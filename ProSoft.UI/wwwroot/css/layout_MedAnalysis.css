@@ -1,0 +1,141 @@
+﻿html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+/*//////////////////////////////////////////////////////////////////////////////////////////*/
+
+/* Start Style for Sidebar Our_Modules */
+#mySidebar {
+    width: 250px;
+    max-height: 100%;
+    overflow: auto;
+}
+#mySidebar ul {
+    font-size: 1rem;
+}
+
+#mySidebar ul li:hover {
+    background-color: #656565 !important;
+}
+
+/* for togelling submenu*/
+#mySidebar li .submenu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    display: none;
+}
+
+#mySidebar li .submenu.show {
+    display: block;
+}
+/*/////////*/
+
+.active-link {
+    background-color: #656565 !important;
+}
+
+.nav-link {
+    cursor: pointer;
+}
+
+#mySidebar .nav-link {
+    font-weight: 500;
+    color: white;
+}
+
+#mySidebar .nav-link i {
+    color: white;
+}
+
+#mySidebar .nav-item ul:hover {
+    background-color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity)) !important;
+}
+
+#mySidebar .hover-link:hover {
+    background-color: rgb(101, 101, 101) !important;
+}
+
+/*on mySidebar nav-open*/
+.nav-open {
+    transform: translateX(0) !important;
+}
+/*on mySidebar nav-open*/
+.toggler {
+    display: none;
+}
+
+@media (max-width: 767px) {
+    #mySidebar {
+        position: absolute;
+        z-index: 2;
+        transform: translateX(-100%);
+        transition: .3s;
+    }
+
+    #mySidebar:dir(RTL) {
+        transform: translateX(100%);
+    }
+    .overlay {
+        opacity: 0;
+        z-index: 1;
+        width: 100%;
+        height: 100vh;
+        pointer-events: none;
+        transition: .3s;
+    }
+
+    .overlay.lay-active {
+        background-color: black;
+        opacity: .3;
+        pointer-events: all;
+    }
+
+    .toggler {
+        display: block;
+    }
+
+    .content {
+        margin-left: 0;
+    }
+
+    .roleInput {
+        width: 100% !important;
+    }
+}
+/* End Style for Sidebar Our_Modules */
+
+/* Start Styling Some Forms */
+.parent > div {
+    width: 30%;
+}
+@media (max-width: 767px) {
+    .parent > div {
+        width: 100% !important;
+    }
+}
+/* End Styling Some Forms */
+
+
+/* For clicking on table row */
+.active-row {
+    background-color: #cdcdcd;
+}
+/* For clicking on table row */

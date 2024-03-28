@@ -1,0 +1,53 @@
+﻿@model KindStoreDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Add New Stock Type";
+    Layout = "_Layout";
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+    <h1 class="mt-4">@localizer["Add New Stock Type"]</h1>
+    <form method="post" asp-action="Add_Patient">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="KId"></label>
+                    <input asp-for="KId" class="form-control" value="@ViewBag.stockTypeId" disabled />
+                    <span asp-validation-for="KId" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="KName"></label>
+                    <input asp-for="KName" class="form-control" />
+                    <span asp-validation-for="KName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="StockType"></label>
+                    <select asp-for="StockType" class="form-control text-center">
+                        <option selected value="6">@localizer["Full Production"]</option>
+                        <option value="7">@localizer["Materials"]</option>
+                    </select>
+                    <span asp-validation-for="StockType" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="parent d-flex justify-content-md-center ">
+                <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add"]</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+
+
+

@@ -1,0 +1,252 @@
+﻿@model List<MainViewDTO>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "_LayoutMedAnalysis";
+}
+<div class="container pt-2">
+    <div class="d-flex justify-content-between align-items-center mt-4 ">
+        <h1 class="header">@ViewBag.main.MainName</h1>
+        <a asp-controller="MainAnalysis" asp-action="AddMainLevel_6" asp-route-ID="@ViewBag.main.MainCode" class="btn btn-sm btn-primary fs-6" style="width:150px">
+            Add New Sub
+        </a>
+    </div>
+    <table id="myTable" class="table table-bordered table-hover" style="width:100%">
+        <thead class="table-dark">
+            <tr>
+                <th>
+                    Code
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var analysis in Model)
+            {
+                <tr onclick="GetSubAnalysis(event, @analysis.MainCode)" style="cursor:pointer;">
+                    <td>
+                        @analysis.MainCode
+                    </td>
+                    <td class="item-name">
+                        @analysis.MainName
+                    </td>
+                    <td width="30%" class="text-center">
+
+                        <a asp-controller="MainAnalysis" asp-action="EditMainLevel_6" asp-route-ID="@analysis.MainCode" class="btn btn-sm btn-success mb-1  fs-6" style="width:150px">
+                            <i class="bi bi-pencil"></i> Edit
+                        </a>
+                        <form asp-action="DeleteMainLevel_6" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@analysis.MainCode" />
+                            <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @* /////////////////////////////////////////////////////////////////// *@
+
+    @* Table for subAnalysis *@
+
+    <div class="subAnalysis-table-head d-flex justify-content-between align-items-center mt-4">
+        <h2 class="header sub-item">Sub Analysis of</h2>
+
+        <a class="btn btn-sm btn-primary fs-6">
+            Add New Sub Item
+        </a>
+        @* asp-controller="MedAnalysis" asp-action="Add_SubItemAnalysis" asp-route-ID="@ViewBag.item.MainCode" asp-route-itemAnalCode="" *@
+    </div>
+    <table id="myTable" class="table table-bordered table-hover subAnalysis-table" style="width:100%">
+        <thead class="table-dark">
+            <tr>
+                <th>
+                    Code
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    @* /////////////////////////////////////////////////////////////////// *@
+
+    @* Table for ItemAnalysis *@
+
+    <div class="ItemAnalysis-table-head d-flex justify-content-between align-items-center mt-4">
+        <h2 class="header sub-item">Item Analysis of</h2>
+
+        <a class="btn btn-sm btn-primary fs-6">
+            Add New Sub Item
+        </a>
+        @* asp-controller="MedAnalysis" asp-action="Add_SubItemAnalysis" asp-route-ID="@ViewBag.item.MainCode" asp-route-itemAnalCode="" *@
+    </div>
+    <table id="myTable" class="table table-bordered table-hover ItemAnalysis-table" style="width:100%">
+        <thead class="table-dark">
+            <tr>
+                <th>
+                    Code
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Actions
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+</div>
+
+@section Scripts{
+    <script>
+        function GetSubAnalysis(e, id) {
+            let subItems = document.querySelector(".subAnalysis-table tbody");
+            let ItemAnalysis = document.querySelector(".ItemAnalysis-table tbody");
+
+            // Handle active clic
+            let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");;
+
+            allItemRows.forEach(row => {
+                row.classList.remove("active-row");
+            });
+
+            let clickedTarget = e.target.parentElement
+            clickedTarget.classList.add("active-row");
+            ///////////////////////////////////////////////////////////////////
+
+            // Catch header for sub items name and reset it
+            let subItemsHead = document.querySelector(".subAnalysis-table-head");
+
+            let itemName = clickedTarget.querySelector(".item-name").innerText;
+
+            let subItemsHeader = subItemsHead.querySelector(".header.sub-item"); // Display Header for sub items
+            subItemsHeader.innerHTML = "Sub Analysis of " + itemName;
+            // For remove specific head
+            let ItemAnalysisHeader = document.querySelector(".ItemAnalysis-table-head .header.sub-item");
+            ItemAnalysisHeader.innerHTML = "Item Analysis of ";
+
+            let subItemAddButton = subItemsHead.querySelector("a");
+            subItemAddButton.setAttribute("href", `/Medical/SubAnalysis/AddSubAnalysis/${id}`);
+            //console.log(subItemAddButton);
+            ///////////////////////////////////////////////////////////////////
+
+            // Handle ajax call
+            subItems.innerHTML = "";  // Empty the body
+            // Handle ajax call
+            ItemAnalysis.innerHTML = ""; // Empty the body
+
+            $.ajax({
+                url: `/Medical/SubAnalysis/GetSubsByMain/${id}`,
+                success: function (result) {
+                    //console.log(result);
+                    // console.log(result.sort((a, b) => b.itemanalcode - a.itemanalcode));
+
+                    for (let item of result) {
+                        const subItem = document.createElement("tr");
+                        subItem.innerHTML +=
+                            `   <td>${item.subCode}</td>
+                                <td class="item-name">${item.subName}</td>
+                                <td width="30%" class="text-center">
+                                    <a href="/Medical/SubAnalysis/EditSubAnalysis/${item.subCode}?maincode=${item.mainCode}" class="btn btn-sm btn-success mb-1  fs-6" style="width:150px">
+                                        <i class="bi bi-pencil"></i> Edit
+                                    </a>
+                                    <form action="/Medical/SubAnalysis/DeleteSubAnalysis" method="post" class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="${item.subCode}" />
+                                        <input type="hidden" name="maincode" value="${item.mainCode}" />
+                                        <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">Delete</button>
+                                    </form>
+                                </td>
+                            `;
+                        //for click to call ajax
+                        subItem.style.cursor = "pointer";
+                        subItem.onclick = function (event) {
+
+                            GetItemAnalysis(event, item.subCode, item.mainCode)
+                        }
+                        subItems.appendChild(subItem);
+                        //console.log(section);
+                    }
+                }
+            });
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        function GetItemAnalysis(e, id, code) {
+            var subItems = document.querySelector(".ItemAnalysis-table tbody");
+
+            // Handle active clic
+            let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");;
+
+            allItemRows.forEach(row => {
+                row.classList.remove("active-row");
+            });
+
+            let clickedTarget = e.target.parentElement
+            clickedTarget.classList.add("active-row");
+            ///////////////////////////////////////////////////////////////////
+
+            // Catch header for sub items name and reset it
+            let subItemsHead = document.querySelector(".ItemAnalysis-table-head");
+
+            let itemName = clickedTarget.querySelector(".item-name").innerText;
+
+            let subItemsHeader = subItemsHead.querySelector(".header.sub-item"); // Display Header for sub items
+            subItemsHeader.innerHTML = "Item Analysis of " + itemName;
+
+            let subItemAddButton = subItemsHead.querySelector("a");
+            subItemAddButton.setAttribute("href", `/Medical/ItemAnalysis/AddItemAnalysis/${id}?maincode=${code}`);
+            // console.log(subItemAddButton);
+            ///////////////////////////////////////////////////////////////////
+
+            // Handle ajax call
+            subItems.innerHTML = "";  // Empty the body
+
+            $.ajax({
+                url: `/Medical/ItemAnalysis/GetItemAnalysis/${id}?maincode=${code}`,
+                success: function (result) {
+                    // console.log(result);
+                    //  result.sort((a, b) => a.itemanalcode - b.itemanalcode)
+
+                    for (let item of result) {
+                        const subItem = document.createElement("tr");
+                        subItem.innerHTML +=
+                            ` <td>${item.itemanalcode}</td>
+                                          <td>${item.itemanalname}</td>
+                                          <td width="30%" class="text-center">
+                                             <a href="/Medical/ItemAnalysis/EditItemAnalysis/${item.itemanalcode}?subcode=${item.codeanalcode}&maincode=${item.subanalcode}" class="btn btn-sm btn-success mb-1  fs-6" style="width:150px">
+                                                <i class="bi bi-pencil"></i> Edit
+                                            </a>
+                                            <form action="/Medical/ItemAnalysis/DeleteItemAnalysis" method="post" class="d-inline">
+                                                    @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="${item.itemanalcode}" />
+                                                <input type="hidden" name="subcode" value="${item.codeanalcode}" />
+                                                <input type="hidden" name="maincode" value="${item.subanalcode}" />
+                                                <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">Delete</button>
+                                            </form>
+                                          </td>
+                                        `;
+                        subItems.appendChild(subItem);
+                        //console.log(section);
+                    }
+                }
+            });
+        }
+    </script>
+}

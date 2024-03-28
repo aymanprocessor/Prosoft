@@ -1,0 +1,166 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+/*//////////////////////////////////////////////////////////////////////////////////////////*/
+
+/* Style for show & hide Password**/
+.input-field .show-hide {
+    position: absolute;
+    right: 13px;
+    top: 50%;
+    transform: translateY(-50%); /*for make icon im middle*/
+    font-size: 18px;
+    color: #919191;
+    cursor: pointer;
+    padding: 3px;
+}
+.input-field .show-hide:dir(RTL) {
+    right: auto;
+    left: 13px;
+}
+/* End Style for show & hide Password**/
+
+/* Style for Authentcation**/
+.registerParent > div {
+    width: 50%;
+}
+@media (max-width: 767px) {
+    .my-mobile {
+        flex-direction: column !important;
+    }
+    .reverse {
+        flex-direction: column-reverse;
+    }
+    .registerParent > div {
+        width: 100% !important;
+    }
+    .login-form {
+        width: 100%;
+    }
+}
+@media (min-width: 768px) {
+    .login-form {
+        width: 65%;
+    }
+}
+/* End Style for Authentcation**/
+
+/* Style for Sidebar dashboard**/
+.toggler {
+    display: none;
+}
+
+#mySidebar {
+    width: 220px;
+    /*max-height: 100%;*/
+    overflow: auto;
+}
+
+#mySidebar ul {
+    font-size: 1rem;
+}
+#mySidebar ul li:hover {
+    background-color: #656565 !important;
+}
+.active-link {
+    background-color: #656565 !important;
+}
+.nav-link {
+    cursor: pointer;
+}
+/*on mySidebar nav-open*/
+.nav-open {
+    transform: translateX(0) !important;
+}
+/*on mySidebar nav-open*/
+@media (max-width: 767px) {
+    #mySidebar {
+        position: absolute;
+        z-index: 2;
+        transform: translateX(-100%);
+        transition: .3s;
+    }
+
+    #mySidebar:dir(RTL) {
+        transform: translateX(100%);
+    }
+    .overlay {
+        opacity: 0;
+        z-index: 1;
+        width: 100%;
+        height: 100vh;
+        pointer-events: none;
+        transition: .3s;
+    }
+
+    .overlay.lay-active {
+        background-color: black;
+        opacity: .3;
+        pointer-events: all;
+    }
+    .toggler {
+        display: block;
+    }
+    .content {
+        margin-left: 0;
+    }
+    .roleInput
+    {
+      width:100% !important;
+    }
+}
+/* End Style for Authentcation**/
+.roleInput {
+    width:50%;
+}
+
+/* Styling role input */
+.toggle-checkbox {
+    -webkit-appearance: none;
+    appearance: none;
+    display: none;
+}
+
+.role {
+    background-color: #bbb;
+    min-width: 82px;
+    text-align: center;
+    border: 2px solid #797979;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all .3s;
+}
+
+.toggle-checkbox:checked + .role {
+    background-color: #5959f5;
+    color: white;
+    border-color: blue;
+    transform: scale(1.08);
+}
+/* Styling role input */
+
+.parent > div {
+    width: 30%;
+}
+
+@media (max-width: 767px) {
+    .parent > div {
+        width: 100% !important;
+    }
+}

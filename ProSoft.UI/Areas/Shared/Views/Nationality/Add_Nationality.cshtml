@@ -1,0 +1,40 @@
+﻿@model NationalityDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+    <h1 class="mt-4">@localizer["Add Nationality"]</h1>
+    <form method="post" asp-action="Add_Nationality" id="myForm">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly"></div>
+
+            <div class="mb-3 ">
+                <label asp-for="NationalityId"></label>
+                <input asp-for="NationalityId" class="form-control" disabled value="@ViewBag.NationalID" />
+                <span asp-validation-for="NationalityId" class="text-danger"></span>
+            </div>
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <label asp-for="NationalityDesc"></label>
+                    <input asp-for="NationalityDesc" class="form-control" />
+                    <span asp-validation-for="NationalityDesc" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="NationalityDescE"></label>
+                    <input asp-for="NationalityDescE" class="form-control" />
+                    <span asp-validation-for="NationalityDescE" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------->
+            <button type="submit" class="btn btn-primary" style="width:150px">
+                @localizer["Add Nationality"]
+            </button>
+        </div>
+    </form>
+</div>

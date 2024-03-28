@@ -1,0 +1,84 @@
+﻿@model ItemEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "_LayoutMedAnalysis";
+}
+<div class="container pt-2">
+    <h1 class="mt-4">Add to : @ViewBag.CurrentName</h1>
+    <form method="post" asp-action="AddItemAnalysis" id="myForm">
+
+        <div class="border p-3 mt-4">
+            <input asp-for="Subanalcode" type="hidden" value="@ViewBag.maincode" />
+            <input asp-for="Mainanalcode" type="hidden" value="@ViewBag.grandCode" />
+            <div asp-validation-summary="ModelOnly"></div>
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="Itemanalname">Name</label>
+                    <input asp-for="Itemanalname" class="form-control" />
+                    <span asp-validation-for="Itemanalname" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Codeanalcode">Sub Item Code</label>
+                    <input asp-for="Codeanalcode" class="form-control" value="@ViewBag.subItemcode" />
+                    <span asp-validation-for="Codeanalcode" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="Itemanalcode">Item Code</label>
+                    <input asp-for="Itemanalcode" class="form-control" value="@ViewBag.ItemCode" />
+                    <span asp-validation-for="Itemanalcode" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label>Measure Unit</label>
+                    <select class="form-control text-center">
+                        <option value="2">yes</option>
+                        <option value="1">No</option>
+                    </select>
+                    <span class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="Itemanalmalenormal">Natural Rate for Man</label>
+                    <input asp-for="Itemanalmalenormal" class="form-control" value="" />
+                    <span asp-validation-for="Itemanalmalenormal" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Itemanalfemalenormal">Natural Rate for Woman</label>
+                    <input asp-for="Itemanalfemalenormal" class="form-control" value="" />
+                    <span asp-validation-for="Itemanalfemalenormal" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="Mainanalcode">Main Code</label>
+                    <input asp-for="Mainanalcode" class="form-control" value="@ViewBag.grandCode" disabled />
+                    <span asp-validation-for="Mainanalcode" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Subanalcode">Sub Code</label>
+                    <input asp-for="Subanalcode" class="form-control" value="@ViewBag.maincode" disabled />
+                    <span asp-validation-for="Subanalcode" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <button type="submit" class="btn btn-primary" style="width:150px">
+                Add
+            </button>
+        </div>
+    </form>
+</div>

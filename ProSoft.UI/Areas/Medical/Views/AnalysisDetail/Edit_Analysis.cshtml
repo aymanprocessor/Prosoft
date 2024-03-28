@@ -1,0 +1,56 @@
+﻿@model AnalysisDtlEditDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Analysis Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .image {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+/*         height: 100%;
+ */        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.5;
+        z-index: -1;
+    }
+</style>
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+    <img class="image" src="/background.jpg" style="position:absolute;" />
+
+    <h1 class="mt-4">@localizer["Edit"] @Model.Itemanalname</h1>
+    <form method="post" asp-action="Edit_Analysis">
+        <div class="border p-3 mt-4">
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="Itemrate">@localizer["Rate"]</label>
+                    <input type="number" asp-for="Itemrate" class="form-control me-2">
+                    <span asp-validation-for="Itemrate" class="text-danger"></span>
+
+                </div>
+            </div>
+            <input type="hidden" asp-for="Headdate" class="form-control me-2">
+            <input type="hidden" asp-for="Itemanalname" class="form-control me-2">
+            <input type="hidden" asp-for="Itemanalcode" class="form-control me-2">
+            <input type="hidden" asp-for="Codeanalcode" class="form-control me-2">
+            <input type="hidden" asp-for="PatId" class="form-control me-2">
+            <input type="hidden" asp-for="MasterId" class="form-control me-2">
+            <input type="hidden" asp-for="BranchId" class="form-control me-2">
+            <input type="hidden" asp-for="FYear" class="form-control me-2">
+            <input type="hidden" asp-for="SubCode" class="form-control me-2">
+            <input type="hidden" asp-for="MainCode" class="form-control me-2">
+
+            <div class="parent d-flex justify-content-md-center ">
+                <button type="submit" class="btn btn-success" style="width:150px">@localizer["Save Changes"]</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+

@@ -1,0 +1,43 @@
+﻿@model MainEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "_LayoutMedAnalysis";
+}
+<div class="container pt-2">
+    <h1 class="mt-4"> Edit : @Model.MainName</h1>
+    <form method="post" asp-action="EditMainLevel_5" id="myForm">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="MainCode">MainCode</label>
+                    <input asp-for="MainCode" class="form-control" />
+                    <span asp-validation-for="MainCode" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="MainSubType">MedicalFlag</label>
+                    <select asp-for="MainSubType" class="form-control text-center">
+                        <option value="2">yes</option>
+                        <option value="1">No</option>
+                    </select>
+                    <span asp-validation-for="MainSubType" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="MainName">Name</label>
+                    <input asp-for="MainName" class="form-control" />
+                    <span asp-validation-for="MainName" class="text-danger"></span>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:150px">
+                Save
+            </button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,147 @@
+﻿@model List<AnalysiDtlViewDTO>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Print Analysis";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .hide-print {
+        display: none !important;
+    }
+
+    .header span {
+        padding: 2px;
+        background-color: #e6e5e5;
+        border: 1px solid black;
+        border-radius: 2px;
+        width: 300px;
+        text-align: center;
+    }
+
+    .header p {
+        font-weight: bold;
+        width: 120px;
+        margin: 0;
+        background-color: #e6e5e5;
+        border: 1px solid black;
+        border-radius: 2px;
+        padding-left: 5px;
+    }
+</style>
+
+<div class="container pt-2">
+
+    <div class="print">
+        <div class="border rounded-3 border-dark border-3 p-3 pt-0 mt-3 ">
+            <div class="d-flex justify-content-between align-items-center">
+                <div><img src="/prosoft.jpg" style="border-radius:50%;height: 120px;width: 120px;" class="mb-0 mt-0"></div>
+                <h2 class="mt-2">Analysis Result for @ViewBag.analysisName</h2>
+
+                <div class="fw-bold">اسم المركز : قسم التحاليل</div>
+            </div>
+            <div class="header p-2 mt-0">
+                <div class="d-flex justify-content-between ">
+                    <div class="d-flex w-50 me-4">
+                        <p>Date  </p>
+                        <span>@ViewBag.date</span>
+                    </div>
+                    <div class="d-flex w-50 pe-4">
+                        <p>Age  </p>
+                        <span>@ViewBag.age</span>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between ">
+                    <div class="d-flex w-50 me-4">
+                        <p>Patient Name  </p>
+                        <span>@ViewBag.patName</span>
+                    </div>
+                    <div class="d-flex w-50 pe-4">
+                        <p>ID  </p>
+                        <span>@ViewBag.patId</span>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between ">
+                    <div class="d-flex w-50 me-4">
+                        <p> Main Client  </p>
+                        <span>@ViewBag.compName</span>
+                    </div>
+                    <div class="d-flex w-50 pe-4">
+                        <p> Sub Client </p>
+                        <span>@ViewBag.compNameDetail</span>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between ">
+                    <div class="d-flex w-50 me-4">
+                        <p> Doctor  </p>
+                        <span>@ViewBag.drName</span>
+                    </div>
+                    <div class="d-flex w-50 pe-4">
+                        <p>ID </p>
+                        <span>@ViewBag.drId</span>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <table class="table" style="border-style: none;">
+                <thead class="mb-2">
+                    <tr>
+                        <th>Name</th>
+                        <th>Result</th>
+                        <th>Rate for Man</th>
+                        <th>Rate for Women</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Itemanalname : </td>
+                            <td> @item.Itemrate </td>
+
+                            <td>15-20</td>
+                            <td>12-20</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <br />
+            <div class="ms-5">
+                <p>Verified By </p>
+                <br />
+
+                <span>@ViewBag.drName</span>
+            </div>
+
+            <!--PRINT-->
+            <div id="for-print" class="parent d-flex align-items-md-start justify-content-center">
+                <div class="mb-3">
+                    <button onclick="printRecord()" class="btn btn-success">Print</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function printRecord() {
+        let printContent = document.querySelector(".content");
+
+        let originalContent = document.body.innerHTML;
+
+        document.body.innerHTML = printContent.outerHTML;
+
+        let buttonDiv = document.querySelector("#for-print");
+
+        buttonDiv.classList.add("hide-print");
+        window.print();
+        document.body.innerHTML = originalContent;
+    }
+</script>
+
+

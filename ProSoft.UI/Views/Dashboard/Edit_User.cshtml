@@ -1,0 +1,72 @@
+﻿@model UserEditDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Edit User";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+
+    // Casting type to get all roles as a list
+    List<RoleDTO> allRoles = (List<RoleDTO>)ViewBag.Roles;
+}
+@inject IViewLocalizer localizer
+
+<div class="container-fluid d-flex align-items-center flex-column">
+    <form method="post" asp-action="Edit_User" class="login-form">
+        @* asp-action="Edit_User" *@
+        <div class="border p-3 mt-4">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                <h2 class="text-dark">@localizer["Edit User"]: @Model.UserName</h2>
+                <h2 class="text-dark">@localizer["Id"] : @Model.UserCode</h2>
+            </div>
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <hr />
+            <input asp-for="UserCode" type="hidden" />
+            <div class="registerParent d-flex flex-column flex-md-row gap-3">
+                <div class="mb-3">
+                    <label asp-for="UserName"></label>
+                    <input asp-for="UserName" class="form-control" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="PhoneNumber"></label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="d-flex gap-2 form-control">
+                    @for (int i = 0, len1 = allRoles.Count(); i < len1; i++)
+                    {
+                        if (Model.Roles.Contains(allRoles[i], new RoleDTOComparer()))
+                        {
+                            <input type="checkbox" class="toggle-checkbox" name="roles" value="@allRoles[i].Name" id="role-@i" checked />
+                            <label for="role-@i" class="role me-1 fs-5 px-2">
+                                @allRoles[i].Name
+                            </label>
+                        }
+                        else
+                        {
+                            <input type="checkbox" class="toggle-checkbox" name="roles" value="@allRoles[i].Name" id="role-@i" />
+                            <label for="role-@i" class="role me-1 fs-5 px-2">
+                                @allRoles[i].Name
+                            </label>
+                        }
+                    }
+                </div>
+                <span asp-validation-for="Roles" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-success" style="width:150px">@localizer["Save Changes"]</button>
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial.cshtml" />
+    @* script to clarify the clicked link *@
+    <script>
+        let ss = document.querySelector(".users");
+        ss.classList.add("active-link");
+    </script>
+}

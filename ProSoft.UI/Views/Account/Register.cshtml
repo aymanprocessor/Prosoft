@@ -1,0 +1,90 @@
+﻿@model UserRegisterDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Register User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    SelectList roles = new SelectList(ViewBag.Roles, "Name", "Name");
+}
+@inject IViewLocalizer localizer
+
+<div class="container d-flex align-items-center flex-column">
+    <form method="post" asp-action="Register" class="login-form">
+        <div class="border p-3 mt-4">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                <h2 class="text-primary">@localizer["Create an account"]</h2>
+                <div class="d-flex align-items-center">
+                    @* <h5 class="w-50">Your Id : </h5> *@
+                    @* <input class="form-control" value="@ViewBag.PatId" disabled /> *@
+                </div>
+            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <hr />
+            <div class="mb-3">
+                <label asp-for="UserName"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="registerParent d-flex flex-column flex-md-row gap-3">
+                <div class="mb-3">
+                    <label asp-for="PhoneNumber"></label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    @* Role Name *@
+                    <label asp-for="Name"></label>
+                    <select asp-for="Name" asp-items="roles" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="registerParent d-flex flex-column flex-md-row gap-3">
+                <div class="mb-3">
+                    <label asp-for="PassWord"></label>
+                    <div class="input-field position-relative">
+                        <input asp-for="PassWord" class="form-control" />
+                        <i class="bx bx-hide show-hide"></i>
+                    </div>
+                    <span asp-validation-for="PassWord" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="PassConfirm"></label>
+                    <div class="input-field position-relative">
+                        <input asp-for="PassConfirm" class="form-control" />
+                        <i class="bx bx-hide show-hide"></i>
+                    </div>
+                    <span asp-validation-for="PassConfirm" class="text-danger"></span>
+                </div>
+            </div>
+
+            @* onclick="alert('Your ID : @ViewBag.PatId ')" *@
+            <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Create Account"]</button>
+            <a asp-action="Login" asp-controller="Account" class="" style="width:150px">
+                @localizer["I have an account"]
+            </a>
+        </div>
+    </form>
+</div>
+<script>
+    const eyeIcons = document.querySelectorAll(".show-hide");
+
+    eyeIcons.forEach((eyeIcon) => {
+        eyeIcon.addEventListener("click", () => {
+            const pInput = eyeIcon.parentElement.querySelector("input");
+            if (pInput.type === "password") {
+                eyeIcon.classList.replace("bx-hide", "bx-show");
+                pInput.type = "text";
+                // return; OR else
+            }
+            else {
+                eyeIcon.classList.replace("bx-show", "bx-hide");
+                pInput.type = "password";
+            }
+        });
+    });
+
+</script>
+
+

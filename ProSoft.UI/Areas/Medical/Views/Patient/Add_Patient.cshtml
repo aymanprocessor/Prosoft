@@ -1,0 +1,149 @@
+﻿@model PatEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Add New Patient";
+    Layout = "_Layout";
+}
+<style>
+    .image {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.5;
+        z-index: -1;
+    }
+</style>
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+    <img class="image" src="/background.jpg" style="position:absolute;" />
+
+    <h1 class="mt-4">@localizer["Add New Patient"]</h1>
+    <form method="post" asp-action="Add_Patient">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="parent d-flex align-items-md-end justify-content-center reverse gap-3">
+                @* hidden *@
+                <input type="hidden" name="redirect" value="@ViewBag.redirect" />
+                <input type="hidden" name="controll" value="@ViewBag.controll" />
+
+                <div class="mb-3">
+                    <label asp-for="PatIdCard"></label>
+                    <input asp-for="PatIdCard" class="form-control" />
+                    <span asp-validation-for="PatIdCard" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="IdType"></label>
+                    <select asp-for="IdType" class="form-control text-center">
+                        <option value="1">الرقم القومي</option>
+                        <option value="2">رقم جواز السفر</option>
+                        <option value="3">رقم الكارنية</option>
+                    </select>
+                    <span asp-validation-for="IdType" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
+                <div class="mb-3" >
+                    <label asp-for="PatName"></label>
+                    <input asp-for="PatName" class="form-control" />
+                    <span asp-validation-for="PatName" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EntryNo"></label>
+                    <input asp-for="EntryNo" type="number" class="form-control" />
+                    <span asp-validation-for="EntryNo" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
+                <div class="mb-3">
+                    <label asp-for="EntryDate"></label>
+                    <input asp-for="EntryDate" type="date" class="form-control" />
+                    <span asp-validation-for="EntryDate" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EntryTime"></label>
+                    <input asp-for="EntryTime" type="datetime-local" class="form-control" />
+                    <span asp-validation-for="EntryTime" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
+                <div class="mb-3">
+                    <label asp-for="BirthDate"></label>
+                    <input asp-for="BirthDate" type="date" class="form-control" />
+                    <span asp-validation-for="BirthDate" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="NewOld"></label>
+                    <input asp-for="NewOld" type="number" class="form-control" />
+                    <span asp-validation-for="NewOld" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
+                <div class="mb-3">
+                    <label asp-for="MaritalStatus"></label>
+                    <select asp-for="MaritalStatus" class="form-control text-center">
+                        <option value="1">اعزب</option>
+                        <option value="2">متزوج</option>
+                    </select>
+                    <span asp-validation-for="MaritalStatus" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="PersonKind"></label>
+                    <select asp-for="PersonKind" class="form-control text-center">
+                        <option value="1">ذكر</option>
+                        <option value="2">انثي</option>
+                    </select>
+                    <span asp-validation-for="PersonKind" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile ">
+                <div class="mb-3 " style="width: 60%">
+                    <label asp-for="PatAddress"></label>
+                    <input asp-for="PatAddress" class="form-control" />
+                    <span asp-validation-for="PatAddress" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
+                <div class="mb-3 ">
+                    <label asp-for="PatJob"></label>
+                    <input asp-for="PatJob" class="form-control" />
+                    <span asp-validation-for="PatJob" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="PatMobile"></label>
+                    <input asp-for="PatMobile" class="form-control" />
+                    <span asp-validation-for="PatMobile" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
+                <div class="mb-3 ">
+                    <label asp-for="PatHospital"></label>
+                    <input asp-for="PatHospital" class="form-control" />
+                    <span asp-validation-for="PatHospital" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="PDep"></label>
+                    <input asp-for="PDep" class="form-control" />
+                    <span asp-validation-for="PDep" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile">
+                <div class="mb-3" style="width: 60%">
+                    <label asp-for="PatSector"></label>
+                    <input asp-for="PatSector" class="form-control" />
+                    <span asp-validation-for="PatSector" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="parent d-flex justify-content-md-center ">
+                <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add Patient"]</button>
+            </div>
+        </div>
+    </form>
+</div>

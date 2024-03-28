@@ -1,0 +1,321 @@
+﻿@model ClinicTransEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Analysis Transaction";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    SelectList mainList = new SelectList(Model.MainClinics, "ClinicId", "ClinicDesc");
+    SelectList mainItemList = new SelectList(Model.MainItems, "MainId", "MainName");
+    SelectList drList = new SelectList(Model.Doctors, "DrId", "DrDesc");
+}
+
+<style>
+
+    .hide {
+        display: none !important;
+    }
+
+    .resizeDoctor {
+        width: 60% !important;
+    }
+    .image {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.5;
+        z-index: -1;
+    }
+</style>
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+    <img class="image" src="/background.jpg" style="position:absolute;" />
+
+    <h1 class="mt-4">@localizer["New ClinicTrans to Visit No"] : @ViewBag.Master </h1>
+    <form method="post" asp-action="Add_ClinicTrans">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly"></div>
+
+            <div class="parent d-flex flex-column align-items-center my-mobile">
+                <input type="hidden" name="redirect" value="@ViewBag.redirect"/>
+                <input type="hidden" name="flag" value="@ViewBag.flag" />
+
+                <label asp-for="ItmServFlag"><h4>@localizer["Servise OR Item"]</h4></label>
+
+                <div class="d-flex justify-content-center">
+                    <div class="mb-3 me-md-4 ms-4">
+                        <label class="form-check-label">
+                            <input asp-for="ItmServFlag" class="form-check-input radio-inline" checked type="radio" value="3" onchange="SelectOption(event)">
+                            @localizer["Servise"]
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="ItmServFlag" class="form-check-input radio-inline" type="radio" value="2" onchange="SelectOption(event)">
+                            @localizer["Item"]             
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+            @* ///////////////////////////////////////////////////////////////////////////////////////// *@
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile servise gap-3">
+                @* from main clinic *@
+                <div class="mb-3 ">
+                    <label asp-for="ClinicId">@localizer["Main Clinic"] </label>
+                    <select asp-for="ClinicId" asp-items="mainList" class="form-control text-center" onchange="GetSubClinics()">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="ClinicId" class="text-danger"></span>
+                </div>
+                @* from sub clinic *@
+                <div class="mb-3">
+                    <label asp-for="SClinicId">@localizer["Sub Clinic"]</label>
+                    <select asp-for="SClinicId" class="form-control text-center" onchange="GetServeClinics()">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="SClinicId" class="text-danger"></span>
+                </div>
+            </div>
+
+            @* ///////////////////////////////////////////////////////////////////////////////////////// *@
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile item-hide hide gap-3">
+                @* from main clinic *@
+                <div class="mb-3">
+                    <label asp-for="MainId">@localizer["Main Item"]</label>
+                    <select asp-for="MainId" asp-items="mainItemList" class="form-control text-center" onchange="GetSubItems()">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="MainId" class="text-danger"></span>
+                </div>
+                @* from sub clinic *@
+                <div class="mb-3">
+                    <label asp-for="SubId">@localizer["Sub Item"]</label>
+                    <select asp-for="SubId" class="form-control text-center" onchange="GetServeClinics()">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="SubId" class="text-danger"></span>
+                </div>
+            </div>
+
+            @* ///////////////////////////////////////////////////////////////////////////////////////// *@
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
+                @* from Serve clinic *@
+                <div class="mb-3  servise">
+                    <label asp-for="ServId">@localizer["Clinic Service"]</label>
+                    <select asp-for="ServId" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="ServId" class="text-danger"></span>
+                </div>
+                @* from Sender Doctor *@
+                <div class="mb-3 sizeDoctor">
+                    <label asp-for="DrSend">@localizer["Sender Doctor"]</label>
+                    <select asp-for="DrSend" asp-items="drList" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="DrSend" class="text-danger"></span>
+                </div>
+            </div>
+
+            @* ///////////////////////////////////////////////////////////////////////////////////////// *@
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
+                <div class="mb-3 ">
+                    <label asp-for="ExInvoiceNo">@localizer["Invoice No"]</label>
+                    <input asp-for="ExInvoiceNo" type="number" class="form-control text-center" />
+                    <span asp-validation-for="ExInvoiceNo" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="ExDate">@localizer["Invoice Date"]</label>
+                    <input asp-for="ExDate" class="form-control text-center" />
+                    <span asp-validation-for="ExDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            @* ///////////////////////////////////////////////////////////////////////////////////////// *@
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
+                <div class="mb-3">
+                    <label asp-for="StockCode">@localizer["Stock"]</label>
+                    <input asp-for="StockCode" type="number" class="form-control text-center" />
+                    <span asp-validation-for="StockCode" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="UnitPrice">@localizer["Service Price"]</label>
+                    <input asp-for="UnitPrice" type="number" class="form-control text-center" />
+                    <span asp-validation-for="UnitPrice" class="text-danger"></span>
+                </div>
+            </div>
+
+            @* ///////////////////////////////////////////////////////////////////////////////////////// *@
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
+                <div class="mb-3">
+                    <label asp-for="Qty">@localizer["Quantity"]</label>
+                    <input asp-for="Qty" type="number" class="form-control text-center" value="1" />
+                    <span asp-validation-for="Qty" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="PatientValue">@localizer["Patient Value"] </label>
+                    <input asp-for="PatientValue" type="number" class="form-control text-center" />
+                    <span asp-validation-for="PatientValue" class="text-danger"></span>
+                </div>
+            </div>
+
+            @* ///////////////////////////////////////////////////////////////////////////////////////// *@
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
+                <div class="mb-3">
+                    <label asp-for="ExtraVal">@localizer["Patient Requirements"]</label>
+                    <input asp-for="ExtraVal" type="number" class="form-control text-center" />
+                    <span asp-validation-for="ExtraVal" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="ExtraVal2">@localizer["Patient Maintainance"]</label>
+                    <input asp-for="ExtraVal2" type="number" class="form-control text-center" />
+                    <span asp-validation-for="ExtraVal2" class="text-danger"></span>
+                </div>
+            </div>
+
+            @* ///////////////////////////////////////////////////////////////////////////////////////// *@
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
+                <div class="mb-3 ">
+                    <label asp-for="CompValue">@localizer["Company Value"]</label>
+                    <input asp-for="CompValue" type="number" class="form-control text-center" />
+                    <span asp-validation-for="CompValue" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DiscountVal">@localizer["Discount"] </label>
+                    <input asp-for="DiscountVal" type="number" class="form-control text-center" />
+                    <span asp-validation-for="DiscountVal" class="text-danger"></span>
+                </div>
+            </div>
+
+            @* ///////////////////////////////////////////////////////////////////////////////////////// *@
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
+                <div class="mb-3">
+                    <label asp-for="ApprovalPeriod">@localizer["Attendance Shift"] </label>
+                    <select asp-for="ApprovalPeriod" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                        <option value="1">صباحي</option>
+                        <option value="2">مسائي</option>
+                        <option value="3">ليلي</option>
+                        <option value="4">ظهرا</option>
+                    </select>
+                    @* <input asp-for="ApprovalPeriod" type="number" class="form-control text-center" /> *@
+                    <span asp-validation-for="ApprovalPeriod" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="CheckIdCancel">@localizer["Service Acceptance"] </label>
+                    <select asp-for="CheckIdCancel" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                        <option value="1">حضور</option>
+                        <option value="2">حجز</option>
+                        <option value="3">ملغي</option>
+                        <option value="4">استرداد</option>
+                    </select>
+                    @* <input asp-for="CheckIdCancel" type="number" class="form-control text-center" /> *@
+                    <span asp-validation-for="CheckIdCancel" class="text-danger"></span>
+                </div>
+            </div>
+
+            @* ///////////////////////////////////////////////////////////////////////////////////////// *@
+
+            <div class="parent d-flex justify-content-md-center ">
+                <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add New"] </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    // for Select Option
+    function SelectOption(e) {
+        var inputValue = e.target.value;
+
+        var serviseElements = document.querySelectorAll(".servise");
+        var itemeElement = document.querySelector(".item-hide");
+        var doctorElement = document.querySelector(".sizeDoctor");
+
+        if (inputValue == 2) {
+            itemeElement.classList.remove("hide");
+            serviseElements.forEach(e => {
+                e.classList.add("hide");
+            });
+            doctorElement.classList.add("resizeDoctor");
+        }
+        else if (inputValue == 3) {
+            itemeElement.classList.add("hide");
+            serviseElements.forEach(e => {
+                e.classList.remove("hide");
+            });
+            doctorElement.classList.remove("resizeDoctor");
+        }
+    }
+
+    // for sub clinic
+    function GetSubClinics() {
+        var clinicId = document.getElementById("ClinicId").value;
+
+        var subClinicId = document.getElementById("SClinicId");
+        subClinicId.innerHTML = `<option value="">-- Choose --</option>`;
+
+        $.ajax({
+            url: `/Medical/ClinicTrans/GetSubClinic/${clinicId}`,
+            success: function (result) {
+                for (let item of result) {
+                    subClinicId.innerHTML +=
+                        `<option value="${item.sClinicId}">${item.sClinicDesc}</option>`
+                }
+            }
+        });
+    }
+
+    // for sub item
+    function GetSubItems() {
+        var itemId = document.getElementById("MainId").value;
+
+        var subItemId = document.getElementById("SubId");
+        subItemId.innerHTML = `<option value="">-- Choose --</option>`;
+
+        $.ajax({
+            url: `/Medical/ClinicTrans/GetSubItem/${itemId}`,
+            success: function (result) {
+                for (let item of result) {
+                    subItemId.innerHTML +=
+                        `<option value="${item.subId}">${item.subName}</option>`
+                }
+            }
+        });
+    }
+
+    // for serve clinic
+    function GetServeClinics() {
+        var subClinicId = document.getElementById("SClinicId").value;
+
+        var serveClinicId = document.getElementById("ServId");
+        serveClinicId.innerHTML = `<option value="">-- Choose --</option>`;
+
+        $.ajax({
+            url: `/Medical/ClinicTrans/GetServeClinic/${subClinicId}`,
+            success: function (result) {
+                for (let item of result) {
+                    serveClinicId.innerHTML +=
+                        `<option value="${item.servId}">${item.servDesc}</option>`;
+                }
+            }
+        });
+    }
+</script>

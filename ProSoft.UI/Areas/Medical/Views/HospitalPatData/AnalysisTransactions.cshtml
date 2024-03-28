@@ -1,0 +1,497 @@
+﻿@model List<PatViewDTO>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Analysis Transaction";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@inject IViewLocalizer localizer
+<style>
+    .active-row {
+        background-color: #cdcdcd;
+    }
+    .hide
+    {
+        display:none !important;
+    }
+
+    .image {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.5;
+        z-index: -1;
+    }
+</style>
+<div class="text-center">
+    <h1 class="mb-2">@localizer["Hospital Patient Data"] </h1>
+</div>
+
+<div class="container pt-2" style="min-height:100vh;">
+    <img class="image" src="/background.jpg" style="position:absolute;" />
+
+    <div class="d-flex align-items-md-center flex-column flex-md-row justify-content-between mb-2 gap-2">
+        <div>
+            <h4 class="ms-2 my-1">@localizer["Search for patient.."]</h4>
+        </div>
+        <div class="w-50 ">
+            <input type="text" class="form-control" id="searchInput" placeholder="@localizer["Search by ID, Name, or Mobile..."]">
+        </div>
+        <div>
+            <a asp-area="Medical" asp-controller="Patient" asp-action="Add_Patient" asp-route-redirect="AnalysisTransactions" asp-route-controll="HospitalPatData" class="btn btn-sm btn-primary fs-6" style="width:150px">
+                @localizer["Add New Patient"]
+            </a>
+
+        </div>
+    </div>
+    <div class="border border-success p-0 mb-2 border-opacity-75 overflow-auto" style="height: 200px;">
+        <table id="myTable" class="table table-bordered table-hover" style="width:100%">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        @localizer["Patient ID"]
+                    </th>
+                    <th>
+                        @localizer["Patient Name"]
+                    </th>
+                    <th>
+                        @localizer["Patient Mobile"]
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var pat in Model)
+                {
+                    <tr onclick="GetAdmisson(event,@pat.PatId)" style="cursor:pointer;">
+
+                        <td>
+                            @pat.PatId
+                        </td>
+                        <td class="item-name">
+                            @pat.PatName
+                        </td>
+                        <td>
+                            @pat.PatMobile
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @* /////////////////////////////////////////////////////////////////// *@
+
+    @* Table for PatAdmissions *@
+
+    <div class="admission-table-head d-flex justify-content-between align-items-center mt-4">
+        <h2 class="header pat-admission">@localizer["Visits of patient"]:</h2>
+
+        @*  <a class="btn btn-sm btn-primary fs-6" style="width:150px">
+            Add Visit
+        </a> *@
+        @* asp-controller="MedAnalysis" asp-action="Add_SubItemAnalysis" asp-route-ID="@ViewBag.item.MainCode" asp-route-itemAnalCode="" *@
+    </div>
+
+    <div class="border border-success p-0 mb-2 border-opacity-75 overflow-auto" style="max-height: 300px;">
+
+        <table id="myTable" class="table table-bordered table-hover admisson-table" style="width:100%">
+            <thead class="table-dark">
+                <tr>
+                    <th class="align-middle">
+                       @localizer["Master Id"] 
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Entry Date"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Entity Name"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["subEntity Name"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Department"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Sent From"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Doctor Name"]
+                    </th>
+                    @*   <th class="align-middle">
+                        Actions
+                    </th> *@
+
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+    </div>
+    @* /////////////////////////////////////////////////////////////////// *@
+
+    @* Table for ClinicTrans *@
+
+    <div class="clinicTrans-table-head d-flex justify-content-between align-items-center mt-4">
+        <h2 class="header clinic-trans">@localizer["Clinic Transaction Visit No."]</h2>
+
+        <a class="btn btn-sm btn-primary fs-6" style="width:150px">
+            @localizer["Add Transaction"]
+        </a>
+        @* asp-controller="MedAnalysis" asp-action="Add_SubItemAnalysis" asp-route-ID="@ViewBag.item.MainCode" asp-route-itemAnalCode="" *@
+    </div>
+
+    <div class="border border-success p-0 mb-2 border-opacity-75 overflow-auto" style="max-height: 300px;">
+
+        <table id="myTable" class="table table-bordered table-hover clinicTrans-table" style="width:100%">
+            <thead class="table-dark">
+                <tr>
+                    <th class="align-middle">
+                        @localizer["Serial"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Service OR Item"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Sender Doctor"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Service Price"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Patient Value"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Patient Requirements"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Patient Maintainance"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Company value"]
+                    </th>
+                    @*  <th class="align-middle">
+                        Actions
+                    </th> *@
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+    </div>
+
+    @* /////////////////////////////////////////////////////////////////// *@
+
+    @* Table for Analysis Details *@
+
+    <div class="analysis-table-head d-flex justify-content-between align-items-center mt-4">
+        <h2 class="header analysis">@localizer["Analysis details for"] : -@localizer["visit No"]: - @localizer["transaction No"]: </h2>
+
+        <a asp class="btn btn-sm btn-primary fs-6" style="width:150px">
+            @localizer["Go To Print"]
+        </a>
+        @* asp-controller="MedAnalysis" asp-action="Add_SubItemAnalysis" asp-route-ID="@ViewBag.item.MainCode" asp-route-itemAnalCode="" *@
+    </div>
+
+    <div class="border border-success p-0 mb-2 border-opacity-75 overflow-auto" style="max-height: 300px;">
+
+        <table id="myTable" class="table table-bordered table-hover analysis-table" style="width:100%">
+            <thead class="table-dark">
+                <tr>
+                    <th class="align-middle">
+                        @localizer["Code"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Description"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Item Rate"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Action"]
+                    </th> 
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+@section Scripts {
+    @* search *@
+    <script>
+        document.getElementById('searchInput').addEventListener('input', function () {
+            filterTable();
+        });
+
+        function filterTable() {
+            var input = document.getElementById('searchInput');
+            var filter = input.value.toUpperCase();
+            var table = document.getElementById('myTable');
+            var rows = table.getElementsByTagName('tr');
+
+            for (var i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
+                var cells = rows[i].getElementsByTagName('td');
+                var found = false;
+
+                for (var j = 0; j < cells.length; j++) {
+                    var cell = cells[j];
+                    if (cell) {
+                        var textValue = cell.textContent || cell.innerText;
+                        if (textValue.toUpperCase().indexOf(filter) > -1) {
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (found) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        }
+    </script>
+
+    <script>
+        @* Ajax for patAdmisson *@
+        function GetAdmisson(e, id) {
+            let admissions = document.querySelector(".admisson-table tbody");
+            let clinicTrans = document.querySelector(".clinicTrans-table tbody");
+            let analysis = document.querySelector(".analysis-table tbody");
+
+            // Handle active clic
+            let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");;
+
+            allItemRows.forEach(row => {
+                row.classList.remove("active-row");
+            });
+
+            let clickedTarget = e.target.parentElement
+            clickedTarget.classList.add("active-row");
+            ///////////////////////////////////////////////////////////////////
+
+            // Catch header for pat admission name and reset it
+            let patAdmissonHead = document.querySelector(".admission-table-head");
+            // Catch header for analysisDetails => PatAdmissionID and reset it
+            let analysisHead = document.querySelector(".analysis-table-head");
+
+            let itemName = clickedTarget.querySelector(".item-name").innerText;
+
+            let patAdmissonHeader = patAdmissonHead.querySelector(".header.pat-admission"); // Display Header for patAdmisson
+            patAdmissonHeader.innerHTML = "@localizer["Visits of patient"] : " + itemName;
+            // For remove specific head
+            let clinicTransHeader = document.querySelector(".header.clinic-trans");
+            clinicTransHeader.innerHTML = "@localizer["Clinic Transaction Invoices For Visit No"] :";
+            let analysisHeader = analysisHead.querySelector(".header.analysis");
+                analysisHeader.innerHTML = "@localizer["Analysis details for"] : -@localizer["visit No"]: - @localizer["transaction No"]:";
+
+            // let patAdmissonAddButton = patAdmissonHead.querySelector("a");
+            // patAdmissonAddButton.setAttribute("href", `/Medical/AnalysisTransaction/Add_PatientAdmission/${id}`);
+               
+            // console.log(patAdmissonAddButton);
+            // console.log(clickedTarget);
+            ///////////////////////////////////////////////////////////////////
+
+            // Handle ajax call
+            admissions.innerHTML = "";  // Empty the body
+            // For closing clinictrans
+            clinicTrans.innerHTML = "";  // Empty the body
+            // For closing analysisDetails
+            analysis.innerHTML = "";  // Empty the body
+
+            $.ajax({
+                url: `/Medical/PatAdmission/GetAdmissions/${id}`,
+                success: function (result) {
+                    // console.log(result);
+                    //sorting
+                    result.sort((a, b) => b.masterId - a.masterId)
+                    for (let item of result) {
+                        const patAdmission = document.createElement("tr");
+                        patAdmission.innerHTML +=
+                        `
+                            <td class="item-id align-middle">${item.masterId}</td>
+                            <td class="align-middle">${item.patAdDate}</td>
+                            <td class="align-middle">${item.compName}</td>
+                            <td class="align-middle">${item.compNameDtl}</td>
+                            <td class="align-middle">${item.classificationDesc}</td>
+                            <td class="align-middle">${item.regionDesc}</td>
+                            <td class="align-middle">${item.drDesc}</td>    
+                        `;
+                        //for click to call ajax
+                        patAdmission.style.cursor = "pointer";
+                        patAdmission.onclick = function (event) {
+                            GetClinicTrans(event, item.masterId);
+                        }
+                        admissions.appendChild(patAdmission);
+                        //console.log(section);
+                    }
+                }
+            });
+            }
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        @* Ajax for Clinctrans *@
+        function GetClinicTrans(e, id) {
+            var clinicTrans = document.querySelector(".clinicTrans-table tbody");
+            let analysis = document.querySelector(".analysis-table tbody");
+
+            // Handle active clic
+            let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");;
+
+            allItemRows.forEach(row => {
+                row.classList.remove("active-row");
+            });
+
+            let clickedTarget = e.target.parentElement
+            clickedTarget.classList.add("active-row");
+            ///////////////////////////////////////////////////////////////////
+
+            // Catch header for ClinicTrans => PatAdmissionID and reset it
+            let clinicTransHead = document.querySelector(".clinicTrans-table-head");
+            // Catch header for analysisDetails => PatAdmissionID and reset it
+            let analysisHead = document.querySelector(".analysis-table-head");
+
+            let itemId = clickedTarget.querySelector(".item-id").innerText;
+
+            let clinicTransHeader = clinicTransHead.querySelector(".header.clinic-trans"); // Display Header for sub items
+                clinicTransHeader.innerHTML = "@localizer["Clinic Transaction For Visit No"] :" + itemId;
+
+            let clinicTransAddButton = clinicTransHead.querySelector("a");
+                clinicTransAddButton.setAttribute("href", `/Medical/ClinicTrans/Add_ClinicTrans/${id}?redirect=AnalysisTransactions&flag=1`);
+            let analysisHeader = analysisHead.querySelector(".header.analysis");
+                analysisHeader.innerHTML = "@localizer["Analysis details for"] : -@localizer["visit No"]: - @localizer["transaction No"]:";
+
+            
+            // console.log(clinicTransAddButton);
+            ///////////////////////////////////////////////////////////////////
+
+            // Handle ajax call
+            clinicTrans.innerHTML = "";  // Empty the body
+            // For closing analysisDetails
+            analysis.innerHTML = "";  // Empty the body
+
+            $.ajax({
+                url: `/Medical/ClinicTrans/GetClinicTrans/${id}?flag=1`,
+                success: function (result) {
+                    //console.log(result);
+                    // console.log(result.sort((a, b) => b.itemanalcode - a.itemanalcode));
+                    //sortng
+                    result.sort((a, b) => b.counter - a.counter)
+
+                    for (let item of result) {
+                        const clinic = document.createElement("tr");
+                        clinic.innerHTML +=
+                        `
+                            <td class="trans-id align-middle">${item.counter}</td>
+                            ${item.itmServFlag == 3 ?
+                                `<td class="align-middle">${item.servDesc}</td>`
+                                : `<td class="align-middle">${item.subName}</td>`
+                            }
+                            <td class="align-middle">${item.drDesc}</td>
+                            <td class="align-middle">${item.unitPrice}</td>
+                            <td class="align-middle">${item.patientValue}</td>
+                            <td class="align-middle">${item.extraVal}</td>
+                            <td class="align-middle">${item.extraVal2}</td>
+                            <td class="align-middle">${item.compValue}</td>
+                        `;
+                        //for click to call ajax
+                        clinic.style.cursor = "pointer";
+                        clinic.onclick = function (event) {
+                            GetAnalysisDetail(event, item.checkId, item.sClinicId);//, item.subCode, item.mainCode
+                        };
+                        clinicTrans.appendChild(clinic);
+                    }
+                }
+            });
+            }
+        
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        @* Ajax for Analysis *@
+        function GetAnalysisDetail(e, id, sClinicId) {
+            var analysis = document.querySelector(".analysis-table tbody");
+
+            // Handle active clic
+            let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");;
+
+            allItemRows.forEach(row => {
+                row.classList.remove("active-row");
+            });
+
+            let clickedTarget = e.target.parentElement
+            clickedTarget.classList.add("active-row");
+            ///////////////////////////////////////////////////////////////////
+
+            if (sClinicId == 5) {
+                // Catch header for analysisDetails => PatAdmissionID and reset it
+                let analysisHead = document.querySelector(".analysis-table-head");
+
+                let itemName = document.querySelector(".active-row .item-name").innerText;
+                let itemId = document.querySelector(".active-row .item-id").innerText;
+
+                let transId = clickedTarget.querySelector(".trans-id").innerText;
+
+                let analysisPrintButton = analysisHead.querySelector("a");
+                    analysisPrintButton.setAttribute("href", `/Medical/AnalysisDetail/PrintAnalysis/${id}`);
+
+                let analysisHeader = analysisHead.querySelector(".header.analysis"); // Display Header for sub items
+                    analysisHeader.innerHTML = "@localizer["Analysis details for"] :" + itemName + " - @localizer["visit No"] :" + itemId + " - @localizer["transaction No"] :" + transId;
+
+                ///////////////////////////////////////////////////////////////////
+
+                // Handle ajax call
+                analysis.innerHTML = "";  // Empty the body
+                $.ajax({
+                    url: `/Medical/AnalysisDetail/GetAnalysisDetail/${id}`,//?subCode=${subCode}&mainCode=${mainCode}
+                    success: function (result) {
+                        //console.log(result);
+                        // console.log(result.sort((a, b) => b.itemanalcode - a.itemanalcode));
+                        //sortng
+                        // result.sort((a, b) => b.counter - a.counter)
+
+                        for (let item of result) {
+                            const analysisItem = document.createElement("tr");
+                            analysisItem.innerHTML +=
+                                `
+                                <td class="align-middle">${item.itemanalcode}</td>
+                                <td class="align-middle">${item.itemanalname}</td>
+                                <td class="align-middle">${item.itemrate}</td>
+
+                                <td width="20%" class="text-center">
+                                      <a href="/Medical/AnalysisDetail/Edit_Analysis/${item.id}" class="btn btn-sm btn-success mb-1 fs-6" style="width:150px">
+                                                <i class="bi bi-pencil"></i> @localizer["Edit"]
+                                            </a>
+                                </td>
+                            `;
+                            analysis.appendChild(analysisItem);
+                        }
+                    }
+                });
+            }
+            else {
+                // Catch header for analysisDetails => PatAdmissionID and reset it
+                let analysisHead = document.querySelector(".analysis-table-head");
+
+                let analysisHeader = analysisHead.querySelector(".header.analysis");
+                    analysisHeader.innerHTML = "@localizer["Analysis details for"] : - @localizer["visit No"] : - @localizer["transaction No"] :";
+
+                // For closing analysisDetails
+                analysis.innerHTML = "";  // Empty the body
+            }
+        }
+         
+        function openEdit(e, id) { 
+            var Current = e.target.parentElement.parentElement;
+            Current.querySelector(".editRate form").classList.remove("hide");
+        }
+    </script>
+}

@@ -1,0 +1,45 @@
+﻿@model SubEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "_LayoutMedAnalysis";
+}
+<div class="container pt-2">
+    <h1 class="mt-4"> Edit : @Model.SubName</h1>
+    <form method="post" asp-action="EditSubAnalysis" id="myForm">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly"></div>
+            <input asp-for="MainCode" type="hidden" />
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="SubCode"></label>
+                    <input asp-for="SubCode" class="form-control" />
+                    <span asp-validation-for="SubCode" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="MedicalFlag"></label>
+                    <select asp-for="MedicalFlag" class="form-control text-center">
+                        <option value="2">yes</option>
+                        <option value="1">No</option>
+                    </select>
+                    <span asp-validation-for="MedicalFlag" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="SubName"></label>
+                    <input asp-for="SubName" class="form-control" />
+                    <span asp-validation-for="SubName" class="text-danger"></span>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:150px">
+                Save Changes
+            </button>
+        </div>
+    </form>
+</div>

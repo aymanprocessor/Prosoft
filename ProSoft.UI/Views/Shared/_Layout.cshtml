@@ -1,0 +1,39 @@
+﻿@inject IViewLocalizer localizer
+
+@{
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+}
+<!DOCTYPE html>
+<html lang="en" dir="@(isRTL ? "RTL" : "LTR")">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+    <div  class="d-flex justify-content-between align-items-center p-2 shadow-sm rounded">
+        <div class="d-flex align-items-center gap-2 @(isRTL ? "me-auto" : "ms-auto")">
+            <partial name="_SelectLanguagePartial" />
+            @if (User.Identity.IsAuthenticated)
+            {
+                <a asp-action="Logout" asp-controller="Account" class="btn btn-secondary">@localizer["Log out"]</a>
+            }
+        </div>
+    </div>
+        <div class="content pb-3 position-relative" style="flex: 1;">
+            @RenderBody()
+        </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @* for two way validation *@
+    <script src="/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
