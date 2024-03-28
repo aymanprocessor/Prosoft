@@ -1,0 +1,38 @@
+﻿@model DrDegreeDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Edit DrDegree";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+    <h1 class="mt-4">@localizer["Edit Degree"] : @Model.DegreeDesc</h1>
+    <form method="post" asp-action="Edit_DrDegree" id="myForm">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly"></div>
+            @* hidden *@
+            <input asp-for="DegreeId" type="hidden" />
+
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <label asp-for="DegreeId"></label>
+                    <input asp-for="DegreeId" class="form-control" disabled />
+                    <span asp-validation-for="DegreeId" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="DegreeDesc"></label>
+                    <input asp-for="DegreeDesc" class="form-control" />
+                    <span asp-validation-for="DegreeDesc" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------->
+            <button type="submit" class="btn btn-primary" style="width:150px">
+                @localizer["Save Changes"]
+            </button>
+        </div>
+    </form>
+</div>

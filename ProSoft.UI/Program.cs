@@ -57,6 +57,7 @@ builder.Services.AddScoped<IPatAdmissionRepo, PatAdmissionRepo>();
 builder.Services.AddScoped<IClinicTransRepo, ClinicTransRepo>();
 builder.Services.AddScoped<IAnalysisDetailRepo, AnalysisDetailRepo>();
 builder.Services.AddScoped<INationalityRepo, NationalityRepo>();
+builder.Services.AddScoped<IDrDegreeRepo, DrDegreeRepo>();
 /////////////////Stock/////////////
 builder.Services.AddScoped<IStockTypeRepo, StockTypeRepo>();
 

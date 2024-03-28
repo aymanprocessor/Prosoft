@@ -1,0 +1,59 @@
+﻿@model List<DrDegreeDTO>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Doctor Degree";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2 ">
+    <div class="d-flex justify-content-between align-items-center mt-4 ">
+        <h1 class="header">@localizer["Doctor Degree"]</h1>
+
+        <a asp-controller="DrDegree" asp-action="Add_DrDegree" class="btn btn-sm btn-primary fs-6" style="width:150px">
+            @localizer["Add Degree"]
+        </a>
+    </div>
+    <div class="overflow-auto" style="max-height:calc(100vh - 145px)">
+    <table id="myTable" class="table table-bordered table-hover" style="width:100%">
+        <thead class="table-dark">
+            <tr>
+                <th>
+                    @localizer["Code"]
+                </th>
+                <th>
+                    @localizer["Degree Name"]
+                </th>
+                <th>
+                    @localizer["Action"]
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var deg in Model)
+            {
+                <tr>
+                    <td>
+                        @deg.DegreeId
+                    </td>
+                    <td>
+                        @deg.DegreeDesc
+                    </td>
+                    <td width="30%" class="text-center">
+                        <a asp-controller="DrDegree" asp-action="Edit_DrDegree" asp-route-ID="@deg.DegreeId" class="btn btn-sm btn-success mb-1 fs-6" style="width:150px">
+                            <i class="bi bi-pencil"></i> @localizer["Edit"]
+                        </a>
+
+                        <form asp-action="Delete_DrDegree" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@deg.DegreeId" />
+                            <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">@localizer["Delete"] </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </div>
+</div>

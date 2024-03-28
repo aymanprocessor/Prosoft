@@ -2,6 +2,7 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
+    ViewData["Title"] = "Add Nationality";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @inject IViewLocalizer localizer
@@ -13,10 +14,12 @@
 
             <div asp-validation-summary="ModelOnly"></div>
 
-            <div class="mb-3 ">
-                <label asp-for="NationalityId"></label>
-                <input asp-for="NationalityId" class="form-control" disabled value="@ViewBag.NationalID" />
-                <span asp-validation-for="NationalityId" class="text-danger"></span>
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3 ">
+                    <label asp-for="NationalityId"></label>
+                    <input asp-for="NationalityId" class="form-control" disabled value="@ViewBag.NationalID" />
+                    <span asp-validation-for="NationalityId" class="text-danger"></span>
+                </div>
             </div>
 
             <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
