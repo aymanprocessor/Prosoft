@@ -72,6 +72,7 @@ namespace ProSoft.EF.DbContext
         public DbSet<SubClinic> SubClinics { get; set; }
 
         public DbSet<SubItem> SubItems { get; set; }
+        public DbSet<DrDegree> DrDegrees { get; set; }
         /////
     }
 }

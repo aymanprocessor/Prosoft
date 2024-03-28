@@ -23,11 +23,6 @@ namespace ProSoft.UI.Areas.Shared.Controllers
             _mapper = mapper;
             _nationalityRepo = nationalityRepo;
         }
-        public IActionResult index()
-        {
-            ViewBag.ahmed = "ahmed alaa";
-            return View();
-        }
         public async Task<IActionResult> Nationalities()
         {
            List<NationalityEi> nationalities =await _nationalityRepo.GetAllAsync();

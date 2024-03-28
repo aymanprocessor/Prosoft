@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace ProSoft.EF.DTOs.Medical.HospitalPatData
 {
-    public class DoctorViewDTO
+    public class DoctorEditAddDTO
     {
-        public int DrId { get; set; }
-        public string DrDesc { get; set; }
-        public int? DrDegree { get; set; }
+
     }
 }

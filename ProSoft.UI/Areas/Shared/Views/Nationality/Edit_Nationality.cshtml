@@ -2,6 +2,7 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
+    ViewData["Title"] = "Edit Nationality";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @inject IViewLocalizer localizer
@@ -12,19 +13,25 @@
         <div class="border p-3 mt-4">
 
             <div asp-validation-summary="ModelOnly"></div>
-
+            @* hidden *@
             <input asp-for="NationalityId" type="hidden" />
 
-            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
-                <div class="mb-3 me-md-4">
-                    <label asp-for="NationalityId"></label>
-                    <input asp-for="NationalityId" class="form-control" disabled />
-                    <span asp-validation-for="NationalityId" class="text-danger"></span>
-                </div>
+            <div class="mb-3 ">
+                <label asp-for="NationalityId"></label>
+                <input asp-for="NationalityId" class="form-control" disabled/>
+                <span asp-validation-for="NationalityId" class="text-danger"></span>
+            </div>
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
                 <div class="mb-3">
                     <label asp-for="NationalityDesc"></label>
                     <input asp-for="NationalityDesc" class="form-control" />
                     <span asp-validation-for="NationalityDesc" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="NationalityDescE"></label>
+                    <input asp-for="NationalityDescE" class="form-control" />
+                    <span asp-validation-for="NationalityDescE" class="text-danger"></span>
                 </div>
             </div>
             <!------------------------------------------------------------------------------->
@@ -34,3 +41,5 @@
         </div>
     </form>
 </div>
+
+                    

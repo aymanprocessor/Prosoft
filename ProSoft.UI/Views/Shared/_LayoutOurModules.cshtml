@@ -58,6 +58,16 @@
                                                 <a asp-area="Shared" asp-controller="Nationality" asp-action="Nationalities" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
                                                     @localizer["National Definations"]
                                                 </a>
+                                            </li> 
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Medical" asp-controller="DrDegree" asp-action="Index" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                                    @localizer["Doctor Degree"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Medical" asp-controller="Doctor" asp-action="Index" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                                    @localizer["Doctor Definations"]
+                                                </a>
                                             </li>
                                         </ul>
                                     </li>

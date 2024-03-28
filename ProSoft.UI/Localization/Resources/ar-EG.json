@@ -139,9 +139,19 @@
   "Edit Patient": "تعديل بيانات المريض",
   "National Id must be 14 digit": "يجب أن يتألف رقم الهوية الوطنية من 14 رقماً",
   "Nationalities": "الجنسيات",
-  "Nationality Name": "اسم الجنسية",
+  "Nationality Name AR": "اسم الجنسية عربي",
+  "Nationality Name EN": "اسم الجنسية انجليزي",
   "Add Nationality": "اضافة جنسية",
   "Edit Nationality": "تعديل جنسية",
+  "Doctor Degree": "درجة الطبيب",
+  "Degree Name": "اسم الطبيب",
+  "Add Degree": "اضافة درجة",
+  "Edit Degree": "تعديل الدرجة",
+  "Doctor Definations": "تعريف الاطباء",
+
+
+
+
   "Stocks System": "نظام المخازن",
   "Stocks Types": "انواع المخازن",
   "Stock Type": "طبيعة المخزن",
