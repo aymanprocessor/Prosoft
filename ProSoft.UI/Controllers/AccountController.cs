@@ -192,5 +192,20 @@ namespace ProSoft.UI.Controllers
             }
             return View(changePassword);
         }
+
+
+        // Get Change Financial Year
+        public async Task<IActionResult> Edit_FinancialYear()
+        {
+            return View();
+        }
+        
+        // Post Change Financial Year
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit_FinancialYear(int year)
+        {
+            return View();
+        }
     }
 }

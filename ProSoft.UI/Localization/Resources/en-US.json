@@ -142,6 +142,12 @@
   "Nationality Name": "Nationality Name",
   "Add Nationality": "Add Nationality",
   "Edit Nationality": "Edit Nationality",
+  "Doctor Degree": "Doctor Degree",
+  "Degree Name": "Degree Name",
+  "Add Degree": "Add Degree",
+  "Edit Degree": "Edit Degree",
+  "Doctor Definations": "Doctor Definations",
+
   "Stocks System": "Stocks System",
   "Stocks Types": "Stocks Types",
   "Stock Type": "Stock Type",
@@ -151,6 +157,8 @@
   "Add New Stock Type": "Add New Stock Type",
   "Add": "Add",
   "Materials": "Materials",
-  "Full Production": "Full Production"
-
+  "Full Production": "Full Production",
+  "Edit Stock Type": "Edit Stock Type",
+  "Change Financial Year": "Change Financial Year",
+  "Change": "Change"
 }

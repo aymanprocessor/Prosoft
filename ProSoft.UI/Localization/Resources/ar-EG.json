@@ -142,6 +142,12 @@
   "Nationality Name": "اسم الجنسية",
   "Add Nationality": "اضافة جنسية",
   "Edit Nationality": "تعديل جنسية",
+  "Doctor Degree": "درجة الطبيب",
+  "Degree Name": "اسم الطبيب",
+  "Add Degree": "اضافة درجة",
+  "Edit Degree": "تعديل الدرجة",
+  "Doctor Definations": "تعريف الاطباء",
+
   "Stocks System": "نظام المخازن",
   "Stocks Types": "انواع المخازن",
   "Stock Type": "طبيعة المخزن",
@@ -151,6 +157,8 @@
   "Add New Stock Type": "اضافة نوع محزن جديد",
   "Add": "اضافة",
   "Materials": "خامات",
-  "Full Production": "انتاج تام"
-
+  "Full Production": "انتاج تام",
+  "Edit Stock Type": "تعديل نوع مخزن",
+  "Change Financial Year": "تغيير السنة المالية",
+  "Change": "تغيير"
 }

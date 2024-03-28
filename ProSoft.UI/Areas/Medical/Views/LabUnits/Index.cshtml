@@ -4,7 +4,7 @@
 @{
     Layout = "_LayoutMedAnalysis";
 }
-<div class="container pt-2 overflow-auto" style="height:calc(100vh - 54px)">
+<div class="container pt-2">
     <div class="d-flex justify-content-between align-items-center mt-4 ">
         <h1 class="header">Lab Units</h1>
 
@@ -12,8 +12,9 @@
             Add Lab Unit
         </a>
     </div>
-    <table id="myTable" class="table table-bordered table-hover" style="width:100%">
-        <thead class="table-dark">
+    <div class="overflow-auto" style="max-height:calc(100vh - 145px)">
+        <table id="myTable" class="table table-bordered table-hover" style="width:100%">
+            <thead class="table-dark">
             <tr>
                 <th>
                     Unit Code
@@ -26,7 +27,7 @@
                 </th>
             </tr>
         </thead>
-        <tbody>
+            <tbody>
             @foreach (var unit in Model)
             {
                 <tr>
@@ -50,5 +51,6 @@
                 </tr>
             }
         </tbody>
-    </table>
+        </table>
+    </div>
 </div>

@@ -2,21 +2,24 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Add New Stock Type";
+    ViewData["Title"] = "Edit Stock Type";
     Layout = "_Layout";
 }
 @inject IViewLocalizer localizer
 
 <div class="container pt-2">
-    <h1 class="mt-4">@localizer["Add New Stock Type"]</h1>
-    <form method="post" asp-action="Add_StockType">
+    <h1 class="mt-4">@localizer["Edit Stock Type"] : @Model.KName</h1>
+    <form method="post" asp-action="Edit_StockType">
         <div class="border p-3 mt-4">
+
+            @* Hidden Inputs *@
+            <input asp-for="KId" type="hidden" />
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile ">
                 <div class="mb-3">
                     <label asp-for="KId"></label>
-                    <input asp-for="KId" class="form-control" value="@ViewBag.stockTypeId" disabled />
+                    <input asp-for="KId" class="form-control" value="@Model.KId" disabled />
                     <span asp-validation-for="KId" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
@@ -40,7 +43,7 @@
             </div>
 
             <div class="parent d-flex justify-content-md-center ">
-                <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add"]</button>
+                <button type="submit" class="btn btn-success" style="width:150px">@localizer["Save Changes"]</button>
             </div>
         </div>
     </form>
