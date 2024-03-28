@@ -19,6 +19,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             _stockTypeRepo = stockTypeRepo;
             _mapper = mapper;
         }
+
         public async Task<IActionResult> Index()
         {
             List<KindStore> stocksTypes = await _stockTypeRepo.GetAllAsync();
@@ -26,6 +27,12 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             return View(stocksTypesDTO);
         }
 
+        public async Task<IActionResult> StockType()
+        {
+            ViewBag.stockTypeId = "Ibrahim Ahmed";
+            return View();
+        }
+        
         public async Task<IActionResult> Add_StockType()
         {
             ViewBag.stockTypeId = await _stockTypeRepo.GetNewIdAsync();
