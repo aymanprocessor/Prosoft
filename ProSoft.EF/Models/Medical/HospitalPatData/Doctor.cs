@@ -95,6 +95,10 @@ public partial class Doctor
     [InverseProperty("DrSendNavigation")]
     public virtual ICollection<ClinicTran> ClinicTrans { get; set; } = new List<ClinicTran>();
 
+    [ForeignKey("DrDegree")]
+    [InverseProperty("Doctors")]
+    public virtual DrDegree? DrDegreeNavigation { get; set; }
+
     [InverseProperty("DrCodeNavigation")]
     public virtual ICollection<PatAdmission> PatAdmissions { get; set; } = new List<PatAdmission>();
 }

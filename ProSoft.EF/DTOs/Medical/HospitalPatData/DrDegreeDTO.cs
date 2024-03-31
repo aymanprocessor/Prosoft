@@ -14,9 +14,9 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
     {
         [DisplayName("code")]        
         public int DegreeId { get; set; }
+
         [DisplayName("Degree Name")]
         public string DegreeDesc { get; set; }
-
         public int? BranchId { get; set; }
 
     }

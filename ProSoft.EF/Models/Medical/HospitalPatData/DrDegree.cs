@@ -26,4 +26,7 @@ public partial class DrDegree
 
     [Column("REPLCATE")]
     public int? Replcate { get; set; }
+
+    [InverseProperty("DrDegreeNavigation")]
+    public virtual ICollection<Doctor> Doctors { get; set; } = new List<Doctor>();
 }
