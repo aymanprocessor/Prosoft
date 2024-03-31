@@ -11,5 +11,6 @@ namespace ProSoft.EF.IRepositories
     {
         Task<IEnumerable<AppUser>> GetAllUsersAsync();
         Task<AppUser> GetUserByIdAsync(int id);
+        Task<string> GetUserBranchAsync(int branchID);
     }
 }

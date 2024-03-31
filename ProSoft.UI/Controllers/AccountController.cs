@@ -107,24 +107,35 @@ namespace ProSoft.UI.Controllers
         public async Task<IActionResult> Login(UserLoginDTO userDTO)
         {
            if (ModelState.IsValid) 
-            {
+           {
                 AppUser user = await _userRepo.GetUserByIdAsync(userDTO.UserCode);
-                if (user != null) 
+                bool checkkPassword = await _userManager.CheckPasswordAsync(user, userDTO.PassWord);
+                if (user != null && checkkPassword) 
                 {
                     //create Cookie
-                    SignInResult result = await _signInManager
-                        .PasswordSignInAsync(user, userDTO.PassWord, userDTO.rememberMe, false);
-                    //Check Cookie
-                    if (result.Succeeded) 
+                    //SignInResult result = await _signInManager
+                    //    .PasswordSignInAsync(user, userDTO.PassWord, userDTO.rememberMe, false);
+
+                    // Sign in with additional claims
+                    string branch = await _userRepo.GetUserBranchAsync(Convert.ToInt32(user.BranchId));
+                    var claims = new List<Claim>
                     {
-                        if (User.IsInRole("Admin"))
-                        {
-                            return RedirectToAction("Index", "Dashboard");
-                        }else
-                            return RedirectToAction("Index", "Home");
-                    }
-                    else
-                        ModelState.AddModelError("", "Invalid User Id or password");
+                        new ("F_Year", user.FYear.ToString()),
+                        new ("U_Branch", branch),
+                    };
+                    await _signInManager.SignInWithClaimsAsync(user, userDTO.rememberMe, claims);
+
+                    ////Check Cookie
+                    //if (result.Succeeded)
+                    //{
+                    if (User.IsInRole("Admin"))
+                    {
+                        return RedirectToAction("Index", "Dashboard");
+                    }else
+                        return RedirectToAction("Index", "Home");
+                    //}
+                    //else
+                    //    ModelState.AddModelError("", "Invalid User Id or password");
                 }
                 else
                     ModelState.AddModelError("", "Invalid User Id or password");
@@ -205,6 +216,9 @@ namespace ProSoft.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit_FinancialYear(int year)
         {
+            if (ModelState.IsValid)
+            {
+            }
             return View();
         }
     }

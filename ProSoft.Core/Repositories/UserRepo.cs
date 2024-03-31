@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using ProSoft.EF.DbContext;
 using ProSoft.EF.IRepositories;
 using ProSoft.EF.Models;
+using ProSoft.EF.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,12 @@ namespace ProSoft.Core.Repositories
         {
             AppUser user = await _Context.Users.FirstOrDefaultAsync(obj=>obj.UserCode == id);
             return user;
+        }
+
+        public async Task<string> GetUserBranchAsync(int branchID)
+        {
+            Branch branch = await _Context.Branchs.FirstOrDefaultAsync(obj => obj.BranchId == branchID);
+            return branch != null ? branch.BranchDesc : "";
         }
     }
 }

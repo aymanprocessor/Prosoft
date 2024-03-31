@@ -148,6 +148,21 @@
   "Add Degree": "Add Degree",
   "Edit Degree": "Edit Degree",
   "Doctor Definations": "Doctor Definations",
+  "Add Doctor": "Add Doctor",
+  "Doctor Type": "Doctor Type",
+  "Tax": "Tax",
+  "Contributor": "Contributor",
+  "Without": "Without",
+  "Internal": "Internal",
+  "External": "External",
+  "Free Positions": "Free Positions",
+  "Exempt": "Exempt",
+  "Gain Work": "Gain Work",
+  "Gain Insurance work": "Gain Insurance work",
+  "Non-Contributor": "Non-Contributor",
+  "Activation": "Activation",
+  "Yes": "Yes",
+  "No": "No",
 
   "Stocks System": "Stocks System",
   "Stocks Types": "Stocks Types",
@@ -161,5 +176,7 @@
   "Full Production": "Full Production",
   "Edit Stock Type": "Edit Stock Type",
   "Change Financial Year": "Change Financial Year",
-  "Change": "Change"
+  "Financial Year": "Financial Year",
+  "Change": "Change",
+  "Branch": "Branch"
 }

@@ -74,5 +74,6 @@ namespace ProSoft.EF.DbContext
         public DbSet<SubItem> SubItems { get; set; }
         public DbSet<DrDegree> DrDegrees { get; set; }
         /////
+        public DbSet<Branch> Branchs { get; set; }
     }
 }

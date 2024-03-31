@@ -2,6 +2,9 @@
 
 @{
     var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+    string F_Year = "";
+    if(User.Identity.IsAuthenticated)
+         F_Year = User.Claims.FirstOrDefault(c => c.Type == "F_Year").Value;
 }
 <!DOCTYPE html>
 <html lang="en" dir="@(isRTL ? "RTL" : "LTR")">
@@ -14,7 +17,9 @@
     <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
 </head>
 <body>
-    <div  class="d-flex justify-content-between align-items-center p-2 shadow-sm rounded">
+    <div class="d-flex justify-content-between align-items-center gap-2 p-2 shadow-sm rounded">
+        <span class="fw-bold text-capitalize">@User.Identity.Name</span>
+        <span class="fw-bold">@F_Year</span>
         <div class="d-flex align-items-center gap-2 @(isRTL ? "me-auto" : "ms-auto")">
             <partial name="_SelectLanguagePartial" />
             @if (User.Identity.IsAuthenticated)
@@ -23,9 +28,9 @@
             }
         </div>
     </div>
-        <div class="content pb-3 position-relative" style="flex: 1;">
-            @RenderBody()
-        </div>
+    <div class="content pb-3 position-relative" style="flex: 1;">
+        @RenderBody()
+    </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.js"></script>

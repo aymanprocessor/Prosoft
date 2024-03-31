@@ -2,6 +2,9 @@
 @{
     ViewData["Title"] = "Dashboard";
     Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+    string userBranch = "";
+    if (User.Identity.IsAuthenticated)
+        userBranch = User.Claims.FirstOrDefault(c => c.Type == "U_Branch").Value;
 }
 
 @inject IViewLocalizer localizer
@@ -9,5 +12,12 @@
 <div class="container pt-2">
     <div class="d-flex justify-content-between align-items-center mt-4">
         <h2 class="text-capitalize">@localizer["Hello"], @User.Identity.Name</h2>
+        <h2 class="text-capitalize">@localizer["Branch"] : @userBranch</h2>
+    </div>
+    <div class="d-flex justify-content-between flex-column flex-md-row gap-3 mb-3">
+        <div class="d-flex justify-content-between align-items-center gap-3">
+            <span class="d-inline-block fs-5">@localizer["Change Financial Year"]</span>
+            <a asp-controller="Account" asp-action="Edit_FinancialYear" class="btn btn-primary">@localizer["Change"]</a>
+        </div>
     </div>
 </div>

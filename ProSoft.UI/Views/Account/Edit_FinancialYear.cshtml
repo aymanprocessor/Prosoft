@@ -1,0 +1,39 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@inject IViewLocalizer localizer
+
+<div class="container d-flex align-items-center justify-content-center h-100">
+    <form method="post" asp-action="Edit_FinancialYear" class="login-form">
+        <div class="border p-3 mt-4">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                <h2 class="text-primary">@localizer["Change Financial Year"]</h2>
+            </div>
+            <div class="mb-3">
+                <label>@localizer["Financial Year"]</label>
+                <input type="number" name="year" onchange="validateYear(event)" class="form-control" />
+                @* <span asp-validation-for="UserCode" class="text-danger"></span> *@
+            </div>
+
+            <div class="login-buttons d-flex justify-content-between flex-column flex-md-row gap-2">
+                <button type="submit" class="btn btn-success w-25">@localizer["Change"]</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        function validateYear(e) {
+            let input = e.target;
+            let currentYear = new Date().getFullYear();
+
+            if (input.value < 1990)
+                input.value = 1990;
+            else if (input.value > currentYear)
+                input.value = currentYear;
+        }
+    </script>
+}
