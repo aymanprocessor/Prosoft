@@ -1,10 +1,115 @@
-﻿@* @model List<DoctorDTO>
+﻿@model List<DoctorViewDTO>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Doctor Degree";
+    ViewData["Title"] = "Doctors";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @inject IViewLocalizer localizer
- *@
- <h1> doctors here</h1>
+
+<style>
+    .image {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.5;
+        z-index: -1;
+    }
+</style>
+
+<div class="container pt-2 ">
+    <img class="image" src="/background.jpg" style="position:absolute;" />
+
+    <div class="d-flex justify-content-between align-items-center mt-4 ">
+        <h1 class="header">@localizer["Doctors"]</h1>
+
+        <a asp-controller="Doctor" asp-action="Add_Doctor" class="btn btn-sm btn-primary fs-6" style="width:150px">
+            @localizer["Add Doctor"]
+        </a>
+    </div>
+    <div class="overflow-auto" style="max-height:calc(100vh - 145px)">
+        <table id="myTable" class="table table-bordered table-hover" style="width:100%">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        @localizer["Code"]
+                    </th>
+                    <th>
+                        @localizer["Doctor Name"]
+                    </th>
+                    <th>
+                        @localizer["Doctor Type"]
+                    </th>
+                    <th>
+                        @localizer["Doctor Degree"]
+                    </th> 
+                    <th>
+                        @localizer["Tax"]
+                    </th> 
+                    <th>
+                        @localizer["Contributor"]
+                    </th>
+                    <th>
+                        @localizer["Action"]
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var dr in Model)
+                {
+                    <tr>
+                        <td>
+                            @dr.DrId
+                        </td>
+                        <td>
+                            @dr.DrDesc
+                        </td>
+                        <td>
+                            @if(dr.DrType ==1)
+                                @localizer["Internal"]
+                            else if (dr.DrType == 2)
+                                @localizer["External"]
+                            else if (dr.DrType == 0)
+                                @localizer["Without"]
+                        </td>
+                        <td>
+                            @dr.DegreeDesc
+                        </td>
+                        <td>
+                            @if (dr.DrType == 1)
+                                @localizer["Free Positions"]
+                            else if (dr.DrType == 2)
+                                @localizer["Exempt"]
+                            else if (dr.DrType == 3)
+                                @localizer["Gain Work"]
+                            else if (dr.DrType == 4)
+                                @localizer["Gain Insurance work"]
+                        </td>
+                        <td>
+                            @if (dr.DrType == 1)
+                                @localizer["Yes"]
+                            else if (dr.DrType == 0)
+                                @localizer["No"]
+                        </td>
+                        <td width="30%" class="text-center">
+                            <a asp-controller="Doctor" asp-action="Edit_Doctor" asp-route-ID="@dr.DrId" class="btn btn-sm btn-success mb-1 fs-6" style="width:150px">
+                                <i class="bi bi-pencil"></i> @localizer["Edit"]
+                            </a>
+
+                            <form asp-action="Delete_Doctor" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@dr.DrId" />
+                                <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">@localizer["Delete"] </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
