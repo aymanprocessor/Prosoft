@@ -66,7 +66,7 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<DrDegreeDTO, DrDegree>().ReverseMap();
             //////////Stocks////////////////////
             CreateMap<KindStore, KindStoreDTO>().ReverseMap();
-
+            CreateMap<Branch, BranchDTO>().ReverseMap();
         }
     }
 }

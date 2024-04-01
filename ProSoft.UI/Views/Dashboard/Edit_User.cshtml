@@ -6,6 +6,9 @@
 
     // Casting type to get all roles as a list
     List<RoleDTO> allRoles = (List<RoleDTO>)ViewBag.Roles;
+
+    // Casting type to get all branches as a list
+    SelectList branches = new SelectList(Model.Branches, "BranchId", "BranchDesc");
 }
 @inject IViewLocalizer localizer
 
@@ -34,6 +37,13 @@
                 </div>
             </div>
             <div class="mb-3">
+                <label asp-for="BranchId"></label>
+                <select asp-for="BranchId" asp-items="branches" class="form-control text-center">
+                </select>
+                <span asp-validation-for="BranchId" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label>@localizer["Roles"]</label>
                 <div class="d-flex gap-2 form-control">
                     @for (int i = 0, len1 = allRoles.Count(); i < len1; i++)
                     {

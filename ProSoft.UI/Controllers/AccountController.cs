@@ -218,8 +218,26 @@ namespace ProSoft.UI.Controllers
         {
             if (ModelState.IsValid)
             {
+                int currentYear = DateTime.UtcNow.Year;
+                if (year >= 2020 && year <= currentYear)
+                {
+                    string UsrId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                    var user = await _userManager.FindByIdAsync(UsrId);
+                    if (user != null)
+                    {
+                        user.FYear = year;
+                        await _userManager.UpdateAsync(user);
+
+                        await _signInManager.SignOutAsync();
+                        return RedirectToAction("Login");
+                    }
+                }
+                else
+                    ModelState.AddModelError("", $"Please, enter a year betwween 2020 : {currentYear}");
             }
-            return View();
+            else
+                ModelState.AddModelError("", "Please, enter the financial year");
+            return View(year);
         }
     }
 }
