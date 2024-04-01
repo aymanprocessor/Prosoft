@@ -22,7 +22,7 @@
     }
 </style>
 
-<div class="container pt-2 ">
+<div class="container pt-2" style=" min-height:100vh;">
     <img class="image" src="/background.jpg" style="position:absolute;" />
 
     <div class="d-flex justify-content-between align-items-center mt-4 ">
@@ -32,29 +32,32 @@
             @localizer["Add Doctor"]
         </a>
     </div>
-    <div class="overflow-auto" style="max-height:calc(100vh - 145px)">
-        <table id="myTable" class="table table-bordered table-hover" style="width:100%">
+    <div class="overflow-auto"  style="height: 300px;">
+        <table id="myTable" class="table table-bordered table-hover" style="width:100%;">
             <thead class="table-dark">
                 <tr>
-                    <th>
+                    <th class="align-middle">
                         @localizer["Code"]
                     </th>
-                    <th>
+                    <th class="align-middle">
                         @localizer["Doctor Name"]
                     </th>
-                    <th>
+                    <th class="align-middle">
                         @localizer["Doctor Type"]
                     </th>
-                    <th>
+                    <th class="align-middle">
                         @localizer["Doctor Degree"]
                     </th> 
-                    <th>
+                    <th class="align-middle">
                         @localizer["Tax"]
                     </th> 
-                    <th>
+                    <th class="align-middle">
                         @localizer["Contributor"]
                     </th>
-                    <th>
+                    <th class="align-middle">
+                        @localizer["Activation"]
+                    </th>
+                    <th class="align-middle">
                         @localizer["Action"]
                     </th>
                 </tr>
@@ -62,11 +65,11 @@
             <tbody>
                 @foreach (var dr in Model)
                 {
-                    <tr>
+                    <tr onclick="GetDocSubDtl(event,@dr.DrId)" style="cursor:pointer;">
                         <td>
                             @dr.DrId
                         </td>
-                        <td>
+                        <td class="item-name">
                             @dr.DrDesc
                         </td>
                         <td>
@@ -81,20 +84,27 @@
                             @dr.DegreeDesc
                         </td>
                         <td>
-                            @if (dr.DrType == 1)
+                            @if (dr.Taxable == 1)
                                 @localizer["Free Positions"]
-                            else if (dr.DrType == 2)
+                            else if (dr.Taxable == 2)
                                 @localizer["Exempt"]
-                            else if (dr.DrType == 3)
+                            else if (dr.Taxable == 3)
                                 @localizer["Gain Work"]
-                            else if (dr.DrType == 4)
+                            else if (dr.Taxable == 4)
                                 @localizer["Gain Insurance work"]
                         </td>
                         <td>
-                            @if (dr.DrType == 1)
+                            @if (dr.Shareholder == 0)
+                                @localizer["Non-Contributor"]
+                            else if (dr.Shareholder == 1)
+                                @localizer["Contributor"]
+                        </td>
+                        <td>
+                            @if (dr.DrOnOff == 1)
                                 @localizer["Yes"]
-                            else if (dr.DrType == 0)
+                            else if (dr.DrOnOff == 2)
                                 @localizer["No"]
+
                         </td>
                         <td width="30%" class="text-center">
                             <a asp-controller="Doctor" asp-action="Edit_Doctor" asp-route-ID="@dr.DrId" class="btn btn-sm btn-success mb-1 fs-6" style="width:150px">
@@ -112,4 +122,121 @@
             </tbody>
         </table>
     </div>
+    @* /////////////////////////////////////////////////////////////////// *@
+
+    @* Table for DocSUbDtl *@
+
+    <div class="DocSubDtl-table-head d-flex justify-content-between align-items-center mt-4">
+        <h2 class="header DocSub-Dtl">@localizer["Specialties of Doctor"] :</h2>
+
+        <a class="btn btn-sm btn-primary fs-6" style="width:150px">
+            @localizer["Add Specialty"]
+        </a>
+        @* asp-controller="MedAnalysis" asp-action="Add_SubItemAnalysis" asp-route-ID="@ViewBag.item.MainCode" asp-route-itemAnalCode="" *@
+    </div>
+
+    <div class="border border-success p-0 mb-2 border-opacity-75 overflow-auto" style="max-height: 300px;">
+
+        <table id="myTable" class="table table-bordered table-hover docSubDtl-table" style="width:100%">
+            <thead class="table-dark">
+                <tr>
+                    <th class="align-middle">
+                        @localizer["Department"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Specialty"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Activation"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Main Specialty"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Action"]
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+   @* /////////////////////////////////////////////////////////////////// *@
+
 </div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+
+
+<script>
+    @* Ajax for DocDTL *@
+        function GetDocSubDtl(e, id) {
+            var docSubDtls = document.querySelector(".docSubDtl-table tbody");
+            // Handle active clic
+            let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");;
+
+            allItemRows.forEach(row => {
+                row.classList.remove("active-row");
+            });
+
+            let clickedTarget = e.target.parentElement
+            clickedTarget.classList.add("active-row");
+            ///////////////////////////////////////////////////////////////////
+
+            // Catch header for ClinicTrans => PatAdmissionID and reset it
+            let docSubDtlHead = document.querySelector(".DocSubDtl-table-head");
+
+            let itemName = clickedTarget.querySelector(".item-name").innerText;
+            console.log(itemName)
+
+            let docSubDtlHeader = docSubDtlHead.querySelector(".header.DocSub-Dtl"); // Display Header for sub items
+            docSubDtlHeader.innerHTML = "@localizer["Specialties of Doctor"] :" + itemName;
+
+            let docSubDtlAddButton = docSubDtlHead.querySelector("a");
+            docSubDtlAddButton.setAttribute("href", `/Medical/ClinicTrans/Add_ClinicTrans/${id}?redirect=Invoices&flag=1`);
+            // console.log(docSubDtlAddButton);
+            ///////////////////////////////////////////////////////////////////
+
+            // Handle ajax call
+            docSubDtls.innerHTML = "";  // Empty the body
+
+            $.ajax({
+                url: `/Medical/ClinicTrans/GetClinicTrans/${id}?flag=1`,
+                success: function (result) {
+                    //console.log(result);
+                    // console.log(result.sort((a, b) => b.itemanalcode - a.itemanalcode));
+                    //sortng
+                    //result.sort((a, b) => b.counter - a.counter)
+
+                    for (let item of result) {
+                        const docDtl = document.createElement("tr");
+                        docDtl.innerHTML +=
+
+                            `
+                                <td class="align-middle">${item.drDesc}</td>
+                                <td class="align-middle">${item.unitPrice}</td>
+                                <td class="align-middle">${item.patientValue}</td>
+                                <td class="align-middle">${item.extraVal}</td>
+
+                                <td width="30%" class="text-center">
+                                    <a href="/Medical/ClinicTrans/Edit_ClinicTrans/${item.checkId}?redirect=Invoices" class="btn btn-sm btn-success mb-1  fs-6" style="width:150px">
+                                        <i class="bi bi-pencil"></i> @localizer["Edit"]
+                                    </a>
+                                <form action="/Medical/ClinicTrans/Delete_ClinicTrans" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="${item.checkId}" />
+                                        <input type="hidden" name="redirect" value="Invoices" />
+                                    <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">@localizer["Delete"]</button>
+                                    </form>
+                                </td>
+                                        `;
+                        docSubDtls.appendChild(docDtl);
+                    }
+                }
+            });
+        }
+</script>

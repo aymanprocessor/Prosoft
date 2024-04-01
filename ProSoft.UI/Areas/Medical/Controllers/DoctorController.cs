@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProSoft.Core.Repositories.Medical.HospitalPatData;
 using ProSoft.EF.DTOs.Medical.HospitalPatData;
 using ProSoft.EF.IRepositories.Medical.HospitalPatData;
 using ProSoft.EF.Models.Medical.Analysis;
@@ -35,13 +36,17 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         // Post Add
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add_Doctor(DoctorViewDTO doctorDTO)
+        public async Task<IActionResult> Add_Doctor(DoctorEditAddDTO doctorDTO)
         {
             if (ModelState.IsValid)
             {
+                /// كنت مستخدم ال Dto بتاع ال view
+
                 Doctor myDoctor = _mapper.Map<Doctor>(doctorDTO);
                 await _doctorRepo.AddAsync(myDoctor);
                 await _doctorRepo.SaveChangesAsync();
+                // await _doctorRepo.AddDoctorAsync(doctorDTO);
+
                 return RedirectToAction(nameof(Index));
             }
             return View(doctorDTO);

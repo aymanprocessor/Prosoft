@@ -8,12 +8,9 @@ using System.Threading.Tasks;
 
 namespace ProSoft.EF.IRepositories.Medical.HospitalPatData
 {
-    public interface IDoctorRepo :IRepository<Doctor,int>
+    public interface IDocSubDtlRepo : IRepository<DocSubDtl,int>
     {
-        Task<List<DoctorViewDTO>> GetAllDoctor ();
-        Task<int> GetNewIdAsync();
-        Task<DoctorEditAddDTO> GetEmptyDoctorAsync();
-        Task AddDoctorAsync(DoctorEditAddDTO doctorDTO);
+        Task<List<DoctorViewDTO>> GetAllDoctor();
 
     }
 }

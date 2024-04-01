@@ -23,7 +23,6 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             _Context = Context;
             _mapper = mapper;
         }
-       
 
         public async Task<List<DoctorViewDTO>> GetAllDoctor()
         {
@@ -65,5 +64,12 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
                 newID = 1;
             return newID;
         }
+        public async Task AddDoctorAsync(DoctorEditAddDTO doctorDTO)
+        {
+            Doctor doctor = _mapper.Map<Doctor>(doctorDTO);
+            await _Context.AddAsync(doctor);
+            await _Context.SaveChangesAsync();
+        }
+
     }
 }

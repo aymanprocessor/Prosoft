@@ -83,5 +83,8 @@ public partial class SubClinic
     public virtual ICollection<ClinicTran> ClinicTrans { get; set; } = new List<ClinicTran>();
 
     [InverseProperty("SClinic")]
+    public virtual ICollection<DocSubDtl> DocSubDtls { get; set; } = new List<DocSubDtl>();
+
+    [InverseProperty("SClinic")]
     public virtual ICollection<ServiceClinic> ServiceClinics { get; set; } = new List<ServiceClinic>();
 }
