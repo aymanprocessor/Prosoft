@@ -59,8 +59,10 @@ builder.Services.AddScoped<IAnalysisDetailRepo, AnalysisDetailRepo>();
 builder.Services.AddScoped<INationalityRepo, NationalityRepo>();
 builder.Services.AddScoped<IDrDegreeRepo, DrDegreeRepo>();
 builder.Services.AddScoped<IDoctorRepo, DoctorRepo>();
+builder.Services.AddScoped<IDocSubDtlRepo, DocSubDtlRepo>();
 /////////////////Stock/////////////
 builder.Services.AddScoped<IStockTypeRepo, StockTypeRepo>();
+builder.Services.AddScoped<IBranchRepo, BranchRepo>();
 
 ///For Localization
 builder.Services.AddLocalization();

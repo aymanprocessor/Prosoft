@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProSoft.EF.DTOs.Shared;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -20,7 +21,12 @@ namespace ProSoft.EF.DTOs.Auth
         [RegularExpression(@"^(011|010|015|012)\d{8}$", ErrorMessage = "Please enter a valid phone number")]
         public string PhoneNumber { get; set; }
 
+        [Display(Name = "Branch")]
+        [Required(ErrorMessage = "The field is required")]
+        public int BranchId { get; set; }
+
         [Required(ErrorMessage = "Please, choose at least one role")]
         public List<RoleDTO> Roles { get; set; }
+        public List<BranchDTO>? Branches { get; set; }
     }
 }

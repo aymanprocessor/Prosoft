@@ -2,10 +2,8 @@
 
 @{
     var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
-    string F_Year = "";
-    if(User.Identity.IsAuthenticated)
-         F_Year = User.Claims.FirstOrDefault(c => c.Type == "F_Year").Value;
 }
+
 <!DOCTYPE html>
 <html lang="en" dir="@(isRTL ? "RTL" : "LTR")">
 <head>
@@ -18,8 +16,11 @@
 </head>
 <body>
     <div class="d-flex justify-content-between align-items-center gap-2 p-2 shadow-sm rounded">
+        @if (User.Identity.IsAuthenticated)
+        {
         <span class="fw-bold text-capitalize">@User.Identity.Name</span>
-        <span class="fw-bold">@F_Year</span>
+        <span class="fw-bold">@User.FindFirst(c => c.Type == "F_Year").Value</span>
+        }
         <div class="d-flex align-items-center gap-2 @(isRTL ? "me-auto" : "ms-auto")">
             <partial name="_SelectLanguagePartial" />
             @if (User.Identity.IsAuthenticated)

@@ -12,6 +12,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using ProSoft.EF.IRepositories.Shared;
+using ProSoft.EF.Models.Shared;
+using ProSoft.EF.DTOs.Shared;
 
 namespace ProSoft.UI.Controllers
 {
@@ -21,18 +24,20 @@ namespace ProSoft.UI.Controllers
         private readonly IMapper _mapper;
         private readonly IRoleRepo _roleRepo;
         private readonly IUserRepo _userRepo;
+        private readonly IBranchRepo _branchRepo;
         private readonly UserManager<AppUser> _userManager;
-
         private readonly RoleManager<IdentityRole> _roleManager;
 
         public DashboardController(IMapper mapper, IRoleRepo roleRepo, IUserRepo userRepo,
-                    RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager)
+                    RoleManager<IdentityRole> roleManager, UserManager<AppUser> userManager,
+                    IBranchRepo branchRepo)
         {
             _mapper = mapper;
             _roleRepo = roleRepo;
             _roleManager = roleManager;
-            _userRepo= userRepo;
+            _userRepo = userRepo;
             _userManager = userManager;
+            _branchRepo = branchRepo;
         }
         public IActionResult Index()
         {
@@ -192,6 +197,10 @@ namespace ProSoft.UI.Controllers
             UserEditDTO userEditDTO = _mapper.Map<UserEditDTO>(user);
             userEditDTO.Roles = rolesDTO;
 
+            // Get Branches
+            List<Branch> branches = await _branchRepo.GetAllAsync();
+            userEditDTO.Branches = _mapper.Map<List<BranchDTO>>(branches);
+
             return View(userEditDTO);
         }
         //Post Edit User
@@ -199,7 +208,6 @@ namespace ProSoft.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit_User(int id, string[] roles, UserEditDTO userEditDTO)
         {
-            
             if (ModelState.IsValid)
             {
                 AppUser user = await _userRepo.GetUserByIdAsync(id);
