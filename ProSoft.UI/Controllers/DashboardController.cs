@@ -237,6 +237,10 @@ namespace ProSoft.UI.Controllers
 
             // Set empty list so as not to be null
             userEditDTO.Roles = new List<RoleDTO>();
+
+            // Get Branches
+            List<Branch> branches = await _branchRepo.GetAllAsync();
+            userEditDTO.Branches = _mapper.Map<List<BranchDTO>>(branches);
             #endregion
 
             return View(userEditDTO);

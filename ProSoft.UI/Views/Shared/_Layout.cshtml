@@ -19,7 +19,7 @@
         @if (User.Identity.IsAuthenticated)
         {
         <span class="fw-bold text-capitalize">@User.Identity.Name</span>
-        <span class="fw-bold">@User.FindFirst(c => c.Type == "F_Year").Value</span>
+        <span class="fw-bold"> / @User.FindFirst(c => c.Type == "F_Year").Value</span>
         }
         <div class="d-flex align-items-center gap-2 @(isRTL ? "me-auto" : "ms-auto")">
             <partial name="_SelectLanguagePartial" />

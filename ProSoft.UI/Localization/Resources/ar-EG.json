@@ -149,6 +149,7 @@
   "Edit Degree": "تعديل الدرجة",
   "Doctor Definations": "تعريف الاطباء",
   "Add Doctor": "اضافة طبيب",
+  "Edit Doctor": "تعديل طبيب",
   "Doctor Type": "نوع الطبيب",
   "Tax": "الضريبة",
   "Contributor": "مساهم",
@@ -161,17 +162,16 @@
   "Gain Insurance work": "كسب عمل تاميني",
   "Non-Contributor": "غير مساهم",
   "Activation": "تفعيل",
+  "Activate": "مفعل",
+  "UnActivate": "غير مفعل",
   "Yes": "نعم",
   "No": "لا",
   "Specialties of Doctor": "تخصصات الاطباء",
   "Add Specialty": "اضافة تخصص",
+  "Edit Specialty": "تعديل تخصص",
   "Specialty": "تخصص",
   "Main Specialty": "التخصص الرئيسي",
-<<<<<<< HEAD
-
-
-=======
->>>>>>> aa3b87d59e3d6217ee2976d3d6ad7ad0dc452832
+  "Un-Main Specialty": "ليس التخصص الرئيسي",
 
   "Stocks System": "نظام المخازن",
   "Stocks Types": "انواع المخازن",
@@ -187,5 +187,7 @@
   "Change Financial Year": "تغيير السنة المالية",
   "Financial Year": "السنة المالية",
   "Change": "تغيير",
-  "Branch": "الفرع"
+  "Branch": "الفرع",
+  "Please enter at least 5 characters": "من فضلك ادخل 5 احرف علي الاقل",
+  "Please start with capitals or smalls, and don't use special characters": "من فضلك ابدأ بحروف كبيرة او صغيرة ولا تستخدم الرموز"
 }
