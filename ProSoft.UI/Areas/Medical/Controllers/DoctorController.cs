@@ -40,8 +40,7 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         {
             if (ModelState.IsValid)
             {
-                /// كنت مستخدم ال Dto بتاع ال view
-
+                
                 Doctor myDoctor = _mapper.Map<Doctor>(doctorDTO);
                 await _doctorRepo.AddAsync(myDoctor);
                 await _doctorRepo.SaveChangesAsync();
@@ -51,6 +50,27 @@ namespace ProSoft.UI.Areas.Medical.Controllers
             }
             return View(doctorDTO);
         }
+
+        // Get Edit
+        public async Task<IActionResult> Edit_Doctor(int id)
+        {
+            DoctorEditAddDTO doctorDTO = await _doctorRepo.GetDoctorByIdAsync(id);
+            return View(doctorDTO);
+        }
+
+        // Post Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit_Doctor(int id,DoctorEditAddDTO doctorDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                await _doctorRepo.EditDoctotAsync(id , doctorDTO);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(doctorDTO);
+        }
+
         // Delete
         [HttpPost]
         [ValidateAntiForgeryToken]

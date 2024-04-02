@@ -1,0 +1,116 @@
+﻿@model DoctorEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Edit Doctor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    SelectList degreeList = new SelectList(Model.drDegrees, "DegreeId", "DegreeDesc");
+}
+@inject IViewLocalizer localizer
+<style>
+    .image {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        min-height: calc(100vh - 60px);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.5;
+        z-index: -1;
+    }
+</style>
+<div class="container pt-2">
+    <img class="image" src="/background.jpg" style="position:absolute;" />
+
+    <h1 class="mt-4">@localizer["Add Doctor"]</h1>
+    <form method="post" asp-action="Edit_Doctor" id="myForm">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly"></div>
+            @* hidden *@
+            <input asp-for="DrId" type="hidden" />
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <label asp-for="DrId"></label>
+                    <input asp-for="DrId" class="form-control" disabled />
+                    <span asp-validation-for="DrId" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="DrDesc"></label>
+                    <input asp-for="DrDesc" class="form-control" />
+                    <span asp-validation-for="DrDesc" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <label asp-for="DrType"></label>
+                    <select asp-for="DrType" class="form-control text-center">
+                        <option value="0">@localizer["Without"]</option>
+                        <option value="1">@localizer["Internal"]</option>
+                        <option value="2">@localizer["External"]</option>
+                    </select>
+                    <span asp-validation-for="DrType" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="DrDegree"></label>
+                    <select asp-for="DrDegree" asp-items="degreeList" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="DrDegree" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <label asp-for="Taxable"></label>
+                    <select asp-for="Taxable" class="form-control text-center">
+                        <option value="1">@localizer["Free Positions"]</option>
+                        <option value="2">@localizer["Exempt"]</option>
+                        <option value="3">@localizer["Gain Work"]</option>
+                        <option value="4">@localizer["Gain Insurance work"]</option>
+                    </select>
+                    <span asp-validation-for="Taxable" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="Shareholder"></label>
+                    <select asp-for="Shareholder" class="form-control text-center">
+                        <option value="0">@localizer["Non-Contributor"]</option>
+                        <option value="1">@localizer["Contributor"]</option>
+                    </select>
+                    <span asp-validation-for="Shareholder" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="DrOnOff" class="me-md-3"><p>@localizer["Activation"]</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="DrOnOff" class="form-check-input radio-inline" type="radio" name="DrOnOff" value="1">
+                            @localizer["Yes"]
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="DrOnOff" class="form-check-input radio-inline" type="radio" name="DrOnOff" value="2">
+                            @localizer["No"]
+                        </label>
+                    </div>
+                    <span asp-validation-for="DrOnOff" class="text-danger"></span>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:150px">
+                @localizer["Save Changes"]
+            </button>
+        </div>
+    </form>
+</div>

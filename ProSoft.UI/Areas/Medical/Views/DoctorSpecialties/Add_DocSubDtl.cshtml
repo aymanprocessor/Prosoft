@@ -1,0 +1,128 @@
+﻿@model DocSubDtlEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Add Specialty";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    SelectList mainList = new SelectList(Model.MainClinics, "ClinicId", "ClinicDesc");
+  //  SelectList subList = new SelectList(Model.SubClinics, "SClinicId", "SClinicDesc");
+
+}
+@inject IViewLocalizer localizer
+<style>
+    .image {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        min-height: calc(100vh - 60px);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.5;
+        z-index: -1;
+    }
+</style>
+<div class="container pt-2">
+    <img class="image" src="/background.jpg" style="position:absolute;" />
+
+    <h1 class="mt-4">@localizer["Add Specialty"] : @Model.DrDesc</h1>
+    <form method="post" asp-action="Add_DocSubDtl" id="myForm">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly"></div>
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="DocSubId"></label>
+                    <input asp-for="DocSubId" class="form-control" disabled value="@ViewBag.DoctorID" />
+                    <span asp-validation-for="DocSubId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3 ">
+                    <label asp-for="ClinicId"></label>
+                    <select asp-for="ClinicId" asp-items="mainList" class="form-control text-center" onchange="GetSubClinics()">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="ClinicId" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="SClinicId"></label>
+                    <select asp-for="SClinicId"  class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="SClinicId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="DocSubDef" class="me-md-3"><p>@localizer["Main Specialty"]</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="DocSubDef" class="form-check-input radio-inline" type="radio" name="DocSubDef" value="1">
+                            @localizer["Yes"]
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="DocSubDef" class="form-check-input radio-inline" type="radio" name="DocSubDef" value="0">
+                            @localizer["No"]
+                        </label>
+                    </div>
+                    <span asp-validation-for="DocSubDef" class="text-danger"></span>
+                </div>
+
+                <!------------------------------------------------------------------------->
+
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="DrOnOff" class="me-md-3"><p>@localizer["Activation"]</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="DrOnOff" class="form-check-input radio-inline" type="radio" name="DrOnOff" value="1">
+                            @localizer["Yes"]
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="DrOnOff" class="form-check-input radio-inline" type="radio" name="DrOnOff" value="0">
+                            @localizer["No"]
+                        </label>
+                    </div>
+                    <span asp-validation-for="DrOnOff" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+          
+            <button type="submit" class="btn btn-primary" style="width:150px">
+                @localizer["Add Specialty"]
+            </button>
+        </div>
+    </form>
+</div>
+<script>
+    // for sub clinic
+    function GetSubClinics() {
+        var clinicId = document.getElementById("ClinicId").value;
+
+        var subClinicId = document.getElementById("SClinicId");
+        subClinicId.innerHTML = `<option value="">-- Choose --</option>`;
+
+        $.ajax({
+            url: `/Medical/ClinicTrans/GetSubClinic/${clinicId}`,
+            success: function (result) {
+                for (let item of result) {
+                    subClinicId.innerHTML +=
+                        `<option value="${item.sClinicId}">${item.sClinicDesc}</option>`
+                }
+            }
+        });
+    }
+</script>

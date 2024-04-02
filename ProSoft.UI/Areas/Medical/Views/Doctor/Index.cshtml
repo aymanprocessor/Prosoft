@@ -8,6 +8,9 @@
 @inject IViewLocalizer localizer
 
 <style>
+    .active-row {
+        background-color: #cdcdcd;
+    }
     .image {
         top: 0px;
         left: 0px;
@@ -197,7 +200,7 @@
             docSubDtlHeader.innerHTML = "@localizer["Specialties of Doctor"] :" + itemName;
 
             let docSubDtlAddButton = docSubDtlHead.querySelector("a");
-            docSubDtlAddButton.setAttribute("href", `/Medical/ClinicTrans/Add_ClinicTrans/${id}?redirect=Invoices&flag=1`);
+            docSubDtlAddButton.setAttribute("href", `/Medical/DoctorSpecialties/Add_DocSubDtl/${id}`);
             // console.log(docSubDtlAddButton);
             ///////////////////////////////////////////////////////////////////
 
@@ -205,9 +208,9 @@
             docSubDtls.innerHTML = "";  // Empty the body
 
             $.ajax({
-                url: `/Medical/ClinicTrans/GetClinicTrans/${id}?flag=1`,
+                url: `/Medical/DoctorSpecialties/GetDocSubDtl/${id}`,
                 success: function (result) {
-                    //console.log(result);
+                   // console.log(result);
                     // console.log(result.sort((a, b) => b.itemanalcode - a.itemanalcode));
                     //sortng
                     //result.sort((a, b) => b.counter - a.counter)
@@ -217,18 +220,22 @@
                         docDtl.innerHTML +=
 
                             `
-                                <td class="align-middle">${item.drDesc}</td>
-                                <td class="align-middle">${item.unitPrice}</td>
-                                <td class="align-middle">${item.patientValue}</td>
-                                <td class="align-middle">${item.extraVal}</td>
+                                <td class="align-middle">${item.clinicDesc}</td>
+                                <td class="align-middle">${item.sClinicDesc}</td>
+                                    ${item.drOnOff == 1 ?
+                                `<td class="align-middle">@localizer["Activate"]</td>`
+                                : `<td class="align-middle">@localizer["UnActivate"]</td>`}
+                                     ${item.docSubDef == 1 ?
+                                `<td class="align-middle">@localizer["Main Specialty"]</td>`
+                                : `<td class="align-middle">@localizer["Un-Main Specialty"]</td>`}
 
                                 <td width="30%" class="text-center">
-                                    <a href="/Medical/ClinicTrans/Edit_ClinicTrans/${item.checkId}?redirect=Invoices" class="btn btn-sm btn-success mb-1  fs-6" style="width:150px">
+                                  <a href="/Medical/DoctorSpecialties/Edit_DocSubDtl/${item.docSubId}" class="btn btn-sm btn-success mb-1  fs-6" style="width:150px">
                                         <i class="bi bi-pencil"></i> @localizer["Edit"]
                                     </a>
-                                <form action="/Medical/ClinicTrans/Delete_ClinicTrans" method="post" class="d-inline">
+                                <form action="/Medical/DoctorSpecialties/Delete_DocSubDtl" method="post" class="d-inline">
                             @Html.AntiForgeryToken()
-                                        <input type="hidden" name="id" value="${item.checkId}" />
+                                        <input type="hidden" name="id" value="${item.docSubId}" />
                                         <input type="hidden" name="redirect" value="Invoices" />
                                     <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">@localizer["Delete"]</button>
                                     </form>

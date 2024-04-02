@@ -71,5 +71,23 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             await _Context.SaveChangesAsync();
         }
 
+        public async Task<DoctorEditAddDTO> GetDoctorByIdAsync(int id)
+        {
+            Doctor doctor = await _Context.Doctors.FirstOrDefaultAsync(obj=>obj.DrId == id);
+            DoctorEditAddDTO doctorDTO=_mapper.Map<DoctorEditAddDTO>(doctor);
+
+            List<DrDegree> drDegrees =await _Context.DrDegrees.ToListAsync();
+            doctorDTO.drDegrees = _mapper.Map<List<DrDegreeDTO>>(drDegrees);
+
+            return doctorDTO;
+        }
+
+        public async Task EditDoctotAsync(int id, DoctorEditAddDTO doctorDTO)
+        {
+            Doctor doctor = await _Context.Doctors.FirstOrDefaultAsync(obj=>obj.DrId ==id);
+            _mapper.Map(doctorDTO,doctor);
+            _Context.Update(doctor);
+            await _Context.SaveChangesAsync();
+        }
     }
 }

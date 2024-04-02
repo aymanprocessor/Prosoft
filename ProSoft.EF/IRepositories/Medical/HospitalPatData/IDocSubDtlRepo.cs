@@ -10,7 +10,14 @@ namespace ProSoft.EF.IRepositories.Medical.HospitalPatData
 {
     public interface IDocSubDtlRepo : IRepository<DocSubDtl,int>
     {
-        Task<List<DoctorViewDTO>> GetAllDoctor();
+        Task<List<DocSubDtlViewDTO>> GetDocSubDtlByDoctorAsync(int id);
+        Task<int> GetNewIdAsync();
+        Task<DocSubDtlEditAddDTO> GetEmptyDocSubDtlAsync(int id);
+
+        Task AddDocSubDtlAsync(int id, DocSubDtlEditAddDTO docSubDtlDTO);
+        Task<DocSubDtlEditAddDTO> GetDocSubDtlByIdAsync(int id);
+        Task EditDocSubDtlAsync(int id, DocSubDtlEditAddDTO docSubDtlDTO);
+
 
     }
 }

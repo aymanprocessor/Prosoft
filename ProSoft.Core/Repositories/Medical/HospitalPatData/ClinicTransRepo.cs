@@ -44,7 +44,7 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
                    ApprovalPeriod = Convert.ToInt32(obj.ApprovalPeriod),
                    CheckIdCancel = Convert.ToInt32(obj.CheckIdCancel)
                })
-               .ToListAsync();
+               .ToListAsync(); 
 
             return clinicTransDTO;
         }
