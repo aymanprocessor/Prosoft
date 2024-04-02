@@ -12,8 +12,10 @@ namespace ProSoft.EF.DTOs.Auth
     {
         public int UserCode { get; set; }
 
-        [Required(ErrorMessage = "The field is required")]
         [Display(Name = "User Name")]
+        [Required(ErrorMessage = "The field is required")]
+        [MinLength(5, ErrorMessage = "Please enter at least 5 characters")]
+        [RegularExpression(@"^[a-zA-Z][a-zA-Z0-9]+$", ErrorMessage = "Please start with capitals or smalls, and don't use special characters")]
         public string UserName { get; set; }
 
         [Display(Name = "Mobile number")]
@@ -21,6 +23,10 @@ namespace ProSoft.EF.DTOs.Auth
         [MinLength(11)]
         [RegularExpression(@"^(011|010|015|012)\d{8}$", ErrorMessage = "Please enter a valid phone number")]
         public string PhoneNumber { get; set; }
+
+        [Display(Name = "Branch")]
+        [Required(ErrorMessage = "The field is required")]
+        public int BranchId { get; set; }
 
         [Display(Name = "Password")]
         [Required(ErrorMessage = "The field is required")]
@@ -36,6 +42,6 @@ namespace ProSoft.EF.DTOs.Auth
 
         [Display(Name = "Role Name")]
         [Required(ErrorMessage = "The field is required")]
-        public string Name { get; set; }
+        public string RoleName { get; set; }
     }
 }

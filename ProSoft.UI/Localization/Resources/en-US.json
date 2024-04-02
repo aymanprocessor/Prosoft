@@ -149,6 +149,7 @@
   "Edit Degree": "Edit Degree",
   "Doctor Definations": "Doctor Definations",
   "Add Doctor": "Add Doctor",
+  "Edit Doctor": "Edit Doctor",
   "Doctor Type": "Doctor Type",
   "Tax": "Tax",
   "Contributor": "Contributor",
@@ -161,12 +162,16 @@
   "Gain Insurance work": "Gain Insurance work",
   "Non-Contributor": "Non-Contributor",
   "Activation": "Activation",
+  "Activate": "Activate",
+  "UnActivate": "UnActivate",
   "Yes": "Yes",
   "No": "No",
   "Specialties of Doctor": "Specialties of Doctor",
   "Add Specialty": "Add Specialty",
+  "Edit Specialty": "Edit Specialty",
   "Specialty": "Specialty",
   "Main Specialty": "Main Specialty",
+  "Un-Main Specialty": "Un-Main Specialty",
 
   "Stocks System": "Stocks System",
   "Stocks Types": "Stocks Types",
@@ -182,5 +187,7 @@
   "Change Financial Year": "Change Financial Year",
   "Financial Year": "Financial Year",
   "Change": "Change",
-  "Branch": "Branch"
+  "Branch": "Branch",
+  "Please enter at least 5 characters": "Please enter at least 5 characters",
+  "Please start with capitals or smalls, and don't use special characters": "Please start with capitals or smalls, and don't use special characters"
 }

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using ProSoft.EF.DTOs.Auth;
 using ProSoft.EF.IRepositories;
+using ProSoft.EF.IRepositories.Shared;
 using ProSoft.EF.Models;
 using System.Data;
 using System.Security.Claims;
@@ -23,17 +24,19 @@ namespace ProSoft.UI.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IMapper _mapper;
         private readonly IUserRepo _userRepo;
+        private readonly IBranchRepo _branchRepo;
 
         public AccountController(UserManager<AppUser> userManager,
                     SignInManager<AppUser> signInManager,
                     IMapper mapper, IUserRepo userRepo,
-                    RoleManager<IdentityRole> roleManager)
+                    RoleManager<IdentityRole> roleManager, IBranchRepo branchRepo)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _mapper = mapper;
             _roleManager = roleManager;
-            _userRepo= userRepo;
+            _userRepo = userRepo;
+            _branchRepo = branchRepo;
         }
 
         //Get register
@@ -42,6 +45,7 @@ namespace ProSoft.UI.Controllers
         {
             var ourroles = _roleManager.Roles;
             ViewBag.Roles = ourroles;
+            ViewBag.Branches = await _branchRepo.GetAllAsync();
             return View();
         }
 
@@ -80,7 +84,7 @@ namespace ProSoft.UI.Controllers
                 if (result.Succeeded)// && resultRole.Succeeded)
                 {
                     // Add role to user
-                    await _userManager.AddToRoleAsync(user, userDTO.Name);
+                    await _userManager.AddToRoleAsync(user, userDTO.RoleName);
 
                     // Add cookies for login
                     //await _signInManager.SignInAsync(user, false);
