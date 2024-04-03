@@ -26,4 +26,7 @@ public partial class KindStore
 
     [Column("K_STK_ON_OFF")]
     public int? KStkOnOff { get; set; }
+
+    [InverseProperty("Flag1Navigation")]
+    public virtual ICollection<Stock> Stocks { get; set; } = new List<Stock>();
 }

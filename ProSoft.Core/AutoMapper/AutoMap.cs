@@ -70,6 +70,7 @@ namespace ProSoft.Core.AutoMapper
             //////////Stocks////////////////////
             CreateMap<KindStore, KindStoreDTO>().ReverseMap();
             CreateMap<Branch, BranchDTO>().ReverseMap();
+            CreateMap<Stock, StockViewDTO>().ReverseMap();
         }
     }
 }

@@ -169,6 +169,7 @@
   "No": "No",
   "Cancel": "Cancel",
   "Specialties of Doctor": "Specialties of Doctor",
+  "Cancel": "Cancel",
   "Add Specialty": "Add Specialty",
   "Edit Specialty": "Edit Specialty",
   "Specialty": "Specialty",
@@ -186,15 +187,18 @@
   "Add Service": "Add Service",
   "Tax Category": "Tax Category",
   "Send Invoice": "Send Invoice",
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> ee860d8616ddf30be70284fa25e5132e032865fc
 
   "Stocks System": "Stocks System",
   "Stocks Types": "Stocks Types",
   "Stock Type": "Stock Type",
   "Stock Kind": "Stock Kind",
-  "Stock ID": "Stock ID",
+  "StockType ID": "StockType ID",
   "Add Stock Type": "Add Stock Type",
   "Add New Stock Type": "Add New Stock Type",
   "Add": "Add",
@@ -206,5 +210,10 @@
   "Change": "Change",
   "Branch": "Branch",
   "Please enter at least 5 characters": "Please enter at least 5 characters",
-  "Please start with capitals or smalls, and don't use special characters": "Please start with capitals or smalls, and don't use special characters"
+  "Please start with capitals or smalls, and don't use special characters": "Please start with capitals or smalls, and don't use special characters",
+  "Stock ID": "Stock ID",
+  "Stock Name": "Stock Name",
+  "System Code": "System Code",
+  "Jornal Code": "Jornal Code",
+  "Is Active": "Is Active"
 }

@@ -169,6 +169,7 @@
   "No": "لا",
   "Cancel": "الغاء",
   "Specialties of Doctor": "تخصصات الاطباء",
+  "Cancel": "الغاء",
   "Add Specialty": "اضافة تخصص",
   "Edit Specialty": "تعديل تخصص",
   "Specialty": "تخصص",
@@ -181,19 +182,25 @@
   "SubClinc Name": "اسم العيادة الفرعية",
   "SubClinc": "العيادة الفرعية",
   "Add SubClinc": "اضافة عيادة فرعية",
+<<<<<<< HEAD
 
+=======
+>>>>>>> ee860d8616ddf30be70284fa25e5132e032865fc
   "Revenue Department": "القسم الايرادي",
   "Cost Center": "مركز التكلفة",
   "Add Service": "اضافة خدمة",
   "Tax Category": "الصنف الضريبي",
   "Send Invoice": "ارسال فاتورة",
+<<<<<<< HEAD
 
+=======
+>>>>>>> ee860d8616ddf30be70284fa25e5132e032865fc
 
   "Stocks System": "نظام المخازن",
   "Stocks Types": "انواع المخازن",
-  "Stock Type": "طبيعة المخزن",
-  "Stock Kind": "نوع المخزن",
-  "Stock ID": "الكود",
+  "Stock Type": "نوع المخزن",
+  "Stock Kind": "طبيعة المخزن",
+  "StockType ID": "الكود",
   "Add Stock Type": "اضافة نوع مخزن",
   "Add New Stock Type": "اضافة نوع محزن جديد",
   "Add": "اضافة",
@@ -205,5 +212,10 @@
   "Change": "تغيير",
   "Branch": "الفرع",
   "Please enter at least 5 characters": "من فضلك ادخل 5 احرف علي الاقل",
-  "Please start with capitals or smalls, and don't use special characters": "من فضلك ابدأ بحروف كبيرة او صغيرة ولا تستخدم الرموز"
+  "Please start with capitals or smalls, and don't use special characters": "من فضلك ابدأ بحروف كبيرة او صغيرة ولا تستخدم الرموز",
+  "Stock ID": "الكود",
+  "Stock Name": "اسم المخزن",
+  "System Code": "كود النظام",
+  "Jornal Code": "يومية الحسابات",
+  "Is Active": "مفعل ام لا"
 }

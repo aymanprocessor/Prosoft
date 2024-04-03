@@ -79,5 +79,7 @@ namespace ProSoft.EF.DbContext
 
         /////
         public DbSet<Branch> Branchs { get; set; }
+        public DbSet<Stock> Stocks { get; set; }
+        public DbSet<JournalType> JournalTypes { get; set; }
     }
 }
