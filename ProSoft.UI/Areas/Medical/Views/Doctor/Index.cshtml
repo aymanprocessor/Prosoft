@@ -105,7 +105,7 @@
                         <td>
                             @if (dr.DrOnOff == 1)
                                 @localizer["Yes"]
-                            else if (dr.DrOnOff == 2)
+                            else if (dr.DrOnOff == 0)
                                 @localizer["No"]
 
                         </td>
@@ -190,13 +190,13 @@
             clickedTarget.classList.add("active-row");
             ///////////////////////////////////////////////////////////////////
 
-            // Catch header for ClinicTrans => PatAdmissionID and reset it
+            // Catch header for Doctor sub dtl => doctor id and reset it
             let docSubDtlHead = document.querySelector(".DocSubDtl-table-head");
 
             let itemName = clickedTarget.querySelector(".item-name").innerText;
-            console.log(itemName)
+            //console.log(itemName)
 
-            let docSubDtlHeader = docSubDtlHead.querySelector(".header.DocSub-Dtl"); // Display Header for sub items
+            let docSubDtlHeader = docSubDtlHead.querySelector(".header.DocSub-Dtl"); // Display Header for doctor sub dtls
             docSubDtlHeader.innerHTML = "@localizer["Specialties of Doctor"] :" + itemName;
 
             let docSubDtlAddButton = docSubDtlHead.querySelector("a");

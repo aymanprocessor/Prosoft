@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProSoft.EF.DTOs.Medical.HospitalPatData
 {
-    public class MainClinicViewDTO
+    public class MainClinicEditAddDTO
     {
         [DisplayName("Code")]
         public int ClinicId { get; set; }
@@ -19,10 +19,9 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
         public int MOnOff { get; set; }
 
         [DisplayName("System Section")]
-        public string SecName { get; set; }
+        public int SecCode { get; set; }
 
-
-
-
+        //list
+        public List<EisSectionTypeDTO>? eisSectionTypes { get; set; }
     }
 }

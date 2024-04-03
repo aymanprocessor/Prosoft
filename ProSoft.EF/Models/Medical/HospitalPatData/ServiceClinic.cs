@@ -52,10 +52,10 @@ public partial class ServiceClinic
     public decimal? ServVal { get; set; }
 
     [Column("PROTECT_ID")]
-    public double? ProtectId { get; set; }
+    public int? ProtectId { get; set; }
 
     [Column("SERV_ON_OFF")]
-    public double? ServOnOff { get; set; }
+    public int? ServOnOff { get; set; }
 
     [Column("ENTRY_DATE", TypeName = "datetime")]
     public DateTime? EntryDate { get; set; }
@@ -64,28 +64,28 @@ public partial class ServiceClinic
     public DateTime? ModfyDate { get; set; }
 
     [Column("USER_ENTRY")]
-    public double? UserEntry { get; set; }
+    public int? UserEntry { get; set; }
 
     [Column("USER_MODIFY")]
-    public double? UserModify { get; set; }
+    public int? UserModify { get; set; }
 
     [Column("SERV_COST_VAL", TypeName = "decimal(11, 2)")]
     public decimal? ServCostVal { get; set; }
 
     [Column("CLINIC_ID_NEW")]
-    public double? ClinicIdNew { get; set; }
+    public int? ClinicIdNew { get; set; }
 
     [Column("S_CLINIC_ID_NEW")]
-    public double? SClinicIdNew { get; set; }
+    public int? SClinicIdNew { get; set; }
 
     [Column("SERV_ID_NEW")]
-    public double? ServIdNew { get; set; }
+    public int? ServIdNew { get; set; }
 
     [Column("FLAG")]
-    public double? Flag { get; set; }
+    public int? Flag { get; set; }
 
     [Column("MEDICAL_FLAG")]
-    public double? MedicalFlag { get; set; }
+    public int? MedicalFlag { get; set; }
 
     [Column("BR_REPLC")]
     [StringLength(20)]
@@ -93,7 +93,7 @@ public partial class ServiceClinic
     public string? BrReplc { get; set; }
 
     [Column("COST_CODE")]
-    public double? CostCode { get; set; }
+    public int? CostCode { get; set; }
 
     [InverseProperty("Serv")]
     public virtual ICollection<ClinicTran> ClinicTrans { get; set; } = new List<ClinicTran>();

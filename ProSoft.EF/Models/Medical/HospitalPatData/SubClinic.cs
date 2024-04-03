@@ -34,7 +34,7 @@ public partial class SubClinic
     public decimal? TaxPrec { get; set; }
 
     [Column("S_ON_OFF")]
-    public double? SOnOff { get; set; }
+    public int? SOnOff { get; set; }
 
     [Column("ENTRY_DATE", TypeName = "datetime")]
     public DateTime? EntryDate { get; set; }
@@ -43,19 +43,19 @@ public partial class SubClinic
     public DateTime? ModfyDate { get; set; }
 
     [Column("USER_ENTRY")]
-    public double? UserEntry { get; set; }
+    public int? UserEntry { get; set; }
 
     [Column("USER_MODIFY")]
-    public double? UserModify { get; set; }
+    public int? UserModify { get; set; }
 
     [Column("FLAG_N")]
-    public double? FlagN { get; set; }
+    public int? FlagN { get; set; }
 
     [Column("MEDICAL_FLAG")]
-    public double? MedicalFlag { get; set; }
+    public int? MedicalFlag { get; set; }
 
     [Column("STOCK_CD")]
-    public double? StockCd { get; set; }
+    public int? StockCd { get; set; }
 
     [Column("BR_REPLC")]
     [StringLength(20)]
@@ -68,7 +68,7 @@ public partial class SubClinic
     public string? EinvItem { get; set; }
 
     [Column("COST_CODE")]
-    public double? CostCode { get; set; }
+    public int? CostCode { get; set; }
 
     [Column("SRV_INV_SHOW_FLG")]
     [StringLength(1)]

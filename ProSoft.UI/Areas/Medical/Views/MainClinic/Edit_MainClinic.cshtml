@@ -1,0 +1,86 @@
+﻿@model MainClinicEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Edit Clinic";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    SelectList eisSectionTypesList = new SelectList(Model.eisSectionTypes, "SecCode", "SecName");
+}
+@inject IViewLocalizer localizer
+<style>
+    .image {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        min-height: calc(100vh - 60px);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.5;
+        z-index: -1;
+    }
+</style>
+<div class="container pt-2">
+    <img class="image" src="/background.jpg" style="position:absolute;" />
+
+    <h1 class="mt-4">@localizer["Edit Clinic"] : @Model.ClinicDesc</h1>
+    <form method="post" asp-action="Edit_MainClinic" id="myForm">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly"></div>
+            @* hidden *@
+            <input asp-for="ClinicId" type="hidden" />
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <label asp-for="ClinicId"></label>
+                    <input asp-for="ClinicId" class="form-control" disabled  />
+                    <span asp-validation-for="ClinicId" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="ClinicDesc"></label>
+                    <input asp-for="ClinicDesc" class="form-control" />
+                    <span asp-validation-for="ClinicDesc" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                        <label asp-for="MOnOff" class="me-md-3"><p>@localizer["Activation"]</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="MOnOff" class="form-check-input radio-inline" type="radio" name="MOnOff" value="1">
+                                @localizer["Yes"]
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="MOnOff" class="form-check-input radio-inline" type="radio" name="MOnOff" value="0">
+                                @localizer["No"]
+                            </label>
+                        </div>
+                        <span asp-validation-for="MOnOff" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="SecCode"></label>
+                    <select asp-for="SecCode" asp-items="eisSectionTypesList" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="SecCode" class="text-danger"></span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-success" style="width:150px">
+                @localizer["Save Changes"]
+            </button>
+            <a asp-controller="MainClinic" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                @localizer["Cancel"]
+            </a>
+        </div>
+    </form>
+</div>

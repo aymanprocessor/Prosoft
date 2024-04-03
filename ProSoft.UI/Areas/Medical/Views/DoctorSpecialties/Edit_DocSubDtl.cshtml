@@ -104,9 +104,12 @@
 
             <!------------------------------------------------------------------------------->
 
-            <button type="submit" class="btn btn-primary" style="width:150px">
+            <button type="submit" class="btn btn-success" style="width:150px">
                 @localizer["Save Changes"]
             </button>
+            <a asp-controller="Doctor" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                @localizer["Cancel"]
+            </a>
         </div>
     </form>
 </div>

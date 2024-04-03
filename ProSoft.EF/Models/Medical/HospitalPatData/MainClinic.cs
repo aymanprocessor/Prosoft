@@ -28,7 +28,7 @@ public partial class MainClinic
     public int? Flag { get; set; }
 
     [Column("M_ON_OFF")]
-    public double? MOnOff { get; set; }
+    public int? MOnOff { get; set; }
 
     [Column("ENTRY_DATE", TypeName = "datetime")]
     public DateTime? EntryDate { get; set; }
@@ -37,16 +37,16 @@ public partial class MainClinic
     public DateTime? ModfyDate { get; set; }
 
     [Column("USER_ENTRY")]
-    public double? UserEntry { get; set; }
+    public int? UserEntry { get; set; }
 
     [Column("USER_MODIFY")]
-    public double? UserModify { get; set; }
+    public int? UserModify { get; set; }
 
     [Column("FLAG_N")]
-    public double? FlagN { get; set; }
+    public int? FlagN { get; set; }
 
     [Column("SYS_SECTION")]
-    public double? SysSection { get; set; }
+    public int? SysSection { get; set; }
 
     [Column("BR_REPLC")]
     [StringLength(20)]
@@ -61,4 +61,8 @@ public partial class MainClinic
 
     [InverseProperty("Clinic")]
     public virtual ICollection<SubClinic> SubClinics { get; set; } = new List<SubClinic>();
+
+    [ForeignKey("SysSection")]
+    [InverseProperty("MainClinics")]
+    public virtual EisSectionType? SysSectionNavigation { get; set; }
 }

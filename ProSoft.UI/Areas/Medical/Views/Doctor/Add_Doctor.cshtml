@@ -99,7 +99,7 @@
                     </div>
                     <div class="mb-3 me-md-2">
                         <label class="form-check-label">
-                            <input asp-for="DrOnOff" class="form-check-input radio-inline" type="radio" name="DrOnOff" value="2" >
+                            <input asp-for="DrOnOff" class="form-check-input radio-inline" type="radio" name="DrOnOff" value="0" >
                            @localizer["No"]
                         </label>
                     </div>
@@ -109,6 +109,10 @@
             <button type="submit" class="btn btn-primary" style="width:150px">
                 @localizer["Add Doctor"]
             </button>
+            <a asp-controller="Doctor" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                @localizer["Cancel"]
+            </a>
+
         </div>
     </form>
 </div>
