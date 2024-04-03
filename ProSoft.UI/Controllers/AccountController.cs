@@ -62,6 +62,7 @@ namespace ProSoft.UI.Controllers
 
                 // Mapping from view model
                 AppUser user = _mapper.Map<AppUser>(userDTO);
+                user.FYear = DateTime.UtcNow.Year;
                 #region mapper
                 //AppUser user = new AppUser();
                 //_mapper.Map(userDTO, user);

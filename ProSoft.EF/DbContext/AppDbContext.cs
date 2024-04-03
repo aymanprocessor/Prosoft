@@ -77,5 +77,7 @@ namespace ProSoft.EF.DbContext
         public DbSet<DrDegree> DrDegrees { get; set; }
         /////
         public DbSet<Branch> Branchs { get; set; }
+        public DbSet<Stock> Stocks { get; set; }
+        public DbSet<JournalType> JournalTypes { get; set; }
     }
 }

@@ -60,9 +60,11 @@ builder.Services.AddScoped<INationalityRepo, NationalityRepo>();
 builder.Services.AddScoped<IDrDegreeRepo, DrDegreeRepo>();
 builder.Services.AddScoped<IDoctorRepo, DoctorRepo>();
 builder.Services.AddScoped<IDocSubDtlRepo, DocSubDtlRepo>();
+builder.Services.AddScoped<IMainClinicRepo, MainClinicRepo>();
 /////////////////Stock/////////////
 builder.Services.AddScoped<IStockTypeRepo, StockTypeRepo>();
 builder.Services.AddScoped<IBranchRepo, BranchRepo>();
+builder.Services.AddScoped<IStockRepo, StockRepo>();
 
 ///For Localization
 builder.Services.AddLocalization();

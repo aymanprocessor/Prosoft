@@ -39,8 +39,11 @@
                 </div>
             </div>
 
-            <div class="parent d-flex justify-content-md-center ">
+            <div class="parent d-flex justify-content-md-center gap-2">
                 <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add"]</button>
+                <a asp-controller="StocksTypes" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
             </div>
         </div>
     </form>

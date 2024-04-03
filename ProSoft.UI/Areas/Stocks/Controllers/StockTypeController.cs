@@ -9,12 +9,12 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
 {
     [Authorize]
     [Area("Stocks")]
-    public class StocksTypesController : Controller
+    public class StockTypeController : Controller
     {
 
         private readonly IStockTypeRepo _stockTypeRepo;
         private readonly IMapper _mapper;
-        public StocksTypesController(IStockTypeRepo stockTypeRepo, IMapper mapper)
+        public StockTypeController(IStockTypeRepo stockTypeRepo, IMapper mapper)
         {
             _stockTypeRepo = stockTypeRepo;
             _mapper = mapper;
