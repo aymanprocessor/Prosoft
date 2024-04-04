@@ -53,4 +53,8 @@ public partial class Stock
 
     [InverseProperty("StockCdNavigation")]
     public virtual ICollection<SubClinic> SubClinics { get; set; } = new List<SubClinic>();
+
+    [ForeignKey("JornalCode")]
+    [InverseProperty("Stocks")]
+    public virtual JournalType? JornalCodeNavigation { get; set; }
 }

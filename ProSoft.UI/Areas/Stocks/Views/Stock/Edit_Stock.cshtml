@@ -1,0 +1,105 @@
+﻿@model StockEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Add New Stock";
+    Layout = "_Layout";
+
+    // Casting type to get all kindstores as a list
+    SelectList stocksTypes = new SelectList(Model.StocksTypes, "KId", "KName");
+    // Casting type to get all branches as a list
+    SelectList branches = new SelectList(Model.Branches, "BranchId", "BranchDesc");
+    // Casting type to get all journaltypes as a list
+    SelectList calculusJournals = new SelectList(Model.CalculusJournals, "JournalCode", "JournalName");
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+    <h1 class="mt-4">@localizer["Edit Stock"] : @Model.Stknam</h1>
+    <form method="post" asp-action="Edit_Stock">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="Stkcod"></label>
+                    <input asp-for="Stkcod" class="form-control" value="@Model.Stkcod" disabled />
+                    <span asp-validation-for="Stkcod" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Stknam"></label>
+                    <input asp-for="Stknam" class="form-control" />
+                    <span asp-validation-for="Stknam" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="Flag1"></label>
+                    <select asp-for="Flag1" asp-items="stocksTypes" class="form-control text-center">
+                    </select>
+                    <span asp-validation-for="Flag1" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="BranchId"></label>
+                    <select asp-for="BranchId" asp-items="branches" class="form-control text-center">
+                    </select>
+                    <span asp-validation-for="BranchId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="JornalCode"></label>
+                    <select asp-for="JornalCode" asp-items="calculusJournals" class="form-control text-center">
+                    </select>
+                    <span asp-validation-for="JornalCode" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="StockPurchOnshelf"></label>
+                    <select asp-for="StockPurchOnshelf" class="form-control text-center">
+                        <option value="1">@localizer["Purchasr"]</option>
+                        <option value="2">@localizer["Trusts"]</option>
+                    </select>
+                    <span asp-validation-for="StockPurchOnshelf" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="StockType"></label>
+                    <select asp-for="StockType" class="form-control text-center">
+                        <option value="1">@localizer["Normal Stock"]</option>
+                        <option value="2">@localizer["Entity"]</option>
+                        <option value="3">@localizer["Catheter Stock"]</option>
+                        <option value="4">@localizer["Care Stock"]</option>
+                        <option value="5">@localizer["Pharmacy Stock"]</option>
+                        <option value="6">@localizer["Internal Stock"]</option>
+                    </select>
+                    <span asp-validation-for="StockType" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="StkOnOff"></label>
+                    <select asp-for="StkOnOff" class="form-control text-center">
+                        <option value="0">@localizer["No"]</option>
+                        <option value="1">@localizer["Yes"]</option>
+                    </select>
+                    <span asp-validation-for="StkOnOff" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="parent d-flex justify-content-md-center gap-2">
+                <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Save Changes"]</button>
+                <a asp-controller="Stock" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>

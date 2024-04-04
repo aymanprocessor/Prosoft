@@ -23,11 +23,9 @@ namespace ProSoft.EF.DTOs.Stocks
 
         public int StockType { get; set; }
 
-        public int StkDefult { get; set; }
-
         public int StockPurchOnshelf { get; set; }
 
-        public string JornalCode { get; set; }
+        public string CalculusJournal { get; set; }
 
         public int StkOnOff { get; set; }
     }
