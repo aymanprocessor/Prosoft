@@ -97,18 +97,18 @@
 
     @* Table for DocSUbDtl *@
 
-    <div class="DocSubDtl-table-head d-flex justify-content-between align-items-center mt-4">
-        <h2 class="header DocSub-Dtl">@localizer["SubClinc Name"] :</h2>
+    <div class="subClinic-table-head d-flex justify-content-between align-items-center mt-4">
+        <h2 class="header subClinic-Dtl">@localizer["SubClinc Name"] :</h2>
 
         <a class="btn btn-sm btn-primary fs-6" style="width:150px">
-            @localizer["Add SubClinc"]
+            @localizer["Add SubClinic"]
         </a>
         @* asp-controller="MedAnalysis" asp-action="Add_SubItemAnalysis" asp-route-ID="@ViewBag.item.MainCode" asp-route-itemAnalCode="" *@
     </div>
 
     <div class="border border-success p-0 mb-2 border-opacity-75 overflow-auto" style="max-height: 300px;">
 
-        <table id="myTable" class="table table-bordered table-hover docSubDtl-table" style="width:100%">
+        <table id="myTable" class="table table-bordered table-hover subClinic-table" style="width:100%">
             <thead class="table-dark">
                 <tr>
                     <th class="align-middle">
@@ -149,3 +149,85 @@
     @* /////////////////////////////////////////////////////////////////// *@
 
 </div>
+
+
+<script>
+    @* Ajax for SubClinic *@
+        function GetSubClinic(e, id) {
+            var subClinics = document.querySelector(".subClinic-table tbody")
+            // Handle active clic
+            let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");
+            allItemRows.forEach(row => {
+                row.classList.remove("active-row");
+            });
+
+            let clickedTarget = e.target.parentElement
+            clickedTarget.classList.add("active-row");
+            ///////////////////////////////////////////////////////////////////
+
+            // Catch header for subClinic => mainClinic id and reset it
+            let subClinicHead = document.querySelector(".subClinic-table-head");
+            let itemName = clickedTarget.querySelector(".item-name").innerText;
+            //console.log(itemName)
+
+            let subClinicHeader = subClinicHead.querySelector(".header.subClinic-Dtl");
+            subClinicHeader.innerHTML = "@localizer["Sub Clinic"] :" + itemName;
+
+            let subClinicAddButton = subClinicHead.querySelector("a");
+            subClinicAddButton.setAttribute("href", `/Medical/SubClinic/Add_SubClinic/${id}`);
+            // console.log(docSubDtlAddButton);
+            ///////////////////////////////////////////////////////////////////
+
+            // Handle ajax call
+            subClinics.innerHTML = "";  // Empty the body
+
+            $.ajax({
+                url: `/Medical/SubClinic/GetSubClinic/${id}`,
+                success: function (result) {
+                    for (let item of result) {
+                        const subClinic = document.createElement("tr");
+                        let medicalType;
+                        if (item.medicalFlag == 0) {
+                            medicalType = "@localizer["Without"]";
+                        } else if (item.medicalFlag == 1) {
+                            medicalType = "@localizer["Analysis"]";
+                        } else if (item.medicalFlag == 2) {
+                            medicalType = "@localizer["XRay"]";
+                        }
+
+                        let itemType;
+                        if (item.srvInvShowFlg == "I") {
+                            itemType = "@localizer["Item"]";
+                        } else if (item.srvInvShowFlg == "G") {
+                            itemType = "@localizer["Groub"]";
+                        }
+
+                        subClinic.innerHTML +=
+                            `
+                    <td class="align-middle">${item.sClinicDesc}</td>
+                    <td class="align-middle">${item.sClinicDesc}</td>
+                    <td class="align-middle">${item.typDesc}</td>
+                    <td class="align-middle">${item.costDesc}</td>
+                    <td class="align-middle">${medicalType}</td>
+                    <td class="align-middle">${item.einvItem}</td>
+                    <td class="align-middle">${itemType}</td>
+                    <td class="align-middle">${item.stknam}</td>
+                    <td width="30%" class="text-center">
+                        <a href="/Medical/SubClinic/Edit_SubClinic/${item.sClinicId}" class="btn btn-sm btn-success mb-1 fs-6" style="width:150px">
+                            <i class="bi bi-pencil"></i> @localizer["Edit"]
+                        </a>
+                          <form action="/Medical/SubClinic/Delete_SubClinic" method="post" class="d-inline">
+    @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="${item.sClinicId}" />
+                            <button type="submit" class="btn btn-sm btn-danger mb-1 fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">@localizer["Delete"]</button>
+                        </form>
+                    </td>
+                `;
+                        subClinics.appendChild(subClinic);
+                    }
+                }
+            });
+
+
+        }
+</script>

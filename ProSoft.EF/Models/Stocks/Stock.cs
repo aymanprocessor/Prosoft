@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using ProSoft.EF.Models.Medical.HospitalPatData;
 using ProSoft.EF.Models.Shared;
 
 namespace ProSoft.EF.Models.Stocks;
@@ -37,7 +38,7 @@ public partial class Stock
     [Column("JORNAL_CODE")]
     [StringLength(5)]
     [Unicode(false)]
-    public string? JornalCode { get; set; }
+    public int? JornalCode { get; set; }
 
     [Column("STK_ON_OFF")]
     public int? StkOnOff { get; set; }
@@ -49,4 +50,7 @@ public partial class Stock
     [ForeignKey("Flag1")]
     [InverseProperty("Stocks")]
     public virtual KindStore? Flag1Navigation { get; set; }
+
+    [InverseProperty("StockCdNavigation")]
+    public virtual ICollection<SubClinic> SubClinics { get; set; } = new List<SubClinic>();
 }

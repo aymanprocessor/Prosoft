@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using ProSoft.EF.Models.Stocks;
 
 namespace ProSoft.EF.Models.Medical.HospitalPatData;
 
@@ -62,7 +63,7 @@ public partial class SubClinic
     [Unicode(false)]
     public string? BrReplc { get; set; }
 
-    [Column("EINV_ITEM")]
+    [Column("EINV_ITEM")] 
     [StringLength(30)]
     [Unicode(false)]
     public string? EinvItem { get; set; }
@@ -82,9 +83,21 @@ public partial class SubClinic
     [InverseProperty("SClinic")]
     public virtual ICollection<ClinicTran> ClinicTrans { get; set; } = new List<ClinicTran>();
 
+    [ForeignKey("CostCode")]
+    [InverseProperty("SubClinics")]
+    public virtual CostCenter? CostCodeNavigation { get; set; }
+
     [InverseProperty("SClinic")]
     public virtual ICollection<DocSubDtl> DocSubDtls { get; set; } = new List<DocSubDtl>();
 
     [InverseProperty("SClinic")]
     public virtual ICollection<ServiceClinic> ServiceClinics { get; set; } = new List<ServiceClinic>();
+
+    [ForeignKey("StockCd")]
+    [InverseProperty("SubClinics")]
+    public virtual Stock? StockCdNavigation { get; set; }
+
+    [ForeignKey("TypId")]
+    [InverseProperty("SubClinics")]
+    public virtual ServiceType? Typ { get; set; }
 }

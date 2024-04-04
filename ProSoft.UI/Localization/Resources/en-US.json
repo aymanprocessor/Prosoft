@@ -169,7 +169,6 @@
   "No": "No",
   "Cancel": "Cancel",
   "Specialties of Doctor": "Specialties of Doctor",
-  "Cancel": "Cancel",
   "Add Specialty": "Add Specialty",
   "Edit Specialty": "Edit Specialty",
   "Specialty": "Specialty",
@@ -181,18 +180,11 @@
   "Edit Clinic": "Edit Clinic",
   "SubClinc Name": "SubClinc Name",
   "SubClinc": "SubClinc",
-  "Add SubClinc": "Add SubClinc",
   "Revenue Department": "Revenue Department",
   "Cost Center": "Cost Center",
   "Add Service": "Add Service",
   "Tax Category": "Tax Category",
   "Send Invoice": "Send Invoice",
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> ee860d8616ddf30be70284fa25e5132e032865fc
 
   "Stocks System": "Stocks System",
   "Stocks Types": "Stocks Types",

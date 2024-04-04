@@ -169,7 +169,6 @@
   "No": "لا",
   "Cancel": "الغاء",
   "Specialties of Doctor": "تخصصات الاطباء",
-  "Cancel": "الغاء",
   "Add Specialty": "اضافة تخصص",
   "Edit Specialty": "تعديل تخصص",
   "Specialty": "تخصص",
@@ -180,21 +179,11 @@
   "Add Clinic": "اضافة عيادة",
   "Edit Clinic": "تعديل عيادة",
   "SubClinc Name": "اسم العيادة الفرعية",
-  "SubClinc": "العيادة الفرعية",
-  "Add SubClinc": "اضافة عيادة فرعية",
-<<<<<<< HEAD
-
-=======
->>>>>>> ee860d8616ddf30be70284fa25e5132e032865fc
   "Revenue Department": "القسم الايرادي",
   "Cost Center": "مركز التكلفة",
   "Add Service": "اضافة خدمة",
   "Tax Category": "الصنف الضريبي",
   "Send Invoice": "ارسال فاتورة",
-<<<<<<< HEAD
-
-=======
->>>>>>> ee860d8616ddf30be70284fa25e5132e032865fc
 
   "Stocks System": "نظام المخازن",
   "Stocks Types": "انواع المخازن",

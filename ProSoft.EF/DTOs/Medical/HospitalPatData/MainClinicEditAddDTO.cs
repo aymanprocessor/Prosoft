@@ -14,7 +14,7 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
 
         [DisplayName("Clinic Name")]
         public string ClinicDesc { get; set; }
-
+         
         [DisplayName("Activation")]
         public int MOnOff { get; set; }
 
