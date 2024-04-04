@@ -11,9 +11,7 @@ public partial class JournalType
 {
     [Key]
     [Column("JOURNAL_CODE")]
-    [StringLength(5)]
-    [Unicode(false)]
-    public string JournalCode { get; set; } = null!;
+    public int JournalCode { get; set; }
 
     [Column("JOURNAL_NAME")]
     [StringLength(40)]
@@ -34,4 +32,7 @@ public partial class JournalType
     [StringLength(5)]
     [Unicode(false)]
     public string? JournalInOut { get; set; }
+
+    [InverseProperty("JornalCodeNavigation")]
+    public virtual ICollection<Stock> Stocks { get; set; } = new List<Stock>();
 }

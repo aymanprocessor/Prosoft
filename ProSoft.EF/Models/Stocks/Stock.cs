@@ -35,9 +35,7 @@ public partial class Stock
     public int? StockPurchOnshelf { get; set; }
 
     [Column("JORNAL_CODE")]
-    [StringLength(5)]
-    [Unicode(false)]
-    public string? JornalCode { get; set; }
+    public int? JornalCode { get; set; }
 
     [Column("STK_ON_OFF")]
     public int? StkOnOff { get; set; }
@@ -49,4 +47,8 @@ public partial class Stock
     [ForeignKey("Flag1")]
     [InverseProperty("Stocks")]
     public virtual KindStore? Flag1Navigation { get; set; }
+
+    [ForeignKey("JornalCode")]
+    [InverseProperty("Stocks")]
+    public virtual JournalType? JornalCodeNavigation { get; set; }
 }

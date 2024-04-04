@@ -169,7 +169,6 @@
   "No": "لا",
   "Cancel": "الغاء",
   "Specialties of Doctor": "تخصصات الاطباء",
-  "Cancel": "الغاء",
   "Add Specialty": "اضافة تخصص",
   "Edit Specialty": "تعديل تخصص",
   "Specialty": "تخصص",
@@ -180,22 +179,23 @@
   "Add Clinic": "اضافة عيادة",
   "Edit Clinic": "تعديل عيادة",
   "SubClinc Name": "اسم العيادة الفرعية",
-  "SubClinc": "العيادة الفرعية",
-  "Add SubClinc": "اضافة عيادة فرعية",
-<<<<<<< HEAD
-
-=======
->>>>>>> ee860d8616ddf30be70284fa25e5132e032865fc
+  "SubClinc": "العيادة الفرعية ",
+  "Add SubClinic": "اضافة عيادة فرعية",
+  "Edit SubClinic": "تعديل عيادة فرعية",
   "Revenue Department": "القسم الايرادي",
   "Cost Center": "مركز التكلفة",
   "Add Service": "اضافة خدمة",
   "Tax Category": "الصنف الضريبي",
   "Send Invoice": "ارسال فاتورة",
-<<<<<<< HEAD
+  "SubClinic Name": "اسم العيادة الفرعية",
+  "Service Type": "نوع الخدمة",
+  "Level Invoice": "مستوي الفاتورة",
+  "Analysis": "تجاليل",
+  "XRay": "الاشعة",
+  "Groub": "مجموعة",
+  "Item OR Group": "صنف او مجموعة",
 
-=======
->>>>>>> ee860d8616ddf30be70284fa25e5132e032865fc
-
+  "Cost Name": "اسم التكلفة",
   "Stocks System": "نظام المخازن",
   "Stocks Types": "انواع المخازن",
   "Stock Type": "نوع المخزن",
@@ -217,5 +217,17 @@
   "Stock Name": "اسم المخزن",
   "System Code": "كود النظام",
   "Jornal Code": "يومية الحسابات",
-  "Is Active": "مفعل ام لا"
+  "Is Active": "مفعل ام لا",
+  "Stocks": "المخازن",
+  "Normal Stock": "مخزن عادي",
+  "Entity": "جهة",
+  "Catheter Stock": "مخزن قسطرة",
+  "Care Stock": "مخزن رعاية",
+  "Pharmacy Stock": "مخزن صيدلية",
+  "Internal Stock": "مخزن الداخلي",
+  "Add Stock": "اضافة مخزن",
+  "Add New Stock": "اضافة محزن جديد",
+  "Purchasr": "شراء",
+  "Trusts": "امانات",
+  "Edit Stock": "تعديل مخزن"
 }

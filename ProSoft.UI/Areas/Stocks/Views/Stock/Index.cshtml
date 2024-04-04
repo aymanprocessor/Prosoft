@@ -2,7 +2,7 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Stocks Types";
+    ViewData["Title"] = "Stocks";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @inject IViewLocalizer localizer
@@ -58,20 +58,37 @@
                     <tr>
                         <td class="align-middle">@item.Stkcod</td>
                         <td class="align-middle">@item.Stknam</td>
-                        <td class="align-middle">@item.StockPurchOnshelf</td>
-                        <td class="align-middle">@item.JornalCode</td>
-@*                         <td class="align-middle">@item.Flag1</td>
-                        <td class="align-middle">@item.BranchId</td> *@
-                        <td class="align-middle">@item.StockType</td>
+                        <td class="align-middle">
+                            @if(item.StockPurchOnshelf == 1)
+                                @localizer["Purchasr"]
+                            else if(item.StockPurchOnshelf == 2)
+                                @localizer["Trusts"]
+                        </td>
+                        <td class="align-middle">@item.CalculusJournal</td>
+                        <td class="align-middle">@item.StockTypeName</td>
+                        <td class="align-middle">@item.BranchName</td>
+                        <td class="align-middle">
+                            @if(item.StockType == 1)
+                                @localizer["Normal Stock"]
+                            else if (item.StockType == 2)
+                                @localizer["Entity"]
+                            else if (item.StockType == 3)
+                                @localizer["Catheter Stock"]
+                            else if (item.StockType == 4)
+                                @localizer["Care Stock"]
+                            else if (item.StockType == 5)
+                                @localizer["Pharmacy Stock"]
+                            else if (item.StockType == 6)
+                                @localizer["Internal Stock"]
+                        </td>
                         <td class="align-middle">
                             @if(item.StkOnOff == 1)
                                 @localizer["Yes"]
                             else if(item.StkOnOff == 0)
                                 @localizer["No"]
-                            @item.StkOnOff
                         </td>
                         <td class="text-center align-middle" style="width: 325px;">
-                            <a asp-controller="Stock" asp-action="Edit_Stock" asp-route-id="@item.Stkcod" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
+                            <a asp-action="Edit_Stock" asp-route-id="@item.Stkcod" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
                             <form asp-action="Delete_Stock" method="post" class="d-inline">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="id" value="@item.Stkcod" />

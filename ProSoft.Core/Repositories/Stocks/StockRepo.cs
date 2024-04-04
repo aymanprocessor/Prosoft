@@ -1,10 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using ProSoft.EF.DbContext;
+using ProSoft.EF.DTOs.Shared;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.IRepositories.Stocks;
+using ProSoft.EF.Models.Shared;
 using ProSoft.EF.Models.Stocks;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,13 +17,30 @@ namespace ProSoft.Core.Repositories.Stocks
 {
     public class StockRepo : Repository<Stock, int>, IStockRepo
     {
-        public StockRepo(AppDbContext Context) : base(Context)
+        private readonly AppDbContext _Context;
+        private readonly IMapper _mapper;
+        public StockRepo(AppDbContext Context, IMapper mapper) : base(Context)
         {
+            _Context = Context;
+            _mapper = mapper;
         }
 
-        public Task<List<StockViewDTO>> GetAllStocksAsync()
+        public async Task<List<StockViewDTO>> GetAllStocksAsync()
         {
-            throw new NotImplementedException();
+            List<StockViewDTO> stocksDTO = await _Context.Stocks
+            .Select(obj => new StockViewDTO()
+            {
+                Stkcod = obj.Stkcod,
+                Stknam = obj.Stknam,
+                StockTypeName = obj.Flag1Navigation.KName,
+                BranchName = obj.Branch.BranchDesc,
+                StockType = (int)obj.StockType,
+                StockPurchOnshelf = (int)obj.StockPurchOnshelf,
+                CalculusJournal = obj.JornalCodeNavigation.JournalName,
+                StkOnOff = (int)obj.StkOnOff
+            })
+            .ToListAsync() ?? new ();
+            return stocksDTO;
         }
 
         public async Task<int> GetNewIdAsync()
@@ -33,6 +54,35 @@ namespace ProSoft.Core.Repositories.Stocks
             else
                 newID = 1;
             return newID;
+        }
+
+        public async Task<StockEditAddDTO> GetEmptyStockAsync()
+        {
+            StockEditAddDTO stockDTO = new ();
+
+            List<Branch> branches = await _Context.Branchs.ToListAsync();
+            List<KindStore> stocksTypes = await _Context.KindStores.ToListAsync();
+            List<JournalType> calculusJournals = await _Context.JournalTypes.ToListAsync();
+            stockDTO.Branches = _mapper.Map<List<BranchDTO>>(branches);
+            stockDTO.StocksTypes = _mapper.Map<List<KindStoreDTO>>(stocksTypes);
+            stockDTO.CalculusJournals = _mapper.Map<List<JournalTypeDTO>>(calculusJournals);
+
+            return stockDTO;
+        }
+
+        public async Task<StockEditAddDTO> GetStockByIdAsync(int id)
+        {
+            Stock stock = await GetByIdAsync(id);
+            StockEditAddDTO stockDTO = _mapper.Map<StockEditAddDTO>(stock);
+
+            List<Branch> branches = await _Context.Branchs.ToListAsync();
+            List<KindStore> stocksTypes = await _Context.KindStores.ToListAsync();
+            List<JournalType> calculusJournals = await _Context.JournalTypes.ToListAsync();
+            stockDTO.Branches = _mapper.Map<List<BranchDTO>>(branches);
+            stockDTO.StocksTypes = _mapper.Map<List<KindStoreDTO>>(stocksTypes);
+            stockDTO.CalculusJournals = _mapper.Map<List<JournalTypeDTO>>(calculusJournals);
+
+            return stockDTO;
         }
     }
 }

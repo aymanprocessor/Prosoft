@@ -12,5 +12,7 @@ namespace ProSoft.EF.IRepositories.Stocks
     {
         Task<List<StockViewDTO>> GetAllStocksAsync();
         Task<int> GetNewIdAsync();
+        Task<StockEditAddDTO> GetEmptyStockAsync();
+        Task<StockEditAddDTO> GetStockByIdAsync(int id);
     }
 }

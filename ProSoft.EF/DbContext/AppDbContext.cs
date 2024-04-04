@@ -35,9 +35,6 @@ namespace ProSoft.EF.DbContext
         }
         // Shared //
         public DbSet<NationalityEi> NationalityEis { get; set; }
-        ////////////////////
-        // Stocks //
-        public DbSet<KindStore> KindStores { get; set; }
         /////
         // Analysis //
         public DbSet<Itemanalysis> Itemanalyses { get; set; }
@@ -77,7 +74,9 @@ namespace ProSoft.EF.DbContext
         public DbSet<DrDegree> DrDegrees { get; set; }
         public DbSet<EisSectionType> EisSectionTypes { get; set; }
 
-        /////
+        ////////////////////
+        // Stocks //
+        public DbSet<KindStore> KindStores { get; set; }
         public DbSet<Branch> Branchs { get; set; }
         public DbSet<Stock> Stocks { get; set; }
         public DbSet<JournalType> JournalTypes { get; set; }

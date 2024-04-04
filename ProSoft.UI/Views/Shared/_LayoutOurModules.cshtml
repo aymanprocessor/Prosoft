@@ -144,8 +144,13 @@
                                         </a>
                                         <ul class="submenu collapse p-0 ">
                                             <li class="nav-item has-submenu">
-                                                <a asp-area="Stocks" asp-controller="StocksTypes" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                <a asp-area="Stocks" asp-controller="StockType" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
                                                     @localizer["Stocks Types"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Stocks" asp-controller="Stock" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["Stocks"]
                                                 </a>
                                             </li>
                                         </ul>
