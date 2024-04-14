@@ -17,11 +17,9 @@ namespace ProSoft.Core.Repositories.Stocks
 {
     public class StockRepo : Repository<Stock, int>, IStockRepo
     {
-        private readonly AppDbContext _Context;
         private readonly IMapper _mapper;
         public StockRepo(AppDbContext Context, IMapper mapper) : base(Context)
         {
-            _Context = Context;
             _mapper = mapper;
         }
 

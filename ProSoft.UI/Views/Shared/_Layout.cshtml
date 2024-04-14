@@ -25,7 +25,7 @@
             <partial name="_SelectLanguagePartial" />
             @if (User.Identity.IsAuthenticated)
             {
-                <a asp-action="Logout" asp-controller="Account" class="btn btn-secondary">@localizer["Log out"]</a>
+                <a asp-action="Logout" asp-controller="Account" asp-area="" class="btn btn-secondary">@localizer["Log out"]</a>
             }
         </div>
     </div>

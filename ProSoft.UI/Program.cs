@@ -68,6 +68,8 @@ builder.Services.AddScoped<IDoctorsPersentageRepo, DoctorsPersentageRepo>();
 builder.Services.AddScoped<IStockTypeRepo, StockTypeRepo>();
 builder.Services.AddScoped<IBranchRepo, BranchRepo>();
 builder.Services.AddScoped<IStockRepo, StockRepo>();
+builder.Services.AddScoped<ISideRepo, SideRepo>();
+builder.Services.AddScoped<IUnitCodeRepo, UnitCodeRepo>();
 
 ///For Localization
 builder.Services.AddLocalization();
