@@ -213,6 +213,9 @@
   "Value OR Ratio": "قيمة او نسبة",
   "Ratio": "نسبة",
   "Value": "قيمة",
+  "Edit Precentage": "تعديل النسبة",
+  "Special Cases": "حالات خاصة",
+  "Contract Cases": "حالات تعاقد",
 
   "Cost Name": "اسم التكلفة",
   "Stocks System": "نظام المخازن",
@@ -248,5 +251,16 @@
   "Add New Stock": "اضافة محزن جديد",
   "Purchasr": "شراء",
   "Trusts": "امانات",
-  "Edit Stock": "تعديل مخزن"
+  "Edit Stock": "تعديل مخزن",
+  "Sides": "الجهات",
+  "Add Side": "اضافة جهة",
+  "Add New Side": "اضافة جهة جديدة",
+  "Edit Side": "تعديل الجهة",
+  "Side ID": "كود الجهة",
+  "Side Name": "اسم الجهة",
+  "UnitCode Id": "كود الوحدة",
+  "UnitCode Name": "اسم الوحدة",
+  "Unit Codes": "الوحدات",
+  "Add UnitCode": "اضافة وحدة",
+  "Number of Particles": "عدد الاجزاء"
 }

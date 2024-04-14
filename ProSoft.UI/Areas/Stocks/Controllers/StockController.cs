@@ -65,14 +65,26 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         {
             if (ModelState.IsValid)
             {
-                Stock stock = _mapper.Map<Stock>(stockDTO);
-                stock.StkDefult = 0;
+                Stock stock = await _stockRepo.GetByIdAsync(id);
+                _mapper.Map(stockDTO, stock);
 
-                await _stockRepo.AddAsync(stock);
+                await _stockRepo.UpdateAsync(stock);
                 await _stockRepo.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(stockDTO);
+        }
+
+        // Delete
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete_Stock(int id)
+        {
+            Stock stock = await _stockRepo.GetByIdAsync(id);
+
+            await _stockRepo.DeleteAsync(stock);
+            await _stockRepo.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
     }
 }

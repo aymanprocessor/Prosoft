@@ -213,6 +213,9 @@
   "Value OR Ratio": "Value OR Ratio",
   "Ratio": "Ratio",
   "Value": "Value",
+  "Edit Precentage": "تعديل النسبة",
+  "Special Cases": "حالات خاصة",
+  "Contract Cases": "حالات تعاقد",
 
   "Cost Name": "Cost Name",
   "Stocks System": "Stocks System",
@@ -248,5 +251,16 @@
   "Add New Stock": "Add New Stock",
   "Purchasr": "Purchasr",
   "Trusts": "Trusts",
-  "Edit Stock": "Edit Stock"
+  "Edit Stock": "Edit Stock",
+  "Sides": "Sides",
+  "Add Side": "Add Side",
+  "Add New Side": "Add New Side",
+  "Edit Side": "Edit Side",
+  "Side ID": "Side ID",
+  "Side Name": "Side Name",
+  "UnitCode Id": "UnitCode Id",
+  "UnitCode Name": "UnitCode Name",
+  "Unit Codes": "Unit Codes",
+  "Add UnitCode": "Add UnitCode",
+  "Number of Particles": "Number of Particles"
 }

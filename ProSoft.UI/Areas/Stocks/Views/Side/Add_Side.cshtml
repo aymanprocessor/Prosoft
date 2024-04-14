@@ -1,0 +1,37 @@
+﻿@model SideDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Add New Side";
+    Layout = "_Layout";
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+    <h1 class="mt-4">@localizer["Add New Side"]</h1>
+    <form method="post" asp-action="Add_Side">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="SideId"></label>
+                    <input asp-for="SideId" class="form-control" value="@ViewBag.sideId" disabled />
+                    <span asp-validation-for="SideId" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="SideDesc"></label>
+                    <input asp-for="SideDesc" class="form-control" />
+                    <span asp-validation-for="SideDesc" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="parent d-flex justify-content-md-center gap-2">
+                <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add"]</button>
+                <a asp-controller="Side" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>

@@ -83,5 +83,7 @@ namespace ProSoft.EF.DbContext
         public  DbSet<CostCenter> CostCenters { get; set; }
         public  DbSet<ServiceType> ServiceTypes { get; set; }
         public DbSet<JournalType> JournalTypes { get; set; }
+        public DbSet<Side> Sides { get; set; }
+        public DbSet<UnitCode> UnitCodes { get; set; }
     }
 }
