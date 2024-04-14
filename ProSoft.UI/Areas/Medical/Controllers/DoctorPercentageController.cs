@@ -29,28 +29,28 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         }
         public async Task<IActionResult> GetDoctorPresentages(int id)
         {
-           List<DoctorPrecentViewDTO> doctorPrecentDTOs =await _drPersentageRepo.GetAllDoctorPersentageAsync(id);
+           List<DoctorPrecentViewDTO> doctorPrecentDTOs =await _drPersentageRepo.GetAllDoctorPercentageAsync(id);
             return Json(doctorPrecentDTOs);
         }
 
         //Get Edit
         public async Task<IActionResult> Edit_DoctorPerc(int id)
         {
-          //  DocSubDtlEditAddDTO docSubDtlDTO = await _drPersentageRepo(id);
-            return View();
+            DoctorPrecentEditAddDTO doctorPrecentDTO = await _drPersentageRepo.GetDoctorPrecntByIdAsync(id);
+            return View(doctorPrecentDTO);
         }
 
         //Post Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit_DoctorPerc(int id, DocSubDtlEditAddDTO docSubDtlDTO)
+        public async Task<IActionResult> Edit_DoctorPerc(int id, DoctorPrecentEditAddDTO doctorPrecentDTO)
         {
             if (ModelState.IsValid)
             {
-               // await _drPersentageRepo.EditDocSubDtlAsync(id, docSubDtlDTO);
-                return RedirectToAction("Index", "Doctor");
+                await _drPersentageRepo.EditDoctorPercentAsync(id, doctorPrecentDTO);
+                return RedirectToAction("Index", "DoctorPercentage");
             }
-            return View(docSubDtlDTO);
+            return View(doctorPrecentDTO);
         }
         // Delete
         [HttpPost]
@@ -61,7 +61,7 @@ namespace ProSoft.UI.Areas.Medical.Controllers
 
             await _drPersentageRepo.DeleteAsync(doctorsPercent);
             await _drPersentageRepo.SaveChangesAsync();
-            return RedirectToAction("Index", "Doctor");
+            return RedirectToAction("Index", "DoctorPercentage");
         }
 
 

@@ -70,7 +70,7 @@ namespace ProSoft.UI.Areas.Medical.Controllers
             return View(clinicTranDTO);
         }
 
-        //Get Add ClinicTrans
+        //Get Edit ClinicTrans
         public async Task<IActionResult> Edit_ClinicTrans(int id, string redirect)
         {
             ClinicTransEditAddDTO clinicTransEditAddDTO = await _clinicTransRepo.GetClinicTransByIdAsync(id);
@@ -81,7 +81,7 @@ namespace ProSoft.UI.Areas.Medical.Controllers
             return View(clinicTransEditAddDTO);
         }
 
-        // Post Add ClinicTrans
+        // Post Edit ClinicTrans
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit_ClinicTrans(int id, string redirect, ClinicTransEditAddDTO clinicTranDTO)

@@ -21,25 +21,47 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
         {
             _mapper = mapper;
         }
-
+ 
         public async Task<List<Doctor>> GetAllDoctorAsync()
         {
             List<Doctor> doctors =await _Context.Doctors.ToListAsync();
             return doctors;
         }
 
-        public async Task<List<DoctorPrecentViewDTO>> GetAllDoctorPersentageAsync()
+        public async Task<List<DoctorPrecentViewDTO>> GetAllDoctorPercentageAsync(int id)
         {
-            List<DoctorsPercent> doctorsPercents = await _Context.DoctorsPercents.ToListAsync();
-            List<DoctorPrecentViewDTO> doctorPrecentDTOs = _mapper.Map<List<DoctorPrecentViewDTO>>(doctorsPercents);
-            return doctorPrecentDTOs;
-        }
+            List<DocSubDtl> docSubDtls = await _Context.DocSubDtls.Where(obj=>obj.DrId ==id).ToListAsync();
+            List<ServiceClinic> serviceClinics = new();
+            foreach (var x in docSubDtls)
+            {
+                List<ServiceClinic> servClinics = await _Context.ServiceClinics
+                    .Where(obj=>obj.SClinicId == x.SClinicId && obj.ClinicId ==x.ClinicId).ToListAsync();   
+                 serviceClinics.AddRange(servClinics);
+            }
 
-        public async Task<List<DoctorPrecentViewDTO>> GetAllDoctorPersentageAsync(int id)
-        {
+            List<DoctorsPercent> doctorsPercentss = await _Context.DoctorsPercents.ToListAsync();
+
+            foreach (var z in serviceClinics)
+            {
+                DoctorsPercent doctorsPercent1 = await _Context.DoctorsPercents
+                    .FirstOrDefaultAsync(obj=>obj.MainCode == z.ClinicId && obj.SubCode ==z.SClinicId && obj.SubDetailCodeL1 ==z.ServId);
+                if (doctorsPercent1 ==null)
+                {
+                    DoctorsPercent doctorsPercent = new();
+                    doctorsPercent.SubCode = z.SClinicId;
+                    doctorsPercent.SubDetailCodeL1 = z.ServId;
+                    doctorsPercent.MainCode = z.ClinicId;
+                    doctorsPercent.DrValFlg = 1;
+                    doctorsPercent.DrCode = id;
+                    await _Context.AddAsync(doctorsPercent);
+                    await _Context.SaveChangesAsync();
+                }
+            }
+
             List<DoctorPrecentViewDTO> doctorsPercents = await _Context.DoctorsPercents.Where(obj => obj.DrCode == id)
                 .Select(obj => new DoctorPrecentViewDTO()
                 {
+                    DrPercent=(int)obj.DrPercent,
                     DrCode = (int)obj.DrCode,
                     SClinicDesc = obj.SubCodeNavigation.SClinicDesc,
                     ServDesc = obj.SubDetailCodeL1Navigation.ServDesc,
@@ -56,5 +78,30 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
 
             return doctorsPercents;
         }
+
+        public async Task<DoctorPrecentEditAddDTO> GetDoctorPrecntByIdAsync(int id)
+        {
+            DoctorsPercent doctorsPercent = await _Context.DoctorsPercents
+                .FirstOrDefaultAsync(obj => obj.DrPercent == id);
+
+            DoctorPrecentEditAddDTO doctorPrecentDTO = _mapper.Map<DoctorPrecentEditAddDTO>(doctorsPercent);
+            List<SubClinic> subClinics = await _Context.SubClinics.ToListAsync();
+            List<ServiceClinic> servClinics = await _Context.ServiceClinics.ToListAsync();
+
+            doctorPrecentDTO.subClinics = _mapper.Map<List<SubClinicViewDTO>>(subClinics);
+            doctorPrecentDTO.services = _mapper.Map<List<ServiceClinicViewDTO>>(servClinics);
+
+            return doctorPrecentDTO;
+        }
+
+        public async Task EditDoctorPercentAsync(int id, DoctorPrecentEditAddDTO doctorPrecentDTO)
+        {
+            DoctorsPercent doctorsPercent = await _Context.DoctorsPercents.FirstOrDefaultAsync(obj => obj.DrPercent == id);
+
+            _mapper.Map(doctorPrecentDTO, doctorsPercent);
+            _Context.Update(doctorsPercent);
+            await _Context.SaveChangesAsync();
+        }
+
     }
 }

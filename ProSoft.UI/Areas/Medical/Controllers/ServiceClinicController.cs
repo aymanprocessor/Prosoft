@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ProSoft.Core.Repositories.Medical.HospitalPatData;
 using ProSoft.EF.DTOs.Medical.HospitalPatData;
 using ProSoft.EF.IRepositories.Medical.HospitalPatData;
@@ -26,9 +27,10 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         }
 
         //Get Add
-        public async Task<IActionResult> Add_ServClinic(int id)
+        public async Task<IActionResult> Add_ServClinic(int id,int clinicId)
         {
             ViewBag.ServeID = await _servClinicRepo.GetNewIdAsync();
+            ViewBag.clinicId=clinicId;
             ServClinicEditAddDTO servClinicDTO =await _servClinicRepo.GetEmptyServClinicAsync();
             return View(servClinicDTO);
         }
@@ -36,11 +38,11 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         //Get Post
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add_ServClinic(int id ,ServClinicEditAddDTO servClinicDTO)
+        public async Task<IActionResult> Add_ServClinic(int id,int clinicID, ServClinicEditAddDTO servClinicDTO)
         {
             if (ModelState.IsValid)
             {
-                await _servClinicRepo.AddServClinicAsync(id, servClinicDTO);
+                await _servClinicRepo.AddServClinicAsync(id,clinicID, servClinicDTO);
                 return RedirectToAction("Index", "MainClinic");
             }
             return View();

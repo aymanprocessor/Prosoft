@@ -55,18 +55,26 @@
         <table id="myTable" class="table table-bordered table-hover doctorPer-table" style="width:100%">
             <thead class="table-dark">
                 <tr>
-                    <th class="align-middle">
+                    <th class="align-middle text-center" rowspan="2">
                         @localizer["Specialty"]
                     </th>
-                    <th class="align-middle">
+                    <th class="align-middle text-center" rowspan="2">
                         @localizer["Service"]
                     </th>
-                    <th class="align-middle">
+                    <th class="align-middle text-center" rowspan="2">
                         @localizer["Value OR Ratio"]
-                    </th> 
-                    <th class="align-middle">
+                    </th>
+                    <th class="align-middle text-center" rowspan="2">
                         @localizer["Service Value"]
                     </th>
+                    <th class="align-middle text-center" colspan="3">@localizer["Special Cases"]</th>
+                    <th class="align-middle text-center" colspan="3">@localizer["Contract Cases"]</th>
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Action"]
+                    </th>
+                </tr>
+                <tr>
+                   
                     <th class="align-middle">
                         @localizer["Dr Value"]
                     </th>
@@ -84,9 +92,6 @@
                     </th>
                     <th class="align-middle">
                         @localizer["Center Value"]
-                    </th>
-                    <th class="align-middle">
-                        @localizer["Action"]
                     </th>
 
                 </tr>
@@ -164,11 +169,11 @@
                                     <td class="align-middle">${item.valueService - item.drValContract} @localizer["L.E"]</td>
 
                                 <td width="30%" class="text-center">
-                                <a href="/Medical/DoctorPercentage/Edit_DoctorPerc/${item.drPercent}" class="btn btn-sm btn-success mb-1  fs-6" style="width:150px">
+                                        <a href="/Medical/DoctorPercentage/Edit_DoctorPerc/${item.drPercent}" class="btn btn-sm btn-success mb-1  fs-6" style="width:150px">
                                             <i class="bi bi-pencil"></i> @localizer["Edit"]
                                     </a>
-                                <form action="/Medical/DoctorPercentage/Delete_DoctorPerc" method="post" class="d-inline">
-@Html.AntiForgeryToken()
+                            <form action="/Medical/DoctorPercentage/Delete_DoctorPerc" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
                                     <input type="hidden" name="id" value="${item.drPercent}" />
                                  <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">@localizer["Delete"]</button>
                                     </form>

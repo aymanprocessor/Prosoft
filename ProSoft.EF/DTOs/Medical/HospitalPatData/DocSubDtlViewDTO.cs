@@ -16,6 +16,9 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
         public int DrOnOff { get; set; }
         public int DocSubDef { get; set; }
 
+        public int? ClinicId { get; set; }
+        public int? SClinicId { get; set; }
+
 
     }
 }

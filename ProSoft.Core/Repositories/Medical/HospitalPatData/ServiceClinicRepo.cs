@@ -76,10 +76,12 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
         }
 
 
-        public async Task AddServClinicAsync(int id, ServClinicEditAddDTO servClinicDTO)
+        public async Task AddServClinicAsync(int id, int clinicID, ServClinicEditAddDTO servClinicDTO)
         {
             ServiceClinic serviceClinic = _mapper.Map<ServiceClinic>(servClinicDTO);
             serviceClinic.SClinicId = id;
+            serviceClinic.ClinicId = clinicID;
+            
             serviceClinic.DrVal = serviceClinic.PlValue * (serviceClinic.DrPerc / 100);
             await _Context.AddAsync(serviceClinic);
             await _Context.SaveChangesAsync();

@@ -296,7 +296,7 @@
                         //for click to call ajax
                         subClinic.style.cursor = "pointer";
                         subClinic.onclick = function (event) {
-                            GetServClinic(event, item.sClinicId);
+                            GetServClinic(event, item.sClinicId,id);
                         }
                         subClinics.appendChild(subClinic);
                     }
@@ -307,7 +307,7 @@
         }
 
     @* Ajax for ServClinic *@
-        function GetServClinic(e, id) {
+        function GetServClinic(e, id ,clinicID) {
             var servClinics = document.querySelector(".servClinic-table tbody")
             // Handle active clic
             let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");
@@ -328,7 +328,7 @@
             servClinicHeader.innerHTML = "@localizer["Service Clinc Name"] :" + itemName;
 
             let servClinicAddButton = servClinicHead.querySelector("a");
-            servClinicAddButton.setAttribute("href", `/Medical/ServiceClinic/Add_ServClinic/${id}`);
+            servClinicAddButton.setAttribute("href", `/Medical/ServiceClinic/Add_ServClinic/${id}&clinicId=${clinicID}`);
             // console.log(docSubDtlAddButton);
             ///////////////////////////////////////////////////////////////////
 

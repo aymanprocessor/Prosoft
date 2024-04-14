@@ -29,6 +29,8 @@
         <div class="border p-3 mt-4">
 
             <div asp-validation-summary="ModelOnly"></div>
+            @* hidden *@
+            <input name="clinicID" type="hidden" value="@ViewBag.clinicId" />
 
             <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
                 <div class="mb-3">
