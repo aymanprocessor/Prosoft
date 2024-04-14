@@ -36,8 +36,6 @@ public partial class Stock
     public int? StockPurchOnshelf { get; set; }
 
     [Column("JORNAL_CODE")]
-    [StringLength(5)]
-    [Unicode(false)]
     public int? JornalCode { get; set; }
 
     [Column("STK_ON_OFF")]
@@ -51,10 +49,10 @@ public partial class Stock
     [InverseProperty("Stocks")]
     public virtual KindStore? Flag1Navigation { get; set; }
 
-    [InverseProperty("StockCdNavigation")]
-    public virtual ICollection<SubClinic> SubClinics { get; set; } = new List<SubClinic>();
-
     [ForeignKey("JornalCode")]
     [InverseProperty("Stocks")]
     public virtual JournalType? JornalCodeNavigation { get; set; }
+
+    [InverseProperty("StockCdNavigation")]
+    public virtual ICollection<SubClinic> SubClinics { get; set; } = new List<SubClinic>();
 }

@@ -36,9 +36,9 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
         [DisplayName("Stock Name")]
         public int Stkcod { get; set; }
         //list
-        public List<StockViewDTO> stocks { get; set; }
-        public List<CostCenterViewDTO>  costs { get; set; }
-        public List<ServiceTypeViewDTO>  servesTypes { get; set; }
+        public List<StockViewDTO>? stocks { get; set; }
+        public List<CostCenterViewDTO>?  costs { get; set; }
+        public List<ServiceTypeViewDTO>?  servesTypes { get; set; }
 
 
 

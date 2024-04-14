@@ -95,7 +95,7 @@
     </div>
     @* /////////////////////////////////////////////////////////////////// *@
 
-    @* Table for DocSUbDtl *@
+    @* Table for SubClinic *@
 
     <div class="subClinic-table-head d-flex justify-content-between align-items-center mt-4">
         <h2 class="header subClinic-Dtl">@localizer["SubClinc Name"] :</h2>
@@ -148,6 +148,68 @@
 
     @* /////////////////////////////////////////////////////////////////// *@
 
+    @* Table for service Clinic *@
+
+    <div class="servClinic-table-head d-flex justify-content-between align-items-center mt-4">
+        <h2 class="header servClinic-Dtl">@localizer["Service Clinc Name"] :</h2>
+
+        <a class="btn btn-sm btn-primary fs-6" style="width:150px">
+            @localizer["Add ServClinic"]
+        </a>
+        @* asp-controller="MedAnalysis" asp-action="Add_SubItemAnalysis" asp-route-ID="@ViewBag.item.MainCode" asp-route-itemAnalCode="" *@
+    </div>
+
+    <div class="border border-success p-0 mb-2 border-opacity-75 overflow-auto" style="max-height: 300px;">
+
+        <table id="myTable" class="table table-bordered table-hover servClinic-table" style="width:100%">
+            <thead class="table-dark">
+                <tr>
+                    <th class="align-middle">
+                        @localizer["Code"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["ServClinc Name"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Service Value"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Cost Center"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Service Type"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Dr Ratio"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Dr Value"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Center Ratio"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Center Value"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Protect"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Activation"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Action"]
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    @* /////////////////////////////////////////////////////////////////// *@
+
 </div>
 
 
@@ -155,6 +217,8 @@
     @* Ajax for SubClinic *@
         function GetSubClinic(e, id) {
             var subClinics = document.querySelector(".subClinic-table tbody")
+            var servClinics = document.querySelector(".servClinic-table tbody")
+
             // Handle active clic
             let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");
             allItemRows.forEach(row => {
@@ -167,12 +231,17 @@
 
             // Catch header for subClinic => mainClinic id and reset it
             let subClinicHead = document.querySelector(".subClinic-table-head");
+            let servClinicHead = document.querySelector(".servClinic-table-head");
+
             let itemName = clickedTarget.querySelector(".item-name").innerText;
             //console.log(itemName)
 
             let subClinicHeader = subClinicHead.querySelector(".header.subClinic-Dtl");
             subClinicHeader.innerHTML = "@localizer["Sub Clinic"] :" + itemName;
-
+            // For remove specific head
+            let servClinicHeader = servClinicHead.querySelector(".header.servClinic-Dtl");
+            servClinicHeader.innerHTML = "@localizer["Service Clinc Name"] :";
+            
             let subClinicAddButton = subClinicHead.querySelector("a");
             subClinicAddButton.setAttribute("href", `/Medical/SubClinic/Add_SubClinic/${id}`);
             // console.log(docSubDtlAddButton);
@@ -180,32 +249,33 @@
 
             // Handle ajax call
             subClinics.innerHTML = "";  // Empty the body
+            // For closing servClinics
+            servClinics.innerHTML = "";  // Empty the body
 
             $.ajax({
                 url: `/Medical/SubClinic/GetSubClinic/${id}`,
                 success: function (result) {
                     for (let item of result) {
                         const subClinic = document.createElement("tr");
-                        let medicalType;
-                        if (item.medicalFlag == 0) {
-                            medicalType = "@localizer["Without"]";
-                        } else if (item.medicalFlag == 1) {
-                            medicalType = "@localizer["Analysis"]";
-                        } else if (item.medicalFlag == 2) {
-                            medicalType = "@localizer["XRay"]";
-                        }
+                                let medicalType;
+                                if (item.medicalFlag == 0) {
+                                    medicalType = "@localizer["Without"]";
+                                } else if (item.medicalFlag == 1) {
+                                    medicalType = "@localizer["Analysis"]";
+                                } else if (item.medicalFlag == 2) {
+                                    medicalType = "@localizer["XRay"]";
+                                }
 
-                        let itemType;
-                        if (item.srvInvShowFlg == "I") {
-                            itemType = "@localizer["Item"]";
-                        } else if (item.srvInvShowFlg == "G") {
-                            itemType = "@localizer["Groub"]";
-                        }
-
+                                let itemType;
+                                if (item.srvInvShowFlg == "I") {
+                                    itemType = "@localizer["Item"]";
+                                } else if (item.srvInvShowFlg == "G") {
+                                    itemType = "@localizer["Groub"]";
+                                }
                         subClinic.innerHTML +=
                             `
-                    <td class="align-middle">${item.sClinicDesc}</td>
-                    <td class="align-middle">${item.sClinicDesc}</td>
+                    <td class="align-middle">${item.sClinicId}</td>
+                    <td class="align-middle item-name">${item.sClinicDesc}</td>
                     <td class="align-middle">${item.typDesc}</td>
                     <td class="align-middle">${item.costDesc}</td>
                     <td class="align-middle">${medicalType}</td>
@@ -223,6 +293,11 @@
                         </form>
                     </td>
                 `;
+                        //for click to call ajax
+                        subClinic.style.cursor = "pointer";
+                        subClinic.onclick = function (event) {
+                            GetServClinic(event, item.sClinicId);
+                        }
                         subClinics.appendChild(subClinic);
                     }
                 }
@@ -230,4 +305,97 @@
 
 
         }
+
+    @* Ajax for ServClinic *@
+        function GetServClinic(e, id) {
+            var servClinics = document.querySelector(".servClinic-table tbody")
+            // Handle active clic
+            let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");
+            allItemRows.forEach(row => {
+                row.classList.remove("active-row");
+            });
+
+            let clickedTarget = e.target.parentElement
+            clickedTarget.classList.add("active-row");
+            ///////////////////////////////////////////////////////////////////
+
+            // Catch header for subClinic => mainClinic id and reset it
+            let servClinicHead = document.querySelector(".servClinic-table-head");
+            let itemName = clickedTarget.querySelector(".item-name").innerText;
+            //console.log(itemName)
+
+            let servClinicHeader = servClinicHead.querySelector(".header.servClinic-Dtl");
+            servClinicHeader.innerHTML = "@localizer["Service Clinc Name"] :" + itemName;
+
+            let servClinicAddButton = servClinicHead.querySelector("a");
+            servClinicAddButton.setAttribute("href", `/Medical/ServiceClinic/Add_ServClinic/${id}`);
+            // console.log(docSubDtlAddButton);
+            ///////////////////////////////////////////////////////////////////
+
+            // Handle ajax call
+            servClinics.innerHTML = "";  // Empty the body
+
+            $.ajax({
+                url: `/Medical/ServiceClinic/GetServClinic/${id}`,
+                success: function (result) {
+                    for (let item of result) {
+                        const servClinic = document.createElement("tr");
+                        let serviceType;
+                        if (item.servType == 0) {
+                            serviceType = "@localizer["Service"]";
+                        } else if (item.servType == 1) {
+                            serviceType = "@localizer["Examination"]";
+                        } else if (item.servType == 2) {
+                            serviceType = "@localizer["Consultation"]";
+                        }else if (item.servType == 3) {
+                            serviceType = "@localizer["Visit"]";
+                        }
+
+                        let protect;
+                        if (item.protectId == 0) {
+                            protect = "@localizer["No"]";
+                        } else if (item.protectId == 1) {
+                            protect = "@localizer["Yes"]";
+                        }
+
+                        let active;
+                        if (item.servOnOff == 0) {
+                            active = "@localizer["No"]";
+                        } else if (item.servOnOff == 1) {
+                            active = "@localizer["Yes"]";
+                        }
+
+                        servClinic.innerHTML +=
+                            `
+                        <td class="align-middle">${item.servId}</td>
+                        <td class="align-middle">${item.servDesc}</td>
+                        <td class="align-middle">${item.plValue} @localizer["L.E"]</td>
+                        <td class="align-middle">${item.costDesc}</td>
+                        <td class="align-middle">${serviceType}</td>
+                        <td class="align-middle">${item.drPerc} % </td>
+                       <td class="align-middle">${item.drVal} @localizer["L.E"]</td>
+                        <td class="align-middle">${100 - item.drPerc} % </td>
+                      <td class="align-middle">${item.plValue - item.drVal} @localizer["L.E"]</td>
+                        <td class="align-middle">${protect}</td>
+                        <td class="align-middle">${active}</td>
+
+                        <td width="30%" class="text-center">
+                                        <a href="/Medical/ServiceClinic/Edit_ServClinic/${item.servId}" class="btn btn-sm btn-success mb-1 fs-6" style="width:150px">
+                                <i class="bi bi-pencil"></i> @localizer["Edit"]
+                            </a>
+                          <form action="/Medical/ServiceClinic/Delete_ServClinic" method="post" class="d-inline">
+    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="${item.servId}" />
+                                <button type="submit" class="btn btn-sm btn-danger mb-1 fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">@localizer["Delete"]</button>
+                            </form>
+                        </td>
+                    `;
+                        servClinics.appendChild(servClinic);
+                    }
+                }
+            });
+
+
+        }
+
 </script>

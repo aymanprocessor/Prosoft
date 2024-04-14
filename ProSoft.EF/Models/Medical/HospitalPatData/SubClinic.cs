@@ -63,7 +63,7 @@ public partial class SubClinic
     [Unicode(false)]
     public string? BrReplc { get; set; }
 
-    [Column("EINV_ITEM")] 
+    [Column("EINV_ITEM")]
     [StringLength(30)]
     [Unicode(false)]
     public string? EinvItem { get; set; }
@@ -89,6 +89,9 @@ public partial class SubClinic
 
     [InverseProperty("SClinic")]
     public virtual ICollection<DocSubDtl> DocSubDtls { get; set; } = new List<DocSubDtl>();
+
+    [InverseProperty("SubCodeNavigation")]
+    public virtual ICollection<DoctorsPercent> DoctorsPercents { get; set; } = new List<DoctorsPercent>();
 
     [InverseProperty("SClinic")]
     public virtual ICollection<ServiceClinic> ServiceClinics { get; set; } = new List<ServiceClinic>();

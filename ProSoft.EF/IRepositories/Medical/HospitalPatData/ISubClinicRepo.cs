@@ -14,5 +14,8 @@ namespace ProSoft.EF.IRepositories.Medical.HospitalPatData
         Task<int> GetNewIdAsync();
         Task<SubClinicEditAddDTO> GetSubClinicByIdAsync(int id);
         Task<SubClinicEditAddDTO> GetEmptySubClinicAsync();
+
+        Task AddSubClinicAsync(int id, SubClinicEditAddDTO subClinicDTO);
+        Task EditSubClinicAsync(int id, SubClinicEditAddDTO subClinicDTO);
     }
 }

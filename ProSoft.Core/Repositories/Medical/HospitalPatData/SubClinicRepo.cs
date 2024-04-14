@@ -64,6 +64,7 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             SubClinic subClinic = await _Context.SubClinics
                 .FirstOrDefaultAsync(obj => obj.SClinicId == id);
             SubClinicEditAddDTO SubClinicDTO = _mapper.Map<SubClinicEditAddDTO>(subClinic);
+            SubClinicDTO.Stkcod = Convert.ToInt32(subClinic.StockCd);
             List<ServiceType> serviceTypes = await _Context.ServiceTypes.ToListAsync();
             List<Stock> stocks = await _Context.Stocks.ToListAsync();
             List<CostCenter> costs = await _Context.CostCenters.ToListAsync();
@@ -85,6 +86,25 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             subClinicDTO.stocks = _mapper.Map<List<StockViewDTO>>(stocks);
             subClinicDTO.costs = _mapper.Map<List<CostCenterViewDTO>>(costs);
             return subClinicDTO;
+        }
+
+        public async Task AddSubClinicAsync(int id, SubClinicEditAddDTO subClinicDTO)
+        {
+            SubClinic subClinic = _mapper.Map<SubClinic>(subClinicDTO);
+            subClinic.ClinicId= id;
+            subClinic.StockCd = subClinicDTO.Stkcod;
+            await _Context.AddAsync(subClinic);
+            await _Context.SaveChangesAsync();
+        }
+
+        public async Task EditSubClinicAsync(int id, SubClinicEditAddDTO subClinicDTO)
+        {
+            SubClinic subClinic = await _Context.SubClinics
+                .FirstOrDefaultAsync(obj => obj.SClinicId == id);
+            _mapper.Map(subClinicDTO, subClinic);
+            subClinic.StockCd= subClinicDTO.Stkcod;
+            _Context.Update(subClinic);
+            await _Context.SaveChangesAsync();
         }
     }
 }

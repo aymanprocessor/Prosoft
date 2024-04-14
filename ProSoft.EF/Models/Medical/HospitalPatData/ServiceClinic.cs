@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using ProSoft.EF.Models.Stocks;
 
 namespace ProSoft.EF.Models.Medical.HospitalPatData;
 
@@ -42,8 +43,8 @@ public partial class ServiceClinic
     [Column("PL_VALUE", TypeName = "decimal(9, 2)")]
     public decimal? PlValue { get; set; }
 
-    [Column("SERV_TYPE", TypeName = "decimal(38, 0)")]
-    public decimal? ServType { get; set; }
+    [Column("SERV_TYPE")]
+    public int? ServType { get; set; }
 
     [Column("DR_VAL", TypeName = "decimal(11, 2)")]
     public decimal? DrVal { get; set; }
@@ -97,6 +98,13 @@ public partial class ServiceClinic
 
     [InverseProperty("Serv")]
     public virtual ICollection<ClinicTran> ClinicTrans { get; set; } = new List<ClinicTran>();
+
+    [ForeignKey("CostCode")]
+    [InverseProperty("ServiceClinics")]
+    public virtual CostCenter? CostCodeNavigation { get; set; }
+
+    [InverseProperty("SubDetailCodeL1Navigation")]
+    public virtual ICollection<DoctorsPercent> DoctorsPercents { get; set; } = new List<DoctorsPercent>();
 
     [ForeignKey("SClinicId")]
     [InverseProperty("ServiceClinics")]

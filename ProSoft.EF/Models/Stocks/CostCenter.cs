@@ -35,5 +35,8 @@ public partial class CostCenter
     public int? CostVisible { get; set; }
 
     [InverseProperty("CostCodeNavigation")]
+    public virtual ICollection<ServiceClinic> ServiceClinics { get; set; } = new List<ServiceClinic>();
+
+    [InverseProperty("CostCodeNavigation")]
     public virtual ICollection<SubClinic> SubClinics { get; set; } = new List<SubClinic>();
 }

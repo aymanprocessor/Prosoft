@@ -62,6 +62,8 @@ builder.Services.AddScoped<IDoctorRepo, DoctorRepo>();
 builder.Services.AddScoped<IDocSubDtlRepo, DocSubDtlRepo>();
 builder.Services.AddScoped<IMainClinicRepo, MainClinicRepo>();
 builder.Services.AddScoped<ISubClinicRepo, SubClinicRepo>();
+builder.Services.AddScoped<IServiceClinicRepo, ServiceClinicRepo>();
+builder.Services.AddScoped<IDoctorsPersentageRepo, DoctorsPersentageRepo>();
 /////////////////Stock/////////////
 builder.Services.AddScoped<IStockTypeRepo, StockTypeRepo>();
 builder.Services.AddScoped<IBranchRepo, BranchRepo>();

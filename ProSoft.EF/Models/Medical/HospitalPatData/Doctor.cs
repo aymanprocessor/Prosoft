@@ -98,6 +98,9 @@ public partial class Doctor
     [InverseProperty("Dr")]
     public virtual ICollection<DocSubDtl> DocSubDtls { get; set; } = new List<DocSubDtl>();
 
+    [InverseProperty("DrCodeNavigation")]
+    public virtual ICollection<DoctorsPercent> DoctorsPercents { get; set; } = new List<DoctorsPercent>();
+
     [ForeignKey("DrDegree")]
     [InverseProperty("Doctors")]
     public virtual DrDegree? DrDegreeNavigation { get; set; }

@@ -1,0 +1,111 @@
+﻿@model ServClinicEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Add ServClinic";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    SelectList costsList = new SelectList(Model.costs, "CostCode", "CostDesc");
+}
+@inject IViewLocalizer localizer
+<style>
+    .image {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        min-height: calc(100vh - 60px);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.5;
+        z-index: -1;
+    }
+</style>
+<div class="container pt-2">
+    <img class="image" src="/background.jpg" style="position:absolute;" />
+
+    <h1 class="mt-4">@localizer["Add ServClinic"] : </h1>
+    <form method="post" asp-action="Add_ServClinic" id="myForm">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly"></div>
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <label asp-for="ServId"></label>
+                    <input asp-for="ServId" class="form-control" disabled value="@ViewBag.ServeID" />
+                    <span asp-validation-for="ServId" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="ServDesc"></label>
+                    <input asp-for="ServDesc" class="form-control" />
+                    <span asp-validation-for="ServDesc" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3 ">
+                    <label asp-for="ServType"></label>
+                    <select asp-for="ServType"  class="form-control text-center">
+                        <option value="0">@localizer["Service"]</option>
+                        <option value="1">@localizer["Examination"]</option>
+                        <option value="2">@localizer["Consultation"]</option>
+                        <option value="3">@localizer["Visit"]</option>
+                    </select>
+                    <span asp-validation-for="ServType" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="CostCode"></label>
+                    <select asp-for="CostCode" asp-items="costsList" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="CostCode" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+           
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3 ">
+                    <label asp-for="PlValue"></label>
+                    <input asp-for="PlValue" class="form-control" type="number" />
+                    <span asp-validation-for="PlValue" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="DrPerc"></label>
+                    <input asp-for="DrPerc" class="form-control" type="number" />
+                    <span asp-validation-for="DrPerc" class="text-danger"></span>
+                </div>
+            </div>
+          <!------------------------------------------------------------------------------->
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3">
+                <div class="mb-3 ">
+                    <label asp-for="ProtectId"></label>
+                    <select asp-for="ProtectId" class="form-control text-center">
+                        <option value="0">@localizer["No"]</option>
+                        <option value="1">@localizer["Yes"]</option>
+                    </select>
+                    <span asp-validation-for="ProtectId" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="ServOnOff"></label>
+                    <select asp-for="ServOnOff" class="form-control text-center">
+                        <option value="0">@localizer["No"]</option>
+                        <option value="1">@localizer["Yes"]</option>
+                    </select>
+                    <span asp-validation-for="ServOnOff" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------->
+
+            <button type="submit" class="btn btn-primary" style="width:150px">
+                @localizer["Add ServClinic"]
+            </button>
+            <a asp-controller="MainClinic" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                @localizer["Cancel"]
+            </a>
+        </div>
+    </form>
+</div>

@@ -31,6 +31,8 @@
         <div class="border p-3 mt-4">
 
             <div asp-validation-summary="ModelOnly"></div>
+            @* hidden *@
+            <input asp-for="SClinicId" type="hidden" />
 
             <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
                 <div class="mb-3">
@@ -135,7 +137,7 @@
             <!------------------------------------------------------------------------------->
 
             <button type="submit" class="btn btn-primary" style="width:150px">
-                @localizer["Edit SubClinic"]
+                @localizer["Save Changes"]
             </button>
             <a asp-controller="MainClinic" asp-action="Index" class="btn btn-secondary" style="width:150px">
                 @localizer["Cancel"]

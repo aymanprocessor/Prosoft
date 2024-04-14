@@ -34,12 +34,36 @@ namespace ProSoft.UI.Areas.Medical.Controllers
 
         }
 
+        //Post Add
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Add_SubClinic(int id , SubClinicEditAddDTO subClinicDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                await _subClinicRebo.AddSubClinicAsync(id, subClinicDTO);
+                return RedirectToAction("Index", "MainClinic");
+            }
+            return View();
+
+        }
         //Get Edit
         public async Task<IActionResult> Edit_SubClinic(int id)
         {
             SubClinicEditAddDTO subClinicDTO = await _subClinicRebo.GetSubClinicByIdAsync(id);
             return View(subClinicDTO);
-
+        }
+        //Post Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit_SubClinic(int id , SubClinicEditAddDTO subClinicDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                await _subClinicRebo.EditSubClinicAsync(id, subClinicDTO);
+                return RedirectToAction("Index", "MainClinic");
+            }
+            return View(subClinicDTO);
         }
 
         // Delete
