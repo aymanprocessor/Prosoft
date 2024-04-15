@@ -85,5 +85,6 @@ namespace ProSoft.EF.DbContext
         public DbSet<JournalType> JournalTypes { get; set; }
         public DbSet<Side> Sides { get; set; }
         public DbSet<UnitCode> UnitCodes { get; set; }
+        public virtual DbSet<Sections2> Sections2s { get; set; }
     }
 }

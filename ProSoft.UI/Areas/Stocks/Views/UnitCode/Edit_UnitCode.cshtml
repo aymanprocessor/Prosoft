@@ -2,21 +2,24 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Add New UnitCode";
+    ViewData["Title"] = "Edit UnitCode";
     Layout = "_Layout";
 }
 @inject IViewLocalizer localizer
 
 <div class="container pt-2">
-    <h1 class="mt-4">@localizer["Add New UnitCode"]</h1>
-    <form method="post" asp-action="Add_UnitCode">
+    <h1 class="mt-4">@localizer["Edit UnitCode"] : @Model.Names</h1>
+    <form method="post" asp-action="Edit_UnitCode">
         <div class="border p-3 mt-4">
+
+            @* Hidden Inputs *@
+            <input asp-for="Code" type="hidden" />
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile ">
                 <div class="mb-3">
                     <label asp-for="Code"></label>
-                    <input asp-for="Code" class="form-control" value="@ViewBag.UnitCodeId" disabled />
+                    <input asp-for="Code" class="form-control" disabled />
                     <span asp-validation-for="Code" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
@@ -31,13 +34,13 @@
             <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
                 <div class="mb-3">
                     <label asp-for="ItemQty"></label>
-                    <input asp-for="ItemQty" type="number" class="form-control text-center" value="1" />
+                    <input asp-for="ItemQty" type="number" class="form-control text-center" />
                     <span asp-validation-for="ItemQty" class="text-danger"></span>
                 </div>
             </div>
 
             <div class="parent d-flex justify-content-md-center gap-2">
-                <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add"]</button>
+                <button type="submit" class="btn btn-success" style="width:150px">@localizer["Save Changes"]</button>
                 <a asp-controller="UnitCode" asp-action="Index" class="btn btn-secondary" style="width:150px">
                     @localizer["Cancel"]
                 </a>

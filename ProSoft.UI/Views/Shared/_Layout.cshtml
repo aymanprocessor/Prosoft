@@ -13,11 +13,16 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/eb688b112b.js"
+            crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="d-flex justify-content-between align-items-center gap-2 p-2 shadow-sm rounded">
         @if (User.Identity.IsAuthenticated)
         {
+        <a class="btn btn-secondary rounded-circle" href="/Home/Index">
+            <i class="fa-solid @(isRTL ? "fa-chevron-right" : "fa-chevron-left")"></i>
+        </a>
         <span class="fw-bold text-capitalize">@User.Identity.Name</span>
         <span class="fw-bold"> / @User.FindFirst(c => c.Type == "F_Year").Value</span>
         }
@@ -25,7 +30,7 @@
             <partial name="_SelectLanguagePartial" />
             @if (User.Identity.IsAuthenticated)
             {
-                <a asp-action="Logout" asp-controller="Account" asp-area="" class="btn btn-secondary">@localizer["Log out"]</a>
+            <a asp-action="Logout" asp-controller="Account" asp-area="" class="btn btn-secondary">@localizer["Log out"]</a>
             }
         </div>
     </div>

@@ -213,9 +213,9 @@
   "Value OR Ratio": "Value OR Ratio",
   "Ratio": "Ratio",
   "Value": "Value",
-  "Edit Precentage": "تعديل النسبة",
-  "Special Cases": "حالات خاصة",
-  "Contract Cases": "حالات تعاقد",
+  "Edit Precentage": "Edit Precentage",
+  "Special Cases": "Special Cases",
+  "Contract Cases": "Contract Cases",
 
   "Cost Name": "Cost Name",
   "Stocks System": "Stocks System",
@@ -262,5 +262,4 @@
   "UnitCode Name": "UnitCode Name",
   "Unit Codes": "Unit Codes",
   "Add UnitCode": "Add UnitCode",
-  "Number of Particles": "Number of Particles"
 }

@@ -30,6 +30,9 @@
                         @localizer["Side Name"]
                     </th>
                     <th class="align-middle">
+                        @localizer["Number of Particles"]
+                    </th>
+                    <th class="align-middle">
                         @localizer["Action"]
                     </th>
                 </tr>
@@ -40,9 +43,10 @@
                     <tr>
                         <td class="align-middle">@item.Code</td>
                         <td class="align-middle">@item.Names</td>
+                        <td class="align-middle">@item.ItemQty</td>
                         <td class="text-center align-middle" style="width: 325px;">
-                            <a asp-action="Edit_Side" asp-route-id="@item.Code" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
-                            <form asp-action="Delete_Side" method="post" class="d-inline">
+                            <a asp-action="Edit_UnitCode" asp-route-id="@item.Code" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
+                            <form asp-action="Delete_UnitCode" method="post" class="d-inline">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="id" value="@item.Code" />
                                 <button class="btn btn-sm btn-danger mb-1 fs-6" onclick="return confirm('Are you sure you want to delete this one?')" style="width: 150px">@localizer["Delete"]</button>

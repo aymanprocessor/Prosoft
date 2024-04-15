@@ -20,7 +20,5 @@ namespace ProSoft.EF.DTOs.Shared
 
         [DisplayName("Nationality Name AR")]
         public string NationalityDescE { get; set; }
-
-
     }
 }

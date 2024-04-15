@@ -26,6 +26,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             List<UnitCodeDTO> unitCodesDTO = _mapper.Map<List<UnitCodeDTO>>(unitCodes);
             return View(unitCodesDTO);
         }
+
         // Get Add
         public async Task<IActionResult> Add_UnitCode()
         {
@@ -41,6 +42,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             if (ModelState.IsValid)
             {
                 UnitCode unitCode = _mapper.Map<UnitCode>(unitCodeDTO);
+                unitCode.Flag1 = 1;
 
                 await _unitCodeRepo.AddAsync(unitCode);
                 await _unitCodeRepo.SaveChangesAsync();
@@ -49,41 +51,42 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             return View(unitCodeDTO);
         }
 
-        // Get Add
-        //public async Task<IActionResult> Edit_UnitCode(int id)
-        //{
-        //    Side side = await _sideRepo.GetByIdAsync(id);
-        //    SideDTO sideDTO = _mapper.Map<SideDTO>(side);
-        //    return View(sideDTO);
-        //}
+        // Get Edit
+        public async Task<IActionResult> Edit_UnitCode(int id)
+        {
+            UnitCode unitCode = await _unitCodeRepo.GetByIdAsync(id);
+            UnitCodeDTO unitCodeDTO = _mapper.Map<UnitCodeDTO>(unitCode);
+            return View(unitCodeDTO);
+        }
 
-        // Post Add
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit_UnitCode(int id, SideDTO sideDTO)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        Side side = await _sideRepo.GetByIdAsync(id);
-        //        _mapper.Map(sideDTO, side);
+        // Post Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit_UnitCode(int id, UnitCodeDTO unitCodeDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                UnitCode unitCode = await _unitCodeRepo.GetByIdAsync(id);
+                _mapper.Map(unitCodeDTO, unitCode);
+                unitCode.Flag1 = 1;
 
-        //        await _sideRepo.UpdateAsync(side);
-        //        await _sideRepo.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(sideDTO);
-        //}
+                await _unitCodeRepo.UpdateAsync(unitCode);
+                await _unitCodeRepo.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(unitCodeDTO);
+        }
 
         // Delete
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Delete_UnitCode(int id)
-        //{
-        //    Side side = await _sideRepo.GetByIdAsync(id);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete_UnitCode(int id)
+        {
+            UnitCode unitCode = await _unitCodeRepo.GetByIdAsync(id);
 
-        //    await _sideRepo.DeleteAsync(side);
-        //    await _sideRepo.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
+            await _unitCodeRepo.DeleteAsync(unitCode);
+            await _unitCodeRepo.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

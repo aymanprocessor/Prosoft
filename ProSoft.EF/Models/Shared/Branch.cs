@@ -29,5 +29,8 @@ public partial class Branch
     public double? BranchIdDefault { get; set; }
 
     [InverseProperty("Branch")]
+    public virtual ICollection<Sections2> Sections2s { get; set; } = new List<Sections2>();
+
+    [InverseProperty("Branch")]
     public virtual ICollection<Stock> Stocks { get; set; } = new List<Stock>();
 }
