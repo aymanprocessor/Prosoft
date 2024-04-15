@@ -106,6 +106,9 @@ public partial class ServiceClinic
     [InverseProperty("SubDetailCodeL1Navigation")]
     public virtual ICollection<DoctorsPercent> DoctorsPercents { get; set; } = new List<DoctorsPercent>();
 
+    [InverseProperty("Serv")]
+    public virtual ICollection<PriceListDetail> PriceListDetails { get; set; } = new List<PriceListDetail>();
+
     [ForeignKey("SClinicId")]
     [InverseProperty("ServiceClinics")]
     public virtual SubClinic? SClinic { get; set; }

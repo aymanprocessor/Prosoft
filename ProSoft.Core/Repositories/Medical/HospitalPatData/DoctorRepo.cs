@@ -67,6 +67,10 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
         public async Task AddDoctorAsync(DoctorEditAddDTO doctorDTO)
         {
             Doctor doctor = _mapper.Map<Doctor>(doctorDTO);
+            doctor.ClinicId = 1;
+            doctor.VisitorPerDay = 20;
+            doctor.ContractTyp = 1;
+            doctor.JopTyp=1;
             await _Context.AddAsync(doctor);
             await _Context.SaveChangesAsync();
         }

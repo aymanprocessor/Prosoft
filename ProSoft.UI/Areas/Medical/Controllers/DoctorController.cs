@@ -40,11 +40,7 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         {
             if (ModelState.IsValid)
             {
-                
-                Doctor myDoctor = _mapper.Map<Doctor>(doctorDTO);
-                await _doctorRepo.AddAsync(myDoctor);
-                await _doctorRepo.SaveChangesAsync();
-                // await _doctorRepo.AddDoctorAsync(doctorDTO);
+               await _doctorRepo.AddDoctorAsync(doctorDTO);
 
                 return RedirectToAction(nameof(Index));
             }

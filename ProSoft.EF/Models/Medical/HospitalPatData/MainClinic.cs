@@ -60,6 +60,9 @@ public partial class MainClinic
     public virtual ICollection<DocSubDtl> DocSubDtls { get; set; } = new List<DocSubDtl>();
 
     [InverseProperty("Clinic")]
+    public virtual ICollection<PriceListDetail> PriceListDetails { get; set; } = new List<PriceListDetail>();
+
+    [InverseProperty("Clinic")]
     public virtual ICollection<SubClinic> SubClinics { get; set; } = new List<SubClinic>();
 
     [ForeignKey("SysSection")]

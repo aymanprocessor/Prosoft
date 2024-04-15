@@ -216,6 +216,14 @@
   "Edit Precentage": "Edit Precentage",
   "Special Cases": "Special Cases",
   "Contract Cases": "Contract Cases",
+  "Price Lists": "Price Lists",
+  "Search by Service Name...": "Search by Service Name...",
+  "List Name": "List Name",
+  "List Type": "List Type",
+  "Date of List": "Date of List",
+  "Add List": "Add List",
+  "Private": "Private",
+  "Contract": "Contract",
 
   "Cost Name": "Cost Name",
   "Stocks System": "Stocks System",
@@ -262,4 +270,13 @@
   "UnitCode Name": "UnitCode Name",
   "Unit Codes": "Unit Codes",
   "Add UnitCode": "Add UnitCode",
+  "Number of Particles": "Number of Particles",
+  "Edit UnitCode": "Edit UnitCode",
+  "Back To Modules": "Back To Modules",
+  "Department Codes": "Department Codes",
+  "Add Department": "Add Department",
+  "Department Code": "Department Code",
+  "Department Description": "Department Description",
+  "Departments": "Departments",
+  "Add New Department": "Add New Department"
 }

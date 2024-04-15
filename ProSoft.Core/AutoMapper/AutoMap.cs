@@ -74,6 +74,8 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<CostCenterViewDTO, CostCenter>().ReverseMap();
             CreateMap<EisSectionTypeDTO, EisSectionType>().ReverseMap();
             CreateMap<DoctorPrecentEditAddDTO, DoctorsPercent>().ReverseMap();
+            CreateMap<PriceListViewDTO, PriceList>().ReverseMap();
+            CreateMap<PriceListEditAddDTO, PriceList>().ReverseMap();
             //////////Stocks////////////////////
             CreateMap<KindStore, KindStoreDTO>().ReverseMap();
             CreateMap<Branch, BranchDTO>().ReverseMap();
