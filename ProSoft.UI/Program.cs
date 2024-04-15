@@ -64,12 +64,14 @@ builder.Services.AddScoped<IMainClinicRepo, MainClinicRepo>();
 builder.Services.AddScoped<ISubClinicRepo, SubClinicRepo>();
 builder.Services.AddScoped<IServiceClinicRepo, ServiceClinicRepo>();
 builder.Services.AddScoped<IDoctorsPersentageRepo, DoctorsPersentageRepo>();
+builder.Services.AddScoped<IPriceListRepo, PriceListRepo>();
 /////////////////Stock/////////////
 builder.Services.AddScoped<IStockTypeRepo, StockTypeRepo>();
 builder.Services.AddScoped<IBranchRepo, BranchRepo>();
 builder.Services.AddScoped<IStockRepo, StockRepo>();
 builder.Services.AddScoped<ISideRepo, SideRepo>();
 builder.Services.AddScoped<IUnitCodeRepo, UnitCodeRepo>();
+builder.Services.AddScoped<IClassificationCustRepo, ClassificationCustRepo>();
 
 ///For Localization
 builder.Services.AddLocalization();

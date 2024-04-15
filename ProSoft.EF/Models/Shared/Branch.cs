@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using ProSoft.EF.Models.Medical.HospitalPatData;
 using ProSoft.EF.Models.Stocks;
 
 namespace ProSoft.EF.Models.Shared;
@@ -27,6 +28,12 @@ public partial class Branch
 
     [Column("BRANCH_ID_DEFAULT")]
     public double? BranchIdDefault { get; set; }
+
+    [InverseProperty("Branch")]
+    public virtual ICollection<PriceListDetail> PriceListDetails { get; set; } = new List<PriceListDetail>();
+
+    [InverseProperty("Branch")]
+    public virtual ICollection<PriceList> PriceLists { get; set; } = new List<PriceList>();
 
     [InverseProperty("Branch")]
     public virtual ICollection<Stock> Stocks { get; set; } = new List<Stock>();

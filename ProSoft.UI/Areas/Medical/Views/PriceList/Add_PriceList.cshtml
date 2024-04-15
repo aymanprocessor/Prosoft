@@ -1,0 +1,68 @@
+﻿@model PriceListEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Add Price List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+
+     <h1 class="mt-4">@localizer["Add List"]</h1>
+    <form method="post" asp-action="Add_PriceList" id="myForm">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly"></div>
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="PLId"></label>
+                    <input asp-for="PLId" class="form-control" disabled value="@ViewBag.ListID" />
+                    <span asp-validation-for="PLId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3 ">
+                    <label asp-for="PlDesc"></label>
+                    <input asp-for="PlDesc" class="form-control" />
+                    <span asp-validation-for="PlDesc" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="Flag1"></label>
+                    <select asp-for="Flag1" class="form-control text-center">
+                        <option value="1">@localizer["Private"]</option>
+                        <option value="2">@localizer["Contract"]</option>
+                    </select>
+                    <span asp-validation-for="Flag1" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3 ">
+                    <label asp-for="PLDate"></label>
+                    <input asp-for="PLDate" class="form-control"  />
+                    <span asp-validation-for="PLDate" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="Year"></label>
+                    <input asp-for="Year" class="form-control" />
+                    <span asp-validation-for="Year" class="text-danger"></span>
+                </div>
+            </div>
+         
+            <!------------------------------------------------------------------------------->
+
+            <button type="submit" class="btn btn-primary" style="width:150px">
+                @localizer["Add List"]
+            </button>
+            <a asp-controller="PriceList" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                @localizer["Cancel"]
+            </a>
+        </div>
+    </form>
+</div>

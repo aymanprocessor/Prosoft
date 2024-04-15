@@ -94,6 +94,9 @@ public partial class SubClinic
     public virtual ICollection<DoctorsPercent> DoctorsPercents { get; set; } = new List<DoctorsPercent>();
 
     [InverseProperty("SClinic")]
+    public virtual ICollection<PriceListDetail> PriceListDetails { get; set; } = new List<PriceListDetail>();
+
+    [InverseProperty("SClinic")]
     public virtual ICollection<ServiceClinic> ServiceClinics { get; set; } = new List<ServiceClinic>();
 
     [ForeignKey("StockCd")]

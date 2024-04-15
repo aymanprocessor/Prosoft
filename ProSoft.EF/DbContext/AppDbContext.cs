@@ -74,6 +74,9 @@ namespace ProSoft.EF.DbContext
         public DbSet<DrDegree> DrDegrees { get; set; }
         public DbSet<DoctorsPercent> DoctorsPercents { get; set; }
         public DbSet<EisSectionType> EisSectionTypes { get; set; }
+        public DbSet<PriceList> PriceLists { get; set; }
+
+        public DbSet<PriceListDetail> PriceListDetails { get; set; }
 
         ////////////////////
         // Stocks //

@@ -32,6 +32,9 @@
 
     <div class="d-flex justify-content-between align-items-center mt-4 ">    
       <h1 class="header d-block">@localizer["Doctors"]</h1>
+        <div class="w-25">
+            <input type="text" class="form-control" id="searchInput" placeholder="@localizer["Search by Service Name..."]">
+        </div>
         <select asp-items="drList" class="form-control text-center w-50" onchange="GetDoctorID(event)">
             <option value="">-- Choose --</option>
         </select>
@@ -104,11 +107,45 @@
     @* /////////////////////////////////////////////////////////////////// *@
 </div>
 <script>
+    @* search *@
+        document.getElementById('searchInput').addEventListener('input', function () {
+            filterTable();
+        });
+
+    function filterTable() {
+        var input = document.getElementById('searchInput');
+        var filter = input.value.toUpperCase();
+        var table = document.getElementById('myTable');
+        var rows = table.getElementsByTagName('tr');
+
+        for (var i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
+            var cells = rows[i].getElementsByTagName('td');
+            var found = false;
+
+            for (var j = 0; j < cells.length; j++) {
+                var cell = cells[j];
+                if (cell) {
+                    var textValue = cell.textContent || cell.innerText;
+                    if (textValue.toUpperCase().indexOf(filter) > -1) {
+                        found = true;
+                        break;
+                    }
+                }
+            }
+
+            if (found) {
+                rows[i].style.display = '';
+            } else {
+                rows[i].style.display = 'none';
+            }
+        }
+    }
+
     @* Ajax for Doctor Prenstage *@
        function GetDoctorID(e) {
-            const id = e.target.value;
+           const id = e.target.value;
            const drName = e.target[e.target.value].textContent;
-           // console.log(e.target[e.target.value].textContent);
+           console.log(e.target.value);
 
             var doctorPresentages = document.querySelector(".doctorPer-table tbody");
 
@@ -129,7 +166,7 @@
            //let itemId = id;// clickedTarget.querySelector(".item-id").innerText;
 
             let doctorPresentagesHeader = doctorPresentagesHead.querySelector(".header.doctorPer"); // Display Header for sub items
-            doctorPresentagesHeader.innerHTML = "@localizer["Doctors Percentages"] : " + drName;
+            doctorPresentagesHeader.innerHTML = "@localizer["Doctors Percentages"] : " + drName + " : "+id;
 
          //   let doctorPresentagesAddButton = doctorPresentagesHead.querySelector("a");
          //   doctorPresentagesAddButton.setAttribute("href", `/Medical/DoctorPersentage/Add_ClinicTrans/${id}?redirect=Requirements&flag=2`);
@@ -142,19 +179,34 @@
             $.ajax({
                 url: `/Medical/DoctorPercentage/GetDoctorPresentages/${id}`,
                 success: function (result) {
-                    console.log(result);
+                   // console.log(result);
                     // console.log(result.sort((a, b) => b.itemanalcode - a.itemanalcode));
                     //sortng
                    // result.sort((a, b) => b.counter - a.counter)
 
                     for (let item of result) {
                         const doctorPresentage = document.createElement("tr");
-                            let valOrRatio;
+                         let valOrRatio;
                             if (item.drValFlg == 1) {
                                 valOrRatio = "@localizer["Ratio"]";
                             } else if (item.drValFlg == 2) {
                                 valOrRatio = "@localizer["Value"]";
                             }
+                         let centerValue;
+                            if (item.drPerc == 0) {
+                                centerValue = item.valueService - item.drVal;
+                            } else if (item.drVal == 0) {
+                            centerValue = item.valueService - (item.valueService * (item.drPerc / 100));
+                            }
+
+                         let centerValueContract;
+                            if (item.drPercContract == 0) {
+                            centerValueContract = item.valueService - item.drValContract;
+                            } else if (item.drValContract == 0) {
+                            centerValueContract = item.valueService - (item.valueService * (item.drPercContract / 100));
+                            }
+
+
                         doctorPresentage.innerHTML +=
                             `
                                     <td class="align-middle">${item.sClinicDesc}</td>
@@ -163,10 +215,10 @@
                                     <td class="align-middle">${item.valueService} @localizer["L.E"]</td>
                                     <td class="align-middle">${item.drVal} @localizer["L.E"]</td>
                                     <td class="align-middle">${item.drPerc} % </td>
-                                    <td class="align-middle">${item.valueService - item.drVal} @localizer["L.E"]</td>
+                                    <td class="align-middle">${centerValue} @localizer["L.E"]</td>
                                     <td class="align-middle">${item.drValContract} @localizer["L.E"]</td>
                                     <td class="align-middle">${item.drPercContract} % </td>
-                                    <td class="align-middle">${item.valueService - item.drValContract} @localizer["L.E"]</td>
+                                    <td class="align-middle">${centerValueContract} @localizer["L.E"]</td>
 
                                 <td width="30%" class="text-center">
                                         <a href="/Medical/DoctorPercentage/Edit_DoctorPerc/${item.drPercent}" class="btn btn-sm btn-success mb-1  fs-6" style="width:150px">

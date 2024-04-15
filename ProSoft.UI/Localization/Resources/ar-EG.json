@@ -216,6 +216,14 @@
   "Edit Precentage": "تعديل النسبة",
   "Special Cases": "حالات خاصة",
   "Contract Cases": "حالات تعاقد",
+  "Price Lists": "قوائم الاسعارس",
+  "Search by Service Name...": "ابحث بواسطة اسم الخدمة...",
+  "List Name": "اسم القائمة",
+  "List Type": "نوع القائمة",
+  "Date of List": "تاريخ القائمة",
+  "Add List": "اضافة قائمة",
+  "Private": "خاص",
+  "Contract": "تعاقد",
 
   "Cost Name": "اسم التكلفة",
   "Stocks System": "نظام المخازن",
@@ -262,5 +270,13 @@
   "UnitCode Name": "اسم الوحدة",
   "Unit Codes": "الوحدات",
   "Add UnitCode": "اضافة وحدة",
-  "Number of Particles": "عدد الاجزاء"
+  "Number of Particles": "عدد الاجزاء",
+  "Edit UnitCode": "تعديل الوحدة",
+  "Back To Modules": "الرجوع الي البرامج",
+  "Department Codes": "اكواد الادارات",
+  "Add Department": "اضافة ادارة",
+  "Department Code": "كود الادارة",
+  "Department Description": "توصيف الادارة",
+  "Departments": "الادارات",
+  "Add New Department": "اضافة ادارة جديدة"
 }

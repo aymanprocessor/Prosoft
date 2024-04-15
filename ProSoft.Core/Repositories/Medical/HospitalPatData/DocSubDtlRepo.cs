@@ -72,6 +72,14 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
         {
             DocSubDtl docSubDtl = _mapper.Map<DocSubDtl>(docSubDtlDTO);
             docSubDtl.DrId= id;
+            Doctor doctor = await _Context.Doctors.FirstOrDefaultAsync(obj => obj.DrId == id);
+            
+            //set data in doctor
+            if (doctor.SClinicId ==null)
+            {
+                doctor.SClinicId = docSubDtlDTO.SClinicId;
+            }
+
             await _Context.AddAsync(docSubDtl);
             await _Context.SaveChangesAsync();
         }
