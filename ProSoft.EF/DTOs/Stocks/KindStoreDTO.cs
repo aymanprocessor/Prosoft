@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -15,6 +16,7 @@ namespace ProSoft.EF.DTOs.Stocks
 
         [DisplayName("Stock Type")]
         [Required(ErrorMessage = "The field is required")]
+        [Remote(action: "VerifyStockType", controller: "StockType", AdditionalFields = "KId", ErrorMessage = "This Name Exists Already")]
         public string KName { get; set; }
         public int? KType { get; set; }
 

@@ -20,7 +20,7 @@
     <div class="d-flex justify-content-between align-items-center gap-2 p-2 shadow-sm rounded">
         @if (User.Identity.IsAuthenticated)
         {
-        <a class="btn btn-secondary rounded-circle" href="/Home/Index">
+        <a class="btn btn-secondary rounded-circle" href="/Home/Index" title="go to modules">
             <i class="fa-solid @(isRTL ? "fa-chevron-right" : "fa-chevron-left")"></i>
         </a>
         <span class="fw-bold text-capitalize">@User.Identity.Name</span>

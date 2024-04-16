@@ -36,10 +36,10 @@ namespace ProSoft.Core.Repositories
             return user;
         }
 
-        public async Task<string> GetUserBranchAsync(int branchID)
+        public async Task<Branch> GetUserBranchAsync(int branchID)
         {
             Branch branch = await _Context.Branchs.FirstOrDefaultAsync(obj => obj.BranchId == branchID);
-            return branch != null ? branch.BranchDesc : "";
+            return branch;
         }
     }
 }

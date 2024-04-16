@@ -1,4 +1,5 @@
 ﻿using ProSoft.EF.Models;
+using ProSoft.EF.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,6 @@ namespace ProSoft.EF.IRepositories
     {
         Task<IEnumerable<AppUser>> GetAllUsersAsync();
         Task<AppUser> GetUserByIdAsync(int id);
-        Task<string> GetUserBranchAsync(int branchID);
+        Task<Branch> GetUserBranchAsync(int branchID);
     }
 }

@@ -1,0 +1,75 @@
+﻿@model List<SectionViewDTO>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Sections";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@inject IViewLocalizer localizer
+
+<div class="text-center">
+    <h1 class="mb-2">@localizer["Section Codes"] </h1>
+</div>
+
+<div class="container pt-2" style=" min-height:100vh;">
+    <div class="d-flex justify-content-between mb-2 gap-2">
+        <div>
+            <a asp-area="Shared" asp-controller="Section" asp-action="Add_Section" class="btn btn-sm btn-primary fs-6" style="width:150px">
+                @localizer["Add Section"]
+            </a>
+        </div>
+    </div>
+    <div class="overflow-auto" style="height: 300px;">
+        <table id="myTable" class="table table-bordered table-hover" style="width:100%;">
+            <thead class="table-dark">
+                <tr>
+                    <th class="align-middle">
+                        @localizer["Section Code"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Section Name"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Pricing Type"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Is Active"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Action"]
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="align-middle">@item.SecCd</td>
+                        <td class="align-middle">@item.SecDesc</td>
+                        <td class="align-middle">
+                            @if (item.SecCost == 1)
+                                @localizer["Selling Price"]
+                            else if (item.SecCost == 2)
+                                @localizer["Cost Price"]
+                        </td>
+                        <td class="align-middle">
+                            @if (item.OnOff == 1)
+                                @localizer["Yes"]
+                            else if (item.OnOff == 0)
+                                @localizer["No"]
+                        </td>
+                        <td class="text-center align-middle" style="width: 325px;">
+                            <a asp-action="Edit_Section" asp-route-id="@item.SecCd" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
+                            <form asp-action="Delete_Section" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@item.SecCd" />
+                                <button class="btn btn-sm btn-danger mb-1 fs-6" onclick="return confirm('Are you sure you want to delete this one?')" style="width: 150px">@localizer["Delete"]</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
