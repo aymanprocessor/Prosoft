@@ -84,6 +84,8 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<JournalType, JournalTypeDTO>().ReverseMap();
             CreateMap<Side, SideDTO>().ReverseMap();
             CreateMap<UnitCode, UnitCodeDTO>().ReverseMap();
+            CreateMap<Sections2, SectionViewDTO>().ReverseMap();
+            CreateMap<Sections2, SectionEditAddDTO>().ReverseMap();
         }
     }
 }

@@ -86,5 +86,22 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             await _stockTypeRepo.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        public async Task<IActionResult> VerifyStockType(string KName, int KId)
+        {
+            //if(KId == 0 || KId == null)
+            //{
+                //KindStore stockType1 = (await _stockTypeRepo.GetAllAsync()).FirstOrDefault(obj => obj.KName == KName);
+            KindStore stockType1 = await _stockTypeRepo.GetByIdAsync(KId);
+            if(stockType1 != null)
+            {
+                KindStore anotherStockType = (await _stockTypeRepo.GetAllAsync())
+                    .FirstOrDefault(obj => obj.KName == KName && obj.KName != stockType1.KName);
+                return Json(anotherStockType == null);
+            }
+            //}
+            KindStore stockType2 = (await _stockTypeRepo.GetAllAsync()).FirstOrDefault(obj => obj.KName == KName);
+            return Json(stockType2 == null);
+        }
     }
 }

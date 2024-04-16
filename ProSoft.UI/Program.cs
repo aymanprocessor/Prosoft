@@ -72,6 +72,7 @@ builder.Services.AddScoped<IStockRepo, StockRepo>();
 builder.Services.AddScoped<ISideRepo, SideRepo>();
 builder.Services.AddScoped<IUnitCodeRepo, UnitCodeRepo>();
 builder.Services.AddScoped<IClassificationCustRepo, ClassificationCustRepo>();
+builder.Services.AddScoped<ISectionRepo, SectionRepo>();
 
 ///For Localization
 builder.Services.AddLocalization();

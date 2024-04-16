@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var F_Year = User.FindFirstValue("F_Year");
 }
 @inject IViewLocalizer localizer
 
@@ -17,11 +18,14 @@
             
             <div class="mb-3">
                 <label>@localizer["Financial Year"]</label>
-                <input type="number" name="year" class="form-control" />
+                <input type="number" name="year" class="form-control" value="@F_Year" />
             </div>
 
-            <div class="login-buttons d-flex justify-content-between flex-column flex-md-row gap-2">
+            <div class="login-buttons d-flex flex-column flex-md-row gap-2">
                 <button type="submit" class="btn btn-success w-25">@localizer["Change"]</button>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
             </div>
         </div>
     </form>

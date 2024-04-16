@@ -8,6 +8,7 @@ using ProSoft.EF.DTOs.Auth;
 using ProSoft.EF.IRepositories;
 using ProSoft.EF.IRepositories.Shared;
 using ProSoft.EF.Models;
+using ProSoft.EF.Models.Shared;
 using System.Data;
 using System.Security.Claims;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -122,11 +123,12 @@ namespace ProSoft.UI.Controllers
                     //    .PasswordSignInAsync(user, userDTO.PassWord, userDTO.rememberMe, false);
 
                     // Sign in with additional claims
-                    string branch = await _userRepo.GetUserBranchAsync(Convert.ToInt32(user.BranchId));
+                    Branch branch = await _userRepo.GetUserBranchAsync(Convert.ToInt32(user.BranchId));
                     var claims = new List<Claim>
                     {
                         new ("F_Year", user.FYear.ToString()),
-                        new ("U_Branch", branch),
+                        new ("U_Branch_Name", branch.BranchDesc),
+                        new ("U_Branch_Id", branch.BranchId.ToString()),
                     };
                     await _signInManager.SignInWithClaimsAsync(user, userDTO.rememberMe, claims);
 
