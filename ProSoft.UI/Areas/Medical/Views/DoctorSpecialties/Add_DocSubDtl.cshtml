@@ -60,13 +60,12 @@
             </div>
 
             <!------------------------------------------------------------------------------->
-
             <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
                 <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
                     <label asp-for="DocSubDef" class="me-md-3"><p>@localizer["Main Specialty"]</p></label>
                     <div class="mb-3 me-md-2">
                         <label class="form-check-label">
-                            <input asp-for="DocSubDef" class="form-check-input radio-inline" type="radio" name="DocSubDef" value="1">
+                            <input asp-for="DocSubDef" class="form-check-input radio-inline" checked type="radio" name="DocSubDef" value="1">
                             @localizer["Yes"]
                         </label>
                     </div>
@@ -85,7 +84,7 @@
                     <label asp-for="DrOnOff" class="me-md-3"><p>@localizer["Activation"]</p></label>
                     <div class="mb-3 me-md-2">
                         <label class="form-check-label">
-                            <input asp-for="DrOnOff" class="form-check-input radio-inline" type="radio" name="DrOnOff" value="1">
+                            <input asp-for="DrOnOff" class="form-check-input radio-inline" checked type="radio" name="DrOnOff" value="1">
                             @localizer["Yes"]
                         </label>
                     </div>

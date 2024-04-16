@@ -12,6 +12,20 @@
 
     <div class="d-flex justify-content-between align-items-center mt-4 ">
         <h1 class="header">@localizer["Price Lists"]</h1>
+        <div class="d-flex justify-content-center">
+            <div class="me-md-4 ms-4">
+                <label class="form-check-label">
+                    <input class="form-check-input radio-inline" type="radio" name="filter" value="@localizer["Private"]" onchange="SelectOption(event)">
+                    @localizer["Private"]
+                </label>
+            </div>
+            <div class="me-md-4">
+                <label class="form-check-label">
+                    <input class="form-check-input radio-inline" type="radio" name="filter" value="@localizer["Contract"]" onchange="SelectOption(event)">
+                    @localizer["Contract"]
+                </label>
+            </div>
+        </div>
          
         <a asp-controller="PriceList" asp-action="Add_PriceList" class="btn btn-sm btn-primary fs-6" style="width:150px">
             @localizer["Add List"]
@@ -44,7 +58,7 @@
             <tbody>
                 @foreach (var pl in Model)
                 {
-                    <tr onclick="GetDocSubDtl(event,@pl.PLId)" style="cursor:pointer;">
+                    <tr onclick="GetTermOfPriceLists(event,@pl.PLId)" style="cursor:pointer;">
                         <td>
                             @pl.PLId
                         </td>
@@ -82,40 +96,84 @@
     </div>
     @* /////////////////////////////////////////////////////////////////// *@
 
-    @* Table for DocSUbDtl *@
+    @* Table for PriceListDTL *@
 
-    <div class="DocSubDtl-table-head d-flex justify-content-between align-items-center mt-4">
-        <h2 class="header DocSub-Dtl">@localizer["Specialties of Doctor"] :</h2>
+    <div class="PriceListDtl-table-head d-flex justify-content-between align-items-center mt-4">
+        <h2 class="header PriceList-Dtl">@localizer["Terms of Price Lists"] :</h2>
 
         <a class="btn btn-sm btn-primary fs-6" style="width:150px">
-            @localizer["Add Specialty"]
+            @localizer["Add Term"]
         </a>
         @* asp-controller="MedAnalysis" asp-action="Add_SubItemAnalysis" asp-route-ID="@ViewBag.item.MainCode" asp-route-itemAnalCode="" *@
     </div>
 
     <div class="border border-success p-0 mb-2 border-opacity-75 overflow-auto" style="max-height: 300px;">
 
-        <table id="myTable" class="table table-bordered table-hover docSubDtl-table" style="width:100%">
+        <table id="myTable" class="table table-bordered table-hover priceListDtl-table" style="width:100%">
             <thead class="table-dark">
                 <tr>
-                    <th class="align-middle">
-                        @localizer["Department"]
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Sort"]
                     </th>
-                    <th class="align-middle">
-                        @localizer["Specialty"]
+                    <th class="align-middle text-center" colspan="4">@localizer["Services"]</th>
+                   
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Service Value"]
                     </th>
-                    <th class="align-middle">
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Service Discount Percentage"]
+                    </th>
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Service Value After Discount"]
+                    </th>
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Company Percentage"]
+                    </th>
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Company Cost Value"]
+                    </th>
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Member Cost Value"]
+                    </th>
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Realitve Cost Value"]
+                    </th>
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Patient Cost Requirment"]
+                    </th>
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Patient Cost Maintainace"]
+                    </th>
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Cover Service"]
+                    </th>
+                    @* <th class="align-middle text-center" rowspan="2">
                         @localizer["Activation"]
-                    </th>
-                    <th class="align-middle">
-                        @localizer["Main Specialty"]
-                    </th>
-                    <th class="align-middle">
+                    </th> *@
+                  
+                    <th class="align-middle text-center" rowspan="2">
                         @localizer["Action"]
                     </th>
+                </tr>
+                <tr>
+
+                    <th class="align-middle">
+                        @localizer["Level 1"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Level 2"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Code"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Level 3"]
+                    </th>
+                   
 
                 </tr>
             </thead>
+
             <tbody>
             </tbody>
         </table>
@@ -124,3 +182,113 @@
     @* /////////////////////////////////////////////////////////////////// *@
 
 </div>
+
+<script>
+    @* Ajax for DocDTL *@
+        function GetTermOfPriceLists(e, id) {
+            var termOfPriceLists = document.querySelector(".priceListDtl-table tbody");
+            // Handle active clic
+            let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");;
+
+            allItemRows.forEach(row => {
+                row.classList.remove("active-row");
+            });
+
+            let clickedTarget = e.target.parentElement
+            clickedTarget.classList.add("active-row");
+            ///////////////////////////////////////////////////////////////////
+
+            // Catch header for Doctor sub dtl => doctor id and reset it
+            let priceListDtlHead = document.querySelector(".PriceListDtl-table-head");
+
+            let itemName = clickedTarget.querySelector(".item-name").innerText;
+            //console.log(itemName)
+
+            let priceListDtlHeader = priceListDtlHead.querySelector(".header.PriceList-Dtl"); // Display Header for doctor sub dtls
+            priceListDtlHeader.innerHTML = "@localizer["Terms of Price Lists"] :" + itemName;
+
+            let priceListDtlAddButton = priceListDtlHead.querySelector("a");
+            priceListDtlAddButton.setAttribute("href", `/Medical/DoctorSpecialties/Add_DocSubDtl/${id}`);
+            // console.log(priceListDtlAddButton);
+            ///////////////////////////////////////////////////////////////////
+
+            // Handle ajax call
+            termOfPriceLists.innerHTML = "";  // Empty the body
+
+            $.ajax({
+                url: `/Medical/TermsPriceList/GetTermOfPriceLists/${id}`,
+                success: function (result) {
+                    // console.log(result);
+                    // console.log(result.sort((a, b) => b.itemanalcode - a.itemanalcode));
+                    //sortng
+                    // result.sort((a, b) => b.pLDetailCode - a.pLDetailCode)
+
+                    for (let item of result) {
+                        const priceListDtl = document.createElement("tr");
+                        priceListDtl.innerHTML +=
+
+                            `
+                                    <td class="align-middle">${item.pLDetailCode}</td>
+                                    <td class="align-middle">${item.clinicDesc}</td>
+                                    <td class="align-middle">${item.sClinicDesc}</td>
+                                    <td class="align-middle">${item.servId}</td>
+                                    <td class="align-middle">${item.servDesc}</td>
+                                    <td class="align-middle">${item.servBefDesc}</td>
+                                    <td class="align-middle">${item.discoutComp}</td>
+                                    <td class="align-middle">${item.plValue}</td>
+                                    <td class="align-middle">${item.compCovPercentage}</td>
+                                    <td class="align-middle">${item.compValue}</td>
+                                    <td class="align-middle">${item.plValue2}</td>
+                                    <td class="align-middle">${item.plValue3}</td>
+                                    <td class="align-middle">${item.extraVal}</td>
+                                    <td class="align-middle">${item.extraVal2}</td>
+                                    <td class="align-middle">${item.covered}</td>
+                                    
+                                    <td width="30%" class="text-center">
+                                      <a href="/Medical/DoctorSpecialties/Edit_DocSubDtl/${item.docSubId}" class="btn btn-sm btn-success mb-1  fs-6" style="width:150px">
+                                            <i class="bi bi-pencil"></i> @localizer["Edit"]
+                                        </a>
+                                    <form action="/Medical/DoctorSpecialties/Delete_DocSubDtl" method="post" class="d-inline">
+    @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="${item.docSubId}" />
+                                            <input type="hidden" name="redirect" value="Invoices" />
+                                        <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">@localizer["Delete"]</button>
+                                        </form>
+                                    </td>
+                                            `;
+                        termOfPriceLists.appendChild(priceListDtl);
+                    }
+                }
+            });
+        }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    @* for filter *@
+    function SelectOption(event) {
+        var selectedOption = event.target.value; // Get the selected option value
+
+        // Get all table rows
+        var tableRows = document.querySelectorAll("#myTable tbody tr");
+
+        // Loop through each row
+        tableRows.forEach(function (row) {
+            // Get the value of the "List Type" column in the current row
+            var listType = row.cells[2].textContent.trim();
+
+            // Show or hide the row based on the selected option value
+            if (selectedOption === "All" || listType === selectedOption) {
+                row.style.display = ""; // Show the row
+            } else {
+                row.style.display = "none"; // Hide the row
+            }
+        });
+    }
+
+</script>

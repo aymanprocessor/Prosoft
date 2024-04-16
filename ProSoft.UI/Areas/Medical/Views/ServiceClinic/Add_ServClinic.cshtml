@@ -86,16 +86,16 @@
                 <div class="mb-3 ">
                     <label asp-for="ProtectId"></label>
                     <select asp-for="ProtectId" class="form-control text-center">
-                        <option value="0">@localizer["No"]</option>
                         <option value="1">@localizer["Yes"]</option>
+                        <option value="0">@localizer["No"]</option>
                     </select>
                     <span asp-validation-for="ProtectId" class="text-danger"></span>
                 </div>
                 <div class="mb-3 ">
                     <label asp-for="ServOnOff"></label>
                     <select asp-for="ServOnOff" class="form-control text-center">
-                        <option value="0">@localizer["No"]</option>
                         <option value="1">@localizer["Yes"]</option>
+                        <option value="0" >@localizer["No"]</option>
                     </select>
                     <span asp-validation-for="ServOnOff" class="text-danger"></span>
                 </div>

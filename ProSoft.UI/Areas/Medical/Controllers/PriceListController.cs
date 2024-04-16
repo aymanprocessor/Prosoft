@@ -42,6 +42,25 @@ namespace ProSoft.UI.Areas.Medical.Controllers
             }
             return View(priceListDTO);
         }
+        // Get Edit
+        public async Task<IActionResult> Edit_PriceList(int id)
+        {
+            PriceListEditAddDTO priceListDTO = await _priceListRepo.GetPriceListByIdAsync(id);
+            return View(priceListDTO);
+        }
+
+        // Post Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit_PriceList(int id, PriceListEditAddDTO priceListDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                await _priceListRepo.EditPriceListAsync(id, priceListDTO);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(priceListDTO);
+        }
 
         // Delete
         [HttpPost]

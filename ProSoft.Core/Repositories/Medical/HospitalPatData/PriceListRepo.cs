@@ -48,5 +48,20 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             await _Context.SaveChangesAsync();
         }
 
+        public async Task<PriceListEditAddDTO> GetPriceListByIdAsync(int id)
+        {
+            PriceList priceList = await _Context.PriceLists.FirstOrDefaultAsync(obj=>obj.PLId == id);
+            PriceListEditAddDTO priceListDTO = _mapper.Map<PriceListEditAddDTO>(priceList);
+            return priceListDTO;
+        }
+
+        public async Task EditPriceListAsync(int id, PriceListEditAddDTO priceListDTO)
+        {
+            PriceList priceList = await _Context.PriceLists.FirstOrDefaultAsync(obj => obj.PLId == id);
+            _mapper.Map(priceListDTO, priceList);
+            _Context.Update(priceList);
+            await _Context.SaveChangesAsync();
+            
+        }
     }
 }
