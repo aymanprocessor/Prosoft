@@ -240,6 +240,10 @@
   "Terms of Price Lists": "بنود قوائم الاسعار",
   "Add Term": "اضافة بند",
   "Cover Service": "تغطي الخدمة",
+  "Search by List Name...": "ابحث باسم القائمة...",
+  "Search Level 1...": "بحث مستوي 1...",
+  "Search Level 2...": "بحث مستوي 2...",
+  "Search Level 3...": "بحث مستوي 3...",
 
   "Cost Name": "اسم التكلفة",
   "Stocks System": "نظام المخازن",
@@ -304,5 +308,17 @@
   "Selling Price": "سعر بيع",
   "Cost Price": "سعر تكلفة",
   "The Sections": "الاقسام",
-  "This Name Exists Already": "هذا الاسم موجود بالفعل"
+  "This Name Exists Already": "هذا الاسم موجود بالفعل",
+  "Permissions Names": "اسماء الأذون",
+  "Add Permission Definition": "اضافة تعريف اذن",
+  "Unique Code": "الكود المميز",
+  "System Description": "توصيف النظام",
+  "User Description": "توصيف المستخدم",
+  "Depends On": "معتمد علي",
+  "Sell Or Buy": "بيع ام شراء",
+  "Permission Type": "نوع الاذن",
+  "Buying": "شراء",
+  "Selling": "بيع",
+  "Remove": "حذف",
+  "Add New Permission Name": "اضافة اسم اذن جديد"
 }

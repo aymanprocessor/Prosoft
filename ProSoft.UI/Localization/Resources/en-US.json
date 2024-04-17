@@ -240,6 +240,10 @@
   "Terms of Price Lists": "Terms of Price Lists",
   "Add Term": "Add Term",
   "Cover Service": "Cover Service",
+  "Search by List Name...": "Search by List Name...",
+  "Search Level 1...": "Search Level 1...",
+  "Search Level 2...": "Search Level 2...",
+  "Search Level 3...": "Search Level 3...",
 
   "Cost Name": "Cost Name",
   "Stocks System": "Stocks System",
@@ -304,5 +308,17 @@
   "Selling Price": "Selling Price",
   "Cost Price": "Cost Price",
   "The Sections": "The Sections",
-  "This Name Exists Already": "This Name Exists Already"
+  "This Name Exists Already": "This Name Exists Already",
+  "Permissions Names": "Permissions Names",
+  "Add Permission Definition": "Add Permission Definition",
+  "Unique Code": "Unique Code",
+  "System Description": "System Description",
+  "User Description": "User Description",
+  "Depends On": "Depends On",
+  "Sell Or Buy": "Sell Or Buy",
+  "Permission Type": "Permission Type",
+  "Buying": "Buying",
+  "Selling": "Selling",
+  "Remove": "Remove",
+  "Add New Permission Name": "Add New Permission Name"
 }
