@@ -1,0 +1,98 @@
+﻿@model List<PermissionDefDTO>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Permissions Names";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@inject IViewLocalizer localizer
+
+<div class="text-center">
+    <h1 class="mb-2">@localizer["Permissions Names"] </h1>
+</div>
+
+<div class="container pt-2" style=" min-height:100vh;">
+    <div class="d-flex justify-content-between mb-2 gap-2">
+        <div>
+            <a asp-area="Shared" asp-controller="PermitDefinition" asp-action="Add_PermissionDef" class="btn btn-sm btn-primary fs-6" style="width:150px">
+                @localizer["Add Permission Definition"]
+            </a>
+        </div>
+    </div>
+    <div class="overflow-auto" style="height: 300px;">
+        <table id="myTable" class="table table-bordered table-hover" style="width:100%;">
+            <thead class="table-dark">
+                <tr>
+                    <th class="align-middle">
+                        @localizer["Unique Code"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Code"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["System Description"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["User Description"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Depends On"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Is Active"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Sell Or Buy"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Permission Type"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Action"]
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="align-middle">@item.UniqueType</td>
+                        <td class="align-middle">@item.GId</td>
+                        <td class="align-middle">@item.GDesc</td>
+                        <td class="align-middle">@item.TransDescUser</td>
+                        <td class="align-middle">@item.PermissionDepended</td>
+                        <td class="align-middle">
+                            @if (item.ShowHide == 1)
+                                @localizer["Yes"]
+                            else if (item.ShowHide == 0)
+                                @localizer["No"]
+
+                        </td>
+                        <td class="align-middle">
+                            @if (item.AddSub == 1)
+                                @localizer["Add"]
+                            else if (item.AddSub == 2)
+                                @localizer["Remove"]
+
+                        </td>
+                        <td class="align-middle">
+                            @if (item.FormType == 1)
+                                @localizer["Internal"]
+                            else if (item.FormType == 2)
+                                @localizer["External"]
+
+                        </td>
+                        <td class="text-center align-middle" style="width: 325px;">
+                            <a asp-action="Edit_PermissionDef" asp-route-id="@item.GId" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
+                            <form asp-action="Delete_PermissionDef" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@item.GId" />
+                                <button class="btn btn-sm btn-danger mb-1 fs-6" onclick="return confirm('Are you sure you want to delete this one?')" style="width: 150px">@localizer["Delete"]</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
