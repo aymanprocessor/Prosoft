@@ -31,7 +31,8 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         {
             ViewBag.ServeID = await _servClinicRepo.GetNewIdAsync();
             ViewBag.clinicId=clinicId;
-            ServClinicEditAddDTO servClinicDTO =await _servClinicRepo.GetEmptyServClinicAsync();
+            
+            ServClinicEditAddDTO servClinicDTO =await _servClinicRepo.GetEmptyServClinicAsync(id);
             return View(servClinicDTO);
         }
 

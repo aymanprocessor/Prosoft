@@ -98,6 +98,16 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
         {
             DoctorsPercent doctorsPercent = await _Context.DoctorsPercents.FirstOrDefaultAsync(obj => obj.DrPercent == id);
 
+            if (doctorPrecentDTO.DrValFlg == 1)
+            {
+                doctorPrecentDTO.DrValContract = 0;
+                doctorPrecentDTO.DrVal = 0;
+            }
+            else if (doctorPrecentDTO.DrValFlg ==2)
+            {
+                doctorPrecentDTO.DrPerc = 0;
+                doctorPrecentDTO.DrPercContract = 0;
+            }
             _mapper.Map(doctorPrecentDTO, doctorsPercent);
             _Context.Update(doctorsPercent);
             await _Context.SaveChangesAsync();

@@ -26,6 +26,7 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             List<TermsPriceListViewDTO> TermsPriceListDTO = await _Context.PriceListDetails.Where(obj => obj.PLId == id)
                 .Select(obj => new TermsPriceListViewDTO()
                 {
+                    PLDetailCode=Convert.ToInt32(obj.PLDetailCode),
                     ClinicDesc = obj.Clinic.ClinicDesc,
                     SClinicDesc = obj.SClinic.SClinicDesc,
                     ServId =obj.Serv.ServId,

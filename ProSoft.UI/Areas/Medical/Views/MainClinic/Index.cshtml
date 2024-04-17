@@ -30,15 +30,18 @@
 <div class="container pt-2" style=" min-height:100vh;">
     <img class="image" src="/background.jpg" style="position:absolute;" />
 
-    <div class="d-flex justify-content-between align-items-center mt-4 ">
-        <h1 class="header">@localizer["Department services"]</h1>
+    <div class="d-flex justify-content-center align-items-center mt-2 ">
+      <h1 class="header">@localizer["Department services"]</h1>
+    </div>
+    <div class="d-flex justify-content-between align-items-center ">
+        <h1 class="header">@localizer["Level 1"]</h1>
 
         <a asp-controller="MainClinic" asp-action="Add_MainClinic" class="btn btn-sm btn-primary fs-6" style="width:150px">
             @localizer["Add Clinic"]
         </a>
     </div>
-    <div class="overflow-auto" style="height: 300px;">
-        <table id="myTable" class="table table-bordered table-hover" style="width:100%;">
+    <div class="overflow-auto" style="height: 225px;">
+        <table id="myTable" class="table table-bordered border-dark table-hover" style="width:100%;">
             <thead class="table-dark">
                 <tr>
                     <th class="align-middle">
@@ -98,7 +101,7 @@
     @* Table for SubClinic *@
 
     <div class="subClinic-table-head d-flex justify-content-between align-items-center mt-4">
-        <h2 class="header subClinic-Dtl">@localizer["SubClinc Name"] :</h2>
+        <h2 class="header subClinic-Dtl">@localizer["Level 2"] :</h2>
 
         <a class="btn btn-sm btn-primary fs-6" style="width:150px">
             @localizer["Add SubClinic"]
@@ -106,9 +109,9 @@
         @* asp-controller="MedAnalysis" asp-action="Add_SubItemAnalysis" asp-route-ID="@ViewBag.item.MainCode" asp-route-itemAnalCode="" *@
     </div>
 
-    <div class="border border-success p-0 mb-2 border-opacity-75 overflow-auto" style="max-height: 300px;">
+    <div class="border p-0 mb-2 overflow-auto" style="max-height: 225px;">
 
-        <table id="myTable" class="table table-bordered table-hover subClinic-table" style="width:100%">
+        <table id="myTable" class="table table-bordered border-dark table-hover subClinic-table" style="width:100%">
             <thead class="table-dark">
                 <tr>
                     <th class="align-middle">
@@ -151,7 +154,7 @@
     @* Table for service Clinic *@
 
     <div class="servClinic-table-head d-flex justify-content-between align-items-center mt-4">
-        <h2 class="header servClinic-Dtl">@localizer["Service Clinc Name"] :</h2>
+        <h2 class="header servClinic-Dtl">@localizer["Level 3"] :</h2>
 
         <a class="btn btn-sm btn-primary fs-6" style="width:150px">
             @localizer["Add ServClinic"]
@@ -159,9 +162,9 @@
         @* asp-controller="MedAnalysis" asp-action="Add_SubItemAnalysis" asp-route-ID="@ViewBag.item.MainCode" asp-route-itemAnalCode="" *@
     </div>
 
-    <div class="border border-success p-0 mb-2 border-opacity-75 overflow-auto" style="max-height: 300px;">
+    <div class="border p-0 mb-2  overflow-auto" style="max-height: 300px;">
 
-        <table id="myTable" class="table table-bordered table-hover servClinic-table" style="width:100%">
+        <table id="myTable" class="table table-bordered border-dark table-hover servClinic-table" style="width:100%">
             <thead class="table-dark">
                 <tr>
                     <th class="align-middle">
@@ -237,10 +240,10 @@
             //console.log(itemName)
 
             let subClinicHeader = subClinicHead.querySelector(".header.subClinic-Dtl");
-            subClinicHeader.innerHTML = "@localizer["Sub Clinic"] :" + itemName;
+            subClinicHeader.innerHTML = "@localizer["Level 2"] :" + itemName;
             // For remove specific head
             let servClinicHeader = servClinicHead.querySelector(".header.servClinic-Dtl");
-            servClinicHeader.innerHTML = "@localizer["Service Clinc Name"] :";
+            servClinicHeader.innerHTML = "@localizer["Level 3"] :";
             
             let subClinicAddButton = subClinicHead.querySelector("a");
             subClinicAddButton.setAttribute("href", `/Medical/SubClinic/Add_SubClinic/${id}`);
@@ -307,7 +310,7 @@
         }
 
     @* Ajax for ServClinic *@
-        function GetServClinic(e, id ,clinicID) {
+        function GetServClinic(e, id, clinicID) {
             var servClinics = document.querySelector(".servClinic-table tbody")
             // Handle active clic
             let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");
@@ -325,10 +328,10 @@
             //console.log(itemName)
 
             let servClinicHeader = servClinicHead.querySelector(".header.servClinic-Dtl");
-            servClinicHeader.innerHTML = "@localizer["Service Clinc Name"] :" + itemName;
+            servClinicHeader.innerHTML = "@localizer["Level 3"] :" + itemName;
 
             let servClinicAddButton = servClinicHead.querySelector("a");
-            servClinicAddButton.setAttribute("href", `/Medical/ServiceClinic/Add_ServClinic/${id}&clinicId=${clinicID}`);
+            servClinicAddButton.setAttribute("href", `/Medical/ServiceClinic/Add_ServClinic/${id}?clinicId=${clinicID}`);
             // console.log(docSubDtlAddButton);
             ///////////////////////////////////////////////////////////////////
 

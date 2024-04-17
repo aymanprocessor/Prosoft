@@ -66,12 +66,15 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             return servClinicDTO;
         }
 
-        public async Task<ServClinicEditAddDTO> GetEmptyServClinicAsync()
+        public async Task<ServClinicEditAddDTO> GetEmptyServClinicAsync(int id)
         {
             ServClinicEditAddDTO servClinicDTO =new ServClinicEditAddDTO();
             List<CostCenter> costs = await _Context.CostCenters.ToListAsync();
 
             servClinicDTO.costs = _mapper.Map<List<CostCenterViewDTO>>(costs);
+            SubClinic subClinic =await _Context.SubClinics.FirstOrDefaultAsync(obj=>obj.SClinicId == id);
+            servClinicDTO.CostCode = subClinic.CostCode;
+            
             return servClinicDTO;
         }
 
@@ -81,7 +84,10 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             ServiceClinic serviceClinic = _mapper.Map<ServiceClinic>(servClinicDTO);
             serviceClinic.SClinicId = id;
             serviceClinic.ClinicId = clinicID;
-            
+            SubClinic subClinic = await _Context.SubClinics.FirstOrDefaultAsync(obj=>obj.SClinicId ==id);
+            serviceClinic.CostCode = subClinic.CostCode;
+
+
             serviceClinic.DrVal = serviceClinic.PlValue * (serviceClinic.DrPerc / 100);
             await _Context.AddAsync(serviceClinic);
             await _Context.SaveChangesAsync();

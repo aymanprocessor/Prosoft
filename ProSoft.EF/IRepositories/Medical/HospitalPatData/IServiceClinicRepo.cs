@@ -13,7 +13,7 @@ namespace ProSoft.EF.IRepositories.Medical.HospitalPatData
         Task<List<ServiceClinicViewDTO>> GetAllServClinicAsync(int id);
         Task<int> GetNewIdAsync();
         Task<ServClinicEditAddDTO> GetServClinicByIdAsync(int id);
-        Task<ServClinicEditAddDTO> GetEmptyServClinicAsync();
+        Task<ServClinicEditAddDTO> GetEmptyServClinicAsync(int id);
 
         Task AddServClinicAsync(int id, int clinicID, ServClinicEditAddDTO servClinicDTO);
         Task EditServClinicAsync(int id, ServClinicEditAddDTO servClinicDTO);

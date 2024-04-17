@@ -10,9 +10,13 @@
 @inject IViewLocalizer localizer
 <div class="container pt-2" style=" min-height:100vh;">
 
-    <div class="d-flex justify-content-between align-items-center mt-4 ">
+    <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mt-4 gap-2">
         <h1 class="header">@localizer["Price Lists"]</h1>
-        <div class="d-flex justify-content-center">
+        <div >
+            <input type="text" id="searchInput" class="form-control" oninput="searchListName()" placeholder="@localizer["Search by List Name..."]">
+        </div>
+        
+         <div class="d-flex justify-content-center">
             <div class="me-md-4 ms-4">
                 <label class="form-check-label">
                     <input class="form-check-input radio-inline" type="radio" name="filter" value="@localizer["Private"]" onchange="SelectOption(event)">
@@ -27,11 +31,11 @@
             </div>
         </div>
          
-        <a asp-controller="PriceList" asp-action="Add_PriceList" class="btn btn-sm btn-primary fs-6" style="width:150px">
+        <a asp-controller="PriceList" asp-action="Add_PriceList" class="btn btn-sm btn-primary fs-6 mb-1" style="width:150px">
             @localizer["Add List"]
         </a>
     </div>
-    <div class="overflow-auto" style="height: 300px;">
+    <div class="overflow-auto" style="height: 280px;">
         <table id="myTable" class="table table-bordered table-hover" style="width:100%;">
             <thead class="table-dark">
                 <tr>
@@ -98,18 +102,24 @@
 
     @* Table for PriceListDTL *@
 
-    <div class="PriceListDtl-table-head d-flex justify-content-between align-items-center mt-4">
+    <div class="PriceListDtl-table-head d-flex justify-content-between align-items-center flex-column flex-md-row gap-1 mt-4">
         <h2 class="header PriceList-Dtl">@localizer["Terms of Price Lists"] :</h2>
 
-        <a class="btn btn-sm btn-primary fs-6" style="width:150px">
+        <div class="d-flex justify-content-center align-items-center gap-1">
+            <input type="text" id="searchInputLevel1" class="form-control" oninput="searchLevels()" placeholder="@localizer["Search Level 1..."]">
+            <input type="text" id="searchInputLevel2" class="form-control" oninput="searchLevels()" placeholder="@localizer["Search Level 2..."]">
+            <input type="text" id="searchInputLevel3" class="form-control" oninput="searchLevels()" placeholder="@localizer["Search Level 3..."]">
+        </div>
+
+        <a class="btn btn-sm btn-primary fs-6 mb-1" style="width:150px">
             @localizer["Add Term"]
         </a>
         @* asp-controller="MedAnalysis" asp-action="Add_SubItemAnalysis" asp-route-ID="@ViewBag.item.MainCode" asp-route-itemAnalCode="" *@
     </div>
 
-    <div class="border border-success p-0 mb-2 border-opacity-75 overflow-auto" style="max-height: 300px;">
+    <div class="border border-success p-0 mb-2 border-opacity-75 overflow-auto" style="max-height: 500px;">
 
-        <table id="myTable" class="table table-bordered table-hover priceListDtl-table" style="width:100%">
+        <table id="myTableDtl" class="table table-bordered table-hover priceListDtl-table" style="width:100%">
             <thead class="table-dark">
                 <tr>
                     <th class="align-middle text-center" rowspan="2">
@@ -189,7 +199,6 @@
             var termOfPriceLists = document.querySelector(".priceListDtl-table tbody");
             // Handle active clic
             let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");;
-
             allItemRows.forEach(row => {
                 row.classList.remove("active-row");
             });
@@ -221,14 +230,15 @@
                     // console.log(result);
                     // console.log(result.sort((a, b) => b.itemanalcode - a.itemanalcode));
                     //sortng
-                    // result.sort((a, b) => b.pLDetailCode - a.pLDetailCode)
+                    result.sort((a, b) => a.plDetailCode - b.plDetailCode);
+                    //console.log(result);
 
                     for (let item of result) {
                         const priceListDtl = document.createElement("tr");
                         priceListDtl.innerHTML +=
 
                             `
-                                    <td class="align-middle">${item.pLDetailCode}</td>
+                                    <td class="align-middle">${item.plDetailCode}</td>
                                     <td class="align-middle">${item.clinicDesc}</td>
                                     <td class="align-middle">${item.sClinicDesc}</td>
                                     <td class="align-middle">${item.servId}</td>
@@ -261,34 +271,79 @@
                 }
             });
         }
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+   
+</script>
+
+    @* script for fillteing and Searching *@
+<script>
     @* for filter *@
-    function SelectOption(event) {
-        var selectedOption = event.target.value; // Get the selected option value
+        function SelectOption(event) {
+            var selectedOption = event.target.value; // Get the selected option value
 
-        // Get all table rows
-        var tableRows = document.querySelectorAll("#myTable tbody tr");
+            // Get all table rows
+            var tableRows = document.querySelectorAll("#myTable tbody tr");
 
-        // Loop through each row
-        tableRows.forEach(function (row) {
-            // Get the value of the "List Type" column in the current row
-            var listType = row.cells[2].textContent.trim();
+            // Loop through each row
+            tableRows.forEach(function (row) {
+                // Get the value of the "List Type" column in the current row
+                var listType = row.cells[2].textContent.trim();
 
-            // Show or hide the row based on the selected option value
-            if (selectedOption === "All" || listType === selectedOption) {
-                row.style.display = ""; // Show the row
-            } else {
-                row.style.display = "none"; // Hide the row
+                // Show or hide the row based on the selected option value
+                if (selectedOption === "All" || listType === selectedOption) {
+                    row.style.display = ""; // Show the row
+                } else {
+                    row.style.display = "none"; // Hide the row
+                }
+            });
+        }
+
+    @* for Search in price List *@
+        function searchListName() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, hide those that do not match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByClassName("item-name")[0];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
             }
-        });
-    }
+        }
 
+    @* for Search by levels *@
+
+    function searchLevels() {
+            var input, filter, table, tr, td1, td2, td, i, txtValue1, txtValue2, txtValue;
+        filter1 = document.getElementById("searchInputLevel1").value.toUpperCase();
+        filter2 = document.getElementById("searchInputLevel2").value.toUpperCase();
+        filter = document.getElementById("searchInputLevel3").value.toUpperCase();
+        table = document.getElementById("myTableDtl");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) {
+                td1 = tr[i].getElementsByTagName("td")[1]; // Index 1 corresponds to Level 1 column
+                td2 = tr[i].getElementsByTagName("td")[2]; // Index 2 corresponds to Level 2 column
+              td = tr[i].getElementsByTagName("td")[4]; // Index 3 corresponds to Level 3 column
+            if (td) {
+                txtValue1 = td1.textContent || td1.innerText;
+                txtValue2 = td2.textContent || td2.innerText;
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1 && txtValue2.toUpperCase().indexOf(filter2) > -1 && txtValue1.toUpperCase().indexOf(filter1) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
 </script>

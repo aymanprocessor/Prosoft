@@ -65,7 +65,7 @@
                 </div>
                 <div class="mb-3 ">
                     <label asp-for="DrValFlg"></label>
-                    <select asp-for="DrValFlg" class="form-control text-center">
+                    <select asp-for="DrValFlg" class="form-control text-center" onchange="ValueOrRatio(event)">
                         <option value="1">@localizer["Ratio"]</option>
                         <option value="2">@localizer["Value"]</option>
                     </select>
@@ -76,12 +76,12 @@
             <!------------------------------------------------------------------------------->
             <h5 class="text-center">@localizer["Special Cases"]</h5>
             <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">  
-                <div class="mb-3">
-                    <label asp-for="DrVal"></label>
-                    <input asp-for="DrVal" type="number" class="form-control" />
+                <div class="mb-3" id="valuee">
+                    <label asp-for="DrVal" ></label>
+                    <input asp-for="DrVal" type="number" class="form-control />
                     <span asp-validation-for="DrVal" class="text-danger"></span>
                 </div>
-                <div class="mb-3">
+                <div class="mb-3" id="percentagee">
                     <label asp-for="DrPerc"></label>
                     <input asp-for="DrPerc" type="number" class="form-control" />
                     <span asp-validation-for="DrPerc" class="text-danger"></span>
@@ -91,12 +91,12 @@
             <h5 class="text-center">@localizer["Contract Cases"]</h5>
             <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
                 
-                <div class="mb-3">
-                    <label asp-for="DrValContract"></label>
+                <div class="mb-3" id="valueeContract">
+                    <label asp-for="DrValContract" ></label>
                     <input asp-for="DrValContract" type="number" class="form-control" />
                     <span asp-validation-for="DrValContract" class="text-danger"></span>
                 </div>
-                <div class="mb-3">
+                <div class="mb-3" id="percentageeContract">
                     <label asp-for="DrPercContract"></label>
                     <input asp-for="DrPercContract" type="number" class="form-control" />
                     <span asp-validation-for="DrPercContract" class="text-danger"></span>
@@ -134,4 +134,51 @@
             }
         });
     }
+
+    function ValueOrRatio(e)
+    {
+        var value = e.target.value;
+        console.log(value)
+        var percentage = document.getElementById('percentagee')
+        var valuee = document.getElementById('valuee')
+        var valueeContract = document.getElementById('valueeContract');
+        var percentageeContract = document.getElementById('percentageeContract');
+
+        if (value == 2 || @Model.DrValFlg ==2)
+        {
+            percentage.style.display = "none";
+            percentageeContract.style.display = "none";
+            valuee.style.display = "block";
+            valueeContract.style.display = "block";
+        }
+        else if (value == 1 || @Model.DrValFlg == 1) {
+            valuee.style.display = "none";
+            valueeContract.style.display = "none";
+            percentage.style.display = "block";
+            percentageeContract.style.display = "block";
+
+        }
+    }
+    function ValueOrRati()
+    {
+        var percentage = document.getElementById('percentagee')
+        var valuee = document.getElementById('valuee')
+        var valueeContract = document.getElementById('valueeContract');
+        var percentageeContract = document.getElementById('percentageeContract');
+
+        if (@Model.DrValFlg == 2) {
+            percentage.style.display = "none";
+            percentageeContract.style.display = "none";
+            valuee.style.display = "block";
+            valueeContract.style.display = "block";
+        }
+        else if (@Model.DrValFlg == 1) {
+            valuee.style.display = "none";
+            valueeContract.style.display = "none";
+            percentage.style.display = "block";
+            percentageeContract.style.display = "block";
+        }
+    }
+    //when page load
+    ValueOrRati();
 </script>

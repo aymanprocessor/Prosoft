@@ -60,7 +60,7 @@
                 </div>
                 <div class="mb-3 ">
                     <label asp-for="CostCode"></label>
-                    <select asp-for="CostCode" asp-items="costsList" class="form-control text-center">
+                    <select asp-for="CostCode" asp-items="costsList"  class="form-control text-center">
                         <option value="">-- Choose --</option>
                     </select>
                     <span asp-validation-for="CostCode" class="text-danger"></span>
@@ -72,12 +72,12 @@
             <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
                 <div class="mb-3 ">
                     <label asp-for="PlValue"></label>
-                    <input asp-for="PlValue" class="form-control" type="number" />
+                    <input asp-for="PlValue" class="form-control" type="number" value="0" />
                     <span asp-validation-for="PlValue" class="text-danger"></span>
                 </div>
                 <div class="mb-3 ">
                     <label asp-for="DrPerc"></label>
-                    <input asp-for="DrPerc" class="form-control" type="number" />
+                    <input asp-for="DrPerc" class="form-control" type="number" value="0" />
                     <span asp-validation-for="DrPerc" class="text-danger"></span>
                 </div>
             </div>

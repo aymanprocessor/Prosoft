@@ -22,7 +22,7 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
         public decimal? PlValue { get; set; }
 
         [DisplayName("Cost Name")]
-        public int CostCode { get; set; }
+        public int? CostCode { get; set; }
 
         [DisplayName("Service Type")]
         public int? ServType { get; set; }
