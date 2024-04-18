@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ProSoft.EF.DTOs.Shared
 {
-    public class PermissionDefDTO
+    public class PermissionDefViewDTO
     {
         public int GId { get; set; }
 

@@ -1,4 +1,4 @@
-﻿@model List<PermissionDefDTO>
+﻿@model List<PermissionDefViewDTO>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
@@ -47,9 +47,7 @@
                     <th class="align-middle">
                         @localizer["Permission Type"]
                     </th>
-                    <th class="align-middle">
-                        @localizer["Action"]
-                    </th>
+                    <th class="align-middle"></th>
                 </tr>
             </thead>
             <tbody>
@@ -66,21 +64,18 @@
                                 @localizer["Yes"]
                             else if (item.ShowHide == 0)
                                 @localizer["No"]
-
                         </td>
                         <td class="align-middle">
                             @if (item.AddSub == 1)
-                                @localizer["Add"]
+                                @localizer["Buying"]
                             else if (item.AddSub == 2)
-                                @localizer["Remove"]
-
+                                @localizer["Selling"]
                         </td>
                         <td class="align-middle">
                             @if (item.FormType == 1)
                                 @localizer["Internal"]
                             else if (item.FormType == 2)
                                 @localizer["External"]
-
                         </td>
                         <td class="text-center align-middle" style="width: 325px;">
                             <a asp-action="Edit_PermissionDef" asp-route-id="@item.GId" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>

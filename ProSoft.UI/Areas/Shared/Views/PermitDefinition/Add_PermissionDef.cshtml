@@ -1,0 +1,100 @@
+﻿@model PermissionDefEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Add New Permission Name";
+    Layout = "_Layout";
+
+    // Casting type to get all permissions as a list
+    SelectList permissions = new SelectList(Model.Permissions, "UniqueType", "GDesc");
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+    <h1 class="mt-4">@localizer["Add New Permission Name"]</h1>
+    <form method="post" asp-action="Add_PermissionDef">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="GId"></label>
+                    <input asp-for="GId" class="form-control" value="@Model.GId" disabled />
+                    <span asp-validation-for="GId" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="UniqueType"></label>
+                    <input asp-for="UniqueType" class="form-control" value="" />
+                    <span asp-validation-for="UniqueType" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+            
+            <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="GDesc"></label>
+                    <input asp-for="GDesc" class="form-control" />
+                    <span asp-validation-for="GDesc" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="TransDescUser"></label>
+                    <input asp-for="TransDescUser" class="form-control" />
+                    <span asp-validation-for="TransDescUser" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+            
+            <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="TransType"></label>
+                    <select asp-for="TransType" asp-items="permissions" class="form-control text-center">
+                        <option value="0">Not Depend On</option>
+                    </select>
+                    <span asp-validation-for="TransType" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="ShowHide"></label>
+                    <select asp-for="ShowHide" class="form-control text-center">
+                        <option value="1">@localizer["Yes"]</option>
+                        <option value="0">@localizer["No"]</option>
+                    </select>
+                    <span asp-validation-for="ShowHide" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="AddSub"></label>
+                    <select asp-for="AddSub" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                        <option value="1">@localizer["Buying"]</option>
+                        <option value="2">@localizer["Selling"]</option>
+                    </select>
+                    <span asp-validation-for="AddSub" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="FormType"></label>
+                    <select asp-for="FormType" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                        <option value="1">@localizer["Internal"]</option>
+                        <option value="2">@localizer["External"]</option>
+                    </select>
+                    <span asp-validation-for="FormType" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex justify-content-md-center gap-2">
+                <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add"]</button>
+                <a asp-controller="PermitDefinition" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>

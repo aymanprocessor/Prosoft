@@ -77,6 +77,7 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<PriceListViewDTO, PriceList>().ReverseMap();
             CreateMap<PriceListEditAddDTO, PriceList>().ReverseMap();
             CreateMap<TermsPriceListViewDTO, PriceListDetail>().ReverseMap();
+            CreateMap<TermsPriceListEditAddDTO, PriceListDetail>().ReverseMap();
             //////////Stocks////////////////////
             CreateMap<KindStore, KindStoreDTO>().ReverseMap();
             CreateMap<Branch, BranchDTO>().ReverseMap();
@@ -87,7 +88,8 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<UnitCode, UnitCodeDTO>().ReverseMap();
             CreateMap<Sections2, SectionViewDTO>().ReverseMap();
             CreateMap<Sections2, SectionEditAddDTO>().ReverseMap();
-            CreateMap<GeneralCode, PermissionDefDTO>().ReverseMap();
+            CreateMap<GeneralCode, PermissionDefViewDTO>().ReverseMap();
+            CreateMap<GeneralCode, PermissionDefEditAddDTO>().ReverseMap();
         }
     }
 }
