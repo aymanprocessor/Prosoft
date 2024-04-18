@@ -244,6 +244,8 @@
   "Search Level 1...": "بحث مستوي 1...",
   "Search Level 2...": "بحث مستوي 2...",
   "Search Level 3...": "بحث مستوي 3...",
+  "Add Term To Price List": "اضافة بند لقائمة اسعار",
+  "Edit Term To Price List": "تعديل بند لقائمة اسعار",
 
   "Cost Name": "اسم التكلفة",
   "Stocks System": "نظام المخازن",
@@ -320,5 +322,7 @@
   "Buying": "شراء",
   "Selling": "بيع",
   "Remove": "حذف",
-  "Add New Permission Name": "اضافة اسم اذن جديد"
+  "Add New Permission Name": "اضافة اسم اذن جديد",
+  "Edit Permission": "تعديل اذن",
+  "User Transactions": "ربط المستخدمين بالحركات"
 }

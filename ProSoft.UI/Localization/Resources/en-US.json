@@ -244,6 +244,8 @@
   "Search Level 1...": "Search Level 1...",
   "Search Level 2...": "Search Level 2...",
   "Search Level 3...": "Search Level 3...",
+  "Add Term To Price List": "Add Price Lists Details",
+  "Edit Term To Price List": "Edit Term To Price List",
 
   "Cost Name": "Cost Name",
   "Stocks System": "Stocks System",
@@ -320,5 +322,7 @@
   "Buying": "Buying",
   "Selling": "Selling",
   "Remove": "Remove",
-  "Add New Permission Name": "Add New Permission Name"
+  "Add New Permission Name": "Add New Permission Name",
+  "Edit Permission": "Edit Permission",
+  "User Transactions": "User Transactions"
 }

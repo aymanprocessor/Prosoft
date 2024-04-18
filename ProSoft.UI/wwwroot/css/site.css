@@ -164,3 +164,8 @@ html {
         width: 100% !important;
     }
 }
+/* For clicking on table row */
+.active-row {
+    background-color: #cdcdcd;
+}
+/* For clicking on table row */

@@ -9,6 +9,7 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
     public class TermsPriceListViewDTO
     {
         public int PLId { get; set; }
+        public int PLDtlId { get; set; }
         public int? PLDetailCode { get; set; }
         public string ClinicDesc { get; set; }
         public string SClinicDesc { get; set; }

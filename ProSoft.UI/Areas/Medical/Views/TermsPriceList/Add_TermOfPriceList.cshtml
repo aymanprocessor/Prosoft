@@ -1,0 +1,181 @@
+﻿@model TermsPriceListEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Add Price List DtL";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    SelectList mainList = new SelectList(Model.MainClinics, "ClinicId", "ClinicDesc");
+
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+
+    <h1 class="mt-4">@localizer["Add Term To Price List"]</h1>
+    <form method="post" asp-action="Add_TermOfPriceList" id="myForm">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly"></div>
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="PLDetailCode"></label>
+                    <input asp-for="PLDetailCode" class="form-control" value="@ViewBag.SortID" />
+                    <span asp-validation-for="PLDetailCode" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile servise gap-3">
+                @* from main clinic *@
+                <div class="mb-3 ">
+                    <label asp-for="ClinicId"> </label>
+                    <select asp-for="ClinicId" asp-items="mainList" class="form-control text-center" onchange="GetSubClinics()">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="ClinicId" class="text-danger"></span>
+                </div>
+                @* from sub clinic *@
+                <div class="mb-3">
+                    <label asp-for="SClinicId"></label>
+                    <select asp-for="SClinicId" class="form-control text-center" onchange="GetServeClinics()">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="SClinicId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
+                @* from Serve clinic *@
+                <div class="mb-3  servise">
+                    <label asp-for="ServId"></label>
+                    <select asp-for="ServId" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="ServId" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="ServBefDesc"></label>
+                    <input asp-for="ServBefDesc" class="form-control" />
+                    <span asp-validation-for="ServBefDesc" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
+                <div class="mb-3 ">
+                    <label asp-for="DiscoutComp"></label>
+                    <input asp-for="DiscoutComp" class="form-control" value="0" />
+                    <span asp-validation-for="DiscoutComp" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="CompCovPercentage"></label>
+                    <input asp-for="CompCovPercentage" class="form-control" value="0" />
+                    <span asp-validation-for="CompCovPercentage" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
+                <div class="mb-3 ">
+                    <label asp-for="PlValue2"></label>
+                    <input asp-for="PlValue2" class="form-control" value="0" />
+                    <span asp-validation-for="PlValue2" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="PlValue3"></label>
+                    <input asp-for="PlValue3" class="form-control" value="0" />
+                    <span asp-validation-for="PlValue" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
+                <div class="mb-3 ">
+                    <label asp-for="ExtraVal"></label>
+                    <input asp-for="ExtraVal" class="form-control" value="0" />
+                    <span asp-validation-for="ExtraVal" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="ExtraVal2"></label>
+                    <input asp-for="ExtraVal2" class="form-control" value="0" />
+                    <span asp-validation-for="ExtraVal2" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <label asp-for="ServOnOff"></label>
+                    <select asp-for="ServOnOff" class="form-control text-center">
+                        <option value="1">@localizer["Yes"]</option>
+                        <option value="2">@localizer["No"]</option>
+                    </select>
+                    <span asp-validation-for="ServOnOff" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="Covered"></label>
+                    <select asp-for="Covered" class="form-control text-center">
+                        <option value="1">@localizer["Yes"]</option>
+                        <option value="2">@localizer["No"]</option>
+                    </select>
+                    <span asp-validation-for="Covered" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <!------------------------------------------------------------------------------->
+
+            <button type="submit" class="btn btn-primary" style="width:150px">
+                @localizer["Add Term"]
+            </button>
+            <a asp-controller="PriceList" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                @localizer["Cancel"]
+            </a>
+        </div>
+    </form>
+</div>
+
+<script>
+    // for sub clinic
+    function GetSubClinics() {
+        var clinicId = document.getElementById("ClinicId").value;
+
+        var subClinicId = document.getElementById("SClinicId");
+        subClinicId.innerHTML = `<option value="">-- Choose --</option>`;
+
+        $.ajax({
+            url: `/Medical/ClinicTrans/GetSubClinic/${clinicId}`,
+            success: function (result) {
+                for (let item of result) {
+                    subClinicId.innerHTML +=
+                        `<option value="${item.sClinicId}">${item.sClinicDesc}</option>`
+                }
+            }
+        });
+    }
+
+    // for serve clinic
+    function GetServeClinics() {
+        var subClinicId = document.getElementById("SClinicId").value;
+
+        var serveClinicId = document.getElementById("ServId");
+        serveClinicId.innerHTML = `<option value="">-- Choose --</option>`;
+
+        $.ajax({
+            url: `/Medical/ClinicTrans/GetServeClinic/${subClinicId}`,
+            success: function (result) {
+                for (let item of result) {
+                    serveClinicId.innerHTML +=
+                        `<option value="${item.servId}">${item.servDesc}</option>`;
+                }
+            }
+        });
+    }
+</script>

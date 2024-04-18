@@ -162,8 +162,8 @@
                     </th> *@
                   
                     <th class="align-middle text-center" rowspan="2">
-                        @localizer["Action"]
-                    </th>
+@*                         @localizer["Action"]
+ *@                    </th>
                 </tr>
                 <tr>
 
@@ -217,7 +217,7 @@
             priceListDtlHeader.innerHTML = "@localizer["Terms of Price Lists"] :" + itemName;
 
             let priceListDtlAddButton = priceListDtlHead.querySelector("a");
-            priceListDtlAddButton.setAttribute("href", `/Medical/DoctorSpecialties/Add_DocSubDtl/${id}`);
+            priceListDtlAddButton.setAttribute("href", `/Medical/TermsPriceList/Add_TermOfPriceList/${id}`);
             // console.log(priceListDtlAddButton);
             ///////////////////////////////////////////////////////////////////
 
@@ -227,7 +227,7 @@
             $.ajax({
                 url: `/Medical/TermsPriceList/GetTermOfPriceLists/${id}`,
                 success: function (result) {
-                    // console.log(result);
+                     console.log(result);
                     // console.log(result.sort((a, b) => b.itemanalcode - a.itemanalcode));
                     //sortng
                     result.sort((a, b) => a.plDetailCode - b.plDetailCode);
@@ -255,13 +255,12 @@
                                     <td class="align-middle">${item.covered}</td>
                                     
                                     <td width="30%" class="text-center">
-                                      <a href="/Medical/DoctorSpecialties/Edit_DocSubDtl/${item.docSubId}" class="btn btn-sm btn-success mb-1  fs-6" style="width:150px">
+                                            <a href="/Medical/TermsPriceList/Edit_TermOfPriceList/${item.plDtlId}"  class="btn btn-sm btn-success mb-1  fs-6" style="width:150px">
                                             <i class="bi bi-pencil"></i> @localizer["Edit"]
                                         </a>
-                                    <form action="/Medical/DoctorSpecialties/Delete_DocSubDtl" method="post" class="d-inline">
+                                       <form action="/Medical/TermsPriceList/Delete_TermOfPriceList" method="post" class="d-inline">
     @Html.AntiForgeryToken()
-                                            <input type="hidden" name="id" value="${item.docSubId}" />
-                                            <input type="hidden" name="redirect" value="Invoices" />
+                                      <input type="hidden" name="id" value="${item.plDtlId}" />
                                         <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">@localizer["Delete"]</button>
                                         </form>
                                     </td>
