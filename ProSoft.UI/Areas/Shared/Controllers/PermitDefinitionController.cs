@@ -21,81 +21,69 @@ namespace ProSoft.UI.Areas.Shared.Controllers
 
         public async Task<IActionResult> Index()
         {
-            List<GeneralCode> permissions = (await _permissionRepo.GetAllAsync())
-                .Where(obj => obj.GType == "4").ToList();
-            List<PermissionDefDTO> permissionsDTO = _mapper.Map<List<PermissionDefDTO>>(permissions);
-            foreach (var item in permissionsDTO)
-            {
-                if (item.TransType != 0)
-                    item.PermissionDepended = (await _permissionRepo.GetByIdAsync(item.TransType)).GDesc;
-                else
-                    item.PermissionDepended = "";
-            }
+            List<PermissionDefViewDTO> permissionsDTO = await _permissionRepo.GetAllPermissionsAsync();
             return View(permissionsDTO);
         }
 
         // Get Add
         public async Task<IActionResult> Add_PermissionDef()
         {
-            //ViewBag.sectionId = await _permissionRepo.GetNewIdAsync();
-            return View();
+            PermissionDefEditAddDTO permissionDTO = await _permissionRepo.GetEmptyPermissionAsync();
+            return View(permissionDTO);
         }
 
         // Post Add
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Add_PermissionDef(SectionEditAddDTO sectionDTO)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        Sections2 section = _mapper.Map<Sections2>(sectionDTO);
-        //        int branchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
-        //        section.BranchId = branchId;
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Add_PermissionDef(PermissionDefEditAddDTO permissionDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                GeneralCode permission = _mapper.Map<GeneralCode>(permissionDTO);
+                permission.GType = "4";
 
-        //        await _sectionRepo.AddAsync(section);
-        //        await _sectionRepo.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(sectionDTO);
-        //}
+                await _permissionRepo.AddAsync(permission);
+                await _permissionRepo.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(permissionDTO);
+        }
 
         // Get Edit
-        //public async Task<IActionResult> Edit_PermissionDef(int id)
-        //{
-        //    Sections2 section = await _sectionRepo.GetByIdAsync(id);
-        //    SectionEditAddDTO sectionDTO = _mapper.Map<SectionEditAddDTO>(section);
-        //    return View(sectionDTO);
-        //}
+        public async Task<IActionResult> Edit_PermissionDef(int id)
+        {
+            PermissionDefEditAddDTO permissionDTO = await _permissionRepo.GetPermissionByIdAsync(id);
+            return View(permissionDTO);
+        }
 
         // Post Edit
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit_PermissionDef(int id, SectionEditAddDTO sectionDTO)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        Sections2 section = await _sectionRepo.GetByIdAsync(id);
-        //        int branchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
-        //        sectionDTO.BranchId = branchId;
-        //        _mapper.Map(sectionDTO, section);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit_PermissionDef(int id, PermissionDefEditAddDTO permissionDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                GeneralCode permission = await _permissionRepo.GetByIdAsync(id);
+                _mapper.Map(permissionDTO, permission);
+                //permission.GType = "4";
 
-        //        await _sectionRepo.UpdateAsync(section);
-        //        await _sectionRepo.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(sectionDTO);
-        //}
+                await _permissionRepo.UpdateAsync(permission);
+                await _permissionRepo.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(permissionDTO);
+        }
 
         // Delete
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Delete_PermissionDef(int id)
-        //{
-        //    Sections2 section = await _sectionRepo.GetByIdAsync(id);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete_PermissionDef(int id)
+        {
+            GeneralCode permission = await _permissionRepo.GetByIdAsync(id);
 
-        //    await _sectionRepo.DeleteAsync(section);
-        //    await _sectionRepo.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
+            await _permissionRepo.DeleteAsync(permission);
+            await _permissionRepo.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

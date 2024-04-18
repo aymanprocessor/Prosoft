@@ -90,5 +90,7 @@ namespace ProSoft.EF.DbContext
         public DbSet<UnitCode> UnitCodes { get; set; }
         public virtual DbSet<Sections2> Sections2s { get; set; }
         public DbSet<GeneralCode> GeneralCodes { get; set; }
+        public DbSet<StoreTran> StoreTrans { get; set; }
+        public DbSet<UserTranss> UserTransactions { get; set; }
     }
 }
