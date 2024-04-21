@@ -324,5 +324,14 @@
   "Remove": "Remove",
   "Add New Permission Name": "Add New Permission Name",
   "Edit Permission": "Edit Permission",
-  "User Transactions": "User Transactions"
+  "Users Transactions": "Users Transactions",
+  "Transactions of User": "Transactions of User",
+  "Search users by useer code ...": "Search users by useer code...",
+  "Permissions": "Permissions",
+  "Add Transaction For User": "Add Transaction For User",
+  "Transaction Type": "Transaction Type",
+  "Permission": "Permission",
+  "Add New Transaction For": "Add New Transaction For",
+  "User Code": "User Code",
+  "Before anything, select the user": "Before anything, select the user"
 }

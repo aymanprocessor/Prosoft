@@ -1,0 +1,79 @@
+﻿@model UserTransEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Add New User Transaction";
+    Layout = "_Layout";
+
+    // Casting type to get all permissions as a list
+    SelectList transactionTypes = new SelectList(Model.TransactionTypes, "TransId", "TransDesc");
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+    <h1 class="mt-4">@localizer["Add New Transaction For"] : @ViewBag.userName</h1>
+    <form method="post" asp-action="Add_Transaction">
+        <div class="border p-3 mt-4">
+
+            @* Hidden Inputs *@
+            <input asp-for="UsrId" type="hidden" value="@ViewBag.userCode" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="UsrId"></label>
+                    <input asp-for="UsrId" class="form-control" disabled value="@ViewBag.userCode" />
+                    <span asp-validation-for="UsrId" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DType"></label>
+                    <select asp-for="DType" asp-items="transactionTypes" class="form-control text-center" onchange="getPermissions(event)">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="DType" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="GId"></label>
+                    <select asp-for="GId" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="GId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex justify-content-md-center gap-2">
+                <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add"]</button>
+                <a asp-controller="UserTransaction" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        function getPermissions(e) {
+            let dType = e.target.value;
+            let permissionsDropDown = document.querySelector("#GId");
+            permissionsDropDown.innerHTML = `<option value="">-- Choose --</option>`;
+
+            $.ajax({
+                url: `/Stocks/UserTransaction/GetPermissionsByTransType/${dType}`,
+                success: function (result) {
+                    for (let item of result) {
+                        permissionsDropDown.innerHTML +=
+                            `<option value="${item.gId}">${item.gDesc}</option>`
+                    }
+                }
+            });
+        }
+    </script>
+}

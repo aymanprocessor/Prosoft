@@ -324,5 +324,14 @@
   "Remove": "حذف",
   "Add New Permission Name": "اضافة اسم اذن جديد",
   "Edit Permission": "تعديل اذن",
-  "User Transactions": "ربط المستخدمين بالحركات"
+  "Users Transactions": "حركات المستخدمين",
+  "Transactions of User": "حركات المستخدم",
+  "Search users by useer code ...": "ابحث عن المستخدم بواسطة الكود ...",
+  "Permissions": "الاذون",
+  "Add Transaction For User": "اضافة حركة للمستخدم",
+  "Transaction Type": "نوع الحركة",
+  "Permission": "الاذن",
+  "Add New Transaction For": "اضافة حركة جديدة ل",
+  "User Code": "كود المستخدم",
+  "Before anything, select the user": "قبل اي شيئ قم باختيار المستخدم"
 }

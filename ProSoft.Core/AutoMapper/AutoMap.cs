@@ -90,6 +90,9 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<Sections2, SectionEditAddDTO>().ReverseMap();
             CreateMap<GeneralCode, PermissionDefViewDTO>().ReverseMap();
             CreateMap<GeneralCode, PermissionDefEditAddDTO>().ReverseMap();
+            CreateMap<AppUser, UserTransViewDTO>().ReverseMap();
+            CreateMap<StoreTran, StoreTransDTO>().ReverseMap();
+            CreateMap<UserTranss, UserTransEditAddDTO>().ReverseMap();
         }
     }
 }

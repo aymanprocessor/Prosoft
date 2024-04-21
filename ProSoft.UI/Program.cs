@@ -75,6 +75,7 @@ builder.Services.AddScoped<IUnitCodeRepo, UnitCodeRepo>();
 builder.Services.AddScoped<IClassificationCustRepo, ClassificationCustRepo>();
 builder.Services.AddScoped<ISectionRepo, SectionRepo>();
 builder.Services.AddScoped<IGeneralTableRepo, GeneralTableRepo>();
+builder.Services.AddScoped<IUserTransRepo, UserTransRepo>();
 
 ///For Localization
 builder.Services.AddLocalization();

@@ -10,11 +10,10 @@ using ProSoft.EF.DTOs.Shared;
 
 namespace ProSoft.EF.DTOs.Stocks
 {
-    public class UserTransDTO
+    public class UserTransViewDTO
     {
-        public int UsrId { get; set; }
-        public int GId { get; set; }
-        public List<UserDTO>? Users {  get; set; }
-        public List<PermissionDefViewDTO>? Permissions {  get; set; }
+        public int UserCode { get; set; }
+        public string UserName { get; set; }
+        public List<PermissionDefViewDTO> Permissions {  get; set; }
     }
 }

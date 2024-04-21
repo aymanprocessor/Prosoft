@@ -1,4 +1,5 @@
-﻿using ProSoft.EF.DTOs.Stocks;
+﻿using ProSoft.EF.DTOs.Shared;
+using ProSoft.EF.DTOs.Stocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,11 @@ namespace ProSoft.EF.IRepositories.Stocks
 {
     public interface IUserTransRepo
     {
-        Task<UserTransDTO> GetUserTransIndexAsync();
+        Task<List<UserTransViewDTO>> GetAllUserTransAsync();
+        Task<UserTransEditAddDTO> GetEmptyUserTransAsync();
+        Task<List<PermissionDefViewDTO>> GetPermissionsByTransTypeAsync(string transType);
+        Task<List<PermissionDefViewDTO>> GetPermissionsForUserAsync(int userCode);
+        Task AddUserTransAsync(UserTransEditAddDTO userTransDTO);
+        Task SaveChangesAsync();
     }
 }
