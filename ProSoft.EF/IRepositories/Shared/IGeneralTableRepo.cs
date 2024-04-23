@@ -11,7 +11,7 @@ namespace ProSoft.EF.IRepositories.Shared
     public interface IGeneralTableRepo: IRepository<GeneralCode, int>
     {
         Task<int> GetNewIdAsync();
-        Task<List<PermissionDefViewDTO>> GetAllPermissionsAsync(string GType);
+        Task<List<PermissionDefViewDTO>> GetPermissionsAsync(string GType);
         Task<PermissionDefEditAddDTO> GetEmptyPermissionAsync();
         Task<PermissionDefEditAddDTO> GetPermissionByIdAsync(int id);
     }
