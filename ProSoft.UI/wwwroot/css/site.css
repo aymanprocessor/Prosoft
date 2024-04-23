@@ -137,7 +137,7 @@ html {
     display: none;
 }
 
-.role {
+.role, .trans {
     background-color: #bbb;
     min-width: 82px;
     text-align: center;
@@ -147,7 +147,8 @@ html {
     transition: all .3s;
 }
 
-.toggle-checkbox:checked + .role {
+.toggle-checkbox:checked + label/*,
+.toggle-checkbox:checked + .trans */{
     background-color: #5959f5;
     color: white;
     border-color: blue;

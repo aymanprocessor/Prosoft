@@ -5,6 +5,9 @@
     ViewData["Title"] = "Add New User Transaction";
     Layout = "_Layout";
 
+    // Casting type to get all transactions as a list
+    List<PermissionDefViewDTO> allTransactions = (List<PermissionDefViewDTO>)ViewBag.transactions;
+
     // Casting type to get all permissions as a list
     SelectList transactionTypes = new SelectList(Model.TransactionTypes, "TransId", "TransDesc");
 }
@@ -27,7 +30,7 @@
                 </div>
                 <div class="mb-3">
                     <label asp-for="DType"></label>
-                    <select asp-for="DType" asp-items="transactionTypes" class="form-control text-center" onchange="getPermissions(event)">
+                    <select asp-for="DType" asp-items="transactionTypes" class="form-control text-center" onchange="getPermissions(event, @ViewBag.userCode)">
                         <option value="">-- Choose --</option>
                     </select>
                     <span asp-validation-for="DType" class="text-danger"></span>
@@ -36,15 +39,37 @@
 
             <!------------------------------------------------------------------------------->
 
-            <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile ">
-                <div class="mb-3">
-                    <label asp-for="GId"></label>
-                    <select asp-for="GId" class="form-control text-center">
-                        <option value="">-- Choose --</option>
-                    </select>
-                    <span asp-validation-for="GId" class="text-danger"></span>
+            @* <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile "> *@
+            <div class="mb-3">
+@*                     <label asp-for="GId"></label>
+                <select asp-for="GId" class="form-control text-center">
+                    <option value="">-- Choose --</option>
+                </select>
+                <span asp-validation-for="GId" class="text-danger"></span> *@
+
+                <label asp-for="Transactions"></label>
+                <div id="transactions" class="d-flex flex-wrap gap-2 form-control">
+@*                     @for (int i = 0, len = allTransactions.Count(); i < len; i++)
+                    {
+                        if (Model.Transactions.Contains(allTransactions[i], new TransactionDTOComparer()))
+                        {
+                            <input type="checkbox" class="toggle-checkbox" name="transactions" value="@allTransactions[i].GId" id="trans-@i" checked />
+                            <label for="trans-@i" class="trans me-2 fs-5 px-2">
+                                @allTransactions[i].GDesc
+                            </label>
+                        }
+                        else
+                        {
+                            <input type="checkbox" class="toggle-checkbox" name="transactions" value="@allTransactions[i].GId" id="trans-@i" />
+                            <label for="trans-@i" class="trans me-2 fs-5 px-2">
+                                @allTransactions[i].GDesc
+                            </label>
+                        }
+                    } *@
                 </div>
+                <span asp-validation-for="Transactions" class="text-danger"></span>
             </div>
+            @* </div> *@
 
             <!------------------------------------------------------------------------------->
 
@@ -60,17 +85,46 @@
 
 @section Scripts {
     <script>
-        function getPermissions(e) {
+        function getPermissions(e, userCode) {
+            // let dType = e.target.value;
+            // let permissionsDropDown = document.querySelector("#GId");
+            // permissionsDropDown.innerHTML = `<option value="">-- Choose --</option>`;
+
+            // $.ajax({
+            //     url: `/Stocks/UserTransaction/GetPermissionsByTransType/${dType}?userCode=${userCode}`,
+            //     success: function (result) {
+            //         for (let item of result) {
+            //             permissionsDropDown.innerHTML +=
+            //                 `<option value="${item.gId}">${item.gDesc}</option>`
+            //         }
+            //     }
+            // });
             let dType = e.target.value;
-            let permissionsDropDown = document.querySelector("#GId");
-            permissionsDropDown.innerHTML = `<option value="">-- Choose --</option>`;
+            let permissions = document.getElementById("transactions");
+            console.log(permissions);
+            permissions.innerHTML = "";
 
             $.ajax({
                 url: `/Stocks/UserTransaction/GetPermissionsByTransType/${dType}`,
-                success: function (result) {
-                    for (let item of result) {
-                        permissionsDropDown.innerHTML +=
-                            `<option value="${item.gId}">${item.gDesc}</option>`
+                success: function (resuit) {
+                    permissions.innerHTML =
+                    // `
+                    // `;
+                    for (let i = 0, len = result.length; i < len; i++)
+                    {
+                        if (@Model.Transactions.Contains(allTransactions[i], new TransactionDTOComparer())) {
+                            <input type="checkbox" class="toggle-checkbox" name = "transactions" value = "@allTransactions[i].GId" id = "trans-@i" checked />
+                            <label for= "trans-@i" class= "trans me-2 fs-5 px-2" >
+                                @allTransactions[i].GDesc
+                            </label>
+                        }
+                        else
+                        {
+                            <input type="checkbox" class="toggle-checkbox" name = "transactions" value = "@allTransactions[i].GId" id = "trans-@i" />
+                            <label for= "trans-@i" class= "trans me-2 fs-5 px-2" >
+                                @allTransactions[i].GDesc
+                            </label>
+                        }
                     }
                 }
             });

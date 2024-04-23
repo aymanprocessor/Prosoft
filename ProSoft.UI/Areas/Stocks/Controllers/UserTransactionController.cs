@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProSoft.EF.DTOs.Shared;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.IRepositories;
+using ProSoft.EF.IRepositories.Shared;
 using ProSoft.EF.IRepositories.Stocks;
 using ProSoft.EF.Models.Stocks;
 
@@ -15,12 +16,14 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
     {
         private readonly IUserTransRepo _userTransRepo;
         private readonly IUserRepo _userRepo;
+        private readonly IGeneralTableRepo _permissionsRepo;
         private readonly IMapper _mapper;
         public UserTransactionController(IUserTransRepo userTransRepo,
-            IUserRepo userRepo, IMapper mapper)
+            IUserRepo userRepo, IGeneralTableRepo permissionsRepo, IMapper mapper)
         {
             _userTransRepo = userTransRepo;
             _userRepo = userRepo;
+            _permissionsRepo = permissionsRepo;
             _mapper = mapper;
         }
 
@@ -37,10 +40,10 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             return Json(permissionsDTO);
         }
 
-        public async Task<IActionResult> GetPermissionsByTransType(int id)
+        public async Task<IActionResult> GetPermissionsByTransType(string id/*, int userCode*/)
         {
             List<PermissionDefViewDTO> permissionsDTO = await _userTransRepo
-                .GetPermissionsByTransTypeAsync(id.ToString());
+                .GetPermissionsByTransTypeAsync(id/*, userCode*/);
             return Json(permissionsDTO);
         }
 
@@ -49,7 +52,8 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         {
             ViewBag.userCode = id;
             ViewBag.userName = (await _userRepo.GetUserByIdAsync(id)).UserName;
-            UserTransEditAddDTO userTransDTO = await _userTransRepo.GetEmptyUserTransAsync();
+            ViewBag.transactions = await _permissionsRepo.GetAllPermissionsAsync();
+            UserTransEditAddDTO userTransDTO = await _userTransRepo.GetEmptyUserTransAsync(id);
             return View(userTransDTO);
         }
 
@@ -93,15 +97,13 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         //}
 
         // Delete
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Delete_Transaction(int id)
-        //{
-        //    GeneralCode permission = await _permissionRepo.GetByIdAsync(id);
-
-        //    await _permissionRepo.DeleteAsync(permission);
-        //    await _permissionRepo.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete_Transaction(int id, int userCode)
+        {
+            await _userTransRepo.DeleteUserTransAsync(id, userCode);
+            await _userTransRepo.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

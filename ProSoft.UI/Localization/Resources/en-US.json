@@ -246,6 +246,11 @@
   "Search Level 3...": "Search Level 3...",
   "Add Term To Price List": "Add Price Lists Details",
   "Edit Term To Price List": "Edit Term To Price List",
+  "After Discount": "After Discount",
+  "Company Group": "Company Group",
+  "Add CompanyGroup": "Add CompanyGroup",
+  "Edit CompanyGroup": "Edit CompanyGroup",
+  "CompanyGroup Name": "CompanyGroup Name",
 
   "Cost Name": "Cost Name",
   "Stocks System": "Stocks System",
@@ -333,5 +338,7 @@
   "Permission": "Permission",
   "Add New Transaction For": "Add New Transaction For",
   "User Code": "User Code",
-  "Before anything, select the user": "Before anything, select the user"
+  "Before anything, select the user": "Before anything, select the user",
+  "Transaction Name": "Transaction Name",
+  "Please, choose at least one transaction": "Please, choose at least one transaction"
 }

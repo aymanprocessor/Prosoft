@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ProSoft.EF.DTOs.Shared;
 
 namespace ProSoft.EF.DTOs.Stocks
 {
@@ -22,5 +23,8 @@ namespace ProSoft.EF.DTOs.Stocks
         public string DType { get; set; }
 
         public List<StoreTransDTO>? TransactionTypes { get; set; }
+
+        [Required(ErrorMessage = "Please, choose at least one transaction")]
+        public List<PermissionDefViewDTO> Transactions { get; set; }
     }
 }

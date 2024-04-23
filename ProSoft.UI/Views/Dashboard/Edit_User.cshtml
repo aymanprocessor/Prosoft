@@ -44,20 +44,20 @@
             </div>
             <div class="mb-3">
                 <label>@localizer["Roles"]</label>
-                <div class="d-flex gap-2 form-control">
-                    @for (int i = 0, len1 = allRoles.Count(); i < len1; i++)
+                <div class="d-flex flex-wrap gap-2 form-control">
+                    @for (int i = 0, len = allRoles.Count(); i < len; i++)
                     {
                         if (Model.Roles.Contains(allRoles[i], new RoleDTOComparer()))
                         {
                             <input type="checkbox" class="toggle-checkbox" name="roles" value="@allRoles[i].Name" id="role-@i" checked />
-                            <label for="role-@i" class="role me-1 fs-5 px-2">
+                            <label for="role-@i" class="role me-2 fs-5 px-2">
                                 @allRoles[i].Name
                             </label>
                         }
                         else
                         {
                             <input type="checkbox" class="toggle-checkbox" name="roles" value="@allRoles[i].Name" id="role-@i" />
-                            <label for="role-@i" class="role me-1 fs-5 px-2">
+                            <label for="role-@i" class="role me-2 fs-5 px-2">
                                 @allRoles[i].Name
                             </label>
                         }
