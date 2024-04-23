@@ -9,7 +9,7 @@
 
 <div class="container pt-2">
     <h1 class="mt-4">@localizer["Add CompanyGroup"]</h1>
-    <form method="post" asp-action="Add_CompanyGroup">
+    <form method="post" asp-action="Add_CompanyGroup" id="myForm">
         <div class="border p-3 mt-4">
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -35,13 +35,13 @@
                     <span asp-validation-for="CompGroupOnOff" class="text-danger"></span>
                 </div>
             </div>
+            <button type="submit" class="btn btn-primary" style="width:150px">
+                @localizer["Add"]
+            </button>
+            <a asp-controller="Doctor" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                @localizer["Cancel"]
+            </a>
 
-            <div class="parent d-flex justify-content-md-center gap-2">
-                <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add"]</button>
-                <a asp-controller="CompanyGroup" asp-action="Index" class="btn btn-secondary" style="width:150px">
-                    @localizer["Cancel"]
-                </a>
-            </div>
         </div>
     </form>
 </div>

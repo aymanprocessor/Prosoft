@@ -26,4 +26,7 @@ public partial class CompanyGroup
 
     [Column("COMP_GROUP_ON_OFF")]
     public int? CompGroupOnOff { get; set; }
+
+    [InverseProperty("Group")]
+    public virtual ICollection<Company> Companies { get; set; } = new List<Company>();
 }

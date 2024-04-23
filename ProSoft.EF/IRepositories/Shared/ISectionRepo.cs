@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProSoft.EF.IRepositories.Shared
 {
-    public interface ISectionRepo: IRepository<Sections2, int>
+    public interface ISectionRepo : IRepository<Sections2, int>
     {
         Task<int> GetNewIdAsync();
     }

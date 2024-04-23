@@ -18,8 +18,8 @@ namespace ProSoft.UI.Areas.Medical.Controllers
 
         public CompanyGroupController(ICompanyGroupRepo companyGroupRepo, IMapper mapper)
         {
-            _mapper = mapper;
             _companyGroupRepo = companyGroupRepo;
+            _mapper = mapper;
 
         }
         public async Task<IActionResult> Index()

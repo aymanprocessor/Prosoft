@@ -11,22 +11,22 @@
     <h1 class="mb-2">@localizer["Company Group"] </h1>
 </div>
 
-<div class="container pt-2">
+<div class="container pt-2" style="min-height:100vh;">
     <div class="d-flex justify-content-between mb-2 gap-2">
         <div>
-            <a asp-area="Medical" asp-controller="CompanyGroup" asp-action="Add_CompanyGroup" class="btn btn-sm btn-primary fs-6" style="width:150px">
+            <a asp-area="Medical" asp-controller="CompanyGroup" asp-action="Add_CompanyGroup" class="btn btn-sm btn-primary fs-6" style="width:170px">
                 @localizer["Add CompanyGroup"]
             </a>
         </div>
     </div>
-    <div class="overflow-auto" style="max-height:calc(100vh - 145px)">
+    <div class="overflow-auto" style="height: 170px;">
         <table id="myTable" class="table table-bordered table-hover overflow-auto" style="width:100%;">
             <thead class="table-dark">
                 <tr>
                     <th class="align-middle">
                         @localizer["Code"]
                     </th>
-                    <th class="align-middle">
+                    <th class="align-middle item-name">
                         @localizer["CompanyGroup Name"]
                     </th>
                     <th class="align-middle">
@@ -40,9 +40,9 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
+                    <tr onclick="GetCompany(event,@item.GroupId)" style="cursor:pointer;">
                         <td class="align-middle">@item.GroupId</td>
-                        <td class="align-middle">@item.GroupName</td>
+                        <td class="align-middle item-name">@item.GroupName</td>
                         <td class="align-middle">
                             @if (@item.CompGroupOnOff==1)
                                 @localizer["Yes"]
@@ -63,4 +63,184 @@
         </table>
 
     </div>
+    @* Table for Doctor Prenstage *@
+
+    <div class="company-table-head d-flex justify-content-between align-items-center mt-1">
+        <h2 class="header company">@localizer["Companies"] :</h2>
+
+        <a class="btn btn-sm btn-primary fs-6" style="width:150px">
+        @localizer["Add Company"]
+        </a>
+        @* asp-controller="MedAnalysis" asp-action="Add_SubItemAnalysis" asp-route-ID="@ViewBag.item.MainCode" asp-route-itemAnalCode="" *@
+    </div>
+    <div class=" p-0 mb-2 overflow-auto" style="max-height: 400px;">
+
+        <table id="myTable" class="table table-bordered table-hover company-table" style="width:100%">
+            <thead class="table-dark">
+                <tr>
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Code"]
+                    </th>
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Company Name"]
+                    </th>
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["List ID"]
+                    </th>
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Tax Number"]
+                    </th>
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Insurance Company Level"]
+                    </th>
+                    <th class="align-middle text-center" colspan="2">@localizer["Accounting code"]</th>
+                    <th class="align-middle text-center" colspan="2">@localizer["Medical stamp"]</th>
+                    <th class="align-middle text-center" colspan="2">@localizer["Service"]</th>
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Company Address"]
+                    </th>
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Telephone Number"]
+                    </th>
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Fax"]
+                    </th>
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Medical Manager"]
+                    </th>
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Medical Manager"]
+                    </th>
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Action"]
+                    </th>
+                </tr>
+                <tr>
+
+                    <th class="align-middle">
+                        @localizer["Sub"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Main"]
+                    </th>
+                    <th class="align-middle">
+                        %
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Maximum"]
+                    </th>
+                    <th class="align-middle">
+                        %
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Stock Type"]
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
 </div>
+
+
+ <script>
+
+
+    @* Ajax for Doctor Prenstage *@
+        function GetCompany(e,id) {
+
+          // const drName = e.target[e.target.value].textContent;
+
+            var companies = document.querySelector(".company-table tbody");
+
+            // Handle active clic
+            let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");;
+
+            allItemRows.forEach(row => {
+                row.classList.remove("active-row");
+            });
+
+            let clickedTarget = e.target.parentElement
+            clickedTarget.classList.add("active-row");
+            ///////////////////////////////////////////////////////////////////
+
+            // Catch header for ClinicTrans => PatAdmissionID and reset it
+            let companyHead = document.querySelector(".company-table-head");
+
+           //let itemId = id;// clickedTarget.querySelector(".item-id").innerText;
+            let itemName = clickedTarget.querySelector(".item-name").innerText;
+           // console.log(itemName);
+
+            let companyHeader = companyHead.querySelector(".header.company"); // Display Header for sub items
+            companyHeader.innerHTML = "@localizer["Companies"] : " + itemName;
+
+            let companyAddButton = companyHead.querySelector("a");
+            companyAddButton.setAttribute("href", `/Medical/Company/Add_Company/${id}`);
+            // console.log(clinicTransAddButton);
+            ///////////////////////////////////////////////////////////////////
+
+            // Handle ajax call
+            companies.innerHTML = "";  // Empty the body
+
+            $.ajax({
+                url: `/Medical/Company/GetCompany/${id}`,
+                success: function (result) {
+                    console.log(result);
+                    // console.log(result.sort((a, b) => b.itemanalcode - a.itemanalcode));
+                    //sortng
+                   // result.sort((a, b) => b.counter - a.counter)
+
+                    for (let item of result) {
+                        const company = document.createElement("tr");
+                         let valOrRatio;
+                            if (item.drValFlg == 1) {
+                                valOrRatio = "@localizer["Ratio"]";
+                            } else if (item.drValFlg == 2) {
+                                valOrRatio = "@localizer["Value"]";
+                            }
+                         // let centerValue;
+                         //    if (item.drPerc == 0) {
+                         //        centerValue = item.valueService - item.drVal;
+                         //    } else if (item.drVal == 0) {
+                         //    centerValue = item.valueService - (item.valueService * (item.drPerc / 100));
+                         //    }
+
+                         // let centerValueContract;
+                         //    if (item.drPercContract == 0) {
+                         //    centerValueContract = item.valueService - item.drValContract;
+                         //    } else if (item.drValContract == 0) {
+                         //    centerValueContract = item.valueService - (item.valueService * (item.drPercContract / 100));
+                         //    }
+
+
+                        company.innerHTML +=
+                            `
+                                    <td class="align-middle">${item.sClinicDesc}</td>
+                                    <td class="align-middle">${item.servDesc}</td>
+                                    <td class="align-middle">${valOrRatio}</td>
+                                    <td class="align-middle">${item.drVal} @localizer["L.E"]</td>
+                                    <td class="align-middle">${item.drPerc} % </td>
+                                    <td class="align-middle">0 @localizer["L.E"]</td>
+                                    <td class="align-middle">${item.drValContract} @localizer["L.E"]</td>
+                                    <td class="align-middle">${item.drPercContract} % </td>
+                                    <td class="align-middle">0 @localizer["L.E"]</td>
+
+                                <td width="30%" class="text-center">
+                                        <a href="/Medical/DoctorPercentage/Edit_DoctorPerc/${item.drPercent}" class="btn btn-sm btn-success mb-1  fs-6" style="width:150px">
+                                            <i class="bi bi-pencil"></i> @localizer["Edit"]
+                                    </a>
+                            <form action="/Medical/DoctorPercentage/Delete_DoctorPerc" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="${item.drPercent}" />
+                                 <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">@localizer["Delete"]</button>
+                                    </form>
+                                </td>
+                                                `;
+                        companies.appendChild(company);
+                    }
+                }
+            });
+        }
+</script>

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ProSoft.Core.Repositories.Medical.HospitalPatData
 {
-    public class CompanyGroupRepo : Repository<CompanyGroup, int> , ICompanyGroupRepo
+    public class CompanyGroupRepo : Repository<CompanyGroup, int>, ICompanyGroupRepo
     {
         public CompanyGroupRepo(AppDbContext Context) : base(Context)
         {

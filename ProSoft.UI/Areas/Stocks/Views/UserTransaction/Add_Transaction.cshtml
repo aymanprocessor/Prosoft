@@ -104,7 +104,7 @@
             console.log(permissions);
             permissions.innerHTML = "";
 
-            $.ajax({
+          @*  $.ajax({
                 url: `/Stocks/UserTransaction/GetPermissionsByTransType/${dType}`,
                 success: function (resuit) {
                     permissions.innerHTML =
@@ -127,7 +127,7 @@
                         }
                     }
                 }
-            });
+            });*@
         }
     </script>
 }

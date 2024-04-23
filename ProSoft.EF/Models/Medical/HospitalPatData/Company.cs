@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using ProSoft.EF.Models.Stocks;
 
 namespace ProSoft.EF.Models.Medical.HospitalPatData;
 
@@ -13,8 +14,8 @@ public partial class Company
     [Column("COMP_ID")]
     public int CompId { get; set; }
 
-    [Column("GROUP_ID", TypeName = "decimal(38, 0)")]
-    public decimal? GroupId { get; set; }
+    [Column("GROUP_ID")]
+    public int? GroupId { get; set; }
 
     [Column("COMP_NAME")]
     [StringLength(255)]
@@ -61,20 +62,20 @@ public partial class Company
     [Unicode(false)]
     public string? ResponsableManager { get; set; }
 
-    [Column("P_L_ID", TypeName = "decimal(38, 0)")]
-    public decimal? PLId { get; set; }
+    [Column("P_L_ID")]
+    public int? PLId { get; set; }
 
-    [Column("P_L_R_CODE", TypeName = "decimal(38, 0)")]
-    public decimal? PLRCode { get; set; }
+    [Column("P_L_R_CODE")]
+    public int? PLRCode { get; set; }
 
-    [Column("OP_PL", TypeName = "decimal(38, 0)")]
-    public decimal? OpPl { get; set; }
+    [Column("OP_PL")]
+    public int? OpPl { get; set; }
 
-    [Column("BRANCH_ID", TypeName = "decimal(38, 0)")]
-    public decimal? BranchId { get; set; }
+    [Column("BRANCH_ID")]
+    public int? BranchId { get; set; }
 
-    [Column("REPLCATE", TypeName = "decimal(38, 0)")]
-    public decimal? Replcate { get; set; }
+    [Column("REPLCATE")]
+    public int? Replcate { get; set; }
 
     [Column("STAMP", TypeName = "decimal(4, 2)")]
     public decimal? Stamp { get; set; }
@@ -136,6 +137,18 @@ public partial class Company
 
     [InverseProperty("Comp")]
     public virtual ICollection<CompanyDtl> CompanyDtls { get; set; } = new List<CompanyDtl>();
+
+    [ForeignKey("GroupId")]
+    [InverseProperty("Companies")]
+    public virtual CompanyGroup? Group { get; set; }
+
+    [ForeignKey("KindStore")]
+    [InverseProperty("Companies")]
+    public virtual KindStore? KindStoreNavigation { get; set; }
+
+    [ForeignKey("PLId")]
+    [InverseProperty("Companies")]
+    public virtual PriceList? PL { get; set; }
 
     [InverseProperty("Comp")]
     public virtual ICollection<PatAdmission> PatAdmissions { get; set; } = new List<PatAdmission>();

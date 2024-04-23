@@ -62,5 +62,8 @@ public partial class PriceList
     public virtual Branch? Branch { get; set; }
 
     [InverseProperty("PL")]
+    public virtual ICollection<Company> Companies { get; set; } = new List<Company>();
+
+    [InverseProperty("PL")]
     public virtual ICollection<PriceListDetail> PriceListDetails { get; set; } = new List<PriceListDetail>();
 }

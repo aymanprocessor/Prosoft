@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using ProSoft.EF.Models.Medical.HospitalPatData;
 
 namespace ProSoft.EF.Models.Stocks;
 
@@ -26,6 +27,9 @@ public partial class KindStore
 
     [Column("K_STK_ON_OFF")]
     public int? KStkOnOff { get; set; }
+
+    [InverseProperty("KindStoreNavigation")]
+    public virtual ICollection<Company> Companies { get; set; } = new List<Company>();
 
     [InverseProperty("Flag1Navigation")]
     public virtual ICollection<Stock> Stocks { get; set; } = new List<Stock>();

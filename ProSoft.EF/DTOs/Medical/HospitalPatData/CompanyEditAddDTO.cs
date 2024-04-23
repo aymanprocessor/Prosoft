@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProSoft.EF.DTOs.Medical.HospitalPatData
 {
-    public class CompanyViewDTO
+    public class CompanyEditAddDTO
     {
         public int CompId { get; set; }
         public string CompName { get; set; }

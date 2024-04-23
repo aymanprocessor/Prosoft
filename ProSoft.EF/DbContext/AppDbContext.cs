@@ -85,8 +85,8 @@ namespace ProSoft.EF.DbContext
         public DbSet<KindStore> KindStores { get; set; }
         public DbSet<Branch> Branchs { get; set; }
         public DbSet<Stock> Stocks { get; set; }
-        public  DbSet<CostCenter> CostCenters { get; set; }
-        public  DbSet<ServiceType> ServiceTypes { get; set; }
+        public DbSet<CostCenter> CostCenters { get; set; }
+        public DbSet<ServiceType> ServiceTypes { get; set; }
         public DbSet<JournalType> JournalTypes { get; set; }
         public DbSet<Side> Sides { get; set; }
         public DbSet<UnitCode> UnitCodes { get; set; }
