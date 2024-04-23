@@ -52,6 +52,8 @@ namespace ProSoft.EF.DbContext
 
         public DbSet<CompanyDtl> CompanyDtls { get; set; }
 
+        public DbSet<CompanyGroup> CompanyGroups { get; set; }
+
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<DocSubDtl> DocSubDtls { get; set; }
 

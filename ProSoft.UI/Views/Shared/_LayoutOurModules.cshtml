@@ -51,6 +51,11 @@
                                         </a>
                                     </li>
                                     <li class="nav-item has-submenu">
+                                        <a asp-area="Medical" asp-controller="CompanyGroup" asp-action="Index" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Companys"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
                                         <a class="nav-link hover-link @(isRTL ? "me-3 pe-3" : "ms-3 ps-3")">
                                             <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i> @localizer["Definitions"]
                                         </a>

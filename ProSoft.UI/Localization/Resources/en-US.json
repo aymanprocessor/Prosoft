@@ -246,6 +246,11 @@
   "Search Level 3...": "Search Level 3...",
   "Add Term To Price List": "Add Price Lists Details",
   "Edit Term To Price List": "Edit Term To Price List",
+  "After Discount": "After Discount",
+  "Company Group": "Company Group",
+  "Add CompanyGroup": "Add CompanyGroup",
+  "Edit CompanyGroup": "Edit CompanyGroup",
+  "CompanyGroup Name": "CompanyGroup Name",
 
   "Cost Name": "Cost Name",
   "Stocks System": "Stocks System",
@@ -324,5 +329,16 @@
   "Remove": "Remove",
   "Add New Permission Name": "Add New Permission Name",
   "Edit Permission": "Edit Permission",
-  "User Transactions": "User Transactions"
+  "Users Transactions": "Users Transactions",
+  "Transactions of User": "Transactions of User",
+  "Search users by useer code ...": "Search users by useer code...",
+  "Permissions": "Permissions",
+  "Add Transaction For User": "Add Transaction For User",
+  "Transaction Type": "Transaction Type",
+  "Permission": "Permission",
+  "Add New Transaction For": "Add New Transaction For",
+  "User Code": "User Code",
+  "Before anything, select the user": "Before anything, select the user",
+  "Transaction Name": "Transaction Name",
+  "Please, choose at least one transaction": "Please, choose at least one transaction"
 }

@@ -74,11 +74,11 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
         {
             termsPriceListDTO.PlValue = termsPriceListDTO.ServBefDesc - (termsPriceListDTO.ServBefDesc * (termsPriceListDTO.DiscoutComp / 100));
             //////////
-            termsPriceListDTO.CompCovPercentage = 100 - ((termsPriceListDTO.PlValue2 / termsPriceListDTO.PlValue) * 100) - ((termsPriceListDTO.PlValue3 / termsPriceListDTO.PlValue) * 100);
-            termsPriceListDTO.PlValue2 = termsPriceListDTO.PlValue -
-                   (termsPriceListDTO.PlValue * (termsPriceListDTO.CompCovPercentage / 100)) - termsPriceListDTO.PlValue3;
-            termsPriceListDTO.PlValue3 = termsPriceListDTO.PlValue -
-                   (termsPriceListDTO.PlValue * (termsPriceListDTO.CompCovPercentage / 100)) - termsPriceListDTO.PlValue2;
+            //termsPriceListDTO.CompCovPercentage = 100 - ((termsPriceListDTO.PlValue2 / termsPriceListDTO.PlValue) * 100) - ((termsPriceListDTO.PlValue3 / termsPriceListDTO.PlValue) * 100);
+            //termsPriceListDTO.PlValue2 = termsPriceListDTO.PlValue -
+            //       (termsPriceListDTO.PlValue * (termsPriceListDTO.CompCovPercentage / 100)) - termsPriceListDTO.PlValue3;
+            //termsPriceListDTO.PlValue3 = termsPriceListDTO.PlValue -
+            //       (termsPriceListDTO.PlValue * (termsPriceListDTO.CompCovPercentage / 100)) - termsPriceListDTO.PlValue2;
             /////////
             termsPriceListDTO.CompValue = termsPriceListDTO.PlValue * (termsPriceListDTO.CompCovPercentage / 100);
             ////////////////////////////////////

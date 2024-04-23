@@ -1,0 +1,66 @@
+﻿@model List<CompanyGroupDTO>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Company Group";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@inject IViewLocalizer localizer
+
+<div class="text-center mt-2">
+    <h1 class="mb-2">@localizer["Company Group"] </h1>
+</div>
+
+<div class="container pt-2">
+    <div class="d-flex justify-content-between mb-2 gap-2">
+        <div>
+            <a asp-area="Medical" asp-controller="CompanyGroup" asp-action="Add_CompanyGroup" class="btn btn-sm btn-primary fs-6" style="width:150px">
+                @localizer["Add CompanyGroup"]
+            </a>
+        </div>
+    </div>
+    <div class="overflow-auto" style="max-height:calc(100vh - 145px)">
+        <table id="myTable" class="table table-bordered table-hover overflow-auto" style="width:100%;">
+            <thead class="table-dark">
+                <tr>
+                    <th class="align-middle">
+                        @localizer["Code"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["CompanyGroup Name"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Activation"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Action"]
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="align-middle">@item.GroupId</td>
+                        <td class="align-middle">@item.GroupName</td>
+                        <td class="align-middle">
+                            @if (@item.CompGroupOnOff==1)
+                                @localizer["Yes"]
+                            else
+                                @localizer["No"]
+                            </td>
+                        <td class="text-center align-middle" style="width: 325px;">
+                            <a asp-action="Edit_CompanyGroup" asp-route-id="@item.GroupId" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
+                            <form asp-action="Delete_CompanyGroup" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@item.GroupId" />
+                                <button class="btn btn-sm btn-danger mb-1 fs-6" onclick="return confirm('Are you sure you want to delete this one?')" style="width: 150px">@localizer["Delete"]</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

@@ -246,6 +246,11 @@
   "Search Level 3...": "بحث مستوي 3...",
   "Add Term To Price List": "اضافة بند لقائمة اسعار",
   "Edit Term To Price List": "تعديل بند لقائمة اسعار",
+  "After Discount": "بعد الخصم",
+  "Company Group": "جروب الشركات",
+  "Add CompanyGroup": "اضافة جروب شركة",
+  "Edit CompanyGroup": "تعديل جروب شركة",
+  "CompanyGroup Name": "اسم جروب الشركة",
 
   "Cost Name": "اسم التكلفة",
   "Stocks System": "نظام المخازن",
@@ -324,5 +329,16 @@
   "Remove": "حذف",
   "Add New Permission Name": "اضافة اسم اذن جديد",
   "Edit Permission": "تعديل اذن",
-  "User Transactions": "ربط المستخدمين بالحركات"
+  "Users Transactions": "حركات المستخدمين",
+  "Transactions of User": "حركات المستخدم",
+  "Search users by useer code ...": "ابحث عن المستخدم بواسطة الكود ...",
+  "Permissions": "الاذون",
+  "Add Transaction For User": "اضافة حركة للمستخدم",
+  "Transaction Type": "نوع الحركة",
+  "Permission": "الاذن",
+  "Add New Transaction For": "اضافة حركة جديدة ل",
+  "User Code": "كود المستخدم",
+  "Before anything, select the user": "قبل اي شيئ قم باختيار المستخدم",
+  "Transaction Name": "اسم الحركة",
+  "Please, choose at least one transaction": "من فضلك اختار حركة واحدة علي الاقل"
 }
