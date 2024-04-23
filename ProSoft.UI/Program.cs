@@ -67,6 +67,7 @@ builder.Services.AddScoped<IDoctorsPersentageRepo, DoctorsPersentageRepo>();
 builder.Services.AddScoped<IPriceListRepo, PriceListRepo>();
 builder.Services.AddScoped<ITermsPriceListRepo, TermsPriceListRepo>();
 builder.Services.AddScoped<ICompanyGroupRepo, CompanyGroupRepo>();
+builder.Services.AddScoped<ICompanyRepo, CompanyRepo>();
 /////////////////Stock/////////////
 builder.Services.AddScoped<IStockTypeRepo, StockTypeRepo>();
 builder.Services.AddScoped<IBranchRepo, BranchRepo>();

@@ -47,13 +47,6 @@ namespace ProSoft.Core.Repositories.Stocks
             return userTransDTO;
         }
 
-        //public async Task<UserTransEditAddDTO> GetUserTransByIdAsync(int id)
-        //{
-        //    UserTranss userTrans = await _Context.UserTransactions.FindAsync(id);
-        //    UserTransEditAddDTO userTransDTO = _mapper.Map<UserTransEditAddDTO>(userTranss);
-        //    return userTransDTO;
-        //}
-
         public async Task<UserTransEditAddDTO> GetEmptyUserTransAsync(int id)
         {
             UserTransEditAddDTO userTransDTO = new();
@@ -64,20 +57,28 @@ namespace ProSoft.Core.Repositories.Stocks
             return userTransDTO;
         }
 
-        public async Task<List<PermissionDefViewDTO>> GetPermissionsByTransTypeAsync(string transType/*, int userCode*/)
+        public async Task<List<PermissionDefViewDTO>> GetPermissionsByTransTypeAsync(string transType)
         {
             List<GeneralCode> permissions = await _Context.GeneralCodes
                 .Where(obj => obj.GType == transType).ToListAsync();
-            //var permissionsDTO = _mapper.Map<List<PermissionDefViewDTO>>(permissions);
+            List<PermissionDefViewDTO> permissionsDTO = _mapper.Map<List<PermissionDefViewDTO>>(permissions);
 
-            //List<UserTranss> userTrans = await _Context.UserTransactions
-            //    .Where(obj => obj.UsrId == userCode).ToListAsync();
-            //foreach (var item in userTrans)
-            //{
-            //    GeneralCode permission = permissions.Find(obj => obj.GId == item.GId);
-            //    if (permission != null)
-            //        permissions.Remove(permission);
-            //}
+            return permissionsDTO;
+        }
+
+        public async Task<List<PermissionDefViewDTO>> GetPermissionsByTransTypeAsync(string transType, int userCode)
+        {
+            List<GeneralCode> permissions = await _Context.GeneralCodes
+                .Where(obj => obj.GType == transType).ToListAsync();
+
+            List<UserTranss> userTrans = await _Context.UserTransactions
+                .Where(obj => obj.UsrId == userCode).ToListAsync();
+            foreach (var item in userTrans)
+            {
+                GeneralCode permission = permissions.Find(obj => obj.GId == item.GId);
+                if (permission != null)
+                    permissions.Remove(permission);
+            }
             List<PermissionDefViewDTO> permissionsDTO = _mapper.Map<List<PermissionDefViewDTO>>(permissions);
 
             return permissionsDTO;

@@ -39,17 +39,17 @@
 
             <!------------------------------------------------------------------------------->
 
-            @* <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile "> *@
+            <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile ">
             <div class="mb-3">
-@*                     <label asp-for="GId"></label>
+                <label asp-for="GId"></label>
                 <select asp-for="GId" class="form-control text-center">
                     <option value="">-- Choose --</option>
                 </select>
-                <span asp-validation-for="GId" class="text-danger"></span> *@
+                <span asp-validation-for="GId" class="text-danger"></span>
 
-                <label asp-for="Transactions"></label>
-                <div id="transactions" class="d-flex flex-wrap gap-2 form-control">
-@*                     @for (int i = 0, len = allTransactions.Count(); i < len; i++)
+@*                <label asp-for="Transactions"></label>
+                <div id="transactions" class="d-flex flex-column flex-wrap gap-2 form-control">
+                     @for (int i = 0, len = allTransactions.Count(); i < len; i++)
                     {
                         if (Model.Transactions.Contains(allTransactions[i], new TransactionDTOComparer()))
                         {
@@ -65,11 +65,11 @@
                                 @allTransactions[i].GDesc
                             </label>
                         }
-                    } *@
+                    }
                 </div>
-                <span asp-validation-for="Transactions" class="text-danger"></span>
+                <span asp-validation-for="Transactions" class="text-danger"></span>*@
             </div>
-            @* </div> *@
+            </div>
 
             <!------------------------------------------------------------------------------->
 
@@ -86,48 +86,56 @@
 @section Scripts {
     <script>
         function getPermissions(e, userCode) {
-            // let dType = e.target.value;
-            // let permissionsDropDown = document.querySelector("#GId");
-            // permissionsDropDown.innerHTML = `<option value="">-- Choose --</option>`;
-
-            // $.ajax({
-            //     url: `/Stocks/UserTransaction/GetPermissionsByTransType/${dType}?userCode=${userCode}`,
-            //     success: function (result) {
-            //         for (let item of result) {
-            //             permissionsDropDown.innerHTML +=
-            //                 `<option value="${item.gId}">${item.gDesc}</option>`
-            //         }
-            //     }
-            // });
             let dType = e.target.value;
-            let permissions = document.getElementById("transactions");
-            console.log(permissions);
-            permissions.innerHTML = "";
+            let permissionsDropDown = document.querySelector("#GId");
+            permissionsDropDown.innerHTML = `<option value="">-- Choose --</option>`;
 
             $.ajax({
-                url: `/Stocks/UserTransaction/GetPermissionsByTransType/${dType}`,
-                success: function (resuit) {
-                    permissions.innerHTML =
-                    // `
-                    // `;
-                    for (let i = 0, len = result.length; i < len; i++)
-                    {
-                        if (@Model.Transactions.Contains(allTransactions[i], new TransactionDTOComparer())) {
-                            <input type="checkbox" class="toggle-checkbox" name = "transactions" value = "@allTransactions[i].GId" id = "trans-@i" checked />
-                            <label for= "trans-@i" class= "trans me-2 fs-5 px-2" >
-                                @allTransactions[i].GDesc
-                            </label>
-                        }
-                        else
-                        {
-                            <input type="checkbox" class="toggle-checkbox" name = "transactions" value = "@allTransactions[i].GId" id = "trans-@i" />
-                            <label for= "trans-@i" class= "trans me-2 fs-5 px-2" >
-                                @allTransactions[i].GDesc
-                            </label>
-                        }
+                url: `/Stocks/UserTransaction/GetPermissionsByTransType/${dType}?userCode=${userCode}`,
+                success: function (result) {
+                    for (let item of result) {
+                        permissionsDropDown.innerHTML +=
+                            `<option value="${item.gId}">${item.gDesc}</option>`
                     }
                 }
             });
+            // let dType = e.target.value;
+            // let permissions = document.getElementById("transactions");
+            // permissions.innerHTML = "";
+
+            // $.ajax({
+            //     url: `/Stocks/UserTransaction/GetPermissionsForUser/${userCode}`,
+            //     success: async function (resuit) {
+            //         await fetch(`/Stocks/UserTransaction/GetPermissionsByTransType/${dType}`)
+            //             .then(res => res.json())
+            //             .then(res => {
+            //                 for (let i = 0, len = res.length; i < len; i++) {
+            //                     if (resuit.some(trans => trans.gId === res[i].gId)) {
+            //                         permissions.innerHTML += 
+            //                         `
+            //                         <div>
+            //                             <input type="checkbox" class="" name="transactions" value="${res[i].gId}" id = "trans-${i}" checked />
+            //                             <label for= "trans-${i}" class= " me-2 fs-5 px-2" >
+            //                                 ${res[i].gDesc}
+            //                             </label>
+            //                         </div>
+            //                         `;
+            //                     } else {
+            //                         permissions.innerHTML +=
+            //                         `
+            //                         <div>
+            //                             <input type="checkbox" class="" name="transactions" value="${res[i].gId}" id = "trans-${i}" />
+            //                             <label for= "trans-${i}" class= " me-2 fs-5 px-2" >
+            //                                 ${res[i].gDesc}
+            //                             </label>
+            //                         </div>
+            //                         `;
+            //                     }
+            //                 }
+            //             })
+            //             .catch(err => console.log(err));
+            //     }
+            // });
         }
     </script>
 }
