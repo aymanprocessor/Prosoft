@@ -33,9 +33,9 @@ namespace ProSoft.Core.Repositories.Shared
             return newID;
         }
 
-        public async Task<List<PermissionDefViewDTO>> GetAllPermissionsAsync()
+        public async Task<List<PermissionDefViewDTO>> GetAllPermissionsAsync(string GType)
         {
-            List<GeneralCode> permissions = await _DbSet.Where(obj => obj.GType == "4")
+            List<GeneralCode> permissions = await _DbSet.Where(obj => obj.GType == GType)
                 .ToListAsync();
             List<PermissionDefViewDTO> permissionsDTO = _mapper.Map<List<PermissionDefViewDTO>>(permissions);
             foreach (var item in permissionsDTO)

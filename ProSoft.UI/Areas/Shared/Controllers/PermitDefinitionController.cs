@@ -21,7 +21,7 @@ namespace ProSoft.UI.Areas.Shared.Controllers
 
         public async Task<IActionResult> Index()
         {
-            List<PermissionDefViewDTO> permissionsDTO = await _permissionRepo.GetAllPermissionsAsync();
+            List<PermissionDefViewDTO> permissionsDTO = await _permissionRepo.GetAllPermissionsAsync("4");
             return View(permissionsDTO);
         }
 
