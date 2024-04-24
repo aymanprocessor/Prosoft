@@ -16,6 +16,7 @@ namespace ProSoft.EF.IRepositories.Stocks
         Task<List<PermissionDefViewDTO>> GetPermissionsByTransTypeAsync(string transType);
         Task<List<PermissionDefViewDTO>> GetPermissionsByTransTypeAsync(string transType, int userCode);
         Task<List<PermissionDefViewDTO>> GetPermissionsForUserAsync(int userCode);
+        Task<List<PermissionDefViewDTO>> GetPermissionsForUserAsync(int userCode, int transType);
         Task AddUserTransAsync(UserTransEditAddDTO userTransDTO);
         Task DeleteUserTransAsync(int id, int userCode);
         Task SaveChangesAsync();

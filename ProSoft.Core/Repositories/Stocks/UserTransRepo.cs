@@ -102,6 +102,53 @@ namespace ProSoft.Core.Repositories.Stocks
             return permissionsDTO;
         }
 
+        public async Task<List<PermissionDefViewDTO>> GetPermissionsForUserAsync(int userCode, int transType)
+        {
+            List<UserTranss> userTrans = await _Context.UserTransactions
+                .Where(obj => obj.UsrId == userCode &&
+                    obj.DType == transType.ToString()).ToListAsync();
+            List<PermissionDefViewDTO> permissionsDTO = new();
+            
+            if(userTrans.Count() == 0)
+            {
+                List<GeneralCode> permissions = await _Context.GeneralCodes
+                    .Where(obj => obj.GType == transType.ToString()).ToListAsync();
+                foreach (var item in permissions)
+                {
+                    var newUserTrans = new UserTranss();
+                    newUserTrans.UsrId = userCode;
+                    newUserTrans.GId = item.GId;
+                    newUserTrans.DType = transType.ToString();
+                    newUserTrans.TransFlag = 0;
+                    newUserTrans.UeIns = 0;
+                    newUserTrans.UeDel = 0;
+                    newUserTrans.UeSav = 0;
+
+                    await _Context.AddAsync(newUserTrans);
+                    var permissionDTO = _mapper.Map<PermissionDefViewDTO>(item);
+                    permissionDTO.TransactionType = (await _Context.StoreTrans
+                        .FindAsync(transType)).TransDesc;
+                    permissionsDTO.Add(permissionDTO);
+                }
+                await SaveChangesAsync();
+            }
+            else
+            {
+                foreach (var item in userTrans)
+                {
+                    GeneralCode permission = await _Context.GeneralCodes
+                        .FirstOrDefaultAsync(obj => obj.GId == item.GId);
+
+                    var permissionDTO = _mapper.Map<PermissionDefViewDTO>(permission);
+                    permissionDTO.TransactionType = (await _Context.StoreTrans
+                        .FindAsync(int.Parse(permission.GType))).TransDesc;
+                    permissionsDTO.Add(permissionDTO);
+                }
+
+            }
+            return permissionsDTO;
+        }
+
         public async Task AddUserTransAsync(UserTransEditAddDTO userTransDTO)
         {
             UserTranss userTrans = _mapper.Map<UserTranss>(userTransDTO);

@@ -68,6 +68,7 @@ builder.Services.AddScoped<IPriceListRepo, PriceListRepo>();
 builder.Services.AddScoped<ITermsPriceListRepo, TermsPriceListRepo>();
 builder.Services.AddScoped<ICompanyGroupRepo, CompanyGroupRepo>();
 builder.Services.AddScoped<ICompanyRepo, CompanyRepo>();
+builder.Services.AddScoped<ICompanyDtlRepo, CompanyDtlRepo>();
 /////////////////Stock/////////////
 builder.Services.AddScoped<IStockTypeRepo, StockTypeRepo>();
 builder.Services.AddScoped<IBranchRepo, BranchRepo>();
@@ -78,6 +79,7 @@ builder.Services.AddScoped<IClassificationCustRepo, ClassificationCustRepo>();
 builder.Services.AddScoped<ISectionRepo, SectionRepo>();
 builder.Services.AddScoped<IGeneralTableRepo, GeneralTableRepo>();
 builder.Services.AddScoped<IUserTransRepo, UserTransRepo>();
+builder.Services.AddScoped<ITransTypeRepo, TransTypeRepo>();
 
 ///For Localization
 builder.Services.AddLocalization();

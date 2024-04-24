@@ -90,32 +90,6 @@
             let permissionsDropDown = document.querySelector("#GId");
             permissionsDropDown.innerHTML = `<option value="">-- Choose --</option>`;
 
-<<<<<<< HEAD
-          @*  $.ajax({
-                url: `/Stocks/UserTransaction/GetPermissionsByTransType/${dType}`,
-                success: function (resuit) {
-                    permissions.innerHTML =
-                    // `
-                    // `;
-                    for (let i = 0, len = result.length; i < len; i++)
-                    {
-                        if (@Model.Transactions.Contains(allTransactions[i], new TransactionDTOComparer())) {
-                            <input type="checkbox" class="toggle-checkbox" name = "transactions" value = "@allTransactions[i].GId" id = "trans-@i" checked />
-                            <label for= "trans-@i" class= "trans me-2 fs-5 px-2" >
-                                @allTransactions[i].GDesc
-                            </label>
-                        }
-                        else
-                        {
-                            <input type="checkbox" class="toggle-checkbox" name = "transactions" value = "@allTransactions[i].GId" id = "trans-@i" />
-                            <label for= "trans-@i" class= "trans me-2 fs-5 px-2" >
-                                @allTransactions[i].GDesc
-                            </label>
-                        }
-                    }
-                }
-            });*@
-=======
             $.ajax({
                 url: `/Stocks/UserTransaction/GetPermissionsByTransType/${dType}?userCode=${userCode}`,
                 success: function (result) {
@@ -125,6 +99,9 @@
                     }
                 }
             });
+
+            ///////////////////////////////////////////
+            
             // let dType = e.target.value;
             // let permissions = document.getElementById("transactions");
             // permissions.innerHTML = "";
@@ -162,7 +139,6 @@
             //             .catch(err => console.log(err));
             //     }
             // });
->>>>>>> fedd771895ee2d65a293e7b2de3e9b79b706b6d8
         }
     </script>
 }

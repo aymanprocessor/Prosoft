@@ -22,6 +22,14 @@ namespace ProSoft.EF.DTOs.Stocks
         [Required(ErrorMessage = "The field is required")]
         public string DType { get; set; }
 
+        public int TransFlag { get; set; }
+
+        public int UeIns { get; set; }
+
+        public int UeSav { get; set; }
+
+        public int UeDel { get; set; }
+
         public List<StoreTransDTO>? TransactionTypes { get; set; }
 
         [Required(ErrorMessage = "Please, choose at least one transaction")]
