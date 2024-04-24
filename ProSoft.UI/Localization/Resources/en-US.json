@@ -267,6 +267,11 @@
   "Insurance Period": "Insurance Period",
   "Companies": "Companies",
   "Add Company": "Add Company",
+  "%": "%",
+  "Add CompanyDetails": "Add CompanyDetails",
+  "Company Details": "Company Details",
+  "Sub Company Name": "Sub Company Name",
+  "Invoice on Level Items": "Invoice on Level Items",
 
   "Cost Name": "Cost Name",
   "Stocks System": "Stocks System",
@@ -354,7 +359,7 @@
   "Permission": "Permission",
   "Add New Transaction For": "Add New Transaction For",
   "User Code": "User Code",
-  "Before anything, select the user": "Before anything, select the user",
+  "Before anything, select the transaction type and then the user": "Before anything, select the transaction type and then the user",
   "Transaction Name": "Transaction Name",
   "Please, choose at least one transaction": "Please, choose at least one transaction"
 }

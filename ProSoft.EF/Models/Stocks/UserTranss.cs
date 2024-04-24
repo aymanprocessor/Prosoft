@@ -23,15 +23,15 @@ public partial class UserTranss
     [Unicode(false)]
     public string? DType { get; set; }
 
-    [Column("TRANS_FLAG", TypeName = "decimal(38, 0)")]
-    public decimal? TransFlag { get; set; }
+    [Column("TRANS_FLAG")]
+    public int? TransFlag { get; set; }
 
-    [Column("UE_INS", TypeName = "decimal(38, 0)")]
-    public decimal? UeIns { get; set; }
+    [Column("UE_INS")]
+    public int? UeIns { get; set; }
 
-    [Column("UE_SAV", TypeName = "decimal(38, 0)")]
-    public decimal? UeSav { get; set; }
+    [Column("UE_SAV")]
+    public int? UeSav { get; set; }
 
-    [Column("UE_DEL", TypeName = "decimal(38, 0)")]
-    public decimal? UeDel { get; set; }
+    [Column("UE_DEL")]
+    public int? UeDel { get; set; }
 }

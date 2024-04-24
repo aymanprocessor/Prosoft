@@ -18,26 +18,32 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         private readonly IUserTransRepo _userTransRepo;
         private readonly IUserRepo _userRepo;
         private readonly IGeneralTableRepo _generalCodeRepo;
+        private readonly ITransTypeRepo _transTypeRepo;
         private readonly IMapper _mapper;
+
         public UserTransactionController(IUserTransRepo userTransRepo,
-            IUserRepo userRepo, IGeneralTableRepo generalCodeRepo, IMapper mapper)
+            IUserRepo userRepo, IGeneralTableRepo generalCodeRepo,
+            ITransTypeRepo transTypeRepo, IMapper mapper)
         {
             _userTransRepo = userTransRepo;
             _userRepo = userRepo;
             _generalCodeRepo = generalCodeRepo;
+            _transTypeRepo = transTypeRepo;
             _mapper = mapper;
         }
 
         public async Task<IActionResult> Index()
         {
+            List<StoreTran> transTypes = await _transTypeRepo.GetAllAsync();
+            ViewBag.transTypes = _mapper.Map<List<StoreTransDTO>>(transTypes);
             List<UserTransViewDTO> userTransDTO = await _userTransRepo.GetAllUserTransAsync();
             return View(userTransDTO);
         }
 
-        public async Task<IActionResult> GetPermissionsForUser(int id)
+        public async Task<IActionResult> GetPermissionsForUser(int id, int transType)
         {
             List<PermissionDefViewDTO> permissionsDTO = await _userTransRepo
-                .GetPermissionsForUserAsync(id);
+                .GetPermissionsForUserAsync(id, transType);
             return Json(permissionsDTO);
         }
 
@@ -53,14 +59,10 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         {
             ViewBag.userCode = id;
             ViewBag.userName = (await _userRepo.GetUserByIdAsync(id)).UserName;
-<<<<<<< HEAD
-          //  ViewBag.transactions = await _permissionsRepo.GetAllPermissionsAsync();
-=======
             List<GeneralCode> generalCodes = await _generalCodeRepo.GetAllAsync();
             List<PermissionDefViewDTO> generalCodesDTO = _mapper.Map < List<PermissionDefViewDTO>>(generalCodes);
             ViewBag.transactions = generalCodesDTO;
             
->>>>>>> fedd771895ee2d65a293e7b2de3e9b79b706b6d8
             UserTransEditAddDTO userTransDTO = await _userTransRepo.GetEmptyUserTransAsync(id);
             return View(userTransDTO);
         }
@@ -82,7 +84,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         // Get Edit
         //public async Task<IActionResult> Edit_Transaction(int id)
         //{
-        //    PermissionDefEditAddDTO permissionDTO = await _permissionRepo.GetPermissionByIdAsync(id);
+        //    PermissionDefEditAddDTO permissionDTO = await _userTransRepo.Get(id);
         //    return View(permissionDTO);
         //}
 
