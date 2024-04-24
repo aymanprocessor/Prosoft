@@ -53,14 +53,10 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         {
             ViewBag.userCode = id;
             ViewBag.userName = (await _userRepo.GetUserByIdAsync(id)).UserName;
-<<<<<<< HEAD
-          //  ViewBag.transactions = await _permissionsRepo.GetAllPermissionsAsync();
-=======
             List<GeneralCode> generalCodes = await _generalCodeRepo.GetAllAsync();
             List<PermissionDefViewDTO> generalCodesDTO = _mapper.Map < List<PermissionDefViewDTO>>(generalCodes);
             ViewBag.transactions = generalCodesDTO;
             
->>>>>>> fedd771895ee2d65a293e7b2de3e9b79b706b6d8
             UserTransEditAddDTO userTransDTO = await _userTransRepo.GetEmptyUserTransAsync(id);
             return View(userTransDTO);
         }

@@ -12,8 +12,11 @@ namespace ProSoft.EF.IRepositories.Medical.HospitalPatData
     {
         Task<List<CompanyViewDTO>> GetAllCompanyAsync(int id);
         Task<int> GetNewIdAsync();
+        Task<CompanyEditAddDTO> GetEmptyCompanyAsync(int id);
+        Task AddCompanylAsync(int id, CompanyEditAddDTO companyDTO);
+
         Task<CompanyEditAddDTO> GetCompanyByIdAsync(int id);
-      //  Task EditDoctorPercentAsync(int id, DoctorPrecentEditAddDTO doctorPrecentDTO);
+       Task EditCompanyAsync(int id, CompanyEditAddDTO companyDTO);
 
 
     }

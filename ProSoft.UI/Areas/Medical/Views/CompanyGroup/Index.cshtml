@@ -63,7 +63,7 @@
         </table>
 
     </div>
-    @* Table for Doctor Prenstage *@
+    @* Table for Company *@
 
     <div class="company-table-head d-flex justify-content-between align-items-center mt-1">
         <h2 class="header company">@localizer["Companies"] :</h2>
@@ -88,6 +88,9 @@
                         @localizer["List ID"]
                     </th>
                     <th class="align-middle text-center" rowspan="2">
+                        @localizer["List Name"]
+                    </th>
+                    <th class="align-middle text-center" rowspan="2">
                         @localizer["Tax Number"]
                     </th>
                     <th class="align-middle text-center" rowspan="2">
@@ -109,7 +112,7 @@
                         @localizer["Medical Manager"]
                     </th>
                     <th class="align-middle text-center" rowspan="2">
-                        @localizer["Medical Manager"]
+                        @localizer["Insurance Period"]
                     </th>
                     <th class="align-middle text-center" rowspan="2">
                         @localizer["Action"]
@@ -142,13 +145,69 @@
             </tbody>
         </table>
     </div>
+
+    @* Table for company Detail *@
+
+    <div class="companyDtl-table-head d-flex justify-content-between align-items-center mt-1">
+        <h2 class="header companyDtl">@localizer["Company Details"] :</h2>
+
+        <a class="btn btn-sm btn-primary fs-6" style="width:170px">
+            @localizer["Add CompanyDetails"]
+        </a>
+        @* asp-controller="MedAnalysis" asp-action="Add_SubItemAnalysis" asp-route-ID="@ViewBag.item.MainCode" asp-route-itemAnalCode="" *@
+    </div>
+    <div class=" p-0 mb-2 overflow-auto" style="max-height: 400px;">
+
+        <table id="myTable" class="table table-bordered table-hover companyDtl-table" style="width:100%">
+            <thead class="table-dark">
+                <tr>
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Code"]
+                    </th>
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Sub Company Name"]
+                    </th>
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Tax Number"]
+                    </th>
+                    <th class="align-middle text-center" colspan="2">@localizer["Accounting code"]</th>
+
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Accounting code"]
+                    </th>
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Invoice on Level Items"]
+                    </th>
+                  
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Action"]
+                    </th>
+                </tr>
+                <tr>
+
+                    <th class="align-middle">
+                        @localizer["Sub"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Main"]
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+
+
 </div>
 
 
  <script>
 
 
-    @* Ajax for Doctor Prenstage *@
+    @* Ajax for Company *@
         function GetCompany(e,id) {
 
           // const drName = e.target[e.target.value].textContent;
@@ -187,60 +246,155 @@
             $.ajax({
                 url: `/Medical/Company/GetCompany/${id}`,
                 success: function (result) {
-                    console.log(result);
+                    //console.log(result);
                     // console.log(result.sort((a, b) => b.itemanalcode - a.itemanalcode));
                     //sortng
                    // result.sort((a, b) => b.counter - a.counter)
 
                     for (let item of result) {
                         const company = document.createElement("tr");
-                         let valOrRatio;
-                            if (item.drValFlg == 1) {
-                                valOrRatio = "@localizer["Ratio"]";
-                            } else if (item.drValFlg == 2) {
-                                valOrRatio = "@localizer["Value"]";
-                            }
-                         // let centerValue;
-                         //    if (item.drPerc == 0) {
-                         //        centerValue = item.valueService - item.drVal;
-                         //    } else if (item.drVal == 0) {
-                         //    centerValue = item.valueService - (item.valueService * (item.drPerc / 100));
-                         //    }
-
-                         // let centerValueContract;
-                         //    if (item.drPercContract == 0) {
-                         //    centerValueContract = item.valueService - item.drValContract;
-                         //    } else if (item.drValContract == 0) {
-                         //    centerValueContract = item.valueService - (item.valueService * (item.drPercContract / 100));
-                         //    }
-
+                       
+                        let eInvMainFlgg;
+                          if (item.eInvMainFlg == 'Y') {
+                            eInvMainFlgg = "@localizer["Yes"]";
+                          } else if (item.eInvMainFlg == 'N') {
+                            eInvMainFlgg = "@localizer["No"]";
+                          }
 
                         company.innerHTML +=
                             `
-                                    <td class="align-middle">${item.sClinicDesc}</td>
-                                    <td class="align-middle">${item.servDesc}</td>
-                                    <td class="align-middle">${valOrRatio}</td>
-                                    <td class="align-middle">${item.drVal} @localizer["L.E"]</td>
-                                    <td class="align-middle">${item.drPerc} % </td>
-                                    <td class="align-middle">0 @localizer["L.E"]</td>
-                                    <td class="align-middle">${item.drValContract} @localizer["L.E"]</td>
-                                    <td class="align-middle">${item.drPercContract} % </td>
-                                    <td class="align-middle">0 @localizer["L.E"]</td>
+                                    <td class="align-middle">${item.compId}</td>
+                                    <td class="align-middle item-name">${item.compName}</td>
+                                    <td class="align-middle">${item.plId}</td>
+                                    <td class="align-middle">${item.plDesc}</td>
+                                    <td class="align-middle">${item.taxNo}</td>
+                                    <td class="align-middle">${eInvMainFlgg}</td>
+                                    <td class="align-middle">${item.subCode}</td>
+                                    <td class="align-middle">${item.mainCode}</td>
+                                    <td class="align-middle">${item.stampPer} %</td>
+                                    <td class="align-middle">${item.stamp}</td>
+                                    <td class="align-middle">${item.taxPer} %</td>
+                                    <td class="align-middle">${item.kName}</td>
+                                    <td class="align-middle">${item.comAdd}</td>
+                                    <td class="align-middle">${item.compTelephone}</td>
+                                    <td class="align-middle">${item.compFax} </td>
+                                    <td class="align-middle">${item.medicalManager} </td>
+                                    <td class="align-middle">${item.insurancePeriod} </td>
 
                                 <td width="30%" class="text-center">
-                                        <a href="/Medical/DoctorPercentage/Edit_DoctorPerc/${item.drPercent}" class="btn btn-sm btn-success mb-1  fs-6" style="width:150px">
-                                            <i class="bi bi-pencil"></i> @localizer["Edit"]
+                                 <a href="/Medical/companyDetail/Edit_Company/${item.compId}" class="btn btn-sm btn-success mb-1  fs-6" style="width:150px">
+                                    <i class="bi bi-pencil"></i> @localizer["Edit"]
                                     </a>
-                            <form action="/Medical/DoctorPercentage/Delete_DoctorPerc" method="post" class="d-inline">
+                                <form action="/Medical/companyDetail/Delete_Company" method="post" class="d-inline">
                                     @Html.AntiForgeryToken()
-                                    <input type="hidden" name="id" value="${item.drPercent}" />
+                                        <input type="hidden" name="id" value="${item.compId}" />
                                  <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">@localizer["Delete"]</button>
                                     </form>
                                 </td>
                                                 `;
+                        //for click to call ajax
+                        company.style.cursor = "pointer";
+                        company.onclick = function (event) {
+                            GetCompanyDetail(event, item.compId);
+                        }
                         companies.appendChild(company);
                     }
                 }
             });
         }
+    
+    @* Ajax for Company Detail *@ 
+        function GetCompanyDetail(e, id) {
+
+            // const drName = e.target[e.target.value].textContent;
+
+            var companyDetails = document.querySelector(".companyDtl-table tbody");
+
+            // Handle active clic
+            let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");;
+
+            allItemRows.forEach(row => {
+                row.classList.remove("active-row");
+            });
+
+            let clickedTarget = e.target.parentElement
+            clickedTarget.classList.add("active-row");
+            ///////////////////////////////////////////////////////////////////
+
+            // Catch header for ClinicTrans => PatAdmissionID and reset it
+            let companyDtlHead = document.querySelector(".companyDtl-table-head");
+
+            //let itemId = id;// clickedTarget.querySelector(".item-id").innerText;
+            let itemName = clickedTarget.querySelector(".item-name").innerText;
+            // console.log(itemName);
+
+            let companyDtlHeader = companyDtlHead.querySelector(".header.companyDtl"); // Display Header for sub items
+            companyDtlHeader.innerHTML = "@localizer["Company Details"] : " + itemName;
+
+            let companyDtlAddButton = companyDtlHead.querySelector("a");
+            companyDtlAddButton.setAttribute("href", `/Medical/companyDetail/Add_CompanyDetail/${id}`);
+            // console.log(clinicTransAddButton);
+            ///////////////////////////////////////////////////////////////////
+
+            // Handle ajax call
+            companyDetails.innerHTML = "";  // Empty the body
+
+            $.ajax({
+                url: `/Medical/companyDetail/GetCompanyDetail/${id}`,
+                success: function (result) {
+                    //console.log(result);
+                    // console.log(result.sort((a, b) => b.itemanalcode - a.itemanalcode));
+                    //sortng
+                    // result.sort((a, b) => b.counter - a.counter)
+
+
+                    for (let item of result) {
+                        const companyDtl = document.createElement("tr");
+
+                        let einvTypee;
+                        if (item.einvType == '1') {
+                            einvTypee = "@localizer["Individual "]";
+                        } else if (item.einvType == '2') {
+                            einvTypee = "@localizer["Group"]";
+                        } 
+
+                        let winvItemsFlgg;
+                        if (item.winvItemsFlg == 'Y') {
+                            winvItemsFlgg = "@localizer["Yes"]";
+                        } else if (item.winvItemsFlg == 'N') {
+                            winvItemsFlgg = "@localizer["No"]";
+                        }
+
+                        companyDtl.innerHTML +=
+                            `
+                            <td class="align-middle">${item.compIdDtl}</td>
+                            <td class="align-middle">${item.compNameDtl}</td>
+                            <td class="align-middle">${item.taxNo}</td>
+                            <td class="align-middle">${item.subCode}</td>
+                            <td class="align-middle">${item.mainCode}</td>
+                            <td class="align-middle">${einvTypee}</td>
+                            <td class="align-middle">${winvItemsFlgg}</td>
+
+                            <td width="30%" class="text-center">
+                                    <a href="/Medical/Company/Edit_CompanyDetail/${item.compIdDtl}" class="btn btn-sm btn-success mb-1  fs-6" style="width:150px">
+                                    <i class="bi bi-pencil"></i> @localizer["Edit"]
+                                </a>
+                                    <form action="/Medical/Company/Delete_CompanyDetail" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                                        <input type="hidden" name="id" value="${item.compIdDtl}" />
+                                    <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">@localizer["Delete"]</button>
+                                </form>
+                            </td>
+                                                        `;
+                        companyDetails.appendChild(companyDtl);
+                    }
+
+
+
+
+                }
+            });
+        }
 </script>
+
+      

@@ -267,6 +267,11 @@
   "Insurance Period": "فترة الائتمان",
   "Companies": "الشركات",
   "Add Company": "اضافة شركة",
+  "%": "%",
+  "Add CompanyDetails": "اضافة تفاصيل شركة",
+  "Company Details": "تفاصيل شركة",
+  "Sub Company Name": "اسم الشركة الفرعية",
+  "Invoice on Level Items": "الفاتورة علي مستوي الاصناف",
 
   "Cost Name": "اسم التكلفة",
   "Stocks System": "نظام المخازن",
@@ -354,7 +359,7 @@
   "Permission": "الاذن",
   "Add New Transaction For": "اضافة حركة جديدة ل",
   "User Code": "كود المستخدم",
-  "Before anything, select the user": "قبل اي شيئ قم باختيار المستخدم",
+  "Before anything, select the transaction type and then the user": "قبل اي شيئ قم باختيار نوع الحركة اولا ثم المستخدم",
   "Transaction Name": "اسم الحركة",
   "Please, choose at least one transaction": "من فضلك اختار حركة واحدة علي الاقل"
 }

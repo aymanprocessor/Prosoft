@@ -12,14 +12,17 @@
 
 <div class="container pt-2">
     <h1 class="mt-4">@localizer["Add Company"]</h1>
-    <form method="post" asp-action="Add_Company" id="myForm">
+    <form method="post" asp-action="Edit_Company" id="myForm">
         <div class="border p-3 mt-4">
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @* hidden *@
+            <input asp-for="CompId" type="hidden" />
+            <input asp-for="GroupId" type="hidden" />
             <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile ">
                 <div class="mb-3">
                     <label asp-for="CompId"></label>
-                    <input asp-for="CompId" class="form-control" value="@ViewBag.CompanyID" disabled />
+                    <input asp-for="CompId" class="form-control" disabled />
                     <span asp-validation-for="CompId" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
@@ -155,7 +158,7 @@
             </div>
 
             <!------------------------------------------------------------------------------->
-            
+
             <button type="submit" class="btn btn-primary" style="width:150px">
                 @localizer["Add"]
             </button>
