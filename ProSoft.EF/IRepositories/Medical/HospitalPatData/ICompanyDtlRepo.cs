@@ -11,11 +11,9 @@ namespace ProSoft.EF.IRepositories.Medical.HospitalPatData
     public interface ICompanyDtlRepo : IRepository<CompanyDtl, int>
     {
         Task<List<CompanyDtlViewDTO>> GetAllCompanyDtlAsync(int id);
-        //Task<int> GetNewIdAsync();
-        //Task<CompanyEditAddDTO> GetEmptyCompanyAsync(int id);
-        //Task AddCompanylAsync(int id, CompanyEditAddDTO companyDTO);
-
-        //Task<CompanyEditAddDTO> GetCompanyByIdAsync(int id);
-        //Task EditCompanyAsync(int id, CompanyEditAddDTO companyDTO);
+        Task<int> GetNewIdAsync();
+        Task AddCompanyDtllAsync(int id, CompanyDtlEditAddDTO companyDtlDTO);
+        Task<CompanyDtlEditAddDTO> GetCompanyDtlByIdAsync(int id);
+        Task EditCompanyDtlAsync(int id, CompanyDtlEditAddDTO companyDtlDTO);
     }
 }

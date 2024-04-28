@@ -45,6 +45,12 @@ namespace ProSoft.UI.Areas.Medical.Controllers
             return Json(serveCinics);
         }
 
+        ///Get  GetPriceListDetails
+        public async Task<IActionResult> GetPriceListDetails(int id, int clincID, int sClincID, int servID)
+        {
+            ClinicTransEditAddDTO clinicTransDTO = await _clinicTransRepo.GetPricesDetails(id, clincID, sClincID, servID);
+            return Json(clinicTransDTO);
+        }
         //Get Add ClinicTrans
         public async Task<IActionResult> Add_ClinicTrans(int id ,string redirect, int flag)
         {

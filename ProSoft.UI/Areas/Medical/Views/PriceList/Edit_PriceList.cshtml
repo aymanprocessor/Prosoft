@@ -23,11 +23,14 @@
                     <input asp-for="PLId" class="form-control" disabled/>
                     <span asp-validation-for="PLId" class="text-danger"></span>
                 </div>
-              @*   <div class="mb-3">
-                    <label asp-for="PLId"></label>
-                    <input asp-for="PLId" class="form-control" disabled value="@ViewBag.ListID" />
-                    <span asp-validation-for="PLId" class="text-danger"></span>
-                </div> *@
+                <div class="mb-3 ">
+                    <label asp-for="CheckAddToCompany"></label>
+                    <select asp-for="CheckAddToCompany" class="form-control text-center">
+                        <option value="1">@localizer["Yes"]</option>
+                        <option value="2">@localizer["No"]</option>
+                    </select>
+                    <span asp-validation-for="CheckAddToCompany" class="text-danger"></span>
+                </div>
             </div>
 
             <!------------------------------------------------------------------------------->

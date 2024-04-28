@@ -19,6 +19,7 @@
             @* hidden *@
             <input asp-for="CompId" type="hidden" />
             <input asp-for="GroupId" type="hidden" />
+
             <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile ">
                 <div class="mb-3">
                     <label asp-for="CompId"></label>
@@ -160,9 +161,9 @@
             <!------------------------------------------------------------------------------->
 
             <button type="submit" class="btn btn-primary" style="width:150px">
-                @localizer["Add"]
+                @localizer["Save Changes"]
             </button>
-            <a asp-controller="Doctor" asp-action="Index" class="btn btn-secondary" style="width:150px">
+            <a asp-controller="CompanyGroup" asp-action="Index" class="btn btn-secondary" style="width:150px">
                 @localizer["Cancel"]
             </a>
 

@@ -26,5 +26,10 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
 
         [DisplayName("Financial Year")]
         public int? Year { get; set; }
+
+        [DisplayName("Check Add To Company")]
+        [Required(ErrorMessage = "The field is required")]
+        public int CheckAddToCompany { get; set; }
+
     }
 }

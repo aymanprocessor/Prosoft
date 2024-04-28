@@ -57,6 +57,9 @@ public partial class PriceList
     [Column("P_TYPE")]
     public int? PType { get; set; }
 
+    [Column("CHECK_ADD_TO_COMPANY")]
+    public int? CheckAddToCompany { get; set; }
+
     [ForeignKey("BranchId")]
     [InverseProperty("PriceLists")]
     public virtual Branch? Branch { get; set; }

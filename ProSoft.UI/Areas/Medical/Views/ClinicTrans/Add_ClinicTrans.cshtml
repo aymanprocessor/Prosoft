@@ -46,6 +46,8 @@
                 <input type="hidden" name="redirect" value="@ViewBag.redirect"/>
                 <input type="hidden" name="flag" value="@ViewBag.flag" />
 
+                <input type="hidden" disabled id="patAdmissionID" value="@ViewBag.Master" />
+
                 <label asp-for="ItmServFlag"><h4>@localizer["Servise OR Item"]</h4></label>
 
                 <div class="d-flex justify-content-center">
@@ -112,7 +114,7 @@
                 @* from Serve clinic *@
                 <div class="mb-3  servise">
                     <label asp-for="ServId">@localizer["Clinic Service"]</label>
-                    <select asp-for="ServId" class="form-control text-center">
+                    <select asp-for="ServId" class="form-control text-center" onchange="GetPriceListDetails()">
                         <option value="">-- Choose --</option>
                     </select>
                     <span asp-validation-for="ServId" class="text-danger"></span>
@@ -283,6 +285,45 @@
         });
     }
 
+    // for serve clinic
+    function GetServeClinics() {
+        var subClinicId = document.getElementById("SClinicId").value;
+
+        var serveClinicId = document.getElementById("ServId");
+        serveClinicId.innerHTML = `<option value="">-- Choose --</option>`;
+
+        $.ajax({
+            url: `/Medical/ClinicTrans/GetServeClinic/${subClinicId}`,
+            success: function (result) {
+                for (let item of result) {
+                    serveClinicId.innerHTML +=
+                        `<option value="${item.servId}">${item.servDesc}</option>`;
+                }
+            }
+        });
+    }
+
+    function GetPriceListDetails() {
+        var serviceORItem = document.getElementById("ItmServFlag").value;
+        var patAdmissionID = document.getElementById("patAdmissionID").value;
+        var clinicID = document.getElementById("ClinicId").value;
+        var sClinicId = document.getElementById("SClinicId").value;
+        var servID = document.getElementById("ServId").value;
+        if (serviceORItem == 3) {
+            $.ajax({
+                url: `/Medical/ClinicTrans/GetPriceListDetails/${patAdmissionID}?clincID=${clinicID}&sClincID=${sClinicId}&servID=${servID}`,
+                success: function (result) {
+                    for (let item of result) {
+                        serveClinicId.innerHTML +=
+                            `<option value="${item.servId}">${item.servDesc}</option>`;
+                    }
+                }
+            });
+        }
+
+    }
+
+
     // for sub item
     function GetSubItems() {
         var itemId = document.getElementById("MainId").value;
@@ -301,21 +342,4 @@
         });
     }
 
-    // for serve clinic
-    function GetServeClinics() {
-        var subClinicId = document.getElementById("SClinicId").value;
-
-        var serveClinicId = document.getElementById("ServId");
-        serveClinicId.innerHTML = `<option value="">-- Choose --</option>`;
-
-        $.ajax({
-            url: `/Medical/ClinicTrans/GetServeClinic/${subClinicId}`,
-            success: function (result) {
-                for (let item of result) {
-                    serveClinicId.innerHTML +=
-                        `<option value="${item.servId}">${item.servDesc}</option>`;
-                }
-            }
-        });
-    }
 </script>

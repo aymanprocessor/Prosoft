@@ -110,6 +110,22 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
 
         }
 
+        public async Task<ClinicTransEditAddDTO> GetPricesDetails(int id,int clincID,int sClincID,int servID)
+        {
+            PatAdmission patAdmission = await _Context.PatAdmissions.FirstOrDefaultAsync(obj => obj.MasterId == id);
+            Company company = await _Context.Companies.FirstOrDefaultAsync(obj=>obj.CompId ==patAdmission.CompId);
+            PriceList priceList = await _Context.PriceLists.FirstOrDefaultAsync(obj=>obj.PLId ==company.PLId);
+           
+            PriceListDetail priceListDetail = await _Context.PriceListDetails
+                .FirstOrDefaultAsync(obj => obj.ClinicId== clincID && obj.SClinicId ==sClincID && obj.ServId ==servID && obj.PLId == priceList.PLId);
+            if (priceListDetail != null)
+            {
+                
+            }
+            ClinicTransEditAddDTO clinicTransEditAddDTO= new ClinicTransEditAddDTO();
+            return clinicTransEditAddDTO;
+        }
+
         ///////////////////////////////////////////////////////////////////////////////////
 
         public async Task AddClinicTransAsync(int visitId, int flag, ClinicTransEditAddDTO clinicTransDTO)

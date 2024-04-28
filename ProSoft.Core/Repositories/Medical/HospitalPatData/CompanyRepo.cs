@@ -25,7 +25,6 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
 
         public async Task<List<CompanyViewDTO>> GetAllCompanyAsync(int id)
         {
-
             List<CompanyViewDTO> companyDTOs = await _Context.Companies.Where(obj => obj.GroupId == id)
                  .Select(obj => new CompanyViewDTO()
                  {
@@ -55,7 +54,7 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
         {
             Company company = await _Context.Companies.FirstOrDefaultAsync(obj => obj.CompId == id);
             CompanyEditAddDTO companyDTO = _mapper.Map<CompanyEditAddDTO>(company);
-            List<PriceList> priceLists = await _Context.PriceLists.ToListAsync();
+            List<PriceList> priceLists = await _Context.PriceLists.Where(obj=>obj.CheckAddToCompany ==1).ToListAsync();
             List<KindStore> kindStores = await _Context.KindStores.ToListAsync();
 
             companyDTO.priceLists = _mapper.Map<List<PriceListViewDTO>>(priceLists);
@@ -80,7 +79,7 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
         {
             CompanyEditAddDTO companyDTO = new CompanyEditAddDTO();
             
-            List<PriceList> priceLists = await _Context.PriceLists.ToListAsync();
+            List<PriceList> priceLists = await _Context.PriceLists.Where(obj => obj.CheckAddToCompany == 1).ToListAsync();
             List<KindStore> kindStores = await _Context.KindStores.ToListAsync();
 
             companyDTO.priceLists = _mapper.Map<List<PriceListViewDTO>>(priceLists);

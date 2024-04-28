@@ -1,0 +1,100 @@
+﻿@model CompanyDtlEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Edit Company Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+    <h1 class="mt-4">@localizer["Edit CompanyDetails"]</h1>
+    <form method="post" asp-action="Edit_CompanyDtl" id="myForm">
+        <div class="border p-3 mt-4">
+
+            @* Hidden Inputs *@
+            <input asp-for="CompId" type="hidden" />
+            <input asp-for="CompIdDtl" type="hidden" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="CompIdDtl"></label>
+                    <input asp-for="CompIdDtl" class="form-control" disabled />
+                    <span asp-validation-for="CompIdDtl" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="CompNameDtl"></label>
+                    <input asp-for="CompNameDtl" class="form-control" />
+                    <span asp-validation-for="CompNameDtl" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3 ">
+                    <label asp-for="SubCode"></label>
+                    <input asp-for="SubCode" class="form-control" />
+                    <span asp-validation-for="SubCode" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="MainCode"></label>
+                    <input asp-for="MainCode" class="form-control" />
+                    <span asp-validation-for="MainCode" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3 ">
+                    <label asp-for="TaxNo"></label>
+                    <input asp-for="TaxNo" class="form-control" />
+                    <span asp-validation-for="TaxNo" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="EinvType"></label>
+                    <select asp-for="EinvType" class="form-control text-center">
+                        <option value="1">@localizer["Individual"]</option>
+                        <option value="2">@localizer["Complex"]</option>
+                    </select>
+                    <span asp-validation-for="EinvType" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3 ">
+                    <label asp-for="CompIdDtlOnOff"></label>
+                    <select asp-for="CompIdDtlOnOff" class="form-control text-center">
+                        <option value="1">@localizer["Yes"]</option>
+                        <option value="0">@localizer["No"]</option>
+                    </select>
+                    <span asp-validation-for="CompIdDtlOnOff" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="WinvItemsFlg"></label>
+                    <select asp-for="WinvItemsFlg" class="form-control text-center">
+                        <option value="Y">@localizer["Yes"]</option>
+                        <option value="N">@localizer["No"]</option>
+                    </select>
+                    <span asp-validation-for="WinvItemsFlg" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <button type="submit" class="btn btn-primary" style="width:150px">
+                @localizer["Save Changes"]
+            </button>
+            <a asp-controller="CompanyGroup" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                @localizer["Cancel"]
+            </a>
+
+        </div>
+    </form>
+</div>

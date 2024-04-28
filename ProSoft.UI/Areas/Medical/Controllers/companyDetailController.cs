@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProSoft.Core.Repositories.Medical.HospitalPatData;
 using ProSoft.EF.DTOs.Medical.HospitalPatData;
 using ProSoft.EF.IRepositories.Medical.HospitalPatData;
+using ProSoft.EF.Models.Medical.HospitalPatData;
 
 namespace ProSoft.UI.Areas.Medical.Controllers
 {
@@ -23,25 +24,55 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         }
 
         //Get add
-        //public async Task<IActionResult> Add_Company(int id)
-        //{
-        //    ViewBag.CompanyID = await _companyDtlRepo.GetNewIdAsync();
-        //    CompanyEditAddDTO companyDTO = await _companyRepo.GetEmptyCompanyAsync(id);
-
-        //    return View(companyDTO);
-        //}
+        public async Task<IActionResult> Add_CompanyDtl(int id)
+        {
+            ViewBag.CompanyID = await _companyDtlRepo.GetNewIdAsync();
+            return View();
+        }
 
         ////Post add
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Add_Company(int id, CompanyEditAddDTO companyDTO)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        await _companyRepo.AddCompanylAsync(id, companyDTO);
-        //        return RedirectToAction("Index", "CompanyGroup");
-        //    }
-        //    return View();
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Add_CompanyDtl(int id, CompanyDtlEditAddDTO companyDtlDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                await _companyDtlRepo.AddCompanyDtllAsync(id, companyDtlDTO);
+                return RedirectToAction("Index", "CompanyGroup");
+            }
+            return View();
+        }
+
+        //Get Edit
+        public async Task<IActionResult> Edit_CompanyDtl(int id)
+        {
+            CompanyDtlEditAddDTO companyDtlDTO = await _companyDtlRepo.GetCompanyDtlByIdAsync(id);
+            return View(companyDtlDTO);
+        }
+
+        //Post Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit_CompanyDtl(int id, CompanyDtlEditAddDTO companyDtlDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                await _companyDtlRepo.EditCompanyDtlAsync(id, companyDtlDTO);
+                return RedirectToAction("Index", "CompanyGroup");
+            }
+            return View(companyDtlDTO);
+        }
+
+        // Delete
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete_CompanyDtl(int id)
+        {
+            CompanyDtl companyDtl = await _companyDtlRepo.GetByIdAsync(id);
+
+            await _companyDtlRepo.DeleteAsync(companyDtl);
+            await _companyDtlRepo.SaveChangesAsync();
+            return RedirectToAction("Index", "CompanyGroup");
+        }
     }
 }
