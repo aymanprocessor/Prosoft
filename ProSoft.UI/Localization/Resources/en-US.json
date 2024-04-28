@@ -269,9 +269,16 @@
   "Add Company": "Add Company",
   "%": "%",
   "Add CompanyDetails": "Add CompanyDetails",
+  "Edit CompanyDetails": "Edit CompanyDetails",
   "Company Details": "Company Details",
   "Sub Company Name": "Sub Company Name",
   "Invoice on Level Items": "Invoice on Level Items",
+  "Individual": "Individual",
+  "Complex": "Complex",
+  "Accounting Code": "Accounting Code",
+  "Sub Accounting Code": "Sub Accounting Code",
+  "Main Accounting Code": "Main Accounting Code",
+  "Check Add To Company": "Check Add To Company",
 
   "Cost Name": "Cost Name",
   "Stocks System": "Stocks System",
@@ -361,5 +368,9 @@
   "User Code": "User Code",
   "Before anything, select the transaction type and then the user": "Before anything, select the transaction type and then the user",
   "Transaction Name": "Transaction Name",
-  "Please, choose at least one transaction": "Please, choose at least one transaction"
+  "Please, choose at least one transaction": "Please, choose at least one transaction",
+  "Save": "Save",
+  "Is Activated": "Is Activated",
+  "Edit transaction": "Edit transaction",
+  "for user": "for user"
 }

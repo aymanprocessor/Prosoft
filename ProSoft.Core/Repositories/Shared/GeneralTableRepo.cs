@@ -63,7 +63,8 @@ namespace ProSoft.Core.Repositories.Shared
         {
             GeneralCode permission = await GetByIdAsync(id);
             PermissionDefEditAddDTO permissionDTO = _mapper.Map<PermissionDefEditAddDTO>(permission);
-            List<GeneralCode> permissions = await _DbSet.Where(obj => obj.GType == "4" && obj.GId != id)
+            List<GeneralCode> permissions = await _DbSet.Where(obj => obj.GType == "4" &&
+                obj.GId != id && obj.ShowHide == 1)
                 .ToListAsync();
             permissionDTO.Permissions = _mapper.Map<List<PermissionDefViewDTO>>(permissions);
             return permissionDTO;

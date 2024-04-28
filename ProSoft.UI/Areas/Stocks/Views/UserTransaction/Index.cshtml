@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "Users Transactions";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
 
     SelectList transTypes = new(ViewBag.transTypes, "TransId", "TransDesc");
 }
@@ -19,8 +20,8 @@
         <div style="width: 40%;">
             <input type="text" id="searchInput" class="form-control" oninput="searchUsers(event)" placeholder="@localizer["Search users by useer code ..."]">
         </div>
-        <div class="d-flex align-items-center" style="width: 50%;">
-            <label for="transType" class="me-1" style="width: 175px;">@localizer["Transaction Type"]</label>
+        <div class="d-flex align-items-md-center align-items-start flex-column flex-md-row" style="width: 50%;">
+            <label for="transType" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Transaction Type"]</label>
             <select id="transType" asp-items="transTypes" class="form-control text-center w-75">
                 <option value="">-- Choose --</option>
             </select>
@@ -129,16 +130,13 @@
             let clickedTarget = e.target.parentElement;
             clickedTarget.classList.add("active-row");
             ///////////////////////////////////////////////////////////////////
+            let userTransactions = document.querySelector("#myTable_2 tbody");
+            let transactionsHead = document.querySelector(".transactions-table-head");
+            let transactionsHeader = transactionsHead.querySelector(".header");
 
-            // let addTransactionLink = document.querySelector(".add-link");
-            // addTransactionLink.setAttribute("href", `/Stocks/UserTransaction/Add_Transaction/${userCode}`);
-            ///////////////////////////////////////////////////////////////////
             let transType = document.getElementById("transType").value;
-            console.log(transType);
-            if(transType){
-                let userTransactions = document.querySelector("#myTable_2 tbody");
-                let transactionsHead = document.querySelector(".transactions-table-head");
-                let transactionsHeader = transactionsHead.querySelector(".header");
+            ///////////////////////////////////////////////////////////////////
+            if (transType) {
                 let userName = clickedTarget.querySelector(".user-name").innerText;
                 transactionsHeader.innerHTML = `@localizer["Transactions of User"] : ${userName}`;
 
@@ -147,7 +145,6 @@
                 $.ajax({
                     url: `/Stocks/UserTransaction/GetPermissionsForUser/${userCode}?transType=${transType}`,
                     success: function (result) {
-                        console.log(result);
                         for (let item of result) {
                             const userTrans = document.createElement("tr");
                             userTrans.innerHTML +=
@@ -157,19 +154,16 @@
                                 <td class="align-middle">${item.transactionType}</td>
                                 <td class="text-center align-middle" style="width: 325px;">
                                     <a href="/Stocks/UserTransaction/Edit_Transaction/${userCode}?gId=${item.gId}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
-                                    <form action="/Stocks/UserTransaction/Delete_Transaction" method="post" class="d-inline">
-                                            @Html.AntiForgeryToken()
-                                        <input type="hidden" name="id" value="${item.gId}" />
-                                        <input type="hidden" name="userCode" value="${userCode}" />
-                                        <button class="btn btn-sm btn-danger mb-1 fs-6" onclick="return confirm('Are you sure you want to delete this one?')" style="width: 150px">@localizer["Delete"]</button>
-                                    </form>
                                 </td>
                                 `;
-                                    // <a href="/Stocks/UserTransaction/Edit_Transaction/${item.gId}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
                             userTransactions.appendChild(userTrans);
                         }
                     }
                 });
+            } else {
+                transactionsHeader.innerHTML = `@localizer["Transactions of User"]`;
+                userTransactions.innerHTML = "";
+                document.getElementById("transType").focus();
             }
         }
     </script>
