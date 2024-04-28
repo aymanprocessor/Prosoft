@@ -55,63 +55,61 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         }
 
         // Get Add
-        public async Task<IActionResult> Add_Transaction(int id)
+        //public async Task<IActionResult> Add_Transaction(int id)
+        //{
+        //    ViewBag.userCode = id;
+        //    ViewBag.userName = (await _userRepo.GetUserByIdAsync(id)).UserName;
+        //    List<GeneralCode> generalCodes = await _generalCodeRepo.GetAllAsync();
+        //    List<PermissionDefViewDTO> generalCodesDTO = _mapper.Map < List<PermissionDefViewDTO>>(generalCodes);
+        //    ViewBag.transactions = generalCodesDTO;
+
+        //    UserTransEditAddDTO userTransDTO = await _userTransRepo.GetEmptyUserTransAsync(id);
+        //    return View(userTransDTO);
+        //}
+
+        // Post Add
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Add_Transaction(UserTransEditAddDTO userTransDTO)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        await _userTransRepo.AddUserTransAsync(userTransDTO);
+        //        await _userTransRepo.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(userTransDTO);
+        //}
+
+        // Get Edit
+        public async Task<IActionResult> Edit_Transaction(int id, int gId)
         {
-            ViewBag.userCode = id;
             ViewBag.userName = (await _userRepo.GetUserByIdAsync(id)).UserName;
-            List<GeneralCode> generalCodes = await _generalCodeRepo.GetAllAsync();
-            List<PermissionDefViewDTO> generalCodesDTO = _mapper.Map < List<PermissionDefViewDTO>>(generalCodes);
-            ViewBag.transactions = generalCodesDTO;
-            
-            UserTransEditAddDTO userTransDTO = await _userTransRepo.GetEmptyUserTransAsync(id);
+            ViewBag.transName = (await _generalCodeRepo.GetPermissionByIdAsync(id)).GDesc;
+            UserTransEditAddDTO userTransDTO = await _userTransRepo.GetUserTransByIdAsync(id, gId);
             return View(userTransDTO);
         }
 
-        // Post Add
+        // Post Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add_Transaction(UserTransEditAddDTO userTransDTO)
+        public async Task<IActionResult> Edit_Transaction(int id, UserTransEditAddDTO userTransDTO)
         {
             if (ModelState.IsValid)
             {
-                await _userTransRepo.AddUserTransAsync(userTransDTO);
+                await _userTransRepo.UpdateUserTransAsync(id, userTransDTO);
                 await _userTransRepo.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(userTransDTO);
         }
 
-        // Get Edit
-        //public async Task<IActionResult> Edit_Transaction(int id)
-        //{
-        //    PermissionDefEditAddDTO permissionDTO = await _userTransRepo.Get(id);
-        //    return View(permissionDTO);
-        //}
-
-        // Post Edit
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit_Transaction(int id, PermissionDefEditAddDTO permissionDTO)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        GeneralCode permission = await _permissionRepo.GetByIdAsync(id);
-        //        _mapper.Map(permissionDTO, permission);
-        //        //permission.GType = "4";
-
-        //        await _permissionRepo.UpdateAsync(permission);
-        //        await _permissionRepo.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(permissionDTO);
-        //}
-
         // Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete_Transaction(int id, int userCode)
+        public async Task<IActionResult> Delete_Transaction(int gId, int userCode)
         {
-            await _userTransRepo.DeleteUserTransAsync(id, userCode);
+            await _userTransRepo.DeleteUserTransAsync(userCode, gId);
             await _userTransRepo.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

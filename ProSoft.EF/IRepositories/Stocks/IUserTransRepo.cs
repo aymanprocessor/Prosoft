@@ -11,14 +11,15 @@ namespace ProSoft.EF.IRepositories.Stocks
     public interface IUserTransRepo
     {
         Task<List<UserTransViewDTO>> GetAllUserTransAsync();
-        //Task<UserTransEditAddDTO> GetUserTransByIdAsync(int id);
+        Task<UserTransEditAddDTO> GetUserTransByIdAsync(int userCode, int gId);
         Task<UserTransEditAddDTO> GetEmptyUserTransAsync(int id);
         Task<List<PermissionDefViewDTO>> GetPermissionsByTransTypeAsync(string transType);
         Task<List<PermissionDefViewDTO>> GetPermissionsByTransTypeAsync(string transType, int userCode);
         Task<List<PermissionDefViewDTO>> GetPermissionsForUserAsync(int userCode);
         Task<List<PermissionDefViewDTO>> GetPermissionsForUserAsync(int userCode, int transType);
         Task AddUserTransAsync(UserTransEditAddDTO userTransDTO);
-        Task DeleteUserTransAsync(int id, int userCode);
+        Task UpdateUserTransAsync(int userCode, UserTransEditAddDTO userTransDTO);
+        Task DeleteUserTransAsync(int userCode, int gId);
         Task SaveChangesAsync();
     }
 }

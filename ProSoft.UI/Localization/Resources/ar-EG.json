@@ -269,9 +269,16 @@
   "Add Company": "اضافة شركة",
   "%": "%",
   "Add CompanyDetails": "اضافة تفاصيل شركة",
+  "Edit CompanyDetails": "تعديل تفاصيل شركة",
   "Company Details": "تفاصيل شركة",
   "Sub Company Name": "اسم الشركة الفرعية",
   "Invoice on Level Items": "الفاتورة علي مستوي الاصناف",
+  "Individual": "فردي",
+  "Complex": "مجمع",
+  "Accounting Code": "الكود المحاسبي",
+  "Sub Accounting Code": "الكود المحاسبي الفرعي",
+  "Main Accounting Code": "الكود المحاسبي الرئيسي",
+  "Check Add To Company": "تاكيد الاضافة الي الشركات",
 
   "Cost Name": "اسم التكلفة",
   "Stocks System": "نظام المخازن",
@@ -361,5 +368,9 @@
   "User Code": "كود المستخدم",
   "Before anything, select the transaction type and then the user": "قبل اي شيئ قم باختيار نوع الحركة اولا ثم المستخدم",
   "Transaction Name": "اسم الحركة",
-  "Please, choose at least one transaction": "من فضلك اختار حركة واحدة علي الاقل"
+  "Please, choose at least one transaction": "من فضلك اختار حركة واحدة علي الاقل",
+  "Save": "حفظ",
+  "Is Activated": "تفعيل",
+  "Edit transaction": "تعديل الحركة",
+  "for user": "للمستخدم"
 }

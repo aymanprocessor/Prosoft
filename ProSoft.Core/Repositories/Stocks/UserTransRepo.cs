@@ -10,6 +10,7 @@ using ProSoft.EF.Models.Stocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -44,6 +45,14 @@ namespace ProSoft.Core.Repositories.Stocks
                 //item.Permissions = permissionsDTO;
                 item.Permissions = await GetPermissionsForUserAsync(item.UserCode);
             }
+            return userTransDTO;
+        }
+
+        public async Task<UserTransEditAddDTO> GetUserTransByIdAsync(int userCode, int gId)
+        {
+            UserTranss userTrans = await _Context.UserTransactions
+                .FirstOrDefaultAsync(obj => obj.UsrId == userCode && obj.GId == gId);
+            var userTransDTO = _mapper.Map<UserTransEditAddDTO>(userTrans);
             return userTransDTO;
         }
 
@@ -112,39 +121,43 @@ namespace ProSoft.Core.Repositories.Stocks
             if(userTrans.Count() == 0)
             {
                 List<GeneralCode> permissions = await _Context.GeneralCodes
-                    .Where(obj => obj.GType == transType.ToString()).ToListAsync();
-                foreach (var item in permissions)
+                    .Where(obj => obj.GType == transType.ToString() &&
+                    obj.ShowHide == 1).ToListAsync();
+                if(permissions.Count() != 0)
                 {
-                    var newUserTrans = new UserTranss();
-                    newUserTrans.UsrId = userCode;
-                    newUserTrans.GId = item.GId;
-                    newUserTrans.DType = transType.ToString();
-                    newUserTrans.TransFlag = 0;
-                    newUserTrans.UeIns = 0;
-                    newUserTrans.UeDel = 0;
-                    newUserTrans.UeSav = 0;
+                    foreach (var item in permissions)
+                    {
+                        var newUserTrans = new UserTranss();
+                        newUserTrans.UsrId = userCode;
+                        newUserTrans.GId = item.GId;
+                        newUserTrans.DType = transType.ToString();
+                        newUserTrans.TransFlag = 0;
+                        newUserTrans.UeIns = 0;
+                        newUserTrans.UeDel = 0;
+                        newUserTrans.UeSav = 0;
 
-                    await _Context.AddAsync(newUserTrans);
-                    var permissionDTO = _mapper.Map<PermissionDefViewDTO>(item);
-                    permissionDTO.TransactionType = (await _Context.StoreTrans
-                        .FindAsync(transType)).TransDesc;
-                    permissionsDTO.Add(permissionDTO);
+                        await _Context.AddAsync(newUserTrans);
+                        var permissionDTO = _mapper.Map<PermissionDefViewDTO>(item);
+                        permissionDTO.TransactionType = (await _Context.StoreTrans
+                            .FindAsync(transType)).TransDesc;
+                        permissionsDTO.Add(permissionDTO);
+                    }
+                    await SaveChangesAsync();
                 }
-                await SaveChangesAsync();
             }
             else
             {
                 foreach (var item in userTrans)
                 {
                     GeneralCode permission = await _Context.GeneralCodes
-                        .FirstOrDefaultAsync(obj => obj.GId == item.GId);
+                        .FirstOrDefaultAsync(obj => obj.GId == item.GId &&
+                        obj.ShowHide == 1);
 
                     var permissionDTO = _mapper.Map<PermissionDefViewDTO>(permission);
                     permissionDTO.TransactionType = (await _Context.StoreTrans
                         .FindAsync(int.Parse(permission.GType))).TransDesc;
                     permissionsDTO.Add(permissionDTO);
                 }
-
             }
             return permissionsDTO;
         }
@@ -156,11 +169,21 @@ namespace ProSoft.Core.Repositories.Stocks
             await _Context.AddAsync(userTrans);
         }
 
-        public async Task DeleteUserTransAsync(int id, int userCode)
+        public async Task DeleteUserTransAsync(int userCode, int gId)
         {
             UserTranss userTrans = await _Context.UserTransactions
-                .FirstOrDefaultAsync(obj => obj.UsrId == userCode && obj.GId == id);
+                .FirstOrDefaultAsync(obj => obj.UsrId == userCode && obj.GId == gId);
             _Context.Remove(userTrans);
+        }
+
+        public async Task UpdateUserTransAsync(int userCode, UserTransEditAddDTO userTransDTO)
+        {
+            UserTranss userTrans = await _Context.UserTransactions
+                .FirstOrDefaultAsync(obj => obj.UsrId == userCode &&
+                obj.GId == userTransDTO.GId);
+
+            _mapper.Map(userTransDTO, userTrans);
+            _Context.Update(userTrans);
         }
 
         public async Task SaveChangesAsync()
