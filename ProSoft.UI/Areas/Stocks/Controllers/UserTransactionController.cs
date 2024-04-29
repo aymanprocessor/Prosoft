@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProSoft.EF.DTOs.Auth;
 using ProSoft.EF.DTOs.Shared;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.IRepositories;
 using ProSoft.EF.IRepositories.Shared;
 using ProSoft.EF.IRepositories.Stocks;
+using ProSoft.EF.Models;
 using ProSoft.EF.Models.Shared;
 using ProSoft.EF.Models.Stocks;
 
@@ -36,8 +38,9 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         {
             List<StoreTran> transTypes = await _transTypeRepo.GetAllAsync();
             ViewBag.transTypes = _mapper.Map<List<StoreTransDTO>>(transTypes);
-            List<UserTransViewDTO> userTransDTO = await _userTransRepo.GetAllUserTransAsync();
-            return View(userTransDTO);
+            List<AppUser> users = (await _userRepo.GetAllUsersAsync()).ToList();
+            List<UserDTO> usersDTO = _mapper.Map<List<UserDTO>>(users);
+            return View(usersDTO);
         }
 
         public async Task<IActionResult> GetPermissionsForUser(int id, int transType)
@@ -47,45 +50,11 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             return Json(permissionsDTO);
         }
 
-        public async Task<IActionResult> GetPermissionsByTransType(string id, int userCode)
-        {
-            List<PermissionDefViewDTO> permissionsDTO = await _userTransRepo
-                .GetPermissionsByTransTypeAsync(id, userCode);
-            return Json(permissionsDTO);
-        }
-
-        // Get Add
-        //public async Task<IActionResult> Add_Transaction(int id)
-        //{
-        //    ViewBag.userCode = id;
-        //    ViewBag.userName = (await _userRepo.GetUserByIdAsync(id)).UserName;
-        //    List<GeneralCode> generalCodes = await _generalCodeRepo.GetAllAsync();
-        //    List<PermissionDefViewDTO> generalCodesDTO = _mapper.Map < List<PermissionDefViewDTO>>(generalCodes);
-        //    ViewBag.transactions = generalCodesDTO;
-
-        //    UserTransEditAddDTO userTransDTO = await _userTransRepo.GetEmptyUserTransAsync(id);
-        //    return View(userTransDTO);
-        //}
-
-        // Post Add
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Add_Transaction(UserTransEditAddDTO userTransDTO)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        await _userTransRepo.AddUserTransAsync(userTransDTO);
-        //        await _userTransRepo.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(userTransDTO);
-        //}
-
         // Get Edit
         public async Task<IActionResult> Edit_Transaction(int id, int gId)
         {
             ViewBag.userName = (await _userRepo.GetUserByIdAsync(id)).UserName;
-            ViewBag.transName = (await _generalCodeRepo.GetPermissionByIdAsync(id)).GDesc;
+            ViewBag.transName = (await _generalCodeRepo.GetPermissionByIdAsync(gId)).GDesc;
             UserTransEditAddDTO userTransDTO = await _userTransRepo.GetUserTransByIdAsync(id, gId);
             return View(userTransDTO);
         }
@@ -102,16 +71,6 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(userTransDTO);
-        }
-
-        // Delete
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete_Transaction(int gId, int userCode)
-        {
-            await _userTransRepo.DeleteUserTransAsync(userCode, gId);
-            await _userTransRepo.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
     }
 }

@@ -9,7 +9,7 @@
     List<PermissionDefViewDTO> allTransactions = (List<PermissionDefViewDTO>)ViewBag.transactions;
 
     // Casting type to get all permissions as a list
-    SelectList transactionTypes = new SelectList(Model.TransactionTypes, "TransId", "TransDesc");
+    // SelectList transactionTypes = new SelectList(Model.TransactionTypes, "TransId", "TransDesc");
 }
 @inject IViewLocalizer localizer
 
@@ -30,9 +30,9 @@
                 </div>
                 <div class="mb-3">
                     <label asp-for="DType"></label>
-                    <select asp-for="DType" asp-items="transactionTypes" class="form-control text-center" onchange="getPermissions(event, @ViewBag.userCode)">
+@*                     <select asp-for="DType" asp-items="transactionTypes" class="form-control text-center" onchange="getPermissions(event, @ViewBag.userCode)">
                         <option value="">-- Choose --</option>
-                    </select>
+                    </select> *@
                     <span asp-validation-for="DType" class="text-danger"></span>
                 </div>
             </div>

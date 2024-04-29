@@ -1,4 +1,4 @@
-﻿@model List<UserTransViewDTO>
+﻿@model List<UserDTO>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
@@ -11,14 +11,14 @@
 @inject IViewLocalizer localizer
 
 <div class="text-center">
-    <h1 class="mb-2">@localizer["Users Transactions"] </h1>
+    <h1 class="mb-2">@localizer["Joining Users With Transactions"] </h1>
     <p class="fs-5">@localizer["Before anything, select the transaction type and then the user"]</p>
 </div>
 
 <div class="container pt-2" style=" min-height:100vh;">
     <div class="d-flex justify-content-between align-items-start align-items-md-center flex-column flex-md-row my-2">
         <div style="width: 40%;">
-            <input type="text" id="searchInput" class="form-control" oninput="searchUsers(event)" placeholder="@localizer["Search users by useer code ..."]">
+            <input type="text" id="searchInput" class="form-control" oninput="searchUsers(event)" placeholder="@localizer["Search users by useer code or name ..."]">
         </div>
         <div class="d-flex align-items-md-center align-items-start flex-column flex-md-row" style="width: 50%;">
             <label for="transType" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Transaction Type"]</label>
@@ -27,7 +27,7 @@
             </select>
         </div>
     </div>
-    <div class="overflow-auto" style="height: 300px;">
+    <div class="overflow-auto" style="height: 225px;">
         <table id="myTable" class="table table-bordered table-hover" style="width:100%;">
             <thead class="table-dark">
                 <tr>
@@ -37,9 +37,6 @@
                     <th class="align-middle" style="min-width: 150px;">
                         @localizer["User Name"]
                     </th>
-@*                     <th class="align-middle">
-                        @localizer["Permissions"]
-                    </th> *@
                 </tr>
             </thead>
             <tbody>
@@ -96,7 +93,7 @@
     <script>
         function searchUsers(e) {
             let input = e.target;
-            let filterValue = input.value;
+            let filterValue = input.value.toLowerCase();
             let rows = document.querySelectorAll("#myTable tbody tr");
 
             if (!filterValue) {
@@ -107,14 +104,19 @@
             }
 
             // Loop through all table rows, hide those that do not match the search query
-            for (let i = 0, len = rows.length; i < len; i++) {
-                let td = rows[i].querySelectorAll("td")[0];
-                if (td) {
-                    let tdValue = td.textContent || td.innerText;
-                    if (tdValue == filterValue) {
-                        rows[i].style.display = "";
-                    } else {
-                        rows[i].style.display = "none";
+            for (let i = 0, len1 = rows.length; i < len1; i++) {
+                let elements = rows[i].querySelectorAll("td");
+                for (let j = 0, len2 = elements.length; j < len2; j++) {
+                    let td = elements[j];
+                    if (td) {
+                        let tdValue = td.textContent || td.innerText;
+                        tdValue = tdValue.toLowerCase();
+                        if (tdValue.indexOf(filterValue) > -1) {
+                            rows[i].style.display = "";
+                            break;
+                        } else {
+                            rows[i].style.display = "none";
+                        }
                     }
                 }
             }
@@ -123,12 +125,8 @@
         function getUserTransactions(e, userCode) {
             // Handle active click
             let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");;
-            allItemRows.forEach(row => {
-                row.classList.remove("active-row");
-            });
-
             let clickedTarget = e.target.parentElement;
-            clickedTarget.classList.add("active-row");
+
             ///////////////////////////////////////////////////////////////////
             let userTransactions = document.querySelector("#myTable_2 tbody");
             let transactionsHead = document.querySelector(".transactions-table-head");
@@ -137,6 +135,11 @@
             let transType = document.getElementById("transType").value;
             ///////////////////////////////////////////////////////////////////
             if (transType) {
+                allItemRows.forEach(row => {
+                    row.classList.remove("active-row");
+                });
+                clickedTarget.classList.add("active-row");
+
                 let userName = clickedTarget.querySelector(".user-name").innerText;
                 transactionsHeader.innerHTML = `@localizer["Transactions of User"] : ${userName}`;
 
