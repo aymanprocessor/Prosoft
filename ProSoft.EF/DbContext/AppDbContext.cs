@@ -94,5 +94,9 @@ namespace ProSoft.EF.DbContext
         public DbSet<GeneralCode> GeneralCodes { get; set; }
         public DbSet<StoreTran> StoreTrans { get; set; }
         public DbSet<UserTranss> UserTransactions { get; set; }
+        public DbSet<AccSubCode> AccSubCodes { get; set; }
+        public DbSet<CityCode> CityCodes { get; set; }
+        public DbSet<PlaceCode> PlaceCodes { get; set; }
+        public DbSet<SupCode> SupCodes { get; set; }
     }
 }

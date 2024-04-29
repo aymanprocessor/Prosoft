@@ -33,10 +33,5 @@ namespace ProSoft.EF.DTOs.Stocks
 
         [DisplayName("Cancel")]
         public int? UeDel { get; set; }
-
-        public List<StoreTransDTO>? TransactionTypes { get; set; }
-
-        //[Required(ErrorMessage = "Please, choose at least one transaction")]
-        public List<PermissionDefViewDTO>? Transactions { get; set; }
     }
 }
