@@ -220,6 +220,7 @@
             </div>
 
             @* ///////////////////////////////////////////////////////////////////////////////////////// *@
+            <div> <button type="button" class="btn btn-dark" onclick="netPatient()">@localizer["Net Patient"] : </button><span id="netPatient"> </span> @localizer["L.E"]</div>
 
             <div class="parent d-flex justify-content-md-center ">
                 <button type="submit" class="btn btn-success" style="width:150px">@localizer["Save Changes"] </button>
@@ -238,7 +239,7 @@
         subClinicId.innerHTML = `<option value="">-- Choose --</option>`;
 
         $.ajax({
-            url: `/Medical/HospitalPatData/GetSubClinic/${clinicId}`,
+            url: `/Medical/ClinicTrans/GetSubClinic/${clinicId}`,
             success: function (result) {
                 console.log(result)
                 for (let item of result) {
@@ -257,7 +258,7 @@
         serveClinicId.innerHTML = `<option value="">-- Choose --</option>`;
 
         $.ajax({
-            url: `/Medical/HospitalPatData/GetServeClinic/${subClinicId}`,
+            url: `/Medical/ClinicTrans/GetServeClinic/${subClinicId}`,
             success: function (result) {
                 console.log(result)
                 for (let item of result) {
@@ -267,4 +268,35 @@
             }
         });
     }
+   
+    
+    //For calculte
+    document.getElementById('PatientValue').addEventListener('input', function () {
+
+        var patientValuee = parseFloat(this.value);
+        var unitPrice = document.getElementById('UnitPrice').value;
+        var compValuee = document.getElementById('CompValue');
+        compValuee.value = unitPrice - patientValuee
+    });
+    document.getElementById('CompValue').addEventListener('input', function () {
+
+        var compValuee = parseFloat(this.value);
+        var unitPrice = document.getElementById('UnitPrice').value;
+        var patientValuee = document.getElementById('PatientValue');
+        patientValuee.value = unitPrice - compValuee;
+    });
+    //Net Patient Value
+    function netPatient() {
+
+        var patientValue = parseFloat(document.getElementById("PatientValue").value);
+        var extraVal = parseFloat(document.getElementById("ExtraVal").value);
+        var extraVal2 = parseFloat(document.getElementById("ExtraVal2").value);
+
+        var totalValue = patientValue + extraVal + extraVal2;
+        // console.log(totalValue);
+
+        var netPatient = document.getElementById("netPatient");
+        netPatient.innerHTML = '  ' + totalValue + ' '; // Adjust decimal places as needed
+    }
+
 </script>

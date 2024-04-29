@@ -122,7 +122,7 @@
                 @* from Sender Doctor *@
                 <div class="mb-3 sizeDoctor">
                     <label asp-for="DrSend">@localizer["Sender Doctor"]</label>
-                    <select asp-for="DrSend" asp-items="drList" class="form-control text-center">
+                    <select asp-for="DrSend" asp-items="drList" class="form-control text-center" onchange="GetDoctorDate()">
                         <option value="">-- Choose --</option>
                     </select>
                     <span asp-validation-for="DrSend" class="text-danger"></span>
@@ -153,9 +153,9 @@
                     <span asp-validation-for="StockCode" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="UnitPrice">@localizer["Service Price"]</label>
-                    <input asp-for="UnitPrice" type="number" class="form-control text-center" />
-                    <span asp-validation-for="UnitPrice" class="text-danger"></span>
+                    <label asp-for="Qty">@localizer["Quantity"]</label>
+                    <input asp-for="Qty" type="number" class="form-control text-center" value="1" />
+                    <span asp-validation-for="Qty" class="text-danger"></span>
                 </div>
             </div>
 
@@ -163,14 +163,30 @@
 
             <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
                 <div class="mb-3">
-                    <label asp-for="Qty">@localizer["Quantity"]</label>
-                    <input asp-for="Qty" type="number" class="form-control text-center" value="1" />
-                    <span asp-validation-for="Qty" class="text-danger"></span>
+                    <label asp-for="UnitPrice">@localizer["Service Price"]</label>
+                    <input asp-for="UnitPrice" type="number" class="form-control text-center" />
+                    <span asp-validation-for="UnitPrice" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label asp-for="PatientValue">@localizer["Patient Value"] </label>
                     <input asp-for="PatientValue" type="number" class="form-control text-center" />
                     <span asp-validation-for="PatientValue" class="text-danger"></span>
+                </div>
+            </div>
+
+            @* ///////////////////////////////////////////////////////////////////////////////////////// *@
+
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
+                <div class="mb-3 ">
+                    <label asp-for="CompValue">@localizer["Company Value"]</label>
+                    <input asp-for="CompValue" type="number" class="form-control text-center" />
+                    <span asp-validation-for="CompValue" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DiscountVal">@localizer["Discount"] </label>
+                    <input asp-for="DiscountVal" type="number" class="form-control text-center" />
+                    <span asp-validation-for="DiscountVal" class="text-danger"></span>
                 </div>
             </div>
 
@@ -189,20 +205,6 @@
                 </div>
             </div>
 
-            @* ///////////////////////////////////////////////////////////////////////////////////////// *@
-
-            <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
-                <div class="mb-3 ">
-                    <label asp-for="CompValue">@localizer["Company Value"]</label>
-                    <input asp-for="CompValue" type="number" class="form-control text-center" />
-                    <span asp-validation-for="CompValue" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="DiscountVal">@localizer["Discount"] </label>
-                    <input asp-for="DiscountVal" type="number" class="form-control text-center" />
-                    <span asp-validation-for="DiscountVal" class="text-danger"></span>
-                </div>
-            </div>
 
             @* ///////////////////////////////////////////////////////////////////////////////////////// *@
 
@@ -235,11 +237,13 @@
 
             @* ///////////////////////////////////////////////////////////////////////////////////////// *@
 
+    <div> <button type="button" class="btn btn-dark" onclick="netPatient()">@localizer["Net Patient"] : </button><span id="netPatient"> </span> @localizer["L.E"]</div>
             <div class="parent d-flex justify-content-md-center ">
                 <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add New"] </button>
             </div>
         </div>
     </form>
+
 </div>
 
 <script>
@@ -302,25 +306,97 @@
             }
         });
     }
+      
+    var relativePatient;
 
+    // for price lists
     function GetPriceListDetails() {
         var serviceORItem = document.getElementById("ItmServFlag").value;
         var patAdmissionID = document.getElementById("patAdmissionID").value;
         var clinicID = document.getElementById("ClinicId").value;
         var sClinicId = document.getElementById("SClinicId").value;
         var servID = document.getElementById("ServId").value;
+
+        //Set inputs from priceList
+        var unitPrice = document.getElementById("UnitPrice");
+        var patientValue = document.getElementById("PatientValue");
+        var compValue = document.getElementById("CompValue");
+        var extraVal = document.getElementById("ExtraVal");//requirment
+        var extraVal2 = document.getElementById("ExtraVal2");//maintaince
+
+       // console.log(relativePatient)
         if (serviceORItem == 3) {
             $.ajax({
                 url: `/Medical/ClinicTrans/GetPriceListDetails/${patAdmissionID}?clincID=${clinicID}&sClincID=${sClinicId}&servID=${servID}`,
                 success: function (result) {
-                    for (let item of result) {
-                        serveClinicId.innerHTML +=
-                            `<option value="${item.servId}">${item.servDesc}</option>`;
+                    console.log(result)
+                    if (result == null) {
+                        unitPrice.value = 0;
+                        patientValue.value = 0;
+                        compValue.value = 0;
+                        extraVal.value = 0;
+                        extraVal2.value = 0;
+                        relativePatient = 0;
                     }
+                    else
+                    {
+                        unitPrice.value = result.plValue;
+                        patientValue.value = result.plValue2;
+                        compValue.value = result.compValue;
+                        extraVal.value = result.extraVal;
+                        extraVal2.value = result.extraVal2;
+                        relativePatient = result.plValue3;
+                    }
+
                 }
             });
         }
 
+    }
+    
+    // for doctor data
+    function GetDoctorDate() {
+        var drID = document.getElementById("DrSend").value;
+        var sClinicId = document.getElementById("SClinicId").value;
+        var servID = document.getElementById("ServId").value;
+       // console.log(drID)
+        $.ajax({
+            url: `/Medical/ClinicTrans/GetDoctorData/${drID}?sClincID=${sClinicId}&servID=${servID}`,
+            success: function (result) {
+                console.log(result)
+            }
+        });
+    }
+
+
+    //For calculte
+    document.getElementById('PatientValue').addEventListener('input', function () {
+
+        var patientValuee = parseFloat(this.value);
+        var unitPrice = document.getElementById('UnitPrice').value;
+        var compValuee = document.getElementById('CompValue');
+        compValuee.value = unitPrice - patientValuee
+    });
+    document.getElementById('CompValue').addEventListener('input', function () {
+
+        var compValuee = parseFloat(this.value);
+        var unitPrice = document.getElementById('UnitPrice').value;
+        var patientValuee = document.getElementById('PatientValue');
+        patientValuee.value = unitPrice - compValuee;
+    });
+
+    //Net Patient Value
+    function netPatient() {
+
+        var patientValue = parseFloat(document.getElementById("PatientValue").value);
+        var extraVal = parseFloat(document.getElementById("ExtraVal").value);
+        var extraVal2 = parseFloat(document.getElementById("ExtraVal2").value);
+
+        var totalValue = relativePatient + patientValue + extraVal + extraVal2;
+       // console.log(totalValue);
+        
+        var netPatient = document.getElementById("netPatient");
+        netPatient.innerHTML = '  ' + totalValue + ' '; // Adjust decimal places as needed
     }
 
 

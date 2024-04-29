@@ -212,6 +212,7 @@
         // Update the value in the CompCovPercentage input
         var discountCompValue = document.getElementById('DiscoutComp').value;
         document.getElementById('afterDiscound').value = serviceValuee - (serviceValuee * (discountCompValue / 100));
+        document.getElementById('CompCovPercentage').value = (100 - discountCompValue) - ((patientValuee / afterDiscound) * 100);
        // console.log(document.getElementById('afterDiscound').value)
     });
     //////////////////

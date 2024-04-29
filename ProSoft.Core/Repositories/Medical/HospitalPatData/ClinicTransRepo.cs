@@ -110,7 +110,7 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
 
         }
 
-        public async Task<ClinicTransEditAddDTO> GetPricesDetails(int id,int clincID,int sClincID,int servID)
+        public async Task<TermsPriceListViewDTO> GetPricesDetails(int id,int clincID,int sClincID,int servID)
         {
             PatAdmission patAdmission = await _Context.PatAdmissions.FirstOrDefaultAsync(obj => obj.MasterId == id);
             Company company = await _Context.Companies.FirstOrDefaultAsync(obj=>obj.CompId ==patAdmission.CompId);
@@ -118,14 +118,18 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
            
             PriceListDetail priceListDetail = await _Context.PriceListDetails
                 .FirstOrDefaultAsync(obj => obj.ClinicId== clincID && obj.SClinicId ==sClincID && obj.ServId ==servID && obj.PLId == priceList.PLId);
-            if (priceListDetail != null)
-            {
-                
-            }
-            ClinicTransEditAddDTO clinicTransEditAddDTO= new ClinicTransEditAddDTO();
-            return clinicTransEditAddDTO;
+
+            TermsPriceListViewDTO TermsPriceListDTO = _mapper.Map<TermsPriceListViewDTO>(priceListDetail);
+            return TermsPriceListDTO;
         }
 
+        public async Task<DoctorPrecentViewDTO> GetDoctorPrices(int id, int sClincID, int servID)
+        {
+            DoctorsPercent doctorsPercent = await _Context.DoctorsPercents
+                .FirstOrDefaultAsync(obj=>obj.DrCode==id && obj.SubCode==sClincID&& obj.SubDetailCodeL1==servID);
+            DoctorPrecentViewDTO doctorPrecentDTO = _mapper.Map<DoctorPrecentViewDTO>(doctorsPercent);
+            return doctorPrecentDTO;
+        }
         ///////////////////////////////////////////////////////////////////////////////////
 
         public async Task AddClinicTransAsync(int visitId, int flag, ClinicTransEditAddDTO clinicTransDTO)

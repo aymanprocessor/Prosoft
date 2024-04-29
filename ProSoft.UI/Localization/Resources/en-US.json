@@ -279,6 +279,7 @@
   "Sub Accounting Code": "Sub Accounting Code",
   "Main Accounting Code": "Main Accounting Code",
   "Check Add To Company": "Check Add To Company",
+  "Net Patient": "Net Patient",
 
   "Cost Name": "Cost Name",
   "Stocks System": "Stocks System",
@@ -357,9 +358,9 @@
   "Remove": "Remove",
   "Add New Permission Name": "Add New Permission Name",
   "Edit Permission": "Edit Permission",
-  "Users Transactions": "Users Transactions",
+  "Joining Users With Transactions": "Joining Users With Transactions",
   "Transactions of User": "Transactions of User",
-  "Search users by useer code ...": "Search users by useer code...",
+  "Search users by useer code or name ...": "Search users by useer codeor name ...",
   "Permissions": "Permissions",
   "Add Transaction For User": "Add Transaction For User",
   "Transaction Type": "Transaction Type",
@@ -372,5 +373,6 @@
   "Save": "Save",
   "Is Activated": "Is Activated",
   "Edit transaction": "Edit transaction",
-  "for user": "for user"
+  "for user": "for user",
+  "Suppliers": "Suppliers"
 }

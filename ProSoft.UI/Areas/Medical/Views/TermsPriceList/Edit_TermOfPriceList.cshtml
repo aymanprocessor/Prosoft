@@ -199,12 +199,12 @@
         var discountCompValue = parseFloat(this.value);
         var afterDiscound = document.getElementById('afterDiscound').value
         var patientValuee = document.getElementById('patientValue').value;
-        if (discountCompValue == null)
+        if (discountCompValue == 0)
             var compCovPercentageValue = 100;
         // Calculate the Comp Cov Percentage (for example, let's say it's 100 minus the Discount Comp value)
         var compCovPercentageValue = (100 - discountCompValue) - ((patientValuee / afterDiscound) * 100);
         // Update the value in the CompCovPercentage input
-        document.getElementById('CompCovPercentage').value = compCovPercentageValue.toFixed(2); // Adjust to your formatting needs
+        document.getElementById('CompCovPercentage').value = compCovPercentageValue; // Adjust to your formatting needs
 
         var serviceValuee = document.getElementById('serviceValue').value;
         document.getElementById('afterDiscound').value = serviceValuee - (serviceValuee * (discountCompValue / 100));
@@ -218,6 +218,8 @@
         // Update the value in the CompCovPercentage input
         var discountCompValue = document.getElementById('DiscoutComp').value;
         document.getElementById('afterDiscound').value = serviceValuee - (serviceValuee * (discountCompValue / 100));
+        document.getElementById('CompCovPercentage').value = (100 - discountCompValue) - ((patientValuee / afterDiscound) * 100);
+
         // console.log(document.getElementById('afterDiscound').value)
     });
     //////////////////

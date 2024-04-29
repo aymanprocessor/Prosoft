@@ -279,6 +279,7 @@
   "Sub Accounting Code": "الكود المحاسبي الفرعي",
   "Main Accounting Code": "الكود المحاسبي الرئيسي",
   "Check Add To Company": "تاكيد الاضافة الي الشركات",
+  "Net Patient": "صافي المريض",
 
   "Cost Name": "اسم التكلفة",
   "Stocks System": "نظام المخازن",
@@ -357,9 +358,9 @@
   "Remove": "حذف",
   "Add New Permission Name": "اضافة اسم اذن جديد",
   "Edit Permission": "تعديل اذن",
-  "Users Transactions": "حركات المستخدمين",
+  "Joining Users With Transactions": "ربط الحركة بالمستخدمين",
   "Transactions of User": "حركات المستخدم",
-  "Search users by useer code ...": "ابحث عن المستخدم بواسطة الكود ...",
+  "Search users by useer code or name ...": "ابحث عن المستخدم بواسطة الكود او الاسم ...",
   "Permissions": "الاذون",
   "Add Transaction For User": "اضافة حركة للمستخدم",
   "Transaction Type": "نوع الحركة",
@@ -372,5 +373,6 @@
   "Save": "حفظ",
   "Is Activated": "تفعيل",
   "Edit transaction": "تعديل الحركة",
-  "for user": "للمستخدم"
+  "for user": "للمستخدم",
+  "Suppliers": "المردين"
 }
