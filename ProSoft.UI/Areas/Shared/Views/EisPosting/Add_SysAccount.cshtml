@@ -1,0 +1,86 @@
+﻿@model EisPostingEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Add New Department";
+    Layout = "_Layout";
+
+    // Casting type to get all mainCodes as a list
+    SelectList mainCodes = new SelectList(Model.MainCodes, "MainCode", "MainCode");
+    // Casting type to get all subCodes as a list
+    // SelectList subCodes = new SelectList(Model.SubCodes, "SubCode", "SubCode");
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+    <h1 class="mt-4">@localizer["Add New System Account"]</h1>
+    <form method="post" asp-action="Add_SysAccount">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="ModuleN"></label>
+                    <input asp-for="ModuleN" class="form-control" />
+                    <span asp-validation-for="ModuleN" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="MainCode"></label>
+                    <select asp-for="MainCode" asp-items="mainCodes" class="form-control text-center" onchange="getSubCodes(event)">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="MainCode" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="SubCode"></label>
+                    <select asp-for="SubCode" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="SubCode" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex justify-content-md-center gap-2">
+                <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add"]</button>
+                <a asp-controller="EisPosting" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts{
+    <script>
+        function getSubCodes(e) {
+            const mainCode = e.target.value;
+
+            $.ajax({
+                url: `/Shared/EisPosting/GetSubCodesFor/${mainCode}`,
+                success: function (result) {
+                    console.log(result);
+                    // for (let item of result) {
+                    //     const userTrans = document.createElement("tr");
+                    //     userTrans.innerHTML +=
+                    //         `
+                    //         <td class="align-middle">${item.gId}</td>
+                    //         <td class="align-middle">${item.gDesc}</td>
+                    //         <td class="align-middle">${item.transactionType}</td>
+                    //         <td class="text-center align-middle" style="width: 325px;">
+                    //             <a href="/Stocks/UserTransaction/Edit_Transaction/${userCode}?gId=${item.gId}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
+                    //         </td>
+                    //         `;
+                    //     userTransactions.appendChild(userTrans);
+                    // }
+                }
+            });
+        }
+    </script>
+}

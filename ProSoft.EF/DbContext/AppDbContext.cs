@@ -1,17 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ProSoft.EF.Models;
+using ProSoft.EF.Models.Calculus;
 using ProSoft.EF.Models.Medical.Analysis;
 using ProSoft.EF.Models.Medical.HospitalPatData;
 using ProSoft.EF.Models.Shared;
 using ProSoft.EF.Models.Stocks;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProSoft.EF.DbContext
 {
@@ -90,13 +84,22 @@ namespace ProSoft.EF.DbContext
         public DbSet<JournalType> JournalTypes { get; set; }
         public DbSet<Side> Sides { get; set; }
         public DbSet<UnitCode> UnitCodes { get; set; }
-        public virtual DbSet<Sections2> Sections2s { get; set; }
+        public DbSet<Sections2> Sections2s { get; set; }
         public DbSet<GeneralCode> GeneralCodes { get; set; }
         public DbSet<StoreTran> StoreTrans { get; set; }
         public DbSet<UserTranss> UserTransactions { get; set; }
-        public DbSet<AccSubCode> AccSubCodes { get; set; }
         public DbSet<CityCode> CityCodes { get; set; }
         public DbSet<PlaceCode> PlaceCodes { get; set; }
         public DbSet<SupCode> SupCodes { get; set; }
+
+        ////////////////////
+        // Calculus //
+
+        public DbSet<AccMainCode> AccMainCodes { get; set; }
+        public DbSet<AccSubCode> AccSubCodes { get; set; }
+
+        ////////////////////
+        // System //
+        public DbSet<EisPosting> EisPostings { get; set; }
     }
 }

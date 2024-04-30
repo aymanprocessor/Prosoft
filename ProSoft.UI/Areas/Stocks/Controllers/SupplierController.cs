@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProSoft.EF.IRepositories.Stocks;
 
 namespace ProSoft.UI.Areas.Stocks.Controllers
 {
@@ -8,10 +9,10 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
     [Area("Stocks")]
     public class SupplierController : Controller
     {
-        private readonly IMapper _mapper;
-        public SupplierController(IMapper mapper)
+        private readonly ISupplierRepo _supplierRepo;
+        public SupplierController(ISupplierRepo supplierRepo)
         {
-            _mapper = mapper;
+            _supplierRepo = supplierRepo;
         }
 
         public IActionResult Index()

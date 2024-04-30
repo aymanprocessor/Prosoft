@@ -147,7 +147,6 @@
                         </a>
 
                         <ul class="submenu collapse p-0">
-                            @* ////Medical Analysis *@
                             <li class="nav-item has-submenu">
                                 <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
                                     <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Main data"]
@@ -210,7 +209,6 @@
                                     </li>
                                 </ul>
                             </li>
-                            @* ////Hospital Patient Data *@
                             <li class="nav-item has-submenu">
                                 <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
                                     <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Transactions"]
@@ -238,8 +236,6 @@
                                     </li>
                                 </ul>
                             </li>
-
-                            @* ////Hospital Patient Data *@
                             <li class="nav-item has-submenu">
                                 <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
                                     <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Reports"]
@@ -256,6 +252,39 @@
                     </li>
                     @* Stocks System *@
 
+                    @* System Tools *@
+                    @if (User.IsInRole("Admin"))
+                    {
+                    <li class="nav-item has-submenu">
+                        <a class="nav-link hover-link">
+                            <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["System Tools"]
+                        </a>
+
+                        <ul class="submenu collapse p-0">
+                            @* ////Medical Analysis *@
+                            <li class="nav-item has-submenu">
+                                <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
+                                    <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Main data"]
+                                </a>
+                                <ul class="submenu collapse p-0 ">
+                                    <li class="nav-item has-submenu">
+                                        <a class="nav-link hover-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i> @localizer["Definitions"]
+                                        </a>
+                                        <ul class="submenu collapse p-0 ">
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Shared" asp-controller="EisPosting" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["System Accounts Coding"]
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>    
+                    }
+                    @* System Tools *@
                 </ul>
 
                 @if (!User.IsInRole("Admin"))

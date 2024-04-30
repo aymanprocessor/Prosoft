@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using ProSoft.EF.DTOs.Auth;
+using ProSoft.EF.DTOs.Calculus;
 using ProSoft.EF.DTOs.Medical.Analysis;
 using ProSoft.EF.DTOs.Medical.HospitalPatData;
 using ProSoft.EF.DTOs.Shared;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.Models;
+using ProSoft.EF.Models.Calculus;
 using ProSoft.EF.Models.Medical.Analysis;
 using ProSoft.EF.Models.Medical.HospitalPatData;
 using ProSoft.EF.Models.Shared;
@@ -73,6 +75,7 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<ServiceTypeViewDTO, ServiceType>().ReverseMap();
             CreateMap<CostCenterViewDTO, CostCenter>().ReverseMap();
             CreateMap<EisSectionTypeDTO, EisSectionType>().ReverseMap();
+            CreateMap<DoctorPrecentViewDTO, DoctorsPercent>().ReverseMap();
             CreateMap<DoctorPrecentEditAddDTO, DoctorsPercent>().ReverseMap();
             CreateMap<PriceListViewDTO, PriceList>().ReverseMap();
             CreateMap<PriceListEditAddDTO, PriceList>().ReverseMap();
@@ -98,6 +101,12 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<UserTranss, UserTransEditAddDTO>().ReverseMap();
             CreateMap<StoreTran, StoreTransDTO>().ReverseMap();
             CreateMap<UserTranss, UserTransEditAddDTO>().ReverseMap();
+            ////////// System ////////////////////
+            CreateMap<EisPosting, EisPostingViewDTO>().ReverseMap();
+            CreateMap<EisPosting, EisPostingEditAddDTO>().ReverseMap();
+            ////////// Calculus ////////////////////
+            CreateMap<AccMainCode, AccMainCodeDTO>().ReverseMap();
+            CreateMap<AccSubCode, AccSubCodeDTO>().ReverseMap();
         }
     }
 }
