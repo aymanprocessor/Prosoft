@@ -135,23 +135,21 @@
         });
     }
 
-    function ValueOrRatio(e)
-    {
+    function ValueOrRatio(e) {
         var value = e.target.value;
-        console.log(value)
+        // console.log(value)
         var percentage = document.getElementById('percentagee')
         var valuee = document.getElementById('valuee')
         var valueeContract = document.getElementById('valueeContract');
         var percentageeContract = document.getElementById('percentageeContract');
 
-        if (value == 2 || @Model.DrValFlg ==2)
-        {
+        if (value == 2) {
             percentage.style.display = "none";
             percentageeContract.style.display = "none";
             valuee.style.display = "block";
             valueeContract.style.display = "block";
         }
-        else if (value == 1 || @Model.DrValFlg == 1) {
+        else if (value == 1) {
             valuee.style.display = "none";
             valueeContract.style.display = "none";
             percentage.style.display = "block";

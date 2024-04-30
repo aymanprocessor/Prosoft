@@ -99,7 +99,7 @@
                     @* from Serve clinic *@
                     <div class="mb-3 servise">
                         <label asp-for="ServId">@localizer["Clinic Service"]</label>
-                        <select asp-for="ServId" asp-items="serveList" class="form-control text-center">
+                        <select asp-for="ServId" asp-items="serveList" class="form-control text-center" onchange="GetPriceListDetails()">
                             <option value="">-- Choose --</option>
                         </select>
                         <span asp-validation-for="ServId" class="text-danger"></span>
@@ -108,7 +108,7 @@
                 @* from Sender Doctor *@
                 <div class="mb-3 sizeDoctor" style="width: @(Model.ItmServFlag == 2 ? "60%" : "30%")">
                     <label asp-for="DrSend">@localizer["Sender Doctor"]</label>
-                    <select asp-for="DrSend" asp-items="drList" class="form-control text-center">
+                    <select asp-for="DrSend" asp-items="drList" class="form-control text-center" onchange="GetDoctorDate()">
                         <option value="">-- Choose --</option>
                     </select>
                     <span asp-validation-for="DrSend" class="text-danger"></span>
@@ -218,10 +218,23 @@
                     <span asp-validation-for="CheckIdCancel" class="text-danger"></span>
                 </div>
             </div>
+            @* ///////////////////////////////////////////////////////////////////////////////////////// *@
+
+            <input type="hidden" id="privateORContract" value="@ViewBag.privateOrContract" />
+            <input asp-for="ValueService" type="hidden" />
+            <input asp-for="DrValPat" type="hidden" />
+            <input asp-for="HoValPat" type="hidden" />
+            <input type="hidden" id="doctorPercentSC" value="@ViewBag.DoctorPercentSC" />
 
             @* ///////////////////////////////////////////////////////////////////////////////////////// *@
-            <div> <button type="button" class="btn btn-dark" onclick="netPatient()">@localizer["Net Patient"] : </button><span id="netPatient"> </span> @localizer["L.E"]</div>
+            <div class="d-flex justify-content-around mb-2">
+                <button type="button" class="btn btn-dark" onclick="netPatient()">@localizer["Net Patient"] : </button>
+                <span id="netPatient"> </span> @localizer["L.E"]
 
+                <button type="button" class="btn btn-dark" onclick="totalService()">@localizer["Total Service"] : </button>
+                <span id="totalService"> </span> @localizer["L.E"]
+
+            </div>
             <div class="parent d-flex justify-content-md-center ">
                 <button type="submit" class="btn btn-success" style="width:150px">@localizer["Save Changes"] </button>
             </div>
@@ -241,7 +254,7 @@
         $.ajax({
             url: `/Medical/ClinicTrans/GetSubClinic/${clinicId}`,
             success: function (result) {
-                console.log(result)
+               // console.log(result)
                 for (let item of result) {
                     subClinicId.innerHTML +=
                         `<option value="${item.sClinicId}">${item.sClinicDesc}</option>`
@@ -259,7 +272,7 @@
 
         $.ajax({
             url: `/Medical/ClinicTrans/GetServeClinic/${subClinicId}`,
-            success: function (result) {
+           // success: function (result) {
                 console.log(result)
                 for (let item of result) {
                     serveClinicId.innerHTML +=
@@ -268,9 +281,130 @@
             }
         });
     }
-   
+
+    var relativePatient;
+
+    // for price lists
+    function GetPriceListDetails() {
+        var serviceORItem = document.getElementById("ItmServFlag").value;
+        var patAdmissionID = document.getElementById("patAdmissionID").value;
+        var clinicID = document.getElementById("ClinicId").value;
+        var sClinicId = document.getElementById("SClinicId").value;
+        var servID = document.getElementById("ServId").value;
+        var privateOrContract = document.getElementById("privateORContract").value;
+
+        //Set inputs from priceList
+        var unitPrice = document.getElementById("UnitPrice");
+        var patientValue = document.getElementById("PatientValue");
+        var compValue = document.getElementById("CompValue");
+        var extraVal = document.getElementById("ExtraVal");//requirment
+        var extraVal2 = document.getElementById("ExtraVal2");//maintaince
+
+        // console.log(relativePatient)
+        if (serviceORItem == 3) {
+            $.ajax({
+                url: `/Medical/ClinicTrans/GetPriceListDetails/${patAdmissionID}?clincID=${clinicID}&sClincID=${sClinicId}&servID=${servID}`,
+                success: function (result) {
+                    console.log(result)
+                    if (result == null) {
+                        unitPrice.value = 0;
+                        patientValue.value = 0;
+                        compValue.value = 0;
+                        extraVal.value = 0;
+                        extraVal2.value = 0;
+                        relativePatient = 0;
+                    }
+                    else {
+                        //Private
+                        if (privateOrContract == 1) {
+                            unitPrice.value = result.plValue;
+                            patientValue.value = result.plValue;
+                            compValue.value = 0;
+                            extraVal.value = result.extraVal;
+                            extraVal2.value = result.extraVal2;
+                            relativePatient = result.plValue3;
+                        }
+                        //Contract
+                        else if (privateOrContract == 2) {
+                            //Coverd or not
+                            if (result.covered == 1) {
+                                unitPrice.value = result.plValue;
+                                patientValue.value = result.plValue2;
+                                compValue.value = result.compValue;
+                                extraVal.value = result.extraVal;
+                                extraVal2.value = result.extraVal2;
+                                relativePatient = result.plValue3;
+                            }
+                            //not Coverd
+                            else {
+                                unitPrice.value = result.plValue;
+                                patientValue.value = result.plValue;
+                                compValue.value = 0;
+                                extraVal.value = result.extraVal;
+                                extraVal2.value = result.extraVal2;
+                                relativePatient = result.plValue3;
+                            }
+                        }
+                    }
+
+                }
+            });
+        }
+
+    }
+
+    // for doctor data
+    function GetDoctorDate() {
+        var drID = document.getElementById("DrSend").value;
+        var sClinicId = document.getElementById("SClinicId").value;
+        var servId = document.getElementById("ServId").value;
+        var privateOrContract = document.getElementById("privateORContract").value;
+        var unitPrice = parseFloat(document.getElementById("UnitPrice").value);
+        var qty = document.getElementById("Qty").value;
+
+        //Set inputs from Doctor Percentage
+        var drValPat = document.getElementById("DrValPat");
+        var hoValPat = document.getElementById("HoValPat");
+        // console.log(privateOrContract);
+        $.ajax({
+            url: `/Medical/ClinicTrans/GetDoctorData/${drID}?sClincID=${sClinicId}&servID=${servId}`,
+            success: function (result) {
+                console.log(result);
+                if (result != null) {
+
+                    //Contract
+                    if (privateOrContract == 2) {
+                        if (result.drPercContract != 0) {
+                            drValPat.value = qty * unitPrice * (result.drPercContract / 100);
+                            hoValPat.value = (qty * unitPrice) - drValPat.value;
+                        }
+                        else if (result.drPercContract == 0) {
+                            var doctorPercentSCc = document.getElementById("doctorPercentSC")
+                            console.log(doctorPercentSCc.value);
+                            drValPat.value = qty * unitPrice * (doctorPercentSCc.value / 100);
+                            hoValPat.value = (qty * unitPrice) - drValPat.value;
+                        }
+                    }
+                    //Private
+                    else if (privateOrContract == 1) {
+                        if (result.drPerc != 0) {
+                            drValPat.value = qty * unitPrice * (result.drPerc / 100);
+                            hoValPat.value = (qty * unitPrice) - drValPat.value;
+                        }
+                        else if (result.drPerc == 0) {
+                            var doctorPercentSCc = document.getElementById("doctorPercentSC")
+                            drValPat.value = qty * unitPrice * (doctorPercentSCc.value / 100);
+                            hoValPat.value = (qty * unitPrice) - drValPat.value;
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+
     
-    //For calculte
+    //For calculte patient And Comp Values
     document.getElementById('PatientValue').addEventListener('input', function () {
 
         var patientValuee = parseFloat(this.value);
@@ -285,18 +419,36 @@
         var patientValuee = document.getElementById('PatientValue');
         patientValuee.value = unitPrice - compValuee;
     });
+
     //Net Patient Value
     function netPatient() {
 
         var patientValue = parseFloat(document.getElementById("PatientValue").value);
         var extraVal = parseFloat(document.getElementById("ExtraVal").value);
         var extraVal2 = parseFloat(document.getElementById("ExtraVal2").value);
+        var discount = parseFloat(document.getElementById("DiscountVal").value);
+        var qty = document.getElementById("Qty").value;
 
-        var totalValue = patientValue + extraVal + extraVal2;
+        var totalValue = qty * (patientValue + extraVal + extraVal2 - discount);
         // console.log(totalValue);
 
         var netPatient = document.getElementById("netPatient");
         netPatient.innerHTML = '  ' + totalValue + ' '; // Adjust decimal places as needed
     }
+
+    //Total Service Value
+    function totalService() {
+
+        var unitPrice = parseFloat(document.getElementById("UnitPrice").value);
+        var qty = document.getElementById("Qty").value;
+        var valueService = document.getElementById("ValueService");
+
+        var totalValue = qty * unitPrice;
+        valueService.value = totalValue;
+        // console.log(totalValue);
+        var totalService = document.getElementById("totalService");
+        totalService.innerHTML = '  ' + totalValue + ' '; // Adjust decimal places as needed
+    }
+
 
 </script>

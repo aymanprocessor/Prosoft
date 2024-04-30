@@ -237,7 +237,22 @@
 
             @* ///////////////////////////////////////////////////////////////////////////////////////// *@
 
-    <div> <button type="button" class="btn btn-dark" onclick="netPatient()">@localizer["Net Patient"] : </button><span id="netPatient"> </span> @localizer["L.E"]</div>
+            <input type="hidden" id="privateORContract" value="@ViewBag.privateOrContract" />
+            <input asp-for="ValueService" type="hidden" />
+            <input asp-for="DrValPat" type="hidden" />
+            <input asp-for="HoValPat" type="hidden"  />
+            <input type="hidden" id="doctorPercentSC" value="@ViewBag.DoctorPercentSC" />
+
+            @* ///////////////////////////////////////////////////////////////////////////////////////// *@
+
+             <div class="d-flex justify-content-around mb-2"> 
+                   <button type="button" class="btn btn-dark" onclick="netPatient()">@localizer["Net Patient"] : </button>
+                   <span id="netPatient"> </span> @localizer["L.E"]
+
+                    <button type="button" class="btn btn-dark" onclick="totalService()">@localizer["Total Service"] : </button>
+                 <span id="totalService"> </span> @localizer["L.E"]
+                   
+             </div>
             <div class="parent d-flex justify-content-md-center ">
                 <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add New"] </button>
             </div>
@@ -316,6 +331,7 @@
         var clinicID = document.getElementById("ClinicId").value;
         var sClinicId = document.getElementById("SClinicId").value;
         var servID = document.getElementById("ServId").value;
+        var privateOrContract = document.getElementById("privateORContract").value;
 
         //Set inputs from priceList
         var unitPrice = document.getElementById("UnitPrice");
@@ -340,12 +356,36 @@
                     }
                     else
                     {
-                        unitPrice.value = result.plValue;
-                        patientValue.value = result.plValue2;
-                        compValue.value = result.compValue;
-                        extraVal.value = result.extraVal;
-                        extraVal2.value = result.extraVal2;
-                        relativePatient = result.plValue3;
+                        //Private
+                        if (privateOrContract ==1) {
+                            unitPrice.value = result.plValue;
+                            patientValue.value = result.plValue;
+                            compValue.value = 0;
+                            extraVal.value = result.extraVal;
+                            extraVal2.value = result.extraVal2;
+                            relativePatient = result.plValue3;
+                        }
+                        //Contract
+                        else if (privateOrContract == 2) {
+                            //Coverd or not 
+                            if (result.covered == 1) {
+                                unitPrice.value = result.plValue;
+                                patientValue.value = result.plValue2;
+                                compValue.value = result.compValue;
+                                extraVal.value = result.extraVal;
+                                extraVal2.value = result.extraVal2;
+                                relativePatient = result.plValue3;
+                            }
+                            //not Coverd
+                            else {
+                                unitPrice.value = result.plValue;
+                                patientValue.value = result.plValue;
+                                compValue.value = 0;
+                                extraVal.value = result.extraVal;
+                                extraVal2.value = result.extraVal2;
+                                relativePatient = result.plValue3;
+                            }
+                        }
                     }
 
                 }
@@ -358,18 +398,53 @@
     function GetDoctorDate() {
         var drID = document.getElementById("DrSend").value;
         var sClinicId = document.getElementById("SClinicId").value;
-        var servID = document.getElementById("ServId").value;
-       // console.log(drID)
+        var servId = document.getElementById("ServId").value;
+        var privateOrContract = document.getElementById("privateORContract").value;
+        var unitPrice = parseFloat(document.getElementById("UnitPrice").value);
+        var qty = document.getElementById("Qty").value;
+
+        //Set inputs from Doctor Percentage
+        var drValPat = document.getElementById("DrValPat");
+        var hoValPat = document.getElementById("HoValPat");
+           // console.log(privateOrContract);
         $.ajax({
-            url: `/Medical/ClinicTrans/GetDoctorData/${drID}?sClincID=${sClinicId}&servID=${servID}`,
+            url: `/Medical/ClinicTrans/GetDoctorData/${drID}?sClincID=${sClinicId}&servID=${servId}`,
             success: function (result) {
-                console.log(result)
+                console.log(result);
+                if (result != null) {
+
+                    //Contract
+                    if (privateOrContract == 2) {
+                        if (result.drPercContract != 0) {
+                            drValPat.value = qty * unitPrice * (result.drPercContract / 100);
+                            hoValPat.value = (qty * unitPrice) - drValPat.value;
+                        }
+                        else if (result.drPercContract == 0) { 
+                            var doctorPercentSCc = document.getElementById("doctorPercentSC")
+                            console.log(doctorPercentSCc.value);
+                            drValPat.value = qty * unitPrice * (doctorPercentSCc.value / 100);
+                            hoValPat.value = (qty * unitPrice) - drValPat.value;
+                        }
+                    }
+                    //Private
+                    else if (privateOrContract == 1) {
+                        if (result.drPerc != 0) {
+                            drValPat.value = qty * unitPrice * (result.drPerc / 100);
+                            hoValPat.value = (qty * unitPrice) - drValPat.value;
+                        }
+                        else if (result.drPerc == 0) {
+                            var doctorPercentSCc = document.getElementById("doctorPercentSC")
+                            drValPat.value = qty * unitPrice * (doctorPercentSCc.value / 100);
+                            hoValPat.value = (qty * unitPrice) - drValPat.value;
+                        }
+                    }
+                }
             }
         });
     }
 
 
-    //For calculte
+    //For calculte patient And Comp Values 
     document.getElementById('PatientValue').addEventListener('input', function () {
 
         var patientValuee = parseFloat(this.value);
@@ -391,12 +466,28 @@
         var patientValue = parseFloat(document.getElementById("PatientValue").value);
         var extraVal = parseFloat(document.getElementById("ExtraVal").value);
         var extraVal2 = parseFloat(document.getElementById("ExtraVal2").value);
+        var discount = parseFloat(document.getElementById("DiscountVal").value);
+        var qty = document.getElementById("Qty").value;
 
-        var totalValue = relativePatient + patientValue + extraVal + extraVal2;
+        var totalValue = qty * (patientValue + extraVal + extraVal2 - discount);
        // console.log(totalValue);
         
         var netPatient = document.getElementById("netPatient");
         netPatient.innerHTML = '  ' + totalValue + ' '; // Adjust decimal places as needed
+    }
+
+    //Total Service Value
+    function totalService() {
+
+        var unitPrice = parseFloat(document.getElementById("UnitPrice").value);
+        var qty = document.getElementById("Qty").value;
+        var valueService = document.getElementById("ValueService");
+
+        var totalValue = qty * unitPrice;
+        valueService.value = totalValue;
+        // console.log(totalValue);
+        var totalService = document.getElementById("totalService");
+        totalService.innerHTML = '  ' + totalValue + ' '; // Adjust decimal places as needed
     }
 
 

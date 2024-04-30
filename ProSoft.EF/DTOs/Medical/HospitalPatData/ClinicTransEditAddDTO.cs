@@ -32,6 +32,10 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
         public decimal DiscountVal { get; set; }
         public int ApprovalPeriod { get; set; }
         public int CheckIdCancel { get; set; }
+        public decimal? ValueService { get; set; }
+        public decimal? DrValPat { get; set; }
+        public decimal? HoValPat { get; set; }
+
         ///optional///
         public int? PatId { get; set; }
         public int? CompId { get; set; }

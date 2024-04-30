@@ -280,6 +280,11 @@
   "Main Accounting Code": "الكود المحاسبي الرئيسي",
   "Check Add To Company": "تاكيد الاضافة الي الشركات",
   "Net Patient": "صافي المريض",
+  "Total Service": "اجمالي الخدمة",
+
+
+
+
 
   "Cost Name": "اسم التكلفة",
   "Stocks System": "نظام المخازن",
@@ -374,5 +379,14 @@
   "Is Activated": "تفعيل",
   "Edit transaction": "تعديل الحركة",
   "for user": "للمستخدم",
-  "Suppliers": "المردين"
+  "Suppliers": "الموردين",
+  "System Tools": "ادوات النظام",
+  "System Accounts Coding": "تكويد حسابات النظام",
+  "The Code": "الكود",
+  "The Description": "الوصف",
+  "Main Code": "الكود الرئيسي",
+  "Sub Code": "الكود الفرعي",
+  "Add System Account": "اضافة حساب نظام",
+  "The Name": "الاسم",
+  "Add New System Account": "اضافة حساب نظام جديد"
 }

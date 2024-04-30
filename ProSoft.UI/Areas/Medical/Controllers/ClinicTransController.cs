@@ -13,9 +13,11 @@ namespace ProSoft.UI.Areas.Medical.Controllers
     public class ClinicTransController : Controller
     {
         private readonly IClinicTransRepo _clinicTransRepo;
-        public ClinicTransController(IClinicTransRepo clinicTransRepo)
+        private readonly IPatAdmissionRepo _patAdmissionRepo;
+        public ClinicTransController(IClinicTransRepo clinicTransRepo, IPatAdmissionRepo patAdmissionRepo)
         {
             _clinicTransRepo = clinicTransRepo;
+            _patAdmissionRepo = patAdmissionRepo;
         }
 
         public async Task<IActionResult> GetClinicTrans(int id, int flag)
@@ -56,9 +58,11 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         public async Task<IActionResult> GetDoctorData(int id,int sClincID, int servID)
         {
             DoctorPrecentViewDTO doctorPrecentDTO = await _clinicTransRepo.GetDoctorPrices(id, sClincID, servID);
+            //To Get Percentage of doctor in case ==0 in doctor Precentage
+            ServiceClinicViewDTO serviceClinicDTO = await _clinicTransRepo.GetServiceClinicByIDs(id, sClincID, servID);
+            ViewBag.DoctorPercentSC = serviceClinicDTO.DrPerc;
             return Json(doctorPrecentDTO);
         }
-
 
         //////////////////////////////////////////////////////////////////////////////////////////
      
@@ -68,6 +72,9 @@ namespace ProSoft.UI.Areas.Medical.Controllers
             ClinicTransEditAddDTO clinicTransEditAddDTO = await _clinicTransRepo.GetEmptyClinicTransAsync();
             ViewBag.Master = id;
             ViewBag.flag = flag;
+            //To Know private or Contract
+            PatAdmissionEditAddDTO patAdmissionDTO = await _clinicTransRepo.GetPatAdmissionByIdAsync(id);
+            ViewBag.privateOrContract = patAdmissionDTO.Deal;
             //for redirction
             ViewBag.redirect=redirect;
 
@@ -92,6 +99,8 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         {
             ClinicTransEditAddDTO clinicTransEditAddDTO = await _clinicTransRepo.GetClinicTransByIdAsync(id);
             ViewBag.Master = id;
+            PatAdmissionEditAddDTO patAdmissionDTO = await _clinicTransRepo.GetPatAdmissionByIdAsync(id);
+            ViewBag.privateOrContract = patAdmissionDTO.Deal;
             //for redirction
             ViewBag.redirect = redirect;
 

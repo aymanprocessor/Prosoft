@@ -122,14 +122,32 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             TermsPriceListViewDTO TermsPriceListDTO = _mapper.Map<TermsPriceListViewDTO>(priceListDetail);
             return TermsPriceListDTO;
         }
+        //get service clink to get percentage of doctor
+        public async Task<ServiceClinicViewDTO> GetServiceClinicByIDs(int id, int sClincID, int servID)
+        {
+            ServiceClinic serviceClinic = await _Context.ServiceClinics
+                .FirstOrDefaultAsync(obj=>obj.ClinicId ==id && obj.SClinicId ==sClincID && obj.ServId ==servID);
+            ServiceClinicViewDTO serviceClinicDTO = _mapper.Map<ServiceClinicViewDTO>(serviceClinic);
+            return serviceClinicDTO;
+        }
+        //get patAdmission for Know Private or contract
+        public async Task<PatAdmissionEditAddDTO> GetPatAdmissionByIdAsync(int id)
+        {
+            PatAdmission patAdmission = await _Context.PatAdmissions
+               .FirstOrDefaultAsync(obj => obj.MasterId == id);
 
+            PatAdmissionEditAddDTO patAdmissionDTO = _mapper.Map<PatAdmissionEditAddDTO>(patAdmission);
+            return patAdmissionDTO;
+        }
         public async Task<DoctorPrecentViewDTO> GetDoctorPrices(int id, int sClincID, int servID)
         {
             DoctorsPercent doctorsPercent = await _Context.DoctorsPercents
-                .FirstOrDefaultAsync(obj=>obj.DrCode==id && obj.SubCode==sClincID&& obj.SubDetailCodeL1==servID);
+                .FirstOrDefaultAsync(obj=>obj.DrCode==id && obj.SubCode == sClincID && obj.SubDetailCodeL1 == servID);
             DoctorPrecentViewDTO doctorPrecentDTO = _mapper.Map<DoctorPrecentViewDTO>(doctorsPercent);
+           
             return doctorPrecentDTO;
         }
+
         ///////////////////////////////////////////////////////////////////////////////////
 
         public async Task AddClinicTransAsync(int visitId, int flag, ClinicTransEditAddDTO clinicTransDTO)
@@ -228,5 +246,7 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             _Context.Remove(clinicTran);
             await _Context.SaveChangesAsync();
         }
+
+       
     }
 }
