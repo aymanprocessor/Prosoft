@@ -280,6 +280,11 @@
   "Main Accounting Code": "Main Accounting Code",
   "Check Add To Company": "Check Add To Company",
   "Net Patient": "Net Patient",
+  "Total Service": "Total Service",
+
+
+
+
 
   "Cost Name": "Cost Name",
   "Stocks System": "Stocks System",
@@ -374,5 +379,14 @@
   "Is Activated": "Is Activated",
   "Edit transaction": "Edit transaction",
   "for user": "for user",
-  "Suppliers": "Suppliers"
+  "Suppliers": "Suppliers",
+  "System Tools": "System Tools",
+  "System Accounts Coding": "System Accounts Coding",
+  "The Code": "The Code",
+  "The Description": "The Description",
+  "Main Code": "Main Code",
+  "Sub Code": "Sub Code",
+  "Add System Account": "Add System Account",
+  "The Name": "The Name",
+  "Add New System Account": "Add New System Account"
 }

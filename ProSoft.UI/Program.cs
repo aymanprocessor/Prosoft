@@ -80,6 +80,8 @@ builder.Services.AddScoped<ISectionRepo, SectionRepo>();
 builder.Services.AddScoped<IGeneralTableRepo, GeneralTableRepo>();
 builder.Services.AddScoped<IUserTransRepo, UserTransRepo>();
 builder.Services.AddScoped<ITransTypeRepo, TransTypeRepo>();
+///////////////// System /////////////
+builder.Services.AddScoped<IEisPostingRepo, EisPostingRepo>();
 
 ///For Localization
 builder.Services.AddLocalization();

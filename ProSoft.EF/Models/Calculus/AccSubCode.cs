@@ -4,24 +4,27 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace ProSoft.EF.Models.Stocks;
+namespace ProSoft.EF.Models.Calculus;
 
-[Keyless]
+[PrimaryKey("CoCode", "SubCode", "MainCode")]
 [Table("ACC_SUB_CODE")]
 public partial class AccSubCode
 {
+    [Key]
     [Column("CO_CODE")]
-    public int? CoCode { get; set; }
+    public int CoCode { get; set; }
 
+    [Key]
     [Column("SUB_CODE")]
     [StringLength(6)]
     [Unicode(false)]
-    public string? SubCode { get; set; }
+    public string SubCode { get; set; } = null!;
 
+    [Key]
     [Column("MAIN_CODE")]
     [StringLength(10)]
     [Unicode(false)]
-    public string? MainCode { get; set; }
+    public string MainCode { get; set; } = null!;
 
     [Column("SUB_NAME")]
     [StringLength(80)]
