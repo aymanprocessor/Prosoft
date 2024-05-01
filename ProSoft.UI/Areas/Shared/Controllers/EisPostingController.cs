@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProSoft.EF.DTOs.Calculus;
 using ProSoft.EF.DTOs.Shared;
 using ProSoft.EF.IRepositories.Shared;
+using ProSoft.EF.Models.Shared;
 
 namespace ProSoft.UI.Areas.Shared.Controllers
 {
@@ -39,56 +40,57 @@ namespace ProSoft.UI.Areas.Shared.Controllers
         }
 
         // Post Add
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Add_SysAccount(ClassificationViewDTO classCastDTO)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        ClassificationCust classCast = _mapper.Map<ClassificationCust>(classCastDTO);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Add_SysAccount(EisPostingEditAddDTO eisPostingDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                EisPosting eisPosting = _mapper.Map<EisPosting>(eisPostingDTO);
+                eisPosting.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
 
-        //        await _classCustRepo.AddAsync(classCast);
-        //        await _classCustRepo.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(classCastDTO);
-        //}
+                await _eisPostingRepo.AddAsync(eisPosting);
+                await _eisPostingRepo.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(eisPostingDTO);
+        }
 
         // Get Edit
-        //public async Task<IActionResult> Edit_SysAccount(int id)
-        //{
-        //    ClassificationCust classCast = await _classCustRepo.GetByIdAsync(id);
-        //    ClassificationViewDTO classCastDTO = _mapper.Map<ClassificationViewDTO>(classCast);
-        //    return View(classCastDTO);
-        //}
+        public async Task<IActionResult> Edit_SysAccount(int id)
+        {
+            EisPostingEditAddDTO eisPostingDTO = await _eisPostingRepo.GetEisPostingByIdAsync(id);
+            return View(eisPostingDTO);
+        }
 
         // Post Edit
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit_SysAccount(int id, ClassificationViewDTO classCastDTO)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        ClassificationCust classCast = await _classCustRepo.GetByIdAsync(id);
-        //        _mapper.Map(classCastDTO, classCast);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit_SysAccount(int id, EisPostingEditAddDTO eisPostingDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                EisPosting eisPosting = await _eisPostingRepo.GetByIdAsync(id);
+                _mapper.Map(eisPostingDTO, eisPosting);
+                eisPosting.PostId = id;
 
-        //        await _classCustRepo.UpdateAsync(classCast);
-        //        await _classCustRepo.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(classCastDTO);
-        //}
+                await _eisPostingRepo.UpdateAsync(eisPosting);
+                await _eisPostingRepo.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(eisPostingDTO);
+        }
 
         // Delete
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Delete_SysAccount(int id)
-        //{
-        //    ClassificationCust classCast = await _classCustRepo.GetByIdAsync(id);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete_SysAccount(int id)
+        {
+            EisPosting eisPosting = await _eisPostingRepo.GetByIdAsync(id);
 
-        //    await _classCustRepo.DeleteAsync(classCast);
-        //    await _classCustRepo.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
+            await _eisPostingRepo.DeleteAsync(eisPosting);
+            await _eisPostingRepo.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
