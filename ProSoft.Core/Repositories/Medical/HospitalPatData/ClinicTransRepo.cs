@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using ProSoft.EF.DbContext;
 using ProSoft.EF.DTOs.Medical.HospitalPatData;
 using ProSoft.EF.IRepositories.Medical.HospitalPatData;
@@ -147,6 +148,19 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
            
             return doctorPrecentDTO;
         }
+        //get all prices of services belong to visit for patient
+        public async Task<decimal> GetPricesOfServices(int visitId, int flag)
+        {
+           List<ClinicTran> clinicTrans = await _Context.ClinicTrans
+                .Where(obj => obj.MasterId == visitId && obj.Flag == flag).ToListAsync();
+
+            decimal totalPrice = 0;
+            foreach (var item in clinicTrans)
+            {
+                   totalPrice += Convert.ToDecimal(item.ValueService ?? 0);
+            }
+            return totalPrice;
+        }
 
         ///////////////////////////////////////////////////////////////////////////////////
 
@@ -247,6 +261,5 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             await _Context.SaveChangesAsync();
         }
 
-       
     }
 }

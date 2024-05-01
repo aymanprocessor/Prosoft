@@ -32,7 +32,8 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
                 {
                     MasterId = obj.MasterId,
                     PatId = (int)obj.PatId,
-                    PatAdDate = Convert.ToDateTime(obj.PatAdDate),
+                    PatAdDate =Convert.ToDateTime(obj.PatAdDate).Date,
+                    CompId = obj.Comp.CompId,
                     CompName = obj.Comp.CompName,
                     CompNameDtl = obj.CompIdDtlNavigation.CompNameDtl,
                     ClassificationDesc = obj.BrnachInitialNavigation.ClassificationDesc,

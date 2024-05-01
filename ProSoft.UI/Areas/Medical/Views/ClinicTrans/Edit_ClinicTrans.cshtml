@@ -43,6 +43,9 @@
             <div asp-validation-summary="ModelOnly"></div>
             <div class="parent d-flex flex-column align-items-center my-mobile">
             <input type="hidden" name="redirect" value="@ViewBag.redirect"/>
+             <input asp-for="ItmServFlag" type="hidden" disabled />
+
+            <input type="hidden" disabled id="patAdmissionID" value="@ViewBag.Master" />
 
             </div>
             @* ///////////////////////////////////////////////////////////////////////////////////////// *@
@@ -235,18 +238,24 @@
                 <span id="totalService"> </span> @localizer["L.E"]
 
             </div>
-            <div class="parent d-flex justify-content-md-center ">
-                <button type="submit" class="btn btn-success" style="width:150px">@localizer["Save Changes"] </button>
+            @* ///////////////////////////////////////////////////////////////////////////////////////// *@
+
+            <div class="parent d-flex justify-content-md-center gap-2">
+                 <button type="submit" class="btn btn-primary" style="width:150px">
+                 @localizer["Save Changes"]
+             </button>
+              <a asp-controller="HospitalPatData" asp-action="Invoices" class="btn btn-secondary" style="width:150px">
+                 @localizer["Cancel"]
+             </a>
             </div>
         </div>
     </form>
 </div>
-
 <script>
-
     // for sub clinic
     function GetSubClinics() {
         var clinicId = document.getElementById("ClinicId").value;
+       // console.log(clinicId);
 
         var subClinicId = document.getElementById("SClinicId");
         subClinicId.innerHTML = `<option value="">-- Choose --</option>`;
@@ -254,7 +263,7 @@
         $.ajax({
             url: `/Medical/ClinicTrans/GetSubClinic/${clinicId}`,
             success: function (result) {
-               // console.log(result)
+                // console.log(result)
                 for (let item of result) {
                     subClinicId.innerHTML +=
                         `<option value="${item.sClinicId}">${item.sClinicDesc}</option>`
@@ -272,15 +281,16 @@
 
         $.ajax({
             url: `/Medical/ClinicTrans/GetServeClinic/${subClinicId}`,
-           // success: function (result) {
-                console.log(result)
-                for (let item of result) {
-                    serveClinicId.innerHTML +=
-                        `<option value="${item.servId}">${item.servDesc}</option>`;
-                }
-            }
-        });
-    }
+             success: function (result) {
+             // console.log(result);
+                for(let item of result) {
+                  serveClinicId.innerHTML +=
+                   `<option value="${item.servId}">${item.servDesc}</option>`;
+                 }
+               }
+            });
+        }
+
 
     var relativePatient;
 
@@ -403,7 +413,7 @@
     }
 
 
-    
+
     //For calculte patient And Comp Values
     document.getElementById('PatientValue').addEventListener('input', function () {
 
@@ -419,6 +429,7 @@
         var patientValuee = document.getElementById('PatientValue');
         patientValuee.value = unitPrice - compValuee;
     });
+
 
     //Net Patient Value
     function netPatient() {

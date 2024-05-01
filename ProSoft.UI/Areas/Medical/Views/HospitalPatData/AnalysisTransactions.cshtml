@@ -107,6 +107,9 @@
                     <th class="align-middle">
                         @localizer["Entry Date"]
                     </th>
+                    <th class="align-middle" width="2px">
+                        @localizer["Entity Code"]
+                    </th>
                     <th class="align-middle">
                         @localizer["Entity Name"]
                     </th>
@@ -116,9 +119,9 @@
                     <th class="align-middle">
                         @localizer["Department"]
                     </th>
-                    <th class="align-middle">
+                  @*   <th class="align-middle">
                         @localizer["Sent From"]
-                    </th>
+                    </th> *@
                     <th class="align-middle">
                         @localizer["Doctor Name"]
                     </th>
@@ -320,11 +323,11 @@
                         patAdmission.innerHTML +=
                         `
                             <td class="item-id align-middle">${item.masterId}</td>
-                            <td class="align-middle">${item.patAdDate}</td>
+                            <td class="align-middle">${item.patAdDate}</td
+                            <td class="align-middle">${item.compId}</td>
                             <td class="align-middle">${item.compName}</td>
                             <td class="align-middle">${item.compNameDtl}</td>
                             <td class="align-middle">${item.classificationDesc}</td>
-                            <td class="align-middle">${item.regionDesc}</td>
                             <td class="align-middle">${item.drDesc}</td>    
                         `;
                         //for click to call ajax

@@ -19,7 +19,7 @@ namespace ProSoft.EF.IRepositories.Medical.HospitalPatData
         Task<List<ServiceClinicViewDTO>> GetServeClinic(int id);
         Task<TermsPriceListViewDTO> GetPricesDetails(int id, int clincID, int sClincID, int servID);
         Task<PatAdmissionEditAddDTO> GetPatAdmissionByIdAsync(int id);
-
+        Task<decimal> GetPricesOfServices(int visitId, int flag);
         Task<ServiceClinicViewDTO> GetServiceClinicByIDs(int id, int sClincID, int servID);
         Task<DoctorPrecentViewDTO> GetDoctorPrices(int id, int sClincID, int servID);
         /////////////////////////////////////////////////////////////////////////////////

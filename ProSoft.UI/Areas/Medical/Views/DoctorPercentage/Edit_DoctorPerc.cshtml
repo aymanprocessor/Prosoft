@@ -104,13 +104,14 @@
             </div>
 
           <!------------------------------------------------------------------------------->
-
-            <button type="submit" class="btn btn-success" style="width:150px">
-                @localizer["Save Changes"]
-            </button>
-            <a asp-controller="DoctorPercentage" asp-action="Index" class="btn btn-secondary" style="width:150px">
-                @localizer["Cancel"]
-            </a>
+            <div class="parent d-flex justify-content-md-center gap-2 ">
+                <button type="submit" class="btn btn-success" style="width:150px">
+                    @localizer["Save Changes"]
+                </button>
+                <a asp-controller="DoctorPercentage" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
         </div>
     </form>
 </div>

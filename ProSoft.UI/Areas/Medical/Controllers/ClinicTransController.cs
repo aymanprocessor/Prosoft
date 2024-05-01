@@ -75,6 +75,9 @@ namespace ProSoft.UI.Areas.Medical.Controllers
             //To Know private or Contract
             PatAdmissionEditAddDTO patAdmissionDTO = await _clinicTransRepo.GetPatAdmissionByIdAsync(id);
             ViewBag.privateOrContract = patAdmissionDTO.Deal;
+            //All Price Of All Services Belong to Visit of Patient
+            decimal totalPriceService = await _clinicTransRepo.GetPricesOfServices(id, flag);
+            ViewBag.AllServicesPrice = totalPriceService;
             //for redirction
             ViewBag.redirect=redirect;
 
@@ -89,7 +92,8 @@ namespace ProSoft.UI.Areas.Medical.Controllers
             if (ModelState.IsValid) 
             {
                 await _clinicTransRepo.AddClinicTransAsync(id, flag, clinicTranDTO);
-                return RedirectToAction(redirect, "HospitalPatData");
+                // return RedirectToAction(redirect, "HospitalPatData");
+                return RedirectToAction("Add_ClinicTrans", new { id , redirect , flag });
             }
             return View(clinicTranDTO);
         }
@@ -101,6 +105,7 @@ namespace ProSoft.UI.Areas.Medical.Controllers
             ViewBag.Master = id;
             PatAdmissionEditAddDTO patAdmissionDTO = await _clinicTransRepo.GetPatAdmissionByIdAsync(id);
             ViewBag.privateOrContract = patAdmissionDTO.Deal;
+
             //for redirction
             ViewBag.redirect = redirect;
 

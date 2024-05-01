@@ -118,6 +118,9 @@
                     <th class="align-middle">
                         @localizer["Entry Date"]
                     </th>
+                    <th class="align-middle" width="2px">
+                        @localizer["Entity Code"]
+                    </th> 
                     <th class="align-middle">
                         @localizer["Entity Name"]
                     </th>
@@ -127,16 +130,14 @@
                     <th class="align-middle">
                         @localizer["Department"]
                     </th>
-                    <th class="align-middle">
+                    @* <th class="align-middle">
                         @localizer["Sent From"]
-                    </th>
+                    </th> *@
                     <th class="align-middle">
                         @localizer["Doctor Name"]
                     </th>
                     <th class="align-middle">
-                        @localizer["Action"]
                     </th>
-
                 </tr>
             </thead>
             <tbody>
@@ -284,6 +285,7 @@
                 success: function (result) {
                     // console.log(result);
                     //sorting
+                        // <td class="align-middle">${item.regionDesc}</td>
                     result.sort((a, b) => b.masterId - a.masterId)
                     for (let item of result) {
                         const patAdmission = document.createElement("tr");
@@ -291,10 +293,10 @@
 `
                         <td class="item-id align-middle">${item.masterId}</td>
                         <td class="align-middle">${item.patAdDate}</td>
+                        <td class="align-middle">${item.compId}</td>
                         <td class="align-middle">${item.compName}</td>
                         <td class="align-middle">${item.compNameDtl}</td>
                         <td class="align-middle">${item.classificationDesc}</td>
-                        <td class="align-middle">${item.regionDesc}</td>
                         <td class="align-middle">${item.drDesc}</td>
 
                             <td class="text-center ">

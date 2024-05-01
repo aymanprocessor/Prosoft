@@ -10,7 +10,6 @@
 }
 
 <style>
-
     .hide {
         display: none !important;
     }
@@ -47,6 +46,7 @@
                 <input type="hidden" name="flag" value="@ViewBag.flag" />
 
                 <input type="hidden" disabled id="patAdmissionID" value="@ViewBag.Master" />
+
 
                 <label asp-for="ItmServFlag"><h4>@localizer["Servise OR Item"]</h4></label>
 
@@ -146,26 +146,32 @@
 
             @* ///////////////////////////////////////////////////////////////////////////////////////// *@
 
-            <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
-                <div class="mb-3">
-                    <label asp-for="StockCode">@localizer["Stock"]</label>
-                    <input asp-for="StockCode" type="number" class="form-control text-center" />
-                    <span asp-validation-for="StockCode" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3" style="width:65%; margin:auto;">
+                <div class="mb-3" >
                     <label asp-for="Qty">@localizer["Quantity"]</label>
                     <input asp-for="Qty" type="number" class="form-control text-center" value="1" />
                     <span asp-validation-for="Qty" class="text-danger"></span>
                 </div>
+                <div class="mb-3">
+                    <label asp-for="UnitPrice">@localizer["Service Price"]</label>
+                    <input asp-for="UnitPrice" type="number" class="form-control text-center" />
+                    <span asp-validation-for="UnitPrice" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="ValueService">@localizer["All Service Price"]</label>
+                    <input asp-for="ValueService" type="number" value="0" class="form-control text-center" />
+                    <span asp-validation-for="ValueService" class="text-danger"></span>
+                </div>
+               
             </div>
 
             @* ///////////////////////////////////////////////////////////////////////////////////////// *@
 
             <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
                 <div class="mb-3">
-                    <label asp-for="UnitPrice">@localizer["Service Price"]</label>
-                    <input asp-for="UnitPrice" type="number" class="form-control text-center" />
-                    <span asp-validation-for="UnitPrice" class="text-danger"></span>
+                    <label asp-for="StockCode">@localizer["Stock"]</label>
+                    <input asp-for="StockCode" type="number" class="form-control text-center" />
+                    <span asp-validation-for="StockCode" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label asp-for="PatientValue">@localizer["Patient Value"] </label>
@@ -238,10 +244,10 @@
             @* ///////////////////////////////////////////////////////////////////////////////////////// *@
 
             <input type="hidden" id="privateORContract" value="@ViewBag.privateOrContract" />
-            <input asp-for="ValueService" type="hidden" />
             <input asp-for="DrValPat" type="hidden" />
             <input asp-for="HoValPat" type="hidden"  />
             <input type="hidden" id="doctorPercentSC" value="@ViewBag.DoctorPercentSC" />
+            <input type="hidden" id="allServicesPrice" value="@ViewBag.AllServicesPrice" />
 
             @* ///////////////////////////////////////////////////////////////////////////////////////// *@
 
@@ -253,8 +259,11 @@
                  <span id="totalService"> </span> @localizer["L.E"]
                    
              </div>
-            <div class="parent d-flex justify-content-md-center ">
+            <div class="parent d-flex justify-content-md-center gap-2 ">
                 <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add New"] </button>
+                <a asp-controller="HospitalPatData" asp-action="Invoices" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
             </div>
         </div>
     </form>
@@ -459,6 +468,13 @@
         var patientValuee = document.getElementById('PatientValue');
         patientValuee.value = unitPrice - compValuee;
     });
+    document.getElementById('Qty').addEventListener('input', function () {
+
+        var qty = parseFloat(this.value);
+        var unitPrice = document.getElementById('UnitPrice').value;
+        var valueService = document.getElementById("ValueService");
+        valueService.value = unitPrice * qty;
+    });
 
     //Net Patient Value
     function netPatient() {
@@ -478,12 +494,13 @@
 
     //Total Service Value
     function totalService() {
-
+        var allServicesPrice = parseFloat(document.getElementById("allServicesPrice").value);
+        console.log(allServicesPrice)
         var unitPrice = parseFloat(document.getElementById("UnitPrice").value);
         var qty = document.getElementById("Qty").value;
         var valueService = document.getElementById("ValueService");
 
-        var totalValue = qty * unitPrice;
+        var totalValue = allServicesPrice + (qty * unitPrice);
         valueService.value = totalValue;
         // console.log(totalValue);
         var totalService = document.getElementById("totalService");

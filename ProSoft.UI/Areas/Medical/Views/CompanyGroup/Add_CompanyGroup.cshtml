@@ -35,12 +35,15 @@
                     <span asp-validation-for="CompGroupOnOff" class="text-danger"></span>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary" style="width:150px">
-                @localizer["Add"]
-            </button>
-            <a asp-controller="CompanyGroup" asp-action="Index" class="btn btn-secondary" style="width:150px">
-                @localizer["Cancel"]
-            </a>
+            <!------------------------------------------------------------------------------->
+            <div class="parent d-flex justify-content-md-center gap-2 ">
+                <button type="submit" class="btn btn-primary" style="width:150px">
+                    @localizer["Add"]
+                </button>
+                <a asp-controller="CompanyGroup" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
 
         </div>
     </form>
