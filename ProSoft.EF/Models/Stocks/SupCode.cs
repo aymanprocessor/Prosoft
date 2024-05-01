@@ -87,7 +87,7 @@ public partial class SupCode
     public short? SupType { get; set; }
 
     [Column("REPLCATE")]
-    public double? Replcate { get; set; }
+    public int? Replcate { get; set; }
 
     [Column("BR_REPLC")]
     [StringLength(20)]

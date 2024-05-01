@@ -1,0 +1,127 @@
+﻿@model SupCodeEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Add New Supplier";
+    Layout = "_Layout";
+
+    // Casting type to get all subCodes as a list
+    SelectList subCodes = new SelectList(Model.SubCodes, "SubCode", "SubName");
+
+    // Casting type to get all cities as a list
+    SelectList cities = new SelectList(Model.Cities, "CityCode1", "CityName");
+
+    // Casting type to get all places as a list
+    SelectList places = new SelectList(Model.Places, "PlaceCode1", "PlaceName");
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+    <h1 class="mt-4">@localizer["Add New Supplier"]</h1>
+    <form method="post" asp-action="Add_Supplier">
+        <div class="border p-3 mt-4">
+
+            @* Hidden Inputs *@
+            <input asp-for="MainCode" type="hidden" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="SubCode"></label>
+                    <select asp-for="SubCode" asp-items="subCodes" class="form-control text-center">
+                        <option value="">-- Choose -</option>
+                    </select>
+                    <span asp-validation-for="SubCode" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="SupName"></label>
+                    <input asp-for="SupName" class="form-control" />
+                    <span asp-validation-for="SupName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="PersonName"></label>
+                    <input asp-for="PersonName" class="form-control" />
+                    <span asp-validation-for="PersonName" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="SupAdd"></label>
+                    <input asp-for="SupAdd" class="form-control" />
+                    <span asp-validation-for="SupAdd" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="CityCode"></label>
+                    <select asp-for="CityCode" asp-items="cities" class="form-control text-center">
+                        <option value="">-- Choose -</option>
+                    </select>
+                    <span asp-validation-for="CityCode" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="AreaCode"></label>
+                    <select asp-for="AreaCode" asp-items="places" class="form-control text-center">
+                        <option value="">-- Choose -</option>
+                    </select>
+                    <span asp-validation-for="AreaCode" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="SupPhone1"></label>
+                    <input asp-for="SupPhone1" class="form-control" />
+                    <span asp-validation-for="SupPhone1" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="SupPhone2"></label>
+                    <input asp-for="SupPhone2" class="form-control" />
+                    <span asp-validation-for="SupPhone2" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="SupFax"></label>
+                    <input asp-for="SupFax" class="form-control" />
+                    <span asp-validation-for="SupFax" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile ">
+                <div class="mb-3" style="width: 62%;">
+                    <label asp-for="Remarks"></label>
+                    <input asp-for="Remarks" class="form-control" />
+                    <span asp-validation-for="Remarks" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex justify-content-md-center gap-2">
+                <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add"]</button>
+                <a asp-controller="Supplier" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>

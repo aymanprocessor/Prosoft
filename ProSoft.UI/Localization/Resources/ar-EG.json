@@ -63,8 +63,8 @@
   "Visits of patient": "زيارات المريض",
   "Master Id": "كود الزيارة",
   "Entry Date": "تاريخ الدخول",
-  "Entity Name": "اسم الجهة",
-  "subEntity Name": "اسم الجهة الفرعية",
+  "Entity Name": "الجهة الرئسية",
+  "subEntity Name": "الجهة الفرعية",
   "Department": "الادارة",
   "Sent From": "محول من",
   "Doctor Name": "اسم الطبيب",
@@ -167,7 +167,7 @@
   "UnActivate": "غير مفعل",
   "Yes": "نعم",
   "No": "لا",
-  "Cancel": "الغاء",
+  "Cancel": "رجوع",
   "Specialties of Doctor": "تخصصات الاطباء",
   "Add Specialty": "اضافة تخصص",
   "Edit Specialty": "تعديل تخصص",
@@ -280,7 +280,10 @@
   "Main Accounting Code": "الكود المحاسبي الرئيسي",
   "Check Add To Company": "تاكيد الاضافة الي الشركات",
   "Net Patient": "صافي المريض",
-  "Total Service": "اجمالي الخدمة",
+  "All Service Price": "اجمالي سعر الخدمة",
+  "Total Service": "اجمالي الخدمات",
+  "Entity Code": "كود الجهة",
+  "Quantity": "كمية",
 
 
 
@@ -379,7 +382,7 @@
   "Is Activated": "تفعيل",
   "Edit transaction": "تعديل الحركة",
   "for user": "للمستخدم",
-  "Suppliers": "الموردين",
+  "The Suppliers": "الموردين",
   "System Tools": "ادوات النظام",
   "System Accounts Coding": "تكويد حسابات النظام",
   "The Code": "الكود",
@@ -388,5 +391,14 @@
   "Sub Code": "الكود الفرعي",
   "Add System Account": "اضافة حساب نظام",
   "The Name": "الاسم",
-  "Add New System Account": "اضافة حساب نظام جديد"
+  "Add New System Account": "اضافة حساب نظام جديد",
+  "Suppliers Data": "بيانات الموردين",
+  "Add New Supplier": "اضافة مورد جديد",
+  "Code in Calculus": "الكود بالحسابات",
+  "Fax Number": "رقم الفاكس",
+  "Notes": "ملاحظات",
+  "The Email": "البريد الالكتروني",
+  "The Governerate": "المحافظة",
+  "The City": "المدينة",
+  "Person Name": "اسم المسؤل"
 }

@@ -1,5 +1,58 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model List<SupCodeEditAddDTO>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
 @{
+    ViewData["Title"] = "Suppliers Data";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@inject IViewLocalizer localizer
+
+<div class="text-center">
+    <h1 class="mb-2">@localizer["Suppliers Data"] </h1>
+</div>
+
+<div class="container pt-2">
+    <div class="d-flex justify-content-between mb-2 gap-2">
+        <div>
+            <a asp-area="Stocks" asp-controller="Supplier" asp-action="Add_Supplier" class="btn btn-sm btn-primary fs-6" style="width:150px">
+                @localizer["Add New Supplier"]
+            </a>
+        </div>
+    </div>
+    <div class="overflow-auto" style="height: 300px;">
+        <table id="myTable" class="table table-bordered table-hover" style="width:100%;">
+            <thead class="table-dark">
+                <tr>
+                    <th class="align-middle">
+                        @localizer["The Code"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Company Name"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Code in Calculus"]
+                    </th>
+                    <th class="align-middle"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="align-middle">@item.Sup</td>
+                        <td class="align-middle">@item.SupName</td>
+                        <td class="align-middle">@item.SubCode</td>
+                        <td class="text-center align-middle" style="width: 325px;">
+                            <a asp-action="Edit_Supplier" asp-route-id="@item.Sup" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
+                            <form asp-action="Delete_Supplier" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@item.Sup" />
+                                <button class="btn btn-sm btn-danger mb-1 fs-6" onclick="return confirm('Are you sure you want to delete this one?')" style="width: 150px">@localizer["Delete"]</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
