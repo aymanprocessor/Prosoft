@@ -45,7 +45,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
 
         public async Task<IActionResult> GetPermissionsForUser(int id, int transType)
         {
-            List<PermissionDefViewDTO> permissionsDTO = await _userTransRepo
+            List<UserTransViewDTO> permissionsDTO = await _userTransRepo
                 .GetPermissionsForUserAsync(id, transType);
             return Json(permissionsDTO);
         }

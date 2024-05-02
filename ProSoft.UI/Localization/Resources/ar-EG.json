@@ -379,6 +379,7 @@
   "Transaction Name": "اسم الحركة",
   "Please, choose at least one transaction": "من فضلك اختار حركة واحدة علي الاقل",
   "Save": "حفظ",
+  "UT_Cancel": "الغاء",
   "Is Activated": "تفعيل",
   "Edit transaction": "تعديل الحركة",
   "for user": "للمستخدم",
@@ -394,11 +395,13 @@
   "Add New System Account": "اضافة حساب نظام جديد",
   "Suppliers Data": "بيانات الموردين",
   "Add New Supplier": "اضافة مورد جديد",
-  "Code in Calculus": "الكود بالحسابات",
+  "Supplier in Calculus": "المورد بالحسابات",
   "Fax Number": "رقم الفاكس",
   "Notes": "ملاحظات",
   "The Email": "البريد الالكتروني",
   "The Governerate": "المحافظة",
   "The City": "المدينة",
-  "Person Name": "اسم المسؤل"
+  "Responsible Name": "اسم المسؤل",
+  "Code In Stock": "الكود بالمخزن",
+  "Edit Supplier": "تعديل مورد"
 }

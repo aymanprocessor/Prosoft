@@ -10,6 +10,8 @@ namespace ProSoft.EF.IRepositories.Stocks
 {
     public interface ISupplierRepo: IRepository<SupCode, int>
     {
+        Task<string> GetNewIdAsync();
         Task<SupCodeEditAddDTO> GetEmptySupplierAsync();
+        Task<SupCodeEditAddDTO> GetSupplierByIdAsync(int id);
     }
 }

@@ -2,7 +2,7 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Add New Supplier";
+    ViewData["Title"] = "Edit Supplier";
     Layout = "_Layout";
 
     // Casting type to get all subCodes as a list
@@ -17,8 +17,8 @@
 @inject IViewLocalizer localizer
 
 <div class="container pt-2">
-    <h1 class="mt-4">@localizer["Add New Supplier"]</h1>
-    <form method="post" asp-action="Add_Supplier">
+    <h1 class="mt-4">@localizer["Edit Supplier"] : @Model.SupName</h1>
+    <form method="post" asp-action="Edit_Supplier">
         <div class="border p-3 mt-4">
 
             @* Hidden Inputs *@
@@ -26,15 +26,15 @@
             <input asp-for="MainCode" type="hidden" />
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile ">
-                <div class="mb-3">
+            <div class="parent d-flex align-items-md-end justify-content-center gap-3 my-mobile mb-3">
+                <div>
                     <label asp-for="SubCode"></label>
                     <select asp-for="SubCode" asp-items="subCodes" class="form-control text-center">
                         <option value="">-- Choose -</option>
                     </select>
                     <span asp-validation-for="SubCode" class="text-danger"></span>
                 </div>
-                <div class="mb-3">
+                <div>
                     <label asp-for="SupName"></label>
                     <input asp-for="SupName" class="form-control" />
                     <span asp-validation-for="SupName" class="text-danger"></span>
@@ -118,7 +118,7 @@
             <!------------------------------------------------------------------------------->
 
             <div class="parent d-flex justify-content-md-center gap-2">
-                <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add"]</button>
+                <button type="submit" class="btn btn-success" style="width:150px">@localizer["Save Changes"]</button>
                 <a asp-controller="Supplier" asp-action="Index" class="btn btn-secondary" style="width:150px">
                     @localizer["Cancel"]
                 </a>

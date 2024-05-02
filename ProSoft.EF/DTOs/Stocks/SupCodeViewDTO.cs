@@ -8,5 +8,8 @@ namespace ProSoft.EF.DTOs.Stocks
 {
     public class SupCodeViewDTO
     {
+        public int Sup { get; set; }
+        public string SupName { get; set; }
+        public string SubCode { get; set; }
     }
 }

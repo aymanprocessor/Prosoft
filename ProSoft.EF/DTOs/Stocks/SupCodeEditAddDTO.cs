@@ -20,51 +20,37 @@ namespace ProSoft.EF.DTOs.Stocks
         public string SupName { get; set; }
 
         [DisplayName("Address")]
-        [Required(ErrorMessage = "The field is required")]
-        public string SupAdd { get; set; }
+        public string? SupAdd { get; set; }
         
         [DisplayName("Telephone Number")]
-        [Required(ErrorMessage = "The field is required")]
-        public string SupPhone1 { get; set; }
+        public string? SupPhone1 { get; set; }
         
         [DisplayName("Mobile number")]
-        [Required(ErrorMessage = "The field is required")]
-        public string SupPhone2 { get; set; }
+        public string? SupPhone2 { get; set; }
 
         [DisplayName("Fax Number")]
-        [Required(ErrorMessage = "The field is required")]
-        public string SupFax { get; set; }
+        public string? SupFax { get; set; }
 
         [DisplayName("Notes")]
-        [Required(ErrorMessage = "The field is required")]
-        public string Remarks { get; set; }
-        public decimal ValDept { get; set; }
-        public decimal ValCredit { get; set; }
+        public string? Remarks { get; set; }
         
-        [DisplayName("Code in Calculus")]
+        [DisplayName("Supplier in Calculus")]
         [Required(ErrorMessage = "The field is required")]
         public string SubCode { get; set; }
         public string? MainCode { get; set; }
         
         [DisplayName("The Email")]
-        [Required(ErrorMessage = "The field is required")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
         
         [DisplayName("The Governerate")]
-        [Required(ErrorMessage = "The field is required")]
-        public int CityCode { get; set; }
+        public int? CityCode { get; set; }
 
         [DisplayName("The City")]
-        [Required(ErrorMessage = "The field is required")]
-        public int AreaCode { get; set; }
-        public int BranchId { get; set; }
+        public int? AreaCode { get; set; }
+        public int? BranchId { get; set; }
 
-        [DisplayName("Person Name")]
-        [Required(ErrorMessage = "The field is required")]
-        public string PersonName { get; set; }
-        public short SupType { get; set; }
-        public int Replcate { get; set; }
-        public string BrReplc { get; set; }
+        [DisplayName("Responsible Name")]
+        public string? PersonName { get; set; }
 
         public List<AccSubCodeDTO>? SubCodes { get; set; }
         public List<CityCodeDTO>? Cities { get; set; }

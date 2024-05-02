@@ -34,57 +34,58 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         }
 
         // Post Add
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Add_Supplier(EisPostingEditAddDTO eisPostingDTO)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        EisPosting eisPosting = _mapper.Map<EisPosting>(eisPostingDTO);
-        //        eisPosting.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Add_Supplier(SupCodeEditAddDTO supplierDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                SupCode supplier = _mapper.Map<SupCode>(supplierDTO);
+                supplier.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
 
-        //        await _eisPostingRepo.AddAsync(eisPosting);
-        //        await _eisPostingRepo.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(eisPostingDTO);
-        //}
+                await _supplierRepo.AddAsync(supplier);
+                await _supplierRepo.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(supplierDTO);
+        }
 
         // Get Edit
-        //public async Task<IActionResult> Edit_Supplier(int id)
-        //{
-        //    EisPostingEditAddDTO eisPostingDTO = await _eisPostingRepo.GetEisPostingByIdAsync(id);
-        //    return View(eisPostingDTO);
-        //}
+        public async Task<IActionResult> Edit_Supplier(int id)
+        {
+            SupCodeEditAddDTO supplierDTO = await _supplierRepo.GetSupplierByIdAsync(id);
+            return View(supplierDTO);
+        }
 
         // Post Edit
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit_Supplier(int id, EisPostingEditAddDTO eisPostingDTO)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        EisPosting eisPosting = await _eisPostingRepo.GetByIdAsync(id);
-        //        _mapper.Map(eisPostingDTO, eisPosting);
-        //        eisPosting.PostId = id;
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit_Supplier(int id, SupCodeEditAddDTO supplierDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                SupCode supplier = await _supplierRepo.GetByIdAsync(id);
+                supplierDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
+                _mapper.Map(supplierDTO, supplier);
+                supplier.Sup = id;
 
-        //        await _eisPostingRepo.UpdateAsync(eisPosting);
-        //        await _eisPostingRepo.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(eisPostingDTO);
-        //}
+                await _supplierRepo.UpdateAsync(supplier);
+                await _supplierRepo.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(supplierDTO);
+        }
 
         // Delete
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Delete_Supplier(int id)
-        //{
-        //    EisPosting eisPosting = await _eisPostingRepo.GetByIdAsync(id);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete_Supplier(int id)
+        {
+            SupCode supplier = await _supplierRepo.GetByIdAsync(id);
 
-        //    await _eisPostingRepo.DeleteAsync(eisPosting);
-        //    await _eisPostingRepo.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
+            await _supplierRepo.DeleteAsync(supplier);
+            await _supplierRepo.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

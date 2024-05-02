@@ -7,13 +7,21 @@ using System.Text;
 using System.Threading.Tasks;
 using ProSoft.EF.DTOs.Auth;
 using ProSoft.EF.DTOs.Shared;
+using System.ComponentModel;
 
 namespace ProSoft.EF.DTOs.Stocks
 {
     public class UserTransViewDTO
     {
-        public int UserCode { get; set; }
-        public string UserName { get; set; }
-        public List<PermissionDefViewDTO> Permissions {  get; set; }
+        public int GId { get; set; }
+        public string GDesc { get; set; }
+        public string TransactionType { get; set; }
+        public int TransFlag { get; set; }
+        public int UeIns { get; set; }
+        public int UeSav { get; set; }
+        public int UeDel { get; set; }
+        //public int UserCode { get; set; }
+        //public string UserName { get; set; }
+        //public List<PermissionDefViewDTO> Permissions {  get; set; }
     }
 }

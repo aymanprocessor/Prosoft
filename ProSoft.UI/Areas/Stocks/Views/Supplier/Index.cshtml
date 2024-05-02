@@ -24,13 +24,13 @@
             <thead class="table-dark">
                 <tr>
                     <th class="align-middle">
-                        @localizer["The Code"]
+                        @localizer["Code In Stock"]
                     </th>
                     <th class="align-middle">
                         @localizer["Company Name"]
                     </th>
                     <th class="align-middle">
-                        @localizer["Code in Calculus"]
+                        @localizer["Supplier in Calculus"]
                     </th>
                     <th class="align-middle"></th>
                 </tr>
@@ -39,7 +39,7 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td class="align-middle">@item.Sup</td>
+                        <td class="align-middle">@item.SupCode1</td>
                         <td class="align-middle">@item.SupName</td>
                         <td class="align-middle">@item.SubCode</td>
                         <td class="text-center align-middle" style="width: 325px;">

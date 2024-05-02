@@ -31,7 +31,7 @@ namespace ProSoft.EF.DTOs.Stocks
         [DisplayName("Save")]
         public int? UeSav { get; set; }
 
-        [DisplayName("Cancel")]
+        [DisplayName("UT_Cancel")]
         public int? UeDel { get; set; }
     }
 }
