@@ -72,6 +72,8 @@ namespace ProSoft.UI.Areas.Medical.Controllers
             ClinicTransEditAddDTO clinicTransEditAddDTO = await _clinicTransRepo.GetEmptyClinicTransAsync();
             ViewBag.Master = id;
             ViewBag.flag = flag;
+            //Set Invoice number
+            ViewBag.InvoiceNo = clinicTransEditAddDTO.ExInvoiceNo;
             //To Know private or Contract
             PatAdmissionEditAddDTO patAdmissionDTO = await _clinicTransRepo.GetPatAdmissionByIdAsync(id);
             ViewBag.privateOrContract = patAdmissionDTO.Deal;
@@ -102,10 +104,11 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         public async Task<IActionResult> Edit_ClinicTrans(int id, string redirect)
         {
             ClinicTransEditAddDTO clinicTransEditAddDTO = await _clinicTransRepo.GetClinicTransByIdAsync(id);
-            ViewBag.Master = id;
+            ViewBag.Master = clinicTransEditAddDTO.MasterId;
             PatAdmissionEditAddDTO patAdmissionDTO = await _clinicTransRepo.GetPatAdmissionByIdAsync(id);
             ViewBag.privateOrContract = patAdmissionDTO.Deal;
-
+            decimal totalPriceService = await _clinicTransRepo.GetPricesOfServices((int)clinicTransEditAddDTO.MasterId, (int)clinicTransEditAddDTO.Flag);
+            ViewBag.AllServicesPrice = totalPriceService;
             //for redirction
             ViewBag.redirect = redirect;
 

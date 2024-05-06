@@ -84,6 +84,9 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             clinicTransEditAddDTO.MainClinics=_mapper.Map<List<MainClinicViewDTO>>(mainClinics);
             clinicTransEditAddDTO.MainItems=_mapper.Map<List<MainItemViewDTO>>(mainItems);
             clinicTransEditAddDTO.Doctors=_mapper.Map<List<DoctorViewDTO>>(doctors);
+            //to set invoice number
+            ClinicTran clinicTran = await _Context.ClinicTrans.OrderBy(obj => obj.ExInvoiceNo).LastOrDefaultAsync();
+            clinicTransEditAddDTO.ExInvoiceNo = (int)(clinicTran.ExInvoiceNo + 1);
 
             return clinicTransEditAddDTO;
         }

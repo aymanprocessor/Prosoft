@@ -129,6 +129,7 @@ namespace ProSoft.UI.Controllers
                         new ("F_Year", user.FYear.ToString()),
                         new ("U_Branch_Name", branch.BranchDesc),
                         new ("U_Branch_Id", branch.BranchId.ToString()),
+                        new ("User_Code", user.UserCode.ToString()),
                     };
                     await _signInManager.SignInWithClaimsAsync(user, userDTO.rememberMe, claims);
 

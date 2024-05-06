@@ -60,6 +60,8 @@ namespace ProSoft.EF.DbContext
 
         public DbSet<PatAdmission> PatAdmissions { get; set; }
 
+        public DbSet<Deposit> Deposits { get; set; }
+
         public DbSet<Region> Regions { get; set; }
 
         public DbSet<ServiceClinic> ServiceClinics { get; set; }

@@ -1,0 +1,87 @@
+﻿@model List<DepositViewDTO>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Deposit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2 ">
+    <div class="d-flex justify-content-between align-items-center mt-4 ">
+        <h1 class="header">@localizer["Deposits"]</h1>
+        <h3>@localizer["Visit No"] : @ViewBag.VisitID - @localizer["For Patient"] : @ViewBag.PatName</h3>
+        <a asp-controller="DepositVisit" asp-action="Add_Deposit" asp-route-ID="@ViewBag.VisitID" class="btn btn-sm btn-primary fs-6" style="width:150px">
+            @localizer["Add Deposit"]
+        </a>
+    </div>
+    <div class="overflow-auto" style="max-height:calc(100vh - 145px)">
+        <table id="myTable" class="table table-bordered table-hover" style="width:100%">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        @localizer["Code"]
+                    </th>
+                    <th>
+                        @localizer["Payment Type"]
+                    </th>
+                    <th>
+                        @localizer["Payment Method"]
+                    </th> 
+                    <th>
+                        @localizer["Value"]
+                    </th> 
+                    <th>
+                        @localizer["Note"]
+                    </th>
+                    <th>
+                        @localizer["Action"]
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var dep in Model)
+                {
+                    <tr>
+                        <td>
+                            @dep.DpsSer
+                        </td>
+                        <td>
+                            @if (@dep.PostRecipt ==1)
+                               @localizer["down payment"]
+                            else
+                                @localizer["Service Value"]
+
+                        </td> 
+                        <td>
+                            @if (@dep.DpsType == 1)
+                                @localizer["Cash"]
+                            else if (@dep.DpsType == 2)
+                                @localizer["Check"]
+                            else if (@dep.DpsType == 3)
+                                @localizer["Visa"]
+                        </td>
+                        <td>
+                            @dep.DpsVal
+                        </td>
+                        <td>
+                            @dep.DepositDesc
+                        </td>
+                        <td width="30%" class="text-center">
+                            <a asp-controller="DepositVisit" asp-action="Edit_Deposit" asp-route-ID="@dep.DpsSer" class="btn btn-sm btn-success mb-1 fs-6" style="width:150px">
+                                <i class="bi bi-pencil"></i> @localizer["Edit"]
+                            </a>
+
+                            <form asp-action="Delete_Deposit" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@dep.DpsSer" />
+                                <input type="hidden" name="visitID" value="@ViewBag.VisitID" />
+                                <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">@localizer["Delete"] </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

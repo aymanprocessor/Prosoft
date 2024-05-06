@@ -1,0 +1,140 @@
+﻿@model DepositEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Edit Deposit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    SelectList accSubCode = new SelectList(Model.accSubCodes, "SubCode", "SubName");
+
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+    <h1 class="mt-4">@localizer["Edit Deposit"]</h1>
+    <form method="post" asp-action="Edit_Deposit" id="myForm">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly"></div>
+
+            @* hidden *@
+            <input asp-for="DpsSer" type="hidden" />
+            <input asp-for="FYear" type="hidden" />
+            <input asp-for="UserCode" type="hidden" />
+            <input asp-for="BranchId" type="hidden" />
+            <input asp-for="PatId" type="hidden" />
+            <input asp-for="MasterId" type="hidden" />
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <label asp-for="DpsSer"></label>
+                    <input asp-for="DpsSer" class="form-control" disabled  />
+                    <span asp-validation-for="DpsSer" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="DpsDate"></label>
+                    <input asp-for="DpsDate" class="form-control" />
+                    <span asp-validation-for="DpsDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <label asp-for="PostRecipt"></label>
+                    <select asp-for="PostRecipt" class="form-control text-center">
+                        <option value="1">@localizer["down payment"]</option>
+                        <option value="Null">@localizer["Service Value"]</option>
+                    </select>
+                    <span asp-validation-for="PostRecipt" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="DpsType"></label>
+                    <select asp-for="DpsType" class="form-control text-center">
+                        <option value="1">@localizer["Cash"]</option>
+                        <option value="2">@localizer["Check"]</option>
+                        <option value="3">@localizer["Visa"]</option>
+                    </select>
+                    <span asp-validation-for="DpsType" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <label asp-for="DpsVal"></label>
+                    <input asp-for="DpsVal" type="number" class="form-control" />
+                    <span asp-validation-for="DpsVal" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="DepositDesc"></label>
+                    <input asp-for="DepositDesc" class="form-control" />
+                    <span asp-validation-for="DepositDesc" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <label asp-for="CheckNo"></label>
+                    <input asp-for="CheckNo" class="form-control" />
+                    <span asp-validation-for="CheckNo" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="CheckDate"></label>
+                    <input asp-for="CheckDate" class="form-control" />
+                    <span asp-validation-for="CheckDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3 ">
+                    <label asp-for="BankId"></label>
+                    <select asp-for="BankId" asp-items="accSubCode" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="BankId" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="PostUser"></label>
+                    <select asp-for="PostUser" class="form-control text-center">
+                        <option value="1">@localizer["Yes"]</option>
+                        <option value="0">@localizer["No"]</option>
+                    </select>
+                    <span asp-validation-for="PostUser" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <label asp-for="SafeDocNo"></label>
+                    <input asp-for="SafeDocNo" class="form-control" />
+                    <span asp-validation-for="SafeDocNo" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="JorKiedNo"></label>
+                    <input asp-for="JorKiedNo" class="form-control" />
+                    <span asp-validation-for="JorKiedNo" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+
+            <div class="parent d-flex justify-content-md-center gap-2 ">
+                <button type="submit" class="btn btn-primary" style="width:150px">
+                    @localizer["Save Changes"]
+                </button>
+                <a asp-controller="DepositVisit" asp-action="Index" asp-route-ID="@Model.MasterId" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>

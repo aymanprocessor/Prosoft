@@ -16,7 +16,7 @@ namespace ProSoft.EF.IRepositories.Medical.HospitalPatData
         Task AddCompanylAsync(int id, CompanyEditAddDTO companyDTO);
 
         Task<CompanyEditAddDTO> GetCompanyByIdAsync(int id);
-       Task EditCompanyAsync(int id, CompanyEditAddDTO companyDTO);
+        Task EditCompanyAsync(int id, CompanyEditAddDTO companyDTO);
 
 
     }

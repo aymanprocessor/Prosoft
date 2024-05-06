@@ -44,6 +44,7 @@
             <div class="parent d-flex flex-column align-items-center my-mobile">
                 <input type="hidden" name="redirect" value="@ViewBag.redirect"/>
                 <input type="hidden" name="flag" value="@ViewBag.flag" />
+                <input asp-for="ExInvoiceNo" type="hidden" value="@ViewBag.InvoiceNo" />
 
                 <input type="hidden" disabled id="patAdmissionID" value="@ViewBag.Master" />
 
@@ -134,7 +135,7 @@
             <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
                 <div class="mb-3 ">
                     <label asp-for="ExInvoiceNo">@localizer["Invoice No"]</label>
-                    <input asp-for="ExInvoiceNo" type="number" class="form-control text-center" />
+                    <input asp-for="ExInvoiceNo" disabled type="number" class="form-control text-center" value="@ViewBag.InvoiceNo" />
                     <span asp-validation-for="ExInvoiceNo" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
@@ -161,8 +162,7 @@
                     <label asp-for="ValueService">@localizer["All Service Price"]</label>
                     <input asp-for="ValueService" type="number" value="0" class="form-control text-center" />
                     <span asp-validation-for="ValueService" class="text-danger"></span>
-                </div>
-               
+                </div>      
             </div>
 
             @* ///////////////////////////////////////////////////////////////////////////////////////// *@
@@ -495,7 +495,7 @@
     //Total Service Value
     function totalService() {
         var allServicesPrice = parseFloat(document.getElementById("allServicesPrice").value);
-        console.log(allServicesPrice)
+        //console.log(allServicesPrice)
         var unitPrice = parseFloat(document.getElementById("UnitPrice").value);
         var qty = document.getElementById("Qty").value;
         var valueService = document.getElementById("ValueService");
