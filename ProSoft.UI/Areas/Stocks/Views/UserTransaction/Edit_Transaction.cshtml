@@ -4,12 +4,6 @@
 @{
     ViewData["Title"] = "Edit User Transaction";
     Layout = "_Layout";
-
-    // Casting type to get all transactions as a list
-    // List<PermissionDefViewDTO> allTransactions = (List<PermissionDefViewDTO>)ViewBag.transactions;
-
-    // Casting type to get all permissions as a list
-    // SelectList transactionTypes = new SelectList(Model.TransactionTypes, "TransId", "TransDesc");
 }
 @inject IViewLocalizer localizer
 
@@ -25,22 +19,19 @@
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="d-flex align-items-center mb-3">
-                @* <label asp-for="UeIns"></label> *@
-                @* <input type="checkbox" class="form-check-input" name="TransFlag" id="TransFlag" value="" onchange="toggleCheck(event)" /> *@
                 @if(Model.TransFlag == 1)
                 {
-                <input type="checkbox" name="TransFlag" id="TransFlag" class="form-check-input" checked onchange="changeValue(event)" />
+                <input type="checkbox" name="TransFlag" id="TransFlag" class="form-check-input" value="@Model.TransFlag" checked onchange="changeValue(event)" />
                 }
                 else if (Model.TransFlag == 0 || Model.TransFlag == null)
                 {
-                <input type="checkbox" name="TransFlag" id="TransFlag" class="form-check-input" onchange="changeValue(event)" />
+                <input type="checkbox" name="TransFlag" id="TransFlag" class="form-check-input" value="@Model.TransFlag" onchange="changeValue(event)" />
                 }
                 <label asp-for="TransFlag" class="me-2 fs-5 px-2"></label>
                 <span asp-validation-for="TransFlag" class="text-danger"></span>
             </div>
             <div class="parent d-flex align-items-md-end gap-3 my-mobile mb-3">
                 <div class="d-flex align-items-center">
-                    @* <label asp-for="UeIns"></label> *@
                     @if(Model.UeIns == 1)
                     {
                     <input type="checkbox" class="form-check-input" name="UeIns" id="UeIns" value="@Model.UeIns" checked onchange="changeValue(event)" />
@@ -49,12 +40,10 @@
                     {
                     <input type="checkbox" class="form-check-input" name="UeIns" id="UeIns" value="@Model.UeIns" onchange="changeValue(event)" />
                     }
-                    @* <input asp-for="UeIns" type="checkbox" class="form-check-input" /> *@
                     <label asp-for="UeIns" class="me-2 fs-5 px-2"></label>
                     <span asp-validation-for="UeIns" class="text-danger"></span>
                 </div>
                 <div class="d-flex align-items-center">
-                    @* <label asp-for="UeDel"></label> *@
                     @if(Model.UeDel == 1)
                     {
                     <input type="checkbox" class="form-check-input" name="UeDel" id="UeDel" value="@Model.UeDel" checked onchange="changeValue(event)" />
@@ -67,7 +56,6 @@
                     <span asp-validation-for="UeDel" class="text-danger"></span>
                 </div>
                 <div class="d-flex align-items-center">
-                    @* <label asp-for="UeSav"></label> *@
                     @if(Model.UeSav == 1)
                     {
                     <input type="checkbox" class="form-check-input" name="UeSav" id="UeSav" value="@Model.UeSav" checked onchange="changeValue(event)" />

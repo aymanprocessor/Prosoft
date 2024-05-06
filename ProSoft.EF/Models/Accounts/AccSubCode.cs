@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace ProSoft.EF.Models.Calculus;
+namespace ProSoft.EF.Models.Accounts;
 
 [PrimaryKey("CoCode", "SubCode", "MainCode")]
 [Table("ACC_SUB_CODE")]

@@ -22,7 +22,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         public async Task<IActionResult> Index()
         {
             List<SupCode> suppliers = await _supplierRepo.GetAllAsync();
-            var suppliersDTO = _mapper.Map<List<SupCodeEditAddDTO>>(suppliers);
+            var suppliersDTO = _mapper.Map<List<SupCodeViewDTO>>(suppliers);
             return View(suppliersDTO);
         }
 

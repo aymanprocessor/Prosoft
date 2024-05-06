@@ -69,7 +69,8 @@ builder.Services.AddScoped<ITermsPriceListRepo, TermsPriceListRepo>();
 builder.Services.AddScoped<ICompanyGroupRepo, CompanyGroupRepo>();
 builder.Services.AddScoped<ICompanyRepo, CompanyRepo>();
 builder.Services.AddScoped<ICompanyDtlRepo, CompanyDtlRepo>();
-/////////////////Stock/////////////
+builder.Services.AddScoped<IDepositVisitRepo, DepositVisitRepo>();
+///////////////// Stock /////////////
 builder.Services.AddScoped<IStockTypeRepo, StockTypeRepo>();
 builder.Services.AddScoped<IBranchRepo, BranchRepo>();
 builder.Services.AddScoped<IStockRepo, StockRepo>();
@@ -81,6 +82,7 @@ builder.Services.AddScoped<IGeneralTableRepo, GeneralTableRepo>();
 builder.Services.AddScoped<IUserTransRepo, UserTransRepo>();
 builder.Services.AddScoped<ITransTypeRepo, TransTypeRepo>();
 builder.Services.AddScoped<ISupplierRepo, SupplierRepo>();
+builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();
 ///////////////// System /////////////
 builder.Services.AddScoped<IEisPostingRepo, EisPostingRepo>();
 

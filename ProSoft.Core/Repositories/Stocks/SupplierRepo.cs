@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ProSoft.EF.DbContext;
-using ProSoft.EF.DTOs.Calculus;
+using ProSoft.EF.DTOs.Accounts;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.IRepositories.Stocks;
-using ProSoft.EF.Models.Calculus;
+using ProSoft.EF.Models.Accounts;
 using ProSoft.EF.Models.Shared;
 using ProSoft.EF.Models.Stocks;
 
