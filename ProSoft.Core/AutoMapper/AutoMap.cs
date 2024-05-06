@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using ProSoft.EF.DTOs.Auth;
-using ProSoft.EF.DTOs.Calculus;
+using ProSoft.EF.DTOs.Accounts;
 using ProSoft.EF.DTOs.Medical.Analysis;
 using ProSoft.EF.DTOs.Medical.HospitalPatData;
 using ProSoft.EF.DTOs.Shared;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.Models;
-using ProSoft.EF.Models.Calculus;
+using ProSoft.EF.Models.Accounts;
 using ProSoft.EF.Models.Medical.Analysis;
 using ProSoft.EF.Models.Medical.HospitalPatData;
 using ProSoft.EF.Models.Shared;
@@ -85,7 +85,9 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<CompanyViewDTO, Company>().ReverseMap();
             CreateMap<CompanyEditAddDTO, Company>().ReverseMap();
             CreateMap<CompanyDtlEditAddDTO, CompanyDtl>().ReverseMap();
-            //////////Stocks////////////////////
+            CreateMap<DepositViewDTO, Deposit>().ReverseMap();
+            CreateMap<DepositEditAddDTO, Deposit>().ReverseMap();
+            ////////// Stocks ////////////////////
             CreateMap<KindStore, KindStoreDTO>().ReverseMap();
             CreateMap<Branch, BranchDTO>().ReverseMap();
             CreateMap<Stock, StockEditAddDTO>().ReverseMap();
@@ -103,12 +105,16 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<UserTranss, UserTransViewDTO>().ReverseMap();
             CreateMap<UserTranss, UserTransEditAddDTO>().ReverseMap();
             CreateMap<SupCode, SupCodeEditAddDTO>().ReverseMap();
+            CreateMap<SupCode, SupCodeViewDTO>().ReverseMap();
             CreateMap<CityCode, CityCodeDTO>().ReverseMap();
             CreateMap<PlaceCode, PlaceCodeDTO>().ReverseMap();
+            CreateMap<CustCode, CustCodeViewDTO>().ReverseMap();
+            CreateMap<CustCode, CustCodeEditAddDTO>().ReverseMap();
+            CreateMap<AdjectiveCust, AdjectiveCustDTO>().ReverseMap();
             ////////// System ////////////////////
             CreateMap<EisPosting, EisPostingViewDTO>().ReverseMap();
             CreateMap<EisPosting, EisPostingEditAddDTO>().ReverseMap();
-            ////////// Calculus ////////////////////
+            ////////// Accounts ////////////////////
             CreateMap<AccMainCode, AccMainCodeDTO>().ReverseMap();
             CreateMap<AccSubCode, AccSubCodeDTO>().ReverseMap();
         }

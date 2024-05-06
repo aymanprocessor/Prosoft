@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProSoft.EF.DTOs.Calculus
+namespace ProSoft.EF.DTOs.Accounts
 {
     public class AccSubCodeDTO
     {

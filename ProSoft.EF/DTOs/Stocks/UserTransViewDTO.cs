@@ -20,8 +20,5 @@ namespace ProSoft.EF.DTOs.Stocks
         public int UeIns { get; set; }
         public int UeSav { get; set; }
         public int UeDel { get; set; }
-        //public int UserCode { get; set; }
-        //public string UserName { get; set; }
-        //public List<PermissionDefViewDTO> Permissions {  get; set; }
     }
 }

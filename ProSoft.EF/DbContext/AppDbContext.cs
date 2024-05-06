@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ProSoft.EF.Models;
-using ProSoft.EF.Models.Calculus;
+using ProSoft.EF.Models.Accounts;
 using ProSoft.EF.Models.Medical.Analysis;
 using ProSoft.EF.Models.Medical.HospitalPatData;
 using ProSoft.EF.Models.Shared;
@@ -91,10 +91,11 @@ namespace ProSoft.EF.DbContext
         public DbSet<CityCode> CityCodes { get; set; }
         public DbSet<PlaceCode> PlaceCodes { get; set; }
         public DbSet<SupCode> SupCodes { get; set; }
+        public DbSet<CustCode> CustCodes { get; set; }
+        public DbSet<AdjectiveCust> AdjectiveCusts { get; set; }
 
         ////////////////////
-        // Calculus //
-
+        // Accounts //
         public DbSet<AccMainCode> AccMainCodes { get; set; }
         public DbSet<AccSubCode> AccSubCodes { get; set; }
 

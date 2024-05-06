@@ -1,4 +1,4 @@
-﻿using ProSoft.EF.DTOs.Calculus;
+﻿using ProSoft.EF.DTOs.Accounts;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,8 +11,6 @@ namespace ProSoft.EF.DTOs.Stocks
 {
     public class SupCodeEditAddDTO
     {
-        [DisplayName("The Code")]
-        public int Sup { get; set; }
         public string SupCode1 { get; set; }
 
         [DisplayName("Company Name")]
@@ -34,7 +32,7 @@ namespace ProSoft.EF.DTOs.Stocks
         [DisplayName("Notes")]
         public string? Remarks { get; set; }
         
-        [DisplayName("Supplier in Calculus")]
+        [DisplayName("Supplier in Accounts")]
         [Required(ErrorMessage = "The field is required")]
         public string SubCode { get; set; }
         public string? MainCode { get; set; }

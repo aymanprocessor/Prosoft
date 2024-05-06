@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace ProSoft.EF.DTOs.Stocks
 {
-    public class SupCodeViewDTO
+    public class CustCodeViewDTO
     {
-        public int Sup { get; set; }
-        public string SupCode1 { get; set; }
-        public string SupName { get; set; }
+        public int Cust { get; set; }
+        public string CustCode1 { get; set; }
+        public string CustName { get; set; }
         public string SubCode { get; set; }
     }
 }

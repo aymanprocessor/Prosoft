@@ -79,7 +79,16 @@
                     <th class="align-middle">
                         @localizer["Transaction Type"]
                     </th>
-                    <th class="align-middle">
+                    <th class="align-middle text-center">
+                        @localizer["Add"]
+                    </th>
+                    <th class="align-middle text-center">
+                        @localizer["UT_Cancel"]
+                    </th>
+                    <th class="align-middle text-center">
+                        @localizer["Save"]
+                    </th>
+                    <th class="align-middle text-center">
                         @localizer["Is Active"]
                     </th>
                     <th class="align-middle">
@@ -153,11 +162,20 @@
                     success: function (result) {
                         for (let item of result) {
                             const userTrans = document.createElement("tr");
+                            let ueIns = item.ueIns == 1 ? `<i class="fa-solid fa-check"></i>` : "";
+                            let ueDel = item.ueDel == 1 ? `<i class="fa-solid fa-check"></i>` : "";
+                            let ueSav = item.ueSav == 1 ? `<i class="fa-solid fa-check"></i>` : "";
+                            let transFlag = item.transFlag == 1 ? `<i class="fa-solid fa-check"></i>` : "";
+
                             userTrans.innerHTML +=
                                 `
-                                <td class="align-middle">${item.gId}</td>
-                                <td class="align-middle">${item.gDesc}</td>
-                                <td class="align-middle">${item.transactionType}</td>
+                                <td class="align-middle text-center">${item.gId}</td>
+                                <td class="align-middle text-center">${item.gDesc}</td>
+                                <td class="align-middle text-center">${item.transactionType}</td>
+                                <td class="align-middle text-center">${ueIns}</td>
+                                <td class="align-middle text-center">${ueDel}</td>
+                                <td class="align-middle text-center">${ueSav}</td>
+                                <td class="align-middle text-center">${transFlag}</td>
                                 <td class="text-center align-middle" style="width: 325px;">
                                     <a href="/Stocks/UserTransaction/Edit_Transaction/${userCode}?gId=${item.gId}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
                                 </td>

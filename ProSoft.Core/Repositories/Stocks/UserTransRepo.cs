@@ -73,6 +73,7 @@ namespace ProSoft.Core.Repositories.Stocks
                         await _Context.AddAsync(newUserTrans);
 
                         var newUserTransDTO = _mapper.Map<UserTransViewDTO>(newUserTrans);
+                        newUserTransDTO.GDesc = item.GDesc;
                         newUserTransDTO.TransactionType = (await _Context.StoreTrans
                             .FindAsync(transType)).TransDesc;
                         userTransDTO.Add(newUserTransDTO);
@@ -106,6 +107,15 @@ namespace ProSoft.Core.Repositories.Stocks
                             await _Context.AddAsync(newUserTrans);
 
                             var newUserTransDTO = _mapper.Map<UserTransViewDTO>(newUserTrans);
+                            newUserTransDTO.GDesc = item.GDesc;
+                            newUserTransDTO.TransactionType = (await _Context.StoreTrans
+                                .FindAsync(transType)).TransDesc;
+                            userTransDTO.Add(newUserTransDTO);
+                        }
+                        else
+                        {
+                            var newUserTransDTO = _mapper.Map<UserTransViewDTO>(userTranss);
+                            newUserTransDTO.GDesc = item.GDesc;
                             newUserTransDTO.TransactionType = (await _Context.StoreTrans
                                 .FindAsync(transType)).TransDesc;
                             userTransDTO.Add(newUserTransDTO);
