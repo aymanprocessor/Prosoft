@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Shared\Shared\" />
+    <Folder Include="Areas\Stocks\Views\UserStock\" />
   </ItemGroup>
 
 </Project>

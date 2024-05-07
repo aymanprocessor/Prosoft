@@ -2,30 +2,26 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Users Transactions";
+    ViewData["Title"] = "Joining Users With Stocks and Accounts";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
-
-    SelectList transTypes = new(ViewBag.transTypes, "TransId", "TransDesc");
 }
 @inject IViewLocalizer localizer
 
 <div class="text-center">
-    <h1 class="mb-2">@localizer["Joining Users With Transactions"] </h1>
-    <p class="fs-5">@localizer["Before anything, select the transaction type and then the user"]</p>
+    <h1 class="mb-2">@localizer["Joining Users With Stocks and Accounts"] </h1>
+    <p class="fs-5">@localizer["Before anything, select the user"]</p>
 </div>
 
 <div class="container pt-2" style=" min-height:100vh;">
-    <div class="d-flex justify-content-between align-items-start align-items-md-center flex-column flex-md-row my-2">
+    <div class="d-flex justify-content-between align-items-center flex-column flex-md-row my-2">
         <div style="width: 40%;">
             <input type="text" id="searchInput" class="form-control" oninput="searchUsers(event)" placeholder="@localizer["Search users by useer code or name ..."]">
         </div>
-        <div class="d-flex align-items-md-center align-items-start flex-column flex-md-row" style="width: 50%;">
-            <label for="transType" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Transaction Type"]</label>
-            <select id="transType" asp-items="transTypes" class="form-control text-center w-75">
-                <option value="">-- Choose --</option>
-            </select>
-        </div>
+@*         <div>
+            <a asp-area="Stocks" asp-controller="UserStockTransaction" asp-action="Add_StockTrans" class="btn btn-sm btn-primary fs-6" style="width:150px">
+                @localizer["Add New Transaction"]
+            </a>
+        </div> *@
     </div>
     <div class="overflow-auto" style="height: 225px;">
         <table id="myTable" class="table table-bordered table-hover" style="width:100%;">
@@ -42,10 +38,10 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                <tr onclick="getUserTransactions(event, @item.UserCode)" style="cursor:pointer;">
-                    <td class="align-middle">@item.UserCode</td>
-                    <td class="align-middle user-name">@item.UserName</td>
-                </tr>
+                    <tr onclick="getStockTransactions(event, @item.UserCode)" style="cursor:pointer;">
+                        <td class="align-middle">@item.UserCode</td>
+                        <td class="align-middle user-name">@item.UserName</td>
+                    </tr>
                 }
             </tbody>
         </table>
@@ -53,10 +49,13 @@
 
     @* /////////////////////////////////////////////////////////////////// *@
 
-    @* Table for User Transactions *@
+    @* Table for UserStock Transactions *@
 
-    <div class="transactions-table-head d-flex justify-content-between align-items-center mt-4">
-        <h2 class="header">@localizer["Transactions of User"] :</h2>
+    <div class="transactions-table-head d-flex justify-content-between align-items-center mt-3 mb-1">
+        <h2 class="header">@localizer["Transactions of Stocks for User"] :</h2>
+        <a class="btn btn-sm btn-primary fs-6" style="width:150px">
+            @localizer["Add New Transaction"]
+        </a>
     </div>
 
     <div class="border border-success p-0 mb-2 border-opacity-75 overflow-auto" style="max-height: 300px;">
@@ -128,7 +127,7 @@
             }
         }
 
-        function getUserTransactions(e, userCode) {
+        function getStockTransactions(e, userCode) {
             // Handle active click
             let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");;
             let clickedTarget = e.target.parentElement;
@@ -137,52 +136,55 @@
             let userTransactions = document.querySelector("#myTable_2 tbody");
             let transactionsHead = document.querySelector(".transactions-table-head");
             let transactionsHeader = transactionsHead.querySelector(".header");
+            let transAddLink = transactionsHead.querySelector("a");
 
-            let transType = document.getElementById("transType").value;
             ///////////////////////////////////////////////////////////////////
-            if (transType) {
-                allItemRows.forEach(row => {
-                    row.classList.remove("active-row");
-                });
-                clickedTarget.classList.add("active-row");
+            // if (transType) {
+            allItemRows.forEach(row => {
+                row.classList.remove("active-row");
+            });
+            clickedTarget.classList.add("active-row");
 
-                let userName = clickedTarget.querySelector(".user-name").innerText;
-                transactionsHeader.innerHTML = `@localizer["Transactions of User"] : ${userName}`;
+            let userName = clickedTarget.querySelector(".user-name").innerText;
+            transactionsHeader.innerHTML = `@localizer["Transactions of Stocks for User"] : ${userName}`;
 
-                userTransactions.innerHTML = "";  // Empty the table
+            transAddLink.setAttribute("href", `/Stocks/UserStock/Add_StockTrans/${userCode}`);
 
-                $.ajax({
-                    url: `/Stocks/UserTransaction/GetPermissionsForUser/${userCode}?transType=${transType}`,
-                    success: function (result) {
-                        for (let item of result) {
-                            const userTrans = document.createElement("tr");
-                            let ueIns = item.ueIns == 1 ? `<i class="fa-solid fa-check"></i>` : "";
-                            let ueDel = item.ueDel == 1 ? `<i class="fa-solid fa-check"></i>` : "";
-                            let ueSav = item.ueSav == 1 ? `<i class="fa-solid fa-check"></i>` : "";
-                            let transFlag = item.transFlag == 1 ? `<i class="fa-solid fa-check"></i>` : "";
+            userTransactions.innerHTML = "";  // Empty the table
 
-                            userTrans.innerHTML +=
-                                `
-                                <td class="align-middle text-center">${item.gId}</td>
-                                <td class="align-middle text-center">${item.gDesc}</td>
-                                <td class="align-middle text-center">${item.transactionType}</td>
-                                <td class="align-middle text-center">${ueIns}</td>
-                                <td class="align-middle text-center">${ueDel}</td>
-                                <td class="align-middle text-center">${ueSav}</td>
-                                <td class="align-middle text-center">${transFlag}</td>
-                                <td class="text-center align-middle" style="width: 325px;">
-                                    <a href="/Stocks/UserTransaction/Edit_Transaction/${userCode}?gId=${item.gId}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
-                                </td>
-                                `;
-                            userTransactions.appendChild(userTrans);
-                        }
-                    }
-                });
-            } else {
-                transactionsHeader.innerHTML = `@localizer["Transactions of User"]`;
-                userTransactions.innerHTML = "";
-                document.getElementById("transType").focus();
-            }
+            $.ajax({
+                url: `/Stocks/UserStock/GetStockTransForUser/${userCode}`,
+                success: function (result) {
+                    console.log(result);
+                    // for (let item of result) {
+                    //     const userTrans = document.createElement("tr");
+                    //     let ueIns = item.ueIns == 1 ? `<i class="fa-solid fa-check"></i>` : "";
+                    //     let ueDel = item.ueDel == 1 ? `<i class="fa-solid fa-check"></i>` : "";
+                    //     let ueSav = item.ueSav == 1 ? `<i class="fa-solid fa-check"></i>` : "";
+                    //     let transFlag = item.transFlag == 1 ? `<i class="fa-solid fa-check"></i>` : "";
+
+                    //     userTrans.innerHTML +=
+                    //         `
+                    //         <td class="align-middle text-center">${item.gId}</td>
+                    //         <td class="align-middle text-center">${item.gDesc}</td>
+                    //         <td class="align-middle text-center">${item.transactionType}</td>
+                    //         <td class="align-middle text-center">${ueIns}</td>
+                    //         <td class="align-middle text-center">${ueDel}</td>
+                    //         <td class="align-middle text-center">${ueSav}</td>
+                    //         <td class="align-middle text-center">${transFlag}</td>
+                    //         <td class="text-center align-middle" style="width: 325px;">
+                    //             <a href="/Stocks/UserTransaction/Edit_Transaction/${userCode}?gId=${item.gId}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
+                    //         </td>
+                    //         `;
+                    //     userTransactions.appendChild(userTrans);
+                    // }
+                }
+            });
+            // } else {
+            //     transactionsHeader.innerHTML = `@localizer["Transactions of User"]`;
+            //     userTransactions.innerHTML = "";
+            //     document.getElementById("transType").focus();
+            // }
         }
     </script>
 }

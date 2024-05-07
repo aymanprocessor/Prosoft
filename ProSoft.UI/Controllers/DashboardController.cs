@@ -146,7 +146,7 @@ namespace ProSoft.UI.Controllers
 
         public async Task<IActionResult> Users()
         {
-            IEnumerable<AppUser> users = await _userRepo.GetAllUsersAsync();
+            List<AppUser> users = await _userRepo.GetAllUsersAsync();
 
             // Create empty list
             List<UserDTO> usersDTO = new List<UserDTO>();

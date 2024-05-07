@@ -24,9 +24,9 @@ namespace ProSoft.Core.Repositories
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<AppUser>> GetAllUsersAsync()
+        public async Task<List<AppUser>> GetAllUsersAsync()
         {
-            IEnumerable<AppUser> users = await _Context.Users.ToListAsync();
+            List<AppUser> users = await _Context.Users.ToListAsync();
             return users;
         }
 

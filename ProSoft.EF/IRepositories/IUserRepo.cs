@@ -10,7 +10,7 @@ namespace ProSoft.EF.IRepositories
 {
     public interface IUserRepo 
     {
-        Task<IEnumerable<AppUser>> GetAllUsersAsync();
+        Task<List<AppUser>> GetAllUsersAsync();
         Task<AppUser> GetUserByIdAsync(int id);
         Task<Branch> GetUserBranchAsync(int branchID);
     }
