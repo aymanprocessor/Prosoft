@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ProSoft.EF.DbContext;
-using ProSoft.EF.DTOs.Calculus;
+using ProSoft.EF.DTOs.Accounts;
 using ProSoft.EF.DTOs.Medical.HospitalPatData;
 using ProSoft.EF.IRepositories.Medical.HospitalPatData;
-using ProSoft.EF.Models.Calculus;
+using ProSoft.EF.Models.Accounts;
 using ProSoft.EF.Models.Medical.HospitalPatData;
+using ProSoft.EF.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,7 +71,9 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
         {
             DepositEditAddDTO depositDTO = new DepositEditAddDTO();
 
-            List<AccSubCode> accSubCodes = await _Context.AccSubCodes.ToListAsync();
+            //filter banks
+            EisPosting eisPosting = await _Context.EisPostings.FirstOrDefaultAsync(obj => obj.PostId == 13);
+            List<AccSubCode> accSubCodes = await _Context.AccSubCodes.Where(obj=>obj.MainCode == eisPosting.MainCode).ToListAsync();
 
             depositDTO.accSubCodes = _mapper.Map<List<AccSubCodeDTO>>(accSubCodes);
             return depositDTO;
@@ -81,7 +84,10 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             Deposit deposit = await _Context.Deposits.FirstOrDefaultAsync(obj=>obj.DpsSer ==id);
 
             DepositEditAddDTO depositDTO = _mapper.Map<DepositEditAddDTO>(deposit);
-            List<AccSubCode> accSubCodes = await _Context.AccSubCodes.ToListAsync();
+
+            //filter banks
+            EisPosting eisPosting = await _Context.EisPostings.FirstOrDefaultAsync(obj => obj.PostId == 13);
+            List<AccSubCode> accSubCodes = await _Context.AccSubCodes.Where(obj => obj.MainCode == eisPosting.MainCode).ToListAsync();
 
             depositDTO.accSubCodes = _mapper.Map<List<AccSubCodeDTO>>(accSubCodes);
             return depositDTO;

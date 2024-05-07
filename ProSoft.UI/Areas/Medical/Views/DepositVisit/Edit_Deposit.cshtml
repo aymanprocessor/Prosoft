@@ -8,8 +8,23 @@
 
 }
 @inject IViewLocalizer localizer
+<style>
+    .image {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.5;
+        z-index: -1;
+    }
+</style>
+<div class="container pt-2" style="min-height:100vh;">
+    <img class="image" src="/background.jpg" style="position:absolute;" />
 
-<div class="container pt-2">
     <h1 class="mt-4">@localizer["Edit Deposit"]</h1>
     <form method="post" asp-action="Edit_Deposit" id="myForm">
         <div class="border p-3 mt-4">
@@ -50,7 +65,7 @@
                 </div>
                 <div class="mb-3 ">
                     <label asp-for="DpsType"></label>
-                    <select asp-for="DpsType" class="form-control text-center">
+                    <select asp-for="DpsType" class="form-control text-center" onchange="paymentMethod()">
                         <option value="1">@localizer["Cash"]</option>
                         <option value="2">@localizer["Check"]</option>
                         <option value="3">@localizer["Visa"]</option>
@@ -77,12 +92,12 @@
             <!------------------------------------------------------------------------------->
 
             <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
-                <div class="mb-3">
+                <div class="mb-3" id="checkNoo">
                     <label asp-for="CheckNo"></label>
                     <input asp-for="CheckNo" class="form-control" />
                     <span asp-validation-for="CheckNo" class="text-danger"></span>
                 </div>
-                <div class="mb-3 ">
+                <div class="mb-3 " id="checkDatee">
                     <label asp-for="CheckDate"></label>
                     <input asp-for="CheckDate" class="form-control" />
                     <span asp-validation-for="CheckDate" class="text-danger"></span>
@@ -92,7 +107,7 @@
             <!------------------------------------------------------------------------------->
 
             <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
-                <div class="mb-3 ">
+                <div class="mb-3 " id="bankk">
                     <label asp-for="BankId"></label>
                     <select asp-for="BankId" asp-items="accSubCode" class="form-control text-center">
                         <option value="">-- Choose --</option>
@@ -138,3 +153,33 @@
         </div>
     </form>
 </div>
+
+<script>
+
+    //when change
+    function paymentMethod() {
+        var value = document.getElementById('DpsType').value
+        // console.log(value)
+        var checkNoo = document.getElementById('checkNoo')
+        var checkDatee = document.getElementById('checkDatee')
+        var bankk = document.getElementById('bankk');
+
+        if (value == 1) {
+            checkNoo.style.display = "none";
+            checkDatee.style.display = "none";
+            bankk.style.display = "none";
+        }
+        else if (value == 2) {
+            checkNoo.style.display = "block";
+            checkDatee.style.display = "block";
+            bankk.style.display = "block";
+        }
+        else if (value == 3) {
+            checkNoo.style.display = "none";
+            checkDatee.style.display = "none";
+            bankk.style.display = "block";
+        }
+    }
+    //when render page run
+    paymentMethod();
+</script>

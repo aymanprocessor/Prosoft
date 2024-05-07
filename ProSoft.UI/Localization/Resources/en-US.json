@@ -280,8 +280,9 @@
   "Main Accounting Code": "Main Accounting Code",
   "Check Add To Company": "Check Add To Company",
   "Net Patient": "Net Patient",
-  "Total Service": "Total Services",
-  "All Service Price": "All Service Price",
+  "Total Service": "Total Services Price",
+  "All Service Price": "Total Service Price",
+  "AllServicePrice": "Total Service Price",
   "Entity Code": "Entity Code",
   "Quantity": "Quantity",
   "Deposits": "Deposits",
@@ -437,5 +438,11 @@
   "Under Tax": "Under Tax",
   "Spending Side": "Spending Side",
   "Pricing List": "Pricing List",
-  "Edit Customer": "Edit Customer"
+  "Edit Customer": "Edit Customer",
+  "Joining Users With Stocks and Accounts": "Joining Users With Stocks and Accounts",
+  "Transactions of Stocks for User": "Transactions of Stocks for User",
+  "Add New Transaction": "Add New Transaction",
+  "Before anything, select the user": "Before anything, select the user",
+  "Add New StockTransaction For User": "Add New StockTransaction For User",
+  "Stock Is Default": "Stock Is Default"
 }

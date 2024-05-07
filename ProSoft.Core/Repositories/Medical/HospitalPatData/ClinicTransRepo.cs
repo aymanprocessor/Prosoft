@@ -234,6 +234,9 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             ClinicTran clinicTran = _mapper.Map<ClinicTran>(clinicTransDTO);
             await _Context.AddAsync(clinicTran);
             await _Context.SaveChangesAsync();
+
+            //Belong to Deposit
+            //هجيب مجموع اسعار الخدمات من ال clinic trans by foreach
         }
         
         public async Task EditClinicTransAsync(int checkId, ClinicTransEditAddDTO clinicTransDTO)

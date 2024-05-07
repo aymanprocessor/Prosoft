@@ -65,7 +65,7 @@
                 </div>
                 <div class="mb-3 ">
                     <label asp-for="DrValFlg"></label>
-                    <select asp-for="DrValFlg" class="form-control text-center" onchange="ValueOrRatio(event)">
+                    <select asp-for="DrValFlg" class="form-control text-center" onchange="ValueOrRatio()">
                         <option value="1">@localizer["Ratio"]</option>
                         <option value="2">@localizer["Value"]</option>
                     </select>
@@ -136,11 +136,11 @@
         });
     }
     //when change
-    function ValueOrRatio(e) {
-        var value = e.target.value;
+    function ValueOrRatio() {
+        var value = document.getElementById('DrValFlg').value;
         // console.log(value)
-        var percentage = document.getElementById('percentagee')
-        var valuee = document.getElementById('valuee')
+        var percentage = document.getElementById('percentagee');
+        var valuee = document.getElementById('valuee');
         var valueeContract = document.getElementById('valueeContract');
         var percentageeContract = document.getElementById('percentageeContract');
 
@@ -158,27 +158,6 @@
 
         }
     }
-    //depend on data come from database
-    function ValueOrRati()
-    {
-        var percentage = document.getElementById('percentagee')
-        var valuee = document.getElementById('valuee')
-        var valueeContract = document.getElementById('valueeContract');
-        var percentageeContract = document.getElementById('percentageeContract');
-
-        if (@Model.DrValFlg == 2) {
-            percentage.style.display = "none";
-            percentageeContract.style.display = "none";
-            valuee.style.display = "block";
-            valueeContract.style.display = "block";
-        }
-        else if (@Model.DrValFlg == 1) {
-            valuee.style.display = "none";
-            valueeContract.style.display = "none";
-            percentage.style.display = "block";
-            percentageeContract.style.display = "block";
-        }
-    }
     //when page load
-    ValueOrRati();
+    ValueOrRatio();
 </script>

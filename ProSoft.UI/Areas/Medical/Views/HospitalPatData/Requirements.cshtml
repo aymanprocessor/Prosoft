@@ -190,6 +190,9 @@
                         @localizer["Company value"]
                     </th>
                     <th class="align-middle">
+                        @localizer["AllServicePrice"]
+                    </th>
+                    <th class="align-middle">
                         @localizer["Action"]
                     </th>
                 </tr>
@@ -283,30 +286,36 @@
                     //sorting
                     result.sort((a, b) => b.masterId - a.masterId)
                     for (let item of result) {
+
+                        //convert to date not time//
+                        const patAdDate = new Date(item.patAdDate);
+                        // Format the date as needed (e.g., "YYYY-MM-DD")
+                        const PatAdDate = patAdDate.toISOString().split('T')[0];
+                        //////////////////
+
                         const patAdmission = document.createElement("tr");
                         patAdmission.innerHTML +=
                             `
-                                            <td class="item-id align-middle">${item.masterId}</td>
-                                            <td class="align-middle">${item.patAdDate}</td>
-                                             <td class="align-middle">${item.compId}</td>
-                                            <td class="align-middle">${item.compName}</td>
-                                            <td class="align-middle">${item.compNameDtl}</td>
-                                            <td class="align-middle">${item.classificationDesc}</td>
-                                            <td class="align-middle">${item.drDesc}</td>
+                                <td class="item-id align-middle">${item.masterId}</td>
+                                <td class="align-middle">${PatAdDate}</td>
+                                <td class="align-middle">${item.compId}</td>
+                                <td class="align-middle">${item.compName}</td>
+                                <td class="align-middle">${item.compNameDtl}</td>
+                                <td class="align-middle">${item.classificationDesc}</td>
+                                <td class="align-middle">${item.drDesc}</td>
 
-                                              <td class="text-center ">
+                                <td class="text-center ">
+                                    <a href="/Medical/PatAdmission/Edit_PatientAdmission/${item.masterId}?redirect=Requirements" class="btn btn-sm btn-success mb-1  fs-6" style="width:150px">
+                                        <i class="bi bi-pencil"></i> @localizer["Edit"]
+                                    </a>
+                                    <form action="/Medical/PatAdmission/Delete_PatientAdmission" method="post" class="d-inline ms-1">
+@Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="${item.masterId}" />
+                                    <input type="hidden" name="redirect" value="Requirements" />
+                                    <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">@localizer["Delete"]</button>
+                                    </form>
 
-                                                    <a href="/Medical/PatAdmission/Edit_PatientAdmission/${item.masterId}?redirect=Requirements" class="btn btn-sm btn-success mb-1  fs-6" style="width:150px">
-                                                     <i class="bi bi-pencil"></i> @localizer["Edit"]
-                                                </a>
-                                                    <form action="/Medical/PatAdmission/Delete_PatientAdmission" method="post" class="d-inline ms-1">
-    @Html.AntiForgeryToken()
-                                                    <input type="hidden" name="id" value="${item.masterId}" />
-                                                  <input type="hidden" name="redirect" value="Requirements" />
-                                                  <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">@localizer["Delete"]</button>
-                                                </form>
-
-                                            </td>
+                                 </td>
                                                     `;
                         //for click to call ajax
                         patAdmission.style.cursor = "pointer";
@@ -376,6 +385,8 @@
                                                 <td class="align-middle">${item.extraVal}</td>
                                                 <td class="align-middle">${item.extraVal2}</td>
                                                 <td class="align-middle">${item.compValue}</td>
+                                                <td class="align-middle">${item.compValue + item.patientValue}</td>
+
 
                                                 <td width="30%" class="text-center">
                                                         <a href="/Medical/ClinicTrans/Edit_ClinicTrans/${item.checkId}?redirect=Requirements" class="btn btn-sm btn-success mb-1  fs-6" style="width:150px">

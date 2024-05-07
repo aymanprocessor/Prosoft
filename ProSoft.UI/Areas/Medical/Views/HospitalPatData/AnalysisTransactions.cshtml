@@ -178,6 +178,9 @@
                     <th class="align-middle">
                         @localizer["Company value"]
                     </th>
+                    <th class="align-middle">
+                        @localizer["AllServicePrice"]
+                    </th>
                     @*  <th class="align-middle">
                         Actions
                     </th> *@
@@ -319,11 +322,18 @@
                     //sorting
                     result.sort((a, b) => b.masterId - a.masterId)
                     for (let item of result) {
+
+                        //convert to date not time//
+                        const patAdDate = new Date(item.patAdDate);
+                        // Format the date as needed (e.g., "YYYY-MM-DD")
+                        const PatAdDate = patAdDate.toISOString().split('T')[0];
+                        //////////////////
+
                         const patAdmission = document.createElement("tr");
                         patAdmission.innerHTML +=
                         `
                             <td class="item-id align-middle">${item.masterId}</td>
-                            <td class="align-middle">${item.patAdDate}</td
+                            <td class="align-middle">${PatAdDate}</td
                             <td class="align-middle">${item.compId}</td>
                             <td class="align-middle">${item.compName}</td>
                             <td class="align-middle">${item.compNameDtl}</td>
@@ -406,6 +416,8 @@
                             <td class="align-middle">${item.extraVal}</td>
                             <td class="align-middle">${item.extraVal2}</td>
                             <td class="align-middle">${item.compValue}</td>
+                            <td class="align-middle">${item.compValue + item.patientValue}</td>
+
                         `;
                         //for click to call ajax
                         clinic.style.cursor = "pointer";

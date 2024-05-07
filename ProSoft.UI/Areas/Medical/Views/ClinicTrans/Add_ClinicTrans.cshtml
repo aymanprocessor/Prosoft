@@ -332,7 +332,8 @@
     }
       
     var relativePatient;
-
+    var resultOfCompValue;
+    var resultOfPatientValue;
     // for price lists
     function GetPriceListDetails() {
         var serviceORItem = document.getElementById("ItmServFlag").value;
@@ -348,13 +349,14 @@
         var compValue = document.getElementById("CompValue");
         var extraVal = document.getElementById("ExtraVal");//requirment
         var extraVal2 = document.getElementById("ExtraVal2");//maintaince
+        var valueServicee = document.getElementById("ValueService");//
 
        // console.log(relativePatient)
         if (serviceORItem == 3) {
             $.ajax({
                 url: `/Medical/ClinicTrans/GetPriceListDetails/${patAdmissionID}?clincID=${clinicID}&sClincID=${sClinicId}&servID=${servID}`,
                 success: function (result) {
-                    console.log(result)
+                   // console.log(result)
                     if (result == null) {
                         unitPrice.value = 0;
                         patientValue.value = 0;
@@ -362,17 +364,24 @@
                         extraVal.value = 0;
                         extraVal2.value = 0;
                         relativePatient = 0;
+                        //set in variable general
+                        resultOfCompValue = 0;
+                        resultOfPatientValue = 0;
                     }
                     else
                     {
                         //Private
                         if (privateOrContract ==1) {
                             unitPrice.value = result.plValue;
-                            patientValue.value = result.plValue;
+                            patientValue.value = result.plValue2;
                             compValue.value = 0;
                             extraVal.value = result.extraVal;
                             extraVal2.value = result.extraVal2;
                             relativePatient = result.plValue3;
+                            valueServicee.value = result.plValue;
+                            //set in variable general
+                            resultOfCompValue = 0;
+                            resultOfPatientValue = result.plValue;
                         }
                         //Contract
                         else if (privateOrContract == 2) {
@@ -384,6 +393,10 @@
                                 extraVal.value = result.extraVal;
                                 extraVal2.value = result.extraVal2;
                                 relativePatient = result.plValue3;
+                                valueServicee.value = result.plValue;
+                                //set in variable general
+                                resultOfCompValue = result.compValue;
+                                resultOfPatientValue = result.plValue2;
                             }
                             //not Coverd
                             else {
@@ -393,6 +406,11 @@
                                 extraVal.value = result.extraVal;
                                 extraVal2.value = result.extraVal2;
                                 relativePatient = result.plValue3;
+                                valueServicee.value = result.plValue;
+                                //set in variable general
+                                resultOfCompValue = 0;
+                                resultOfPatientValue = result.plValue2;
+
                             }
                         }
                     }
@@ -419,7 +437,7 @@
         $.ajax({
             url: `/Medical/ClinicTrans/GetDoctorData/${drID}?sClincID=${sClinicId}&servID=${servId}`,
             success: function (result) {
-                console.log(result);
+              //  console.log(result);
                 if (result != null) {
 
                     //Contract
@@ -457,16 +475,18 @@
     document.getElementById('PatientValue').addEventListener('input', function () {
 
         var patientValuee = parseFloat(this.value);
-        var unitPrice = document.getElementById('UnitPrice').value;
+       // var unitPrice = document.getElementById('UnitPrice').value;
+        var ValueService = document.getElementById('ValueService').value;
         var compValuee = document.getElementById('CompValue');
-        compValuee.value = unitPrice - patientValuee
+        compValuee.value = ValueService - patientValuee
     });
     document.getElementById('CompValue').addEventListener('input', function () {
 
         var compValuee = parseFloat(this.value);
-        var unitPrice = document.getElementById('UnitPrice').value;
+       // var unitPrice = document.getElementById('UnitPrice').value;
+        var ValueService = document.getElementById('ValueService').value;
         var patientValuee = document.getElementById('PatientValue');
-        patientValuee.value = unitPrice - compValuee;
+        patientValuee.value = ValueService - compValuee;
     });
     document.getElementById('Qty').addEventListener('input', function () {
 
@@ -474,6 +494,21 @@
         var unitPrice = document.getElementById('UnitPrice').value;
         var valueService = document.getElementById("ValueService");
         valueService.value = unitPrice * qty;
+        var patientValuee = document.getElementById('PatientValue');
+        var compValuee = document.getElementById('CompValue');
+        var privateOrContract = document.getElementById("privateORContract").value;
+        console.log(privateOrContract)
+
+        if (privateOrContract == 1)//private
+        {
+            patientValuee.value = resultOfPatientValue * qty;
+            compValuee.value = valueService.value - patientValuee.value
+        }
+        else if (privateOrContract == 2)//contract
+        {
+            compValuee.value = resultOfCompValue * qty;
+             patientValuee.value = valueService.value - compValuee.value
+        }
     });
 
     //Net Patient Value
@@ -485,7 +520,7 @@
         var discount = parseFloat(document.getElementById("DiscountVal").value);
         var qty = document.getElementById("Qty").value;
 
-        var totalValue = qty * (patientValue + extraVal + extraVal2 - discount);
+        var totalValue = patientValue + extraVal + extraVal2 - discount;
        // console.log(totalValue);
         
         var netPatient = document.getElementById("netPatient");
@@ -501,7 +536,7 @@
         var valueService = document.getElementById("ValueService");
 
         var totalValue = allServicesPrice + (qty * unitPrice);
-        valueService.value = totalValue;
+        valueService.value = qty * unitPrice;
         // console.log(totalValue);
         var totalService = document.getElementById("totalService");
         totalService.innerHTML = '  ' + totalValue + ' '; // Adjust decimal places as needed
