@@ -1,0 +1,172 @@
+﻿@model StockEmpEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Add New Transaction";
+    Layout = "_Layout";
+
+    // Casting type to get all Permissions as a list
+    SelectList permissions = new SelectList(Model.Permissions, "UniqueType", "GDesc");
+
+    // Casting type to get all Stocks as a list
+    SelectList stocks = new SelectList(Model.Stocks, "Stkcod", "Stknam");
+
+    // Casting type to get all MainAccCodes as a list
+    SelectList mainAccCodes = new SelectList(Model.MainAccCodes, "MainCode", "MainName");
+
+    // Casting type to get all SubAccCodes as a list
+    SelectList subAccCodes = new SelectList(Model.SubAccCodes, "SubCode", "SubName");
+
+    // Casting type to get all JournalTypes as a list
+    SelectList journalTypes = new SelectList(Model.JournalTypes, "JournalCode", "JournalName");
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+    <h1 class="mt-4">@localizer["Add New StockTransaction For User"] : @ViewBag.userName</h1>
+    <form method="post" asp-action="Add_StockTrans">
+        <div class="border p-3 mt-4">
+
+            @* Hidden Inputs *@
+@*             <input asp-for="CustCode1" type="hidden" />
+            <input asp-for="MainCode" type="hidden" /> *@
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="TransType"></label>
+                    <select asp-for="TransType" asp-items="permissions" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="TransType" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Stkcod"></label>
+                    <select asp-for="Stkcod" asp-items="stocks" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="Stkcod" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3">
+                    <div class="d-flex align-items-center mb-3">
+                        <input asp-for="StockDef" type="checkbox" class="form-check-input" />
+                        <label asp-for="StockDef"></label>
+                    </div>
+                    <span asp-validation-for="StockDef" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <div class="d-flex align-items-center mb-3">
+                        <input asp-for="ShowPrice" type="checkbox" class="form-check-input" />
+                        <label asp-for="ShowPrice"></label>
+                    </div>
+                    <span asp-validation-for="ShowPrice" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="TaxType"></label>
+                    <div class="d-flex justify-content-center gap-4 mt-1">
+                        <label class="form-check-label">
+                            <input asp-for="TaxType" class="form-check-input radio-inline" checked type="radio" value="1">
+                            @localizer["Yes"]
+                        </label>
+                        <label class="form-check-label">
+                            <input asp-for="TaxType" class="form-check-input radio-inline" type="radio" value="0">
+                            @localizer["No"]
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="CustDisc4"></label>
+                    <select asp-for="CustDisc4" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                        <option value="1">القاهرة</option>
+                        <option value="2">الموسكي 1</option>
+                        <option value="3">الموسكي 2</option>
+                        <option value="4">الاسكندرية</option>
+                        <option value="5">أسيوط</option>
+                        <option value="6">عهد مندوبين</option>
+                        <option value="7">منفذ بيع</option>
+                        <option value="8">هدايا ومسحوبات</option>
+                    </select>
+                    <span asp-validation-for="CustDisc4" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="CustPhone1"></label>
+                    <input asp-for="CustPhone1" class="form-control" />
+                    <span asp-validation-for="CustPhone1" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="CustPhone2"></label>
+                    <input asp-for="CustPhone2" class="form-control" />
+                    <span asp-validation-for="CustPhone2" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="CustFax"></label>
+                    <input asp-for="CustFax" class="form-control" />
+                    <span asp-validation-for="CustFax" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="AdjectiveCode"></label>
+                    <select asp-for="AdjectiveCode" asp-items="priceTypes" class="form-control text-center">
+                    </select>
+                    <span asp-validation-for="AdjectiveCode" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="CatalogId"></label>
+                    <select asp-for="CatalogId" asp-items="pricesLists" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="CatalogId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3" style="width: 62%;">
+                    <label asp-for="Remarks"></label>
+                    <input asp-for="Remarks" class="form-control" />
+                    <span asp-validation-for="Remarks" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex justify-content-md-center gap-2">
+                <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add"]</button>
+                <a asp-controller="Customer" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>

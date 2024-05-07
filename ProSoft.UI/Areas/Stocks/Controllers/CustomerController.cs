@@ -59,34 +59,34 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         }
 
         // Post Edit
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit_Customer(int id, SupCodeEditAddDTO supplierDTO)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        SupCode supplier = await _supplierRepo.GetByIdAsync(id);
-        //        supplierDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
-        //        _mapper.Map(supplierDTO, supplier);
-        //        supplier.Sup = id;
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit_Customer(int id, CustCodeEditAddDTO customerDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                CustCode customer = await _customerRepo.GetByIdAsync(id);
+                _mapper.Map(customerDTO, customer);
+                customer.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
+                customer.Flag = 2;
 
-        //        await _supplierRepo.UpdateAsync(supplier);
-        //        await _supplierRepo.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(supplierDTO);
-        //}
+                await _customerRepo.UpdateAsync(customer);
+                await _customerRepo.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(customerDTO);
+        }
 
         // Delete
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Delete_Customer(int id)
-        //{
-        //    SupCode supplier = await _supplierRepo.GetByIdAsync(id);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete_Customer(int id)
+        {
+            CustCode customer = await _customerRepo.GetByIdAsync(id);
 
-        //    await _supplierRepo.DeleteAsync(supplier);
-        //    await _supplierRepo.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
+            await _customerRepo.DeleteAsync(customer);
+            await _customerRepo.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

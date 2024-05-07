@@ -95,6 +95,7 @@ namespace ProSoft.EF.DbContext
         public DbSet<SupCode> SupCodes { get; set; }
         public DbSet<CustCode> CustCodes { get; set; }
         public DbSet<AdjectiveCust> AdjectiveCusts { get; set; }
+        public DbSet<StockEmp> StockEmps { get; set; }
 
         ////////////////////
         // Accounts //

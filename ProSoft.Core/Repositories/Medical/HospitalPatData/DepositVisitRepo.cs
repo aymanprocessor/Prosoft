@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ProSoft.EF.DbContext;
-using ProSoft.EF.DTOs.Calculus;
+using ProSoft.EF.DTOs.Accounts;
 using ProSoft.EF.DTOs.Medical.HospitalPatData;
 using ProSoft.EF.IRepositories.Medical.HospitalPatData;
-using ProSoft.EF.Models.Calculus;
+using ProSoft.EF.Models.Accounts;
 using ProSoft.EF.Models.Medical.HospitalPatData;
 using System;
 using System.Collections.Generic;

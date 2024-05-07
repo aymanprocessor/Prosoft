@@ -52,9 +52,21 @@ namespace ProSoft.Core.Repositories.Stocks
             return customerDTO;
         }
 
-        public Task<CustCodeEditAddDTO> GetCustomerByIdAsync(int id)
+        public async Task<CustCodeEditAddDTO> GetCustomerByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            CustCode customer = await GetByIdAsync(id);
+            var customerDTO = _mapper.Map<CustCodeEditAddDTO>(customer);
+
+            List<AccSubCode> subCodes = await _Context.AccSubCodes
+                .Where(obj => obj.MainCode == customerDTO.MainCode).ToListAsync();
+            List<PriceList> pricesLists = await _Context.PriceLists.ToListAsync();
+            List<AdjectiveCust> priceTypes = await _Context.AdjectiveCusts.ToListAsync();
+
+            customerDTO.SubCodes = _mapper.Map<List<AccSubCodeDTO>>(subCodes);
+            customerDTO.PricesLists = _mapper.Map<List<PriceListViewDTO>>(pricesLists);
+            customerDTO.PriceTypes = _mapper.Map<List<AdjectiveCustDTO>>(priceTypes);
+
+            return customerDTO;
         }
     }
 }

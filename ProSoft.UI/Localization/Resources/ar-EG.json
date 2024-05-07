@@ -281,7 +281,8 @@
   "Check Add To Company": "تاكيد الاضافة الي الشركات",
   "Net Patient": "صافي المريض",
   "All Service Price": "اجمالي سعر الخدمة",
-  "Total Service": "اجمالي الخدمات",
+  "AllServicePrice": "اجمالي الخدمة",
+  "Total Service": "اجمالي سعر الخدمات",
   "Entity Code": "كود الجهة",
   "Quantity": "كمية",
   "Deposits": "دفعات",
@@ -436,5 +437,11 @@
   "Under Tax": "خاضع للضريبة",
   "Spending Side": "جهة الصرف",
   "Pricing List": "قائمة التسعير",
-  "Edit Customer": "تعديل عميل"
+  "Edit Customer": "تعديل عميل",
+  "Joining Users With Stocks and Accounts": "ربط المستخدمين بالمخازن والحسابات",
+  "Transactions of Stocks for User": "حركات المخازن للمستخدم",
+  "Add New Transaction": "اضافة حركة جديدة",
+  "Before anything, select the user": "قبل اي شيئ قم باختيار المستخدم",
+  "Add New StockTransaction For User": "اضافة حركة مخزن جديدة للمستتخدم",
+  "Stock Is Default": "المخزن افتراضي"
 }

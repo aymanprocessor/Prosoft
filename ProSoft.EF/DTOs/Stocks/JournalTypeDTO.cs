@@ -10,7 +10,7 @@ namespace ProSoft.EF.DTOs.Stocks
     {
         public int JournalCode { get; set; }
 
-        public string? JournalName { get; set; }
+        public string JournalName { get; set; }
 
         public string? CounterFlag { get; set; }
 

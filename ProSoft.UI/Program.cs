@@ -83,6 +83,7 @@ builder.Services.AddScoped<IUserTransRepo, UserTransRepo>();
 builder.Services.AddScoped<ITransTypeRepo, TransTypeRepo>();
 builder.Services.AddScoped<ISupplierRepo, SupplierRepo>();
 builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();
+builder.Services.AddScoped<IStockEmpRepo, StockEmpRepo>();
 ///////////////// System /////////////
 builder.Services.AddScoped<IEisPostingRepo, EisPostingRepo>();
 

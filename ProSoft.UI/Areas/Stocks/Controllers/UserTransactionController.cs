@@ -38,7 +38,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         {
             List<StoreTran> transTypes = await _transTypeRepo.GetAllAsync();
             ViewBag.transTypes = _mapper.Map<List<StoreTransDTO>>(transTypes);
-            List<AppUser> users = (await _userRepo.GetAllUsersAsync()).ToList();
+            List<AppUser> users = await _userRepo.GetAllUsersAsync();
             List<UserDTO> usersDTO = _mapper.Map<List<UserDTO>>(users);
             return View(usersDTO);
         }

@@ -12,7 +12,6 @@ namespace ProSoft.EF.DTOs.Stocks
 {
     public class CustCodeEditAddDTO
     {
-        //public int Cust { get; set; }
         public string CustCode1 { get; set; }
 
         [DisplayName("Customer_Name_AR")]
@@ -54,7 +53,6 @@ namespace ProSoft.EF.DTOs.Stocks
 
         [DisplayName("Pricing List")]
         public int? CatalogId { get; set; }
-        //public int? BranchId { get; set; }
 
         public List<AccSubCodeDTO>? SubCodes { get; set; }
         public List<PriceListViewDTO>? PricesLists { get; set; }
