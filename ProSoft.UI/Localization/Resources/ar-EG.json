@@ -474,5 +474,9 @@
   "Debit Account": "الحساب المدين",
   "Credit Account (Main)": "الحساب الدائن (رئيسي)",
   "Credit Account (Sub)": "الحساب الدائن (فرعي)",
+<<<<<<< HEAD
   "Credit Account": "الحساب الدائن"
+=======
+  "Credit Account": "الحساب الدائن",
+>>>>>>> 9a290d6aeb3fa25da2e55fee92952c7cc6fc0d67
 }

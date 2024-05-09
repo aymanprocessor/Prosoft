@@ -54,7 +54,6 @@ namespace ProSoft.Core.Repositories.Stocks
             List<GeneralCode> permissions = await _Context.GeneralCodes
                 .Where(obj => obj.GType == transType.ToString() &&
                 obj.ShowHide == 1).ToListAsync();
-            //List<PermissionDefViewDTO> permissionsDTO = new();
             var userTransDTO = new List<UserTransViewDTO>();
             if(userTrans.Count() == 0)
             {
@@ -77,11 +76,6 @@ namespace ProSoft.Core.Repositories.Stocks
                         newUserTransDTO.TransactionType = (await _Context.StoreTrans
                             .FindAsync(transType)).TransDesc;
                         userTransDTO.Add(newUserTransDTO);
-
-                        //var permissionDTO = _mapper.Map<PermissionDefViewDTO>(item);
-                        //permissionDTO.TransactionType = (await _Context.StoreTrans
-                        //    .FindAsync(transType)).TransDesc;
-                        //permissionsDTO.Add(permissionDTO);
                     }
                     await SaveChangesAsync();
                 }
@@ -120,17 +114,11 @@ namespace ProSoft.Core.Repositories.Stocks
                                 .FindAsync(transType)).TransDesc;
                             userTransDTO.Add(newUserTransDTO);
                         }
-
-                        //var permissionDTO = _mapper.Map<PermissionDefViewDTO>(item);
-                        //permissionDTO.TransactionType = (await _Context.StoreTrans
-                        //    .FindAsync(transType)).TransDesc;
-                        //permissionsDTO.Add(permissionDTO);
                     }
                     await SaveChangesAsync();
                 }
             }
             return userTransDTO;
-            //return permissionsDTO;
         }
 
         public async Task UpdateUserTransAsync(int userCode, UserTransEditAddDTO userTransDTO)

@@ -1,4 +1,6 @@
-﻿using ProSoft.EF.DTOs.Stocks;
+﻿using ProSoft.EF.DTOs.Accounts;
+using ProSoft.EF.DTOs.Stocks;
+using ProSoft.EF.Models.Stocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +11,11 @@ namespace ProSoft.EF.IRepositories.Stocks
 {
     public interface IStockEmpRepo
     {
-        //Task<StockEmpEditAddDTO> GetUserTransByIdAsync(int userCode, int gId);
-        //Task<List<PermissionDefViewDTO>> GetPermissionsForUserAsync(int userCode);
-        //Task<List<StockEmpEditAddDTO>> GetPermissionsForUserAsync(int userCode, int transType);
-        Task<StockEmpEditAddDTO> GetEmptyStockTransAsync();
-        Task UpdateUserTransAsync(int userCode, StockEmpEditAddDTO userStockDTO);
+        Task<List<StockEmpViewDTO>> GetStockTransForUserAsync(int userCode);
+        Task<StockEmpEditAddDTO> GetEmptyStockTransAsync(int userCode);
+        Task<List<AccSubCodeDTO>> GetSubCodesFromAccAsync(string mainAccCode);
+        Task AddStockTransAsync(StockEmp userStock);
+        Task UpdateStockTransAsync(int userCode, StockEmpEditAddDTO userStockDTO);
         Task SaveChangesAsync();
     }
 }

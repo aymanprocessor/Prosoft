@@ -155,12 +155,12 @@
                     url: `/Stocks/UserTransaction/GetPermissionsForUser/${userCode}?transType=${transType}`,
                     success: function (result) {
                         for (let item of result) {
-                            const userTrans = document.createElement("tr");
                             let ueIns = item.ueIns == 1 ? `<i class="fa-solid fa-check"></i>` : "";
                             let ueDel = item.ueDel == 1 ? `<i class="fa-solid fa-check"></i>` : "";
                             let ueSav = item.ueSav == 1 ? `<i class="fa-solid fa-check"></i>` : "";
                             let transFlag = item.transFlag == 1 ? `<i class="fa-solid fa-check"></i>` : "";
 
+                            const userTrans = document.createElement("tr");
                             userTrans.innerHTML +=
                                 `
                                 <td class="align-middle text-center">${item.gId}</td>

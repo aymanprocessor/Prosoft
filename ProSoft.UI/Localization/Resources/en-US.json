@@ -475,5 +475,9 @@
   "Debit Account (Main)": "Debit Account (Main)",
   "Debit Account (Sub)": "Debit Account (Sub)",
   "Credit Account (Main)": "Credit Account (Main)",
+<<<<<<< HEAD
   "Credit Account (Sub)": "Credit Account (Sub)"
+=======
+  "Credit Account (Sub)": "Credit Account (Sub)",
+>>>>>>> 9a290d6aeb3fa25da2e55fee92952c7cc6fc0d67
 }

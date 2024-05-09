@@ -1,8 +1,13 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using ProSoft.EF.DbContext;
+using ProSoft.EF.DTOs.Accounts;
 using ProSoft.EF.DTOs.Shared;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.IRepositories.Stocks;
+using ProSoft.EF.Models.Accounts;
+using ProSoft.EF.Models.Shared;
+using ProSoft.EF.Models.Stocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,36 +26,90 @@ namespace ProSoft.Core.Repositories.Stocks
             _mapper = mapper;
         }
 
-        //public Task<List<PermissionDefViewDTO>> GetPermissionsForUserAsync(int userCode)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public async Task<List<StockEmpViewDTO>> GetStockTransForUserAsync(int userCode)
+        {
+            List<StockEmp> stockTrans = await _Context.StockEmps
+                .Where(obj => obj.UserId == userCode).ToListAsync();
 
-        //public Task<List<StockEmpEditAddDTO>> GetPermissionsForUserAsync(int userCode, int transType)
-        //{
-        //    throw new NotImplementedException();
-        //}
+            var stockTransDTO = new List<StockEmpViewDTO>();
+            foreach (var item in stockTrans)
+            {
+                var myStockTransDTO = _mapper.Map<StockEmpViewDTO>(item);
+                myStockTransDTO.PermissionName = (await _Context.GeneralCodes
+                    .FirstOrDefaultAsync(obj => obj.UniqueType == item.TransType)).GDesc;
+                myStockTransDTO.StockName = (await _Context.Stocks
+                    .FirstOrDefaultAsync(obj => obj.Stkcod == item.Stkcod)).Stknam;
+                myStockTransDTO.AccountStk = await GetAccountName(item.MainCodeStk, item.SubCodeStk);
+                myStockTransDTO.AccountAcc = await GetAccountName(item.MainCodeAcc, item.SubCodeAcc);
+                myStockTransDTO.JornalName = (await _Context.JournalTypes.FindAsync(int.Parse(item.JornalCode))).JournalName;
+                stockTransDTO.Add(myStockTransDTO);
+            }
+            return stockTransDTO;
+        }
 
-        //public Task<StockEmpEditAddDTO> GetUserTransByIdAsync(int userCode, int gId)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        private async Task<string> GetAccountName(string mainCode, string subCode)
+        {
+            AccMainCode myMainCode = await _Context.AccMainCodes
+                .FirstOrDefaultAsync(obj => obj.MainCode == mainCode);
+            string mainName = myMainCode.MainName;
 
-        public Task<StockEmpEditAddDTO> GetEmptyStockTransAsync()
+            AccSubCode mySubCode = await _Context.AccSubCodes
+                .FirstOrDefaultAsync(obj => obj.SubCode == subCode && obj.MainCode == mainCode);
+            string subName = mySubCode! != null ? mySubCode.SubName : string.Empty;
+
+            return subName != "" ? $"{mainName} / {subName}" : mainName;
+        }
+
+        public async Task<StockEmpEditAddDTO> GetEmptyStockTransAsync(int userCode)
         {
             var stockTransDTO = new StockEmpEditAddDTO();
 
-            throw new NotImplementedException();
+            List<UserTranss> userTrans = await _Context.UserTransactions
+                .Where(obj => obj.UsrId == userCode && obj.TransFlag == 1).ToListAsync();
+
+            var permissionsDTO = new List<PermissionDefViewDTO>();
+            foreach (var item in userTrans)
+            {
+                GeneralCode permission = await _Context.GeneralCodes
+                    .FirstOrDefaultAsync(obj => obj.GId == item.GId);
+                if(permission != null)
+                {
+                    var permissionDTO = _mapper.Map<PermissionDefViewDTO>(permission);
+                    permissionsDTO.Add(permissionDTO);
+                }
+            }
+            List<Stock> stocks = await _Context.Stocks.ToListAsync();
+            List<AccMainCode> mainAccCodes = await _Context.AccMainCodes.ToListAsync();
+            List<JournalType> journalTypes = await _Context.JournalTypes.ToListAsync();
+
+            stockTransDTO.Permissions = permissionsDTO;
+            stockTransDTO.Stocks = _mapper.Map<List<StockViewDTO>>(stocks);
+            stockTransDTO.MainAccCodes = _mapper.Map<List<AccMainCodeDTO>>(mainAccCodes);
+            stockTransDTO.JournalTypes = _mapper.Map<List<JournalTypeDTO>>(journalTypes);
+            return stockTransDTO;
         }
 
-        public Task UpdateUserTransAsync(int userCode, StockEmpEditAddDTO userStockDTO)
+        public async Task<List<AccSubCodeDTO>> GetSubCodesFromAccAsync(string mainAccCode)
+        {
+            List<AccSubCode> subAccCodes = await _Context.AccSubCodes
+                .Where(obj => obj.MainCode == mainAccCode).ToListAsync();
+            var subAccCodesDTO = _mapper.Map<List<AccSubCodeDTO>>(subAccCodes);
+            return subAccCodesDTO;
+        }
+
+        public async Task AddStockTransAsync(StockEmp userStock)
+        {
+            await _Context.AddAsync(userStock);
+        }
+
+        public Task UpdateStockTransAsync(int userCode, StockEmpEditAddDTO userStockDTO)
         {
             throw new NotImplementedException();
         }
 
-        public Task SaveChangesAsync()
+        public async Task SaveChangesAsync()
         {
-            throw new NotImplementedException();
+            await _Context.SaveChangesAsync();
         }
     }
 }
