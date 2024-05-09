@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using ProSoft.EF.Models.Stocks;
 
-namespace ProSoft.EF.Models.Stocks;
+namespace ProSoft.EF.Models.Accounts;
 
 [Table("JOURNAL_TYPE")]
 public partial class JournalType

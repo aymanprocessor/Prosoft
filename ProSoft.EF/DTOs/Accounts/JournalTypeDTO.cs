@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProSoft.EF.DTOs.Stocks
+namespace ProSoft.EF.DTOs.Accounts
 {
     public class JournalTypeDTO
     {

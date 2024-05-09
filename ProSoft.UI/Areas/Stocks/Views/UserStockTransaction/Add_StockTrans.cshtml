@@ -15,7 +15,7 @@
     SelectList mainAccCodes = new SelectList(Model.MainAccCodes, "MainCode", "MainName");
 
     // Casting type to get all SubAccCodes as a list
-    SelectList subAccCodes = new SelectList(Model.SubAccCodes, "SubCode", "SubName");
+    // SelectList subAccCodes = new SelectList(Model.SubAccCodes, "SubCode", "SubName");
 
     // Casting type to get all JournalTypes as a list
     SelectList journalTypes = new SelectList(Model.JournalTypes, "JournalCode", "JournalName");
@@ -53,15 +53,15 @@
 
             <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
                 <div class="mb-3">
-                    <div class="d-flex align-items-center mb-3">
-                        <input asp-for="StockDef" type="checkbox" class="form-check-input" />
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <input name="StockDef" id="StockDef" type="checkbox" class="form-check-input" onchange="changeValue(event)" />
                         <label asp-for="StockDef"></label>
                     </div>
                     <span asp-validation-for="StockDef" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <div class="d-flex align-items-center mb-3">
-                        <input asp-for="ShowPrice" type="checkbox" class="form-check-input" />
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <input name="ShowPrice" id="ShowPrice" type="checkbox" class="form-check-input" onchange="changeValue(event)" />
                         <label asp-for="ShowPrice"></label>
                     </div>
                     <span asp-validation-for="ShowPrice" class="text-danger"></span>
@@ -69,99 +69,92 @@
             </div>
 
             <!------------------------------------------------------------------------------->
-            @*             <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
-            <div class="mb-3">
-            <label asp-for="TaxType"></label>
-            <div class="d-flex justify-content-center gap-4 mt-1">
-            <label class="form-check-label">
-            <input asp-for="TaxType" class="form-check-input radio-inline" checked type="radio" value="1">
-            @localizer["Yes"]
-            </label>
-            <label class="form-check-label">
-            <input asp-for="TaxType" class="form-check-input radio-inline" type="radio" value="0">
-            @localizer["No"]
-            </label>
+
+            <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="MainCodeStk"></label>
+                    <select asp-for="MainCodeStk" asp-items="mainAccCodes" class="form-control text-center" onchange="getSubCodes('MainCodeStk', 'SubCodeStk')">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="MainCodeStk" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="SubCodeStk"></label>
+                    <select asp-for="SubCodeStk" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="SubCodeStk" class="text-danger"></span>
+                </div>
             </div>
-            </div>
-            <div class="mb-3">
-            <label asp-for="CustDisc4"></label>
-            <select asp-for="CustDisc4" class="form-control text-center">
-            <option value="">-- Choose --</option>
-            <option value="1">القاهرة</option>
-            <option value="2">الموسكي 1</option>
-            <option value="3">الموسكي 2</option>
-            <option value="4">الاسكندرية</option>
-            <option value="5">أسيوط</option>
-            <option value="6">عهد مندوبين</option>
-            <option value="7">منفذ بيع</option>
-            <option value="8">هدايا ومسحوبات</option>
-            </select>
-            <span asp-validation-for="CustDisc4" class="text-danger"></span>
-            </div>
-            </div>
-            *@
+           
             <!------------------------------------------------------------------------------->
-            @*             <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
-            <div class="mb-3">
-            <label asp-for="CustPhone1"></label>
-            <input asp-for="CustPhone1" class="form-control" />
-            <span asp-validation-for="CustPhone1" class="text-danger"></span>
+            
+            <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="MainCodeAcc"></label>
+                    <select asp-for="MainCodeAcc" asp-items="mainAccCodes" class="form-control text-center" onchange="getSubCodes('MainCodeAcc', 'SubCodeAcc')">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="MainCodeAcc" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="SubCodeAcc"></label>
+                    <select asp-for="SubCodeAcc" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="SubCodeAcc" class="text-danger"></span>
+                </div>
             </div>
-            <div class="mb-3">
-            <label asp-for="CustPhone2"></label>
-            <input asp-for="CustPhone2" class="form-control" />
-            <span asp-validation-for="CustPhone2" class="text-danger"></span>
-            </div>
-            </div>
-            *@
+
             <!------------------------------------------------------------------------------->
-            @*             <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
-            <div class="mb-3">
-            <label asp-for="CustFax"></label>
-            <input asp-for="CustFax" class="form-control" />
-            <span asp-validation-for="CustFax" class="text-danger"></span>
+            
+            <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3" style="width: 62%;">
+                    <label asp-for="JornalCode"></label>
+                    <select asp-for="JornalCode" asp-items="journalTypes" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="JornalCode" class="text-danger"></span>
+                </div>
             </div>
-            <div class="mb-3">
-            <label asp-for="AdjectiveCode"></label>
-            <select asp-for="AdjectiveCode" asp-items="priceTypes" class="form-control text-center">
-            </select>
-            <span asp-validation-for="AdjectiveCode" class="text-danger"></span>
-            </div>
-            </div>
-            *@
-            <!------------------------------------------------------------------------------->
-            @*             <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
-            <div class="mb-3">
-            <label asp-for="Email"></label>
-            <input asp-for="Email" class="form-control" />
-            <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-            <label asp-for="CatalogId"></label>
-            <select asp-for="CatalogId" asp-items="pricesLists" class="form-control text-center">
-            <option value="">-- Choose --</option>
-            </select>
-            <span asp-validation-for="CatalogId" class="text-danger"></span>
-            </div>
-            </div>
-            *@
-            <!------------------------------------------------------------------------------->
-            @*             <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
-            <div class="mb-3" style="width: 62%;">
-            <label asp-for="Remarks"></label>
-            <input asp-for="Remarks" class="form-control" />
-            <span asp-validation-for="Remarks" class="text-danger"></span>
-            </div>
-            </div>
-            *@
+           
             <!------------------------------------------------------------------------------->
 
             <div class="parent d-flex justify-content-md-center gap-2">
                 <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add"]</button>
-                <a asp-controller="Customer" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                <a asp-controller="UserStockTransaction" asp-action="Index" class="btn btn-secondary" style="width:150px">
                     @localizer["Cancel"]
                 </a>
             </div>
         </div>
     </form>
 </div>
+
+@section Scripts {
+    <script>
+        function changeValue(e) {
+            let target = e.target;
+            if (target.checked)
+                target.value = 1;
+            else
+                target.value = 0;
+        }
+
+        function getSubCodes(mainId, subId){
+            let mainElement = document.getElementById(mainId);
+            let subElement = document.getElementById(subId);
+            subElement.innerHTML = `<option value="">-- Choose --</option>`;
+
+            $.ajax({
+                url: `/Stocks/UserStockTransaction/GetSubCodesFromAcc/${mainElement.value}`,
+                success: function (result) {
+                    console.log(result);
+                    for (let item of result) {
+                        subElement.innerHTML +=
+                            `<option value="${item.subCode}">${item.subName}</option>`;
+                    }
+                }
+            });
+        }
+    </script>
+}

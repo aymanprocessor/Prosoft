@@ -26,26 +26,24 @@ namespace ProSoft.EF.DTOs.Stocks
         [DisplayName("Stock Is Default")]
         public int StockDef { get; set; }
 
-        [DisplayName("Stock Name")]
-        public int? ShowPrice { get; set; }
+        [DisplayName("Show Trans Price")]
+        public int ShowPrice { get; set; }
 
-        [DisplayName("Stock Name")]
+        [DisplayName("Debit Account (Main)")]
         [Required(ErrorMessage = "The field is required")]
         public string MainCodeStk { get; set; }
 
-        [DisplayName("Stock Name")]
-        [Required(ErrorMessage = "The field is required")]
-        public string SubCodeStk { get; set; }
+        [DisplayName("Debit Account (Sub)")]
+        public string? SubCodeStk { get; set; }
 
-        [DisplayName("Stock Name")]
+        [DisplayName("Credit Account (Main)")]
         [Required(ErrorMessage = "The field is required")]
         public string MainCodeAcc { get; set; }
 
-        [DisplayName("Stock Name")]
-        [Required(ErrorMessage = "The field is required")]
-        public string SubCodeAcc { get; set; }
+        [DisplayName("Credit Account (Sub)")]
+        public string? SubCodeAcc { get; set; }
 
-        [DisplayName("Stock Name")]
+        [DisplayName("Journal Type")]
         [Required(ErrorMessage = "The field is required")]
         public string JornalCode { get; set; }
 

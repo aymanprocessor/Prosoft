@@ -2,32 +2,30 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProSoft.Core.Repositories.Stocks;
+using ProSoft.EF.DTOs.Accounts;
 using ProSoft.EF.DTOs.Auth;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.IRepositories;
 using ProSoft.EF.IRepositories.Stocks;
 using ProSoft.EF.Models;
+using ProSoft.EF.Models.Stocks;
+using System.Web.Mvc.Ajax;
 
 namespace ProSoft.UI.Areas.Stocks.Controllers
 {
     [Authorize(Roles = "Admin")]
-    [Area("Stocks")]
+    [Area(nameof(Stocks))]
     public class UserStockTransactionController : Controller
     {
         private readonly IStockEmpRepo _userStockRepo;
         private readonly IUserRepo _userRepo;
-        //private readonly IGeneralTableRepo _generalCodeRepo;
-        //private readonly ITransTypeRepo _transTypeRepo;
         private readonly IMapper _mapper;
 
         public UserStockTransactionController(IStockEmpRepo serStockRepo
-            , IUserRepo userRepo, /*IGeneralTableRepo generalCodeRepo,*/
-            /*ITransTypeRepo transTypeRepo,*/ IMapper mapper)
+            , IUserRepo userRepo, IMapper mapper)
         {
             _userStockRepo = serStockRepo;
             _userRepo = userRepo;
-            //_generalCodeRepo = generalCodeRepo;
-            //_transTypeRepo = transTypeRepo;
             _mapper = mapper;
         }
 
@@ -38,38 +36,47 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             return View(usersDTO);
         }
 
-        //public async Task<IActionResult> GetStockTransForUser(int id)
-        //{
-        //    List<UserTransViewDTO> permissionsDTO = await _userTransRepo
-        //        .GetPermissionsForUserAsync(id, transType);
-        //    return Json(usersDTO);
-        //}
+        //Ajax In Index
+        public async Task<IActionResult> GetStockTransForUser(int id)
+        {
+            List<StockEmpViewDTO> stockTransDTO = await _userStockRepo
+                .GetStockTransForUserAsync(id);
+            return Json(stockTransDTO);
+        }
+
+        //Ajax In Add_StockTrans
+        public async Task<IActionResult> GetSubCodesFromAcc(string id)
+        {
+            List<AccSubCodeDTO> subAccCodesDTO = await _userStockRepo
+                .GetSubCodesFromAccAsync(id);
+            return Json(subAccCodesDTO);
+        }
 
         // Get Add
         public async Task<IActionResult> Add_StockTrans(int id)
         {
             ViewBag.userName = (await _userRepo.GetUserByIdAsync(id)).UserName;
-            StockEmpEditAddDTO stockTransDTO = await _userStockRepo.GetEmptyStockTransAsync();
+            StockEmpEditAddDTO stockTransDTO = await _userStockRepo.GetEmptyStockTransAsync(id);
             return View(stockTransDTO);
         }
 
         //// Post Add
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Add_StockTrans(CustCodeEditAddDTO customerDTO)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        CustCode customer = _mapper.Map<CustCode>(customerDTO);
-        //        customer.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
-        //        customer.Flag = 2;
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Add_StockTrans(int id, StockEmpEditAddDTO stockTransDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                StockEmp stockTrans = _mapper.Map<StockEmp>(stockTransDTO);
+                stockTrans.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
+                stockTrans.UserId = id;
 
-        //        await _customerRepo.AddAsync(customer);
-        //        await _customerRepo.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(customerDTO);
-        //}
+                await _userStockRepo.AddStockTransAsync(stockTrans);
+                await _userStockRepo.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(stockTransDTO);
+        }
 
         // Get Edit
         //public async Task<IActionResult> Edit_StockTrans(int id)

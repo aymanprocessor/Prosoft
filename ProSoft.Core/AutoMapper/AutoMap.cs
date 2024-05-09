@@ -112,15 +112,18 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<PlaceCode, PlaceCodeDTO>().ReverseMap();
             CreateMap<CustCode, CustCodeViewDTO>().ReverseMap();
             CreateMap<CustCode, CustCodeEditAddDTO>().ReverseMap();
-            CreateMap<AdjectiveCust, AdjectiveCustDTO>().ReverseMap();
+            CreateMap<StockEmp, StockEmpViewDTO>().ReverseMap();
+            CreateMap<StockEmp, StockEmpEditAddDTO>().ReverseMap();
             ////////// System ////////////////////
             CreateMap<EisPosting, EisPostingViewDTO>().ReverseMap();
             CreateMap<EisPosting, EisPostingEditAddDTO>().ReverseMap();
             ////////// Accounts ////////////////////
             CreateMap<AccMainCode, AccMainCodeDTO>().ReverseMap();
             CreateMap<AccSubCode, AccSubCodeDTO>().ReverseMap();
+            CreateMap<JournalTypeDTO, JournalType>().ReverseMap();
             ////////// Treasury ////////////////////
             CreateMap<TreasuryNameViewDTO, SafeName>().ReverseMap();
+            CreateMap<TreasuryNameEditAddDTO, SafeName>().ReverseMap();
         }
     }
 }
