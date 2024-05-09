@@ -1,8 +1,15 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ProSoft.EF.DbContext;
+using ProSoft.EF.DTOs.Accounts;
+using ProSoft.EF.DTOs.Medical.HospitalPatData;
+using ProSoft.EF.DTOs.Shared;
 using ProSoft.EF.DTOs.Treasury;
 using ProSoft.EF.IRepositories.Treasury;
+using ProSoft.EF.Models.Accounts;
+using ProSoft.EF.Models.Medical.HospitalPatData;
+using ProSoft.EF.Models.Shared;
+using ProSoft.EF.Models.Stocks;
 using ProSoft.EF.Models.Treasury;
 using System;
 using System.Collections.Generic;
@@ -22,14 +29,15 @@ namespace ProSoft.Core.Repositories.Treasury
 
         public async Task<List<TreasuryNameViewDTO>> GetAllTreasurysAsync()
         {
-            List<TreasuryNameViewDTO> treasuryNameDTOs = await _Context.SafeNames
-                .Select(obj => new TreasuryNameViewDTO()
-                {
-                    SafeCode = (int)obj.SafeCode,
-                    SafeNames = obj.SafeNames,
-                    PostAccount = (int)obj.PostAccount,
-                    Flag1 = (int)obj.Flag1,
-                }).ToListAsync();
+            List<SafeName> safeNames = await _Context.SafeNames.ToListAsync();
+            List<TreasuryNameViewDTO> treasuryNameDTOs = new();
+
+            foreach (var item in safeNames)
+            {
+               var treasuryNameDTO = _mapper.Map<TreasuryNameViewDTO>(item);
+                treasuryNameDTO.JournalName = (await _Context.JournalTypes.FirstOrDefaultAsync(obj => obj.JournalCode == int.Parse(item.JeDocTyp))).JournalName;
+                treasuryNameDTOs.Add(treasuryNameDTO);
+            }
             return treasuryNameDTOs;
         }
 
@@ -44,6 +52,37 @@ namespace ProSoft.Core.Repositories.Treasury
             else
                 newID = 1;
             return newID;
+        }
+        public async Task<TreasuryNameEditAddDTO> GetEmptyTreasuryNameAsync(int id)
+        {
+            TreasuryNameEditAddDTO treasuryNameDTO = new TreasuryNameEditAddDTO();
+            List<JournalType> journalTypes = await _Context.JournalTypes.ToListAsync();
+            treasuryNameDTO.JournalTypes = _mapper.Map<List<JournalTypeDTO>>(journalTypes);
+            return treasuryNameDTO;
+        }
+
+        public async Task AddTreasuryNameAsync(TreasuryNameEditAddDTO treasuryNameDTO)
+        {
+            SafeName safeName = _mapper.Map<SafeName>(treasuryNameDTO);
+            await _Context.AddAsync(safeName);
+            await _Context.SaveChangesAsync();
+        }
+
+        public async Task<TreasuryNameEditAddDTO> GetTreasuryNameByIdAsync(int id)
+        {
+            SafeName safeName = await _Context.SafeNames.FirstOrDefaultAsync(obj=>obj.SafeCode ==id);
+            TreasuryNameEditAddDTO treasuryNameDTO = _mapper.Map<TreasuryNameEditAddDTO>(safeName);
+            List<JournalType> journalTypes = await _Context.JournalTypes.ToListAsync();
+            treasuryNameDTO.JournalTypes = _mapper.Map<List<JournalTypeDTO>>(journalTypes);
+            return treasuryNameDTO;
+        }
+
+        public async Task EditTreasuryNameAsync(int id, TreasuryNameEditAddDTO treasuryNameDTO)
+        {
+            SafeName safeName =await _Context.SafeNames.FirstOrDefaultAsync(obj=>obj.SafeCode ==id);
+            _mapper.Map(treasuryNameDTO, safeName);
+            _Context.Update(safeName);
+            await _Context.SaveChangesAsync();
         }
     }
 }

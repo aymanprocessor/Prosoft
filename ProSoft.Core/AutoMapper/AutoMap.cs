@@ -94,7 +94,6 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<Branch, BranchDTO>().ReverseMap();
             CreateMap<Stock, StockEditAddDTO>().ReverseMap();
             CreateMap<StockViewDTO, Stock>().ReverseMap();
-            CreateMap<JournalType, JournalTypeDTO>().ReverseMap();
             CreateMap<Side, SideDTO>().ReverseMap();
             CreateMap<UnitCode, UnitCodeDTO>().ReverseMap();
             CreateMap<Sections2, SectionViewDTO>().ReverseMap();

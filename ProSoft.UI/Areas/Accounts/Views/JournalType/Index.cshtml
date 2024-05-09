@@ -1,8 +1,8 @@
-﻿@model List<TreasuryNameViewDTO>
+﻿@model List<JournalTypeDTO>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Treasury";
+    ViewData["Title"] = "Journal Type";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @inject IViewLocalizer localizer
@@ -24,9 +24,9 @@
     @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
 
     <div class="d-flex justify-content-between align-items-center mt-4 ">
-        <h1 class="header">@localizer["Treasurys"]</h1>
-        <a asp-controller="TreasuryName" asp-action="Add_TreasuryName" class="btn btn-sm btn-primary fs-6" style="width:150px">
-            @localizer["Add Treasury"]
+        <h1 class="header">@localizer["Journal Types"]</h1>
+        <a asp-controller="JournalType" asp-action="Add_JournalType" class="btn btn-sm btn-primary fs-6" style="width:150px">
+            @localizer["Add Journal"]
         </a>
     </div>
     <div class="overflow-auto" style="max-height:calc(100vh - 145px)">
@@ -37,16 +37,13 @@
                         @localizer["Code"]
                     </th>
                     <th>
-                        @localizer["Treasury Name"]
-                    </th> 
+                        @localizer["Journal Name"]
+                    </th>
                     <th>
                         @localizer["Journal Type"]
                     </th>
                     <th>
-                        @localizer["Posting To Accounts"]
-                    </th>
-                    <th>
-                        @localizer["Show"]
+                        @localizer["Serial Type"]
                     </th>
                     <th>
                         @localizer["Action"]
@@ -54,39 +51,40 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var tre in Model)
+                @foreach (var jou in Model)
                 {
                     <tr class="align-middle">
                         <td>
-                            @tre.SafeCode
+                            @jou.JournalCode
                         </td>
                         <td>
-                            @tre.SafeNames
+                            @jou.JournalName
                         </td>
                         <td>
-                            @tre.JournalName
-                        </td>
-                        <td>
-                            @if (@tre.PostAccount == 1)
-                                @localizer["Yes"]
-                            else if (@tre.PostAccount == 0)
-                                @localizer["No"]
+                            @if (jou.JournalType1 == "BNK")
+                                @localizer["Banks"]
+                            else if (@jou.JournalType1 == "SAF")
+                                @localizer["Treasury"]
+                            else if (@jou.JournalType1 == "0")
+                                @localizer["Other"]
 
                         </td>
                         <td>
-                            @if (@tre.Flag1 == 1)
-                                @localizer["Yes"]
-                            else if (@tre.Flag1 == 0)
-                                @localizer["No"]
+                            @if (jou.CounterFlag == "C")
+                                @localizer["Mechanical"]
+                            else if (jou.CounterFlag == "M")
+                                @localizer["Manual"]
+                            else if (jou.CounterFlag == "A")
+                                @localizer["Edit"]
                         </td>
                         <td width="30%" class="text-center">
-                            <a asp-controller="TreasuryName" asp-action="Edit_TreasuryName" asp-route-ID="@tre.SafeCode" class="btn btn-sm btn-success mb-1 fs-6" style="width:150px">
+                            <a asp-controller="JournalType" asp-action="Edit_JournalType" asp-route-ID="@jou.JournalCode" class="btn btn-sm btn-success mb-1 fs-6" style="width:150px">
                                 <i class="bi bi-pencil"></i> @localizer["Edit"]
                             </a>
 
-                            <form asp-action="Delete_TreasuryName" method="post" class="d-inline">
+                            <form asp-action="Delete_JournalType" method="post" class="d-inline">
                                 @Html.AntiForgeryToken()
-                                <input type="hidden" name="id" value="@tre.SafeCode" />
+                                <input type="hidden" name="id" value="@jou.JournalCode" />
                                 <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">@localizer["Delete"] </button>
                             </form>
                         </td>
@@ -96,3 +94,4 @@
         </table>
     </div>
 </div>
+

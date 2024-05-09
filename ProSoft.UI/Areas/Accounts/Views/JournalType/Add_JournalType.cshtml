@@ -1,0 +1,81 @@
+﻿@model JournalTypeDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Add Treasury";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+@inject IViewLocalizer localizer
+@* <style>
+    .image {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.5;
+        z-index: -1;
+    }
+</style> *@
+<div class="container pt-2" style="min-height:100vh;">
+    @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
+
+    <h1 class="mt-4">@localizer["Add Journal"]</h1>
+    <form method="post" asp-action="Add_JournalType" id="myForm">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly"></div>
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <label asp-for="JournalCode"></label>
+                    <input asp-for="JournalCode" class="form-control" disabled value="@ViewBag.JournalID" />
+                    <span asp-validation-for="JournalCode" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="JournalName"></label>
+                    <input asp-for="JournalName" class="form-control" />
+                    <span asp-validation-for="JournalName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <label asp-for="JournalType1"></label>
+                    <select asp-for="JournalType1" class="form-control text-center">
+                        <option value="0">@localizer["Other"]</option>
+                        <option value="BNK">@localizer["Banks"]</option>
+                        <option value="SAF">@localizer["Treasury"]</option>
+                    </select>
+                    <span asp-validation-for="JournalType1" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="CounterFlag"></label>
+                    <select asp-for="CounterFlag" class="form-control text-center" onchange="paymentMethod()">
+                        <option value="C">@localizer["Mechanical"]</option>
+                        <option value="M">@localizer["Manual"]</option>
+                        <option value="A">@localizer["Edit"]</option>
+                    </select>
+                    <span asp-validation-for="CounterFlag" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex justify-content-md-center gap-2 ">
+                <button type="submit" class="btn btn-primary" style="width:150px">
+                    @localizer["Add Journal"]
+                </button>
+                <a asp-controller="JournalType" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>

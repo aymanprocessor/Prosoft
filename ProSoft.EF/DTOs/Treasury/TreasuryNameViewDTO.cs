@@ -12,6 +12,7 @@ namespace ProSoft.EF.DTOs.Treasury
         public string? SafeNames { get; set; }
         public int? Flag1 { get; set; }
         public int? PostAccount { get; set; }
+        public string? JournalName { get; set; }
 
     }
 }

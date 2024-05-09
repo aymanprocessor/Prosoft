@@ -102,7 +102,7 @@ namespace ProSoft.EF.DbContext
         // Accounts //
         public DbSet<AccMainCode> AccMainCodes { get; set; }
         public DbSet<AccSubCode> AccSubCodes { get; set; }
-
+        public DbSet<AccSafeCash> AccSafeCashes { get; set; }
         ////////////////////
         // System //
         public DbSet<EisPosting> EisPostings { get; set; }

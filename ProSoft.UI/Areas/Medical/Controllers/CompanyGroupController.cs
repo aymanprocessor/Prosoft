@@ -28,7 +28,7 @@ namespace ProSoft.UI.Areas.Medical.Controllers
             List<CompanyGroupDTO> companyGroupsDTO = _mapper.Map<List<CompanyGroupDTO>>(companyGroups);
             return View(companyGroupsDTO);
         }
-
+        
         // Get Add
         public async Task<IActionResult> Add_CompanyGroup()
         {

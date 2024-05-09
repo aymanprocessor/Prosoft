@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ProSoft.EF.DTOs.Stocks;
+using ProSoft.EF.DTOs.Accounts;
 
 namespace ProSoft.EF.DTOs.Treasury
 {
@@ -25,5 +27,14 @@ namespace ProSoft.EF.DTOs.Treasury
         [DisplayName("Posting To Accounts")]
         [Required(ErrorMessage = "The field is required")]
         public int? PostAccount { get; set; }
+
+        [DisplayName("Journal Type")]
+        [Required(ErrorMessage = "The field is required")]
+        public string? JeDocTyp { get; set; }
+
+        //Lists
+        public List<JournalTypeDTO>? JournalTypes { get; set; }
+
+
     }
 }
