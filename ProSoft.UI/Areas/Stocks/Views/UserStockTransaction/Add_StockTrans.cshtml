@@ -28,7 +28,7 @@
         <div class="border p-3 mt-4">
 
             @* Hidden Inputs *@
-@*             <input asp-for="CustCode1" type="hidden" />
+            @*             <input asp-for="CustCode1" type="hidden" />
             <input asp-for="MainCode" type="hidden" /> *@
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -69,96 +69,91 @@
             </div>
 
             <!------------------------------------------------------------------------------->
-
-            <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
-                <div class="mb-3">
-                    <label asp-for="TaxType"></label>
-                    <div class="d-flex justify-content-center gap-4 mt-1">
-                        <label class="form-check-label">
-                            <input asp-for="TaxType" class="form-check-input radio-inline" checked type="radio" value="1">
-                            @localizer["Yes"]
-                        </label>
-                        <label class="form-check-label">
-                            <input asp-for="TaxType" class="form-check-input radio-inline" type="radio" value="0">
-                            @localizer["No"]
-                        </label>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="CustDisc4"></label>
-                    <select asp-for="CustDisc4" class="form-control text-center">
-                        <option value="">-- Choose --</option>
-                        <option value="1">القاهرة</option>
-                        <option value="2">الموسكي 1</option>
-                        <option value="3">الموسكي 2</option>
-                        <option value="4">الاسكندرية</option>
-                        <option value="5">أسيوط</option>
-                        <option value="6">عهد مندوبين</option>
-                        <option value="7">منفذ بيع</option>
-                        <option value="8">هدايا ومسحوبات</option>
-                    </select>
-                    <span asp-validation-for="CustDisc4" class="text-danger"></span>
-                </div>
+            @*             <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
+            <div class="mb-3">
+            <label asp-for="TaxType"></label>
+            <div class="d-flex justify-content-center gap-4 mt-1">
+            <label class="form-check-label">
+            <input asp-for="TaxType" class="form-check-input radio-inline" checked type="radio" value="1">
+            @localizer["Yes"]
+            </label>
+            <label class="form-check-label">
+            <input asp-for="TaxType" class="form-check-input radio-inline" type="radio" value="0">
+            @localizer["No"]
+            </label>
             </div>
-
+            </div>
+            <div class="mb-3">
+            <label asp-for="CustDisc4"></label>
+            <select asp-for="CustDisc4" class="form-control text-center">
+            <option value="">-- Choose --</option>
+            <option value="1">القاهرة</option>
+            <option value="2">الموسكي 1</option>
+            <option value="3">الموسكي 2</option>
+            <option value="4">الاسكندرية</option>
+            <option value="5">أسيوط</option>
+            <option value="6">عهد مندوبين</option>
+            <option value="7">منفذ بيع</option>
+            <option value="8">هدايا ومسحوبات</option>
+            </select>
+            <span asp-validation-for="CustDisc4" class="text-danger"></span>
+            </div>
+            </div>
+            *@
             <!------------------------------------------------------------------------------->
-
-            <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
-                <div class="mb-3">
-                    <label asp-for="CustPhone1"></label>
-                    <input asp-for="CustPhone1" class="form-control" />
-                    <span asp-validation-for="CustPhone1" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="CustPhone2"></label>
-                    <input asp-for="CustPhone2" class="form-control" />
-                    <span asp-validation-for="CustPhone2" class="text-danger"></span>
-                </div>
+            @*             <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
+            <div class="mb-3">
+            <label asp-for="CustPhone1"></label>
+            <input asp-for="CustPhone1" class="form-control" />
+            <span asp-validation-for="CustPhone1" class="text-danger"></span>
             </div>
-
+            <div class="mb-3">
+            <label asp-for="CustPhone2"></label>
+            <input asp-for="CustPhone2" class="form-control" />
+            <span asp-validation-for="CustPhone2" class="text-danger"></span>
+            </div>
+            </div>
+            *@
             <!------------------------------------------------------------------------------->
-
-            <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
-                <div class="mb-3">
-                    <label asp-for="CustFax"></label>
-                    <input asp-for="CustFax" class="form-control" />
-                    <span asp-validation-for="CustFax" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="AdjectiveCode"></label>
-                    <select asp-for="AdjectiveCode" asp-items="priceTypes" class="form-control text-center">
-                    </select>
-                    <span asp-validation-for="AdjectiveCode" class="text-danger"></span>
-                </div>
+            @*             <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
+            <div class="mb-3">
+            <label asp-for="CustFax"></label>
+            <input asp-for="CustFax" class="form-control" />
+            <span asp-validation-for="CustFax" class="text-danger"></span>
             </div>
-
+            <div class="mb-3">
+            <label asp-for="AdjectiveCode"></label>
+            <select asp-for="AdjectiveCode" asp-items="priceTypes" class="form-control text-center">
+            </select>
+            <span asp-validation-for="AdjectiveCode" class="text-danger"></span>
+            </div>
+            </div>
+            *@
             <!------------------------------------------------------------------------------->
-
-            <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
-                <div class="mb-3">
-                    <label asp-for="Email"></label>
-                    <input asp-for="Email" class="form-control" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="CatalogId"></label>
-                    <select asp-for="CatalogId" asp-items="pricesLists" class="form-control text-center">
-                        <option value="">-- Choose --</option>
-                    </select>
-                    <span asp-validation-for="CatalogId" class="text-danger"></span>
-                </div>
+            @*             <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
+            <div class="mb-3">
+            <label asp-for="Email"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-
+            <div class="mb-3">
+            <label asp-for="CatalogId"></label>
+            <select asp-for="CatalogId" asp-items="pricesLists" class="form-control text-center">
+            <option value="">-- Choose --</option>
+            </select>
+            <span asp-validation-for="CatalogId" class="text-danger"></span>
+            </div>
+            </div>
+            *@
             <!------------------------------------------------------------------------------->
-
-            <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
-                <div class="mb-3" style="width: 62%;">
-                    <label asp-for="Remarks"></label>
-                    <input asp-for="Remarks" class="form-control" />
-                    <span asp-validation-for="Remarks" class="text-danger"></span>
-                </div>
+            @*             <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
+            <div class="mb-3" style="width: 62%;">
+            <label asp-for="Remarks"></label>
+            <input asp-for="Remarks" class="form-control" />
+            <span asp-validation-for="Remarks" class="text-danger"></span>
             </div>
-
+            </div>
+            *@
             <!------------------------------------------------------------------------------->
 
             <div class="parent d-flex justify-content-md-center gap-2">

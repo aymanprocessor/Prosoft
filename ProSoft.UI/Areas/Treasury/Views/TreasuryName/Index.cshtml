@@ -1,0 +1,92 @@
+﻿@model List<TreasuryNameViewDTO>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Treasury";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@inject IViewLocalizer localizer
+@* <style>
+    .image {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.5;
+        z-index: -1;
+    }
+</style> *@
+<div class="container pt-2 " style="min-height:90vh;">
+    @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
+
+    <div class="d-flex justify-content-between align-items-center mt-4 ">
+        <h1 class="header">@localizer["Treasurys"]</h1>
+        <a asp-controller="TreasuryName" asp-action="Add_TreasuryName" class="btn btn-sm btn-primary fs-6" style="width:150px">
+            @localizer["Add Treasury"]
+        </a>
+    </div>
+    <div class="overflow-auto" style="max-height:calc(100vh - 145px)">
+        <table id="myTable" class="table table-bordered table-hover" style="width:100%">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        @localizer["Code"]
+                    </th>
+                    <th>
+                        @localizer["Treasury Name"]
+                    </th>
+                    <th>
+                        @localizer["Posting To Accounts"]
+                    </th>
+                    <th>
+                        @localizer["Show"]
+                    </th>
+                    <th>
+                        @localizer["Action"]
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var tre in Model)
+                {
+                    <tr>
+                        <td>
+                            @tre.SafeCode
+                        </td>
+                        <td>
+                            @tre.SafeNames
+                        </td>
+                        <td>
+                            @if (@tre.PostAccount == 1)
+                                @localizer["Yes"]
+                            else if (@tre.PostAccount == 2)
+                                @localizer["No"]
+
+                        </td>
+                        <td>
+                            @if (@tre.Flag1 == 1)
+                                @localizer["Yes"]
+                            else if (@tre.Flag1 == 2)
+                                @localizer["No"]
+                        </td>
+                        <td width="30%" class="text-center">
+                            <a asp-controller="TreasuryName" asp-action="Edit_TreasuryName" asp-route-ID="@tre.SafeCode" class="btn btn-sm btn-success mb-1 fs-6" style="width:150px">
+                                <i class="bi bi-pencil"></i> @localizer["Edit"]
+                            </a>
+
+                            <form asp-action="Delete_TreasuryName" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@tre.SafeCode" />
+                                <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">@localizer["Delete"] </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

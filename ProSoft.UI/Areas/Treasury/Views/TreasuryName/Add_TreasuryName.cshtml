@@ -1,0 +1,79 @@
+﻿@model TreasuryNameEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Add Treasury";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+@inject IViewLocalizer localizer
+@* <style>
+    .image {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.5;
+        z-index: -1;
+    }
+</style> *@
+<div class="container pt-2" style="min-height:100vh;">
+    @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
+
+    <h1 class="mt-4">@localizer["Add Treasury"]</h1>
+    <form method="post" asp-action="Add_TreasuryName" id="myForm">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly"></div>
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <label asp-for="SafeCode"></label>
+                    <input asp-for="SafeCode" class="form-control" disabled value="@ViewBag.SafeID" />
+                    <span asp-validation-for="SafeCode" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="SafeNames"></label>
+                    <input asp-for="SafeNames" class="form-control" />
+                    <span asp-validation-for="SafeNames" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <label asp-for="PostAccount"></label>
+                    <select asp-for="PostAccount" class="form-control text-center">
+                        <option value="1">@localizer["Yes"]</option>
+                        <option value="0">@localizer["No"]</option>
+                    </select>
+                    <span asp-validation-for="PostAccount" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="Flag1"></label>
+                    <select asp-for="Flag1" class="form-control text-center" onchange="paymentMethod()">
+                        <option value="1">@localizer["Yes"]</option>
+                        <option value="0">@localizer["No"]</option>
+                    </select>
+                    <span asp-validation-for="Flag1" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex justify-content-md-center gap-2 ">
+                <button type="submit" class="btn btn-primary" style="width:150px">
+                    @localizer["Add Treasury"]
+                </button>
+                <a asp-controller="TreasuryName" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>

@@ -17,6 +17,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ProSoft.EF.DTOs.Treasury;
+using ProSoft.EF.Models.Treasury;
 
 namespace ProSoft.Core.AutoMapper
 {
@@ -117,6 +119,8 @@ namespace ProSoft.Core.AutoMapper
             ////////// Accounts ////////////////////
             CreateMap<AccMainCode, AccMainCodeDTO>().ReverseMap();
             CreateMap<AccSubCode, AccSubCodeDTO>().ReverseMap();
+            ////////// Treasury ////////////////////
+            CreateMap<TreasuryNameViewDTO, SafeName>().ReverseMap();
         }
     }
 }

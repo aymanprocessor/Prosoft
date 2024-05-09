@@ -20,6 +20,8 @@ using ProSoft.EF.IRepositories.Shared;
 using ProSoft.Core.Repositories.Shared;
 using ProSoft.Core.Repositories.Stocks;
 using ProSoft.EF.IRepositories.Stocks;
+using ProSoft.EF.IRepositories.Treasury;
+using ProSoft.Core.Repositories.Treasury;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -86,6 +88,8 @@ builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();
 builder.Services.AddScoped<IStockEmpRepo, StockEmpRepo>();
 ///////////////// System /////////////
 builder.Services.AddScoped<IEisPostingRepo, EisPostingRepo>();
+///////////////// Treasury /////////////
+builder.Services.AddScoped<ITreasuryNameRepo, TreasuryNameRepo>();
 
 ///For Localization
 builder.Services.AddLocalization();

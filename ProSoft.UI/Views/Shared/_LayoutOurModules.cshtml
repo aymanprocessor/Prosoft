@@ -262,6 +262,61 @@
                     </li>
                     @* Stocks System *@
 
+
+                    @* Treasury System *@
+                    <li class="nav-item has-submenu">
+                        <a class="nav-link hover-link">
+                            <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Treasury System"]
+                        </a>
+
+                        <ul class="submenu collapse p-0">
+                            <li class="nav-item has-submenu">
+                                <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
+                                    <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Main data"]
+                                </a>
+                                <ul class="submenu collapse p-0 ">
+                                    <li class="nav-item has-submenu">
+                                        <a class="nav-link hover-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i> @localizer["Definitions"]
+                                        </a>
+                                        <ul class="submenu collapse p-0 ">
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Treasury" asp-controller="TreasuryName" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["Treasury Names"]
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item has-submenu">
+                                <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
+                                    <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Transactions"]
+                                </a>
+                                <ul class="submenu collapse p-0 ">
+                                    <li class="nav-item has-submenu">
+                                        <a class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Medical Records"]
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                           @*  <li class="nav-item has-submenu">
+                                <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
+                                    <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Reports"]
+                                </a>
+                                <ul class="submenu collapse p-0 ">
+                                    <li class="nav-item has-submenu">
+                                        <a class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Analysis Results"]
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li> *@
+                        </ul>
+                    </li>
+                    @* Treasury System *@
+
                     @* System Tools *@
                     @if (User.IsInRole("Admin"))
                     {

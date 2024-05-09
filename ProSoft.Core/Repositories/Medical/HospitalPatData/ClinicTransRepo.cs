@@ -164,6 +164,19 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             }
             return totalPrice;
         }
+        //get all prices of services belong to visit for patient
+        public async Task<decimal> GetAllDepositForVisit(int visitId)
+        {
+           List<Deposit> deposits = await _Context.Deposits
+                .Where(obj => obj.MasterId == visitId && obj.PostRecipt == 1).ToListAsync();
+
+            decimal totalDeposit = 0;
+            foreach (var item in deposits)
+            {
+                totalDeposit += Convert.ToDecimal(item.DpsVal ?? 0);
+            }
+            return totalDeposit;
+        }
 
         ///////////////////////////////////////////////////////////////////////////////////
 
@@ -232,11 +245,49 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
                 }
             }
             ClinicTran clinicTran = _mapper.Map<ClinicTran>(clinicTransDTO);
-            await _Context.AddAsync(clinicTran);
-            await _Context.SaveChangesAsync();
+            //await _Context.AddAsync(clinicTran);
+            //await _Context.SaveChangesAsync();
 
             //Belong to Deposit
-            //هجيب مجموع اسعار الخدمات من ال clinic trans by foreach
+            // Call GetPricesOfServices to get the total price of services
+            decimal totalPrice = await GetPricesOfServices(visitId, flag);
+
+            // Call GetAllDepositForVisit to get the total Deposit of visit
+            decimal totalDeposit = await GetAllDepositForVisit(visitId);
+
+            if (totalPrice > totalDeposit)
+            {
+                //delete service deposite 
+                Deposit depositWillDeleted = await _Context.Deposits.FirstOrDefaultAsync(obj=>obj.MasterId == visitId && obj.PostRecipt != 1);
+                if (depositWillDeleted != null)
+                {
+                    _Context.Remove(depositWillDeleted);
+                    await _Context.SaveChangesAsync();    
+                }
+
+                //add new service
+                DepositEditAddDTO depositDTO = new DepositEditAddDTO();
+                depositDTO.DpsType = 1;
+                depositDTO.DpsVal = Convert.ToDecimal(totalPrice - totalDeposit);
+                depositDTO.DpsType = 1;
+                Deposit deposit = _mapper.Map<Deposit>(depositDTO);
+                deposit.MasterId = visitId;
+                deposit.ModId = 11;
+                deposit.DpsDate = clinicTran.ExDate;
+                deposit.PatId = patAdmission.PatId;
+
+                await _Context.AddAsync(deposit);
+                await _Context.SaveChangesAsync();
+                //amanat
+                patAdmission.AmanatRetPat = 0;
+            }
+            else if (totalPrice < totalDeposit)
+            {
+                //amanat
+                patAdmission.AmanatRetPat = 0;
+                patAdmission.AmanatRetPat = Convert.ToDecimal(totalDeposit - totalPrice);
+            }
+
         }
         
         public async Task EditClinicTransAsync(int checkId, ClinicTransEditAddDTO clinicTransDTO)

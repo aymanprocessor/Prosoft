@@ -6,6 +6,7 @@ using ProSoft.EF.Models.Medical.Analysis;
 using ProSoft.EF.Models.Medical.HospitalPatData;
 using ProSoft.EF.Models.Shared;
 using ProSoft.EF.Models.Stocks;
+using ProSoft.EF.Models.Treasury;
 
 namespace ProSoft.EF.DbContext
 {
@@ -105,5 +106,10 @@ namespace ProSoft.EF.DbContext
         ////////////////////
         // System //
         public DbSet<EisPosting> EisPostings { get; set; }
+
+        ////////////////////
+        // Treasury //
+        public DbSet<SafeName> SafeNames { get; set; }
+
     }
 }
