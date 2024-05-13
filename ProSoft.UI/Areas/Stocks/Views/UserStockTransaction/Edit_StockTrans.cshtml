@@ -2,7 +2,7 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Add New Transaction";
+    ViewData["Title"] = "Edit Transaction";
     Layout = "_Layout";
 
     // Casting type to get all Permissions as a list
@@ -14,15 +14,25 @@
     // Casting type to get all MainAccCodes as a list
     SelectList mainAccCodes = new SelectList(Model.MainAccCodes, "MainCode", "MainName");
 
+    // Casting type to get all SubAccCodes_Stk as a list
+    SelectList subAccCodes_Stk = new SelectList(ViewBag.subAccCodesStk, "SubCode", "SubName");
+    
+    // Casting type to get all SubAccCodes_Acc as a list
+    SelectList subAccCodes_Acc = new SelectList(ViewBag.subAccCodesAcc, "SubCode", "SubName");
+
     // Casting type to get all JournalTypes as a list
     SelectList journalTypes = new SelectList(Model.JournalTypes, "JournalCode", "JournalName");
 }
 @inject IViewLocalizer localizer
 
 <div class="container pt-2">
-    <h1 class="mt-4">@localizer["Add New StockTransaction For User"] : @ViewBag.userName</h1>
-    <form method="post" asp-action="Add_StockTrans">
+    <h1 class="mt-4">@localizer["Edit StockTransaction"] @localizer["For User"] : @ViewBag.userName</h1>
+    <form method="post" asp-action="Edit_StockTrans">
         <div class="border p-3 mt-4">
+
+            @* Hidden Inputs *@
+            <input asp-for="BranchId" type="hidden" />
+            <input asp-for="UserId" type="hidden" />
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
@@ -47,14 +57,28 @@
             <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
                 <div class="mb-3">
                     <div class="d-flex align-items-center gap-2 mb-3">
-                        <input name="StockDef" id="StockDef" type="checkbox" class="form-check-input" onchange="changeValue(event)" />
+                        @if (Model.StockDef == 1)
+                        {
+                        <input name="StockDef" id="StockDef" type="checkbox" class="form-check-input" checked value="@Model.StockDef" onchange="changeValue(event)" />
+                        }
+                        else if (Model.StockDef == 0 || Model.StockDef == null)
+                        {
+                        <input name="StockDef" id="StockDef" type="checkbox" class="form-check-input" value="@Model.StockDef" onchange="changeValue(event)" />
+                        }
                         <label asp-for="StockDef"></label>
                     </div>
                     <span asp-validation-for="StockDef" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <div class="d-flex align-items-center gap-2 mb-3">
-                        <input name="ShowPrice" id="ShowPrice" type="checkbox" class="form-check-input" onchange="changeValue(event)" />
+                        @if (Model.ShowPrice == 1)
+                        {
+                        <input name="ShowPrice" id="ShowPrice" type="checkbox" class="form-check-input" checked value="@Model.ShowPrice" onchange="changeValue(event)" />
+                        }
+                        else if (Model.ShowPrice == 0 || Model.ShowPrice == null)
+                        {
+                        <input name="ShowPrice" id="ShowPrice" type="checkbox" class="form-check-input" value="@Model.ShowPrice" onchange="changeValue(event)" />
+                        }
                         <label asp-for="ShowPrice"></label>
                     </div>
                     <span asp-validation-for="ShowPrice" class="text-danger"></span>
@@ -73,15 +97,15 @@
                 </div>
                 <div class="mb-3">
                     <label asp-for="SubCodeStk"></label>
-                    <select asp-for="SubCodeStk" class="form-control text-center">
+                    <select asp-for="SubCodeStk" asp-items="subAccCodes_Stk" class="form-control text-center">
                         <option value="">-- Choose --</option>
                     </select>
                     <span asp-validation-for="SubCodeStk" class="text-danger"></span>
                 </div>
             </div>
-           
+
             <!------------------------------------------------------------------------------->
-            
+
             <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
                 <div class="mb-3">
                     <label asp-for="MainCodeAcc"></label>
@@ -92,7 +116,7 @@
                 </div>
                 <div class="mb-3">
                     <label asp-for="SubCodeAcc"></label>
-                    <select asp-for="SubCodeAcc" class="form-control text-center">
+                    <select asp-for="SubCodeAcc" asp-items="subAccCodes_Acc" class="form-control text-center">
                         <option value="">-- Choose --</option>
                     </select>
                     <span asp-validation-for="SubCodeAcc" class="text-danger"></span>
@@ -100,7 +124,7 @@
             </div>
 
             <!------------------------------------------------------------------------------->
-            
+
             <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
                 <div class="mb-3" style="width: 62%;">
                     <label asp-for="JornalCode"></label>
@@ -110,11 +134,11 @@
                     <span asp-validation-for="JornalCode" class="text-danger"></span>
                 </div>
             </div>
-           
+
             <!------------------------------------------------------------------------------->
 
             <div class="parent d-flex justify-content-md-center gap-2">
-                <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add"]</button>
+                <button type="submit" class="btn btn-success" style="width:150px">@localizer["Save Changes"]</button>
                 <a asp-controller="UserStockTransaction" asp-action="Index" class="btn btn-secondary" style="width:150px">
                     @localizer["Cancel"]
                 </a>
@@ -133,7 +157,7 @@
                 target.value = 0;
         }
 
-        function getSubCodes(mainId, subId){
+        function getSubCodes(mainId, subId) {
             let mainElement = document.getElementById(mainId);
             let subElement = document.getElementById(subId);
             subElement.innerHTML = `<option value="">-- Choose --</option>`;

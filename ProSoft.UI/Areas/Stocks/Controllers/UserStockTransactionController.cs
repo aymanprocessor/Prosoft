@@ -79,41 +79,37 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         }
 
         // Get Edit
-        //public async Task<IActionResult> Edit_StockTrans(int id)
-        //{
-        //    CustCodeEditAddDTO customerDTO = await _customerRepo.GetCustomerByIdAsync(id);
-        //    return View(customerDTO);
-        //}
+        public async Task<IActionResult> Edit_StockTrans(int id, int transType)
+        {
+            StockEmpEditAddDTO stockTransDTO = await _userStockRepo.GetStockTransByIdAsync(id, transType);
+            ViewBag.subAccCodesStk = await _userStockRepo.GetSubCodesFromAccAsync(stockTransDTO.MainCodeStk);
+            ViewBag.subAccCodesAcc = await _userStockRepo.GetSubCodesFromAccAsync(stockTransDTO.MainCodeAcc);
+
+            return View(stockTransDTO);
+        }
 
         // Post Edit
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit_StockTrans(int id, CustCodeEditAddDTO customerDTO)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        CustCode customer = await _customerRepo.GetByIdAsync(id);
-        //        _mapper.Map(customerDTO, customer);
-        //        customer.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
-        //        customer.Flag = 2;
-
-        //        await _customerRepo.UpdateAsync(customer);
-        //        await _customerRepo.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(customerDTO);
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit_StockTrans(int id, int transType, StockEmpEditAddDTO stockTransDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                await _userStockRepo.UpdateStockTransAsync(id, transType, stockTransDTO);
+                await _userStockRepo.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(stockTransDTO);
+        }
 
         // Delete
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Delete_StockTrans(int id)
-        //{
-        //    CustCode customer = await _customerRepo.GetByIdAsync(id);
-
-        //    await _customerRepo.DeleteAsync(customer);
-        //    await _customerRepo.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete_StockTrans(int id, int transType)
+        {
+            await _userStockRepo.DeleteStockTransAsync(id, transType);
+            await _userStockRepo.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
