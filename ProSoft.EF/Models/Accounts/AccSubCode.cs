@@ -53,4 +53,7 @@ public partial class AccSubCode
     [StringLength(20)]
     [Unicode(false)]
     public string? BrReplc { get; set; }
+
+  //  public ICollection<AccSafeCash>? AccSafeCashes { get; set; }
+
 }

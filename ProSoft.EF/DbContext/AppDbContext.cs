@@ -110,6 +110,9 @@ namespace ProSoft.EF.DbContext
         ////////////////////
         // Treasury //
         public DbSet<SafeName> SafeNames { get; set; }
+        public DbSet<GTable> gTables { get; set; }
+        public DbSet<AccGlobalDef> accGlobalDefs { get; set; }
+
 
     }
 }

@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Migrations\" />
     <Folder Include="Models\Medical\Analysis\" />
     <Folder Include="Models\Medical\HospitalPatData\" />
     <Folder Include="Models\Treasury\" />

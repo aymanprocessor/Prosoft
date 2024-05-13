@@ -36,4 +36,8 @@ public partial class JournalType
 
     [InverseProperty("JornalCodeNavigation")]
     public virtual ICollection<Stock> Stocks { get; set; } = new List<Stock>();
+
+    public ICollection<AccSafeCash>? AccSafeCashes { get; set; }
+
+
 }

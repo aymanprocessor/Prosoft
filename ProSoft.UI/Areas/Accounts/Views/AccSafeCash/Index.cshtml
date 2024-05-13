@@ -1,0 +1,92 @@
+﻿@model List<AccSafeCashViewDTO>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Account Safe";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@inject IViewLocalizer localizer
+@* <style>
+    .image {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.5;
+        z-index: -1;
+    }
+</style> *@
+<div class="container pt-2 " style="min-height:90vh;">
+    @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
+
+    <div class="d-flex justify-content-between align-items-center mt-4 ">
+        <h1 class="header">@localizer["Payment Receipts"]</h1>
+        <a asp-controller="AccSafeCash" asp-action="Add_PaymentReceipt" class="btn btn-sm btn-primary fs-6" style="width:150px">
+            @localizer["Add Receipt"]
+        </a>
+    </div>
+    <div class="overflow-auto" style="max-height:calc(100vh - 145px)">
+        <table id="myTable" class="table table-bordered table-hover" style="width:100%">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        @localizer["Receipt No"]
+                    </th> 
+                    <th>
+                        @localizer["Receipt date"]
+                    </th>
+                    <th>
+                        @localizer["Treasury Name"]
+                    </th>
+                    <th>
+                        @localizer["Depositor Name"]
+                    </th>
+                    <th>
+                        @localizer["Amount Deposited"]
+                    </th>
+                    <th>
+                        @localizer["Action"]
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var acc in Model)
+                {
+                    <tr class="align-middle">
+                        <td>
+                            @acc.DocNo
+                        </td>
+                        <td>
+                            @acc.DocDate
+                        </td>
+                        <td>
+                            @acc.SafeName
+                        </td>
+                        <td>
+                            @acc.PersonName
+                        </td>
+                        <td>
+                            @acc.ValuePay
+                        </td>
+                        <td width="30%" class="text-center">
+                            <a asp-controller="JournalType" asp-action="Edit_JournalType" asp-route-ID="@acc.SafeCashId" class="btn btn-sm btn-success mb-1 fs-6" style="width:150px">
+                                <i class="bi bi-pencil"></i> @localizer["Edit"]
+                            </a>
+
+                            <form asp-action="Delete_PaymentReceipt" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@acc.SafeCashId" />
+                                <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">@localizer["Delete"] </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

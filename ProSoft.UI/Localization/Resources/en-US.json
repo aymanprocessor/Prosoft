@@ -307,7 +307,9 @@
   "Data Editor": "Data Editor",
   "Treasury System": "Treasury System",
   "Treasury Names": "Treasury Names",
+  "Treasury Type": "Treasury Type",
   "Treasurys": "Treasurys",
+  "Treasury": "Treasury",
   "Add Treasury": "Add Treasury",
   "Edit Treasury": "Edit Treasury",
   "Treasury Name": "Treasury Name",
@@ -315,6 +317,7 @@
   "Show": "Show",
   "Accounts System": "Accounts System",
   "Journal Types": "Journal Types",
+  "Journal": "Journal",
   "Add Journal": "Add Journal",
   "Edit Journal": "Edit Journal",
   "Journal Name": "Journal Name",
@@ -324,12 +327,23 @@
   "Banks": "Banks",
   "Mechanical": "Mechanical",
   "Manual": "Manual",
-  "Treasury": "Treasury",
   "The Cash": "The Cash",
   "Payment Receipt": "Payment Receipt",
-  "Disbursement permission": "Receive Permission",
+  "Payment Receipts": "Payment Receipts",
+  "Disbursement permission": "Disbursement Permission",
   "Receive Permission": "Receive Permission",
   "Transfer Permission": "Transfer Permission",
+  "Add Receipt": "Add Receipt",
+  "Receipt No": "Receipt No",
+  "Receipt date": "Receipt date",
+  "Depositor Name": "Depositor Name",
+  "Amount Deposited": "Amount Deposited",
+  "Posting": "Posting",
+  "For Payment": "For Payment",
+  "Currency": "Currency",
+  "Posting of Invoices": "Posting of Invoices",
+  "Posting of Treasury": "Posting of Treasury",
+  "Posting of Pharmacy": "Posting of Pharmacy",
 
 
 
@@ -474,10 +488,10 @@
   "Show Trans Price": "Show Trans Price",
   "Debit Account (Main)": "Debit Account (Main)",
   "Debit Account (Sub)": "Debit Account (Sub)",
+  "Debit Account": "Debit Account",
   "Credit Account (Main)": "Credit Account (Main)",
-<<<<<<< HEAD
-  "Credit Account (Sub)": "Credit Account (Sub)"
-=======
   "Credit Account (Sub)": "Credit Account (Sub)",
->>>>>>> 9a290d6aeb3fa25da2e55fee92952c7cc6fc0d67
+  "Credit Account": "Credit Account",
+  "Edit StockTransaction": "Edit StockTransaction",
+  "Go To Medical Records": "Go To Medical Records"
 }

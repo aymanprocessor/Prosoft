@@ -1,0 +1,191 @@
+﻿@model AccSafeCashEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Add Receipt";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    SelectList journals = new SelectList(Model.journalTypes, "JournalCode", "JournalName");
+    SelectList gtables = new SelectList(Model.gTablels, "GCode", "GDesc");
+    SelectList costCenters = new SelectList(Model.costCenters, "CostCode", "CostDesc");
+    SelectList safeNames = new SelectList(Model.treasuryNames, "SafeCode", "SafeNames");
+    SelectList accGlobalDef = new SelectList(Model.accGlobalDefs, "CoCode", "CodeDesc");
+    SelectList mainAccCodes = new SelectList(Model.accMainCodes, "MainCode", "MainName");
+    // SelectList subAccCodes = new SelectList(Model.SubAccCodes, "SubCode", "SubName");
+
+}
+@inject IViewLocalizer localizer
+@* <style>
+    .image {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.5;
+        z-index: -1;
+    }
+</style> *@
+<div class="container pt-2" style="min-height:100vh;">
+    @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
+
+    <h1 class="mt-4">@localizer["Add Receipt"]</h1>
+    <form method="post" asp-action="Add_PaymentReceipt" id="myForm">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly"></div>
+            @* hidden *@
+            <input asp-for="DocNo" hidden value="@ViewBag.SerialID" />
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+               @*  <div class="mb-3">
+                    <label asp-for="SafeCashId"></label>
+                    <input asp-for="SafeCashId" class="form-control" disabled value="@ViewBag.AccSafeCashID" />
+                    <span asp-validation-for="SafeCashId" class="text-danger"></span>
+                </div> *@
+                <div class="mb-3 ">
+                    <label asp-for="DocNo"></label>
+                    <input asp-for="DocNo" class="form-control" disabled value="@ViewBag.SerialID" />
+                    <span asp-validation-for="DocNo" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="DocDate"></label>
+                    <input asp-for="DocDate" class="form-control" />
+                    <span asp-validation-for="DocDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <label asp-for="Flag"></label>
+                    <select asp-for="Flag" class="form-control text-center">
+                        <option value="1">@localizer["Posting of Invoices"]</option>
+                        <option value="2">@localizer["Posting of Treasury"]</option>
+                        <option value="3">@localizer["Posting of Pharmacy"]</option>
+                    </select>
+                    <span asp-validation-for="Flag" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="AccTransType"></label>
+                    <select asp-for="AccTransType" asp-items="journals" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="AccTransType" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="CurCode"></label>
+                    <select asp-for="CurCode" asp-items="accGlobalDef" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="CurCode" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <label asp-for="EntryType"></label>
+                    <select asp-for="EntryType" asp-items="gtables" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="EntryType" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="SafeCode"></label>
+                    <select asp-for="SafeCode" asp-items="safeNames" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="SafeCode" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="CostCenterCode"></label>
+                    <select asp-for="CostCenterCode" asp-items="costCenters" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="CostCenterCode" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <label asp-for="PersonName"></label>
+                    <input asp-for="PersonName" class="form-control" />
+                    <span asp-validation-for="PersonName" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="ValuePay"></label>
+                    <input asp-for="ValuePay" type="number" class="form-control" />
+                    <span asp-validation-for="ValuePay" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="Commentt"></label>
+                    <input asp-for="Commentt" class="form-control" />
+                    <span asp-validation-for="Commentt" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="MainCode"></label>
+                    <select asp-for="MainCode" asp-items="mainAccCodes" class="form-control text-center" onchange="getSubCodes(event)">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="MainCode" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="SubCode"></label>
+                    <select asp-for="SubCode" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="SubCode" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="AprovedFlag"></label>
+                    <select asp-for="AprovedFlag" class="form-control text-center">
+                        <option value="NO">@localizer["No"]</option>
+                        <option value="APR">@localizer["Yes"]</option>
+                    </select>
+                    <span asp-validation-for="AprovedFlag" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex justify-content-md-center gap-2 ">
+                <button type="submit" class="btn btn-primary" style="width:150px">
+                    @localizer["Add Receipt"]
+                </button>
+                <a asp-controller="AccSafeCash" asp-action="Index" asp-route-docType="SFCIN" asp-route-flagType="oneANDtwo" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    function getSubCodes(e) {
+        let mainElement = e.target;
+        let subElement = document.getElementById("SubCode");
+        subElement.innerHTML = `<option value="">-- Choose --</option>`;
+
+        $.ajax({
+            url: `/Accounts/AccSafeCash/GetSubCodesFromAcc/${mainElement.value}`,
+            success: function (result) {
+                console.log(result);
+                for (let item of result) {
+                    subElement.innerHTML +=
+                        `<option value="${item.subCode}">${item.subName}</option>`;
+                }
+            }
+        });
+    }
+</script>

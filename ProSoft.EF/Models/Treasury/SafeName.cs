@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using ProSoft.EF.Models.Accounts;
 
 namespace ProSoft.EF.Models.Treasury;
 
@@ -43,4 +44,6 @@ public partial class SafeName
 
     [Column("MODIFY_DATE", TypeName = "datetime")]
     public DateTime? ModifyDate { get; set; }
+    public ICollection<AccSafeCash>? AccSafeCashes { get; set; }
+
 }

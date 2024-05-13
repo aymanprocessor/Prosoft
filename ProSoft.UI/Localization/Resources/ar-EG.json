@@ -307,7 +307,9 @@
   "Data Editor": "معدل البيانات",
   "Treasury System": "نظام الخزينة",
   "Treasury Names": "اسماء الخزينة",
+  "Treasury Type": "نوع الخزينة",
   "Treasurys": "خزائن",
+  "Treasury": "الخزينة",
   "Add Treasury": "اضافة خزينة",
   "Edit Treasury": "تعديل خزينة",
   "Treasury Name": "اسم الخزينة",
@@ -315,6 +317,7 @@
   "Show": "اظهار",
   "Accounts System": "نظام الحسابات",
   "Journal Types": "انواع اليوميات",
+  "Journal": "اليوميات",
   "Add Journal": "اضافة يومية",
   "Edit Journal": "تعديل يومية",
   "Journal Name": "اسم اليومية",
@@ -324,12 +327,23 @@
   "Banks": "بنوك",
   "Mechanical": "آلي",
   "Manual": "يدوي",
-  "Treasury": "خزينة",
   "The Cash": "النقدية",
   "Payment Receipt": "ايصال توريد",
+  "Payment Receipts": "ايصالات توريد",
   "Disbursement permission": "إذن صرف",
   "Receive Permission": "إذن استلام",
   "Transfer Permission": "إذن تحويل",
+  "Add Receipt": "اضافة ايصال",
+  "Receipt No": "رقم الايصال",
+  "Receipt date": "تاريخ الايصال",
+  "Depositor Name": "اسم المودع",
+  "Amount Deposited": "المبلغ المودع",
+  "Posting": "مرحل",
+  "For Payment": "ذلك لسداد",
+  "Currency": "العملة",
+  "Posting of Invoices": "مرحل من خزينة",
+  "Posting of Treasury": "مرحل من الفواتير",
+  "Posting of Pharmacy": "مرحل من الصيدلية",
 
 
 
@@ -474,9 +488,7 @@
   "Debit Account": "الحساب المدين",
   "Credit Account (Main)": "الحساب الدائن (رئيسي)",
   "Credit Account (Sub)": "الحساب الدائن (فرعي)",
-<<<<<<< HEAD
-  "Credit Account": "الحساب الدائن"
-=======
   "Credit Account": "الحساب الدائن",
->>>>>>> 9a290d6aeb3fa25da2e55fee92952c7cc6fc0d67
+  "Edit StockTransaction": "تعديل حركة مخزن",
+  "Go To Medical Records": "الذهاب الي السجلات الطبية"
 }

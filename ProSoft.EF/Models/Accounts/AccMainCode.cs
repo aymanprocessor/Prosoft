@@ -57,4 +57,7 @@ public partial class AccMainCode
     [StringLength(3)]
     [Unicode(false)]
     public string? MainSubType { get; set; }
+
+   // public ICollection<AccSafeCash>? AccSafeCashes { get; set; }
+
 }

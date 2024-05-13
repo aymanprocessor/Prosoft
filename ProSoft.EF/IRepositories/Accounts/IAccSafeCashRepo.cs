@@ -1,4 +1,6 @@
-﻿using ProSoft.EF.Models.Accounts;
+﻿using ProSoft.EF.DTOs.Accounts;
+using ProSoft.EF.DTOs.Medical.HospitalPatData;
+using ProSoft.EF.Models.Accounts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +11,15 @@ namespace ProSoft.EF.IRepositories.Accounts
 {
     public interface IAccSafeCashRepo : IRepository<AccSafeCash,int>
     {
+        Task<List<AccSafeCashViewDTO>> GetAccSafeCashAsync(string docType, string flagType);
+        Task<int> GetNewIdAsync();
+        Task<int> GetNewSerialAsync();
+        Task<List<AccSubCodeDTO>> GetSubCodesFromAccAsync(string mainAccCode);
+
+        Task<AccSafeCashEditAddDTO> GetPaymentReceiptAsync();
+        Task AddPaymentReceiptAsync(AccSafeCashEditAddDTO accSafeCashDTO);
+
+
+
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProSoft.EF.DbContext;
 
@@ -11,9 +12,11 @@ using ProSoft.EF.DbContext;
 namespace ProSoft.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240513102433_Init")]
+    partial class Init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -417,16 +420,6 @@ namespace ProSoft.EF.Migrations
                         .HasColumnName("VALUE_PAY");
 
                     b.HasKey("SafeCashId");
-
-                    b.HasIndex("AccTransType");
-
-                    b.HasIndex("CostCenterCode");
-
-                    b.HasIndex("CurCode");
-
-                    b.HasIndex("EntryType");
-
-                    b.HasIndex("SafeCode");
 
                     b.ToTable("ACC_SAFE_CASH");
                 });
@@ -3718,76 +3711,6 @@ namespace ProSoft.EF.Migrations
                     b.ToTable("SUB_ITEM");
                 });
 
-            modelBuilder.Entity("ProSoft.EF.Models.Shared.AccGlobalDef", b =>
-                {
-                    b.Property<int>("CodeNo")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("CODE_NO");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CodeNo"));
-
-                    b.Property<int?>("CoCode")
-                        .HasColumnType("int")
-                        .HasColumnName("CO_CODE");
-
-                    b.Property<string>("CodeDesc")
-                        .HasMaxLength(40)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(40)")
-                        .HasColumnName("CODE_DESC");
-
-                    b.Property<string>("CodeKey")
-                        .HasMaxLength(5)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(5)")
-                        .HasColumnName("CODE_KEY");
-
-                    b.Property<decimal?>("CurRate")
-                        .HasColumnType("decimal(9, 6)")
-                        .HasColumnName("CUR_RATE");
-
-                    b.Property<string>("JournalCode")
-                        .HasMaxLength(5)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(5)")
-                        .HasColumnName("JOURNAL_CODE");
-
-                    b.Property<string>("JournalCode2")
-                        .HasMaxLength(5)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(5)")
-                        .HasColumnName("JOURNAL_CODE2");
-
-                    b.Property<string>("MainCode")
-                        .HasMaxLength(10)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(10)")
-                        .HasColumnName("MAIN_CODE");
-
-                    b.Property<string>("SubCode")
-                        .HasMaxLength(6)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(6)")
-                        .HasColumnName("SUB_CODE");
-
-                    b.Property<string>("Symbol")
-                        .HasMaxLength(10)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(10)")
-                        .HasColumnName("SYMBOL");
-
-                    b.Property<string>("TableCode")
-                        .HasMaxLength(3)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(3)")
-                        .HasColumnName("TABLE_CODE");
-
-                    b.HasKey("CodeNo");
-
-                    b.ToTable("ACC_GLOBAL_DEF");
-                });
-
             modelBuilder.Entity("ProSoft.EF.Models.Shared.Branch", b =>
                 {
                     b.Property<int>("BranchId")
@@ -3854,38 +3777,6 @@ namespace ProSoft.EF.Migrations
                     b.HasKey("PostId");
 
                     b.ToTable("EIS_POSTING");
-                });
-
-            modelBuilder.Entity("ProSoft.EF.Models.Shared.GTable", b =>
-                {
-                    b.Property<int?>("GCode")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("G_CODE");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("GCode"));
-
-                    b.Property<int?>("Flag")
-                        .HasColumnType("int")
-                        .HasColumnName("FLAG");
-
-                    b.Property<string>("GDesc")
-                        .HasMaxLength(100)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("G_DESC");
-
-                    b.Property<int?>("GType")
-                        .HasColumnType("int")
-                        .HasColumnName("G_TYPE");
-
-                    b.Property<decimal?>("GValue")
-                        .HasColumnType("decimal(11, 2)")
-                        .HasColumnName("G_VALUE");
-
-                    b.HasKey("GCode");
-
-                    b.ToTable("G_TABLE");
                 });
 
             modelBuilder.Entity("ProSoft.EF.Models.Shared.GeneralCode", b =>
@@ -4808,39 +4699,6 @@ namespace ProSoft.EF.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ProSoft.EF.Models.Accounts.AccSafeCash", b =>
-                {
-                    b.HasOne("ProSoft.EF.Models.Accounts.JournalType", "JournalType")
-                        .WithMany("AccSafeCashes")
-                        .HasForeignKey("AccTransType");
-
-                    b.HasOne("ProSoft.EF.Models.Stocks.CostCenter", "CostCenter")
-                        .WithMany("AccSafeCashes")
-                        .HasForeignKey("CostCenterCode");
-
-                    b.HasOne("ProSoft.EF.Models.Shared.AccGlobalDef", "AccGlobalDef")
-                        .WithMany("AccSafeCashes")
-                        .HasForeignKey("CurCode");
-
-                    b.HasOne("ProSoft.EF.Models.Shared.GTable", "GTable")
-                        .WithMany("AccSafeCashes")
-                        .HasForeignKey("EntryType");
-
-                    b.HasOne("ProSoft.EF.Models.Treasury.SafeName", "SafeName")
-                        .WithMany("AccSafeCashes")
-                        .HasForeignKey("SafeCode");
-
-                    b.Navigation("AccGlobalDef");
-
-                    b.Navigation("CostCenter");
-
-                    b.Navigation("GTable");
-
-                    b.Navigation("JournalType");
-
-                    b.Navigation("SafeName");
-                });
-
             modelBuilder.Entity("ProSoft.EF.Models.Medical.HospitalPatData.ClinicTran", b =>
                 {
                     b.HasOne("ProSoft.EF.Models.Medical.HospitalPatData.MainClinic", "Clinic")
@@ -5151,8 +5009,6 @@ namespace ProSoft.EF.Migrations
 
             modelBuilder.Entity("ProSoft.EF.Models.Accounts.JournalType", b =>
                 {
-                    b.Navigation("AccSafeCashes");
-
                     b.Navigation("Stocks");
                 });
 
@@ -5273,11 +5129,6 @@ namespace ProSoft.EF.Migrations
                     b.Navigation("ClinicTrans");
                 });
 
-            modelBuilder.Entity("ProSoft.EF.Models.Shared.AccGlobalDef", b =>
-                {
-                    b.Navigation("AccSafeCashes");
-                });
-
             modelBuilder.Entity("ProSoft.EF.Models.Shared.Branch", b =>
                 {
                     b.Navigation("PriceListDetails");
@@ -5289,15 +5140,8 @@ namespace ProSoft.EF.Migrations
                     b.Navigation("Stocks");
                 });
 
-            modelBuilder.Entity("ProSoft.EF.Models.Shared.GTable", b =>
-                {
-                    b.Navigation("AccSafeCashes");
-                });
-
             modelBuilder.Entity("ProSoft.EF.Models.Stocks.CostCenter", b =>
                 {
-                    b.Navigation("AccSafeCashes");
-
                     b.Navigation("ServiceClinics");
 
                     b.Navigation("SubClinics");
@@ -5313,11 +5157,6 @@ namespace ProSoft.EF.Migrations
             modelBuilder.Entity("ProSoft.EF.Models.Stocks.Stock", b =>
                 {
                     b.Navigation("SubClinics");
-                });
-
-            modelBuilder.Entity("ProSoft.EF.Models.Treasury.SafeName", b =>
-                {
-                    b.Navigation("AccSafeCashes");
                 });
 #pragma warning restore 612, 618
         }

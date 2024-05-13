@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using ProSoft.EF.Models.Accounts;
 using ProSoft.EF.Models.Medical.HospitalPatData;
 
 namespace ProSoft.EF.Models.Stocks;
@@ -39,4 +40,7 @@ public partial class CostCenter
 
     [InverseProperty("CostCodeNavigation")]
     public virtual ICollection<SubClinic> SubClinics { get; set; } = new List<SubClinic>();
+
+    public ICollection<AccSafeCash>? AccSafeCashes { get; set; }
+
 }

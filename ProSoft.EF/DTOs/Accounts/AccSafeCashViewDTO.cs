@@ -8,5 +8,17 @@ namespace ProSoft.EF.DTOs.Accounts
 {
     public class AccSafeCashViewDTO
     {
+        public int SafeCashId { get; set; }
+
+        public int? DocNo { get; set; }
+
+        public string? SafeName { get; set; }
+
+        public DateTime? DocDate { get; set; }//تاريخ الايصال
+
+        public string? PersonName { get; set; }
+
+        public decimal? ValuePay { get; set; }
+
     }
 }
