@@ -11,11 +11,13 @@ namespace ProSoft.EF.IRepositories.Stocks
 {
     public interface IStockEmpRepo
     {
+        Task<StockEmpEditAddDTO> GetStockTransByIdAsync(int userCode, int permit_uniqueType);
         Task<List<StockEmpViewDTO>> GetStockTransForUserAsync(int userCode);
         Task<StockEmpEditAddDTO> GetEmptyStockTransAsync(int userCode);
         Task<List<AccSubCodeDTO>> GetSubCodesFromAccAsync(string mainAccCode);
         Task AddStockTransAsync(StockEmp userStock);
-        Task UpdateStockTransAsync(int userCode, StockEmpEditAddDTO userStockDTO);
+        Task UpdateStockTransAsync(int userCode, int transType, StockEmpEditAddDTO userStockDTO);
+        Task DeleteStockTransAsync(int userCode, int transType);
         Task SaveChangesAsync();
     }
 }

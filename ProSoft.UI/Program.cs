@@ -94,6 +94,7 @@ builder.Services.AddScoped<IEisPostingRepo, EisPostingRepo>();
 builder.Services.AddScoped<ITreasuryNameRepo, TreasuryNameRepo>();
 ///////////////// Treasury /////////////
 builder.Services.AddScoped<IJournalTypeRepo, JournalTypeRepo>();
+builder.Services.AddScoped<IAccSafeCashRepo, AccSafeCashRepo>();
 
 ///For Localization
 builder.Services.AddLocalization();

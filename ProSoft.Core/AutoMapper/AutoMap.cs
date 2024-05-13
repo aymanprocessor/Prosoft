@@ -123,6 +123,8 @@ namespace ProSoft.Core.AutoMapper
             ////////// Treasury ////////////////////
             CreateMap<TreasuryNameViewDTO, SafeName>().ReverseMap();
             CreateMap<TreasuryNameEditAddDTO, SafeName>().ReverseMap();
+            CreateMap<AccSafeCashViewDTO, AccSafeCash>().ReverseMap();
+            CreateMap<AccSafeCashEditAddDTO, AccSafeCash>().ReverseMap();
         }
     }
 }

@@ -23,8 +23,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="DTOs\MedicalRecords\" />
+    <Folder Include="IRepositories\MedicalRecords\" />
     <Folder Include="Models\Medical\Analysis\" />
     <Folder Include="Models\Medical\HospitalPatData\" />
+    <Folder Include="Models\MedicalRecords\" />
     <Folder Include="Models\Treasury\" />
   </ItemGroup>
 
