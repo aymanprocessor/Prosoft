@@ -12,8 +12,8 @@ using ProSoft.EF.DbContext;
 namespace ProSoft.EF.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240513102859_relation")]
-    partial class relation
+    [Migration("20240514090824_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

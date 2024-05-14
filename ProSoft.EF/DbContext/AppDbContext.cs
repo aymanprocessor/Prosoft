@@ -4,6 +4,7 @@ using ProSoft.EF.Models;
 using ProSoft.EF.Models.Accounts;
 using ProSoft.EF.Models.Medical.Analysis;
 using ProSoft.EF.Models.Medical.HospitalPatData;
+using ProSoft.EF.Models.MedicalRecords;
 using ProSoft.EF.Models.Shared;
 using ProSoft.EF.Models.Stocks;
 using ProSoft.EF.Models.Treasury;
@@ -76,6 +77,20 @@ namespace ProSoft.EF.DbContext
         public DbSet<PriceList> PriceLists { get; set; }
 
         public DbSet<PriceListDetail> PriceListDetails { get; set; }
+
+        ////////////////////
+        // Medical Records //
+        public DbSet<CoronaryAngiographyReport> CoronaryAngiographyReports { get; set; }
+        public DbSet<DailyFollowUpCcuChant> DailyFollowUpCcuChants { get; set; }
+        //public DbSet<DischargeSummery> DischargeSummerys { get; set; }
+        //public DbSet<EcgAndEcho> EcgAndEchos { get; set; }
+        //public DbSet<Echo> Echos { get; set; }
+        //public DbSet<HistoryExamination> HistoryExaminations { get; set; }
+        //public DbSet<LabReport> LabReports { get; set; }
+        //public DbSet<MedicationAtCcu> MedicationAtCcus { get; set; }
+        //public DbSet<PastHistory> PastHistorys { get; set; }
+        //public DbSet<PciReport> PciReports { get; set; }
+
 
         ////////////////////
         // Stocks //

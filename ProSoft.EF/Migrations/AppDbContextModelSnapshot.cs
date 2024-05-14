@@ -220,21 +220,12 @@ namespace ProSoft.EF.Migrations
 
             modelBuilder.Entity("ProSoft.EF.Models.Accounts.AccSafeCash", b =>
                 {
-<<<<<<< HEAD
                     b.Property<int>("SafeCashId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("SAFE_CASH_ID");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SafeCashId"));
-=======
-                    b.Property<int>("CoCode")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("CO_CODE");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CoCode"));
->>>>>>> eb9bb8ceb0d0599b5fd033fdca799d70968028c1
 
                     b.Property<string>("AccName")
                         .HasMaxLength(150)
@@ -246,15 +237,8 @@ namespace ProSoft.EF.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("ACC_TRANS_NO");
 
-<<<<<<< HEAD
                     b.Property<int?>("AccTransType")
                         .HasColumnType("int")
-=======
-                    b.Property<string>("AccTransType")
-                        .HasMaxLength(5)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(5)")
->>>>>>> eb9bb8ceb0d0599b5fd033fdca799d70968028c1
                         .HasColumnName("ACC_TRANS_TYPE");
 
                     b.Property<string>("AprovedFlag")
@@ -273,43 +257,26 @@ namespace ProSoft.EF.Migrations
                         .HasColumnType("int")
                         .HasColumnName("BRANCH_ID");
 
-<<<<<<< HEAD
                     b.Property<int?>("CoCode")
                         .HasColumnType("int")
                         .HasColumnName("CO_CODE");
 
-=======
->>>>>>> eb9bb8ceb0d0599b5fd033fdca799d70968028c1
                     b.Property<string>("Commentt")
                         .HasMaxLength(200)
                         .IsUnicode(false)
                         .HasColumnType("varchar(200)")
                         .HasColumnName("COMMENTT");
 
-<<<<<<< HEAD
                     b.Property<int?>("CostCenterCode")
                         .HasColumnType("int")
-=======
-                    b.Property<string>("CostCenterCode")
-                        .HasMaxLength(6)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(6)")
->>>>>>> eb9bb8ceb0d0599b5fd033fdca799d70968028c1
                         .HasColumnName("COST_CENTER_CODE");
 
                     b.Property<int?>("CshOrdNum")
                         .HasColumnType("int")
                         .HasColumnName("CSH_ORD_NUM");
 
-<<<<<<< HEAD
                     b.Property<int?>("CurCode")
                         .HasColumnType("int")
-=======
-                    b.Property<string>("CurCode")
-                        .HasMaxLength(5)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(5)")
->>>>>>> eb9bb8ceb0d0599b5fd033fdca799d70968028c1
                         .HasColumnName("CUR_CODE");
 
                     b.Property<int?>("CurSer")
@@ -449,7 +416,6 @@ namespace ProSoft.EF.Migrations
                         .HasColumnType("decimal(12, 3)")
                         .HasColumnName("VALUE_PAY");
 
-<<<<<<< HEAD
                     b.HasKey("SafeCashId");
 
                     b.HasIndex("AccTransType");
@@ -461,9 +427,6 @@ namespace ProSoft.EF.Migrations
                     b.HasIndex("EntryType");
 
                     b.HasIndex("SafeCode");
-=======
-                    b.HasKey("CoCode");
->>>>>>> eb9bb8ceb0d0599b5fd033fdca799d70968028c1
 
                     b.ToTable("ACC_SAFE_CASH");
                 });
@@ -3755,7 +3718,288 @@ namespace ProSoft.EF.Migrations
                     b.ToTable("SUB_ITEM");
                 });
 
-<<<<<<< HEAD
+            modelBuilder.Entity("ProSoft.EF.Models.MedicalRecords.CoronaryAngiographyReport", b =>
+                {
+                    b.Property<int>("SerialHistory")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("SERIAL_HISTORY");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SerialHistory"));
+
+                    b.Property<string>("Access")
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("ACCESS_");
+
+                    b.Property<string>("AmountOfContrastMl")
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("AMOUNT_OF_CONTRAST_ML");
+
+                    b.Property<string>("CatheterForLeftCoronary")
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("CATHETER_FOR_LEFT_CORONARY");
+
+                    b.Property<string>("CatheterForRca")
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("CATHETER_FOR_RCA");
+
+                    b.Property<double?>("CinDiagnostic")
+                        .HasColumnType("float")
+                        .HasColumnName("CIN_DIAGNOSTIC");
+
+                    b.Property<string>("Diagnosis")
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("DIAGNOSIS");
+
+                    b.Property<DateTime?>("EntryDate")
+                        .HasColumnType("datetime")
+                        .HasColumnName("ENTRY_DATE");
+
+                    b.Property<string>("FirstOperator")
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("FIRST_OPERATOR");
+
+                    b.Property<double?>("HematomaD")
+                        .HasColumnType("float")
+                        .HasColumnName("HEMATOMA_D");
+
+                    b.Property<string>("Lad")
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("LAD");
+
+                    b.Property<string>("Lcx")
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("LCX");
+
+                    b.Property<string>("LeftAnteriorDescending")
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("LEFT_ANTERIOR_DESCENDING");
+
+                    b.Property<string>("LeftCircumflex")
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("LEFT_CIRCUMFLEX");
+
+                    b.Property<string>("LeftMain")
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("LEFT_MAIN");
+
+                    b.Property<string>("LeftMainCoronary")
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("LEFT_MAIN_CORONARY");
+
+                    b.Property<string>("OtherVessels")
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("OTHER_VESSELS");
+
+                    b.Property<int?>("PatId")
+                        .HasColumnType("int")
+                        .HasColumnName("PAT_ID");
+
+                    b.Property<string>("PatSsn")
+                        .HasMaxLength(14)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(14)")
+                        .HasColumnName("PAT_SSN");
+
+                    b.Property<double?>("PreoprativeAssessment")
+                        .HasColumnType("float")
+                        .HasColumnName("PREOPRATIVE_ASSESSMENT");
+
+                    b.Property<double?>("PreoprativeAssessment1")
+                        .HasColumnType("float")
+                        .HasColumnName("PREOPRATIVE_ASSESSMENT_");
+
+                    b.Property<string>("Rca")
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("RCA");
+
+                    b.Property<string>("Recomendation")
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("RECOMENDATION");
+
+                    b.Property<string>("RightCoronaryArtery")
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("RIGHT_CORONARY_ARTERY");
+
+                    b.Property<string>("SecondOperator")
+                        .HasMaxLength(20)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("SECOND_OPERATOR");
+
+                    b.Property<decimal?>("Serial")
+                        .HasColumnType("numeric(8, 0)")
+                        .HasColumnName("SERIAL");
+
+                    b.HasKey("SerialHistory");
+
+                    b.HasIndex("PatId");
+
+                    b.ToTable("CORONARY_ANGIOGRAPHY_REPORT");
+                });
+
+            modelBuilder.Entity("ProSoft.EF.Models.MedicalRecords.DailyFollowUpCcuChant", b =>
+                {
+                    b.Property<int>("SerialHistory")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("SERIAL_HISTORY");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SerialHistory"));
+
+                    b.Property<string>("Blpr")
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("BLPR");
+
+                    b.Property<string>("ChestCondition")
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("CHEST_CONDITION");
+
+                    b.Property<string>("Cnp")
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("CNP");
+
+                    b.Property<string>("ConsciousLevel")
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("CONSCIOUS_LEVEL");
+
+                    b.Property<string>("ConsultantVisitRecommendati")
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("CONSULTANT_VISIT_RECOMMENDATI");
+
+                    b.Property<string>("CurrentCO")
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("CURRENT_C_O");
+
+                    b.Property<string>("Ecg")
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("ECG");
+
+                    b.Property<DateTime?>("EntryDate")
+                        .HasColumnType("datetime")
+                        .HasColumnName("ENTRY_DATE");
+
+                    b.Property<string>("Infusions")
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("INFUSIONS");
+
+                    b.Property<string>("InsulinGiven")
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("INSULIN_GIVEN");
+
+                    b.Property<string>("InvestigasionsOrderd")
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("INVESTIGASIONS_ORDERD");
+
+                    b.Property<string>("LowerLimbEdema")
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("LOWER_LIMB_EDEMA");
+
+                    b.Property<string>("O2Sat")
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("O2_SAT");
+
+                    b.Property<int?>("PatId")
+                        .HasColumnType("int")
+                        .HasColumnName("PAT_ID");
+
+                    b.Property<string>("PatSsn")
+                        .HasMaxLength(14)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(14)")
+                        .HasColumnName("PAT_SSN");
+
+                    b.Property<string>("Rbs")
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("RBS");
+
+                    b.Property<decimal?>("Serial")
+                        .HasColumnType("numeric(8, 0)")
+                        .HasColumnName("SERIAL");
+
+                    b.Property<string>("Temp")
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("TEMP");
+
+                    b.Property<string>("UnineOutPut")
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("UNINE_OUT_PUT");
+
+                    b.Property<string>("UpdatesInMedication")
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("UPDATES_IN_MEDICATION");
+
+                    b.HasKey("SerialHistory");
+
+                    b.HasIndex("PatId");
+
+                    b.ToTable("DAILY_FOLLOW_UP_CCU_CHANT");
+                });
+
             modelBuilder.Entity("ProSoft.EF.Models.Shared.AccGlobalDef", b =>
                 {
                     b.Property<int>("CodeNo")
@@ -3826,8 +4070,6 @@ namespace ProSoft.EF.Migrations
                     b.ToTable("ACC_GLOBAL_DEF");
                 });
 
-=======
->>>>>>> eb9bb8ceb0d0599b5fd033fdca799d70968028c1
             modelBuilder.Entity("ProSoft.EF.Models.Shared.Branch", b =>
                 {
                     b.Property<int>("BranchId")
@@ -3896,7 +4138,6 @@ namespace ProSoft.EF.Migrations
                     b.ToTable("EIS_POSTING");
                 });
 
-<<<<<<< HEAD
             modelBuilder.Entity("ProSoft.EF.Models.Shared.GTable", b =>
                 {
                     b.Property<int?>("GCode")
@@ -3929,8 +4170,6 @@ namespace ProSoft.EF.Migrations
                     b.ToTable("G_TABLE");
                 });
 
-=======
->>>>>>> eb9bb8ceb0d0599b5fd033fdca799d70968028c1
             modelBuilder.Entity("ProSoft.EF.Models.Shared.GeneralCode", b =>
                 {
                     b.Property<int>("GId")
@@ -4851,7 +5090,6 @@ namespace ProSoft.EF.Migrations
                         .IsRequired();
                 });
 
-<<<<<<< HEAD
             modelBuilder.Entity("ProSoft.EF.Models.Accounts.AccSafeCash", b =>
                 {
                     b.HasOne("ProSoft.EF.Models.Accounts.JournalType", "JournalType")
@@ -4885,8 +5123,6 @@ namespace ProSoft.EF.Migrations
                     b.Navigation("SafeName");
                 });
 
-=======
->>>>>>> eb9bb8ceb0d0599b5fd033fdca799d70968028c1
             modelBuilder.Entity("ProSoft.EF.Models.Medical.HospitalPatData.ClinicTran", b =>
                 {
                     b.HasOne("ProSoft.EF.Models.Medical.HospitalPatData.MainClinic", "Clinic")
@@ -5165,6 +5401,24 @@ namespace ProSoft.EF.Migrations
                     b.Navigation("Main");
                 });
 
+            modelBuilder.Entity("ProSoft.EF.Models.MedicalRecords.CoronaryAngiographyReport", b =>
+                {
+                    b.HasOne("ProSoft.EF.Models.Medical.HospitalPatData.Pat", "Pat")
+                        .WithMany("CoronaryAngiographyReports")
+                        .HasForeignKey("PatId");
+
+                    b.Navigation("Pat");
+                });
+
+            modelBuilder.Entity("ProSoft.EF.Models.MedicalRecords.DailyFollowUpCcuChant", b =>
+                {
+                    b.HasOne("ProSoft.EF.Models.Medical.HospitalPatData.Pat", "Pat")
+                        .WithMany("DailyFollowUpCcuChants")
+                        .HasForeignKey("PatId");
+
+                    b.Navigation("Pat");
+                });
+
             modelBuilder.Entity("ProSoft.EF.Models.Shared.Sections2", b =>
                 {
                     b.HasOne("ProSoft.EF.Models.Shared.Branch", "Branch")
@@ -5197,11 +5451,8 @@ namespace ProSoft.EF.Migrations
 
             modelBuilder.Entity("ProSoft.EF.Models.Accounts.JournalType", b =>
                 {
-<<<<<<< HEAD
                     b.Navigation("AccSafeCashes");
 
-=======
->>>>>>> eb9bb8ceb0d0599b5fd033fdca799d70968028c1
                     b.Navigation("Stocks");
                 });
 
@@ -5270,6 +5521,10 @@ namespace ProSoft.EF.Migrations
 
             modelBuilder.Entity("ProSoft.EF.Models.Medical.HospitalPatData.Pat", b =>
                 {
+                    b.Navigation("CoronaryAngiographyReports");
+
+                    b.Navigation("DailyFollowUpCcuChants");
+
                     b.Navigation("PatAdmissions");
                 });
 
@@ -5322,14 +5577,11 @@ namespace ProSoft.EF.Migrations
                     b.Navigation("ClinicTrans");
                 });
 
-<<<<<<< HEAD
             modelBuilder.Entity("ProSoft.EF.Models.Shared.AccGlobalDef", b =>
                 {
                     b.Navigation("AccSafeCashes");
                 });
 
-=======
->>>>>>> eb9bb8ceb0d0599b5fd033fdca799d70968028c1
             modelBuilder.Entity("ProSoft.EF.Models.Shared.Branch", b =>
                 {
                     b.Navigation("PriceListDetails");
@@ -5341,7 +5593,6 @@ namespace ProSoft.EF.Migrations
                     b.Navigation("Stocks");
                 });
 
-<<<<<<< HEAD
             modelBuilder.Entity("ProSoft.EF.Models.Shared.GTable", b =>
                 {
                     b.Navigation("AccSafeCashes");
@@ -5351,10 +5602,6 @@ namespace ProSoft.EF.Migrations
                 {
                     b.Navigation("AccSafeCashes");
 
-=======
-            modelBuilder.Entity("ProSoft.EF.Models.Stocks.CostCenter", b =>
-                {
->>>>>>> eb9bb8ceb0d0599b5fd033fdca799d70968028c1
                     b.Navigation("ServiceClinics");
 
                     b.Navigation("SubClinics");
@@ -5371,14 +5618,11 @@ namespace ProSoft.EF.Migrations
                 {
                     b.Navigation("SubClinics");
                 });
-<<<<<<< HEAD
 
             modelBuilder.Entity("ProSoft.EF.Models.Treasury.SafeName", b =>
                 {
                     b.Navigation("AccSafeCashes");
                 });
-=======
->>>>>>> eb9bb8ceb0d0599b5fd033fdca799d70968028c1
 #pragma warning restore 612, 618
         }
     }

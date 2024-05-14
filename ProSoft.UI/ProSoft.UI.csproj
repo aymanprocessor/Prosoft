@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Shared\Shared\**" />
+    <Content Remove="Areas\Shared\Shared\**" />
+    <EmbeddedResource Remove="Areas\Shared\Shared\**" />
+    <None Remove="Areas\Shared\Shared\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.4" />
@@ -20,10 +27,6 @@
   <ItemGroup>
     <ProjectReference Include="..\ProSoft.Core\ProSoft.Core.csproj" />
     <ProjectReference Include="..\ProSoft.EF\ProSoft.EF.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\Shared\Shared\" />
   </ItemGroup>
 
 </Project>
