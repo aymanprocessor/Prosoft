@@ -1,0 +1,122 @@
+﻿@model List<PatViewDTO>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Patients";
+    Layout = "_Layout";
+}
+@inject IViewLocalizer localizer
+
+<div class="text-center">
+    <h1 class="mt-2">@localizer["Go To Medical Records"]</h1>
+</div>
+
+<div class="container pt-2">
+
+    <div class="d-flex align-items-md-center flex-column flex-md-row justify-content-between mb-2 gap-2">
+        <div>
+            <h4 class="ms-2 my-1">@localizer["Search for patient.."]</h4>
+        </div>
+        <div class="w-50 ">
+            <input type="text" class="form-control" id="searchInput" placeholder="@localizer["Search by ID, Name, or Mobile..."]">
+        </div>
+        <div>
+@*             <a asp-controller="AnalysisTransaction" asp-action="Add_Patient" class="btn btn-sm btn-primary fs-6" style="width:150px">
+                Add New Patient
+            </a> *@
+
+        </div>
+    </div>
+    <div class="border border-success p-0 mb-2 border-opacity-75 overflow-auto" style="height: 70vh;">
+        <table id="myTable" class="table table-bordered table-hover" style="width:100%">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        @localizer["Patient ID"]
+                    </th>
+                    <th>
+                        @localizer["Patient Name"]
+                    </th>
+                    <th>
+                        @localizer["Patient Mobile"]
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var pat in Model)
+                {
+                    <tr style="cursor:pointer;">
+                        <td>
+                            @pat.PatId
+                        </td>
+                        <td class="item-name">
+                            @pat.PatName
+                        </td>
+                        <td>
+                            @pat.PatMobile
+                        </td>
+                        <td class="text-center">
+                            <a onclick="setToStorage(event, @pat.PatId)" class="btn btn-sm btn-success" style="width:150px">
+                                @localizer["GO TO RECORD"]
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts{
+    @* search *@
+    <script>
+        document.getElementById('searchInput').addEventListener('input', function () {
+            filterTable();
+        });
+
+        function filterTable() {
+            var input = document.getElementById('searchInput');
+            var filter = input.value.toUpperCase();
+            var table = document.getElementById('myTable');
+            var rows = table.getElementsByTagName('tr');
+
+            for (var i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
+                var cells = rows[i].getElementsByTagName('td');
+                var found = false;
+
+                for (var j = 0; j < cells.length; j++) {
+                    var cell = cells[j];
+                    if (cell) {
+                        var textValue = cell.textContent || cell.innerText;
+                        if (textValue.toUpperCase().indexOf(filter) > -1) {
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (found) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        }
+
+        @* LocalStorage *@
+        function setToStorage(e, patID) {
+            console.log(e.target)
+
+            // window.location.href = "/Medical/PatRecord/CoronaryAngiographyReport/3"
+            window.location.href = `/MedicalRecords/PatRecord/Index/${patID}`;
+
+            $.ajax({
+                url: `/Medical/PatRecord/GetPatient/${patID}`,
+                success: function (result) {
+                    console.log(result)
+                    localStorage.setItem("Current-Patient", JSON.stringify(result))
+                }
+            });
+        }
+    </script>
+}

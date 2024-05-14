@@ -170,3 +170,31 @@ html {
     background-color: #cdcdcd;
 }
 /* For clicking on table row */
+
+/* For styling Medical Records */
+#mySidebar-patRecord {
+    width: 250px;
+    overflow: auto;
+}
+
+#mySidebar-patRecord ul {
+    font-size: 1rem;
+}
+
+#mySidebar-patRecord ul li:hover {
+    background-color: #656565 !important;
+}
+
+@media (max-width: 767px) {
+    #mySidebar-patRecord {
+        position: absolute;
+        z-index: 2;
+        transform: translateX(-100%);
+        transition: .3s;
+    }
+
+    #mySidebar-patRecord:dir(RTL) {
+        transform: translateX(100%);
+    }
+}
+    /* For styling Medical Records */

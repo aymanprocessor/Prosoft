@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using ProSoft.EF.Models.MedicalRecords;
 
 namespace ProSoft.EF.Models.Medical.HospitalPatData;
 
@@ -161,5 +162,9 @@ public partial class Pat
     public string? PatSector { get; set; }
 
     [InverseProperty("Pat")]
-    public virtual ICollection<PatAdmission> PatAdmissions { get; set; } = new List<PatAdmission>();
+    public ICollection<PatAdmission> PatAdmissions { get; set; } = new List<PatAdmission>();
+
+    // Medical Records
+    public ICollection<CoronaryAngiographyReport>? CoronaryAngiographyReports {  get; set; }
+    public ICollection<DailyFollowUpCcuChant>? DailyFollowUpCcuChants {  get; set; }
 }

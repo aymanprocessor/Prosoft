@@ -12,13 +12,11 @@ using System.Threading.Tasks;
 
 namespace ProSoft.Core.Repositories.Medical.HospitalPatData
 {
-    public class PatientRepo : IPatientRepo
+    public class PatientRepo : Repository<Pat, int>, IPatientRepo
     {
-        private readonly AppDbContext _Context;
         private readonly IMapper _mapper;
-        public PatientRepo(AppDbContext Context, IMapper mapper)
+        public PatientRepo(AppDbContext Context, IMapper mapper): base(Context)
         {
-            _Context = Context;
             _mapper = mapper;
         }
 
