@@ -73,9 +73,9 @@
                             @acc.ValuePay
                         </td>
                         <td width="30%" class="text-center">
-                            <a asp-controller="JournalType" asp-action="Edit_JournalType" asp-route-ID="@acc.SafeCashId" class="btn btn-sm btn-success mb-1 fs-6" style="width:150px">
+                          <a asp-controller="AccSafeCash" asp-action="Edit_PaymentReceipt" asp-route-ID="@acc.SafeCashId" class="btn btn-sm btn-success mb-1 fs-6" style="width:150px">
                                 <i class="bi bi-pencil"></i> @localizer["Edit"]
-                            </a>
+                          </a>
 
                             <form asp-action="Delete_PaymentReceipt" method="post" class="d-inline">
                                 @Html.AntiForgeryToken()

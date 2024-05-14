@@ -22,8 +22,4 @@
     <ProjectReference Include="..\ProSoft.EF\ProSoft.EF.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\Shared\Shared\" />
-  </ItemGroup>
-
 </Project>

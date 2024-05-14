@@ -16,10 +16,9 @@ namespace ProSoft.EF.IRepositories.Accounts
         Task<int> GetNewSerialAsync();
         Task<List<AccSubCodeDTO>> GetSubCodesFromAccAsync(string mainAccCode);
 
-        Task<AccSafeCashEditAddDTO> GetPaymentReceiptAsync();
+        Task<AccSafeCashEditAddDTO> GetEmptyPaymentReceiptAsync();
         Task AddPaymentReceiptAsync(AccSafeCashEditAddDTO accSafeCashDTO);
-
-
-
+        Task<AccSafeCashEditAddDTO> GetPaymentReceiptByIdAsync(int id);
+        Task EditPaymentReceiptAsync(int id, AccSafeCashEditAddDTO accSafeCashDTO);
     }
 }

@@ -40,11 +40,11 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
         {
             ViewBag.AccSafeCashID = await _accSafeCashRepo.GetNewIdAsync();
             ViewBag.SerialID = await _accSafeCashRepo.GetNewIdAsync();
-            AccSafeCashEditAddDTO accSafeCashDTO = await _accSafeCashRepo.GetPaymentReceiptAsync();
+            AccSafeCashEditAddDTO accSafeCashDTO = await _accSafeCashRepo.GetEmptyPaymentReceiptAsync();
 
             return View(accSafeCashDTO);
         }
-        //Get Post
+        //Post add
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add_PaymentReceipt(AccSafeCashEditAddDTO accSafeCashDTO)
@@ -58,27 +58,28 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             }
             return View();
         }
+
         //Get Edit
-        //public async Task<IActionResult> Edit_Deposit(int id)
-        //{
-        //    DepositEditAddDTO depositDTO = await _depositRepo.GetDepositByIdAsync(id);
-        //    return View(depositDTO);
-        //}
+        public async Task<IActionResult> Edit_PaymentReceipt(int id)
+        {
+            AccSafeCashEditAddDTO accSafeCashDTO = await _accSafeCashRepo.GetPaymentReceiptByIdAsync(id);
+            return View(accSafeCashDTO);
+        }
 
         ////Post Edit
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit_Deposit(int id, DepositEditAddDTO depositDTO)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        depositDTO.UserModify = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit_PaymentReceipt(int id, AccSafeCashEditAddDTO accSafeCashDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                accSafeCashDTO.FYear = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "F_Year").Value);
 
-        //        await _depositRepo.EditDepositAsync(id, depositDTO);
-        //        return RedirectToAction("Index", "DepositVisit", new { id = depositDTO.MasterId });
-        //    }
-        //    return View(depositDTO);
-        //}
+                await _accSafeCashRepo.EditPaymentReceiptAsync(id, accSafeCashDTO);
+                return RedirectToAction("Index", "AccSafeCash", new { docType = "SFCIN", flagType = "oneANDtwo" });
+            }
+            return View(accSafeCashDTO);
+        }
 
         // Delete
         [HttpPost]

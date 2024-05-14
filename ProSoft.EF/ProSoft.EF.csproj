@@ -23,15 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
-<<<<<<< HEAD
-    <Folder Include="Migrations\" />
-=======
-    <Folder Include="DTOs\MedicalRecords\" />
-    <Folder Include="IRepositories\MedicalRecords\" />
->>>>>>> eb9bb8ceb0d0599b5fd033fdca799d70968028c1
     <Folder Include="Models\Medical\Analysis\" />
     <Folder Include="Models\Medical\HospitalPatData\" />
-    <Folder Include="Models\MedicalRecords\" />
     <Folder Include="Models\Treasury\" />
   </ItemGroup>
 

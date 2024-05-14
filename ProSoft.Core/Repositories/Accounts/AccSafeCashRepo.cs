@@ -98,7 +98,7 @@ namespace ProSoft.Core.Repositories.Accounts
             return subAccCodesDTO;
         }
 
-        public async Task<AccSafeCashEditAddDTO> GetPaymentReceiptAsync()
+        public async Task<AccSafeCashEditAddDTO> GetEmptyPaymentReceiptAsync()
         {
             AccSafeCashEditAddDTO accSafeCashDTO = new AccSafeCashEditAddDTO();
            
@@ -130,6 +130,43 @@ namespace ProSoft.Core.Repositories.Accounts
             accSafeCash.EntryDate = DateTime.Now;
 
             await _Context.AddAsync(accSafeCash);
+            await _Context.SaveChangesAsync();
+        }
+
+        public async Task<AccSafeCashEditAddDTO> GetPaymentReceiptByIdAsync(int id)
+        {
+            AccSafeCash accSafeCash = await _Context.AccSafeCashes.FirstOrDefaultAsync(obj => obj.SafeCashId == id);
+
+            AccSafeCashEditAddDTO accSafeCashDTO = _mapper.Map<AccSafeCashEditAddDTO>(accSafeCash);
+
+            List<JournalType> journalTypes = await _Context.JournalTypes.ToListAsync();
+            List<GTable> gTables = await _Context.gTables.Where(obj => obj.Flag == 30).ToListAsync();
+            List<CostCenter> costCenters = await _Context.CostCenters.ToListAsync();
+            List<SafeName> safeNames = await _Context.SafeNames.ToListAsync();
+            List<AccGlobalDef> accGlobalDefs = await _Context.accGlobalDefs.ToListAsync();
+            List<AccMainCode> accMainCodes = await _Context.AccMainCodes.ToListAsync();
+            List<AccSubCode> accSubCodes = await _Context.AccSubCodes.Where(obj=>obj.MainCode== accSafeCash.MainCode).ToListAsync();
+
+            accSafeCashDTO.journalTypes = _mapper.Map<List<JournalTypeDTO>>(journalTypes);
+            accSafeCashDTO.gTablels = _mapper.Map<List<GTablelDTO>>(gTables);
+            accSafeCashDTO.costCenters = _mapper.Map<List<CostCenterViewDTO>>(costCenters);
+            accSafeCashDTO.treasuryNames = _mapper.Map<List<TreasuryNameViewDTO>>(safeNames);
+            accSafeCashDTO.accGlobalDefs = _mapper.Map<List<AccGlobalDefDTO>>(accGlobalDefs);
+            accSafeCashDTO.accMainCodes = _mapper.Map<List<AccMainCodeDTO>>(accMainCodes);
+            accSafeCashDTO.accSubCodes = _mapper.Map<List<AccSubCodeDTO>>(accSubCodes);
+
+            return accSafeCashDTO;
+        }
+
+        public async Task EditPaymentReceiptAsync(int id, AccSafeCashEditAddDTO accSafeCashDTO)
+        {
+            AccSafeCash accSafeCash = await _Context.AccSafeCashes.FirstOrDefaultAsync(obj=>obj.SafeCashId ==id);
+            _mapper.Map(accSafeCashDTO, accSafeCash);
+            accSafeCash.DocType = "SFCIN";
+            accSafeCash.MCodeDtl = 31;
+            accSafeCash.SerId = 1;
+            accSafeCash.EntryDate = DateTime.Now;
+            _Context.Update(accSafeCash);
             await _Context.SaveChangesAsync();
         }
     }
