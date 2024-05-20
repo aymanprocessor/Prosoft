@@ -90,6 +90,7 @@ builder.Services.AddScoped<ITransTypeRepo, TransTypeRepo>();
 builder.Services.AddScoped<ISupplierRepo, SupplierRepo>();
 builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();
 builder.Services.AddScoped<IStockEmpRepo, StockEmpRepo>();
+builder.Services.AddScoped<ITransMasterRepo, TransMasterRepo>();
 ///////////////// System /////////////
 builder.Services.AddScoped<IEisPostingRepo, EisPostingRepo>();
 ///////////////// Treasury /////////////
@@ -97,6 +98,8 @@ builder.Services.AddScoped<ITreasuryNameRepo, TreasuryNameRepo>();
 ///////////////// Treasury /////////////
 builder.Services.AddScoped<IJournalTypeRepo, JournalTypeRepo>();
 builder.Services.AddScoped<IAccSafeCashRepo, AccSafeCashRepo>();
+builder.Services.AddScoped<ICustCollectionsDiscountRepo, CustCollectionsDiscountRepo>();
+builder.Services.AddScoped<IUserCashNoRepo, UserCashNoRepo>();
 ////////// PatRecord ////////////////////
 builder.Services.AddScoped<ICoronaryRepo, CoronaryRepo>();
 builder.Services.AddScoped<IPastHistoryRepo, PastHistoryRepo>();

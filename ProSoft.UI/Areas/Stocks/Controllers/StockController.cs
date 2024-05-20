@@ -9,7 +9,7 @@ using ProSoft.EF.Models.Stocks;
 namespace ProSoft.UI.Areas.Stocks.Controllers
 {
     [Authorize]
-    [Area("Stocks")]
+    [Area(nameof(Stocks))]
     public class StockController : Controller
     {
         private readonly IStockRepo _stockRepo;

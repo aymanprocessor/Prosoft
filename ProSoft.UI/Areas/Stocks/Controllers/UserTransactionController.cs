@@ -14,7 +14,7 @@ using ProSoft.EF.Models.Stocks;
 namespace ProSoft.UI.Areas.Stocks.Controllers
 {
     [Authorize(Roles = "Admin")]
-    [Area("Stocks")]
+    [Area(nameof(Stocks))]
     public class UserTransactionController : Controller
     {
         private readonly IUserTransRepo _userTransRepo;

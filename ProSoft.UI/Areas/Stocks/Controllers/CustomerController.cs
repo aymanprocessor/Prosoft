@@ -8,7 +8,7 @@ using ProSoft.EF.Models.Stocks;
 namespace ProSoft.UI.Areas.Stocks.Controllers
 {
     [Authorize(Roles = "Admin")]
-    [Area("Stocks")]
+    [Area(nameof(Stocks))]
     public class CustomerController : Controller
     {
         private readonly ICustomerRepo _customerRepo;
