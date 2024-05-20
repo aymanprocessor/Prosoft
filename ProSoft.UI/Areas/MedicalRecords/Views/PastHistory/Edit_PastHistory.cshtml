@@ -1,0 +1,496 @@
+﻿@model PastHistoryDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Edit Past History";
+    Layout = "_LayoutMedicalRecords";
+}
+
+<div class="container internal-scroll pt-2">
+    <h1 class="mt-4">Past History</h1>
+    <form method="post" asp-action="Edit_PastHistory">
+        <div class="border p-3 mt-4">
+
+            @* Hidden Inputs *@
+            <input asp-for="PatId" type="hidden" />
+            <input asp-for="PatSsn" type="hidden" />
+            <input asp-for="SerialHistory" type="hidden" />
+            <input asp-for="Serial" type="hidden" />
+
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="parent d-flex align-items-md-end justify-content-center">
+                <div class="mb-3 me-md-4" style="width: 60%">
+                    <label>Pt Name</label>
+                    <input class="form-control" value="@ViewBag.patName" disabled />
+                </div>
+            </div>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="PatSsn">Patient SSN</label>
+                    <input asp-for="PatSsn" type="number" class="form-control" disabled />
+                    <span asp-validation-for="PatSsn" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="EntryDate">Date</label>
+                    <input asp-for="EntryDate" class="form-control" />
+                    <span asp-validation-for="EntryDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile ">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="SerialHistory">Serial History</label>
+                    <input asp-for="SerialHistory" class="form-control" disabled />
+                    <span asp-validation-for="SerialHistory" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Serial">Serial Record</label>
+                    <input asp-for="Serial" class="form-control" disabled />
+                    <span asp-validation-for="Serial" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="Somker" class="me-md-3"><p>Smoker</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="Somker" class="form-check-input radio-inline" type="radio" name="Somker" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="Somker" class="form-check-input radio-inline" type="radio" name="Somker" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="IvAddict" class="me-md-3"><p>IV Addict</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="IvAddict" class="form-check-input radio-inline" type="radio" name="IvAddict" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="IvAddict" class="form-check-input radio-inline" type="radio" name="IvAddict" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="Csa" class="me-md-3"><p>CSA</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="Csa" class="form-check-input radio-inline" type="radio" name="Csa" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="Csa" class="form-check-input radio-inline" type="radio" name="Csa" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="HashishAddict" class="me-md-3"><p>Hashish Addict</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="HashishAddict" class="form-check-input radio-inline" type="radio" name="HashishAddict" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="HashishAddict" class="form-check-input radio-inline" type="radio" name="HashishAddict" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="PriorCabg" class="me-md-3"><p>Prior CABG</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="PriorCabg" class="form-check-input radio-inline" type="radio" name="PriorCabg" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="PriorCabg" class="form-check-input radio-inline" type="radio" name="PriorCabg" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="TramadolAddict" class="me-md-3"><p>Tramadol Addict</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="TramadolAddict" class="form-check-input radio-inline" type="radio" name="TramadolAddict" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="TramadolAddict" class="form-check-input radio-inline" type="radio" name="TramadolAddict" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="PriorPci" class="me-md-3"><p>Prior PCI</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="PriorPci" class="form-check-input radio-inline" type="radio" name="PriorPci" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="PriorPci" class="form-check-input radio-inline" type="radio" name="PriorPci" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="Pregnant" class="me-md-3"><p>Pregnant</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="Pregnant" class="form-check-input radio-inline" type="radio" name="Pregnant" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="Pregnant" class="form-check-input radio-inline" type="radio" name="Pregnant" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="PriorMi" class="me-md-3"><p>Prior MI</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="PriorMi" class="form-check-input radio-inline" type="radio" name="PriorMi" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="PriorMi" class="form-check-input radio-inline" type="radio" name="PriorMi" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="RheumaticHeatDisease" class="me-md-3"><p>Rheumatic Heat Disease</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="RheumaticHeatDisease" class="form-check-input radio-inline" type="radio" name="RheumaticHeatDisease" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="RheumaticHeatDisease" class="form-check-input radio-inline" type="radio" name="RheumaticHeatDisease" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="Hfref" class="me-md-3"><p>HFrEF</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="Hfref" class="form-check-input radio-inline" type="radio" name="Hfref" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="Hfref" class="form-check-input radio-inline" type="radio" name="Hfref" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="Hyperthyroidism" class="me-md-3"><p>Hyperthyroidism</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="Hyperthyroidism" class="form-check-input radio-inline" type="radio" name="Hyperthyroidism" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="Hyperthyroidism" class="form-check-input radio-inline" type="radio" name="Hyperthyroidism" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="Hfpef" class="me-md-3"><p>HfpEF</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="Hfpef" class="form-check-input radio-inline" type="radio" name="Hfpef" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="Hfpef" class="form-check-input radio-inline" type="radio" name="Hfpef" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="Hypothyroidism" class="me-md-3"><p>Hypothyroidism</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="Hypothyroidism" class="form-check-input radio-inline" type="radio" name="Hypothyroidism" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="Hypothyroidism" class="form-check-input radio-inline" type="radio" name="Hypothyroidism" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="IschemicStroke" class="me-md-3"><p>Ischemic Stroke</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="IschemicStroke" class="form-check-input radio-inline" type="radio" name="IschemicStroke" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="IschemicStroke" class="form-check-input radio-inline" type="radio" name="IschemicStroke" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="ProstheticValve" class="me-md-3"><p>Prosthetic Valve</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="ProstheticValve" class="form-check-input radio-inline" type="radio" name="ProstheticValve" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="ProstheticValve" class="form-check-input radio-inline" type="radio" name="ProstheticValve" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="HemorthagicStroke" class="me-md-3"><p>Hemorthagic Stroke</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="HemorthagicStroke" class="form-check-input radio-inline" type="radio" name="HemorthagicStroke" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="HemorthagicStroke" class="form-check-input radio-inline" type="radio" name="HemorthagicStroke" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="Diabetes" class="me-md-3"><p>Diabetes</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="Diabetes" class="form-check-input radio-inline" type="radio" name="Diabetes" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="Diabetes" class="form-check-input radio-inline" type="radio" name="Diabetes" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="Tia" class="me-md-3"><p>TIA</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="Tia" class="form-check-input radio-inline" type="radio" name="Tia" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="Tia" class="form-check-input radio-inline" type="radio" name="Tia" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="Htn" class="me-md-3"><p>HTN</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="Htn" class="form-check-input radio-inline" type="radio" name="Htn" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="Htn" class="form-check-input radio-inline" type="radio" name="Htn" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="Dyslipidemia" class="me-md-3"><p>Dyslipidemia</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="Dyslipidemia" class="form-check-input radio-inline" type="radio" name="Dyslipidemia" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="Dyslipidemia" class="form-check-input radio-inline" type="radio" name="Dyslipidemia" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="ChronicAf" class="me-md-3"><p>Chronic Af</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="ChronicAf" class="form-check-input radio-inline" type="radio" name="ChronicAf" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="ChronicAf" class="form-check-input radio-inline" type="radio" name="ChronicAf" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="ProxysmaiAf" class="me-md-3"><p>Proxysmai Af</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="ProxysmaiAf" class="form-check-input radio-inline" type="radio" name="ProxysmaiAf" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="ProxysmaiAf" class="form-check-input radio-inline" type="radio" name="ProxysmaiAf" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="MalignantTumors" class="me-md-3"><p>Malignant Tumors</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="MalignantTumors" class="form-check-input radio-inline" type="radio" name="MalignantTumors" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="MalignantTumors" class="form-check-input radio-inline" type="radio" name="MalignantTumors" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="OsApnea" class="me-md-3"><p>Os Apnea</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="OsApnea" class="form-check-input radio-inline" type="radio" name="OsApnea" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="OsApnea" class="form-check-input radio-inline" type="radio" name="OsApnea" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="CkdOnMedical" class="me-md-3"><p>CKD On Medical</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="CkdOnMedical" class="form-check-input radio-inline" type="radio" name="CkdOnMedical" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="CkdOnMedical" class="form-check-input radio-inline" type="radio" name="CkdOnMedical" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="CkdOnDialysis" class="me-md-3"><p>CKD On Dialysis</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="CkdOnDialysis" class="form-check-input radio-inline" type="radio" name="CkdOnDialysis" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="CkdOnDialysis" class="form-check-input radio-inline" type="radio" name="CkdOnDialysis" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="parent d-flex justify-content-md-center gap-2">
+                <button type="submit" class="btn btn-success" style="width:150px">Save Changes</button>
+                <a onclick="goTo('PastHistory')" class="btn btn-secondary" style="width:150px">Back</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        let ss = document.querySelector(".Past .nav-link");
+        ss.classList.add("active-link");
+    </script>
+}

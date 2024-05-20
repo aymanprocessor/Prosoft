@@ -1,0 +1,141 @@
+﻿@model DischargeDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Add DischargeSummery";
+    Layout = "_LayoutMedicalRecords";
+}
+
+<div class="container internal-scroll pt-2">
+    <h1 class="mt-4">Discharge Summery</h1>
+    <form method="post" asp-action="Add_DischargeSummery">
+        <div class="border p-3 mt-4">
+
+            @* Hidden Inputs *@
+            <input asp-for="PatId" type="hidden" value="@ViewBag.patID" />
+            <input asp-for="PatSsn" type="hidden" value="@ViewBag.nationalID" />
+
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3 me-md-4 ">
+                    <label>Pt Name</label>
+                    <input class="form-control" value="@ViewBag.patName" disabled />
+                </div>
+                <div class="mb-3">
+                    <label asp-for="PatSsn">Patient SSN</label>
+                    <input asp-for="PatSsn" type="number" class="form-control" value="@ViewBag.nationalID" disabled />
+                    <span asp-validation-for="PatSsn" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="EntryDate">Date of Discharge</label>
+                    <input asp-for="EntryDate" type="date" class="form-control" />
+                    <span asp-validation-for="EntryDate" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="ReferingDr">Refering Dr</label>
+                    <input asp-for="ReferingDr" class="form-control" />
+                    <span asp-validation-for="ReferingDr" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4 me-auto" style="width:60%">
+                    <label asp-for="ConditionAtDischarge">Condition At Discharge</label>
+                    <select asp-for="ConditionAtDischarge" class="form-control text-center">
+                        <option value="improvement">improvement</option>
+                        <option value="on demand">on demand</option>
+                        <option value="Death">Death</option>
+                    </select>
+                    <span asp-validation-for="ConditionAtDischarge" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3 me-md-4 me-auto" style="width: 60%">
+                    <label asp-for="CourseDuringStay">Course During Stay</label>
+                    <input asp-for="CourseDuringStay" class="form-control" />
+                    <span asp-validation-for="CourseDuringStay" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4 me-auto" style="width:60%">
+                    <label asp-for="EchoAtDischarge">Echo At Discharge</label>
+                    <input asp-for="EchoAtDischarge" class="form-control" />
+                    <span asp-validation-for="EchoAtDischarge" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4 me-auto" style="width:60%">
+                    <label asp-for="EcgAtDischage">Ecg At Dischage</label>
+                    <input asp-for="EcgAtDischage" class="form-control   />
+                    <span asp-validation-for="EcgAtDischage" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4 me-auto" style="width:60%">
+                    <label asp-for="BlprAtDischarge">Blpr At Discharge</label>
+                    <input asp-for="BlprAtDischarge" class="form-control   />
+                    <span asp-validation-for="BlprAtDischarge" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4 me-auto" style="width:60%">
+                    <label asp-for="ImportantInstructionsAtDisc">Important Instructions At Disc</label>
+                    <input asp-for="ImportantInstructionsAtDisc" class="form-control    />
+                    <span asp-validation-for="ImportantInstructionsAtDisc" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4 me-auto" style="width:60%">
+                    <label asp-for="FinalDiagnosis">Final Diagnosis</label>
+                    <input asp-for="FinalDiagnosis" class="form-control   />
+                    <span asp-validation-for="FinalDiagnosis" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4 me-auto" style="width:60%">
+                    <label asp-for="Prescription">Prescription</label>
+                    <input asp-for="Prescription" class="form-control   />
+                    <span asp-validation-for="Prescription" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4 me-auto" style="width:60%">
+                    <label asp-for="NextFollwupDate">Next Follwup Date</label>
+                    <input asp-for="NextFollwupDate" type="date" class="form-control" />
+                    <span asp-validation-for="NextFollwupDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="parent d-flex justify-content-md-center gap-2">
+                <button type="submit" class="btn btn-primary" style="width:150px">Save</button>
+                <a onclick="goTo('DischargeSummery')" class="btn btn-secondary" style="width:150px">Back</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        let ss = document.querySelector(".Discharge .nav-link");
+        ss.classList.add("active-link");
+    </script>
+}

@@ -177,13 +177,13 @@ html {
     overflow: auto;
 }
 
-    #mySidebar-patRecord ul {
-        font-size: 1rem;
-    }
+#mySidebar-patRecord ul {
+    font-size: 1rem;
+}
 
-        #mySidebar-patRecord ul li:hover {
-            background-color: #656565 !important;
-        }
+#mySidebar-patRecord ul li:hover {
+    background-color: #656565 !important;
+}
 
 @media (max-width: 767px) {
     #mySidebar-patRecord {
@@ -193,9 +193,9 @@ html {
         transition: .3s;
     }
 
-        #mySidebar-patRecord:dir(RTL) {
-            transform: translateX(100%);
-        }
+    #mySidebar-patRecord:dir(RTL) {
+        transform: translateX(100%);
+    }
 }
 
 .internal-scroll {
@@ -203,7 +203,7 @@ html {
     overflow: auto;
 }
 
-.parent-record {
+.parent-record{
     gap: 1rem !important;
 }
 
@@ -219,12 +219,12 @@ html {
 }
 
 @media (max-width: 767px) {
-.parent-record > div {
-    width: 100% !important;
-    
-}
-.parent-record{
-    gap:0px !important;
-}
+    .parent-record > div {
+        width: 100% !important;
+    }
+
+    .parent-record {
+        gap: 0px !important;
+    }
 }
 /* For styling Medical Records */

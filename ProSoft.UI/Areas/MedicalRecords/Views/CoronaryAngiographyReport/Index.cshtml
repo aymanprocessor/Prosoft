@@ -1,0 +1,282 @@
+﻿@model List<CoronaryDTO>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Coronary Angiography Report";
+    Layout = "_LayoutMedicalRecords";
+    int FindIndex(CoronaryDTO obj)
+    {
+        return Model.FindIndex(o => o.SerialHistory == obj.SerialHistory);
+    }
+}
+
+<div class="container pt-2 internal-scroll">
+    <div class="patData d-flex justify-content-between align-items-center mt-4 mb-0 ">
+        <h3 class="my-0">Patient Name : @ViewBag.PatName </h3>
+        <h3 class="my-0">National Id : @ViewBag.PatSSN </h3>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mt-4 ">
+        <h1 class="header">Coronary angiography Report</h1>
+@*         @if (!User.IsInRole("Patient"))
+        { } *@
+        <a onclick="goTo('CoronaryAngiographyReport', 'Add_CoronaryReport')" class="btn btn-sm btn-primary" style="width:150px">
+            Add
+        </a>
+    </div>
+
+    @foreach (var item in Model)
+    {
+        <div id="@item.SerialHistory" class="print">
+            <div class="border rounded-3 border-primary border-3 p-3 mt-4">
+                <div asp-validation-summary="ModelOnly"></div>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3">
+                        <label asp-for="@item.Serial">Serial Record</label>
+                        <input asp-for="@item.Serial" disabled class="form-control" />
+                    </div>
+                </div>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3">
+                        <label asp-for="@item.EntryDate">Date</label>
+                        <input asp-for="@item.EntryDate" class="form-control" disabled />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3">
+                        <label asp-for="@item.FirstOperator">First Operator</label>
+                        <input asp-for="@item.FirstOperator" class="form-control" disabled />
+                    </div>
+                    <div class="mb-3 ">
+                        <label asp-for="@item.SecondOperator">Second Operator</label>
+                        <input asp-for="@item.SecondOperator" class="form-control" disabled />
+                    </div>
+                </div>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3">
+                        <label asp-for="@item.CatheterForRca">Catheter For RCA</label>
+                        <select asp-for="@item.CatheterForRca" disabled class="form-control position-relative select-menu">
+                            <option value="JR 4">JR 4</option>
+                            <option value="JR 3.5">JR 3.5</option>
+                            <option value="WILLIAM">WILLIAM</option>
+                            <option value="AL1">AL1</option>
+                            <option value="AL2">AL2</option>
+                        </select>
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3">
+                        <label asp-for="@item.CatheterForLeftCoronary">Catheter ForLeft Coronary</label>
+                        <select asp-for="@item.CatheterForLeftCoronary" disabled class="form-control text-center">
+                            <option value="JR 4">JR 4</option>
+                            <option value="JR 3.5">JR 3.5</option>
+                            <option value="AL1">AL1</option>
+                            <option value="AL2">AL2</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3">
+                        <label asp-for="@item.Access">Access</label>
+                        <select asp-for="@item.Access" disabled class="form-control position-relative select-menu">
+                            <option value="Right femoral">Right femoral</option>
+                            <option value="Left femoral">Left femoral</option>
+                            <option value="Right Radial">Right Radial</option>
+                            <option value="Left Radial">Left Radial</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3">
+                        <label asp-for="@item.AmountOfContrastMl">Amount of contrast (Ml)</label>
+                        <input asp-for="@item.AmountOfContrastMl" class="form-control" disabled />
+                    </div>
+                </div>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.PreoprativeAssessment1" class="me-md-3"><p>Preoprative Assessment</p></label>
+                        <div class="mb-3 mx-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.PreoprativeAssessment1" class="form-check-input radio-inline" type="radio" name="PreoprativeAssessment1-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 mx-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.PreoprativeAssessment1" class="form-check-input radio-inline" type="radio" name="PreoprativeAssessment1-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.LeftMain">Left Main</label>
+                        <select asp-for="@item.LeftMain" disabled class="form-control position-relative select-menu">
+                            <option value="significant">significant</option>
+                            <option value="non significant">non significant</option>
+                        </select>
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3">
+                        <label asp-for="@item.Lad">LAD</label>
+                        <select asp-for="@item.Lad" disabled class="form-control position-relative select-menu">
+                            <option value="significant">significant</option>
+                            <option value="non significant">non significant</option>
+                        </select>
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3">
+                        <label asp-for="@item.Lcx">LCX</label>
+                        <select asp-for="@item.Lcx" disabled class="form-control position-relative select-menu">
+                            <option value="significant">significant</option>
+                            <option value="non significant">non significant</option>
+                        </select>
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3">
+                        <label asp-for="@item.Rca">RCA</label>
+                        <select asp-for="@item.Rca" disabled class="form-control position-relative select-menu">
+                            <option value="significant">significant</option>
+                            <option value="non significant">non significant</option>
+                        </select>
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.HematomaD" class="me-md-3"><p>Hematoma D</p></label>
+                        <div class="mb-3 mx-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.HematomaD" class="form-check-input radio-inline" type="radio" name="HematomaD-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 mx-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.HematomaD" class="form-check-input radio-inline" type="radio" name="HematomaD-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.CinDiagnostic" class="me-md-3"><p>CIN Diagnostic</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.CinDiagnostic" class="form-check-input radio-inline" type="radio" name="CinDiagnostic-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.CinDiagnostic" class="form-check-input radio-inline" type="radio" name="CinDiagnostic-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.PreoprativeAssessment" class="me-md-3"><p>Preoprative Assessment</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.PreoprativeAssessment" class="form-check-input radio-inline" type="radio" name="PreoprativeAssessment-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.PreoprativeAssessment" class="form-check-input radio-inline" type="radio" name="PreoprativeAssessment-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3">
+                        <label asp-for="@item.LeftMainCoronary">Left Main Coronary</label>
+                        <input asp-for="@item.LeftMainCoronary" class="form-control" disabled />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3">
+                        <label asp-for="@item.LeftAnteriorDescending">Left anterior descending</label>
+                        <input asp-for="@item.LeftAnteriorDescending" class="form-control" disabled />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3">
+                        <label asp-for="@item.LeftCircumflex">Left Circumflex</label>
+                        <input asp-for="@item.LeftCircumflex" class="form-control" disabled />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3">
+                        <label asp-for="@item.RightCoronaryArtery">Right Coronary Artery</label>
+                        <input asp-for="@item.RightCoronaryArtery" class="form-control" disabled />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3">
+                        <label asp-for="@item.OtherVessels">Other Vessels</label>
+                        <input asp-for="@item.OtherVessels" class="form-control" disabled />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.Diagnosis">Diagnosis</label>
+                        <input asp-for="@item.Diagnosis" class="form-control" disabled />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.Recomendation">Recomendation</label>
+                        <input asp-for="@item.Recomendation" class="form-control" disabled />
+                    </div>
+                </div>
+@*                 @if (!User.IsInRole("Patient"))
+                { } *@
+                <div class="parent d-flex align-items-md-end justify-content-center" id="for-print">
+                    <div class="d-flex justify-content-evenly" style="width: 60%">
+                        <!-- PRINT -->
+                        <button onclick="printRecord(@item.SerialHistory)" class="btn btn-success">Print</button>
+                        <!-- EDIT -->
+                        <a onclick="goToEdit('CoronaryAngiographyReport', 'Edit_CoronaryReport', @item.SerialHistory)" class="btn btn-primary px-3">Edit</a>
+                        <!-- DELETE -->
+                        <form asp-action="Delete_CoronaryReport" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@item.SerialHistory" />
+                            <input type="hidden" name="patId" value="@item.PatId" />
+                            <button type="submit" class="btn btn-danger fs-6" onclick="return confirm('Are you sure you want to delete this item ?');">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        let ss = document.querySelector(".Coronary .nav-link");
+        ss.classList.add("active-link");
+    </script>
+}

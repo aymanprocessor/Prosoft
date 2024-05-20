@@ -1,0 +1,266 @@
+﻿@model CoronaryDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Add Coronary Angiography Report";
+    Layout = "_LayoutMedicalRecords";
+}
+
+<div class="container internal-scroll pt-2">
+    <h1 class="mt-4">Coronary angiography Report</h1>
+    <form method="post" asp-action="Add_CoronaryReport">
+        <div class="border p-3 mt-4">
+
+            @* Hidden Inputs *@
+            <input asp-for="PatId" type="hidden" value="@ViewBag.patID" />
+            <input asp-for="PatSsn" type="hidden" value="@ViewBag.nationalID" />
+
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="parent d-flex align-items-md-end justify-content-center">
+                <div class="mb-3" style="width: 64%">
+                    <label>Pt Name</label>
+                    <input class="form-control" value="@ViewBag.patName" disabled />
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                @*                 <div class="mb-3 me-md-4">
+                <label asp-for="SerialHistory">Serial</label>
+                <input asp-for="SerialHistory" class="form-control" />
+                <span asp-validation-for="SerialHistory" class="text-danger"></span>
+                </div> *@
+                <div class="mb-3 me-md-4">
+                    <label asp-for="PatSsn">Patient SSN</label>
+                    <input asp-for="PatSsn" type="number" class="form-control" value="@ViewBag.nationalID" disabled />
+                    <span asp-validation-for="PatSsn" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="EntryDate">Date</label>
+                    <input asp-for="EntryDate" class="form-control" />
+                    <span asp-validation-for="EntryDate" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="FirstOperator">First Operator</label>
+                    <input asp-for="FirstOperator" class="form-control" />
+                    <span asp-validation-for="FirstOperator" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="SecondOperator">Second Operator</label>
+                    <input asp-for="SecondOperator" class="form-control" />
+                    <span asp-validation-for="SecondOperator" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="CatheterForRca">Catheter For RCA</label>
+                    <select asp-for="CatheterForRca" class="form-control position-relative select-menu">
+                        <option value="JR 4">JR 4</option>
+                        <option value="JR 3.5">JR 3.5</option>
+                        <option value="WILLIAM">WILLIAM</option>
+                        <option value="AL1">AL1</option>
+                        <option value="AL2">AL2</option>
+
+                    </select>
+                    <span asp-validation-for="CatheterForRca" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="CatheterForLeftCoronary">Catheter ForLeft Coronary</label>
+                    <select asp-for="CatheterForLeftCoronary" class="form-control text-center">
+                        <option value="JR 4">JR 4</option>
+                        <option value="JR 3.5">JR 3.5</option>
+                        <option value="AL1">AL1</option>
+                        <option value="AL2">AL2</option>
+                    </select>
+                    <span asp-validation-for="CatheterForLeftCoronary" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="Access">Access</label>
+                    <select asp-for="Access" class="form-control position-relative select-menu">
+                        <option value="Right femoral">Right femoral</option>
+                        <option value="Left femoral">Left femoral</option>
+                        <option value="Right Radial">Right Radial</option>
+                        <option value="Left Radial">Left Radial</option>
+                    </select>
+                    <span asp-validation-for="Access" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="AmountOfContrastMl">Amount of contrast (Ml)</label>
+                    <input asp-for="AmountOfContrastMl" class="form-control" />
+                    <span asp-validation-for="AmountOfContrastMl" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="PreoprativeAssessment1" class="me-md-3"><p>Preoprative Assessment</p></label>
+                    <div class="mb-3 mx-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="PreoprativeAssessment1" class="form-check-input radio-inline" type="radio" name="PreoprativeAssessment1" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 mx-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="PreoprativeAssessment1" class="form-check-input radio-inline" type="radio" name="PreoprativeAssessment1" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-3 me-md-4">
+                    <label asp-for="LeftMain">Left Main</label>
+                    <select asp-for="LeftMain" class="form-control position-relative select-menu">
+                        <option value="significant">significant</option>
+                        <option value="non significant">non significant</option>
+
+                    </select>
+                    <span asp-validation-for="LeftMain" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="Lad">LAD</label>
+                    <select asp-for="Lad" class="form-control position-relative select-menu">
+                        <option value="significant">significant</option>
+                        <option value="non significant">non significant</option>
+
+                    </select>
+                    <span asp-validation-for="Lad" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Lcx">LCX</label>
+                    <select asp-for="Lcx" class="form-control position-relative select-menu">
+                        <option value="significant">significant</option>
+                        <option value="non significant">non significant</option>
+
+                    </select>
+                    <span asp-validation-for="Lcx" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="Rca">RCA</label>
+                    <select asp-for="Rca" class="form-control position-relative select-menu">
+                        <option value="significant">significant</option>
+                        <option value="non significant">non significant</option>
+
+                    </select>
+                    <span asp-validation-for="Rca" class="text-danger"></span>
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="HematomaD" class="me-md-3"><p>HematomaD</p></label>
+                    <div class="mb-3 mx-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="HematomaD" class="form-check-input radio-inline" type="radio" name="HematomaD" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 mx-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="HematomaD" class="form-check-input radio-inline" type="radio" name="HematomaD" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="CinDiagnostic" class="me-md-3"><p>CIN Diagnostic</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="CinDiagnostic" class="form-check-input radio-inline" type="radio" name="CinDiagnostic" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="CinDiagnostic" class="form-check-input radio-inline" type="radio" name="CinDiagnostic" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="PreoprativeAssessment" class="me-md-3"><p>Preoprative Assessment</p></label>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="PreoprativeAssessment" class="form-check-input radio-inline" type="radio" name="PreoprativeAssessment" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-2">
+                        <label class="form-check-label">
+                            <input asp-for="PreoprativeAssessment" class="form-check-input radio-inline" type="radio" name="PreoprativeAssessment" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="LeftMainCoronary">Left Main Coronary</label>
+                    <input asp-for="LeftMainCoronary" class="form-control" />
+                    <span asp-validation-for="LeftMainCoronary" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="LeftAnteriorDescending">Left anterior descending</label>
+                    <input asp-for="LeftAnteriorDescending" class="form-control" />
+                    <span asp-validation-for="LeftAnteriorDescending" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="LeftCircumflex">Left Circumflex</label>
+                    <input asp-for="LeftCircumflex" class="form-control" />
+                    <span asp-validation-for="LeftCircumflex" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="RightCoronaryArtery">Right Coronary Artery</label>
+                    <input asp-for="RightCoronaryArtery" class="form-control" />
+                    <span asp-validation-for="RightCoronaryArtery" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="OtherVessels">Other Vessels</label>
+                    <input asp-for="OtherVessels" class="form-control" />
+                    <span asp-validation-for="OtherVessels" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Diagnosis">Diagnosis</label>
+                    <input asp-for="Diagnosis" class="form-control" />
+                    <span asp-validation-for="Diagnosis" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4" style="width: 60%">
+                    <label asp-for="Recomendation">Recomendation</label>
+                    <input asp-for="Recomendation" class="form-control" />
+                    <span asp-validation-for="Recomendation" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="parent d-flex justify-content-md-center gap-2">
+                <button type="submit" class="btn btn-primary" style="width:150px">Save</button>
+                <a onclick="goTo('CoronaryAngiographyReport')" class="btn btn-secondary" style="width:150px">Back</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        let ss = document.querySelector(".Coronary .nav-link");
+        ss.classList.add("active-link");
+    </script>
+}

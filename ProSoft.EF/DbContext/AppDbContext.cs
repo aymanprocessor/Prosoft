@@ -89,6 +89,10 @@ namespace ProSoft.EF.DbContext
         public DbSet<LabReport> LabReports { get; set; }
         public DbSet<MedicationAtCcu> MedicationAtCcus { get; set; }
         public DbSet<PastHistory> PastHistorys { get; set; }
+        public DbSet<DischargeSummery> DischargeSummeries { get; set; }
+        public DbSet<EcgAndEcho> EcgAndEchoes { get; set; }
+        public DbSet<Echo> Echoes { get; set; }
+        public DbSet<PastHistory> PastHistories { get; set; }
         public DbSet<PciReport> PciReports { get; set; }
 
 

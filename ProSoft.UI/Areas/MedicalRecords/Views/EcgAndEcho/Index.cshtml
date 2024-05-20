@@ -1,0 +1,113 @@
+﻿@model List<EcgAndEchoDTO>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "ECG And Echo";
+    Layout = "_LayoutMedicalRecords";
+    int FindIndex(EcgAndEchoDTO obj)
+    {
+        return Model.FindIndex(o => o.SerialHistory == obj.SerialHistory);
+    }
+}
+
+<div class="container internal-scroll pt-2">
+    <div class="patData d-flex justify-content-between align-items-center mt-4 mb-0 ">
+        <h3 class="my-0">Patient Name : @ViewBag.PatName </h3>
+        <h3 class="my-0">National Id : @ViewBag.PatSSN </h3>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mt-4 ">
+        <h1 class="header">ECG and Echo</h1>
+@*         @if (!User.IsInRole("Patient"))
+        { } *@
+        <a onclick="goTo('ECGAndEcho', 'Add_ECGAndEcho')" class="btn btn-sm btn-primary" style="width:150px">
+            Add
+        </a>
+    </div>
+    @foreach (var item in Model)
+    {
+        <div id="@item.SerialHistory" class="print">
+            <div class="border rounded-3 border-primary border-3 p-3 mt-4">
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3">
+                        <label asp-for="@item.Serial">Serial Record</label>
+                        <input asp-for="@item.Serial" disabled class="form-control" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3 ">
+                        <label asp-for="@item.EntryDate">Date</label>
+                        <input asp-for="@item.EntryDate" class="form-control" disabled />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3">
+                        <label asp-for="@item.RhythmOfAdmission">ECG on Admission</label>
+                        <input asp-for="@item.RhythmOfAdmission" class="form-control" disabled />
+                    </div>
+                </div>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3 ">
+                        <label asp-for="@item.EjectionFraction">Ejection Fraction</label>
+                        <input asp-for="@item.EjectionFraction" class="form-control" disabled />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.SwmaAtRest" class="me-md-3"><p>SWMA at rest</p></label>
+                        <div class="mb-3 mx-md-2" style="width: 20%;">
+                            <label class="form-check-label">
+                                <input asp-for="@item.SwmaAtRest" class="form-check-input radio-inline" type="radio" name="SwmaAtRest-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 mx-md-2" style="width: 20%;">
+                            <label class="form-check-label">
+                                <input asp-for="@item.SwmaAtRest" class="form-check-input radio-inline" type="radio" name="SwmaAtRest-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3">
+                        <label asp-for="@item.Edd">EDD</label>
+                        <input asp-for="@item.Edd" class="form-control" disabled />
+                    </div>
+                </div>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3 ">
+                        <label asp-for="@item.Esd">ESD</label>
+                        <input asp-for="@item.Esd" class="form-control" disabled />
+                    </div>
+                </div>
+@*                 @if (!User.IsInRole("Patient"))
+                { } *@
+                <div class="parent d-flex align-items-md-end justify-content-center" id="for-print">
+                    <div class="d-flex justify-content-evenly" style="width: 60%">
+                        <!-- PRINT -->
+                        <button onclick="printRecord(@item.SerialHistory)" class="btn btn-success">Print</button>
+                        <!-- EDIT -->
+                        <a onclick="goToEdit('ECGAndEcho', 'Edit_ECGAndEcho', @item.SerialHistory)" class="btn btn-primary px-3">Edit</a>
+                        <!-- DELETE -->
+                        <form asp-action="Delete_ECGAndEcho" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@item.SerialHistory" />
+                            <input type="hidden" name="patID" value="@item.PatId" />
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item ?');">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        let ss = document.querySelector(".ECG .nav-link");
+        ss.classList.add("active-link");
+    </script>
+}
