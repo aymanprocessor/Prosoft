@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using ProSoft.EF.Models.Stocks;
+using ProSoft.EF.Models.Treasury;
 
 namespace ProSoft.EF.Models.Accounts;
 

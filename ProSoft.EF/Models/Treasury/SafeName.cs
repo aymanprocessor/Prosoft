@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using ProSoft.EF.Models.Accounts;
 
 namespace ProSoft.EF.Models.Treasury;
 

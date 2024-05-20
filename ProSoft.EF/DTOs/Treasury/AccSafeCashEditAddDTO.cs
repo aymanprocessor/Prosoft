@@ -1,6 +1,5 @@
 ﻿using ProSoft.EF.DTOs.Shared;
 using ProSoft.EF.DTOs.Stocks;
-using ProSoft.EF.DTOs.Treasury;
 using ProSoft.EF.Models.Shared;
 using System;
 using System.Collections.Generic;
@@ -9,8 +8,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ProSoft.EF.DTOs.Accounts;
 
-namespace ProSoft.EF.DTOs.Accounts
+namespace ProSoft.EF.DTOs.Treasury
 {
     public class AccSafeCashEditAddDTO
     {
@@ -61,7 +61,7 @@ namespace ProSoft.EF.DTOs.Accounts
         public decimal? Rate1 { get; set; }
 
         [DisplayName("Currency")]
-      //  [Required(ErrorMessage = "The field is required")]
+        //  [Required(ErrorMessage = "The field is required")]
         public int? CurCode { get; set; }//Acc Global Def
 
         [DisplayName("Credit Account (Main)")]

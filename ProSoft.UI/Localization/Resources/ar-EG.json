@@ -345,6 +345,25 @@
   "Posting of Invoices": "مرحل من خزينة",
   "Posting of Treasury": "مرحل من الفواتير",
   "Posting of Pharmacy": "مرحل من الصيدلية",
+  "Discount Percentage": "نسبة الخصم",
+  "Discount Value": "قيمة الخصم",
+  "Joining Users With Treasurys": "ربط المستخدمين بالخزينة",
+  "Sub Safe Account (Main)": "الخزينة الفرعية (رئيسي)",
+  "Sub Safe Account (Sub)": "الخزينة الفرعية (فرعي)",
+  "Sub Safe Account": "الحساب الفرعية",
+  "Main Safe Account (Main)": "الخزينة الرئيسية (رئيسي)",
+  "Main Safe Account (Sub)": "الخزينة الرئيسية (فرعي)",
+  "Main Safe Account": "الحساب الرئيسية",
+  "Posting To Safes": "ترحيل للخزينة",
+  "Transactions of Safes for User": "حركات الخزائن للمستخدم",
+  "Convert To": "التحويل ال",
+  "Add New SafeTransaction For User": "اضافة حركة خزينة جديدة للمستتخدم",
+
+
+
+
+
+
 
 
 
@@ -435,7 +454,7 @@
   "Permission": "الاذن",
   "Add New Transaction For": "اضافة حركة جديدة ل",
   "User Code": "كود المستخدم",
-  "Before anything, select the transaction type and then the user": "قبل اي شيئ قم باختيار نوع الحركة اولا ثم المستخدم",
+  "Select the transaction type and then the user": "قم باختيار نوع الحركة اولا ثم المستخدم",
   "Transaction Name": "اسم الحركة",
   "Please, choose at least one transaction": "من فضلك اختار حركة واحدة علي الاقل",
   "Save": "حفظ",
@@ -480,7 +499,7 @@
   "Joining Users With Stocks and Accounts": "ربط المستخدمين بالمخازن والحسابات",
   "Transactions of Stocks for User": "حركات المخازن للمستخدم",
   "Add New Transaction": "اضافة حركة جديدة",
-  "Before anything, select the user": "قبل اي شيئ قم باختيار المستخدم",
+  "Select the user": "قم باختيار المستخدم",
   "Add New StockTransaction For User": "اضافة حركة مخزن جديدة للمستتخدم",
   "Stock Is Default": "المخزن افتراضي",
   "Show Trans Price": "اظهار سعر الحركة",
@@ -493,4 +512,5 @@
   "Edit StockTransaction": "تعديل حركة مخزن",
   "Go To Medical Records": "الذهاب الي السجلات الطبية",
   "GO TO RECORD": "الذهاب للسجلات",
+  "Permissions Forms": "نماذج الاذون"
 }

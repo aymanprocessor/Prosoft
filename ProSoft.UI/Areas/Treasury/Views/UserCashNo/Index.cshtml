@@ -2,14 +2,13 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Joining Users With Stocks and Accounts";
+    ViewData["Title"] = "Joining Users With Treasurys";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @inject IViewLocalizer localizer
 
 <div class="text-center">
-    <h1 class="mb-2">@localizer["Joining Users With Stocks and Accounts"] </h1>
-    <p class="fs-5">@localizer["Select the user"]</p>
+    <h1 class="mb-2">@localizer["Joining Users With Treasurys"] </h1>
 </div>
 
 <div class="container pt-2" style=" min-height:100vh;">
@@ -33,10 +32,10 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                <tr onclick="getStockTransactions(event, @item.UserCode)" style="cursor:pointer;">
-                    <td class="align-middle">@item.UserCode</td>
-                    <td class="align-middle user-name">@item.UserName</td>
-                </tr>
+                    <tr onclick="getSafeTransactions(event, @item.UserCode)" style="cursor:pointer;">
+                        <td class="align-middle">@item.UserCode</td>
+                        <td class="align-middle user-name">@item.UserName</td>
+                    </tr>
                 }
             </tbody>
         </table>
@@ -44,10 +43,10 @@
 
     @* /////////////////////////////////////////////////////////////////// *@
 
-    @* Table for UserStock Transactions *@
+    @* Table for UserSafe Transactions *@
 
     <div class="transactions-table-head d-flex justify-content-between align-items-center mt-3 mb-1">
-        <h2 class="header">@localizer["Transactions of Stocks for User"] :</h2>
+        <h2 class="header">@localizer["Transactions of Safes for User"] :</h2>
         <a class="btn btn-sm btn-primary fs-6" style="width:150px">
             @localizer["Add New Transaction"]
         </a>
@@ -62,25 +61,19 @@
                         @localizer["Serial"]
                     </th>
                     <th>
-                        @localizer["Permission Type"]
+                        @localizer["Treasury"]
                     </th>
                     <th>
-                        @localizer["Stock"]
+                        @localizer["Posting To Safes"]
                     </th>
                     <th class="text-center">
-                        @localizer["Stock Is Default"]
-                    </th>
-                    <th class="text-center">
-                        @localizer["Show Trans Price"]
+                        @localizer["Activation"]
                     </th>
                     <th>
-                        @localizer["Debit Account"]
+                        @localizer["Sub Safe Account"]
                     </th>
                     <th>
-                        @localizer["Credit Account"]
-                    </th>
-                    <th>
-                        @localizer["Journal Type"]
+                        @localizer["Main Safe Account"]
                     </th>
                     <th></th>
                 </tr>
@@ -124,7 +117,7 @@
             }
         }
 
-        function getStockTransactions(e, userCode) {
+        function getSafeTransactions(e, userCode) {
             // Handle active click
             let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");;
             let clickedTarget = e.target.parentElement;
@@ -143,43 +136,40 @@
             clickedTarget.classList.add("active-row");
 
             let userName = clickedTarget.querySelector(".user-name").innerText;
-            transactionsHeader.innerHTML = `@localizer["Transactions of Stocks for User"] : ${userName}`;
+            transactionsHeader.innerHTML = `@localizer["Transactions of Safes for User"] : ${userName}`;
 
-            transAddLink.setAttribute("href", `/Stocks/UserStockTransaction/Add_StockTrans/${userCode}`);
+            transAddLink.setAttribute("href", `/Treasury/UserCashNo/Add_UserCashNo/${userCode}`);
 
             userTransactions.innerHTML = "";  // Empty the table
 
             $.ajax({
-                url: `/Stocks/UserStockTransaction/GetStockTransForUser/${userCode}`,
+                url: `/Treasury/UserCashNo/GetSafeTransForUser/${userCode}`,
                 success: function (result) {
                     console.log(result);
                     let count = 0;
                     for (let item of result) {
                         count++;
-                        let stockDef = item.stockDef == 1 ? `<i class="fa-solid fa-check"></i>` : "";
-                        let showPrice = item.showPrice == 1 ? `<i class="fa-solid fa-check"></i>` : "";
+                        let actdeactFlag = item.actdeactFlag == 1 ? `<i class="fa-solid fa-check"></i>` : "";
+                        let cshUsr = item.cshUsr == 'Y' ? `<i class="fa-solid fa-check"></i>` : "";
 
                         const userTrans = document.createElement("tr");
                         userTrans.innerHTML =
                             `
-                            <td class="align-middle text-center">${count}</td>
-                            <td class="align-middle text-center">${item.permissionName}</td>
-                            <td class="align-middle text-center">${item.stockName}</td>
-                            <td class="align-middle text-center">${stockDef}</td>
-                            <td class="align-middle text-center">${showPrice}</td>
-                            <td class="align-middle text-center">${item.accountStk}</td>
-                            <td class="align-middle text-center">${item.accountAcc}</td>
-                            <td class="align-middle text-center">${item.jornalName}</td>
-                            <td class="text-center align-middle" style="width: 325px;">
-                                <a href="/Stocks/UserStockTransaction/Edit_StockTrans/${userCode}?transType=${item.transType}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
-                                <form action="/Stocks/UserStockTransaction/Delete_StockTrans" method="post" class="d-inline">
-                                        @Html.AntiForgeryToken()
-                                    <input type="hidden" name="id" value="${userCode}" />
-                                    <input type="hidden" name="transType" value="${item.transType}" />
-                                    <button class="btn btn-sm btn-danger mb-1 fs-6" onclick="return confirm('Are you sure you want to delete this one?')" style="width: 150px">@localizer["Delete"]</button>
-                                </form>
-                            </td>
-                            `;
+                                    <td class="align-middle text-center">${count}</td>
+                                    <td class="align-middle text-center">${item.safeNames}</td>
+                                    <td class="align-middle text-center">${actdeactFlag}</td>
+                                    <td class="align-middle text-center">${cshUsr}</td>
+                                    <td class="align-middle text-center">${item.safeSub}</td>
+                                    <td class="align-middle text-center">${item.safeMain}</td>
+                                    <td class="text-center align-middle" style="width: 325px;">
+                                    <a href="/Treasury/UserCashNo/Edit_UserCashNo/${item.userCashID}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
+                                    <form action="/Treasury/UserCashNo/Delete_UserCashNo" method="post" class="d-inline">
+        @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="${item.userCashID}" />
+                                            <button class="btn btn-sm btn-danger mb-1 fs-6" onclick="return confirm('Are you sure you want to delete this one?')" style="width: 150px">@localizer["Delete"]</button>
+                                        </form>
+                                    </td>
+                                    `;
                         userTransactions.appendChild(userTrans);
                     }
                 }

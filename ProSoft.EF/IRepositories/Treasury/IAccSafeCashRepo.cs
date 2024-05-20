@@ -1,15 +1,16 @@
 ﻿using ProSoft.EF.DTOs.Accounts;
 using ProSoft.EF.DTOs.Medical.HospitalPatData;
-using ProSoft.EF.Models.Accounts;
+using ProSoft.EF.DTOs.Treasury;
+using ProSoft.EF.Models.Treasury;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProSoft.EF.IRepositories.Accounts
+namespace ProSoft.EF.IRepositories.Treasury
 {
-    public interface IAccSafeCashRepo : IRepository<AccSafeCash,int>
+    public interface IAccSafeCashRepo : IRepository<AccSafeCash, int>
     {
         Task<List<AccSafeCashViewDTO>> GetAccSafeCashAsync(string docType, string flagType);
         Task<int> GetNewIdAsync();

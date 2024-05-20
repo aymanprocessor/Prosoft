@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ProSoft.EF.Models.Accounts;
+using ProSoft.EF.Models.Treasury;
 
 namespace ProSoft.EF.Models.Shared
 {

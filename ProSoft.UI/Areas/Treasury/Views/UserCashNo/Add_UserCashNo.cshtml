@@ -1,0 +1,120 @@
+﻿@model UserCashNoEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Add New Transaction";
+    Layout = "_Layout";
+
+    // Casting type to get all Stocks as a list
+    SelectList stocks = new SelectList(Model.treasuryNames, "SafeCode", "SafeNames");
+
+    // Casting type to get all MainAccCodes as a list
+    SelectList mainAccCodes = new SelectList(Model.MainAccCodes, "MainCode", "MainName");
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+    <h1 class="mt-4">@localizer["Add New SafeTransaction For User"] : @ViewBag.userName</h1>
+    <form method="post" asp-action="Add_StockTrans">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="SafeCode"></label>
+                    <select asp-for="SafeCode" asp-items="stocks" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="SafeCode" class="text-danger"></span>
+                </div>
+                <div class="mb-3 d-flex justify-content-center gap-2">
+                   <div style="width: 50%;">
+                        <label asp-for="ActdeactFlag"></label>
+                        <select asp-for="ActdeactFlag" class="form-control text-center">
+                            <option value="1">@localizer["Yes"]</option>
+                            <option value="0">@localizer["No"]</option>
+                        </select>
+                        <span asp-validation-for="ActdeactFlag" class="text-danger"></span>
+                   </div>
+                   <div style="width: 50%;">
+                        <label asp-for="CshUsr"></label>
+                        <select asp-for="CshUsr" class="form-control text-center">
+                            <option value="N">@localizer["No"]</option>
+                            <option value="Y">@localizer["Yes"]</option>
+                        </select>
+                        <span asp-validation-for="CshUsr" class="text-danger"></span>
+                   </div>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="MainCode"></label>
+                    <select asp-for="MainCode" asp-items="mainAccCodes" class="form-control text-center" onchange="getSubCodes('MainCode', 'SubCode')">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="MainCode" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="SubCode"></label>
+                    <select asp-for="SubCode" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="SubCode" class="text-danger"></span>
+                </div>
+            </div>
+           
+            <!------------------------------------------------------------------------------->
+            <div class="d-flex justify-content-center fw-bold"><p>@localizer["Convert To"]</p></div>
+            <!------------------------------------------------------------------------------->
+            
+            <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="MainCode2"></label>
+                    <select asp-for="MainCode2" asp-items="mainAccCodes" class="form-control text-center" onchange="getSubCodes('MainCode2', 'SubCode2')">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="MainCode2" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="SubCode2"></label>
+                    <select asp-for="SubCode2" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="SubCode2" class="text-danger"></span>
+                </div>
+            </div>
+           
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex justify-content-md-center gap-2">
+                <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add"]</button>
+                <a asp-controller="UserCashNo" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+
+    function getSubCodes(mainId, subId){
+        let mainElement = document.getElementById(mainId);
+        let subElement = document.getElementById(subId);
+        subElement.innerHTML = `<option value="">-- Choose --</option>`;
+
+        $.ajax({
+            url: `/Stocks/UserStockTransaction/GetSubCodesFromAcc/${mainElement.value}`,
+            success: function (result) {
+                console.log(result);
+                for (let item of result) {
+                    subElement.innerHTML +=
+                        `<option value="${item.subCode}">${item.subName}</option>`;
+                }
+            }
+        });
+    }
+</script>

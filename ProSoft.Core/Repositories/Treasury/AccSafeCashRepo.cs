@@ -7,7 +7,7 @@ using ProSoft.EF.DTOs.Medical.HospitalPatData;
 using ProSoft.EF.DTOs.Shared;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.DTOs.Treasury;
-using ProSoft.EF.IRepositories.Accounts;
+using ProSoft.EF.IRepositories.Treasury;
 using ProSoft.EF.Models.Accounts;
 using ProSoft.EF.Models.Medical.HospitalPatData;
 using ProSoft.EF.Models.Shared;
@@ -19,7 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProSoft.Core.Repositories.Accounts
+namespace ProSoft.Core.Repositories.Treasury
 {
     public class AccSafeCashRepo : Repository<AccSafeCash, int>, IAccSafeCashRepo
     {
@@ -40,7 +40,7 @@ namespace ProSoft.Core.Repositories.Accounts
                     .Where(obj => obj.DocType == docType && (obj.Flag == 1 || obj.Flag == 2))
                     .Select(obj => new AccSafeCashViewDTO()
                     {
-                        SafeCashId = (int)obj.SafeCashId,
+                        SafeCashId = obj.SafeCashId,
                         DocNo = (int)obj.DocNo,
                         SafeName = obj.SafeName.SafeNames,
                         DocDate = obj.DocDate,
@@ -54,7 +54,7 @@ namespace ProSoft.Core.Repositories.Accounts
                     .Where(obj => obj.DocType == docType && (obj.Flag == 1 || obj.Flag == 2 || obj.Flag == 3))
                     .Select(obj => new AccSafeCashViewDTO()
                     {
-                        SafeCashId= (int)obj.SafeCashId,
+                        SafeCashId = obj.SafeCashId,
                         DocNo = (int)obj.DocNo,
                         SafeName = obj.SafeName.SafeNames,
                         DocDate = obj.DocDate,
@@ -101,9 +101,9 @@ namespace ProSoft.Core.Repositories.Accounts
         public async Task<AccSafeCashEditAddDTO> GetEmptyPaymentReceiptAsync()
         {
             AccSafeCashEditAddDTO accSafeCashDTO = new AccSafeCashEditAddDTO();
-           
+
             List<JournalType> journalTypes = await _Context.JournalTypes.ToListAsync();
-            List<GTable> gTables= await _Context.gTables.Where(obj=>obj.Flag ==30).ToListAsync();
+            List<GTable> gTables = await _Context.gTables.Where(obj => obj.Flag == 30).ToListAsync();
             List<CostCenter> costCenters = await _Context.CostCenters.ToListAsync();
             List<SafeName> safeNames = await _Context.SafeNames.ToListAsync();
             List<AccGlobalDef> accGlobalDefs = await _Context.accGlobalDefs.ToListAsync();
@@ -145,7 +145,7 @@ namespace ProSoft.Core.Repositories.Accounts
             List<SafeName> safeNames = await _Context.SafeNames.ToListAsync();
             List<AccGlobalDef> accGlobalDefs = await _Context.accGlobalDefs.ToListAsync();
             List<AccMainCode> accMainCodes = await _Context.AccMainCodes.ToListAsync();
-            List<AccSubCode> accSubCodes = await _Context.AccSubCodes.Where(obj=>obj.MainCode== accSafeCash.MainCode).ToListAsync();
+            List<AccSubCode> accSubCodes = await _Context.AccSubCodes.Where(obj => obj.MainCode == accSafeCash.MainCode).ToListAsync();
 
             accSafeCashDTO.journalTypes = _mapper.Map<List<JournalTypeDTO>>(journalTypes);
             accSafeCashDTO.gTablels = _mapper.Map<List<GTablelDTO>>(gTables);
@@ -160,7 +160,7 @@ namespace ProSoft.Core.Repositories.Accounts
 
         public async Task EditPaymentReceiptAsync(int id, AccSafeCashEditAddDTO accSafeCashDTO)
         {
-            AccSafeCash accSafeCash = await _Context.AccSafeCashes.FirstOrDefaultAsync(obj=>obj.SafeCashId ==id);
+            AccSafeCash accSafeCash = await _Context.AccSafeCashes.FirstOrDefaultAsync(obj => obj.SafeCashId == id);
             _mapper.Map(accSafeCashDTO, accSafeCash);
             accSafeCash.DocType = "SFCIN";
             accSafeCash.MCodeDtl = 31;

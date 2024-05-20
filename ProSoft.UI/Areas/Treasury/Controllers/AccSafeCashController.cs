@@ -4,15 +4,16 @@ using ProSoft.Core.Repositories.Accounts;
 using ProSoft.Core.Repositories.Medical.HospitalPatData;
 using ProSoft.EF.DTOs.Accounts;
 using ProSoft.EF.DTOs.Medical.HospitalPatData;
-using ProSoft.EF.IRepositories.Accounts;
+using ProSoft.EF.DTOs.Treasury;
 using ProSoft.EF.IRepositories.Medical.HospitalPatData;
-using ProSoft.EF.Models.Accounts;
+using ProSoft.EF.IRepositories.Treasury;
 using ProSoft.EF.Models.Medical.HospitalPatData;
+using ProSoft.EF.Models.Treasury;
 
-namespace ProSoft.UI.Areas.Accounts.Controllers
+namespace ProSoft.UI.Areas.Treasury.Controllers
 {
     [Authorize]
-    [Area(nameof(Accounts))]
+    [Area(nameof(Treasury))]
     public class AccSafeCashController : Controller
     {
         private readonly IAccSafeCashRepo _accSafeCashRepo;

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProSoft.EF.Models.Accounts;
+using ProSoft.EF.Models.Treasury;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

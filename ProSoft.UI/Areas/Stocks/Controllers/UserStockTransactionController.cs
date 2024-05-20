@@ -19,7 +19,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
     {
         private readonly IStockEmpRepo _userStockRepo;
         private readonly IUserRepo _userRepo;
-        private readonly IMapper _mapper;
+        private readonly IMapper _mapper; 
 
         public UserStockTransactionController(IStockEmpRepo serStockRepo
             , IUserRepo userRepo, IMapper mapper)

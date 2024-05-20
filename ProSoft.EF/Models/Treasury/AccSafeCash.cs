@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using ProSoft.EF.Models.Accounts;
 using ProSoft.EF.Models.Shared;
 using ProSoft.EF.Models.Stocks;
-using ProSoft.EF.Models.Treasury;
 
-namespace ProSoft.EF.Models.Accounts;
+namespace ProSoft.EF.Models.Treasury;
 
 [Table("ACC_SAFE_CASH")]
 public partial class AccSafeCash
@@ -166,36 +166,36 @@ public partial class AccSafeCash
 
 
 
-   // [Column("G_CODE")]
-  //  public int? GCode { get; set; }
+    // [Column("G_CODE")]
+    //  public int? GCode { get; set; }
 
     [ForeignKey("EntryType")]
     [InverseProperty("AccSafeCashes")]
     public GTable? GTable { get; set; }
 
     //[Column("JOURNAL_CODE")]
-   // public int? JournalCode { get; set; }
+    // public int? JournalCode { get; set; }
 
     [ForeignKey("AccTransType")]
     [InverseProperty("AccSafeCashes")]
     public JournalType? JournalType { get; set; }
 
     // [Column("COST_CODE")]
-   // public int? CostCode { get; set; }
+    // public int? CostCode { get; set; }
 
     [ForeignKey("CostCenterCode")]
     [InverseProperty("AccSafeCashes")]
     public CostCenter? CostCenter { get; set; }
 
     //[Column("SAFE_CODE")]
-  //  public int? SAFE_CODE { get; set; }
+    //  public int? SAFE_CODE { get; set; }
 
     [ForeignKey("SafeCode")]
     [InverseProperty("AccSafeCashes")]
     public SafeName? SafeName { get; set; }
 
     //[Column("CODE_NO")]
-   // public int? CodeNo { get; set; }
+    // public int? CodeNo { get; set; }
 
     [ForeignKey("CurCode")]
     [InverseProperty("AccSafeCashes")]

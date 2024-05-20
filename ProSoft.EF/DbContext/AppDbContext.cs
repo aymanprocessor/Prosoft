@@ -121,7 +121,6 @@ namespace ProSoft.EF.DbContext
         // Accounts //
         public DbSet<AccMainCode> AccMainCodes { get; set; }
         public DbSet<AccSubCode> AccSubCodes { get; set; }
-        public DbSet<AccSafeCash> AccSafeCashes { get; set; }
         ////////////////////
         // System //
         public DbSet<EisPosting> EisPostings { get; set; }
@@ -131,6 +130,9 @@ namespace ProSoft.EF.DbContext
         public DbSet<SafeName> SafeNames { get; set; }
         public DbSet<GTable> gTables { get; set; }
         public DbSet<AccGlobalDef> accGlobalDefs { get; set; }
+        public DbSet<AccSafeCash> AccSafeCashes { get; set; }
+        public DbSet<CustCollectionsDiscount> custCollectionsDiscounts { get; set; }
+        public DbSet<UserCashNo> userCashNos { get; set; }
 
 
     }

@@ -25,7 +25,6 @@
   <ItemGroup>
     <Folder Include="Models\Medical\Analysis\" />
     <Folder Include="Models\Medical\HospitalPatData\" />
-    <Folder Include="Models\Treasury\" />
   </ItemGroup>
 
 </Project>
