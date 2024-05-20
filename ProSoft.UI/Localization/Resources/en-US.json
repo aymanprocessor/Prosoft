@@ -345,6 +345,23 @@
   "Posting of Invoices": "Posting of Invoices",
   "Posting of Treasury": "Posting of Treasury",
   "Posting of Pharmacy": "Posting of Pharmacy",
+  "Discount Percentage": "Discount Percentage",
+  "Discount Value": "Discount Value",
+  "Joining Users With Treasurys": "Joining Users With Treasurys",
+  "Sub Safe Account (Main)": "Sub Safe Account (Main)",
+  "Sub Safe Account (Sub)": "Sub Safe Account (Sub)",
+  "Sub Safe Account": "Sub Safe Account",
+  "Main Safe Account (Main)": "Main Safe Account (Main)",
+  "Main Safe Account (Sub)": "Main Safe Account (Sub)",
+  "Main Safe Account": "Main Safe Account",
+  "Posting To Safes": "Posting To Safes",
+  "Transactions of Safes for User": "Transactions of Safes for User",
+  "Convert To": "Convert To",
+  "Add New SafeTransaction For User": "Add New SafeTransaction For User",
+
+
+
+
 
 
 
@@ -437,7 +454,7 @@
   "Permission": "Permission",
   "Add New Transaction For": "Add New Transaction For",
   "User Code": "User Code",
-  "Before anything, select the transaction type and then the user": "Before anything, select the transaction type and then the user",
+  "Select the transaction type and then the user": "Select the transaction type and then the user",
   "Transaction Name": "Transaction Name",
   "Please, choose at least one transaction": "Please, choose at least one transaction",
   "Save": "Save",
@@ -483,7 +500,7 @@
   "Joining Users With Stocks and Accounts": "Joining Users With Stocks and Accounts",
   "Transactions of Stocks for User": "Transactions of Stocks for User",
   "Add New Transaction": "Add New Transaction",
-  "Before anything, select the user": "Before anything, select the user",
+  "Select the user": "Select the user",
   "Add New StockTransaction For User": "Add New StockTransaction For User",
   "Stock Is Default": "Stock Is Default",
   "Show Trans Price": "Show Trans Price",
@@ -496,4 +513,5 @@
   "Edit StockTransaction": "Edit StockTransaction",
   "Go To Medical Records": "Go To Medical Records",
   "GO TO RECORD": "GO TO RECORD",
+  "Permissions Forms": "Permissions Forms"
 }

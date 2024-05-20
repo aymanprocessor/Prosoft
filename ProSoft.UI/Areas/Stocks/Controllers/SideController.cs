@@ -9,7 +9,7 @@ using ProSoft.EF.Models.Stocks;
 namespace ProSoft.UI.Areas.Stocks.Controllers
 {
     [Authorize]
-    [Area("Stocks")]
+    [Area(nameof(Stocks))]
     public class SideController : Controller
     {
         private readonly ISideRepo _sideRepo;

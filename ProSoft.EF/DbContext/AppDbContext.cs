@@ -116,6 +116,7 @@ namespace ProSoft.EF.DbContext
         public DbSet<CustCode> CustCodes { get; set; }
         public DbSet<AdjectiveCust> AdjectiveCusts { get; set; }
         public DbSet<StockEmp> StockEmps { get; set; }
+        public DbSet<TransMaster> TransMasters { get; set; }
 
         ////////////////////
         // Accounts //
@@ -131,7 +132,5 @@ namespace ProSoft.EF.DbContext
         public DbSet<SafeName> SafeNames { get; set; }
         public DbSet<GTable> gTables { get; set; }
         public DbSet<AccGlobalDef> accGlobalDefs { get; set; }
-
-
     }
 }
