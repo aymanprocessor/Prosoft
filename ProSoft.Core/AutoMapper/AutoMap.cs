@@ -19,6 +19,8 @@ using System.Text;
 using System.Threading.Tasks;
 using ProSoft.EF.DTOs.Treasury;
 using ProSoft.EF.Models.Treasury;
+using ProSoft.EF.Models.MedicalRecords;
+using ProSoft.EF.DTOs.MedicalRecords;
 
 namespace ProSoft.Core.AutoMapper
 {
@@ -125,6 +127,17 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<TreasuryNameEditAddDTO, SafeName>().ReverseMap();
             CreateMap<AccSafeCashViewDTO, AccSafeCash>().ReverseMap();
             CreateMap<AccSafeCashEditAddDTO, AccSafeCash>().ReverseMap();
+            ////////// PatRecord ////////////////////
+            CreateMap<CoronaryAngiographyReport, CoronaryDTO>().ReverseMap();
+            CreateMap<PastHistory, PastHistoryDTO>().ReverseMap();
+            CreateMap<EcgAndEcho, EcgAndEchoDTO>().ReverseMap();
+            CreateMap<Echo, EchoDTO>().ReverseMap();
+            CreateMap<DischargeSummery, DischargeDTO>().ReverseMap();
+            CreateMap<DailyFollowUpDTO, DailyFollowUpCcuChant>().ReverseMap();
+            CreateMap<HistoryExaminationDTO, HistoryExamination>().ReverseMap();
+            CreateMap<LabReportDTO, LabReport>().ReverseMap();
+            CreateMap<MedicationDTO, MedicationAtCcu>().ReverseMap();
+            CreateMap<PciReportDTO, PciReport>().ReverseMap();
         }
     }
 }

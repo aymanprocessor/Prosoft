@@ -1,0 +1,238 @@
+﻿@model EchoDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Add Echo";
+    Layout = "_LayoutMedicalRecords";
+}
+
+<div class="container internal-scroll pt-2">
+    <h1 class="mt-4">Echo</h1>
+    <form method="post" asp-action="Add_Echo">
+        <div class="border p-3 mt-4">
+
+            @* Hidden Inputs *@
+            <input asp-for="PatId" type="hidden" value="@ViewBag.patID" />
+            <input asp-for="PatSsn" type="hidden" value="@ViewBag.nationalID" />
+
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3 me-md-4 me-auto" style="width: 60%">
+                    <label>Pt Name</label>
+                    <input class="form-control" value="@ViewBag.patName" disabled />
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="PatSsn">Patient SSN</label>
+                    <input asp-for="PatSsn" type="number" class="form-control" value="@ViewBag.nationalID" disabled />
+                    <span asp-validation-for="PatSsn" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="EntryDate">Date</label>
+                    <input asp-for="EntryDate" class="form-control" />
+                    <span asp-validation-for="EntryDate" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3 me-md-4 me-auto" style="width:60%">
+                    <label asp-for="FirstOperator">Echo Operator</label>
+                    <input asp-for="FirstOperator" class="form-control" />
+                    <span asp-validation-for="FirstOperator" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="EddCm">Edd(cm)</label>
+                    <input asp-for="EddCm" type="number" class="form-control" />
+                    <span asp-validation-for="EddCm" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EsdCm">Esd(cm)</label>
+                    <input asp-for="EsdCm" type="number" class="form-control" />
+                    <span asp-validation-for="EsdCm" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="IvsdCm">Ivsd(cm)</label>
+                    <input asp-for="IvsdCm" type="number" class="form-control" />
+                    <span asp-validation-for="IvsdCm" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="LvpwdCm">Lvpwd(cm)</label>
+                    <input asp-for="LvpwdCm" type="number" class="form-control" />
+                    <span asp-validation-for="LvpwdCm" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="Ef">EF</label>
+                    <input asp-for="Ef" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="Ef" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Fs">FS</label>
+                    <input asp-for="Fs" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="Fs" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="La">LA</label>
+                    <input asp-for="La" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="La" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Aod">AOD</label>
+                    <input asp-for="Aod" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="Aod" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="Acs">ACS</label>
+                    <input asp-for="Acs" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="Acs" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Tapse">TAPSE</label>
+                    <input asp-for="Tapse" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="Tapse" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="EARatio">E/A Ratio</label>
+                    <input asp-for="EARatio" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="EARatio" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="E">E'</label>
+                    <input asp-for="E" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="E" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3 me-md-4 me-auto" style="width: 60%">
+                    <label asp-for="EE">EE</label>
+                    <input asp-for="EE" class="form-control text-center" />
+                    <span asp-validation-for="EE" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="LeftVentricle2d">Left Ventricle (2d)</label>
+                    <input asp-for="LeftVentricle2d" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="LeftVentricle2d" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="RightVentricle2d">Right Ventricle (2d)</label>
+                    <input asp-for="RightVentricle2d" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="RightVentricle2d" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="LeftAtrium2d">Left Atrium (2d)</label>
+                    <input asp-for="LeftAtrium2d" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="LeftAtrium2d" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="RightAtrium2d">Left Atrium (2d)</label>
+                    <input asp-for="E" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="E" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="MitralValve2d">Mitral Valve (2d)</label>
+                    <input asp-for="MitralValve2d" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="MitralValve2d" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="AorticValve2d">Aortic Valve (2d)</label>
+                    <input asp-for="AorticValve2d" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="AorticValve2d" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="TricuspidValve2d">Tricuspid Valve (2d)</label>
+                    <input asp-for="TricuspidValve2d" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="TricuspidValve2d" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="PulmonaryValve2d">Pulmonary Valve (2d)</label>
+                    <input asp-for="PulmonaryValve2d" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="PulmonaryValve2d" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="MitralFlow">Mitral Flow</label>
+                    <input asp-for="MitralFlow" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="MitralFlow" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="AorticFlow">AorticFlow</label>
+                    <input asp-for="AorticFlow" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="AorticFlow" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="PulmonaryFlow">PulmonaryFlow</label>
+                    <input asp-for="PulmonaryFlow" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="PulmonaryFlow" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="TricsupidFlow">Tricsupid Flow</label>
+                    <input asp-for="TricsupidFlow" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="TricsupidFlow" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3 me-md-4 me-auto" style="width: 60%">
+                    <label asp-for="Comment1">Comment</label>
+                    <textarea asp-for="Comment1" class="form-control"></textarea>
+                    <span asp-validation-for="Comment1" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3 me-md-4 me-auto" style="width: 60%">
+                    <label asp-for="Conclusion">Conclusion</label>
+                    <textarea asp-for="Conclusion" class="form-control"></textarea>
+                    <span asp-validation-for="Conclusion" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="parent d-flex justify-content-md-center gap-2">
+                <button type="submit" class="btn btn-primary" style="width:150px">Save</button>
+                <a onclick="goTo('Echo')" class="btn btn-secondary" style="width:150px">Back</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        let ss = document.querySelector(".echo .nav-link");
+        ss.classList.add("active-link");
+    </script>
+}

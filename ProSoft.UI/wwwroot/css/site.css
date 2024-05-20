@@ -170,7 +170,7 @@ html {
     background-color: #cdcdcd;
 }
 /* For clicking on table row */
-
+/* ///////////////////////////////////////////////// */
 /* For styling Medical Records */
 #mySidebar-patRecord {
     width: 250px;
@@ -197,4 +197,34 @@ html {
         transform: translateX(100%);
     }
 }
-    /* For styling Medical Records */
+
+.internal-scroll {
+    height: calc(100vh - 70px);
+    overflow: auto;
+}
+
+.parent-record{
+    gap: 1rem !important;
+}
+
+.parent-record > div {
+    width: 50%;
+    display: flex;
+    align-items: center;
+}
+
+.parent-record label {
+    width: 140%;
+    align-self: start;
+}
+
+@media (max-width: 767px) {
+    .parent-record > div {
+        width: 100% !important;
+    }
+
+    .parent-record {
+        gap: 0px !important;
+    }
+}
+/* For styling Medical Records */

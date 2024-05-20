@@ -24,6 +24,8 @@ using ProSoft.EF.IRepositories.Treasury;
 using ProSoft.Core.Repositories.Treasury;
 using ProSoft.EF.IRepositories.Accounts;
 using ProSoft.Core.Repositories.Accounts;
+using ProSoft.EF.IRepositories.MedicalRecords;
+using ProSoft.Core.Repositories.MedicalRecords;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -95,6 +97,17 @@ builder.Services.AddScoped<ITreasuryNameRepo, TreasuryNameRepo>();
 ///////////////// Treasury /////////////
 builder.Services.AddScoped<IJournalTypeRepo, JournalTypeRepo>();
 builder.Services.AddScoped<IAccSafeCashRepo, AccSafeCashRepo>();
+////////// PatRecord ////////////////////
+builder.Services.AddScoped<ICoronaryRepo, CoronaryRepo>();
+builder.Services.AddScoped<IPastHistoryRepo, PastHistoryRepo>();
+builder.Services.AddScoped<IEcgAndEchoRepo, EcgAndEchoRepo>();
+builder.Services.AddScoped<IEchoRepo, EchoRepo>();
+builder.Services.AddScoped<IDischargeRepo, DischargeRepo>();
+builder.Services.AddScoped<IDailyFollowUpRepo, DailyFollowUpRepo>();
+builder.Services.AddScoped<IHistoryExaminationRepo, HistoryExaminationRepo>();
+builder.Services.AddScoped<ILabReportRepo, LabReportRepo>();
+builder.Services.AddScoped<IMedicationRepo, MedicationRepo>();
+builder.Services.AddScoped<IPciReportRepo, PciReportRepo>();
 
 ///For Localization
 builder.Services.AddLocalization();

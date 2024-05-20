@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProSoft.EF.DTOs.Medical.HospitalPatData;
 using ProSoft.EF.IRepositories.Medical.HospitalPatData;
 using ProSoft.EF.Models.Medical.HospitalPatData;
@@ -31,6 +32,13 @@ namespace ProSoft.UI.Areas.MedicalRecords.Controllers
         {
             List<PatViewDTO> patients = await _patientRepo.GetAllPatsAsync();
             return View(patients);
+        }
+
+        public async Task<IActionResult> GetPatient(int id)
+        {
+            Pat patient = await _patientRepo.GetByIdAsync(id);
+            var patientDTO = _mapper.Map<PatViewDTO>(patient);
+            return Json(patient);
         }
     }
 }

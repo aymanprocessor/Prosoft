@@ -167,4 +167,12 @@ public partial class Pat
     // Medical Records
     public ICollection<CoronaryAngiographyReport>? CoronaryAngiographyReports {  get; set; }
     public ICollection<DailyFollowUpCcuChant>? DailyFollowUpCcuChants {  get; set; }
+    public ICollection<PastHistory>? PastHistories {  get; set; }
+    public ICollection<EcgAndEcho>? EcgAndEchoes {  get; set; }
+    public ICollection<Echo>? Echoes {  get; set; }
+    public ICollection<DischargeSummery>? DischargeSummeries {  get; set; }
+    public ICollection<HistoryExamination>? HistoryExaminations { get; set; }
+    public ICollection<LabReport>? LabReports { get; set; }
+    public ICollection<MedicationAtCcu>? medicationAtCcus { get; set; }
+    public ICollection<PciReport>? PciReports { get; set; }
 }

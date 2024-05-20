@@ -1,0 +1,507 @@
+﻿@model List<PastHistoryDTO>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Past History";
+    Layout = "_LayoutMedicalRecords";
+    int FindIndex(PastHistoryDTO obj)
+    {
+        return Model.FindIndex(o => o.SerialHistory == obj.SerialHistory);
+    }
+}
+
+<div class="container internal-scroll pt-2">
+    <div class="patData d-flex justify-content-between align-items-center mt-4 mb-0 ">
+        <h3 class="my-0">Patient Name : @ViewBag.PatName </h3>
+        <h3 class="my-0">National Id : @ViewBag.PatSSN </h3>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mt-4 ">
+        <h3 class="header">Past History</h3>
+@*         @if (!User.IsInRole("Patient"))
+        { } *@
+        <a onclick="goTo('PastHistory', 'Add_PastHistory')" class="btn btn-sm btn-primary" style="width:150px">
+            Add
+        </a>
+    </div>
+    @foreach (var item in Model)
+    {
+        <div id="@item.SerialHistory" class="print">
+            <div class="border rounded-3 border-primary border-3 p-3 mt-4">
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3 me-md-3">
+                        <label asp-for="@item.Serial">Serial Record</label>
+                        <input asp-for="@item.Serial" disabled class="form-control" />
+                    </div>
+                </div>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3">
+                        <label asp-for="@item.EntryDate">Date</label>
+                        <input asp-for="@item.EntryDate" class="form-control" disabled />
+                    </div>
+                </div>
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.Somker" class="me-md-3"><p>Smoker</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.Somker" class="form-check-input radio-inline" type="radio" name="Somker-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.Somker" class="form-check-input radio-inline" type="radio" name="Somker-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.IvAddict" class="me-md-3"><p>IV Addict</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.IvAddict" class="form-check-input radio-inline" type="radio" name="IvAddict-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.IvAddict" class="form-check-input radio-inline" type="radio" name="IvAddict-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.Csa" class="me-md-3"><p>CSA</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.Csa" class="form-check-input radio-inline" type="radio" name="Csa-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.Csa" class="form-check-input radio-inline" type="radio" name="Csa-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.HashishAddict" class="me-md-3"><p>Hashish Addict</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.HashishAddict" class="form-check-input radio-inline" type="radio" name="HashishAddict-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.HashishAddict" class="form-check-input radio-inline" type="radio" name="HashishAddict-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.PriorCabg" class="me-md-3"><p>Prior CABG</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.PriorCabg" class="form-check-input radio-inline" type="radio" name="PriorCabg-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.PriorCabg" class="form-check-input radio-inline" type="radio" name="PriorCabg-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.TramadolAddict" class="me-md-3"><p>Tramadol Addict</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.TramadolAddict" class="form-check-input radio-inline" type="radio" name="TramadolAddict-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.TramadolAddict" class="form-check-input radio-inline" type="radio" name="TramadolAddict-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.PriorPci" class="me-md-3"><p>Prior PCI</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.PriorPci" class="form-check-input radio-inline" type="radio" name="PriorPci-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.PriorPci" class="form-check-input radio-inline" type="radio" name="PriorPci-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.Pregnant" class="me-md-3"><p>Pregnant</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.Pregnant" class="form-check-input radio-inline" type="radio" name="Pregnant-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.Pregnant" class="form-check-input radio-inline" type="radio" name="Pregnant-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.PriorMi" class="me-md-3"><p>Prior MI</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.PriorMi" class="form-check-input radio-inline" type="radio" name="PriorMi-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.PriorMi" class="form-check-input radio-inline" type="radio" name="PriorMi-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.RheumaticHeatDisease" class="me-md-3"><p>Rheumatic Heat Disease</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.RheumaticHeatDisease" class="form-check-input radio-inline" type="radio" name="RheumaticHeatDisease-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.RheumaticHeatDisease" class="form-check-input radio-inline" type="radio" name="RheumaticHeatDisease-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.Hfref" class="me-md-3"><p>HFrEF</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.Hfref" class="form-check-input radio-inline" type="radio" name="Hfref-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.Hfref" class="form-check-input radio-inline" type="radio" name="Hfref-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.Hyperthyroidism" class="me-md-3"><p>Hyperthyroidism</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.Hyperthyroidism" class="form-check-input radio-inline" type="radio" name="Hyperthyroidism-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.Hyperthyroidism" class="form-check-input radio-inline" type="radio" name="Hyperthyroidism-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.Hfpef" class="me-md-3"><p>HfpEF</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.Hfpef" class="form-check-input radio-inline" type="radio" name="Hfpef-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.Hfpef" class="form-check-input radio-inline" type="radio" name="Hfpef-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.Hypothyroidism" class="me-md-3"><p>Hypothyroidism</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.Hypothyroidism" class="form-check-input radio-inline" type="radio" name="Hypothyroidism-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.Hypothyroidism" class="form-check-input radio-inline" type="radio" name="Hypothyroidism-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.IschemicStroke" class="me-md-3"><p>Ischemic Stroke</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.IschemicStroke" class="form-check-input radio-inline" type="radio" name="IschemicStroke-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.IschemicStroke" class="form-check-input radio-inline" type="radio" name="IschemicStroke-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.ProstheticValve" class="me-md-3"><p>Prosthetic Valve</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.ProstheticValve" class="form-check-input radio-inline" type="radio" name="ProstheticValve-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.ProstheticValve" class="form-check-input radio-inline" type="radio" name="ProstheticValve-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.HemorthagicStroke" class="me-md-3"><p>Hemorthagic Stroke</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.HemorthagicStroke" class="form-check-input radio-inline" type="radio" name="HemorthagicStroke-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.HemorthagicStroke" class="form-check-input radio-inline" type="radio" name="HemorthagicStroke-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.Diabetes" class="me-md-3"><p>Diabetes</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.Diabetes" class="form-check-input radio-inline" type="radio" name="Diabetes-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.Diabetes" class="form-check-input radio-inline" type="radio" name="Diabetes-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.Tia" class="me-md-3"><p>TIA</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.Tia" class="form-check-input radio-inline" type="radio" name="Tia-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.Tia" class="form-check-input radio-inline" type="radio" name="Tia-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.Htn" class="me-md-3"><p>HTN</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.Htn" class="form-check-input radio-inline" type="radio" name="Htn-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.Htn" class="form-check-input radio-inline" type="radio" name="Htn-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.Dyslipidemia" class="me-md-3"><p>Dyslipidemia</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.Dyslipidemia" class="form-check-input radio-inline" type="radio" name="Dyslipidemia-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.Dyslipidemia" class="form-check-input radio-inline" type="radio" name="Dyslipidemia-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.ChronicAf" class="me-md-3"><p>Chronic Af</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.ChronicAf" class="form-check-input radio-inline" type="radio" name="ChronicAf-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.ChronicAf" class="form-check-input radio-inline" type="radio" name="ChronicAf-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.ProxysmaiAf" class="me-md-3"><p>Proxysmai Af</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.ProxysmaiAf" class="form-check-input radio-inline" type="radio" name="ProxysmaiAf-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.ProxysmaiAf" class="form-check-input radio-inline" type="radio" name="ProxysmaiAf-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.MalignantTumors" class="me-md-3"><p>Malignant Tumors</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.MalignantTumors" class="form-check-input radio-inline" type="radio" name="MalignantTumors-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.MalignantTumors" class="form-check-input radio-inline" type="radio" name="MalignantTumors-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.OsApnea" class="me-md-3"><p>Os Apnea</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.OsApnea" class="form-check-input radio-inline" type="radio" name="OsApnea-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.OsApnea" class="form-check-input radio-inline" type="radio" name="OsApnea-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.CkdOnMedical" class="me-md-3"><p>CKD On Medical</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.CkdOnMedical" class="form-check-input radio-inline" type="radio" name="CkdOnMedical-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.CkdOnMedical" class="form-check-input radio-inline" type="radio" name="CkdOnMedical-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.CkdOnDialysis" class="me-md-3"><p>CKD On Dialysis</p></label>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.CkdOnDialysis" class="form-check-input radio-inline" type="radio" name="CkdOnDialysis-@FindIndex(item)" value="1" disabled>
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-2">
+                            <label class="form-check-label">
+                                <input asp-for="@item.CkdOnDialysis" class="form-check-input radio-inline" type="radio" name="CkdOnDialysis-@FindIndex(item)" value="2" disabled>
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+@*                 @if (!User.IsInRole("Patient"))
+                { } *@
+                <div class="parent d-flex align-items-md-end justify-content-center" id="for-print">
+                    <div class="d-flex justify-content-evenly" style="width: 60%">
+                        <!-- PRINT -->
+                        <button onclick="printRecord(@item.SerialHistory)" class="btn btn-success">Print</button>
+                        <!-- EDIT -->
+                        <a onclick="goToEdit('PastHistory', 'Edit_PastHistory', @item.SerialHistory)" class="btn btn-primary px-3">Edit</a>
+                        <!-- DELETE -->
+                        <form asp-action="Delete_PastHistory" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@item.SerialHistory" />
+                            <input type="hidden" name="patId" value="@item.PatId" />
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item ?');">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        let ss = document.querySelector(".Past .nav-link");
+        ss.classList.add("active-link");
+    </script>
+}

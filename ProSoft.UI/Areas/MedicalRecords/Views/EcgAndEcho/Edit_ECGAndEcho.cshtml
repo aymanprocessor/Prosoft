@@ -1,0 +1,110 @@
+﻿@model EcgAndEchoDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Edit ECG AndE cho";
+    Layout = "_LayoutMedicalRecords";
+}
+
+<div class="container internal-scroll pt-2">
+    <h1 class="mt-4">ECG and Echo</h1>
+    <form method="post" asp-action="Edit_ECGAndEcho">
+        <div class="border p-3 mt-4">
+
+            @* Hidden Inputs *@
+            <input asp-for="PatId" type="hidden" />
+            <input asp-for="PatSsn" type="hidden" />
+            <input asp-for="SerialHistory" type="hidden" />
+            <input asp-for="Serial" type="hidden" />
+
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="parent d-flex align-items-md-end justify-content-center">
+                <div class="mb-3 me-md-4" style="width: 60%">
+                    <label>Pt Name</label>
+                    <input class="form-control" value="@ViewBag.patName" disabled />
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="PatSsn">Patient SSN</label>
+                    <input asp-for="PatSsn" type="number" class="form-control" disabled />
+                    <span asp-validation-for="PatSsn" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="EntryDate">Date</label>
+                    <input asp-for="EntryDate" class="form-control" />
+                    <span asp-validation-for="EntryDate" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="SerialHistory">Serial History</label>
+                    <input asp-for="SerialHistory" class="form-control" disabled />
+                    <span asp-validation-for="SerialHistory" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Serial">Serial Record</label>
+                    <input asp-for="Serial" class="form-control" disabled />
+                    <span asp-validation-for="Serial" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="RhythmOfAdmission">ECG on Admission</label>
+                    <input asp-for="RhythmOfAdmission" class="form-control" />
+                    <span asp-validation-for="RhythmOfAdmission" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="EjectionFraction">Ejection Fraction</label>
+                    <input asp-for="EjectionFraction" class="form-control" />
+                    <span asp-validation-for="EjectionFraction" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile"
+                     style="width: 60%;">
+                    <label asp-for="SwmaAtRest" class="me-md-3"><p>SWMA at rest</p></label>
+                    <div class="mb-3 mx-md-2" style="width: 20%;">
+                        <label class="form-check-label">
+                            <input asp-for="SwmaAtRest" class="form-check-input radio-inline" type="radio" name="SwmaAtRest" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 mx-md-2" style="width: 20%;">
+                        <label class="form-check-label">
+                            <input asp-for="SwmaAtRest" class="form-check-input radio-inline" type="radio" name="SwmaAtRest" value="2">
+                            No
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="Edd">EDD</label>
+                    <input asp-for="Edd" class="form-control" />
+                    <span asp-validation-for="Edd" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="Esd">ESD</label>
+                    <input asp-for="Esd" class="form-control" />
+                    <span asp-validation-for="Esd" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="parent d-flex justify-content-md-center gap-2">
+                <button type="submit" class="btn btn-success" style="width:150px">Save Changes</button>
+                <a onclick="goTo('EcgAndEcho')" class="btn btn-secondary" style="width:150px">Back</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        let ss = document.querySelector(".ECG .nav-link");
+        ss.classList.add("active-link");
+    </script>
+}

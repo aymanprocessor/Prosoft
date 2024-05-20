@@ -1,0 +1,230 @@
+﻿@model List<EchoDTO>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Echo";
+    Layout = "_LayoutMedicalRecords";
+    int FindIndex(EchoDTO obj)
+    {
+        return Model.FindIndex(o => o.SerialHistory == obj.SerialHistory);
+    }
+}
+
+<div class="container internal-scroll pt-2">
+    <div class="patData d-flex justify-content-between align-items-center mt-4 mb-0 ">
+        <h3 class="my-0">Patient Name : @ViewBag.PatName </h3>
+        <h3 class="my-0">National Id : @ViewBag.PatSSN </h3>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mt-4 ">
+        <h1 class="header">Echo</h1>
+@*         @if (!User.IsInRole("Patient"))
+        { } *@
+        <a onclick="goTo('Echo', 'Add_Echo')" class="btn btn-sm btn-primary" style="width:150px">
+            Add
+        </a>        
+    </div>
+
+    @foreach (var item in Model)
+    {
+        <div id="@item.SerialHistory" class="print">
+            <div class="border rounded-3 border-primary border-3 p-3 mt-4">
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3 ">
+                        <label asp-for="@item.EntryDate">Date</label>
+                        <input asp-for="@item.EntryDate" class="form-control" disabled />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------->
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3">
+                        <label asp-for="@item.Serial">Serial Record</label>
+                        <input asp-for="@item.Serial" disabled class="form-control" value="@(int.Parse(item.Serial.ToString()))" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3">
+                        <label asp-for="@item.FirstOperator">Echo Operator</label>
+                        <input asp-for="@item.FirstOperator" class="form-control" disabled />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3">
+                        <label asp-for="@item.EddCm">Edd(cm)</label>
+                        <input asp-for="@item.EddCm" type="number" class="form-control" disabled />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.EsdCm">Esd(cm)</label>
+                        <input asp-for="@item.EsdCm" type="number" class="form-control" disabled />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3">
+                        <label asp-for="@item.IvsdCm">Ivsd(cm)</label>
+                        <input asp-for="@item.IvsdCm" type="number" class="form-control" disabled />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.LvpwdCm">Lvpwd(cm)</label>
+                        <input asp-for="@item.LvpwdCm" type="number" class="form-control" disabled />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3">
+                        <label asp-for="@item.Ef">EF</label>
+                        <input asp-for="@item.Ef" class="form-control text-center" placeholder="0" disabled />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.Fs">FS</label>
+                        <input asp-for="@item.Fs" class="form-control text-center" placeholder="0" disabled />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3">
+                        <label asp-for="@item.La">LA</label>
+                        <input asp-for="@item.La" class="form-control text-center" placeholder="0" disabled />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.Aod">AOD</label>
+                        <input asp-for="@item.Aod" class="form-control text-center" placeholder="0" disabled />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3">
+                        <label asp-for="@item.Acs">ACS</label>
+                        <input asp-for="@item.Acs" class="form-control text-center" placeholder="0" disabled />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.Tapse">TAPSE</label>
+                        <input asp-for="@item.Tapse" class="form-control text-center" placeholder="0" disabled />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.EARatio">E/A Ratio</label>
+                        <input asp-for="@item.EARatio" class="form-control text-center" placeholder="0" disabled />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.E">E'</label>
+                        <input asp-for="@item.E" class="form-control text-center" placeholder="0" disabled />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3">
+                        <label asp-for="@item.EE">E/e</label>
+                        <input asp-for="@item.EE" class="form-control text-center" disabled />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3">
+                        <label asp-for="@item.LeftVentricle2d">Left Ventricle (2d)</label>
+                        <input asp-for="@item.LeftVentricle2d" class="form-control text-center" placeholder="0" disabled />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.RightVentricle2d">Right Ventricle (2d)</label>
+                        <input asp-for="@item.RightVentricle2d" class="form-control text-center" placeholder="0" disabled />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3">
+                        <label asp-for="@item.LeftAtrium2d">Left Atrium (2d)</label>
+                        <input asp-for="@item.LeftAtrium2d" class="form-control text-center" placeholder="0" disabled />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.RightAtrium2d">Left Atrium (2d)</label>
+                        <input asp-for="@item.E" class="form-control text-center" placeholder="0" disabled />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3">
+                        <label asp-for="@item.MitralValve2d">Mitral Valve (2d)</label>
+                        <input asp-for="@item.MitralValve2d" class="form-control text-center" placeholder="0" disabled />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.AorticValve2d">Aortic Valve (2d)</label>
+                        <input asp-for="@item.AorticValve2d" class="form-control text-center" placeholder="0" disabled />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3">
+                        <label asp-for="@item.TricuspidValve2d">Tricuspid Valve (2d)</label>
+                        <input asp-for="@item.TricuspidValve2d" class="form-control text-center" placeholder="0" disabled />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.PulmonaryValve2d">Pulmonary Valve (2d)</label>
+                        <input asp-for="@item.PulmonaryValve2d" class="form-control text-center" placeholder="0" disabled />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3">
+                        <label asp-for="@item.MitralFlow">Mitral Flow</label>
+                        <input asp-for="@item.MitralFlow" class="form-control text-center" placeholder="0" disabled />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.AorticFlow">AorticFlow</label>
+                        <input asp-for="@item.AorticFlow" class="form-control text-center" placeholder="0" disabled />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3">
+                        <label asp-for="@item.PulmonaryFlow">PulmonaryFlow</label>
+                        <input asp-for="@item.PulmonaryFlow" class="form-control text-center" placeholder="0" disabled />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.TricsupidFlow">Tricsupid Flow</label>
+                        <input asp-for="@item.TricsupidFlow" class="form-control text-center" placeholder="0" disabled />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3 w-100">
+                        <label asp-for="@item.Comment1" style="width: 40%">Comment</label>
+                        <textarea asp-for="@item.Comment1" class="form-control" disabled></textarea>
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3 w-100">
+                        <label asp-for="@item.Conclusion" style="width: 40%">Conclusion</label>
+                        <textarea asp-for="@item.Conclusion" class="form-control" disabled></textarea>
+                    </div>
+                </div>
+@*                 @if (!User.IsInRole("Patient"))
+                { } *@
+                <div class="parent d-flex align-items-md-end justify-content-center" id="for-print">
+                    <div class="d-flex justify-content-evenly" style="width: 60%">
+                        <!-- PRINT -->
+                        <button onclick="printRecord(@item.SerialHistory)" class="btn btn-success">Print</button>
+                        <!-- EDIT -->
+                        <a onclick="goToEdit('Echo', 'Edit_Echo', @item.SerialHistory)" class="btn btn-primary px-3">Edit</a>
+                        <!-- DELETE -->
+                        <form asp-action="Delete_Echo" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@item.SerialHistory" />
+                            <input type="hidden" name="patID" value="@item.PatId" />
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item ?');">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        let ss = document.querySelector(".echo .nav-link");
+        ss.classList.add("active-link");
+    </script>
+}

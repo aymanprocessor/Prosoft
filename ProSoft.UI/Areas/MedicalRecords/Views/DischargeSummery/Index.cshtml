@@ -1,0 +1,139 @@
+﻿@model List<DischargeDTO>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "DischargeSummery";
+    Layout = "_LayoutMedicalRecords";
+}
+
+<div class="container internal-scroll pt-2">
+    <div class="patData d-flex justify-content-between align-items-center mt-4 mb-0 ">
+        <h3 class="my-0">Patient Name : @ViewBag.PatName </h3>
+        <h3 class="my-0">National Id : @ViewBag.PatSSN </h3>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mt-4 ">
+        <h1 class="header">Discharge Summery</h1>
+@*         @if (!User.IsInRole("Patient"))
+        { } *@
+        <a onclick="goTo('DischargeSummery', 'Add_DischargeSummery')" class="btn btn-sm btn-primary" style="width:150px">
+            Add
+        </a>
+    </div>
+    @foreach (var item in Model)
+    {
+        <div id="@item.SerialHistory" class="print">
+            <div class="border rounded-3 border-primary border-3 p-3 mt-4">
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3">
+                        <label asp-for="@item.Serial">Serial Record</label>
+                        <input asp-for="@item.Serial" disabled class="form-control" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3">
+                        <label asp-for="@item.EntryDate">Date of Discharge</label>
+                        <input asp-for="@item.EntryDate" disabled type="date" class="form-control" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3">
+                        <label asp-for="@item.ReferingDr">Refering Dr</label>
+                        <input asp-for="@item.ReferingDr" disabled class="form-control" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3">
+                        <label asp-for="@item.ConditionAtDischarge">Condition At Discharge</label>
+                        <select asp-for="@item.ConditionAtDischarge" disabled class="form-control text-center">
+                            <option value="improvement">improvement</option>
+                            <option value="on demand">on demand</option>
+                            <option value="Death">Death</option>
+                        </select>
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3 w-100">
+                        <label asp-for="@item.CourseDuringStay" style="width: 40%">Course During Stay</label>
+                        <input asp-for="@item.CourseDuringStay" disabled class="form-control" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3 w-100">
+                        <label asp-for="@item.EchoAtDischarge" style="width: 40%">Echo At Discharge</label>
+                        <input asp-for="@item.EchoAtDischarge" disabled class="form-control" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3 w-100">
+                        <label asp-for="@item.EcgAtDischage" style="width: 40%">Ecg At Dischage</label>
+                        <input asp-for="@item.EchoAtDischarge" disabled class="form-control" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3 w-100">
+                        <label asp-for="@item.BlprAtDischarge" style="width: 40%">Blpr At Discharge</label>
+                        <input asp-for="@item.BlprAtDischarge" disabled class="form-control" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3 w-100">
+                        <label asp-for="@item.ImportantInstructionsAtDisc" style="width: 40%">Important Instructions At Disc</label>
+                        <input asp-for="@item.ImportantInstructionsAtDisc" disabled class="form-control" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3 w-100">
+                        <label asp-for="@item.FinalDiagnosis" style="width: 40%">Final Diagnosis</label>
+                        <input asp-for="@item.FinalDiagnosis" disabled class="form-control" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3 w-100">
+                        <label asp-for="@item.Prescription" style="width: 40%">Prescription</label>
+                        <input asp-for="@item.Prescription" disabled class="form-control" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start">
+                    <div class="mb-3">
+                        <label asp-for="@item.NextFollwupDate">Next Follwup Date</label>
+                        <input asp-for="@item.NextFollwupDate" disabled type="date" class="form-control" />
+                    </div>
+                </div>
+@*                 @if (!User.IsInRole("Patient"))
+                { } *@
+                <div class="parent d-flex align-items-md-end justify-content-center" id="for-print">
+                        <div class="d-flex justify-content-evenly" style="width: 60%">
+                            <!-- PRINT -->
+                            <button onclick="printRecord(@item.SerialHistory)" class="btn btn-success">Print</button>
+                            <!-- EDIT -->
+                            <a onclick="goToEdit('DischargeSummery', 'Edit_DischargeSummery', @item.SerialHistory)" class="btn btn-primary px-3">Edit</a>
+                            <!-- DELETE -->
+                            <form asp-action="Delete_DischargeSummery" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@item.SerialHistory" />
+                                <input type="hidden" name="patID" value="@item.PatId" />
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item ?');">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        let ss = document.querySelector(".Discharge .nav-link");
+        ss.classList.add("active-link");
+    </script>
+}
