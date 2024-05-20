@@ -1,0 +1,967 @@
+﻿@model PciReportDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "PCI Reports";
+    Layout = "_LayoutMedicalRecords";
+}
+<div class="container pt-2 internal-scroll">
+    <h1 class="mt-4">PCI Report</h1>
+    <form method="post" asp-action="Add_PCIReport">
+        <div class="border p-3 mt-4">
+
+            @* Hidden Inputs *@
+            <input asp-for="PatId" type="hidden" value="@ViewBag.patID" />
+            <input asp-for="PatSsn" type="hidden" value="@ViewBag.nationalID" />
+
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3 me-md-4 me-auto" style="width: 60%">
+                    <label>Pt Name</label>
+                    <input class="form-control" value="@ViewBag.patName" disabled />
+                    @* <span asp-validation-for="PastHistory" class="text-danger"></span> *@
+                </div>
+            </div>
+            <!----------------------------------------------------------------->
+            <div class="parent d-flex align-items-md-end justify-content-center reverse">
+                @*  <div class="mb-3 me-md-4">
+                <label asp-for="SerialHistory">Serial</label>
+                <input asp-for="SerialHistory" class="form-control" />
+                <span asp-validation-for="SerialHistory" class="text-danger"></span>
+                </div> *@
+                <div class="mb-3 me-md-4">
+                    <label asp-for="PatSsn">Patient SSN</label>
+                    <input asp-for="PatSsn" type="number" class="form-control" value="@ViewBag.nationalID" disabled />
+                    <span asp-validation-for="PatSsn" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EntryDate">Date</label>
+                    <input asp-for="EntryDate" type="date" class="form-control" />
+                    <span asp-validation-for="EntryDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="FirstOperator">First Operator</label>
+                    <input asp-for="FirstOperator" class="form-control" />
+                    <span asp-validation-for="FirstOperator" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="SecondOperator">Second Operator</label>
+                    <input asp-for="SecondOperator" class="form-control" />
+                    <span asp-validation-for="SecondOperator" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="TypeOfAdmission">Type Of Admission</label>
+                    <select asp-for="TypeOfAdmission" class="form-control text-center">
+                        <option value="Private">Private</option>
+                        <option value="Contract">Contract</option>
+                    </select>
+                    <span asp-validation-for="TypeOfAdmission" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="RepurtusionStrategy">Repurtusion Strategy</label>
+                    <select asp-for="RepurtusionStrategy" class="form-control text-center">
+                        <option value="thrombolytic therapy">thrombolytic therapy</option>
+                        <option value="PCI">PCI</option>
+
+                    </select>
+                    <span asp-validation-for="RepurtusionStrategy" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="AmountOfContrastPciMl">Amount Of Contrast PCI (Ml)</label>
+                    <input asp-for="AmountOfContrastPciMl" type="number" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="AmountOfContrastPciMl" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="PciAccess">PCI Access</label>
+                    <select asp-for="PciAccess" class="form-control text-center">
+                        <option value="Right femoral">Right femoral</option>
+                        <option value="Left femoral">Left femoral</option>
+                        <option value="Right Radial">Right Radial</option>
+                        <option value="Left Radial">Left Radial</option>
+                    </select>
+                    <span asp-validation-for="PciAccess" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile  me-md-4">
+                    <label asp-for="IntraAorticBalloon"><p>Intra Aortic Balloon</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="IntraAorticBalloon" class="form-check-input radio-inline" type="radio" name="IntraAorticBalloon" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="IntraAorticBalloon" class="form-check-input radio-inline" type="radio" name="IntraAorticBalloon" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="CcbLc"><p>CCB IC</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="CcbLc" class="form-check-input radio-inline" type="radio" name="CcbLc" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="CcbLc" class="form-check-input radio-inline" type="radio" name="CcbLc" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile  me-md-4">
+                    <label asp-for="AdenosineLc"><p>Adenosine IC</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="AdenosineLc" class="form-check-input radio-inline" type="radio" name="AdenosineLc" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="AdenosineLc" class="form-check-input radio-inline" type="radio" name="AdenosineLc" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="HematomaPci"><p>Hematoma PCI</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="HematomaPci" class="form-check-input radio-inline" type="radio" name="HematomaPci" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="HematomaPci" class="form-check-input radio-inline" type="radio" name="HematomaPci" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile  me-md-4">
+                    <label asp-for="GpInhibitosLc"><p>GP Inhibitos Ic</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="GpInhibitosLc" class="form-check-input radio-inline" type="radio" name="GpInhibitosLc" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="GpInhibitosLc" class="form-check-input radio-inline" type="radio" name="GpInhibitosLc" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="CinPci"><p>CIN PCI</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="CinPci" class="form-check-input radio-inline" type="radio" name="CinPci" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="CinPci" class="form-check-input radio-inline" type="radio" name="CinPci" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile  me-md-4">
+                    <label asp-for="AdrenalineLc"><p>Adrenaline IC</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="AdrenalineLc" class="form-check-input radio-inline" type="radio" name="AdrenalineLc" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="AdrenalineLc" class="form-check-input radio-inline" type="radio" name="AdrenalineLc" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="PerforationPci"><p>Perforation PCI</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="PerforationPci" class="form-check-input radio-inline" type="radio" name="PerforationPci" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="PerforationPci" class="form-check-input radio-inline" type="radio" name="PerforationPci" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile  me-md-4">
+                    <label asp-for="HeparinLc"><p>Heparin IC</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="HeparinLc" class="form-check-input radio-inline" type="radio" name="HeparinLc" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="HeparinLc" class="form-check-input radio-inline" type="radio" name="HeparinLc" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="DisectionPci"><p>Disection PCI</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="DisectionPci" class="form-check-input radio-inline" type="radio" name="DisectionPci" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="DisectionPci" class="form-check-input radio-inline" type="radio" name="DisectionPci" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile  me-md-4">
+                    <label asp-for="TridilLc"><p>Tridil IC</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="TridilLc" class="form-check-input radio-inline" type="radio" name="TridilLc" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="TridilLc" class="form-check-input radio-inline" type="radio" name="TridilLc" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="NoReflow"><p>NoRe flow</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="NoReflow" class="form-check-input radio-inline" type="radio" name="NoReflow" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="NoReflow" class="form-check-input radio-inline" type="radio" name="NoReflow" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="OutcomeOfNoReflow">Out come Of No Reflow</label>
+                    <select asp-for="OutcomeOfNoReflow" class="form-control text-center">
+                        <option value="TEMI 0">TEMI 0</option>
+                        <option value="TEMI 1">TEMI 1</option>
+                        <option value="TEMI 2">TEMI 2</option>
+                        <option value="TEMI 3">TEMI 3</option>
+                    </select>
+                    <span asp-validation-for="OutcomeOfNoReflow" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="MethodOfNoReflowManagement">Method Of No Reflow Management</label>
+                    <select asp-for="MethodOfNoReflowManagement" class="form-control text-center">
+                        <option value="intracoronary isoptin">intracoronary isoptin</option>
+                        <option value="intracoronary tridil">intracoronary tridil</option>
+                        <option value="intracoronary adrenaline">intracoronary adrenaline</option>
+                    </select>
+                    <span asp-validation-for="MethodOfNoReflowManagement" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile  me-md-4">
+                    <label asp-for="DeathPci"><p>Death PCI</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="DeathPci" class="form-check-input radio-inline" type="radio" name="DeathPci" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="DeathPci" class="form-check-input radio-inline" type="radio" name="DeathPci" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4 me-auto" style="width:60%">
+                    <label asp-for="StepOneOfPci">Step One Of Pci</label>
+                    <input asp-for="StepOneOfPci" class="form-control text-center" />
+                    <span asp-validation-for="StepOneOfPci" class="text-danger"></span>
+                </div>
+
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4 me-auto" style="width:60%">
+                    <label asp-for="Step2Pci">Step 2 PCI</label>
+                    <input asp-for="Step2Pci" class="form-control text-center" />
+                    <span asp-validation-for="Step2Pci" class="text-danger"></span>
+                </div>
+
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4 me-auto" style="width:60%">
+                    <label asp-for="Step3Pci">Step 3 PCI</label>
+                    <input asp-for="Step3Pci" class="form-control text-center" />
+                    <span asp-validation-for="Step3Pci" class="text-danger"></span>
+                </div>
+
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4 me-auto" style="width:60%">
+                    <label asp-for="Step4Pci">Step 4 PCI</label>
+                    <input asp-for="Step4Pci" class="form-control text-center" />
+                    <span asp-validation-for="Step4Pci" class="text-danger"></span>
+                </div>
+
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4 me-auto" style="width:60%">
+                    <label asp-for="Step5Pci">Step 5 PCI</label>
+                    <input asp-for="Step5Pci" class="form-control text-center" />
+                    <span asp-validation-for="Step5Pci" class="text-danger"></span>
+                </div>
+
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4 me-auto" style="width:60%">
+                    <label asp-for="Step6Pci">Step 6 PCI</label>
+                    <input asp-for="Step6Pci" class="form-control text-center" />
+                    <span asp-validation-for="Step6Pci" class="text-danger"></span>
+                </div>
+
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4 me-auto" style="width:60%">
+                    <label asp-for="Step7Pci">Step 7 PCI</label>
+                    <input asp-for="Step7Pci" class="form-control text-center" />
+                    <span asp-validation-for="Step7Pci" class="text-danger"></span>
+                </div>
+
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4 me-auto" style="width:60%">
+                    <label asp-for="Step8Pci">Step 8 PCI</label>
+                    <input asp-for="Step8Pci" class="form-control text-center" />
+                    <span asp-validation-for="Step8Pci" class="text-danger"></span>
+                </div>
+
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4 me-auto" style="width:60%">
+                    <label asp-for="DiagnosisOfPci">Diagnosis Of PCI</label>
+                    <input asp-for="DiagnosisOfPci" class="form-control text-center" />
+                    <span asp-validation-for="DiagnosisOfPci" class="text-danger"></span>
+                </div>
+
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4 me-auto" style="width:60%">
+                    <label asp-for="RecomendationPci">Recomendation PCI</label>
+                    <input asp-for="RecomendationPci" class="form-control text-center" />
+                    <span asp-validation-for="RecomendationPci" class="text-danger"></span>
+                </div>
+
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="NoOfDiseasedVesselS50">No Of Diseased Vessel(S)>50%</label>
+                    <select asp-for="NoOfDiseasedVesselS50" class="form-control text-center">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                    <span asp-validation-for="NoOfDiseasedVesselS50" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="VesselOfRevascularization">Vessel Of Revascularization</label>
+                    <select asp-for="VesselOfRevascularization" class="form-control text-center">
+                        <option value="LM">LM</option>
+                        <option value="LAD">LAD</option>
+                        <option value="LCX">LCX</option>
+                        <option value="RCA">RCA</option>
+                        <option value="Diagonal">Diagonal</option>
+                        <option value="OM">OM</option>
+                    </select>
+                    <span asp-validation-for="VesselOfRevascularization" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="Culprit">Culprit</label>
+                    <select asp-for="Culprit" class="form-control text-center">
+                        <option value="LM">LM</option>
+                        <option value="LAD">LAD</option>
+                        <option value="LCX">LCX</option>
+                        <option value="RCA">RCA</option>
+                        <option value="Diagonal">Diagonal</option>
+                        <option value="OM">OM</option>
+                    </select>
+                    <span asp-validation-for="Culprit" class="text-danger"></span>
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile  me-md-4">
+                    <label asp-for="TreatmentOfNonculprit"><p>Treatment Of Nonculprit</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="TreatmentOfNonculprit" class="form-check-input radio-inline" type="radio" name="TreatmentOfNonculprit" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="TreatmentOfNonculprit" class="form-check-input radio-inline" type="radio" name="TreatmentOfNonculprit" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="TimiFlowPre">TIMI Flow Pre</label>
+                    <select asp-for="TimiFlowPre" class="form-control text-center">
+                        <option value="1"> </option>
+                        <option value="2"> </option>
+                    </select>
+                    <span asp-validation-for="TimiFlowPre" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="LesionConfiguration">Lesion Configuration</label>
+                    <select asp-for="LesionConfiguration" class="form-control text-center">
+                        <option value="1"> </option>
+                        <option value="2"> </option>
+                    </select>
+                    <span asp-validation-for="LesionConfiguration" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile  me-md-4">
+                    <label asp-for="BifurcationalLesion"><p>Bifurcational Lesion</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="BifurcationalLesion" class="form-check-input radio-inline" type="radio" name="BifurcationalLesion" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="BifurcationalLesion" class="form-check-input radio-inline" type="radio" name="BifurcationalLesion" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="CalcificLesion"><p>Calcific Lesion</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="CalcificLesion" class="form-check-input radio-inline" type="radio" name="CalcificLesion" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="CalcificLesion" class="form-check-input radio-inline" type="radio" name="CalcificLesion" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile  me-md-4">
+                    <label asp-for="TrifurcationalLesion"><p>Trifurcational Lesion</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="TrifurcationalLesion" class="form-check-input radio-inline" type="radio" name="TrifurcationalLesion" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="TrifurcationalLesion" class="form-check-input radio-inline" type="radio" name="TrifurcationalLesion" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="Cto"><p>CTO</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="Cto" class="form-check-input radio-inline" type="radio" name="Cto" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="Cto" class="form-check-input radio-inline" type="radio" name="Cto" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile  me-md-4">
+                    <label asp-for="TortiousVessel"><p>Tortious Vessel</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="TortiousVessel" class="form-check-input radio-inline" type="radio" name="TortiousVessel" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="TortiousVessel" class="form-check-input radio-inline" type="radio" name="TortiousVessel" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="TimiFlowPost">Timi Flow Post</label>
+                    <select asp-for="TimiFlowPost" class="form-control text-center">
+                        <option value="1"> </option>
+                        <option value="2"> </option>
+                    </select>
+                    <span asp-validation-for="TimiFlowPost" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="TypeOfWire">Type Of Wire</label>
+                    <select asp-for="TypeOfWire" class="form-control text-center">
+                        <option value="1"> </option>
+                        <option value="2"> </option>
+                    </select>
+                    <span asp-validation-for="TypeOfWire" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4 me-auto" style="width:60%">
+                    <label asp-for="HeavnessOfWire">Heavness Of Wire</label>
+                    <select asp-for="HeavnessOfWire" class="form-control text-center">
+                        <option value="1"> </option>
+                        <option value="2"> </option>
+                    </select>
+                    <span asp-validation-for="HeavnessOfWire" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile  me-md-4">
+                    <label asp-for="BuddyWire"><p>Buddy Wire</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="BuddyWire" class="form-check-input radio-inline" type="radio" name="BuddyWire" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="BuddyWire" class="form-check-input radio-inline" type="radio" name="BuddyWire" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="ThrombusAspiration"><p>Thrombus Aspiration</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="ThrombusAspiration" class="form-check-input radio-inline" type="radio" name="ThrombusAspiration" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="ThrombusAspiration" class="form-check-input radio-inline" type="radio" name="ThrombusAspiration" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile  me-md-4">
+                    <label asp-for="FailedWiring"><p>Failed Wiring</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="FailedWiring" class="form-check-input radio-inline" type="radio" name="FailedWiring" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="FailedWiring" class="form-check-input radio-inline" type="radio" name="FailedWiring" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="AnchorBalloon"><p>Anchor Balloon</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="AnchorBalloon" class="form-check-input radio-inline" type="radio" name="AnchorBalloon" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="AnchorBalloon" class="form-check-input radio-inline" type="radio" name="AnchorBalloon" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <!------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile  me-md-4">
+                    <label asp-for="Predilatation"><p>Predilatation</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="Predilatation" class="form-check-input radio-inline" type="radio" name="Predilatation" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="Predilatation" class="form-check-input radio-inline" type="radio" name="Predilatation" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-2">
+                    <label asp-for="MaxPressureOfBalloon">Max Pressure Of Balloon</label>
+                    <input asp-for="MaxPressureOfBalloon" class="form-control text-center" />
+                    <span asp-validation-for="MaxPressureOfBalloon" class="text-danger"></span>
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile  me-md-4">
+                    <label asp-for="Postdilatation"><p>Postdilatation</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="Postdilatation" class="form-check-input radio-inline" type="radio" name="Postdilatation" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="Postdilatation" class="form-check-input radio-inline" type="radio" name="Postdilatation" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <!------------------------------------------------------------------------->
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="MaxPressureOfPostBalloon">max_pressure_of_post_balloon</label>
+                    <input asp-for="MaxPressureOfPostBalloon" class="form-control text-center" />
+                    <span asp-validation-for="MaxPressureOfPostBalloon" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DiameterOfPredilatation">Diameter Of Predilatation</label>
+                    <input asp-for="DiameterOfPredilatation" class="form-control text-center" />
+                    <span asp-validation-for="DiameterOfPredilatation" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4 me-auto" style="width:60%">
+                    <label asp-for="DiameterOfPostdilatationBal">Diameter Of Postdilatation Ballon</label>
+                    <input asp-for="DiameterOfPostdilatationBal" class="form-control text-center" />
+                    <span asp-validation-for="DiameterOfPostdilatationBal" class="text-danger"></span>
+                </div>
+
+            </div>
+            <!------------------------------------------------------------------------->
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="TypeStent">Type Stent</label>
+                    <input asp-for="TypeStent" class="form-control text-center" />
+                    <span asp-validation-for="TypeStent" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Type4thStent">Typethn 4th_Stent</label>
+                    <input asp-for="Type4thStent" type="number" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="Type4thStent" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="DiameterOfStent">Diameter Of Stent</label>
+                    <input asp-for="DiameterOfStent" class="form-control text-center" />
+                    <span asp-validation-for="DiameterOfStent" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DiameterOf4thStent">Diameter Of 4th Stent</label>
+                    <input asp-for="DiameterOf4thStent" class="form-control text-center" />
+                    <span asp-validation-for="DiameterOf4thStent" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------->
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="LenghtOfStent">Lenght Of Stent</label>
+                    <input asp-for="LenghtOfStent" class="form-control text-center" />
+                    <span asp-validation-for="LenghtOfStent" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="LenghtOf4thStent">Lenght Of 4th Stent</label>
+                    <input asp-for="LenghtOf4thStent" class="form-control text-center" />
+                    <span asp-validation-for="LenghtOf4thStent" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="Type2ndStent">Type 2nd_Stent</label>
+                    <input asp-for="Type2ndStent" class="form-control text-center" />
+                    <span asp-validation-for="Type2ndStent" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Type5thStent">Type 5th_Stent</label>
+                    <input asp-for="Type5thStent" class="form-control text-center" />
+                    <span asp-validation-for="Type5thStent" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------->
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="DiameterOf2ndStent">Diameter Of 2nd Stent</label>
+                    <input asp-for="DiameterOf2ndStent" class="form-control text-center" />
+                    <span asp-validation-for="DiameterOfStent" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DiameterOf5thStent">Diameter Of 5th Stent</label>
+                    <input asp-for="DiameterOf5thStent" class="form-control text-center" />
+                    <span asp-validation-for="DiameterOf5thStent" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------->
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="LenghtOf2ndStent">Lenght Of 2nd Stent</label>
+                    <input asp-for="LenghtOf2ndStent" class="form-control text-center" />
+                    <span asp-validation-for="LenghtOf2ndStent" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="LenghtOf5thStent">Lenght Of 5th Stent</label>
+                    <input asp-for="LenghtOf5thStent" class="form-control text-center" />
+                    <span asp-validation-for="LenghtOf5thStent" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------->
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="Type3rdStent">Type 3rd_stent</label>
+                    <input asp-for="Type3rdStent" class="form-control text-center" />
+                    <span asp-validation-for="Type3rdStent" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Type6thStent">Type 6th_stent</label>
+                    <input asp-for="Type6thStent" class="form-control text-center" />
+                    <span asp-validation-for="Type6thStent" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="DiameterOf3rdStent">Diameter Of 3rd Stent</label>
+                    <input asp-for="DiameterOf3rdStent" class="form-control text-center" />
+                    <span asp-validation-for="DiameterOf3rdStent" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DiameterOf6thStent">Diameter Of 6th Stent</label>
+                    <input asp-for="DiameterOf6thStent" class="form-control text-center" />
+                    <span asp-validation-for="DiameterOf6thStent" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------->
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="LenghtOf3rdStent">Lenght Of 3rd Stent</label>
+                    <input asp-for="LenghtOf3rdStent" class="form-control text-center" />
+                    <span asp-validation-for="LenghtOf3rdStent" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="LenghtOf6thStent">Lenght Of 6th Stent</label>
+                    <input asp-for="LenghtOf6thStent" class="form-control text-center" />
+                    <span asp-validation-for="LenghtOf6thStent" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile  me-md-4">
+                    <label asp-for="OverlappInMainVessel"><p>Overlapp In Main Vessel</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="OverlappInMainVessel" class="form-check-input radio-inline" type="radio" name="OverlappInMainVessel" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="OverlappInMainVessel" class="form-check-input radio-inline" type="radio" name="OverlappInMainVessel" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="BifurcationalTechnique"><p>Anchor Balloon</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="BifurcationalTechnique" class="form-check-input radio-inline" type="radio" name="BifurcationalTechnique" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="BifurcationalTechnique" class="form-check-input radio-inline" type="radio" name="BifurcationalTechnique" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="parent d-flex justify-content-md-center gap-2 ">
+                <button type="submit" class="btn btn-primary" style="width:150px">Add</button>
+                <a onclick="goTo('PciReport')" class="btn btn-secondary" style="width:150px">Back</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    let ss = document.querySelector(".Pci .nav-link");
+    ss.classList.add("active-link");
+</script>
+
+

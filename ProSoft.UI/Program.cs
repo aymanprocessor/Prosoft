@@ -24,6 +24,8 @@ using ProSoft.EF.IRepositories.Treasury;
 using ProSoft.Core.Repositories.Treasury;
 using ProSoft.EF.IRepositories.Accounts;
 using ProSoft.Core.Repositories.Accounts;
+using ProSoft.EF.IRepositories.MedicalRecords;
+using ProSoft.Core.Repositories.MedicalRecords;
 
 
 var builder = WebApplication.CreateBuilder(args);

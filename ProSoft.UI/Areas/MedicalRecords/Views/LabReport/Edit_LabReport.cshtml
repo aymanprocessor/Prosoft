@@ -1,0 +1,262 @@
+﻿@model LabReportDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Add Lab Reports";
+    Layout = "_LayoutMedicalRecords";
+}
+<div class="container pt-2 internal-scroll">
+    <h1 class="mt-4">Lab Reports</h1>
+    <form method="post" asp-action="Edit_LabReport">
+        <div class="border p-3 mt-4">
+
+            @* Hidden Inputs *@
+            <input asp-for="PatId" type="hidden" />
+            <input asp-for="PatSsn" type="hidden" />
+            <input asp-for="SerialHistory" type="hidden" />
+            <input asp-for="Serial" type="hidden" />
+
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3 me-md-4 me-auto" style="width: 60%">
+                    <label>Pt Name</label>
+                    <input class="form-control" value="@ViewBag.patName" disabled />
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3 me-md-4 ">
+                    <label asp-for="PatSsn">Patient SSN</label>
+                    <input asp-for="PatSsn" type="number" class="form-control" disabled />
+                    <span asp-validation-for="PatSsn" class="text-danger"></span>
+
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EntryDate">Date</label>
+                    <input asp-for="EntryDate" type="date" class="form-control" />
+                    <span asp-validation-for="EntryDate" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------->
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="SerialHistory">Serial History</label>
+                    <input asp-for="SerialHistory" class="form-control" disabled />
+                    <span asp-validation-for="SerialHistory" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Serial">Serial Record</label>
+                    <input asp-for="Serial" class="form-control" disabled />
+                    <span asp-validation-for="Serial" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="Trop">Trop</label>
+                    <input asp-for="Trop" type="number" class="form-control" />
+                    <span asp-validation-for="Trop" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Ckmb">CKMB</label>
+                    <input asp-for="Ckmb" type="number" class="form-control" />
+                    <span asp-validation-for="Ckmb" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="Ldh">LDH</label>
+                    <input asp-for="Ldh" type="number" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="Ldh" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Hb">Hb</label>
+                    <input asp-for="Hb" type="number" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="Hb" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="Platelet">Platelet</label>
+                    <input asp-for="Platelet" type="number" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="Platelet" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Wbcs">WBCS</label>
+                    <input asp-for="Wbcs" type="number" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="Wbcs" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="Bil">Bil</label>
+                    <input asp-for="Bil" type="number" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="Bil" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Alt">ALT</label>
+                    <input asp-for="Alt" type="number" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="Alt" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="Ast">AST</label>
+                    <input asp-for="Ast" type="number" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="Ast" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Alb">Alb</label>
+                    <input asp-for="Alb" type="number" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="Alb" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="Ldl">LDL</label>
+                    <input asp-for="Ldl" type="number" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="Ldl" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Hdl">HDL</label>
+                    <input asp-for="Hdl" type="number" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="Hdl" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="Tg">TG</label>
+                    <input asp-for="Tg" type="number" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="Tg" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Cholesterol">Cholesterol</label>
+                    <input asp-for="Cholesterol" type="number" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="Cholesterol" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="CrBeforeAngioplasty">Cr BeforeAngioplasty</label>
+                    <input asp-for="CrBeforeAngioplasty" type="number" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="CrBeforeAngioplasty" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Cr48HAfterAngioplasty">Cr 48 H After Angioplasty</label>
+                    <input asp-for="Cr48HAfterAngioplasty" type="number" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="Cr48HAfterAngioplasty" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="Urea">Urea</label>
+                    <input asp-for="Urea" type="number" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="Urea" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Inr">INR</label>
+                    <input asp-for="Inr" type="number" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="Inr" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="K">K</label>
+                    <input asp-for="K" type="number" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="K" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Na">Na</label>
+                    <input asp-for="Na" type="number" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="Na" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="Mg">Mg</label>
+                    <input asp-for="Mg" type="number" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="Mg" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Ca">Ca</label>
+                    <input asp-for="Ca" type="number" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="Ca" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="HcvAb">Hcv Ab</label>
+                    <select asp-for="HcvAb" class="form-control text-center">
+                        <option value="0">trop</option>
+                        <option value="+ ve">+ ve</option>
+                        <option value="- ve">- ve</option>
+                    </select>
+                    <span asp-validation-for="HcvAb" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Hbvsag">HBVsAG</label>
+                    <select asp-for="Hbvsag" class="form-control text-center">
+                        <option value="+ ve">+ ve</option>
+                        <option value="- ve">- ve</option>
+                    </select>
+                    <span asp-validation-for="Hbvsag" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4 me-auto" style="width:60%">
+                    <label asp-for="Hb">Hb AIC</label>
+                    <input asp-for="Hb" type="number" class="form-control text-center" placeholder="0" />
+                    <span asp-validation-for="Hb" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3 me-md-4 me-auto" style="width:60%">
+                    <label asp-for="Notes">Notes</label>
+                    <textarea asp-for="Notes" class="form-control"></textarea>
+                    <span asp-validation-for="Notes" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="parent d-flex justify-content-md-center gap-2">
+                <button type="submit" class="btn btn-success" style="width:150px">Save Changes</button>
+                <a onclick="goTo('LabReport')" class="btn btn-secondary" style="width:150px">Back</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    let ss = document.querySelector(".Lab .nav-link");
+    ss.classList.add("active-link");
+</script>
+
+

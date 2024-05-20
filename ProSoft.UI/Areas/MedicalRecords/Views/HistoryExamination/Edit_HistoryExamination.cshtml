@@ -1,0 +1,291 @@
+﻿@model HistoryExaminationDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Edit History And Examination";
+    Layout = "_LayoutMedicalRecords";
+}
+<div class="container pt-2 internal-scroll">
+    <h1 class="mt-4">History & Examination</h1>
+    <form method="post" asp-action="Edit_HistoryExamination">
+        <div class="border p-3 mt-4">
+
+            @* Hidden Inputs *@
+            <input asp-for="PatId" type="hidden" />
+            <input asp-for="PatSsn" type="hidden" />
+            <input asp-for="SerialHistory" type="hidden" />
+            <input asp-for="Serial" type="hidden" />
+
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3 me-md-4 me-auto">
+                    <label>Pt Name</label>
+                    <input class="form-control" value="@ViewBag.patName" disabled />
+                    @* <span asp-validation-for="PastHistory" class="text-danger"></span> *@
+                </div>
+                <div class="mb-3">
+                    <label asp-for="PatSsn">Patient SSN</label>
+                    <input asp-for="PatSsn" type="number" class="form-control" disabled />
+                    <span asp-validation-for="PatSsn" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------->
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile ">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="SerialHistory">Serial History</label>
+                    <input asp-for="SerialHistory" class="form-control" disabled />
+                    <span asp-validation-for="SerialHistory" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Serial">Serial Record</label>
+                    <input asp-for="Serial" class="form-control" disabled />
+                    <span asp-validation-for="Serial" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="EntryDate">Date</label>
+                    <input asp-for="EntryDate" type="date" class="form-control" />
+                    <span asp-validation-for="EntryDate" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="BelongingToSubSpeciality">Belonging To Sub Speciality</label>
+                    <input asp-for="BelongingToSubSpeciality" type="number" class="form-control" />
+                    <span asp-validation-for="BelongingToSubSpeciality" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="ComplaintAndPresentHistory">Complaint And Present History</label>
+                    <input asp-for="ComplaintAndPresentHistory" class="form-control" />
+                    <span asp-validation-for="ComplaintAndPresentHistory" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="PastHistory">Past History</label>
+                    <input asp-for="PastHistory" class="form-control" />
+                    <span asp-validation-for="PastHistory" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="CardiacExamination">Cardiac Examination</label>
+                    <input asp-for="CardiacExamination" class="form-control" />
+                    <span asp-validation-for="CardiacExamination" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="PreviousAdmissionWithAcs">Previous Admission With Acs</label>
+                    <select asp-for="PreviousAdmissionWithAcs" class="form-control text-center">
+                        <option value="UA">UA</option>
+                        <option value="STEMI">STEMI</option>
+                        <option value="NON STEMI">NON STEMI</option>
+                    </select>
+                    <span asp-validation-for="PreviousAdmissionWithAcs" class="text-danger"></span>
+                </div>
+
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="PreviousAngioResults">Previous Angio Results</label>
+                    <input asp-for="PreviousAngioResults" class="form-control" />
+                    <span asp-validation-for="PreviousAngioResults" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="PreviousExersiseTest">Previous ExersiseTest</label>
+                    <input asp-for="PreviousExersiseTest" class="form-control" />
+                    <span asp-validation-for="PreviousExersiseTest" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3 me-md-4 me-auto" style="width: 60%">
+                    <label asp-for="GeneralExamination">General Examination</label>
+                    <input asp-for="GeneralExamination" class="form-control" />
+                    <span asp-validation-for="GeneralExamination" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="Weight">Weight</label>
+                    <input asp-for="Weight" type="number" class="form-control" />
+                    <span asp-validation-for="Weight" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Height">Height</label>
+                    <input asp-for="Height" type="number" class="form-control" />
+                    <span asp-validation-for="Height" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="SytolicBloodPressure">Sytolic Blood Pressure</label>
+                    <input asp-for="SytolicBloodPressure" type="number" class="form-control" />
+                    <span asp-validation-for="SytolicBloodPressure" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DiastolicBloodPressure">Diastolic Blood Pressure</label>
+                    <input asp-for="DiastolicBloodPressure" type="number" class="form-control" />
+                    <span asp-validation-for="DiastolicBloodPressure" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="Temp">Temp</label>
+                    <input asp-for="Temp" type="number" class="form-control" />
+                    <span asp-validation-for="Temp" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="RespRate">RespRate</label>
+                    <input asp-for="RespRate" type="number" class="form-control" />
+                    <span asp-validation-for="RespRate" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4 me-auto">
+                    <label asp-for="OxygenSat">Oxygen Sat</label>
+                    <input asp-for="OxygenSat" type="number" class="form-control" />
+                    <span asp-validation-for="OxygenSat" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EcgExamination">ECG Examination</label>
+                    <input asp-for="EcgExamination" class="form-control" />
+                    <span asp-validation-for="EcgExamination" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="EchoAdmission">Echo Admission</label>
+                    <input asp-for="EchoAdmission" class="form-control" />
+                    <span asp-validation-for="EchoAdmission" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="ProvisionalDiagnosis">Provisional Diagnosis</label>
+                    <input asp-for="ProvisionalDiagnosis" class="form-control" />
+                    <span asp-validation-for="ProvisionalDiagnosis" class="text-danger"></span>
+                </div>
+            </div>
+
+            <p class="parent d-flex align-items-md-end justify-content-center my-mobile ">STEMI Data</p>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="DoorToBalloonH">Door To BalloonH</label>
+                    <input asp-for="DoorToBalloonH" type="number" class="form-control" />
+                    <span asp-validation-for="DoorToBalloonH" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="SympToDoorH">Symp To Door (H)</label>
+                    <input asp-for="SympToDoorH" type="number" class="form-control" />
+                    <span asp-validation-for="SympToDoorH" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="KillipClass">Killip Class</label>
+                    <select asp-for="KillipClass" class="form-control text-center">
+                        <option value="1">Select1</option>
+                        <option value="2">Select2</option>
+                    </select>
+                    <span asp-validation-for="KillipClass" class="text-danger"></span>
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="CardiacArrestInPresentation"><p>Cardiac Arrest In Presentation</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="CardiacArrestInPresentation" class="form-check-input radio-inline" type="radio" name="CardiacArrestInPresentation" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="CardiacArrestInPresentation" class="form-check-input radio-inline" type="radio" name="CardiacArrestInPresentation" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile  me-md-4">
+                    <label asp-for="MechanicalComplicationOfMi"><p>Mechanical Complication Of MI</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="MechanicalComplicationOfMi" class="form-check-input radio-inline" type="radio" name="MechanicalComplicationOfMi" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="MechanicalComplicationOfMi" class="form-check-input radio-inline" type="radio" name="MechanicalComplicationOfMi" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="ThrombolyticTherapy"><p>Thrombolytic Therapy</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="ThrombolyticTherapy" class="form-check-input radio-inline" type="radio" name="ThrombolyticTherapy" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="ThrombolyticTherapy" class="form-check-input radio-inline" type="radio" name="ThrombolyticTherapy" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3 me-md-4 me-auto" style="width: 60%">
+                    <label asp-for="LocalizationOfMi">Localization Of MI</label>
+                    <select asp-for="LocalizationOfMi" class="form-control text-center">
+                        <option value="1">Anterior</option>
+                        <option value="2">Inferior</option>
+                        <option value="3">Postrior</option>
+                        <option value="4">Lateral</option>
+                    </select>
+                    <span asp-validation-for="LocalizationOfMi" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="parent d-flex justify-content-md-center gap-2">
+                <button type="submit" class="btn btn-success" style="width:150px">Save Changes</button>
+                <a onclick="goTo('HistoryExamination')" class="btn btn-secondary" style="width:150px">Back</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    let ss = document.querySelector(".History .nav-link");
+    ss.classList.add("active-link");
+</script>
+
+

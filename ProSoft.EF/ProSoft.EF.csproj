@@ -23,10 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-<<<<<<< HEAD
-=======
-    <Folder Include="DTOs\MedicalRecords\" />
->>>>>>> d3a05bda6330e2a3a11d86323032b9194868e3f0
     <Folder Include="Models\Medical\Analysis\" />
     <Folder Include="Models\Medical\HospitalPatData\" />
     <Folder Include="Models\Treasury\" />

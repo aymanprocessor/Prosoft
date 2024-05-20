@@ -42,7 +42,7 @@
                         </a>
                     </li>
                     <li class="nav-item History my-1">
-                        <a onclick="goTo('HistoryAndExamination')" class="nav-link text-white">
+                        <a onclick="goTo('HistoryExamination')" class="nav-link text-white">
                             <span class="ms-1  d-sm-inline">History & Examination</span>
                         </a>
                     </li>
@@ -52,7 +52,7 @@
                         </a>
                     </li>
                     <li class="nav-item Lab my-1">
-                        <a onclick="goTo('LabReports')" class="nav-link text-white">
+                        <a onclick="goTo('LabReport')" class="nav-link text-white">
                             <span class="ms-1  d-sm-inline">Lab Reports</span>
                         </a>
                     </li>
@@ -67,41 +67,26 @@
                         </a>
                     </li>
                     <li class="nav-item Coronary my-1">
-                        @*                         <a asp-area="Medical" asp-controller="PatRecord" asp-action="CoronaryAngiographyReport" class="nav-link   text-white">
-                        <span class="ms-1  d-sm-inline">Coronary angiography Report</span>
-                        </a> *@
                         <a onclick="goTo('CoronaryAngiographyReport')" class="nav-link text-white">
                             <span class="ms-1  d-sm-inline">Coronary angiography Report</span>
                         </a>
                     </li>
                     <li class="nav-item Pci">
-                        @*                         <a asp-area="Medical" asp-controller="PatRecord" asp-action="PCTReport" class="nav-link   text-white">
-                        <span class="ms-1  d-sm-inline">PCT Report</span>
-                        </a> *@
-                        <a onclick="goTo('PCTReport')" class="nav-link text-white">
-                            <span class="ms-1  d-sm-inline">PCT Report</span>
+                        <a onclick="goTo('PciReport')" class="nav-link text-white">
+                            <span class="ms-1  d-sm-inline">PCI Report</span>
                         </a>
                     </li>
                     <li class="nav-item echo my-1">
-                        @*                         <a asp-area="Medical" asp-controller="PatRecord" asp-action="Echo" class="nav-link   text-white">
-                        <span class="ms-1  d-sm-inline">Echo</span>
-                        </a> *@
                         <a onclick="goTo('Echo')" class="nav-link text-white">
                             <span class="ms-1  d-sm-inline">Echo</span>
                         </a>
                     </li>
                     <li class="nav-item Discharge my-1">
-                        @*                         <a asp-area="Medical" asp-controller="PatRecord" asp-action="DischargeSummery" class="nav-link   text-white">
-                        <span class="ms-1  d-sm-inline">Discharge Summery</span>
-                        </a> *@
                         <a onclick="goTo('DischargeSummery')" class="nav-link text-white">
                             <span class="ms-1  d-sm-inline">Discharge Summery</span>
                         </a>
                     </li>
                     <li class="nav-item Daily my-1">
-                        @*                         <a asp-area="Medical" asp-controller="PatRecord" asp-action="DailyFollowUpCCUChant" class="nav-link   text-white">
-                        <span class="ms-1  d-sm-inline">Daily follow up CCU chant</span>
-                        </a> *@
                         <a onclick="goTo('DailyFollowUpCCUChant')" class="nav-link text-white">
                             <span class="ms-1 d-sm-inline">Daily follow up CCU chant</span>
                         </a>
@@ -115,18 +100,13 @@
 
         </div>
 
-
-@*         <div class="link-content py-3 position-relative" style="flex: 1;">
-            <button class="toggler btn btn-secondary rounded-4 position-absolute" onclick="toggleNav()">☰</button>
-            @RenderBody()
-        </div> *@
         <div class="content pb-3 position-relative" style="flex: 1;">
             <div class="d-flex justify-content-between align-items-center gap-2 p-2 shadow-sm rounded">
                 <button class="toggler btn btn-secondary rounded-4" onclick="toggleNav()">☰</button>
                 <span class="fw-bold text-capitalize">@User.Identity.Name</span>
                 <span class="fw-bold"> / @F_Year</span>
                 <div class="d-flex align-items-center gap-2 ms-auto">
-                    <a asp-action="Logout" asp-controller="Account" class="btn btn-secondary">Log out</a>
+                    <a asp-area="" asp-action="Logout" asp-controller="Account" class="btn btn-secondary">Log out</a>
                 </div>
             </div>
             @RenderBody()
@@ -150,48 +130,30 @@
             overlay.classList.toggle("lay-active");
         }
 
-        function goTo(action) {
+        function goTo(controller, action = "Index") {
             const patient = JSON.parse(localStorage.getItem("Current-Patient"));
-            window.location.href = `/Medical/PatRecord/${action}/${patient.patId}`;
+            window.location.href = `/MedicalRecords/${controller}/${action}/${patient.patId}`;
         }
 
-        function goToEdit(action, recordPK) {
+        function goToEdit(controller, action, recordPK) {
             const patient = JSON.parse(localStorage.getItem("Current-Patient"));
-            window.location.href = `/Medical/PatRecord/${action}/${patient.patId}?record=${recordPK}`;
+            window.location.href = `/MedicalRecords/${controller}/${action}/${patient.patId}?record=${recordPK}`;
         }
-
 
         function editDemog(action) {
             const patient = JSON.parse(localStorage.getItem("Current-Patient"));
             window.location.href = `/Medical/PatRecord/${action}/${patient.patId}`;
         }
 
-        function deleteMe(e) {
-            e.preventDefault();
-            const myConfirm = confirm('Are you sure you want to delete this item ?');
-
-            if (myConfirm) {
-                console.log(e.target.parentElement);
-                const deleteForm = e.target.parentElement;
-                // console.log(deleteForm.action);
-
-                const patIdInput = e.target.previousElementSibling;
-                const patient = JSON.parse(localStorage.getItem("Current-Patient"));
-                patIdInput.value = patient.patId;
-
-                // console.log(patIdInput.value);
-                deleteForm.submit();
-            }
-        }
-
         function printRecord(id) {
             var printContent = document.getElementById(id);
             let header = document.querySelector(".header");
+            let patData = document.querySelector(".patData");
 
             var originalContent = document.body.innerHTML;
 
             printContent.querySelector("#for-print").style.visibility = "hidden";
-            document.body.innerHTML = header.outerHTML + printContent.outerHTML;
+            document.body.innerHTML = patData.outerHTML + header.outerHTML + printContent.outerHTML;
             window.print();
 
             document.body.innerHTML = originalContent;

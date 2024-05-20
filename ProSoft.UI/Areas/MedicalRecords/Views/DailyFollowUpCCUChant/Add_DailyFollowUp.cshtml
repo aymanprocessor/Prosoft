@@ -1,0 +1,165 @@
+﻿@model DailyFollowUpDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Add Daily Follow Up CCU Chant";
+    Layout = "_LayoutMedicalRecords";
+}
+<div class="container pt-2 internal-scroll">
+    <h1 class="mt-4">Daily Follow Up CCU Chant</h1>
+    <form method="post" asp-action="Add_DailyFollowUp">
+        <div class="border p-3 mt-4">
+
+            @* Hidden Inputs *@
+            <input asp-for="PatId" type="hidden" value="@ViewBag.patID" />
+            <input asp-for="PatSsn" type="hidden" value="@ViewBag.nationalID" />
+
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="parent d-flex align-items-md-end justify-content-center">
+                <div class="mb-3 me-md-4">
+                    <label>Pt Name</label>
+                    <input class="form-control" value="@ViewBag.patName" disabled />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="PatSsn">Patient SSN</label>
+                    <input asp-for="PatSsn" type="number" class="form-control" value="@ViewBag.nationalID" disabled />
+                    <span asp-validation-for="PatSsn" class="text-danger"></span>
+                </div>
+            </div>
+            <!----------------------------------------------------------------------->
+            @*  <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+            <div class="mb-3 me-md-4">
+
+            </div>
+            <div class="mb-3">
+            <label asp-for="SerialHistory">Serial</label>
+            <input asp-for="SerialHistory" class="form-control" />
+            <span asp-validation-for="SerialHistory" class="text-danger"></span>
+            </div>
+            </div> *@
+            <!----------------------------------------------------------------------->
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="EntryDate">Date</label>
+                    <input asp-for="EntryDate" class="form-control" />
+                    <span asp-validation-for="EntryDate" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="CurrentCO">Current C/O</label>
+                    <input asp-for="CurrentCO" class="form-control" />
+                    <span asp-validation-for="CurrentCO" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="Blpr">Blpr</label>
+                    <input asp-for="Blpr" class="form-control" />
+                    <span asp-validation-for="Blpr" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="ConsciousLevel">Conscious Level</label>
+                    <input asp-for="ConsciousLevel" class="form-control" />
+                    <span asp-validation-for="ConsciousLevel" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="LowerLimbEdema">Lower limb edema</label>
+                    <input asp-for="LowerLimbEdema" class="form-control" />
+                    <span asp-validation-for="LowerLimbEdema" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="UnineOutPut">Unine out put</label>
+                    <input asp-for="UnineOutPut" class="form-control" />
+                    <span asp-validation-for="UnineOutPut" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="ChestCondition">Chest Condition</label>
+                    <input asp-for="ChestCondition" class="form-control" />
+                    <span asp-validation-for="ChestCondition" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="Ecg">ECG</label>
+                    <input asp-for="Ecg" class="form-control" />
+                    <span asp-validation-for="Ecg" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="O2Sat">O2 Sat</label>
+                    <input asp-for="O2Sat" class="form-control" />
+                    <span asp-validation-for="O2Sat" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="Temp">Temp</label>
+                    <input asp-for="Temp" class="form-control" />
+                    <span asp-validation-for="Temp" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="Rbs">RBS</label>
+                    <input asp-for="Rbs" class="form-control" />
+                    <span asp-validation-for="Rbs" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="InsulinGiven">Insulin Given</label>
+                    <input asp-for="InsulinGiven" class="form-control" />
+                    <span asp-validation-for="InsulinGiven" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="Cnp">CVP</label>
+                    <input asp-for="Cnp" class="form-control" />
+                    <span asp-validation-for="Cnp" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="Infusions">Infusions</label>
+                    <input asp-for="Infusions" class="form-control" />
+                    <span asp-validation-for="Infusions" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="UpdatesInMedication">Updates in medication</label>
+                    <input asp-for="UpdatesInMedication" class="form-control" />
+                    <span asp-validation-for="UpdatesInMedication" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="InvestigasionsOrderd">Investigasions orderd</label>
+                    <input asp-for="InvestigasionsOrderd" class="form-control" />
+                    <span asp-validation-for="InvestigasionsOrderd" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center">
+                <div class="mb-3 me-md-4" style="width: 60%">
+                    <label asp-for="ConsultantVisitRecommendati">Consultant Visit recommendation</label>
+                    <input asp-for="ConsultantVisitRecommendati" class="form-control" />
+                    <span asp-validation-for="ConsultantVisitRecommendati" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="parent d-flex justify-content-md-center gap-2">
+                 <button type="submit" class="btn btn-primary" style="width:150px">Add</button>
+                <a onclick="goTo('DailyFollowUpCCUChant')" class="btn btn-secondary" style="width:150px">Back</a>
+             </div>
+
+        </div>
+    </form>
+</div>
+
+<script>
+    let ss = document.querySelector(".Daily .nav-link");
+    ss.classList.add("active-link");
+</script>

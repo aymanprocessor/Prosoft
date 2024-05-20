@@ -1,0 +1,387 @@
+﻿@model MedicationDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Edit Medication At CCU";
+    Layout = "_LayoutMedicalRecords";
+}
+<div class="container pt-2 internal-scroll">
+    <h1 class="mt-4">Medication at CCU</h1>
+    <form method="post" asp-action="Edit_MedicationAtCCU">
+        <div class="border p-3 mt-4">
+            @* Hidden Inputs *@
+            <input asp-for="PatId" type="hidden" />
+            <input asp-for="PatSsn" type="hidden" />
+            <input asp-for="SerialHistory" type="hidden" />
+            <input asp-for="Serial" type="hidden" />
+
+            <div asp-validation-summary="ModelOnly"></div>
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3 me-md-4 me-auto">
+                    <label>Pt Name</label>
+                    <input class="form-control" value="@ViewBag.patName" disabled />
+                </div>
+                <div class="mb-3">
+                    <label asp-for="PatSsn">Patient SSN</label>
+                    <input asp-for="PatSsn" type="number" class="form-control" disabled />
+                    <span asp-validation-for="PatSsn" class="text-danger"></span>
+                </div>
+            </div>
+            <!----------------------------------------------------------------->
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="mb-3 me-md-4">
+                    <label asp-for="SerialHistory">Serial History</label>
+                    <input asp-for="SerialHistory" class="form-control" disabled />
+                    <span asp-validation-for="SerialHistory" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Serial">Serial Record</label>
+                    <input asp-for="Serial" class="form-control" disabled />
+                    <span asp-validation-for="Serial" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+                <div class="mb-3 me-md-4 me-auto" style="width: 60%">
+                    <label asp-for="EntryDate">Date</label>
+                    <input asp-for="EntryDate" type="date" class="form-control" />
+                    <span asp-validation-for="EntryDate" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile  me-md-4">
+                    <label asp-for="Asa"><p class="mr-3">ASA</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="Asa" class="form-check-input radio-inline" type="radio" name="Asa" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="Asa" class="form-check-input radio-inline" type="radio" name="Asa" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="Plavix"><p>Plavix</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="Plavix" class="form-check-input radio-inline" type="radio" name="Plavix" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="Plavix" class="form-check-input radio-inline" type="radio" name="Plavix" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile  me-md-4">
+                    <label asp-for="Brilique"><p>Brilique</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="Brilique" class="form-check-input radio-inline" type="radio" name="Brilique" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="Brilique" class="form-check-input radio-inline" type="radio" name="Brilique" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="Heparin"><p>Heparin</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="Heparin" class="form-check-input radio-inline" type="radio" name="Heparin" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="Heparin" class="form-check-input radio-inline" type="radio" name="Heparin" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile  me-md-4">
+                    <label asp-for="Clexane"><p>Clexane</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="Clexane" class="form-check-input radio-inline" type="radio" name="Clexane" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="Clexane" class="form-check-input radio-inline" type="radio" name="Clexane" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="TirofibanLv"><p>Tirofiban(IV)</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="TirofibanLv" class="form-check-input radio-inline" type="radio" name="TirofibanLv" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="TirofibanLv" class="form-check-input radio-inline" type="radio" name="v" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile  me-md-4">
+                    <label asp-for="Eptifibtide"><p>Eptifibtide</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="Eptifibtide" class="form-check-input radio-inline" type="radio" name="Eptifibtide" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="Eptifibtide" class="form-check-input radio-inline" type="radio" name="Eptifibtide" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="Bb"><p>BB</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="Bb" class="form-check-input radio-inline" type="radio" name="Bb" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="Bb" class="form-check-input radio-inline" type="radio" name="Bb" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile  me-md-4">
+                    <label asp-for="NitratesSl"><p>Nitrates Sl</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="NitratesSl" class="form-check-input radio-inline" type="radio" name="NitratesSl" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="NitratesSl" class="form-check-input radio-inline" type="radio" name="NitratesSl" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="NitratesLvl"><p>Nitrates (IV)</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="NitratesLvl" class="form-check-input radio-inline" type="radio" name="NitratesLvl" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="NitratesLvl" class="form-check-input radio-inline" type="radio" name="NitratesLvl" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile  me-md-4">
+                    <label asp-for="FluidLv"><p> Fluid Iv</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="FluidLv" class="form-check-input radio-inline" type="radio" name="FluidLv" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="FluidLv" class="form-check-input radio-inline" type="radio" name="FluidLv" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="LevophidLvl"><p>Levophid IV</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="LevophidLvl" class="form-check-input radio-inline" type="radio" name="LevophidLvl" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="LevophidLvl" class="form-check-input radio-inline" type="radio" name="LevophidLvl" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile  me-md-4">
+                    <label asp-for="DopamineLvl"><p>Dopamine IV</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="DopamineLvl" class="form-check-input radio-inline" type="radio" name="DopamineLvl" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="DopamineLvl" class="form-check-input radio-inline" type="radio" name="DopamineLvl" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="DobutamineLvl"><p>Dobutamine IV</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="DobutamineLvl" class="form-check-input radio-inline" type="radio" name="DobutamineLvl" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="DobutamineLvl" class="form-check-input radio-inline" type="radio" name="DobutamineLvl" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile  me-md-4">
+                    <label asp-for="Lasix"><p>Lasix</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="Lasix" class="form-check-input radio-inline" type="radio" name="Lasix" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="Lasix" class="form-check-input radio-inline" type="radio" name="Lasix" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="Morphea"><p>Morphea</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="Morphea" class="form-check-input radio-inline" type="radio" name="Morphea" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="Morphea" class="form-check-input radio-inline" type="radio" name="Morphea" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------------>
+
+            <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile  me-md-4">
+                    <label asp-for="Dormicum"><p>Dormicum</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="Dormicum" class="form-check-input radio-inline" type="radio" name="Dormicum" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="Dormicum" class="form-check-input radio-inline" type="radio" name="Dormicum" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                    <label asp-for="MechanicalVentilation"><p>Mechanical Ventilation</p></label>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="MechanicalVentilation" class="form-check-input radio-inline" type="radio" name="MechanicalVentilation" value="1">
+                            yes
+                        </label>
+                    </div>
+                    <div class="mb-3 me-md-4">
+                        <label class="form-check-label">
+                            <input asp-for="MechanicalVentilation" class="form-check-input radio-inline" type="radio" name="MechanicalVentilation" value="2">
+                            No
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <div class="parent d-flex justify-content-md-center gap-2">
+                <button type="submit" class="btn btn-success" style="width:150px">Save Changes</button>
+                <a onclick="goTo('MedicationAtCCU')" class="btn btn-secondary" style="width:150px">Back</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    let ss = document.querySelector(".Medication .nav-link");
+    ss.classList.add("active-link");
+</script>
+
+

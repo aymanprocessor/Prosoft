@@ -1,0 +1,933 @@
+﻿@model List<PciReportDTO>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "PCI Reports";
+    Layout = "_LayoutMedicalRecords";
+    int FindIndex(PciReportDTO obj)
+    {
+        return Model.FindIndex(o => o.SerialHistory == obj.SerialHistory);
+    }
+}
+
+<div class="container pt-2  internal-scroll">
+    <div class="patData d-flex justify-content-between align-items-center mt-4 mb-0 ">
+        <h3 class="my-0">Patient Name : @ViewBag.PatName </h3>
+        <h3 class="my-0">National Id : @ViewBag.PatSSN </h3>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mt-4 ">
+        <h3 class="header my-0">PCI Reports</h3>
+
+        <a onclick="goTo('PciReport','Add_PCIReport')" class="btn btn-sm btn-primary" style="width:150px">
+                Add
+        </a>
+
+    </div>
+    @foreach (var item in Model)
+    {
+        <div id="@item.SerialHistory" class="print">
+            <div class="border rounded-3 border-primary border-3 p-3 mt-4">
+
+                <div asp-validation-summary="ModelOnly"></div>
+                <!----------------------------------------------------------------->
+                <div class="parent-record d-flex align-items-md-end justify-content-center reverse">
+                    <div class="mb-3 me-md-4 ">
+                        <label asp-for="@item.PatSsn">Patient SSN</label>
+                        <input asp-for="@item.PatSsn" disabled type="number" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.EntryDate">Date</label>
+                        <input asp-for="@item.EntryDate" disabled type="date" class="form-control" />
+
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.SerialHistory">Serial History</label>
+                        <input asp-for="@item.SerialHistory" disabled class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.Serial">Serial Record</label>
+                        <input asp-for="@item.Serial" disabled class="form-control" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.FirstOperator">First Operator</label>
+                        <input asp-for="@item.FirstOperator" disabled class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.SecondOperator">Second Operator</label>
+                        <input asp-for="@item.SecondOperator" disabled class="form-control" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.TypeOfAdmission">Type Of Admission</label>
+                        <select asp-for="@item.TypeOfAdmission" disabled class="form-control text-center">
+                            <option value="Private">Private</option>
+                            <option value="Contract">Contract</option>
+                        </select>
+
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.RepurtusionStrategy">Repurtusion Strategy</label>
+                        <select asp-for="@item.RepurtusionStrategy" disabled class="form-control text-center">
+                            <option value="thrombolytic therapy">thrombolytic therapy</option>
+                            <option value="PCI">PCI</option>
+
+                        </select>
+
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.AmountOfContrastPciMl">Amount Of Contrast PCI (Ml)</label>
+                        <input asp-for="@item.AmountOfContrastPciMl" disabled type="number" class="form-control text-center" placeholder="0" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.PciAccess">PCI Access</label>
+                        <select asp-for="@item.PciAccess" disabled class="form-control text-center">
+                            <option value="Right femoral">Right femoral</option>
+                            <option value="Left femoral">Left femoral</option>
+                            <option value="Right Radial">Right Radial</option>
+                            <option value="Left Radial">Left Radial</option>
+                        </select>
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center  me-md-4">
+                        <label asp-for="@item.IntraAorticBalloon"><p>Intra Aortic Balloon</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.IntraAorticBalloon" disabled class="form-check-input radio-inline" type="radio" name="IntraAorticBalloon-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.IntraAorticBalloon" disabled class="form-check-input radio-inline" type="radio" name="IntraAorticBalloon-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.CcbLc"><p>CCB IC</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.CcbLc" disabled class="form-check-input radio-inline" type="radio" name="CcbLc-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.CcbLc" disabled class="form-check-input radio-inline" type="radio" name="CcbLc-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center  me-md-4">
+                        <label asp-for="@item.AdenosineLc"><p>Adenosine IC</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.AdenosineLc" disabled class="form-check-input radio-inline" type="radio" name="AdenosineLc-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.AdenosineLc" disabled class="form-check-input radio-inline" type="radio" name="AdenosineLc-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.HematomaPci"><p>Hematoma PCI</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.HematomaPci" disabled class="form-check-input radio-inline" type="radio" name="HematomaPci-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.HematomaPci" disabled class="form-check-input radio-inline" type="radio" name="HematomaPci-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center   me-md-4">
+                        <label asp-for="@item.GpInhibitosLc"><p>GP Inhibitos Ic</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.GpInhibitosLc" disabled class="form-check-input radio-inline" type="radio" name="GpInhibitosLc-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.GpInhibitosLc" disabled class="form-check-input radio-inline" type="radio" name="GpInhibitosLc-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="parent d-flex align-items-md-end justify-content-center my-mobile">
+                        <label asp-for="@item.CinPci"><p>CIN PCI</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.CinPci" disabled class="form-check-input radio-inline" type="radio" name="CinPci-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.CinPci" disabled class="form-check-input radio-inline" type="radio" name="CinPci-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center   me-md-4">
+                        <label asp-for="@item.AdrenalineLc"><p>Adrenaline IC</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.AdrenalineLc" disabled class="form-check-input radio-inline" type="radio" name="AdrenalineLc-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.AdrenalineLc" disabled class="form-check-input radio-inline" type="radio" name="AdrenalineLc-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="parent d-flex align-items-md-end justify-content-center ">
+                        <label asp-for="@item.PerforationPci"><p>Perforation PCI</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.PerforationPci" disabled class="form-check-input radio-inline" type="radio" name="PerforationPci-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.PerforationPci" disabled class="form-check-input radio-inline" type="radio" name="PerforationPci-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center  me-md-4">
+                        <label asp-for="@item.HeparinLc"><p>Heparin IC</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.HeparinLc" disabled class="form-check-input radio-inline" type="radio" name="HeparinLc-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.HeparinLc" disabled class="form-check-input radio-inline" type="radio" name="HeparinLc-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.DisectionPci"><p>Disection PCI</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.DisectionPci" disabledclass="form-check-input radio-inline" type="radio" name="DisectionPci-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.DisectionPci" disabled class="form-check-input radio-inline" type="radio" name="DisectionPci-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center  me-md-4">
+                        <label asp-for="@item.TridilLc"><p>Tridil IC</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.TridilLc" disabled class="form-check-input radio-inline" type="radio" name="TridilLc-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.TridilLc" disabled class="form-check-input radio-inline" type="radio" name="TridilLc-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="parent d-flex align-items-md-end justify-content-center ">
+                        <label asp-for="@item.NoReflow"><p>NoRe flow</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.NoReflow" disabled class="form-check-input radio-inline" type="radio" name="NoReflow-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.NoReflow" disabled class="form-check-input radio-inline" type="radio" name="NoReflow-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.OutcomeOfNoReflow">Out come Of No Reflow</label>
+                        <select asp-for="@item.OutcomeOfNoReflow" disabled class="form-control text-center">
+                            <option value="TEMI 0">TEMI 0</option>
+                            <option value="TEMI 1">TEMI 1</option>
+                            <option value="TEMI 2">TEMI 2</option>
+                            <option value="TEMI 3">TEMI 3</option>
+                        </select>
+
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.MethodOfNoReflowManagement">Method Of No Reflow Management</label>
+                        <select asp-for="@item.MethodOfNoReflowManagement" disabled class="form-control text-center">
+                            <option value="intracoronary isoptin">intracoronary isoptin</option>
+                            <option value="intracoronary tridil">intracoronary tridil</option>
+                            <option value="intracoronary adrenaline">intracoronary adrenaline</option>
+                        </select>
+
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center  me-md-4">
+                        <label asp-for="@item.DeathPci"><p>Death PCI</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.DeathPci" disabled class="form-check-input radio-inline" type="radio" name="DeathPci-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.DeathPci" disabled class="form-check-input radio-inline" type="radio" name="DeathPci-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3 me-md-4 me-auto w-100" >
+                        <label asp-for="@item.StepOneOfPci" style="width:40%">Step One Of Pci</label>
+                        <input asp-for="@item.StepOneOfPci" disabled class="form-control text-center" />
+                    </div>
+
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.Step2Pci"style="width:40%">Step 2 PCI</label>
+                        <input asp-for="@item.Step2Pci" disabled class="form-control text-center" />
+                    </div>
+
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.Step3Pci" style="width:40%">Step 3 PCI</label>
+                        <input asp-for="@item.Step3Pci" disabled class="form-control text-center" />
+                    </div>
+
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.Step4Pci" style="width:40%">Step 4 PCI</label>
+                        <input asp-for="@item.Step4Pci" disabled class="form-control text-center" />
+                    </div>
+
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.Step5Pci" style="width:40%">Step 5 PCI</label>
+                        <input asp-for="@item.Step5Pci" disabled class="form-control text-center" />
+                    </div>
+
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3 me-md-4 me-auto w-100" >
+                        <label asp-for="@item.Step6Pci" style="width:40%">Step 6 PCI</label>
+                        <input asp-for="@item.Step6Pci" disabled class="form-control text-center" />
+                    </div>
+
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.Step7Pci"  style="width:40%">Step 7 PCI</label>
+                        <input asp-for="@item.Step7Pci" disabled class="form-control text-center" />
+                    </div>
+
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.Step8Pci" style="width:40%">Step 8 PCI</label>
+                        <input asp-for="@item.Step8Pci" disabled class="form-control text-center" />
+                    </div>
+
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.DiagnosisOfPci" style="width:40%">Diagnosis Of PCI</label>
+                        <input asp-for="@item.DiagnosisOfPci" disabled class="form-control text-center" />
+                    </div>
+
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.RecomendationPci" style="width:40%">Recomendation PCI</label>
+                        <input asp-for="@item.RecomendationPci" disabled class="form-control text-center" />
+                    </div>
+
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.NoOfDiseasedVesselS50">No Of Diseased Vessel(S)>50%</label>
+                        <select asp-for="@item.NoOfDiseasedVesselS50" disabled class="form-control text-center">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.VesselOfRevascularization">Vessel Of Revascularization</label>
+                        <select asp-for="@item.VesselOfRevascularization" disabled class="form-control text-center">
+                            <option value="LM">LM</option>
+                            <option value="LAD">LAD</option>
+                            <option value="LCX">LCX</option>
+                            <option value="RCA">RCA</option>
+                            <option value="Diagonal">Diagonal</option>
+                            <option value="OM">OM</option>
+                        </select>
+
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.Culprit">Culprit</label>
+                        <select asp-for="@item.Culprit" disabled class="form-control text-center">
+                            <option value="LM">LM</option>
+                            <option value="LAD">LAD</option>
+                            <option value="LCX">LCX</option>
+                            <option value="RCA">RCA</option>
+                            <option value="Diagonal">Diagonal</option>
+                            <option value="OM">OM</option>
+                        </select>
+                    </div>
+                    <div class="parent d-flex align-items-md-end justify-content-center  me-md-4">
+                        <label asp-for="@item.TreatmentOfNonculprit"><p>Treatment Of Nonculprit</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.TreatmentOfNonculprit" disabled class="form-check-input radio-inline" type="radio" name="TreatmentOfNonculprit-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.TreatmentOfNonculprit" disabled class="form-check-input radio-inline" type="radio" name="TreatmentOfNonculprit-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.TimiFlowPre">TIMI Flow Pre</label>
+                        <input asp-for="@item.TimiFlowPre" disabled class="form-control text-center" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.LesionConfiguration">Lesion Configuration</label>
+                        <input asp-for="@item.LesionConfiguration" disabled class="form-control text-center" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center me-md-4">
+                        <label asp-for="@item.BifurcationalLesion"><p>Bifurcational Lesion</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.BifurcationalLesion" disabled class="form-check-input radio-inline" type="radio" name="BifurcationalLesion-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.BifurcationalLesion" disabled class="form-check-input radio-inline" type="radio" name="BifurcationalLesion-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="parent d-flex align-items-md-end justify-content-center ">
+                        <label asp-for="@item.CalcificLesion"><p>Calcific Lesion</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.CalcificLesion" disabled class="form-check-input radio-inline" type="radio" name="CalcificLesion-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.CalcificLesion" disabled class="form-check-input radio-inline" type="radio" name="CalcificLesion-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center  me-md-4">
+                        <label asp-for="@item.TrifurcationalLesion"><p>Trifurcational Lesion</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.TrifurcationalLesion" disabled class="form-check-input radio-inline" type="radio" name="TrifurcationalLesion-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.TrifurcationalLesion" disabled class="form-check-input radio-inline" type="radio" name="TrifurcationalLesion-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="parent d-flex align-items-md-end justify-content-center ">
+                        <label asp-for="@item.Cto"><p>CTO</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.Cto" disabled class="form-check-input radio-inline" type="radio" name="Cto-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.Cto" disabled class="form-check-input radio-inline" type="radio" name="Cto-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center  me-md-4">
+                        <label asp-for="@item.TortiousVessel"><p>Tortious Vessel</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.TortiousVessel" disabled class="form-check-input radio-inline" type="radio" name="TortiousVessel-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.TortiousVessel" disabled class="form-check-input radio-inline" type="radio" name="TortiousVessel-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-center ">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.TimiFlowPost">Timi Flow Post</label>
+                        <input asp-for="@item.TimiFlowPost" disabled class="form-control text-center" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.TypeOfWire">Type Of Wire</label>
+                        <input asp-for="@item.TypeOfWire" disabled class="form-control text-center" />
+                    </div>
+                </div>
+
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3 me-md-4 me-auto" >
+                        <label asp-for="@item.HeavnessOfWire" style="width:125%">Heavness Of Wire</label>
+                        <input asp-for="@item.HeavnessOfWire" disabled class="form-control text-center" />
+                    </div>
+                </div>
+
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center  me-md-4">
+                        <label asp-for="@item.BuddyWire"><p>Buddy Wire</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.BuddyWire" disabled class="form-check-input radio-inline" type="radio" name="BuddyWire-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.BuddyWire" disabled class="form-check-input radio-inline" type="radio" name="BuddyWire-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="parent d-flex align-items-md-end justify-content-center ">
+                        <label asp-for="@item.ThrombusAspiration"><p>Thrombus Aspiration</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.ThrombusAspiration" disabled class="form-check-input radio-inline" type="radio" name="ThrombusAspiration-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.ThrombusAspiration" disabled class="form-check-input radio-inline" type="radio" name="ThrombusAspiration-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center me-md-4">
+                        <label asp-for="@item.FailedWiring"><p>Failed Wiring</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.FailedWiring" disabled class="form-check-input radio-inline" type="radio" name="FailedWiring-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.FailedWiring" disabled class="form-check-input radio-inline" type="radio" name="FailedWiring-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.AnchorBalloon"><p>Anchor Balloon</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.AnchorBalloon" disabled class="form-check-input radio-inline" type="radio" name="AnchorBalloon-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.AnchorBalloon" disabled class="form-check-input radio-inline" type="radio" name="AnchorBalloon-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center  me-md-4">
+                        <label asp-for="@item.Predilatation"><p>Predilatation</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.Predilatation" disabled class="form-check-input radio-inline" type="radio" name="Predilatation-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.Predilatation" disabled class="form-check-input radio-inline" type="radio" name="Predilatation-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="mb-3 me-md-2">
+                        <label asp-for="@item.MaxPressureOfBalloon">Max Pressure Of Balloon</label>
+                        <input asp-for="@item.MaxPressureOfBalloon" disabled class="form-control text-center" />
+                    </div>
+                    <div class="parent d-flex align-items-md-end justify-content-center  me-md-4">
+                        <label asp-for="@item.Postdilatation"><p>Postdilatation</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.Postdilatation" disabled class="form-check-input radio-inline" type="radio" name="Postdilatation-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.Postdilatation" disabled class="form-check-input radio-inline" type="radio" name="Postdilatation-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------->
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.MaxPressureOfPostBalloon">max_pressure_of_post_balloon</label>
+                        <input asp-for="@item.MaxPressureOfPostBalloon" disabled class="form-control text-center" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.DiameterOfPredilatation">Diameter Of Predilatation</label>
+                        <input asp-for="@item.DiameterOfPredilatation" disabled class="form-control text-center" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3 me-md-4 me-auto" >
+                        <label asp-for="@item.DiameterOfPostdilatationBal" style="width:125%">Diameter Of Postdilatation Ballon</label>
+                        <input asp-for="@item.DiameterOfPostdilatationBal" disabled class="form-control text-center" />
+                    </div>
+
+                </div>
+                <!------------------------------------------------------------------------->
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.TypeStent">Type Stent</label>
+                        <input asp-for="@item.TypeStent" disabled class="form-control text-center" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.Type4thStent">Typethn 4th_Stent</label>
+                        <input asp-for="@item.Type4thStent" disabled type="number" class="form-control text-center" placeholder="0" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.DiameterOfStent">Diameter Of Stent</label>
+                        <input asp-for="@item.DiameterOfStent" disabled class="form-control text-center" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.DiameterOf4thStent">Diameter Of 4th Stent</label>
+                        <input asp-for="@item.DiameterOf4thStent" disabled class="form-control text-center" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------->
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.LenghtOfStent">Lenght Of Stent</label>
+                        <input asp-for="@item.LenghtOfStent" disabled class="form-control text-center" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.LenghtOf4thStent">Lenght Of 4th Stent</label>
+                        <input asp-for="@item.LenghtOf4thStent" disabled class="form-control text-center" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------->
+
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.Type2ndStent">Type 2nd_Stent</label>
+                        <input asp-for="@item.Type2ndStent" disabled class="form-control text-center" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.Type5thStent">Type 5th_Stent</label>
+                        <input asp-for="@item.Type5thStent" disabled class="form-control text-center" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------->
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.DiameterOf2ndStent">Diameter Of 2nd Stent</label>
+                        <input asp-for="@item.DiameterOf2ndStent" disabled class="form-control text-center" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.DiameterOf5thStent">Diameter Of 5th Stent</label>
+                        <input asp-for="@item.DiameterOf5thStent" disabled class="form-control text-center" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------->
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.LenghtOf2ndStent">Lenght Of 2nd Stent</label>
+                        <input asp-for="@item.LenghtOf2ndStent" disabled class="form-control text-center" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.LenghtOf5thStent">Lenght Of 5th Stent</label>
+                        <input asp-for="@item.LenghtOf5thStent" disabled class="form-control text-center" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------->
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.Type3rdStent">Type 3rd_stent</label>
+                        <input asp-for="@item.Type3rdStent" disabled class="form-control text-center" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.Type6thStent">Type 6th_stent</label>
+                        <input asp-for="@item.Type6thStent" disabled class="form-control text-center" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.DiameterOf3rdStent">Diameter Of 3rd Stent</label>
+                        <input asp-for="@item.DiameterOf3rdStent" disabled class="form-control text-center" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.DiameterOf6thStent">Diameter Of 6th Stent</label>
+                        <input asp-for="@item.DiameterOf6thStent" disabled class="form-control text-center" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------->
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.LenghtOf3rdStent">Lenght Of 3rd Stent</label>
+                        <input asp-for="@item.LenghtOf3rdStent" disabled class="form-control text-center" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.LenghtOf6thStent">Lenght Of 6th Stent</label>
+                        <input asp-for="@item.LenghtOf6thStent" disabled class="form-control text-center" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------->
+
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center  me-md-4">
+                        <label asp-for="@item.OverlappInMainVessel"><p>Overlapp In Main Vessel</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.OverlappInMainVessel" disabled class="form-check-input radio-inline" type="radio" name="OverlappInMainVessel-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.OverlappInMainVessel" disabled class="form-check-input radio-inline" type="radio" name="OverlappInMainVessel-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.BifurcationalTechnique"><p>Anchor Balloon</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.BifurcationalTechnique" disabled class="form-check-input radio-inline" type="radio" name="BifurcationalTechnique-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.BifurcationalTechnique" disabled class="form-check-input radio-inline" type="radio" name="BifurcationalTechnique-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="parent d-flex align-items-md-end justify-content-center mt-3" id="for-print">
+                        <div class="d-flex justify-content-evenly" style="width: 60%">
+                            <!-- PRINT -->
+                            <button onclick="printRecord(@item.SerialHistory)" class="btn btn-success">Print</button>
+                            <!-- EDIT -->
+                            <a onclick="goToEdit('PciReport','Edit_PCIReport', @item.SerialHistory)" class="btn btn-primary px-3">Edit</a>
+                            <!-- DELETE -->
+                            <form asp-action="Delete_PCIReport" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@item.SerialHistory" />
+                                <input type="hidden" name="patId" value="@item.PatId"/>
+                                <button type="submit" class="btn btn-danger " onclick="deleteMe(event)">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    let ss = document.querySelector(".Pci .nav-link");
+    ss.classList.add("active-link");
+</script>
+

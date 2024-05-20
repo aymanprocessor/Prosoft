@@ -1,0 +1,229 @@
+﻿@model List<DailyFollowUpDTO>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Daily Follow Up CCU Chant";
+    Layout = "_LayoutMedicalRecords";
+}
+
+<div class="container pt-2 internal-scroll">
+    <div class="patData d-flex justify-content-between align-items-center mt-4 mb-0 ">
+        <h3 class="my-0">Patient Name : @ViewBag.PatName </h3>
+        <h3 class="my-0">National Id : @ViewBag.PatSSN </h3>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mt-4 ">
+        <h1 class="header">Daily Follow Up CCU Chant</h1>
+
+        <a onclick="goTo('DailyFollowUpCCUChant','Add_DailyFollowUp')" class="btn btn-sm btn-primary" style="width:150px">
+                Add
+        </a>
+
+    </div>
+    @foreach (var item in Model)
+    {
+        <div id="@item.SerialHistory" class="print">
+            <div class="border rounded-3 border-primary border-3 p-3 mt-4">
+
+                <!------------------------------------------------------------------------------->
+               @*  <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile ">
+                    <div class="mb-3">
+                        <label asp-for="@item.Serial">Serial Record</label>
+                        <input asp-for="@item.Serial" disabled class="form-control me-md-2" />
+                    </div>
+                </div> *@
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.EntryDate">Date</label>
+                        <input asp-for="@item.EntryDate" disabled type="date" class="form-control me-md-2" />
+                    </div>
+
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.CurrentCO" style="width:40%">Current C/O</label>
+                        <input asp-for="@item.CurrentCO" disabled type="number" class="form-control" />
+                    </div>
+                </div>
+
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.Blpr" style="width:40%">Blpr</label>
+                        <input asp-for="@item.Blpr" disabled class="form-control" />
+                    </div>
+                </div>
+
+                <!------------------------------------------------------------------------------------>
+
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.ConsciousLevel" style="width:40%">Conscious Level</label>
+                        <input asp-for="@item.ConsciousLevel" disabled class="form-control" />
+                    </div>
+                </div>
+
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.LowerLimbEdema" style="width:40%">Lower limb edema</label>
+                        <input asp-for="@item.LowerLimbEdema" disabled class="form-control" />
+                    </div>
+                </div>
+
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.UnineOutPut" style="width:40%">Unine out put</label>
+                        <input asp-for="@item.UnineOutPut" disabled class="form-control" />
+                    </div>
+                </div>
+
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.ChestCondition" style="width:40%">Chest Condition</label>
+                        <input asp-for="@item.ChestCondition" disabled class="form-control" />
+                    </div>
+                </div>
+
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.Ecg" style="width:40%">ECG</label>
+                        <input asp-for="@item.Ecg" disabled class="form-control" />
+                    </div>
+                </div>
+
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.O2Sat" style="width:40%">O2 Sat</label>
+                        <input asp-for="@item.O2Sat" disabled class="form-control" />
+                    </div>
+                </div>
+
+                <!------------------------------------------------------------------------------------>
+
+                          <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.Temp" style="width:40%">Temp</label>
+                        <input asp-for="@item.Temp" disabled class="form-control" />
+                    </div>
+                </div>
+
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.Rbs" style="width:40%">RBS</label>
+                        <input asp-for="@item.Rbs" disabled class="form-control" />
+                    </div>
+                </div>
+
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.InsulinGiven" style="width:40%">Insulin Given</label>
+                        <input asp-for="@item.InsulinGiven" disabled class="form-control" />
+                    </div>
+                </div>
+
+                <!------------------------------------------------------------------------------------>
+
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.Cnp" style="width:40%">CVP</label>
+                        <input asp-for="@item.Cnp" disabled class="form-control" />
+                    </div>
+                </div>
+
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.Infusions" style="width:40%">Infusions</label>
+                        <input asp-for="@item.Infusions" disabled class="form-control" />
+                    </div>
+                </div>
+
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.UpdatesInMedication" style="width:40%">Updates in medication</label>
+                        <input asp-for="@item.UpdatesInMedication" disabled class="form-control" />
+                    </div>
+                </div>
+
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.InvestigasionsOrderd" style="width:40%">Investigasions orderd</label>
+                        <input asp-for="@item.InvestigasionsOrderd" disabled class="form-control" />
+                    </div>
+                </div>
+
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.ConsultantVisitRecommendati" style="width:40%">Consultant Visit recommendation</label>
+                        <input asp-for="@item.ConsultantVisitRecommendati" disabled class="form-control" />
+                    </div>
+                </div>
+
+                <!------------------------------------------------------------------------------------>
+
+
+                <div class="parent d-flex align-items-md-end justify-content-center mt-3" id="for-print">
+                        <div class="d-flex justify-content-evenly" style="width: 60%">
+                            <!-- PRINT -->
+                            <button onclick="printRecord(@item.SerialHistory)" class="btn btn-success">Print</button>
+                            <!-- EDiT -->
+                            <a onclick="goToEdit('DailyFollowUpCCUChant','Edit_DailyFollowUp', @item.SerialHistory)" class="btn btn-primary px-3">Edit</a>
+                            <!-- DELETE -->
+                        <form asp-action="Delete_DailyFollowUp" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@item.SerialHistory" />
+                                <input type="hidden" name="patId" value="@item.PatId" />
+                            <button type="submit" class="btn btn-danger  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');">Delete</button>
+                        </form>
+                        </div>
+                    </div>
+
+            </div>
+        </div>
+    }
+</div>
+
+
+<script>
+    let ss = document.querySelector(".Daily .nav-link");
+    ss.classList.add("active-link");
+</script>

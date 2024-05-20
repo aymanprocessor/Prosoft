@@ -14,8 +14,4 @@
     <ProjectReference Include="..\ProSoft.EF\ProSoft.EF.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\MedicalRecords\" />
-  </ItemGroup>
-
 </Project>

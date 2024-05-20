@@ -19,6 +19,8 @@ using System.Text;
 using System.Threading.Tasks;
 using ProSoft.EF.DTOs.Treasury;
 using ProSoft.EF.Models.Treasury;
+using ProSoft.EF.DTOs.MedicalRecords;
+using ProSoft.EF.Models.MedicalRecords;
 
 namespace ProSoft.Core.AutoMapper
 {

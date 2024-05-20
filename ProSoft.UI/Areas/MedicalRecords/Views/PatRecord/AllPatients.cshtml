@@ -26,7 +26,7 @@
 
         </div>
     </div>
-    <div class="border border-success p-0 mb-2 border-opacity-75 overflow-auto" style="height: 70vh;">
+    <div class="p-0 mb-2 border-opacity-75 overflow-auto" style="height: 70vh;">
         <table id="myTable" class="table table-bordered table-hover" style="width:100%">
             <thead class="table-dark">
                 <tr>
@@ -105,16 +105,11 @@
 
         @* LocalStorage *@
         function setToStorage(e, patID) {
-            console.log(e.target)
-
-            // window.location.href = "/Medical/PatRecord/CoronaryAngiographyReport/3"
-            window.location.href = `/MedicalRecords/PatRecord/Index/${patID}`;
-
             $.ajax({
-                url: `/Medical/PatRecord/GetPatient/${patID}`,
+                url: `/MedicalRecords/PatRecord/GetPatient/${patID}`,
                 success: function (result) {
-                    console.log(result)
                     localStorage.setItem("Current-Patient", JSON.stringify(result))
+                    window.location.href = `/MedicalRecords/PatRecord/Index/${patID}`;
                 }
             });
         }

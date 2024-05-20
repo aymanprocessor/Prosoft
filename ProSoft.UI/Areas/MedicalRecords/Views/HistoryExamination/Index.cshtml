@@ -1,0 +1,307 @@
+﻿@model List<HistoryExaminationDTO>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "History And Examination";
+    Layout = "_LayoutMedicalRecords";
+    int FindIndex(HistoryExaminationDTO obj)
+    {
+        return Model.FindIndex(o => o.SerialHistory == obj.SerialHistory);
+    }
+}
+
+<div class="container pt-2 internal-scroll">
+    <div class="patData d-flex justify-content-between align-items-center mt-4 mb-0 ">
+        <h3 class="my-0">Patient Name : @ViewBag.PatName </h3>
+        <h3 class="my-0">National Id : @ViewBag.PatSSN </h3>
+    </div>
+    <div class="d-flex justify-content-between align-items-center mt-4 ">
+        <h1 class="header">History & Examination</h1>
+
+        <a onclick="goTo('HistoryExamination','Add_HistoryExamination')" class="pe-auto btn btn-sm btn-primary" style="width:150px">
+                Add
+        </a>
+    </div>
+
+    @foreach (var item in Model)
+    {
+        <div id="@item.SerialHistory" class="print">
+            <div class="border rounded-3 border-primary border-3 p-3 mt-4">
+
+                <!------------------------------------------------------------------------------->
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile ">
+                    <div class="mb-3">
+                        <label asp-for="@item.Serial">Serial Record</label>
+                        <input asp-for="@item.Serial" disabled class="form-control me-md-3" />
+                        <span asp-validation-for="@item.Serial" class="text-danger"></span>
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.EntryDate">Date</label>
+                        <input asp-for="@item.EntryDate" disabled type="date" class="form-control me-md-3" />
+                        <span asp-validation-for="@item.EntryDate" class="text-danger"></span>
+                    </div>
+
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.BelongingToSubSpeciality" style="width:40%">Belonging To Sub Speciality</label>
+                        <input asp-for="@item.BelongingToSubSpeciality" disabled type="number" class="form-control" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.ComplaintAndPresentHistory" style="width:40%">Complaint And Present History</label>
+                        <input asp-for="@item.ComplaintAndPresentHistory" disabled class="form-control" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.PastHistory" style="width:40%">Past History</label>
+                        <input asp-for="@item.PastHistory" disabled class="form-control" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.CardiacExamination" style="width:40%">Cardiac Examination</label>
+                        <input asp-for="@item.CardiacExamination" disabled class="form-control" />
+                    </div>
+                </div>
+            <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3 me-md-4 me-auto">
+                        <label asp-for="@item.PreviousAdmissionWithAcs" style="width:125%">Previous Admission With Acs</label>
+                        <select asp-for="@item.PreviousAdmissionWithAcs" disabled class="form-control ms-md-3 text-center">
+                            <option value="UA">UA</option>
+                            <option value="STEMI">STEMI</option>
+                            <option value="NON STEMI">NON STEMI</option>
+                        </select>
+                    </div>
+
+                </div>
+       <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3 me-md-4 me-auto">
+                        <label asp-for="@item.PreviousAngioResults" style="width:125%">Previous Angio Results</label>
+                        <input asp-for="@item.PreviousAngioResults" disabled class="form-control ms-md-3" />
+                    </div>
+
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-Start my-mobile">
+
+                    <div class="mb-3 me-md-4 me-auto">
+                        <label asp-for="@item.PreviousExersiseTest">Previous ExersiseTest</label>
+                        <input asp-for="@item.PreviousExersiseTest" disabled class="form-control me-md-3" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-center  my-mobile ">
+                    <div class="mb-3 me-md-4 me-auto  w-100">
+                        <label asp-for="@item.GeneralExamination" style="width:40%">General Examination</label>
+                        <input asp-for="@item.GeneralExamination" disabled class="form-control" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.Weight">Weight</label>
+                        <input asp-for="@item.Weight" disabled type="number" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.Height">Height</label>
+                        <input asp-for="@item.Height" disabled type="number" class="form-control" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.SytolicBloodPressure">Sytolic Blood Pressure</label>
+                        <input asp-for="@item.SytolicBloodPressure" disabled type="number" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.DiastolicBloodPressure">Diastolic Blood Pressure</label>
+                        <input asp-for="@item.DiastolicBloodPressure" disabled type="number" class="form-control" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.Temp">Temp</label>
+                        <input asp-for="@item.Temp" disabled type="number" class="form-control" />
+\                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.RespRate">RespRate</label>
+                        <input asp-for="@item.RespRate" disabled type="number" class="form-control" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3 me-md-4 me-auto">
+                        <label asp-for="@item.OxygenSat" style="width:125%" >Oxygen Sat</label>
+                        <input asp-for="@item.OxygenSat" disabled type="number" class="form-control ms-md-3" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.EcgExamination" style="width:40%">ECG Examination</label>
+                        <input asp-for="@item.EcgExamination" disabled class="form-control" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.EchoAdmission" style="width:40%">Echo Admission</label>
+                        <input asp-for="@item.EchoAdmission" disabled class="form-control" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+
+                    <div class="mb-3 me-md-4 me-auto w-100">
+                        <label asp-for="@item.ProvisionalDiagnosis" style="width:40%">Provisional Diagnosis</label>
+                        <input asp-for="@item.ProvisionalDiagnosis" disabled class="form-control" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+                <p class="parent d-flex align-items-md-end justify-content-center my-mobile ">STEMI Data</p>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start my-mobile">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.DoorToBalloonH">Door To BalloonH</label>
+                        <input asp-for="@item.DoorToBalloonH" disabled type="number" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="@item.SympToDoorH">Symp To Door (H)</label>
+                        <input asp-for="@item.SympToDoorH" disabled type="number" class="form-control" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="mb-3 me-md-4">
+                        <label asp-for="@item.KillipClass">Killip Class</label>
+                        <select asp-for="@item.KillipClass" disabled class="form-control text-center">
+                            <option value="1">Select1</option>
+                            <option value="2">Select2</option>
+                        </select>
+                    </div>
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.CardiacArrestInPresentation"><p>Cardiac Arrest In Presentation</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.CardiacArrestInPresentation" disabled class="form-check-input radio-inline" type="radio" name="CardiacArrestInPresentation-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.CardiacArrestInPresentation" disabled class="form-check-input radio-inline" type="radio" name="CardiacArrestInPresentation-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+
+                <div class="parent-record d-flex align-items-md-end justify-content-center my-mobile">
+                    <div class="parent d-flex align-items-md-end justify-content-center me-md-4">
+                        <label asp-for="@item.MechanicalComplicationOfMi"><p>Mechanical Complication Of MI</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.MechanicalComplicationOfMi" disabled class="form-check-input radio-inline" type="radio" name="MechanicalComplicationOfMi-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.MechanicalComplicationOfMi" disabled class="form-check-input radio-inline" type="radio" name="MechanicalComplicationOfMi-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="parent d-flex align-items-md-end justify-content-center">
+                        <label asp-for="@item.ThrombolyticTherapy"><p>Thrombolytic Therapy</p></label>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.ThrombolyticTherapy" disabled class="form-check-input radio-inline" type="radio" name="ThrombolyticTherapy-@FindIndex(item)" value="1">
+                                yes
+                            </label>
+                        </div>
+                        <div class="mb-3 me-md-4">
+                            <label class="form-check-label">
+                                <input asp-for="@item.ThrombolyticTherapy" disabled class="form-check-input radio-inline" type="radio" name="ThrombolyticTherapy-@FindIndex(item)" value="2">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!------------------------------------------------------------------------------------>
+
+                <div class="parent-record d-flex align-items-md-end justify-content-start  my-mobile ">
+                    <div class="mb-3 me-md-4 me-auto">
+                        <label asp-for="@item.LocalizationOfMi" style="width:125%">Localization Of MI</label>
+                        <select asp-for="@item.LocalizationOfMi" disabled class="form-control text-center">
+                            <option value="1">Anterior</option>
+                            <option value="2">Inferior</option>
+                            <option value="3">Postrior</option>
+                            <option value="4">Lateral</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="parent d-flex align-items-md-end justify-content-center mt-3" id="for-print">
+                        <div class="d-flex justify-content-evenly" style="width: 60%">
+                            <!--PRINT-->
+                            <button onclick="printRecord(@item.SerialHistory)" class="btn btn-success">Print</button>
+                            <a onclick="goToEdit('HistoryExamination','Edit_HistoryExamination', @item.SerialHistory)" class="pe-auto btn btn-primary px-3">Edit</a>
+                            <!-- DELETE -->
+                            <form asp-action="Delete_HistoryExamination" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@item.SerialHistory" />
+                                <input type="hidden" name="patId" value="@item.PatId" />
+                                <button type="submit" class="btn btn-danger fs-6" onclick="return confirm('Are you sure you want to delete this item ?');">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    let ss = document.querySelector(".History .nav-link");
+    ss.classList.add("active-link");
+</script>
+
+
+

@@ -32,5 +32,12 @@ namespace ProSoft.UI.Areas.MedicalRecords.Controllers
             List<PatViewDTO> patients = await _patientRepo.GetAllPatsAsync();
             return View(patients);
         }
+        public async Task<IActionResult> GetPatient(int id)
+        {
+            Pat patient = await _patientRepo.GetByIdAsync(id);
+            var patientDTO = _mapper.Map<PatViewDTO>(patient);
+            return Json(patient);
+        }
+
     }
 }
