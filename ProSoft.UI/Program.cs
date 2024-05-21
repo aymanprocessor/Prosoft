@@ -35,7 +35,6 @@ var connectionString = builder.Configuration.GetConnectionString("MyConnection")
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-
 // Register for AutoMapper service
 builder.Services.AddAutoMapper(typeof(AutoMap)); //builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

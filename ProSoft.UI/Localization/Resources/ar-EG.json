@@ -374,6 +374,7 @@
 
 
 
+
   "Cost Name": "اسم التكلفة",
   "Stocks System": "نظام المخازن",
   "Stocks Types": "انواع المخازن",
@@ -518,5 +519,6 @@
   "Edit StockTransaction": "تعديل حركة مخزن",
   "Go To Medical Records": "الذهاب الي السجلات الطبية",
   "GO TO RECORD": "الذهاب للسجلات",
-  "Permissions Forms": "نماذج الاذون"
+  "Permissions Forms": "نماذج الاذون",
+  "Add Permission Form": "اضافة نموذج اذن"
 }

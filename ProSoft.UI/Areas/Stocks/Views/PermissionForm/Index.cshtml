@@ -1,5 +1,144 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@* @model List<PermissionDefViewDTO> *@
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
+    ViewData["Title"] = "Permissions Forms";
+    Layout = "_Layout";
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+
+    // SelectList permissions = new(ViewBag.Permissions, "GId", "GDesc");
+    SelectList stocks = new(ViewBag.Stocks, "Stkcod", "Stknam");
+}
+@inject IViewLocalizer localizer
+
+<div class="text-center">
+    <h2 class="mb-2">@localizer["Permissions Forms"] </h2>
+</div>
+
+<div class="container pt-2" style=" min-height:100vh;">
+    <div class="page-head d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 my-2">
+        <div class="d-flex align-items-center flex-column flex-md-row w-50">
+            <label for="stocks" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Stocks"]</label>
+            <select id="stocks" asp-items="stocks" class="form-control text-center w-100" onchange="getUserPermissionsForStock(event)">
+                <option value="">-- Choose --</option>
+            </select>
+        </div>
+        <div class="d-flex align-items-center flex-column flex-md-row w-50">
+            <label for="permissions" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Permissions"]</label>
+            <select id="permissions" class="form-control text-center w-100">
+                <option value="">-- Choose --</option>
+            </select>
+        </div>
+        <a onclick="goToAddPermissionForm(event, 'permissions', 'stocks')" class="btn btn-sm btn-primary fs-6" style="width:150px">
+            @localizer["Add Permission Form"]
+        </a>
+    </div>
+
+    <div class="overflow-auto" style="height: 225px;">
+        <table id="myTable" class="table table-bordered table-hover" style="width:100%;">
+            <thead class="table-dark">
+                <tr>
+                    <th class="align-middle">
+                        @localizer["Code"]
+                    </th>
+                    <th class="align-middle" style="min-width: 150px;">
+                        @localizer["User Name"]
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+@*                 @foreach (var item in Model)
+                {
+                    <tr style="cursor: pointer;">
+                        <td class="align-middle">@item.GId</td>
+                        <td class="align-middle user-name">@item.GDesc</td>
+                    </tr>
+                } *@
+            </tbody>
+        </table>
+    </div>
+
+    @* /////////////////////////////////////////////////////////////////// *@
+
+    @* Table for UserStock Transactions *@
+
+    <div class="transactions-table-head d-flex justify-content-between align-items-center mt-3 mb-1">
+        <h2 class="header">@localizer["Transactions of Stocks for User"] :</h2>
+        <a class="btn btn-sm btn-primary fs-6" style="width:150px">
+            @localizer["Add Permission Form"]
+        </a>
+    </div>
+
+    <div class="p-0 mb-2 border-opacity-75 overflow-auto" style="max-height: 300px;">
+
+        <table id="myTable_2" class="table table-bordered table-hover" style="width:100%">
+            <thead class="table-dark">
+                <tr class="align-middle">
+                    <th>
+                        @localizer["Serial"]
+                    </th>
+                    <th>
+                        @localizer["Permission Type"]
+                    </th>
+                    <th>
+                        @localizer["Stock"]
+                    </th>
+                    <th class="text-center">
+                        @localizer["Stock Is Default"]
+                    </th>
+                    <th class="text-center">
+                        @localizer["Show Trans Price"]
+                    </th>
+                    <th>
+                        @localizer["Debit Account"]
+                    </th>
+                    <th>
+                        @localizer["Credit Account"]
+                    </th>
+                    <th>
+                        @localizer["Journal Type"]
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function goToAddPermissionForm(e, permissionID, stockID) {
+            let linkButton = e.target;
+            let permission = document.getElementById(permissionID);
+            let stock = document.getElementById(stockID);
+
+            if (!stock.value) {
+                stock.focus();
+                return;
+            }
+            else if (!permission.value) {
+                permission.focus();
+                return;
+            }
+
+            linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_PermissionForm/${stock.value}?transType=${permission.value}`);
+        }
+
+        function getUserPermissionsForStock(e) {
+            let stock = e.target;
+            let permissions = document.getElementById("permissions");
+            permissions.innerHTML = `<option value="">-- Choose --</option>`;
+
+            $.ajax({
+                url: `/Stocks/PermissionForm/GetUserPermissionsForStock/${stock.value}`,
+                success: function (result) {
+                    for (let item of result) {
+                        permissions.innerHTML +=
+                            `<option value="${item.gId}">${item.gDesc}</option>`;
+                    }
+                }
+            });
+        }
+    </script>
 }

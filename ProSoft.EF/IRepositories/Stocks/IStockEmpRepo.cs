@@ -18,6 +18,5 @@ namespace ProSoft.EF.IRepositories.Stocks
         Task AddStockTransAsync(StockEmp userStock);
         Task UpdateStockTransAsync(int userCode, int transType, StockEmpEditAddDTO userStockDTO);
         Task DeleteStockTransAsync(int userCode, int transType);
-        Task SaveChangesAsync();
     }
 }
