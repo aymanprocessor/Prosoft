@@ -136,6 +136,7 @@ namespace ProSoft.Core.Repositories.Stocks
         public async Task AddStockTransAsync(StockEmp stockTrans)
         {
             await _Context.AddAsync(stockTrans);
+            await _Context.SaveChangesAsync();
         }
 
         public async Task UpdateStockTransAsync(int userCode, int transType, StockEmpEditAddDTO stockTransDTO)
@@ -144,7 +145,11 @@ namespace ProSoft.Core.Repositories.Stocks
                 obj => obj.UserId == userCode && obj.TransType == transType);
             _mapper.Map(stockTransDTO, stockTrans);
 
-            if (stockTrans != null) _Context.Update(stockTrans);
+            if (stockTrans != null)
+            {
+                _Context.Update(stockTrans);
+                await _Context.SaveChangesAsync();
+            }
         }
 
         public async Task DeleteStockTransAsync(int userCode, int transType)
@@ -152,12 +157,11 @@ namespace ProSoft.Core.Repositories.Stocks
             StockEmp stockTrans = await _Context.StockEmps.FirstOrDefaultAsync(
                 obj => obj.UserId == userCode && obj.TransType == transType);
 
-            if (stockTrans != null) _Context.Remove(stockTrans);
-        }
-
-        public async Task SaveChangesAsync()
-        {
-            await _Context.SaveChangesAsync();
+            if (stockTrans != null)
+            {
+                _Context.Remove(stockTrans);
+                await _Context.SaveChangesAsync();
+            }
         }
     }
 }

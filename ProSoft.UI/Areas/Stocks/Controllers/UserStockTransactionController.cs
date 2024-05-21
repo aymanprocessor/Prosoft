@@ -72,7 +72,6 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
                 stockTrans.UserId = id;
 
                 await _userStockRepo.AddStockTransAsync(stockTrans);
-                await _userStockRepo.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(stockTransDTO);
@@ -96,7 +95,6 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             if (ModelState.IsValid)
             {
                 await _userStockRepo.UpdateStockTransAsync(id, transType, stockTransDTO);
-                await _userStockRepo.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(stockTransDTO);
@@ -108,7 +106,6 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         public async Task<IActionResult> Delete_StockTrans(int id, int transType)
         {
             await _userStockRepo.DeleteStockTransAsync(id, transType);
-            await _userStockRepo.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
     }
