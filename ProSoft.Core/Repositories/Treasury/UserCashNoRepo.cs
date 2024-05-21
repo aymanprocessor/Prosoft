@@ -5,7 +5,9 @@ using ProSoft.EF.DTOs.Accounts;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.DTOs.Treasury;
 using ProSoft.EF.IRepositories.Treasury;
+using ProSoft.EF.Models;
 using ProSoft.EF.Models.Accounts;
+using ProSoft.EF.Models.Medical.HospitalPatData;
 using ProSoft.EF.Models.Stocks;
 using ProSoft.EF.Models.Treasury;
 using System;
@@ -62,12 +64,52 @@ namespace ProSoft.Core.Repositories.Treasury
             List<SafeName> safeNames = await _Context.SafeNames.ToListAsync();
             List<AccMainCode> mainAccCodes = await _Context.AccMainCodes.ToListAsync();
 
+            userCashNoDTO.treasuryNames = _mapper.Map<List<TreasuryNameViewDTO>>(safeNames);
+            userCashNoDTO.MainAccCodes = _mapper.Map<List<AccMainCodeDTO>>(mainAccCodes);
+            return userCashNoDTO;
+        }
+
+        public async Task AddSafeTransAsync(UserCashNoEditAddDTO userCashNoDTO)
+        {
+            var userCashNo = _mapper.Map<UserCashNo>(userCashNoDTO);
+            userCashNo.MCode = 11;
+
+            await _Context.AddAsync(userCashNo);
+            await _Context.SaveChangesAsync();
+        }
+
+
+        public async Task<UserCashNoEditAddDTO> GetSafeTransByIdAsync(int id)
+        {
+            UserCashNo userCashNo = await _DbSet.FirstOrDefaultAsync(obj => obj.UserCashID == id);
+            var userCashNoDTO = _mapper.Map<UserCashNoEditAddDTO>(userCashNo);
+
+            List<SafeName> safeNames = await _Context.SafeNames.ToListAsync();
+            List<AccMainCode> mainAccCodes = await _Context.AccMainCodes.ToListAsync();
 
             userCashNoDTO.treasuryNames = _mapper.Map<List<TreasuryNameViewDTO>>(safeNames);
             userCashNoDTO.MainAccCodes = _mapper.Map<List<AccMainCodeDTO>>(mainAccCodes);
-
-
             return userCashNoDTO;
+        }
+
+        public async Task<List<AccSubCodeDTO>> GetSubCodesFromAccAsync(string mainAccCode)
+        {
+            List<AccSubCode> subAccCodes = await _Context.AccSubCodes
+                .Where(obj => obj.MainCode == mainAccCode).ToListAsync();
+            var subAccCodesDTO = _mapper.Map<List<AccSubCodeDTO>>(subAccCodes);
+            return subAccCodesDTO;
+        }
+        public async Task EditSafeTransAsync(int id, UserCashNoEditAddDTO userCashNoDTO)
+        {
+            UserCashNo userCashNo = await _Context.userCashNos.FirstOrDefaultAsync(
+               obj => obj.UserCashID == id);
+            var userId = userCashNo.UserCode;
+
+            _mapper.Map(userCashNoDTO, userCashNo);
+            userCashNo.UserCode = userId ?? 0;
+            if (userCashNo != null)
+              _Context.Update(userCashNo);
+            await _Context.SaveChangesAsync();
         }
     }
 }

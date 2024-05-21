@@ -20,6 +20,7 @@ public partial class AccSubCode
     [Unicode(false)]
     public string SubCode { get; set; } = null!;
 
+
     [Key]
     [Column("MAIN_CODE")]
     [StringLength(10)]

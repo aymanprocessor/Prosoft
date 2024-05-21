@@ -16,11 +16,11 @@ namespace ProSoft.EF.DTOs.Treasury
         [DisplayName("Code")]
         [Required(ErrorMessage = "The field is required")]
         public int UserCashID { get; set; }
-        public int? UserCode { get; set; }
+        public int UserCode { get; set; }
 
         [DisplayName("Treasury Name")]
         [Required(ErrorMessage = "The field is required")]
-        public int? SafeCode { get; set; }
+        public int SafeCode { get; set; }
         public int? BranchId { get; set; }
 
         [DisplayName("Activation")]

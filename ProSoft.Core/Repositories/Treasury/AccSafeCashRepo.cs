@@ -30,14 +30,14 @@ namespace ProSoft.Core.Repositories.Treasury
             _mapper = mapper;
         }
 
-        public async Task<List<AccSafeCashViewDTO>> GetAccSafeCashAsync(string docType, string flagType)
+        public async Task<List<AccSafeCashViewDTO>> GetAccSafeCashAsync(string docType, string flagType, int fYear, int safeCode)
         {
             List<AccSafeCashViewDTO> accSafeCashDTOs = new List<AccSafeCashViewDTO>();
 
             if (flagType == "oneANDtwo")
             {
                 accSafeCashDTOs = await _Context.AccSafeCashes
-                    .Where(obj => obj.DocType == docType && (obj.Flag == 1 || obj.Flag == 2))
+                    .Where(obj => obj.DocType == docType && (obj.Flag == 1 || obj.Flag == 2) && obj.FYear==fYear && obj.SafeCode== safeCode)
                     .Select(obj => new AccSafeCashViewDTO()
                     {
                         SafeCashId = obj.SafeCashId,
@@ -45,7 +45,7 @@ namespace ProSoft.Core.Repositories.Treasury
                         SafeName = obj.SafeName.SafeNames,
                         DocDate = obj.DocDate,
                         PersonName = obj.PersonName,
-                        ValuePay = obj.ValuePay
+                        ValuePay = obj.ValuePay,
                     }).ToListAsync();
             }
             else if (flagType == "oneANDtwoAndthree")
@@ -66,25 +66,28 @@ namespace ProSoft.Core.Repositories.Treasury
             return accSafeCashDTOs;
         }
 
-        public async Task<int> GetNewIdAsync()
-        {
-            int newID;
-            if (_DbSet.Count() != 0)
-            {
-                var lastID = await _DbSet.MaxAsync(obj => obj.SafeCashId);
-                newID = lastID + 1;
-            }
-            else
-                newID = 1;
-            return newID;
-        }
-        public async Task<int> GetNewSerialAsync()
+        //public async Task<int> GetNewIdAsync()
+        //{
+        //    int newID;
+        //    if (_DbSet.Count() != 0)
+        //    {
+        //        var lastID = await _DbSet.MaxAsync(obj => obj.SafeCashId);
+        //        newID = lastID + 1;
+        //    }
+        //    else
+        //        newID = 1;
+        //    return newID;
+        //}
+        public async Task<int> GetNewSerialAsync(string docType, int safeCode, int fYear)
         {
             int newSerial;
-            if (_DbSet.Count() != 0)
+            var accSafeCash = await _Context.AccSafeCashes
+                .Where(obj => obj.DocType == docType && obj.SafeCode == safeCode && obj.FYear == fYear).CountAsync();
+           
+            if (accSafeCash != 0)
             {
-                var lastID = await _DbSet.MaxAsync(obj => obj.DocNo);
-                newSerial = (int)lastID + 1;
+                //var lastID = await _DbSet.MaxAsync(obj => obj.DocNo);
+                newSerial = (int)accSafeCash + 1;
             }
             else
                 newSerial = 1;
@@ -124,7 +127,7 @@ namespace ProSoft.Core.Repositories.Treasury
         public async Task AddPaymentReceiptAsync(AccSafeCashEditAddDTO accSafeCashDTO)
         {
             AccSafeCash accSafeCash = _mapper.Map<AccSafeCash>(accSafeCashDTO);
-            accSafeCash.DocType = "SFCIN";
+            //accSafeCash.DocType = "SFCIN";
             accSafeCash.MCodeDtl = 31;
             accSafeCash.SerId = 1;
             accSafeCash.EntryDate = DateTime.Now;
@@ -162,7 +165,7 @@ namespace ProSoft.Core.Repositories.Treasury
         {
             AccSafeCash accSafeCash = await _Context.AccSafeCashes.FirstOrDefaultAsync(obj => obj.SafeCashId == id);
             _mapper.Map(accSafeCashDTO, accSafeCash);
-            accSafeCash.DocType = "SFCIN";
+            //accSafeCash.DocType = "SFCIN";
             accSafeCash.MCodeDtl = 31;
             accSafeCash.SerId = 1;
             accSafeCash.EntryDate = DateTime.Now;

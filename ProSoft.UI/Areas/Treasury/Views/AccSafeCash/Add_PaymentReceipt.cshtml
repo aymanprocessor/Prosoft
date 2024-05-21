@@ -38,6 +38,8 @@
             <div asp-validation-summary="ModelOnly"></div>
             @* hidden *@
             <input asp-for="DocNo" hidden value="@ViewBag.SerialID" />
+            <input asp-for="DocType" hidden value="@ViewBag.docType" />
+            <input asp-for="FYear" hidden value="@ViewBag.fYear" />
 
             <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
                @*  <div class="mb-3">
@@ -178,7 +180,7 @@
         subElement.innerHTML = `<option value="">-- Choose --</option>`;
 
         $.ajax({
-            url: `/Accounts/AccSafeCash/GetSubCodesFromAcc/${mainElement.value}`,
+            url: `/Treasury/AccSafeCash/GetSubCodesFromAcc/${mainElement.value}`,
             success: function (result) {
                 console.log(result);
                 for (let item of result) {

@@ -8,6 +8,7 @@ namespace ProSoft.EF.DTOs.Treasury
 {
     public class CustCollectionsDiscountViewDTO
     {
+        public int? DiscountCode { get; set; }
         public decimal? DiscPrc { get; set; }
         public decimal? DiscValue { get; set; }
         public string? MainCode { get; set; }

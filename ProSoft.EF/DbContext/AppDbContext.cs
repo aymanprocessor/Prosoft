@@ -131,13 +131,8 @@ namespace ProSoft.EF.DbContext
         public DbSet<SafeName> SafeNames { get; set; }
         public DbSet<GTable> gTables { get; set; }
         public DbSet<AccGlobalDef> accGlobalDefs { get; set; }
-<<<<<<< HEAD
         public DbSet<AccSafeCash> AccSafeCashes { get; set; }
         public DbSet<CustCollectionsDiscount> custCollectionsDiscounts { get; set; }
         public DbSet<UserCashNo> userCashNos { get; set; }
-
-
-=======
->>>>>>> 912cf9e87a0293477b887ab4859a1ee31d80cda2
     }
 }

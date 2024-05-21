@@ -52,5 +52,12 @@ namespace ProSoft.EF.Models.Treasury
 
         [Column("SAFE_CODE")]
         public int? SafeCode { get; set; }
+
+        [Column("SAFE_CASH_ID")]
+        public int? SafeCashId { get; set; }
+
+        [ForeignKey("SafeCashId")]
+        [InverseProperty("custCollectionsDiscounts")]
+        public AccSafeCash? accSafeCash { get; set; }
     }
 }

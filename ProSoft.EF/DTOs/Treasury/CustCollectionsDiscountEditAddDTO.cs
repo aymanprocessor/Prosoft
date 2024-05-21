@@ -11,8 +11,6 @@ namespace ProSoft.EF.DTOs.Treasury
 {
     public class CustCollectionsDiscountEditAddDTO
     {
-        [DisplayName("Code")]
-        [Required(ErrorMessage = "The field is required")]
         public int? DiscountCode { get; set; }
         public int? ReceiptNo { get; set; }
         public DateTime? ReceiptDate { get; set; }
@@ -26,14 +24,15 @@ namespace ProSoft.EF.DTOs.Treasury
         [Required(ErrorMessage = "The field is required")]
         public decimal? DiscValue { get; set; }
 
-        [DisplayName("Credit Account (Main)")]
+        [DisplayName("Account (Main)")]
         [Required(ErrorMessage = "The field is required")]
         public string? MainCode { get; set; }
 
-        [DisplayName("Credit Account (Sub)")]
+        [DisplayName("Account (Sub)")]
         public string? SubCode { get; set; }
         public int? FYear { get; set; }
         public int? SafeCode { get; set; }
+        public int? SafeCashId { get; set; }
 
         //Lists
         public List<AccMainCodeDTO>? accMainCodes { get; set; }

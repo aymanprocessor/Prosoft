@@ -17,15 +17,26 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
     public class AccSafeCashController : Controller
     {
         private readonly IAccSafeCashRepo _accSafeCashRepo;
-        public AccSafeCashController(IAccSafeCashRepo accSafeCashRepo)
+        private readonly IUserCashNoRepo _userCashNoRepo;
+
+        public AccSafeCashController(IAccSafeCashRepo accSafeCashRepo, IUserCashNoRepo userCashNoRepo)
         {
             _accSafeCashRepo = accSafeCashRepo;
+            _userCashNoRepo = userCashNoRepo;
         }
         public async Task<IActionResult> Index(string docType,string? flagType)
         {
+            var userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
+            var userCashNoDTO = await _userCashNoRepo.GetSafeTransByIdAsync(userCode);
+            var safeCode = userCashNoDTO.SafeCode;
+            var fYear = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "F_Year").Value);
+            var branchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
 
             List<AccSafeCashViewDTO> accSafeCashs = await _accSafeCashRepo
-            .GetAccSafeCashAsync(docType, flagType);
+            .GetAccSafeCashAsync(docType, flagType, fYear, safeCode);
+            ViewBag.docType = docType;
+            ViewBag.safeCode = safeCode;
+            ViewBag.fYear = fYear;
 
             return View(accSafeCashs);
         }
@@ -37,11 +48,13 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
             return Json(subAccCodesDTO);
         }
         //Get Add
-        public async Task<IActionResult> Add_PaymentReceipt()
+        public async Task<IActionResult> Add_PaymentReceipt(string docType ,int safeCode, int fYear)
         {
-            ViewBag.AccSafeCashID = await _accSafeCashRepo.GetNewIdAsync();
-            ViewBag.SerialID = await _accSafeCashRepo.GetNewIdAsync();
+           // ViewBag.AccSafeCashID = await _accSafeCashRepo.GetNewIdAsync();
+            ViewBag.SerialID = await _accSafeCashRepo.GetNewSerialAsync(docType, safeCode, fYear);
             AccSafeCashEditAddDTO accSafeCashDTO = await _accSafeCashRepo.GetEmptyPaymentReceiptAsync();
+            ViewBag.docType = docType;
+            ViewBag.fYear = fYear;
 
             return View(accSafeCashDTO);
         }
@@ -52,8 +65,6 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
         {
             if (ModelState.IsValid)
             {
-                accSafeCashDTO.FYear = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "F_Year").Value);
-
                 await _accSafeCashRepo.AddPaymentReceiptAsync(accSafeCashDTO);
                 return RedirectToAction("Index", "AccSafeCash" ,new { docType = "SFCIN", flagType = "oneANDtwo" });
             }
@@ -74,8 +85,6 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
         {
             if (ModelState.IsValid)
             {
-                accSafeCashDTO.FYear = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "F_Year").Value);
-
                 await _accSafeCashRepo.EditPaymentReceiptAsync(id, accSafeCashDTO);
                 return RedirectToAction("Index", "AccSafeCash", new { docType = "SFCIN", flagType = "oneANDtwo" });
             }

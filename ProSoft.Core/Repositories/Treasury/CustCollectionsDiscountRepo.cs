@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ProSoft.EF.DbContext;
+using ProSoft.EF.DTOs.Accounts;
 using ProSoft.EF.DTOs.Shared;
 using ProSoft.EF.DTOs.Treasury;
 using ProSoft.EF.IRepositories.Treasury;
@@ -22,9 +23,9 @@ namespace ProSoft.Core.Repositories.Treasury
         {
             _mapper = mapper;
         }
-        public async Task<List<CustCollectionsDiscountViewDTO>> GetAllCustCollectionsDiscountAsync()
+        public async Task<List<CustCollectionsDiscountViewDTO>> GetAllCustCollectionsDiscountAsync(int id)
         {
-            List<CustCollectionsDiscount> custCollectionsDiscounts = await _DbSet.ToListAsync();
+            List<CustCollectionsDiscount> custCollectionsDiscounts = await _DbSet.Where(obj=>obj.SafeCashId == id).ToListAsync();
             var custCollectionsDiscountDTOs = _mapper.Map<List<CustCollectionsDiscountViewDTO>>(custCollectionsDiscounts);
 
             foreach (var item in custCollectionsDiscountDTOs)
@@ -45,5 +46,50 @@ namespace ProSoft.Core.Repositories.Treasury
 
             return subName != "" ? $"{mainName} / {subName}" : mainName;
         }
+
+
+        public async Task<CustCollectionsDiscountEditAddDTO> GetEmptycustCollectionsDiscountAsync(int id)
+        {
+            var custCollectionsDiscountDTO = new CustCollectionsDiscountEditAddDTO();
+
+            List<AccMainCode> mainAccCodes = await _Context.AccMainCodes.ToListAsync();
+
+            custCollectionsDiscountDTO.accMainCodes = _mapper.Map<List<AccMainCodeDTO>>(mainAccCodes);
+            return custCollectionsDiscountDTO;
+        }
+
+        public async Task AddcustCollectionsDiscountAsync(int id,CustCollectionsDiscountEditAddDTO custCollectionsDiscountDTO)
+        {
+            var custCollectionsDiscount = _mapper.Map<CustCollectionsDiscount>(custCollectionsDiscountDTO);
+            var accSafeCash = await _Context.AccSafeCashes.FirstOrDefaultAsync(obj => obj.SafeCashId == id);
+            custCollectionsDiscount.ReceiptNo = accSafeCash.DocNo;
+            custCollectionsDiscount.ReceiptDate = accSafeCash.DocDate;
+            custCollectionsDiscount.FYear = accSafeCash.FYear;
+            custCollectionsDiscount.DocType = accSafeCash.DocType;
+            custCollectionsDiscount.SafeCode = accSafeCash.SafeCode;
+
+            await _Context.AddAsync(custCollectionsDiscount);
+            await _Context.SaveChangesAsync();
+        }
+        public async  Task<CustCollectionsDiscountEditAddDTO> GetcustCollectionsDiscountByIdAsync(int id)
+        {
+            CustCollectionsDiscount custCollectionsDiscount = await _Context.custCollectionsDiscounts
+                .FirstOrDefaultAsync(obj=>obj.DiscountCode ==id);
+            var custCollectionsDiscountDTO = _mapper.Map<CustCollectionsDiscountEditAddDTO>(custCollectionsDiscount);
+            
+            List<AccMainCode> mainAccCodes = await _Context.AccMainCodes.ToListAsync();
+            custCollectionsDiscountDTO.accMainCodes = _mapper.Map<List<AccMainCodeDTO>>(mainAccCodes);
+
+            return custCollectionsDiscountDTO;
+        }
+
+        public async Task<List<AccSubCodeDTO>> GetSubCodesFromAccAsync(string mainAccCode)
+        {
+            List<AccSubCode> subAccCodes = await _Context.AccSubCodes
+                .Where(obj => obj.MainCode == mainAccCode).ToListAsync();
+            var subAccCodesDTO = _mapper.Map<List<AccSubCodeDTO>>(subAccCodes);
+            return subAccCodesDTO;
+        }
+
     }
 }

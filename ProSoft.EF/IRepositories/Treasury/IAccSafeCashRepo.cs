@@ -12,11 +12,10 @@ namespace ProSoft.EF.IRepositories.Treasury
 {
     public interface IAccSafeCashRepo : IRepository<AccSafeCash, int>
     {
-        Task<List<AccSafeCashViewDTO>> GetAccSafeCashAsync(string docType, string flagType);
-        Task<int> GetNewIdAsync();
-        Task<int> GetNewSerialAsync();
+        Task<List<AccSafeCashViewDTO>> GetAccSafeCashAsync(string docType, string flagType, int fYear ,int safeCode);
+       // Task<int> GetNewIdAsync();
+        Task<int> GetNewSerialAsync(string docType, int safeCode, int fYear);
         Task<List<AccSubCodeDTO>> GetSubCodesFromAccAsync(string mainAccCode);
-
         Task<AccSafeCashEditAddDTO> GetEmptyPaymentReceiptAsync();
         Task AddPaymentReceiptAsync(AccSafeCashEditAddDTO accSafeCashDTO);
         Task<AccSafeCashEditAddDTO> GetPaymentReceiptByIdAsync(int id);

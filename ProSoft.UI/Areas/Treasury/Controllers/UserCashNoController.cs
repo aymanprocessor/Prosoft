@@ -10,6 +10,7 @@ using ProSoft.EF.IRepositories;
 using ProSoft.EF.IRepositories.Treasury;
 using ProSoft.EF.Models;
 using ProSoft.EF.Models.Stocks;
+using ProSoft.EF.Models.Treasury;
 
 namespace ProSoft.UI.Areas.Treasury.Controllers
 {
@@ -52,19 +53,55 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
         //// Post Add
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add_UserCashNo(int id, StockEmpEditAddDTO stockTransDTO)
+        public async Task<IActionResult> Add_UserCashNo(int id, UserCashNoEditAddDTO userCashNoDTO)
         {
             if (ModelState.IsValid)
             {
-                //StockEmp stockTrans = _mapper.Map<StockEmp>(stockTransDTO);
-                //stockTrans.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
-                //stockTrans.UserId = id;
+                userCashNoDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
+                userCashNoDTO.UserCode = id;
 
-                //await _userStockRepo.AddStockTransAsync(stockTrans);
-                //await _userStockRepo.SaveChangesAsync();
-                //return RedirectToAction(nameof(Index));
+                await _userCashNoRepo.AddSafeTransAsync(userCashNoDTO);
+                return RedirectToAction(nameof(Index));
             }
-            return View(stockTransDTO);
+            return View(userCashNoDTO);
+        }
+
+        // Get Edit
+        public async Task<IActionResult> Edit_UserCashNo(int id)
+        {
+            UserCashNoEditAddDTO userCashNoDTO = await _userCashNoRepo.GetSafeTransByIdAsync(id);
+            ViewBag.subAccCodesSub = await _userCashNoRepo.GetSubCodesFromAccAsync(userCashNoDTO.MainCode);
+            ViewBag.subAccCodesMain = await _userCashNoRepo.GetSubCodesFromAccAsync(userCashNoDTO.MainCode2);
+            ViewBag.userName = (await _userRepo.GetUserByIdAsync(userCashNoDTO.UserCode)).UserName;
+
+            return View(userCashNoDTO);
+        }
+
+        // Post Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit_UserCashNo(int id, UserCashNoEditAddDTO userCashNoDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                userCashNoDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
+
+                await _userCashNoRepo.EditSafeTransAsync(id, userCashNoDTO);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(userCashNoDTO);
+        }
+
+        // Delete
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete_UserCashNo(int id)
+        {
+            UserCashNo userCashNo = await _userCashNoRepo.GetByIdAsync(id);
+
+            await _userCashNoRepo.DeleteAsync(userCashNo);
+            await _userCashNoRepo.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
     }
 }

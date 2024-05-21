@@ -358,7 +358,13 @@
   "Transactions of Safes for User": "حركات الخزائن للمستخدم",
   "Convert To": "التحويل ال",
   "Add New SafeTransaction For User": "اضافة حركة خزينة جديدة للمستتخدم",
-
+  "Edit New SafeTransaction For User": "تعديل حركة خزينة جديدة للمستتخدم",
+  "Account (Main)": "حساب (رئيسي)",
+  "Account (Sub)": "حساب (فرعي)",
+  "Account Name": "اسم الحساب",
+  "Check deductions": "استقطاعات الشيك",
+  "Add Discount": "اضافة خصم",
+  "Edit Discount": "تعديل الخصم",
 
 
 

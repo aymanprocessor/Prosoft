@@ -1,0 +1,84 @@
+﻿@model CustCollectionsDiscountEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Add New custCollectionsDiscount";
+    Layout = "_Layout";
+
+    // Casting type to get all MainAccCodes as a list
+    SelectList mainAccCodes = new SelectList(Model.accMainCodes, "MainCode", "MainName");
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+    <h1 class="mt-4">@localizer["Add Discount"]</h1>
+    <form method="post" asp-action="Add_CustDiscount">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="MainCode"></label>
+                    <select asp-for="MainCode" asp-items="mainAccCodes" class="form-control text-center" onchange="getSubCodes('MainCode', 'SubCode')">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="MainCode" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="SubCode"></label>
+                    <select asp-for="SubCode" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="SubCode" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="DiscPrc"></label>
+                    <input asp-for="DiscPrc" type="number" class="form-control" />
+                    <span asp-validation-for="DiscPrc" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DiscValue"></label>
+                    <input asp-for="DiscValue" type="number" class="form-control" />
+                    <span asp-validation-for="DiscValue" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex justify-content-md-center gap-2">
+                <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add Discount"]</button>
+                <a asp-controller="CustCollectionsDiscount" asp-action="Index" asp-route-Id="@ViewBag.custDiscountID" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+
+    function getSubCodes(mainId, subId) {
+        let mainElement = document.getElementById(mainId);
+        let subElement = document.getElementById(subId);
+        subElement.innerHTML = `<option value="">-- Choose --</option>`;
+
+        $.ajax({
+            url: `/Stocks/UserStockTransaction/GetSubCodesFromAcc/${mainElement.value}`,
+            success: function (result) {
+                console.log(result);
+                for (let item of result) {
+                    subElement.innerHTML +=
+                        `<option value="${item.subCode}">${item.subName}</option>`;
+                }
+            }
+        });
+    }
+</script>

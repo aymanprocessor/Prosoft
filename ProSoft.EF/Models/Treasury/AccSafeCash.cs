@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using ProSoft.EF.Models.Accounts;
+using ProSoft.EF.Models.MedicalRecords;
 using ProSoft.EF.Models.Shared;
 using ProSoft.EF.Models.Stocks;
 
@@ -25,7 +26,7 @@ public partial class AccSafeCash
     [Column("DOC_TYPE")]
     [StringLength(5)]
     [Unicode(false)]
-    public string? DocType { get; set; }
+    public string DocType { get; set; }
 
     [Column("DOC_NO")]
     public int? DocNo { get; set; }
@@ -163,7 +164,7 @@ public partial class AccSafeCash
     [Column("SER_ID")]
     public int? SerId { get; set; }
 
-
+    public ICollection<CustCollectionsDiscount>? custCollectionsDiscounts { get; set; }
 
 
     // [Column("G_CODE")]

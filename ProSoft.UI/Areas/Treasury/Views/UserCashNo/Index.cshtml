@@ -145,8 +145,17 @@
             $.ajax({
                 url: `/Treasury/UserCashNo/GetSafeTransForUser/${userCode}`,
                 success: function (result) {
-                    console.log(result);
+                  //  console.log(result);
+                  //to disable l add when user has Treasury
                     let count = 0;
+                    if (result.length > 0) {
+                        transAddLink.classList.add("btn-secondary");
+                        transAddLink.style.pointerEvents = "none";
+                    }
+                    else {
+                        transAddLink.classList.remove("btn-secondary");
+                        transAddLink.style.pointerEvents = "all";
+                    }
                     for (let item of result) {
                         count++;
                         let actdeactFlag = item.actdeactFlag == 1 ? `<i class="fa-solid fa-check"></i>` : "";
