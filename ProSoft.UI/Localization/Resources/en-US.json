@@ -335,11 +335,18 @@
   "Transfer Permission": "Transfer Permission",
   "Add Receipt": "Add Receipt",
   "Edit Receipt": "Edit Receipt",
+  "Add Permission": "Add Permission",
+  "Edit Permission": "Edit Permission",
+  "Disbursement Permissions": "Disbursement Permissions",
+  "Receive Permissions": "Receive Permissions",
+  "Add Disbursement Permission": "Add Disbursement Permission",
+  "Edit Disbursement Permission": "Edit Disbursement Permission",
   "Receipt No": "Receipt No",
   "Receipt date": "Receipt date",
   "Depositor Name": "Depositor Name",
   "Amount Deposited": "Amount Deposited",
   "Posting": "Posting",
+  "Statement": "Statement",
   "For Payment": "For Payment",
   "Currency": "Currency",
   "Posting of Invoices": "Posting of Invoices",
@@ -365,6 +372,8 @@
   "Check deductions": "Check deductions",
   "Add Discount": "Add Discount",
   "Edit Discount": "Edit Discount",
+  "Recipient Name": "Recipient Name",
+  "Net Amount": "Net Amount",
 
 
 
@@ -521,5 +530,8 @@
   "Go To Medical Records": "Go To Medical Records",
   "GO TO RECORD": "GO TO RECORD",
   "Permissions Forms": "Permissions Forms",
-  "Add Permission Form": "Add Permission Form"
+  "Add Permission Form": "Add Permission Form",
+  "The Month": "The Month",
+  "The Year": "The Year",
+  "Number of Permissions": "Number of Permissions"
 }

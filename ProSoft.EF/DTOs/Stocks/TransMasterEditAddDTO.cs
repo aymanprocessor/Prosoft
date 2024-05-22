@@ -86,5 +86,13 @@ namespace ProSoft.EF.DTOs.Stocks
         public DateTime? EntryDate { get; set; }
         public DateTime? ModifyDate { get; set; }
         public int? SendFr { get; set; }
+        /////////////////////////////////////////////////
+        public string? MonthName { get; set; }
+        public int? PermissionsCount { get; set; }
+        public string? StockName { get; set; }
+        public string? PermissionName { get; set; }
+        public string? UserName { get; set; }
+
+        public List<SupCodeViewDTO>? Suppliers {  get; set; }
     }
 }
