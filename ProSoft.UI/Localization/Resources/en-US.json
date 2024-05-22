@@ -347,6 +347,7 @@
   "Amount Deposited": "Amount Deposited",
   "Posting": "Posting",
   "Statement": "Statement",
+  "For Payment": "For Payment",
   "Currency": "Currency",
   "Posting of Invoices": "Posting of Invoices",
   "Posting of Treasury": "Posting of Treasury",
@@ -459,7 +460,6 @@
   "Selling": "Selling",
   "Remove": "Remove",
   "Add New Permission Name": "Add New Permission Name",
-  "Edit Permission": "Edit Permission",
   "Joining Users With Transactions": "Joining Users With Transactions",
   "Transactions of User": "Transactions of User",
   "Search users by useer code or name ...": "Search users by useer codeor name ...",
@@ -530,5 +530,8 @@
   "GO TO RECORD": "GO TO RECORD",
   "Permissions Forms": "Permissions Forms",
   "Add Permission Form": "Add Permission Form",
-  "Are you sure you want to delete this item ?": "Are you sure you want to delete this item ?"
+  "Are you sure you want to delete this item ?": "Are you sure you want to delete this item ?",
+  "The Month": "The Month",
+  "The Year": "The Year",
+  "Number of Permissions": "Number of Permissions",
 }

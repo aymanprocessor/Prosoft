@@ -58,5 +58,29 @@ namespace ProSoft.Core.Repositories.Stocks
             }
             return permissionsDTO;
         }
+
+        public async Task<TransMasterEditAddDTO> GetDTOWithDefaultsAsync(int stockID, int permissionID)
+        {
+            var permissionFormDTO = new TransMasterEditAddDTO();
+
+            List<TransMaster> permissionForms = await _DbSet
+                .Where(obj => obj.StockCode == stockID && obj.TransType == permissionID
+                && obj.Flag3 == "1").ToListAsync();
+
+            List<SupCode> suppliers = await _Context.SupCodes.ToListAsync();
+            permissionFormDTO.Suppliers = _mapper.Map<List<SupCodeViewDTO>>(suppliers);
+
+            Stock stock = await _Context.Stocks.FindAsync(stockID);
+            permissionFormDTO.StockCode = (short)stockID;
+            GeneralCode permission = await _Context.GeneralCodes.FindAsync(permissionID);
+            permissionFormDTO.TransType = permissionID;
+
+            permissionFormDTO.FYear = DateTime.Now.Year;
+            permissionFormDTO.MonthName = DateTime.Now.ToString("MMMM");
+            permissionFormDTO.PermissionsCount = permissionForms.Count();
+            permissionFormDTO.StockName = stock?.Stknam;
+            permissionFormDTO.PermissionName = permission?.GDesc;
+            return permissionFormDTO;
+        }
     }
 }

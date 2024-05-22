@@ -347,6 +347,10 @@
   "Amount Deposited": "المبلغ المودع",
   "Posting": "مرحل",
   "Statement": "البيان",
+<<<<<<< HEAD
+=======
+  "For Payment": "ذلك لسداد",
+>>>>>>> a6a12aee4e532feee8380329f50d6c898407433a
   "Currency": "العملة",
   "Posting of Invoices": "مرحل من خزينة",
   "Posting of Treasury": "مرحل من الفواتير",
@@ -529,5 +533,11 @@
   "GO TO RECORD": "الذهاب للسجلات",
   "Permissions Forms": "نماذج الاذون",
   "Add Permission Form": "اضافة نموذج اذن",
+<<<<<<< HEAD
   "Are you sure you want to delete this item ?": "هل انت متاكد من حذف هذا العنصر ؟"
+=======
+  "The Month": "الشهر",
+  "The Year": "السنة",
+  "Number of Permissions": "عدد الاذون"
+>>>>>>> a6a12aee4e532feee8380329f50d6c898407433a
 }

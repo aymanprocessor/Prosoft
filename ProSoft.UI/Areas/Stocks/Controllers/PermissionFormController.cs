@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProSoft.Core.Repositories.Stocks;
 using ProSoft.EF.DTOs.Shared;
 using ProSoft.EF.DTOs.Stocks;
+using ProSoft.EF.IRepositories;
 using ProSoft.EF.IRepositories.Stocks;
 
 namespace ProSoft.UI.Areas.Stocks.Controllers
@@ -13,10 +14,13 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
     {
         private readonly IUserTransRepo _userTransRepo;
         private readonly ITransMasterRepo _transMasterRepo;
-        public PermissionFormController(IUserTransRepo userTransRepo, ITransMasterRepo transMasterRepo)
+        private readonly IUserRepo _userRepo;
+        public PermissionFormController(IUserTransRepo userTransRepo,
+            ITransMasterRepo transMasterRepo, IUserRepo userRepo)
         {
             _userTransRepo = userTransRepo;
             _transMasterRepo = transMasterRepo;
+            _userRepo = userRepo;
         }
 
         public async Task<IActionResult> Index()
@@ -41,9 +45,10 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         public async Task<IActionResult> Add_PermissionForm(int id, int transType)
         {
             var userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
-            List<PermissionDefViewDTO> permissionsDTO = await _transMasterRepo
-                .GetUserPermissionsForStockAsync(userCode, id);
-            return Json(permissionsDTO);
+            TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetDTOWithDefaultsAsync(id, transType);
+            permissionFormDTO.UserName = (await _userRepo.GetUserByIdAsync(userCode)).UserName;
+
+            return View(permissionFormDTO);
         }
     }
 }
