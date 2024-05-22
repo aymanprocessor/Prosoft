@@ -48,13 +48,17 @@ namespace ProSoft.EF.DTOs.Treasury
 
         [DisplayName("Treasury")]
         [Required(ErrorMessage = "The field is required")]
-        public int? SafeCode { get; set; }
+        public int? SafeCode { get; set; }     
+
+        [DisplayName("Treasury")]
+        [Required(ErrorMessage = "The field is required")]
+        public int? SafeCode2 { get; set; }
 
         [DisplayName("Receipt date")]
         [Required(ErrorMessage = "The field is required")]
         public DateTime? DocDate { get; set; }//تاريخ الايصال
 
-        [DisplayName("For Payment")]
+        [DisplayName("Statement")]
         [Required(ErrorMessage = "The field is required")]
         public string? Commentt { get; set; }
         public int? CurSer { get; set; }

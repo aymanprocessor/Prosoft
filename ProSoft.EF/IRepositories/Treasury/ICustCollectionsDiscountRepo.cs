@@ -17,6 +17,8 @@ namespace ProSoft.EF.IRepositories.Treasury
         Task AddcustCollectionsDiscountAsync(int id,CustCollectionsDiscountEditAddDTO custCollectionsDiscountDTO);
         Task<CustCollectionsDiscountEditAddDTO> GetcustCollectionsDiscountByIdAsync(int id);
         Task<List<AccSubCodeDTO>> GetSubCodesFromAccAsync(string mainAccCode);
+        Task EditcustCollectionsDiscountAsync(int id, CustCollectionsDiscountEditAddDTO custCollectionsDiscountDTO);
+
 
     }
 }

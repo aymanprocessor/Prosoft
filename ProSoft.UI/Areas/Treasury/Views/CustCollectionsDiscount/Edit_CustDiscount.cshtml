@@ -1,5 +1,105 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model CustCollectionsDiscountEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
 @{
+    ViewData["Title"] = "Edit custCollectionsDiscount";
+    Layout = "_Layout";
+
+    // Casting type to get all MainAccCodes as a list
+    SelectList mainAccCodes = new SelectList(Model.accMainCodes, "MainCode", "MainName");
+    // Casting type to get all SubAccCodes_Stk as a list
+    SelectList subAccCodes = new SelectList(ViewBag.subAccCodesSub, "SubCode", "SubName");
+
 }
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+    <h1 class="mt-4">@localizer["Add Discount"]</h1>
+    <form method="post" asp-action="Edit_CustDiscount">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="ValuePay" hidden disabled value="@ViewBag.ValuePay" />
+
+            @* hidden *@
+            <input asp-for="DiscountCode" type="hidden" />
+            <input asp-for="ReceiptNo" type="hidden" />
+            <input asp-for="ReceiptDate" type="hidden" />
+            <input asp-for="FYear" type="hidden" />
+            <input asp-for="DocType" type="hidden" />
+            <input asp-for="SafeCode" type="hidden" />
+            <input asp-for="SafeCashId" type="hidden" />
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="MainCode"></label>
+                    <select asp-for="MainCode" asp-items="mainAccCodes" class="form-control text-center" onchange="getSubCodes('MainCode', 'SubCode')">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="MainCode" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="SubCode"></label>
+                    <select asp-for="SubCode" asp-items="subAccCodes" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="SubCode" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="DiscPrc"></label>
+                    <input asp-for="DiscPrc" id="discountPrc" type="number" class="form-control" />
+                    <span asp-validation-for="DiscPrc" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DiscValue"></label>
+                    <input asp-for="DiscValue" id="discountValue" type="number" class="form-control" />
+                    <span asp-validation-for="DiscValue" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex justify-content-md-center gap-2">
+                <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Save Changes"]</button>
+                <a asp-controller="CustCollectionsDiscount" asp-action="Index" asp-route-Id="@Model.SafeCashId" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    //get discount value from discount Prc
+    document.getElementById('discountPrc').addEventListener('input', function () {
+        // Get the value entered in the Discount price input
+        var discountPrcc = parseFloat(this.value);
+        var cashValuePay = parseInt(document.getElementById('ValuePay').value);
+        //  console.log(cashValuePay)
+        document.getElementById('discountValue').value = (discountPrcc * cashValuePay) / 100;
+    });
+
+    function getSubCodes(mainId, subId) {
+        let mainElement = document.getElementById(mainId);
+        let subElement = document.getElementById(subId);
+        subElement.innerHTML = `<option value="">-- Choose --</option>`;
+
+        $.ajax({
+            url: `/Stocks/UserStockTransaction/GetSubCodesFromAcc/${mainElement.value}`,
+            success: function (result) {
+                console.log(result);
+                for (let item of result) {
+                    subElement.innerHTML +=
+                        `<option value="${item.subCode}">${item.subName}</option>`;
+                }
+            }
+        });
+    }
+</script>

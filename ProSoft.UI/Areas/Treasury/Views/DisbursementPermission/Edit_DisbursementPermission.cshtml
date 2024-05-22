@@ -2,7 +2,7 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Edit Receipt";
+    ViewData["Title"] = "Edit Disbursement Permission";
     Layout = "~/Views/Shared/_Layout.cshtml";
     SelectList journals = new SelectList(Model.journalTypes, "JournalCode", "JournalName");
     SelectList gtables = new SelectList(Model.gTablels, "GCode", "GDesc");
@@ -31,8 +31,8 @@
 <div class="container pt-2" style="min-height:100vh;">
     @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
 
-    <h1 class="mt-4">@localizer["Edit Receipt"]</h1>
-    <form method="post" asp-action="Edit_PaymentReceipt" id="myForm">
+    <h1 class="mt-4">@localizer["Edit Disbursement Permission"]</h1>
+    <form method="post" asp-action="Edit_DisbursementPermission" id="myForm">
         <div class="border p-3 mt-4">
 
             <div asp-validation-summary="ModelOnly"></div>
@@ -116,25 +116,6 @@
 
             <!------------------------------------------------------------------------------->
 
-            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
-                <div class="mb-3">
-                    <label asp-for="PersonName"></label>
-                    <input asp-for="PersonName" class="form-control" />
-                    <span asp-validation-for="PersonName" class="text-danger"></span>
-                </div>
-                <div class="mb-3 ">
-                    <label asp-for="ValuePay"></label>
-                    <input asp-for="ValuePay" type="number" class="form-control" />
-                    <span asp-validation-for="ValuePay" class="text-danger"></span>
-                </div>
-                <div class="mb-3 ">
-                    <label asp-for="Commentt"></label>
-                    <input asp-for="Commentt" class="form-control" />
-                    <span asp-validation-for="Commentt" class="text-danger"></span>
-                </div>
-            </div>
-
-            <!------------------------------------------------------------------------------->
 
             <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
                 <div class="mb-3">
@@ -163,11 +144,31 @@
 
             <!------------------------------------------------------------------------------->
 
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <label asp-for="PersonName">@localizer["Recipient Name"]</label>
+                    <input asp-for="PersonName" class="form-control" />
+                    <span asp-validation-for="PersonName" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="ValuePay">@localizer["Net Amount"]</label>
+                    <input asp-for="ValuePay" type="number" class="form-control" />
+                    <span asp-validation-for="ValuePay" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="Commentt"></label>
+                    <input asp-for="Commentt" class="form-control" />
+                    <span asp-validation-for="Commentt" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
             <div class="parent d-flex justify-content-md-center gap-2 ">
                 <button type="submit" class="btn btn-primary" style="width:150px">
                     @localizer["Save Changes"]
                 </button>
-                <a asp-controller="AccSafeCash" asp-action="Index" asp-route-docType="SFCIN" asp-route-flagType="oneANDtwo" class="btn btn-secondary" style="width:150px">
+                <a asp-controller="DisbursementPermission" asp-action="Index" asp-route-docType="SFCOT" asp-route-flagType="oneANDtwo" class="btn btn-secondary" style="width:150px">
                     @localizer["Cancel"]
                 </a>
             </div>

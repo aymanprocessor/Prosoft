@@ -33,6 +33,8 @@ namespace ProSoft.EF.DTOs.Treasury
         public int? FYear { get; set; }
         public int? SafeCode { get; set; }
         public int? SafeCashId { get; set; }
+        public decimal? ValuePay { get; set; }
+
 
         //Lists
         public List<AccMainCodeDTO>? accMainCodes { get; set; }

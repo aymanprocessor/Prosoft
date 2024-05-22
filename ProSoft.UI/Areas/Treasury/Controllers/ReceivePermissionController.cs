@@ -1,32 +1,24 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ProSoft.Core.Repositories.Accounts;
-using ProSoft.Core.Repositories.Medical.HospitalPatData;
 using ProSoft.EF.DTOs.Accounts;
-using ProSoft.EF.DTOs.Medical.HospitalPatData;
 using ProSoft.EF.DTOs.Treasury;
-using ProSoft.EF.IRepositories.Medical.HospitalPatData;
 using ProSoft.EF.IRepositories.Treasury;
-using ProSoft.EF.Models.Medical.HospitalPatData;
 using ProSoft.EF.Models.Treasury;
-using ArabicNumbersConverter;
-using Humanizer;
 
 namespace ProSoft.UI.Areas.Treasury.Controllers
 {
     [Authorize]
     [Area(nameof(Treasury))]
-    public class AccSafeCashController : Controller
+    public class ReceivePermissionController : Controller
     {
         private readonly IAccSafeCashRepo _accSafeCashRepo;
         private readonly IUserCashNoRepo _userCashNoRepo;
-
-        public AccSafeCashController(IAccSafeCashRepo accSafeCashRepo, IUserCashNoRepo userCashNoRepo)
+        public ReceivePermissionController(IAccSafeCashRepo accSafeCashRepo, IUserCashNoRepo userCashNoRepo)
         {
             _accSafeCashRepo = accSafeCashRepo;
             _userCashNoRepo = userCashNoRepo;
         }
-        public async Task<IActionResult> Index(string docType,string? flagType)
+        public async Task<IActionResult> Index(string docType, string? flagType)
         {
             var userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
             var userCashNoDTO = await _userCashNoRepo.GetSafeTransByIdAsync(userCode);
@@ -50,9 +42,9 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
             return Json(subAccCodesDTO);
         }
         //Get Add
-        public async Task<IActionResult> Add_PaymentReceipt(string docType ,int safeCode, int fYear)
+        public async Task<IActionResult> Add_ReceivePermission(string docType, int safeCode, int fYear)
         {
-           // ViewBag.AccSafeCashID = await _accSafeCashRepo.GetNewIdAsync();
+            // ViewBag.AccSafeCashID = await _accSafeCashRepo.GetNewIdAsync();
             ViewBag.SerialID = await _accSafeCashRepo.GetNewSerialAsync(docType, safeCode, fYear);
             AccSafeCashEditAddDTO accSafeCashDTO = await _accSafeCashRepo.GetEmptyAccSafeCashAsync();
             ViewBag.docType = docType;
@@ -63,18 +55,18 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
         //Post add
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add_PaymentReceipt(AccSafeCashEditAddDTO accSafeCashDTO)
+        public async Task<IActionResult> Add_ReceivePermission(AccSafeCashEditAddDTO accSafeCashDTO)
         {
             if (ModelState.IsValid)
             {
                 await _accSafeCashRepo.AddAccSafeCashAsync(accSafeCashDTO);
-                return RedirectToAction("Index", "AccSafeCash" ,new { docType = "SFCIN", flagType = "oneANDtwo" });
+                return RedirectToAction("Index", "ReceivePermission", new { docType = "SFTIN", flagType = "oneANDtwoAndthree" });
             }
             return View();
         }
 
         //Get Edit
-        public async Task<IActionResult> Edit_PaymentReceipt(int id)
+        public async Task<IActionResult> Edit_ReceivePermission(int id)
         {
             AccSafeCashEditAddDTO accSafeCashDTO = await _accSafeCashRepo.GetAccSafeCashByIdAsync(id);
             return View(accSafeCashDTO);
@@ -83,12 +75,12 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
         ////Post Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit_PaymentReceipt(int id, AccSafeCashEditAddDTO accSafeCashDTO)
+        public async Task<IActionResult> Edit_ReceivePermission(int id, AccSafeCashEditAddDTO accSafeCashDTO)
         {
             if (ModelState.IsValid)
             {
                 await _accSafeCashRepo.EditAccSafeCashAsync(id, accSafeCashDTO);
-                return RedirectToAction("Index", "AccSafeCash", new { docType = "SFCIN", flagType = "oneANDtwo" });
+                return RedirectToAction("Index", "ReceivePermission", new { docType = "SFTIN", flagType = "oneANDtwoAndthree" });
             }
             return View(accSafeCashDTO);
         }
@@ -96,13 +88,13 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
         // Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete_PaymentReceipt(int id)
+        public async Task<IActionResult> Delete_ReceivePermission(int id)
         {
             AccSafeCash accSafeCash = await _accSafeCashRepo.GetByIdAsync(id);
 
             await _accSafeCashRepo.DeleteAsync(accSafeCash);
             await _accSafeCashRepo.SaveChangesAsync();
-            return RedirectToAction("Index", "AccSafeCash",new { docType = "SFCIN", flagType = "oneANDtwo" });
+            return RedirectToAction("Index", "ReceivePermission", new { docType = "SFTIN", flagType = "oneANDtwoAndthree" });
         }
     }
 }

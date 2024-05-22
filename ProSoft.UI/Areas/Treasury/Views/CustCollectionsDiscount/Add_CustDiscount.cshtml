@@ -2,7 +2,7 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Add New custCollectionsDiscount";
+    ViewData["Title"] = "Add custCollectionsDiscount";
     Layout = "_Layout";
 
     // Casting type to get all MainAccCodes as a list
@@ -16,6 +16,7 @@
         <div class="border p-3 mt-4">
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="ValuePay" hidden disabled value="@ViewBag.ValuePay" />
 
             <!------------------------------------------------------------------------------->
 
@@ -41,12 +42,12 @@
             <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
                 <div class="mb-3">
                     <label asp-for="DiscPrc"></label>
-                    <input asp-for="DiscPrc" type="number" class="form-control" />
+                    <input asp-for="DiscPrc" id="discountPrc" type="number" class="form-control" />
                     <span asp-validation-for="DiscPrc" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label asp-for="DiscValue"></label>
-                    <input asp-for="DiscValue" type="number" class="form-control" />
+                    <input asp-for="DiscValue" id="discountValue" type="number" class="form-control" />
                     <span asp-validation-for="DiscValue" class="text-danger"></span>
                 </div>
             </div>
@@ -64,6 +65,15 @@
 </div>
 
 <script>
+    //get discount value from discount Prc
+    document.getElementById('discountPrc').addEventListener('input', function () {
+        // Get the value entered in the Discount price input
+        var discountPrcc = parseFloat(this.value);
+        var cashValuePay = parseInt(document.getElementById('ValuePay').value);
+       //  console.log(cashValuePay)
+        document.getElementById('discountValue').value = (discountPrcc * cashValuePay) / 100;
+    });
+
 
     function getSubCodes(mainId, subId) {
         let mainElement = document.getElementById(mainId);
@@ -73,7 +83,7 @@
         $.ajax({
             url: `/Stocks/UserStockTransaction/GetSubCodesFromAcc/${mainElement.value}`,
             success: function (result) {
-                console.log(result);
+                //console.log(result);
                 for (let item of result) {
                     subElement.innerHTML +=
                         `<option value="${item.subCode}">${item.subName}</option>`;

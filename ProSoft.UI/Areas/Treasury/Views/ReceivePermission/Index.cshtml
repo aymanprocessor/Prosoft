@@ -1,8 +1,8 @@
-﻿@model List<CustCollectionsDiscountViewDTO>
+﻿@model List<AccSafeCashViewDTO>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Check deductions";
+    ViewData["Title"] = "Account Safe";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @inject IViewLocalizer localizer
@@ -24,9 +24,9 @@
     @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
 
     <div class="d-flex justify-content-between align-items-center mt-4 ">
-        <h1 class="header">@localizer["Check deductions"]</h1>
-        <a asp-controller="CustCollectionsDiscount" asp-action="Add_CustDiscount" asp-route-ID="@ViewBag.SafeCashID" class="btn btn-sm btn-primary fs-6" style="width:150px">
-            @localizer["Add Discount"]
+        <h1 class="header">@localizer["Receive Permissions"]</h1>
+        <a asp-controller="ReceivePermission" asp-action="Add_ReceivePermission" asp-route-docType="@ViewBag.docType" asp-route-safeCode="@ViewBag.safeCode" asp-route-fYear="@ViewBag.fYear" class="btn btn-sm btn-primary fs-6" style="width:150px">
+            @localizer["Add Permission"]
         </a>
     </div>
     <div class="overflow-auto" style="max-height:calc(100vh - 145px)">
@@ -34,59 +34,55 @@
             <thead class="table-dark">
                 <tr>
                     <th>
-                        @localizer["Code"]
+                        @localizer["Receipt No"]
                     </th>
                     <th>
-                        @localizer["Account (Main)"]
+                        @localizer["Receipt date"]
                     </th>
                     <th>
-                        @localizer["Account (Sub)"]
+                        @localizer["Treasury Name"]
                     </th>
                     <th>
-                        @localizer["Account Name"]
-                    </th> 
-
+                        @localizer["Depositor Name"]
+                    </th>
                     <th>
-                        @localizer["Discount Percentage"]
-                    </th> 
-                    <th>
-                        @localizer["Discount Value"]
+                        @localizer["Amount Deposited"]
                     </th>
                     <th>
                     </th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var dep in Model)
+                @foreach (var acc in Model)
                 {
                     <tr class="align-middle">
                         <td>
-                            @dep.DiscountCode
+                            @acc.DocNo
                         </td>
                         <td>
-                            @dep.MainCode
+                            @acc.DocDate
                         </td>
                         <td>
-                            @dep.SubCode
+                            @acc.SafeName
                         </td>
                         <td>
-                            @dep.CodeDesc
+                            @acc.PersonName
                         </td>
                         <td>
-                            @(Convert.ToInt32(dep.DiscPrc)) %
-                        </td>
-                        <td>
-                            @dep.DiscValue
+                            @acc.ValuePay
                         </td>
                         <td width="30%" class="text-center">
-                            <a asp-controller="CustCollectionsDiscount" asp-action="Edit_CustDiscount" asp-route-ID="@dep.DiscountCode" class="btn btn-sm btn-success mb-1 fs-6" style="width:150px">
+                            <a asp-controller="CustCollectionsDiscount" asp-action="Index" asp-route-ID="@acc.SafeCashId" class="btn btn-sm btn-dark mb-1  fs-6" style="width:100px">
+                                <i class="bi bi-pencil"></i> @localizer["Add Discount"]
+                            </a>
+                            <a asp-controller="ReceivePermission" asp-action="Edit_ReceivePermission" asp-route-ID="@acc.SafeCashId" class="btn btn-sm btn-success mb-1 fs-6" style="width:100px">
                                 <i class="bi bi-pencil"></i> @localizer["Edit"]
                             </a>
 
-                            <form asp-action="Delete_CustDiscount" method="post" class="d-inline">
+                            <form asp-action="Delete_ReceivePermission" method="post" class="d-inline">
                                 @Html.AntiForgeryToken()
-                                <input type="hidden" name="id" value="@dep.DiscountCode" />
-                                <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width:150px">@localizer["Delete"]</button>
+                                <input type="hidden" name="id" value="@acc.SafeCashId" />
+                                <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width:100px">@localizer["Delete"]</button>
                                 <div class="modal-container">
                                     <div class="modal 4" id="modal">
                                         <div class="modal-header">
@@ -111,3 +107,4 @@
         </table>
     </div>
 </div>
+

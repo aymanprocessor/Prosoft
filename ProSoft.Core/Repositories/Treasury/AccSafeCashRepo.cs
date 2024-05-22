@@ -101,7 +101,7 @@ namespace ProSoft.Core.Repositories.Treasury
             return subAccCodesDTO;
         }
 
-        public async Task<AccSafeCashEditAddDTO> GetEmptyPaymentReceiptAsync()
+        public async Task<AccSafeCashEditAddDTO> GetEmptyAccSafeCashAsync()
         {
             AccSafeCashEditAddDTO accSafeCashDTO = new AccSafeCashEditAddDTO();
 
@@ -124,11 +124,26 @@ namespace ProSoft.Core.Repositories.Treasury
             return accSafeCashDTO;
         }
 
-        public async Task AddPaymentReceiptAsync(AccSafeCashEditAddDTO accSafeCashDTO)
+        public async Task AddAccSafeCashAsync(AccSafeCashEditAddDTO accSafeCashDTO)
         {
             AccSafeCash accSafeCash = _mapper.Map<AccSafeCash>(accSafeCashDTO);
             //accSafeCash.DocType = "SFCIN";
-            accSafeCash.MCodeDtl = 31;
+            if (accSafeCash.DocType == "SFCIN")
+            {
+                accSafeCash.MCodeDtl = 31;
+            }
+            else if (accSafeCash.DocType == "SFCOT")
+            {
+                accSafeCash.MCodeDtl = 32;
+            }
+            else if (accSafeCash.DocType == "SFTIN")
+            {
+                accSafeCash.MCodeDtl = 35;
+            }
+            else if (accSafeCash.DocType == "SFTOT")
+            {
+                accSafeCash.MCodeDtl = 36;
+            }
             accSafeCash.SerId = 1;
             accSafeCash.EntryDate = DateTime.Now;
 
@@ -136,7 +151,7 @@ namespace ProSoft.Core.Repositories.Treasury
             await _Context.SaveChangesAsync();
         }
 
-        public async Task<AccSafeCashEditAddDTO> GetPaymentReceiptByIdAsync(int id)
+        public async Task<AccSafeCashEditAddDTO> GetAccSafeCashByIdAsync(int id)
         {
             AccSafeCash accSafeCash = await _Context.AccSafeCashes.FirstOrDefaultAsync(obj => obj.SafeCashId == id);
 
@@ -161,12 +176,28 @@ namespace ProSoft.Core.Repositories.Treasury
             return accSafeCashDTO;
         }
 
-        public async Task EditPaymentReceiptAsync(int id, AccSafeCashEditAddDTO accSafeCashDTO)
+        public async Task EditAccSafeCashAsync(int id, AccSafeCashEditAddDTO accSafeCashDTO)
         {
+
             AccSafeCash accSafeCash = await _Context.AccSafeCashes.FirstOrDefaultAsync(obj => obj.SafeCashId == id);
             _mapper.Map(accSafeCashDTO, accSafeCash);
             //accSafeCash.DocType = "SFCIN";
-            accSafeCash.MCodeDtl = 31;
+            if (accSafeCash.DocType == "SFCIN")
+            {
+                accSafeCash.MCodeDtl = 31;
+            }
+            else if (accSafeCash.DocType == "SFCOT")
+            {
+                accSafeCash.MCodeDtl = 32;
+            }
+            else if (accSafeCash.DocType == "SFTIN")
+            {
+                accSafeCash.MCodeDtl = 35;
+            }
+            else if (accSafeCash.DocType == "SFTOT")
+            {
+                accSafeCash.MCodeDtl = 36;
+            }
             accSafeCash.SerId = 1;
             accSafeCash.EntryDate = DateTime.Now;
             _Context.Update(accSafeCash);

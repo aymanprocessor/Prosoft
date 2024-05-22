@@ -29,6 +29,7 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
         {
             ViewBag.custDiscountID = id;
             CustCollectionsDiscountEditAddDTO custCollectionsDiscountDTO = await _custCollectionsDiscountRepo.GetEmptycustCollectionsDiscountAsync(id);
+            ViewBag.ValuePay = custCollectionsDiscountDTO.ValuePay;
             return View(custCollectionsDiscountDTO);
         }
 
@@ -41,7 +42,7 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
             {
                 custCollectionsDiscountDTO.SafeCashId = id;
                 await _custCollectionsDiscountRepo.AddcustCollectionsDiscountAsync(id,custCollectionsDiscountDTO);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index),new {id});
             }
             return View(custCollectionsDiscountDTO);
         }
@@ -51,6 +52,7 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
         {
             CustCollectionsDiscountEditAddDTO custCollectionsDiscountDTO = await _custCollectionsDiscountRepo.GetcustCollectionsDiscountByIdAsync(id);
             ViewBag.subAccCodesSub = await _custCollectionsDiscountRepo.GetSubCodesFromAccAsync(custCollectionsDiscountDTO.MainCode);
+            ViewBag.ValuePay = custCollectionsDiscountDTO.ValuePay;
 
             return View(custCollectionsDiscountDTO);
         }
@@ -58,16 +60,14 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
         // Post Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit_CustDiscount(int id, UserCashNoEditAddDTO userCashNoDTO)
+        public async Task<IActionResult> Edit_CustDiscount(int id, CustCollectionsDiscountEditAddDTO custCollectionsDiscountDTO)
         {
             if (ModelState.IsValid)
             {
-                userCashNoDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
-
-               // await _userCashNoRepo.EditSafeTransAsync(id, userCashNoDTO);
-                return RedirectToAction(nameof(Index));
+                await _custCollectionsDiscountRepo.EditcustCollectionsDiscountAsync(id, custCollectionsDiscountDTO);
+                return RedirectToAction(nameof(Index), new { id = custCollectionsDiscountDTO.SafeCashId});
             }
-            return View(userCashNoDTO);
+            return View(custCollectionsDiscountDTO);
         }
 
         // Delete
@@ -79,7 +79,7 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
 
             await _custCollectionsDiscountRepo.DeleteAsync(custCollectionsDiscount);
             await _custCollectionsDiscountRepo.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index) ,new {id = custCollectionsDiscount.SafeCashId});
         }
     }
 }

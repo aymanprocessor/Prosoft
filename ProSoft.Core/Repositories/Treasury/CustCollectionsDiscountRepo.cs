@@ -55,6 +55,9 @@ namespace ProSoft.Core.Repositories.Treasury
             List<AccMainCode> mainAccCodes = await _Context.AccMainCodes.ToListAsync();
 
             custCollectionsDiscountDTO.accMainCodes = _mapper.Map<List<AccMainCodeDTO>>(mainAccCodes);
+            //get value pay
+            var accSafeCash = await _Context.AccSafeCashes.FirstOrDefaultAsync(obj => obj.SafeCashId == id);
+            custCollectionsDiscountDTO.ValuePay = accSafeCash.ValuePay;
             return custCollectionsDiscountDTO;
         }
 
@@ -79,6 +82,9 @@ namespace ProSoft.Core.Repositories.Treasury
             
             List<AccMainCode> mainAccCodes = await _Context.AccMainCodes.ToListAsync();
             custCollectionsDiscountDTO.accMainCodes = _mapper.Map<List<AccMainCodeDTO>>(mainAccCodes);
+            //get value pay
+            var accSafeCash = await _Context.AccSafeCashes.FirstOrDefaultAsync(obj => obj.SafeCashId == custCollectionsDiscount.SafeCashId);
+            custCollectionsDiscountDTO.ValuePay = accSafeCash.ValuePay;
 
             return custCollectionsDiscountDTO;
         }
@@ -91,5 +97,12 @@ namespace ProSoft.Core.Repositories.Treasury
             return subAccCodesDTO;
         }
 
+        public async Task EditcustCollectionsDiscountAsync(int id, CustCollectionsDiscountEditAddDTO custCollectionsDiscountDTO)
+        {
+            CustCollectionsDiscount custCollectionsDiscount = _DbSet.Find(id);
+            _mapper.Map(custCollectionsDiscountDTO, custCollectionsDiscount);
+            _Context.Update(custCollectionsDiscount);
+            await _Context.SaveChangesAsync();
+        }
     }
 }
