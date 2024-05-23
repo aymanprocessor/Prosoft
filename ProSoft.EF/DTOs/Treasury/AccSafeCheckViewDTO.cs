@@ -6,23 +6,17 @@ using System.Threading.Tasks;
 
 namespace ProSoft.EF.DTOs.Treasury
 {
-    public class AccSafeCashViewDTO
+    public class AccSafeCheckViewDTO
     {
-        public int SafeCashId { get; set; }
-
+        public int SafeCeckId { get; set; }
         public int? DocNo { get; set; }
-
         public string? SafeName { get; set; }
-
         public DateTime? DocDate { get; set; }//تاريخ الايصال
-
         public string? PersonName { get; set; }
-
+        public string? ChekNo { get; set; }
         public decimal? ValuePay { get; set; }
         public string? ValuePayWord { get; set; }
-
         public int? SafeCode { get; set; }
         public int? FYear { get; set; }
-
     }
 }

@@ -44,5 +44,7 @@ public partial class SafeName
     [Column("MODIFY_DATE", TypeName = "datetime")]
     public DateTime? ModifyDate { get; set; }
     public ICollection<AccSafeCash>? AccSafeCashes { get; set; }
+    public ICollection<AccSafeCheck>? AccSafeChecks { get; set; }
+
 
 }

@@ -42,5 +42,6 @@ public partial class CostCenter
     public virtual ICollection<SubClinic> SubClinics { get; set; } = new List<SubClinic>();
 
     public ICollection<AccSafeCash>? AccSafeCashes { get; set; }
+    public ICollection<AccSafeCheck>? AccSafeChecks { get; set; }
 
 }

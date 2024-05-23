@@ -1,4 +1,4 @@
-﻿const { event } = require("jquery");
+﻿//const { event } = require("jquery");
 
 const openModalButtons = document.querySelectorAll("[data-modal-target]");
 const closeModalButtons = document.querySelectorAll("[data-close-button]");

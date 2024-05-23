@@ -39,6 +39,7 @@ public partial class JournalType
     public virtual ICollection<Stock> Stocks { get; set; } = new List<Stock>();
 
     public ICollection<AccSafeCash>? AccSafeCashes { get; set; }
+    public ICollection<AccSafeCheck>? AccSafeChecks { get; set; }
 
 
 }

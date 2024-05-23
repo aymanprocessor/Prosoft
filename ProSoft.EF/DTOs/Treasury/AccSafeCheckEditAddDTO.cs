@@ -1,6 +1,6 @@
-﻿using ProSoft.EF.DTOs.Shared;
+﻿using ProSoft.EF.DTOs.Accounts;
+using ProSoft.EF.DTOs.Shared;
 using ProSoft.EF.DTOs.Stocks;
-using ProSoft.EF.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,15 +8,14 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ProSoft.EF.DTOs.Accounts;
 
 namespace ProSoft.EF.DTOs.Treasury
 {
-    public class AccSafeCashEditAddDTO
+    public class AccSafeCheckEditAddDTO
     {
         [DisplayName("Code")]
         [Required(ErrorMessage = "The field is required")]
-        public int SafeCashId { get; set; }
+        public int SafeCeckId { get; set; }
 
         [DisplayName("Posting")]
         [Required(ErrorMessage = "The field is required")]
@@ -26,11 +25,17 @@ namespace ProSoft.EF.DTOs.Treasury
         [Required(ErrorMessage = "The field is required")]
         public int? AccTransType { get; set; }
 
-        public int? SerId { get; set; }
+        [DisplayName("Check Number")]
+        [Required(ErrorMessage = "The field is required")]
+        public string? ChekNo { get; set; }    
 
-        [DisplayName("Treasury Type")]
+        [DisplayName("Due Date")]
+        [Required(ErrorMessage = "The field is required")]
+        public DateTime? SattlDate { get; set; }
+
+        [DisplayName("Payment Ways")]
         //[Required(ErrorMessage = "The field is required")]
-        public int? EntryType { get; set; }
+        public string? FlagPay { get; set; }
 
         [DisplayName("Cost Center")]
         [Required(ErrorMessage = "The field is required")]
@@ -48,7 +53,7 @@ namespace ProSoft.EF.DTOs.Treasury
 
         [DisplayName("Treasury")]
         [Required(ErrorMessage = "The field is required")]
-        public int? SafeCode { get; set; }     
+        public int? SafeCode { get; set; }
 
         [DisplayName("Treasury")]
         public int? SafeCode2 { get; set; }
@@ -73,10 +78,10 @@ namespace ProSoft.EF.DTOs.Treasury
 
         [DisplayName("Credit Account (Sub)")]
         public string? SubCode { get; set; }
-        public string? DocType { get; set; }
+        public string? TranType { get; set; }
         public int? MCodeDtl { get; set; }
 
-        [DisplayName("Depositor Name")]
+        [DisplayName("Drawee Bank")]
         [Required(ErrorMessage = "The field is required")]
         public string? PersonName { get; set; }
 

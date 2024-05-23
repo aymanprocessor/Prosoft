@@ -374,6 +374,14 @@
   "Edit Discount": "Edit Discount",
   "Recipient Name": "Recipient Name",
   "Net Amount": "Net Amount",
+  "Amount by words": "Amount by words",
+  "Check Number": "Check Number",
+  "Due Date": "Due Date",
+  "The Checks": "The Checks",
+  "Add check in Treasury": "Add check in Treasury",
+  "Drawee Bank": "Drawee Bank",
+  "Payment Ways": "Payment Ways",
+  "Transfer": "Transfer",
 
 
 
@@ -534,4 +542,20 @@
   "The Month": "The Month",
   "The Year": "The Year",
   "Number of Permissions": "Number of Permissions",
+  "Permission Date": "Permission Date",
+  "Supplier Invoice No": "Supplier Invoice No",
+  "Supplier Invoice Date": "Supplier Invoice Date",
+  "Lot Number": "Lot Number",
+  "Purchase No": "Purchase No",
+  "The Supplier": "The Supplier",
+  "Discount Percentage %": "Discount Percentage %",
+  "Permission Approval": "Permission Approval",
+  "Purchases Value": "Purchases Value",
+  "Sales Tax Percentage %": "Sales Tax Percentage %",
+  "Sales Tax Value": "Sales Tax Value",
+  "Due Value": "Due Value",
+  "Discount/Addition": "Discount/Addition",
+  "Prices Include Tax": "Prices Include Tax",
+  "Doc No": "Doc No",
+  "Permission Name": "Permission Name"
 }

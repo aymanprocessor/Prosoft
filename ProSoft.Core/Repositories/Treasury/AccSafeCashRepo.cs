@@ -203,5 +203,13 @@ namespace ProSoft.Core.Repositories.Treasury
             _Context.Update(accSafeCash);
             await _Context.SaveChangesAsync();
         }
+
+        public async Task<bool> HasRelatedDataAsync(int id)
+        {
+            // Check if there are related records in custCollectionsDiscounts
+            var hasRelatedData = await _Context.custCollectionsDiscounts.AnyAsync(p => p.SafeCashId == id);
+            return hasRelatedData;
+        }
+
     }
 }

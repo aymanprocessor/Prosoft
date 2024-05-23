@@ -64,6 +64,8 @@ namespace ProSoft.EF.Models.Shared
         [Unicode(false)]
         public string? Symbol { get; set; }
         public ICollection<AccSafeCash>? AccSafeCashes { get; set; }
+        public ICollection<AccSafeCheck>? AccSafeChecks { get; set; }
+
 
     }
 
