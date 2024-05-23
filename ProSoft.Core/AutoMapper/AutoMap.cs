@@ -116,6 +116,7 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<StockEmp, StockEmpViewDTO>().ReverseMap();
             CreateMap<StockEmp, StockEmpEditAddDTO>().ReverseMap();
             CreateMap<TransMaster, TransMasterViewDTO>().ReverseMap();
+            CreateMap<TransMaster, TransMasterEditAddDTO>().ReverseMap();
             ////////// System ////////////////////
             CreateMap<EisPosting, EisPostingViewDTO>().ReverseMap();
             CreateMap<EisPosting, EisPostingEditAddDTO>().ReverseMap();

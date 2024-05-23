@@ -59,6 +59,14 @@ namespace ProSoft.Core.Repositories.Stocks
             return permissionsDTO;
         }
 
+        public async Task<List<TransMasterViewDTO>> GetPermissionsFormsAsync(int stockID, int transType)
+        {
+            List<TransMaster> permissionsForms = await _DbSet.Where(obj => obj.StockCode == stockID
+                && obj.TransType == transType).ToListAsync();
+            var permissionsFormsDTO = _mapper.Map<List<TransMasterViewDTO>>(permissionsForms);
+            return permissionsFormsDTO;
+        }
+
         public async Task<TransMasterEditAddDTO> GetDTOWithDefaultsAsync(int stockID, int permissionID)
         {
             var permissionFormDTO = new TransMasterEditAddDTO();
@@ -81,6 +89,31 @@ namespace ProSoft.Core.Repositories.Stocks
             permissionFormDTO.StockName = stock?.Stknam;
             permissionFormDTO.PermissionName = permission?.GDesc;
             return permissionFormDTO;
+        }
+
+        public async Task AddPermissionFormAsync(TransMasterEditAddDTO permissionFormDTO)
+        {
+            permissionFormDTO.FYear = DateTime.Now.Year;
+            permissionFormDTO.FMonth = DateTime.Now.Month;
+            permissionFormDTO.Flag2 = "0";
+            permissionFormDTO.AmountVisa = 0;
+            permissionFormDTO.CashAmount = 0;
+            permissionFormDTO.SaleStatus = "N";
+            permissionFormDTO.AddPers = 0;
+            permissionFormDTO.InvType = "0";
+            permissionFormDTO.TransConfirm = 0;
+            permissionFormDTO.ShowRow = 3;
+
+            var filteredPermissions = await _DbSet.Where(obj => obj.TransType == permissionFormDTO.TransType
+                && obj.StockCode == permissionFormDTO.StockCode && obj.BranchId ==
+                permissionFormDTO.BranchId && obj.FYear == permissionFormDTO.FYear)
+                .ToListAsync();
+            permissionFormDTO.DocNo = filteredPermissions.Count() != 0 ? filteredPermissions.Max(obj => obj.DocNo) : 1;
+            permissionFormDTO.SerSys = filteredPermissions.Count() != 0 ? filteredPermissions.Max(obj => obj.SerSys) : 1;
+
+            var permissionForm = _mapper.Map<TransMaster>(permissionFormDTO);
+            await AddAsync(permissionForm);
+            await SaveChangesAsync();
         }
     }
 }

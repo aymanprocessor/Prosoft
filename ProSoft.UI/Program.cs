@@ -98,6 +98,7 @@ builder.Services.AddScoped<ITreasuryNameRepo, TreasuryNameRepo>();
 ///////////////// Treasury /////////////
 builder.Services.AddScoped<IJournalTypeRepo, JournalTypeRepo>();
 builder.Services.AddScoped<IAccSafeCashRepo, AccSafeCashRepo>();
+builder.Services.AddScoped<IAccSafeCheckRepo, AccSafeCheckRepo>();
 builder.Services.AddScoped<ICustCollectionsDiscountRepo, CustCollectionsDiscountRepo>();
 builder.Services.AddScoped<IUserCashNoRepo, UserCashNoRepo>();
 ////////// PatRecord ////////////////////
