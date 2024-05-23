@@ -1,4 +1,5 @@
-﻿using ProSoft.EF.DTOs.Shared;
+﻿using Microsoft.EntityFrameworkCore;
+using ProSoft.EF.DTOs.Shared;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.Models.Stocks;
 using System;
@@ -13,6 +14,8 @@ namespace ProSoft.EF.IRepositories.Stocks
     {
         Task<List<StockViewDTO>> GetActiveStocksForUserAsync(int userCode);
         Task<List<PermissionDefViewDTO>> GetUserPermissionsForStockAsync(int userCode, int stockID);
+        Task<List<TransMasterViewDTO>> GetPermissionsFormsAsync(int stockID, int transType);
         Task<TransMasterEditAddDTO> GetDTOWithDefaultsAsync(int stockID, int permissionID);
+        Task AddPermissionFormAsync(TransMasterEditAddDTO permissionFormDTO);
     }
 }

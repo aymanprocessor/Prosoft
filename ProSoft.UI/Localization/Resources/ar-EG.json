@@ -347,10 +347,7 @@
   "Amount Deposited": "المبلغ المودع",
   "Posting": "مرحل",
   "Statement": "البيان",
-<<<<<<< HEAD
-=======
   "For Payment": "ذلك لسداد",
->>>>>>> a6a12aee4e532feee8380329f50d6c898407433a
   "Currency": "العملة",
   "Posting of Invoices": "مرحل من خزينة",
   "Posting of Treasury": "مرحل من الفواتير",
@@ -377,6 +374,17 @@
   "Edit Discount": "تعديل الخصم",
   "Recipient Name": "اسم المستلم",
   "Net Amount": "صافي المبلغ",
+  "Amount by words": "صافي المبلغ بالعربي",
+  "Cannot delete this record because it has related data in another table!": "لا يمكن حذف هذا السجل لأنه يحتوي على بيانات مرتبطة في جدول آخر!",
+  "Check Number": "رقم الشيك",
+  "Due Date": "تاريخ الاستحقاق",
+  "The Checks": "الشيكات",
+  "Deposit check in Treasury": "ايداع شيك بالخزينة",
+  "Disbursement permission Checks": "اذن صرف شيكات",
+  "Add check in Treasury": "اضافة شيك بالخزينة",
+  "Drawee Bank": "البنك المسحوب عليه",
+  "Payment Ways": "طرق الدفع",
+  "Transfer": "تحويل",
 
 
 
@@ -463,7 +471,6 @@
   "Selling": "بيع",
   "Remove": "حذف",
   "Add New Permission Name": "اضافة اسم اذن جديد",
-  "Edit Permission": "تعديل اذن",
   "Joining Users With Transactions": "ربط الحركة بالمستخدمين",
   "Transactions of User": "حركات المستخدم",
   "Search users by useer code or name ...": "ابحث عن المستخدم بواسطة الكود او الاسم ...",
@@ -533,11 +540,24 @@
   "GO TO RECORD": "الذهاب للسجلات",
   "Permissions Forms": "نماذج الاذون",
   "Add Permission Form": "اضافة نموذج اذن",
-<<<<<<< HEAD
-  "Are you sure you want to delete this item ?": "هل انت متاكد من حذف هذا العنصر ؟"
-=======
+  "Are you sure you want to delete this item ?": "هل انت متاكد من حذف هذا العنصر ؟",
   "The Month": "الشهر",
   "The Year": "السنة",
-  "Number of Permissions": "عدد الاذون"
->>>>>>> a6a12aee4e532feee8380329f50d6c898407433a
+  "Number of Permissions": "عدد الاذون",
+  "Permission Date": "تاريخ الاذن",
+  "Supplier Invoice No": "رقم فاتورة المورد",
+  "Supplier Invoice Date": "تاريخ فاتورة المورد",
+  "Lot Number": "رقم اللوط",
+  "Purchase No": "رقم المشتريات",
+  "The Supplier": "المورد",
+  "Discount Percentage %": "نسبة الخصم %",
+  "Permission Approval": "اعتماد الاذن",
+  "Purchases Value": "قيمة مشتريات",
+  "Sales Tax Percentage %": "نسبة ضريبة المبيعات %",
+  "Sales Tax Value": "قيمة ضريبة المبيعات",
+  "Due Value": "القيمة المستحقة",
+  "Discount/Addition": "خصم/اضافة",
+  "Prices Include Tax": "الاسعار شاملة الضريبة",
+  "Doc No": "رقم الاذن",
+  "Permission Name": "اسم الاذن"
 }

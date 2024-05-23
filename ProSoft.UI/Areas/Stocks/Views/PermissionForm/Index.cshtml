@@ -24,7 +24,7 @@
         </div>
         <div class="d-flex align-items-center flex-column flex-md-row w-50">
             <label for="permissions" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Permissions"]</label>
-            <select id="permissions" class="form-control text-center w-100">
+            <select id="permissions" class="form-control text-center w-100" onchange="getUserPermissions(event)">
                 <option value="">-- Choose --</option>
             </select>
         </div>
@@ -38,7 +38,13 @@
             <thead class="table-dark">
                 <tr>
                     <th class="align-middle">
-                        @localizer["Code"]
+                        @localizer["Doc No"]
+                    </th>
+                    <th class="align-middle" style="min-width: 150px;">
+                        @localizer["Permission Name"]
+                    </th>
+                    <th class="align-middle" style="min-width: 150px;">
+                        @localizer["Stock Name"]
                     </th>
                     <th class="align-middle" style="min-width: 150px;">
                         @localizer["User Name"]
@@ -46,13 +52,6 @@
                 </tr>
             </thead>
             <tbody>
-@*                 @foreach (var item in Model)
-                {
-                    <tr style="cursor: pointer;">
-                        <td class="align-middle">@item.GId</td>
-                        <td class="align-middle user-name">@item.GDesc</td>
-                    </tr>
-                } *@
             </tbody>
         </table>
     </div>
@@ -61,7 +60,7 @@
 
     @* Table for UserStock Transactions *@
 
-    <div class="transactions-table-head d-flex justify-content-between align-items-center mt-3 mb-1">
+@*     <div class="transactions-table-head d-flex justify-content-between align-items-center mt-3 mb-1">
         <h2 class="header">@localizer["Transactions of Stocks for User"] :</h2>
         <a class="btn btn-sm btn-primary fs-6" style="width:150px">
             @localizer["Add Permission Form"]
@@ -103,7 +102,7 @@
             <tbody>
             </tbody>
         </table>
-    </div>
+    </div> *@
 </div>
 
 @section Scripts {
@@ -136,6 +135,44 @@
                     for (let item of result) {
                         permissions.innerHTML +=
                             `<option value="${item.gId}">${item.gDesc}</option>`;
+                    }
+                }
+            });
+        }
+
+        function getUserPermissions(e) {
+            let stock = document.getElementById("stocks");
+            if (!stock.value) {
+                stock.focus();
+                return;
+            }
+
+            let userPermissions = document.querySelector("#myTable tbody");
+            userPermissions.innerHTML = "";  // Empty the table
+
+            $.ajax({
+                url: `/Stocks/PermissionForm/GetPermissionsForms/`,
+                success: function (result) {
+                    console.log(result);
+                    for (let item of result) {
+                        const userPerm = document.createElement("tr");
+                        userPerm.innerHTML =
+                            `
+                            <td class="align-middle text-center">${item.docNo}</td>
+                            <td class="align-middle text-center">${item.permissionName}</td>
+                            <td class="align-middle text-center">${item.stockName}</td>
+                            <td class="align-middle text-center">${item.userName}</td>
+                            <td class="text-center align-middle" style="width: 325px;">
+                                <a href="/Stocks/PermissionForm/Edit_PermissionForm/${userCode}?transType=${item.transType}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
+                                <form action="/Stocks/PermissionForm/Delete_PermissionForm" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="${userCode}" />
+                                    <input type="hidden" name="transType" value="${item.transType}" />
+                                    <button class="btn btn-sm btn-danger mb-1 fs-6" onclick="return confirm('Are you sure you want to delete this one?')" style="width: 150px">@localizer["Delete"]</button>
+                                </form>
+                            </td>
+                            `;
+                        userPermissions.appendChild(userPerm);
                     }
                 }
             });

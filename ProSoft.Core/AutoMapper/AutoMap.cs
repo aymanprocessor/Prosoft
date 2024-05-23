@@ -116,6 +116,7 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<StockEmp, StockEmpViewDTO>().ReverseMap();
             CreateMap<StockEmp, StockEmpEditAddDTO>().ReverseMap();
             CreateMap<TransMaster, TransMasterViewDTO>().ReverseMap();
+            CreateMap<TransMaster, TransMasterEditAddDTO>().ReverseMap();
             ////////// System ////////////////////
             CreateMap<EisPosting, EisPostingViewDTO>().ReverseMap();
             CreateMap<EisPosting, EisPostingEditAddDTO>().ReverseMap();
@@ -128,6 +129,8 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<TreasuryNameEditAddDTO, SafeName>().ReverseMap();
             CreateMap<AccSafeCashViewDTO, AccSafeCash>().ReverseMap();
             CreateMap<AccSafeCashEditAddDTO, AccSafeCash>().ReverseMap();
+            CreateMap<AccSafeCheckViewDTO, AccSafeCheck>().ReverseMap();
+            CreateMap<AccSafeCheckEditAddDTO, AccSafeCheck>().ReverseMap();
             CreateMap<CustCollectionsDiscountViewDTO, CustCollectionsDiscount>().ReverseMap();
             CreateMap<CustCollectionsDiscountEditAddDTO, CustCollectionsDiscount>().ReverseMap();
             CreateMap<UserCashNoViewDTO, UserCashNo>().ReverseMap();
