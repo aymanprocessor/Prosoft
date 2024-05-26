@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "Check deductions";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var index = 1;
 }
 @inject IViewLocalizer localizer
 @* <style>
@@ -25,7 +26,7 @@
 
     <div class="d-flex justify-content-between align-items-center mt-4 ">
         <h1 class="header">@localizer["Check deductions"]</h1>
-        <a asp-controller="CustCollectionsDiscount" asp-action="Add_CustDiscount" asp-route-ID="@ViewBag.SafeCashID" class="btn btn-sm btn-primary fs-6" style="width:150px">
+        <a asp-controller="CustCollectionsDiscount" asp-action="Add_CustDiscount" asp-route-ID="@ViewBag.SafeCashID" asp-route-docType="@ViewBag.docType" class="btn btn-sm btn-primary fs-6" style="width:150px">
             @localizer["Add Discount"]
         </a>
     </div>
@@ -57,11 +58,17 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var dep in Model)
+@*                 @for (int i = 0; i < Model.Count(); i++)
+                {
+                <td>
+                        @Model
+                </td>
+                } *@
+                @foreach (var dep in Model) 
                 {
                     <tr class="align-middle">
                         <td>
-                            @dep.DiscountCode
+                            @index  @* counter *@
                         </td>
                         <td>
                             @dep.MainCode
@@ -107,6 +114,7 @@
                             </form>
                         </td>
                     </tr>
+                    index++;
                 }
             </tbody>
         </table>

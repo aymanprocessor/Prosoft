@@ -385,6 +385,11 @@
   "Drawee Bank": "البنك المسحوب عليه",
   "Payment Ways": "طرق الدفع",
   "Transfer": "تحويل",
+  "Edit check in Treasury": "تعديل شيك بالخزينة",
+  "Disbursement Permission Check": "اذن صرف شيك",
+  "Add Disbursement Permission Check": "اضافة اذن صرف شيك",
+  "Check Type": "شيك اجل",
+  "Edit Disbursement Permission Check": "تعديل اذن صرف شيك",
 
 
 
@@ -558,6 +563,7 @@
   "Due Value": "القيمة المستحقة",
   "Discount/Addition": "خصم/اضافة",
   "Prices Include Tax": "الاسعار شاملة الضريبة",
-  "Doc No": "رقم الاذن",
-  "Permission Name": "اسم الاذن"
+  "Doc No": "كود الاذن",
+  "Permission Name": "اسم الاذن",
+  "Modify": "تعديل"
 }

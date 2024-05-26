@@ -23,9 +23,9 @@ namespace ProSoft.Core.Repositories.Treasury
         {
             _mapper = mapper;
         }
-        public async Task<List<CustCollectionsDiscountViewDTO>> GetAllCustCollectionsDiscountAsync(int id)
+        public async Task<List<CustCollectionsDiscountViewDTO>> GetAllCustCollectionsDiscountAsync(int id, string docType)
         {
-            List<CustCollectionsDiscount> custCollectionsDiscounts = await _DbSet.Where(obj=>obj.SafeCashId == id).ToListAsync();
+            List<CustCollectionsDiscount> custCollectionsDiscounts = await _DbSet.Where(obj=>obj.SafeCashId == id && obj.DocType ==docType).ToListAsync();
             var custCollectionsDiscountDTOs = _mapper.Map<List<CustCollectionsDiscountViewDTO>>(custCollectionsDiscounts);
 
             foreach (var item in custCollectionsDiscountDTOs)
@@ -48,7 +48,7 @@ namespace ProSoft.Core.Repositories.Treasury
         }
 
 
-        public async Task<CustCollectionsDiscountEditAddDTO> GetEmptycustCollectionsDiscountAsync(int id)
+        public async Task<CustCollectionsDiscountEditAddDTO> GetEmptycustCollectionsDiscountAsync(int id, string docType)
         {
             var custCollectionsDiscountDTO = new CustCollectionsDiscountEditAddDTO();
 
@@ -56,20 +56,40 @@ namespace ProSoft.Core.Repositories.Treasury
 
             custCollectionsDiscountDTO.accMainCodes = _mapper.Map<List<AccMainCodeDTO>>(mainAccCodes);
             //get value pay
-            var accSafeCash = await _Context.AccSafeCashes.FirstOrDefaultAsync(obj => obj.SafeCashId == id);
-            custCollectionsDiscountDTO.ValuePay = accSafeCash.ValuePay;
+            if (docType == "SFSIN")
+            {
+                var accsafeCheck = await _Context.AccSafeChecks.FirstOrDefaultAsync(obj => obj.SafeCeckId == id && obj.TranType == docType);
+                custCollectionsDiscountDTO.ValuePay = accsafeCheck.ValuePay;
+            }
+            else
+            {             
+                var accSafeCash = await _Context.AccSafeCashes.FirstOrDefaultAsync(obj => obj.SafeCashId == id && obj.DocType ==docType);
+                custCollectionsDiscountDTO.ValuePay = accSafeCash.ValuePay;
+            }
             return custCollectionsDiscountDTO;
         }
 
         public async Task AddcustCollectionsDiscountAsync(int id,CustCollectionsDiscountEditAddDTO custCollectionsDiscountDTO)
         {
             var custCollectionsDiscount = _mapper.Map<CustCollectionsDiscount>(custCollectionsDiscountDTO);
-            var accSafeCash = await _Context.AccSafeCashes.FirstOrDefaultAsync(obj => obj.SafeCashId == id);
-            custCollectionsDiscount.ReceiptNo = accSafeCash.DocNo;
-            custCollectionsDiscount.ReceiptDate = accSafeCash.DocDate;
-            custCollectionsDiscount.FYear = accSafeCash.FYear;
-            custCollectionsDiscount.DocType = accSafeCash.DocType;
-            custCollectionsDiscount.SafeCode = accSafeCash.SafeCode;
+            if (custCollectionsDiscount.DocType == "SFSIN") 
+            {
+                var accsafeCheck = await _Context.AccSafeChecks.FirstOrDefaultAsync(obj => obj.SafeCeckId == id && obj.TranType == custCollectionsDiscountDTO.DocType);
+                custCollectionsDiscount.ReceiptNo = accsafeCheck.DocNo;
+                custCollectionsDiscount.ReceiptDate = accsafeCheck.DocDate;
+                custCollectionsDiscount.FYear = accsafeCheck.FYear;
+                custCollectionsDiscount.DocType = accsafeCheck.TranType;
+                custCollectionsDiscount.SafeCode = accsafeCheck.SafeCode;
+            }
+            else 
+            {
+                var accSafeCash = await _Context.AccSafeCashes.FirstOrDefaultAsync(obj => obj.SafeCashId == id);
+                custCollectionsDiscount.ReceiptNo = accSafeCash.DocNo;
+                custCollectionsDiscount.ReceiptDate = accSafeCash.DocDate;
+                custCollectionsDiscount.FYear = accSafeCash.FYear;
+                custCollectionsDiscount.DocType = accSafeCash.DocType;
+                custCollectionsDiscount.SafeCode = accSafeCash.SafeCode;
+            }
 
             await _Context.AddAsync(custCollectionsDiscount);
             await _Context.SaveChangesAsync();
@@ -83,8 +103,16 @@ namespace ProSoft.Core.Repositories.Treasury
             List<AccMainCode> mainAccCodes = await _Context.AccMainCodes.ToListAsync();
             custCollectionsDiscountDTO.accMainCodes = _mapper.Map<List<AccMainCodeDTO>>(mainAccCodes);
             //get value pay
-            var accSafeCash = await _Context.AccSafeCashes.FirstOrDefaultAsync(obj => obj.SafeCashId == custCollectionsDiscount.SafeCashId);
-            custCollectionsDiscountDTO.ValuePay = accSafeCash.ValuePay;
+            if (custCollectionsDiscount.DocType == "SFSIN")
+            {
+                var accsafeCheck = await _Context.AccSafeChecks.FirstOrDefaultAsync(obj => obj.SafeCeckId == custCollectionsDiscount.SafeCashId && obj.TranType == custCollectionsDiscount.DocType);
+                custCollectionsDiscountDTO.ValuePay = accsafeCheck.ValuePay;
+            }
+            else
+            {
+                var accSafeCash = await _Context.AccSafeCashes.FirstOrDefaultAsync(obj => obj.SafeCashId == custCollectionsDiscount.SafeCashId && obj.DocType == custCollectionsDiscount.DocType);
+                custCollectionsDiscountDTO.ValuePay = accSafeCash.ValuePay;
+            }
 
             return custCollectionsDiscountDTO;
         }

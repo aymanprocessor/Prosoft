@@ -1,7 +1,6 @@
 ﻿using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ProSoft.Core.Repositories.Treasury;
 using ProSoft.EF.DTOs.Accounts;
 using ProSoft.EF.DTOs.Treasury;
 using ProSoft.EF.IRepositories.Treasury;
@@ -12,15 +11,17 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
 {
     [Authorize]
     [Area(nameof(Treasury))]
-    public class AccSafeCheckController : Controller
+    public class DisbursementPermissionCheckController : Controller
     {
         private readonly IAccSafeCheckRepo _accSafeCheckRepo;
         private readonly IUserCashNoRepo _userCashNoRepo;
-        public AccSafeCheckController(IAccSafeCheckRepo accSafeCheckRepo, IUserCashNoRepo userCashNoRepo)
+
+        public DisbursementPermissionCheckController(IAccSafeCheckRepo accSafeCheckRepo, IUserCashNoRepo userCashNoRepo)
         {
             _accSafeCheckRepo = accSafeCheckRepo;
             _userCashNoRepo = userCashNoRepo;
         }
+
         public async Task<IActionResult> Index(string tranType, string? flagType, string? errorMessage)
         {
             var userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
@@ -72,8 +73,9 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
                 .GetSubCodesFromAccAsync(id);
             return Json(subAccCodesDTO);
         }
+
         //Get Add
-        public async Task<IActionResult> Add_DepositCheck(string tranType, int safeCode, int fYear)
+        public async Task<IActionResult> Add_DisbursementCheck(string tranType, int safeCode, int fYear)
         {
             // ViewBag.AccSafeCashID = await _accSafeCashRepo.GetNewIdAsync();
             ViewBag.SerialID = await _accSafeCheckRepo.GetNewSerialAsync(tranType, safeCode, fYear);
@@ -86,18 +88,19 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
         //Post add
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add_DepositCheck(AccSafeCheckEditAddDTO accSafeCeckDTO)
+        public async Task<IActionResult> Add_DisbursementCheck(AccSafeCheckEditAddDTO accSafeCeckDTO)
         {
             if (ModelState.IsValid)
             {
                 await _accSafeCheckRepo.AddAccSafeCeckAsync(accSafeCeckDTO);
-                return RedirectToAction("Index", "AccSafeCheck", new { tranType = "SFSIN", flagType = "oneANDtwo" });
+                return RedirectToAction("Index", "DisbursementPermissionCheck", new { tranType = "SFOUT", flagType = "oneANDtwo" });
             }
             return View();
         }
 
+
         //Get Edit
-        public async Task<IActionResult> Edit_DepositCheck(int id)
+        public async Task<IActionResult> Edit_DisbursementCheck(int id)
         {
             AccSafeCheckEditAddDTO accSafeCheckDTO = await _accSafeCheckRepo.GetAccSafeCheckByIdAsync(id);
             return View(accSafeCheckDTO);
@@ -106,12 +109,12 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
         ////Post Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit_DepositCheck(int id, AccSafeCheckEditAddDTO accSafeCheckDTO)
+        public async Task<IActionResult> Edit_DisbursementCheck(int id, AccSafeCheckEditAddDTO accSafeCheckDTO)
         {
             if (ModelState.IsValid)
             {
                 await _accSafeCheckRepo.EditAccSafeCheckAsync(id, accSafeCheckDTO);
-                return RedirectToAction("Index", "AccSafeCheck", new { tranType = "SFSIN", flagType = "oneANDtwo" });
+                return RedirectToAction("Index", "DisbursementPermissionCheck", new { tranType = "SFOUT", flagType = "oneANDtwo" });
             }
             return View(accSafeCheckDTO);
         }
@@ -119,7 +122,7 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
         // Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete_DepositCheck(int id)
+        public async Task<IActionResult> Delete_DisbursementCheck(int id)
         {
             AccSafeCheck accSafeCheck = await _accSafeCheckRepo.GetByIdAsync(id);
 
@@ -128,12 +131,12 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
             {
                 var errorMessage = "Cannot delete this record because it has related data in another table!";
                 //ViewBag.ErrorMessage = "Cannot delete this record because it has related data in another table.";
-                return RedirectToAction("Index", "AccSafeCheck", new { tranType = "SFSIN", flagType = "oneANDtwo", errorMessage });
+                return RedirectToAction("Index", "DisbursementPermissionCheck", new { tranType = "SFOUT", flagType = "oneANDtwo", errorMessage });
             }
 
             await _accSafeCheckRepo.DeleteAsync(accSafeCheck);
             await _accSafeCheckRepo.SaveChangesAsync();
-            return RedirectToAction("Index", "AccSafeCheck", new { tranType = "SFSIN", flagType = "oneANDtwo" });
+            return RedirectToAction("Index", "DisbursementPermissionCheck", new { tranType = "SFOUT", flagType = "oneANDtwo" });
         }
     }
 }

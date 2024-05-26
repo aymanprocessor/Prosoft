@@ -2,14 +2,14 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Add Check";
+    ViewData["Title"] = "Edit Check";
     Layout = "~/Views/Shared/_Layout.cshtml";
     SelectList journals = new SelectList(Model.journalTypes, "JournalCode", "JournalName");
     SelectList costCenters = new SelectList(Model.costCenters, "CostCode", "CostDesc");
     SelectList safeNames = new SelectList(Model.treasuryNames, "SafeCode", "SafeNames");
     SelectList accGlobalDef = new SelectList(Model.accGlobalDefs, "CoCode", "CodeDesc");
     SelectList mainAccCodes = new SelectList(Model.accMainCodes, "MainCode", "MainName");
-    // SelectList subAccCodes = new SelectList(Model.SubAccCodes, "SubCode", "SubName");
+    SelectList subAccCodes = new SelectList(Model.accSubCodes, "SubCode", "SubName");
 
 }
 @inject IViewLocalizer localizer
@@ -30,15 +30,22 @@
 <div class="container pt-2" style="min-height:100vh;">
     @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
 
-    <h1 class="mt-4">@localizer["Add check in Treasury"]</h1>
-    <form method="post" asp-action="Add_DepositCheck" id="myForm">
+    <h1 class="mt-4">@localizer["Edit check in Treasury"]</h1>
+    <form method="post" asp-action="Edit_DepositCheck" id="myForm">
         <div class="border p-3 mt-4">
 
             <div asp-validation-summary="ModelOnly"></div>
             @* hidden *@
-            <input asp-for="DocNo" hidden value="@ViewBag.SerialID" />
-            <input asp-for="TranType" hidden value="@ViewBag.tranType" />
-            <input asp-for="FYear" hidden value="@ViewBag.fYear" />
+            <input asp-for="SafeCeckId" hidden />
+            <input asp-for="DocNo" hidden />
+            <input asp-for="TranType" hidden />
+            <input asp-for="FYear" hidden />
+            <input asp-for="Flag" hidden />
+            <input asp-for="FlagS" hidden />
+            <input asp-for="FlagPayStatus" hidden />
+            <input asp-for="DiscountVal" hidden />
+            <input asp-for="ProfitTax" hidden />
+            <input asp-for="FlagApr" hidden />
 
             <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
                 @*  <div class="mb-3">
@@ -68,14 +75,14 @@
             <!------------------------------------------------------------------------------->
 
             <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
-@*                 <div class="mb-3">
-                    <label asp-for="Flag"></label>
-                    <select asp-for="Flag" class="form-control text-center">
-                        <option value="1">@localizer["Posting of Invoices"]</option>
-                        <option value="2">@localizer["Posting of Treasury"]</option>
-                        <option value="3">@localizer["Posting of Pharmacy"]</option>
-                    </select>
-                    <span asp-validation-for="Flag" class="text-danger"></span>
+                @*                 <div class="mb-3">
+                <label asp-for="Flag"></label>
+                <select asp-for="Flag" class="form-control text-center">
+                <option value="1">@localizer["Posting of Invoices"]</option>
+                <option value="2">@localizer["Posting of Treasury"]</option>
+                <option value="3">@localizer["Posting of Pharmacy"]</option>
+                </select>
+                <span asp-validation-for="Flag" class="text-danger"></span>
                 </div> *@
                 <div class="mb-3 ">
                     <label asp-for="ChekNo"></label>
@@ -156,7 +163,7 @@
                 </div>
                 <div class="mb-3">
                     <label asp-for="SubCode"></label>
-                    <select asp-for="SubCode" class="form-control text-center">
+                    <select asp-for="SubCode" asp-items="subAccCodes" class="form-control text-center">
                         <option value="">-- Choose --</option>
                     </select>
                     <span asp-validation-for="SubCode" class="text-danger"></span>
@@ -175,7 +182,7 @@
 
             <div class="parent d-flex justify-content-md-center gap-2 ">
                 <button type="submit" class="btn btn-primary" style="width:150px">
-                    @localizer["Add Deposit"]
+                    @localizer["Save Changes"]
                 </button>
                 <a asp-controller="AccSafeCheck" asp-action="Index" asp-route-tranType="SFSIN" asp-route-flagType="oneANDtwo" class="btn btn-secondary" style="width:150px">
                     @localizer["Cancel"]

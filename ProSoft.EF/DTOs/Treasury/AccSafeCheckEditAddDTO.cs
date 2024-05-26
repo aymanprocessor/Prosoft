@@ -17,9 +17,7 @@ namespace ProSoft.EF.DTOs.Treasury
         [Required(ErrorMessage = "The field is required")]
         public int SafeCeckId { get; set; }
 
-        [DisplayName("Posting")]
-        [Required(ErrorMessage = "The field is required")]
-        public int? Flag { get; set; }
+        public int? Flag { get; set; } //deafult 1
 
         [DisplayName("Journal")]
         [Required(ErrorMessage = "The field is required")]
@@ -72,11 +70,11 @@ namespace ProSoft.EF.DTOs.Treasury
         //  [Required(ErrorMessage = "The field is required")]
         public int? CurCode { get; set; }//Acc Global Def
 
-        [DisplayName("Credit Account (Main)")]
+        [DisplayName("Debit Account (Main)")]
         [Required(ErrorMessage = "The field is required")]
         public string? MainCode { get; set; }
 
-        [DisplayName("Credit Account (Sub)")]
+        [DisplayName("Debit Account (Sub)")]
         public string? SubCode { get; set; }
         public string? TranType { get; set; }
         public int? MCodeDtl { get; set; }
@@ -90,6 +88,27 @@ namespace ProSoft.EF.DTOs.Treasury
         public decimal? ValuePay { get; set; }
 
 
+        //set in add deafults
+        public string? FlagS { get; set; }
+        public decimal? ProfitTax { get; set; }
+        public decimal? DiscountVal { get; set; }
+        public string? FlagPayStatus { get; set; }
+        public string? FlagApr { get; set; }
+
+        [DisplayName("Drawee Bank")]
+        [Required(ErrorMessage = "The field is required")]
+        public string? SubCodeBank { get; set; }
+
+        [DisplayName("Check Type")]
+        public int? CheckType { get; set; }
+
+        [DisplayName("Credit Account")]
+        public string? SubCode2 { get; set; }
+
+
+
+
+
         //Lists
         public List<JournalTypeDTO>? journalTypes { get; set; }
         public List<GTablelDTO>? gTablels { get; set; }
@@ -98,5 +117,6 @@ namespace ProSoft.EF.DTOs.Treasury
         public List<AccGlobalDefDTO>? accGlobalDefs { get; set; }
         public List<AccMainCodeDTO>? accMainCodes { get; set; }
         public List<AccSubCodeDTO>? accSubCodes { get; set; }
+        public List<AccSubCodeDTO>? banks { get; set; }
     }
 }

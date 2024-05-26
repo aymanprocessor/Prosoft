@@ -18,8 +18,8 @@ namespace ProSoft.EF.IRepositories.Treasury
         Task<List<AccSubCodeDTO>> GetSubCodesFromAccAsync(string mainAccCode);
         Task<AccSafeCheckEditAddDTO> GetEmptyAccSafeCeckAsync();
         Task AddAccSafeCeckAsync(AccSafeCheckEditAddDTO accSafeCeckDTO);
-        //Task<AccSafeCashEditAddDTO> GetAccSafeCashByIdAsync(int id);
-        //Task EditAccSafeCashAsync(int id, AccSafeCheckEditAddDTO accSafeCeckDTO);
-        //Task<bool> HasRelatedDataAsync(int id);
+        Task<AccSafeCheckEditAddDTO> GetAccSafeCheckByIdAsync(int id);
+        Task EditAccSafeCheckAsync(int id, AccSafeCheckEditAddDTO accSafeCeckDTO);
+        Task<bool> HasRelatedDataAsync(int id);
     }
 }

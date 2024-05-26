@@ -14,6 +14,8 @@ namespace ProSoft.EF.DTOs.Treasury
         public string? MainCode { get; set; }
         public string? SubCode { get; set; }
         public string CodeDesc { get; set; }//for maindec/subdec
+        public string? DocType { get; set; }
+
 
     }
 }

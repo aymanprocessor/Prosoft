@@ -17,19 +17,21 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
         {
             _custCollectionsDiscountRepo = custCollectionsDiscountRepo;
         }
-        public async Task<IActionResult> Index(int id)
+        public async Task<IActionResult> Index(int id ,string docType)
         {
-            List<CustCollectionsDiscountViewDTO> custCollectionsDiscounts = await _custCollectionsDiscountRepo.GetAllCustCollectionsDiscountAsync(id);
+            List<CustCollectionsDiscountViewDTO> custCollectionsDiscounts = await _custCollectionsDiscountRepo.GetAllCustCollectionsDiscountAsync(id, docType);
             ViewBag.SafeCashID = id;
+            ViewBag.docType = docType;
             return View(custCollectionsDiscounts);
         }
 
         // Get Add
-        public async Task<IActionResult> Add_CustDiscount(int id)
+        public async Task<IActionResult> Add_CustDiscount(int id,string docType)
         {
             ViewBag.custDiscountID = id;
-            CustCollectionsDiscountEditAddDTO custCollectionsDiscountDTO = await _custCollectionsDiscountRepo.GetEmptycustCollectionsDiscountAsync(id);
+            CustCollectionsDiscountEditAddDTO custCollectionsDiscountDTO = await _custCollectionsDiscountRepo.GetEmptycustCollectionsDiscountAsync(id, docType);
             ViewBag.ValuePay = custCollectionsDiscountDTO.ValuePay;
+            ViewBag.docType = docType;
             return View(custCollectionsDiscountDTO);
         }
 
@@ -42,7 +44,7 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
             {
                 custCollectionsDiscountDTO.SafeCashId = id;
                 await _custCollectionsDiscountRepo.AddcustCollectionsDiscountAsync(id,custCollectionsDiscountDTO);
-                return RedirectToAction(nameof(Index),new {id});
+                return RedirectToAction(nameof(Index),new {id, docType = custCollectionsDiscountDTO.DocType});
             }
             return View(custCollectionsDiscountDTO);
         }
@@ -65,7 +67,7 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
             if (ModelState.IsValid)
             {
                 await _custCollectionsDiscountRepo.EditcustCollectionsDiscountAsync(id, custCollectionsDiscountDTO);
-                return RedirectToAction(nameof(Index), new { id = custCollectionsDiscountDTO.SafeCashId});
+                return RedirectToAction(nameof(Index), new { id = custCollectionsDiscountDTO.SafeCashId, docType = custCollectionsDiscountDTO.DocType });
             }
             return View(custCollectionsDiscountDTO);
         }
@@ -79,7 +81,7 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
 
             await _custCollectionsDiscountRepo.DeleteAsync(custCollectionsDiscount);
             await _custCollectionsDiscountRepo.SaveChangesAsync();
-            return RedirectToAction(nameof(Index) ,new {id = custCollectionsDiscount.SafeCashId});
+            return RedirectToAction(nameof(Index) ,new {id = custCollectionsDiscount.SafeCashId, docType = custCollectionsDiscount.DocType });
         }
     }
 }

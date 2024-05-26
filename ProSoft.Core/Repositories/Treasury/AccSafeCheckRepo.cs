@@ -98,12 +98,17 @@ namespace ProSoft.Core.Repositories.Treasury
             List<AccMainCode> accMainCodes = await _Context.AccMainCodes.ToListAsync();
             List<AccSubCode> accSubCodes = await _Context.AccSubCodes.ToListAsync();
 
+            var mainCode = (await _Context.EisPostings.FindAsync(13)).MainCode;
+            List<AccSubCode> banks = await _Context.AccSubCodes.Where(obj=>obj.MainCode ==mainCode).ToListAsync();
+
+
             accSafeCeckDTO.journalTypes = _mapper.Map<List<JournalTypeDTO>>(journalTypes);
             accSafeCeckDTO.costCenters = _mapper.Map<List<CostCenterViewDTO>>(costCenters);
             accSafeCeckDTO.treasuryNames = _mapper.Map<List<TreasuryNameViewDTO>>(safeNames);
             accSafeCeckDTO.accGlobalDefs = _mapper.Map<List<AccGlobalDefDTO>>(accGlobalDefs);
             accSafeCeckDTO.accMainCodes = _mapper.Map<List<AccMainCodeDTO>>(accMainCodes);
             accSafeCeckDTO.accSubCodes = _mapper.Map<List<AccSubCodeDTO>>(accSubCodes);
+            accSafeCeckDTO.banks = _mapper.Map<List<AccSubCodeDTO>>(banks);
 
             return accSafeCeckDTO;
         }
@@ -116,12 +121,14 @@ namespace ProSoft.Core.Repositories.Treasury
             {
                 accSafeCeck.MCodeDtl = 33;
             }
-            else if (accSafeCeck.TranType == "SFCOT")
+            else if (accSafeCeck.TranType == "SFOUT")
             {
-                accSafeCeck.MCodeDtl = 32;
+                accSafeCeck.MCodeDtl = 34;
+                accSafeCeck.CheckStatus = "1";
             }
 
             accSafeCeck.FlagS = "1";
+            accSafeCeck.Flag = 1;
             accSafeCeck.FlagPayStatus = "0";
             accSafeCeck.DiscountVal = 0;            
             accSafeCeck.ProfitTax = 0;            
@@ -131,5 +138,57 @@ namespace ProSoft.Core.Repositories.Treasury
             await _Context.AddAsync(accSafeCeck);
             await _Context.SaveChangesAsync();
         }
+
+        public async Task<AccSafeCheckEditAddDTO> GetAccSafeCheckByIdAsync(int id)
+        {
+            AccSafeCheck accSafeCheck = await _Context.AccSafeChecks.FirstOrDefaultAsync(obj => obj.SafeCeckId == id);
+
+            AccSafeCheckEditAddDTO accSafeCheckDTO = _mapper.Map<AccSafeCheckEditAddDTO>(accSafeCheck);
+
+            List<JournalType> journalTypes = await _Context.JournalTypes.ToListAsync();
+            List<CostCenter> costCenters = await _Context.CostCenters.ToListAsync();
+            List<SafeName> safeNames = await _Context.SafeNames.ToListAsync();
+            List<AccGlobalDef> accGlobalDefs = await _Context.accGlobalDefs.ToListAsync();
+            List<AccMainCode> accMainCodes = await _Context.AccMainCodes.ToListAsync();
+            List<AccSubCode> accSubCodes = await _Context.AccSubCodes.Where(obj => obj.MainCode == accSafeCheck.MainCode).ToListAsync();
+
+            accSafeCheckDTO.journalTypes = _mapper.Map<List<JournalTypeDTO>>(journalTypes);
+            accSafeCheckDTO.costCenters = _mapper.Map<List<CostCenterViewDTO>>(costCenters);
+            accSafeCheckDTO.treasuryNames = _mapper.Map<List<TreasuryNameViewDTO>>(safeNames);
+            accSafeCheckDTO.accGlobalDefs = _mapper.Map<List<AccGlobalDefDTO>>(accGlobalDefs);
+            accSafeCheckDTO.accMainCodes = _mapper.Map<List<AccMainCodeDTO>>(accMainCodes);
+            accSafeCheckDTO.accSubCodes = _mapper.Map<List<AccSubCodeDTO>>(accSubCodes);
+
+            return accSafeCheckDTO;
+        }
+
+        public async Task EditAccSafeCheckAsync(int id, AccSafeCheckEditAddDTO accSafeCeckDTO)
+        {
+
+            AccSafeCheck accSafeCeck = await _Context.AccSafeChecks.FirstOrDefaultAsync(obj => obj.SafeCeckId == id);
+            _mapper.Map(accSafeCeckDTO, accSafeCeck);
+            //accSafeCash.DocType = "SFCIN";
+            if (accSafeCeck.TranType == "SFSIN")
+            {
+                accSafeCeck.MCodeDtl = 33;
+            }
+            else if (accSafeCeck.TranType == "SFOUT")
+            {
+                accSafeCeck.MCodeDtl = 34;
+                accSafeCeck.CheckStatus = "1";
+            }
+            accSafeCeck.EntryDate = DateTime.Now;
+            _Context.Update(accSafeCeck);
+            await _Context.SaveChangesAsync();
+        }
+
+
+        public async Task<bool> HasRelatedDataAsync(int id)
+        {
+            // Check if there are related records in custCollectionsDiscounts
+            var hasRelatedData = await _Context.custCollectionsDiscounts.AnyAsync(p => p.SafeCashId == id);
+            return hasRelatedData;
+        }
+
     }
 }
