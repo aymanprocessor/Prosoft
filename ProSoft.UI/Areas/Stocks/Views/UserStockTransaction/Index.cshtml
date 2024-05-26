@@ -152,7 +152,6 @@
             $.ajax({
                 url: `/Stocks/UserStockTransaction/GetStockTransForUser/${userCode}`,
                 success: function (result) {
-                    console.log(result);
                     let count = 0;
                     for (let item of result) {
                         count++;

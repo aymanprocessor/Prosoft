@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using ProSoft.EF.DbContext;
 using ProSoft.EF.DTOs.Accounts;
@@ -16,13 +17,11 @@ using System.Threading.Tasks;
 
 namespace ProSoft.Core.Repositories.Stocks
 {
-    public class StockEmpRepo: IStockEmpRepo
+    public class StockEmpRepo: Repository<StockEmp, int>, IStockEmpRepo
     {
-        private readonly AppDbContext _Context;
         private readonly IMapper _mapper;
-        public StockEmpRepo(AppDbContext Context, IMapper mapper)
+        public StockEmpRepo(AppDbContext Context, IMapper mapper): base(Context)
         {
-            _Context = Context;
             _mapper = mapper;
         }
 
@@ -76,6 +75,7 @@ namespace ProSoft.Core.Repositories.Stocks
             List<AccMainCode> mainAccCodes = await _Context.AccMainCodes.ToListAsync();
             List<JournalType> journalTypes = await _Context.JournalTypes.ToListAsync();
 
+            stockTransDTO.UserId = userCode;
             stockTransDTO.Permissions = await GetPermissionsFor(userCode);
             stockTransDTO.Stocks = _mapper.Map<List<StockViewDTO>>(stocks);
             stockTransDTO.MainAccCodes = _mapper.Map<List<AccMainCodeDTO>>(mainAccCodes);
@@ -110,6 +110,36 @@ namespace ProSoft.Core.Repositories.Stocks
                     obj => obj.UniqueType == transType);
                 var permissionDTO_2 = _mapper.Map<PermissionDefViewDTO>(permission_2);
                 permissionsDTO.Add(permissionDTO_2);
+            }
+            return permissionsDTO;
+        }
+
+        public async Task<List<PermissionDefViewDTO>> GetPermissionsForStock(int userCode, int stockCode)
+        {
+            List<StockEmp> stockTransList = await _Context.StockEmps.Where(obj =>
+                obj.Stkcod == stockCode && obj.UserId == userCode).ToListAsync();
+            List<UserTranss> userTransList = await _Context.UserTransactions
+                .Where(obj => obj.UsrId == userCode && obj.TransFlag == 1).ToListAsync();
+
+            var permissionsDTO = new List<PermissionDefViewDTO>();
+            if (stockTransList.Count() == 0)
+                permissionsDTO = await GetPermissionsFor(userCode);
+            else
+            {
+                foreach (var item in stockTransList)
+                {
+                    GeneralCode permission = await _Context.GeneralCodes
+                        .FirstOrDefaultAsync(obj => obj.UniqueType == item.TransType);
+                    foreach (var item1 in userTransList)
+                    {
+                        if(item1.GId != permission.GId)
+                        {
+                            var permDTO = _mapper.Map<PermissionDefViewDTO>(permission);
+                            permissionsDTO.Add(permDTO);
+                            break;
+                        }
+                    }
+                }
             }
             return permissionsDTO;
         }

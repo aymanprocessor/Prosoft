@@ -1,5 +1,4 @@
-﻿@* @model List<PermissionDefViewDTO> *@
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Permissions Forms";
     Layout = "_Layout";
@@ -24,7 +23,7 @@
         </div>
         <div class="d-flex align-items-center flex-column flex-md-row w-50">
             <label for="permissions" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Permissions"]</label>
-            <select id="permissions" class="form-control text-center w-100" onchange="getUserPermissions(event)">
+            <select id="permissions" class="form-control text-center w-100" onchange="getPermissionsInStock(event)">
                 <option value="">-- Choose --</option>
             </select>
         </div>
@@ -40,15 +39,16 @@
                     <th class="align-middle">
                         @localizer["Doc No"]
                     </th>
-                    <th class="align-middle" style="min-width: 150px;">
+                    <th class="align-middle text-center" style="min-width: 150px;">
                         @localizer["Permission Name"]
                     </th>
-                    <th class="align-middle" style="min-width: 150px;">
+                    <th class="align-middle text-center" style="min-width: 150px;">
                         @localizer["Stock Name"]
                     </th>
-                    <th class="align-middle" style="min-width: 150px;">
+                    <th class="align-middle text-center" style="min-width: 150px;">
                         @localizer["User Name"]
                     </th>
+                    <td></td>
                 </tr>
             </thead>
             <tbody>
@@ -140,7 +140,8 @@
             });
         }
 
-        function getUserPermissions(e) {
+        function getPermissionsInStock(e) {
+            let permission = e.target;
             let stock = document.getElementById("stocks");
             if (!stock.value) {
                 stock.focus();
@@ -151,9 +152,8 @@
             userPermissions.innerHTML = "";  // Empty the table
 
             $.ajax({
-                url: `/Stocks/PermissionForm/GetPermissionsForms/`,
+                url: `/Stocks/PermissionForm/GetPermissionsForms/${stock.value}?transType=${permission.value}`,
                 success: function (result) {
-                    console.log(result);
                     for (let item of result) {
                         const userPerm = document.createElement("tr");
                         userPerm.innerHTML =
@@ -163,11 +163,10 @@
                             <td class="align-middle text-center">${item.stockName}</td>
                             <td class="align-middle text-center">${item.userName}</td>
                             <td class="text-center align-middle" style="width: 325px;">
-                                <a href="/Stocks/PermissionForm/Edit_PermissionForm/${userCode}?transType=${item.transType}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
+                                <a href="/Stocks/PermissionForm/Edit_PermissionForm/${item.transMAsterID}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
                                 <form action="/Stocks/PermissionForm/Delete_PermissionForm" method="post" class="d-inline">
                                         @Html.AntiForgeryToken()
-                                    <input type="hidden" name="id" value="${userCode}" />
-                                    <input type="hidden" name="transType" value="${item.transType}" />
+                                    <input type="hidden" name="id" value="${item.transMAsterID}" />
                                     <button class="btn btn-sm btn-danger mb-1 fs-6" onclick="return confirm('Are you sure you want to delete this one?')" style="width: 150px">@localizer["Delete"]</button>
                                 </form>
                             </td>

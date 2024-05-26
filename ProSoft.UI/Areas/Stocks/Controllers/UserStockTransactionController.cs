@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProSoft.Core.Repositories.Stocks;
 using ProSoft.EF.DTOs.Accounts;
 using ProSoft.EF.DTOs.Auth;
+using ProSoft.EF.DTOs.Shared;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.IRepositories;
 using ProSoft.EF.IRepositories.Stocks;
@@ -42,6 +43,14 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             List<StockEmpViewDTO> stockTransDTO = await _userStockRepo
                 .GetStockTransForUserAsync(id);
             return Json(stockTransDTO);
+        }
+
+        //Ajax In Add_StockTrans
+        public async Task<IActionResult> GetPermissionsForStock(int id, int stockCode)
+        {
+            List<PermissionDefViewDTO> permissionsDTO = await _userStockRepo
+                .GetPermissionsForStock(id, stockCode);
+            return Json(permissionsDTO);
         }
 
         //Ajax In Add_StockTrans
