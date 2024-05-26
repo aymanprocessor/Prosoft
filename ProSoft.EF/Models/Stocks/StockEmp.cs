@@ -6,28 +6,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ProSoft.EF.Models.Stocks;
 
-[PrimaryKey("UserId", "Stkcod", "TransType", "StockDef")]
 [Table("STOCK_EMP")]
 public partial class StockEmp
 {
     [Key]
+    public int StockEmpID { get; set; }
+
     [Column("USER_ID")]
-    public int UserId { get; set; }
+    public int? UserId { get; set; }
 
-    [Key]
     [Column("STKCOD")]
-    public int Stkcod { get; set; }
+    public int? Stkcod { get; set; }
 
-    [Key]
     [Column("TRANS_TYPE")]
-    public int TransType { get; set; }
+    public int? TransType { get; set; }
 
     [Column("BRANCH_ID")]
     public int? BranchId { get; set; }
 
-    [Key]
     [Column("STOCK_DEF")]
-    public int StockDef { get; set; }
+    public int? StockDef { get; set; }
 
     [Column("SHOW_PRICE")]
     public int? ShowPrice { get; set; }

@@ -382,6 +382,11 @@
   "Drawee Bank": "Drawee Bank",
   "Payment Ways": "Payment Ways",
   "Transfer": "Transfer",
+  "Edit check in Treasury": "Edit check in Treasury",
+  "Disbursement Permission Check": "Disbursement Permission Check",
+  "Add Disbursement Permission Check": "Add Disbursement Permission Check",
+  "Check Type": "Check Type",
+  "Edit Disbursement Permission Check": "Edit Disbursement Permission Check",
 
 
 
@@ -557,5 +562,6 @@
   "Discount/Addition": "Discount/Addition",
   "Prices Include Tax": "Prices Include Tax",
   "Doc No": "Doc No",
-  "Permission Name": "Permission Name"
+  "Permission Name": "Permission Name",
+  "Modify": "Modify"
 }

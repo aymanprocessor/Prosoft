@@ -54,7 +54,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         public async Task<IActionResult> Add_PermissionForm(int id, int transType)
         {
             var userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
-            TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetDTOWithDefaultsAsync(id, transType);
+            TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetNewTransMasterAsync(id, transType);
             permissionFormDTO.UserName = (await _userRepo.GetUserByIdAsync(userCode)).UserName;
 
             return View(permissionFormDTO);
@@ -77,35 +77,35 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         }
 
         // Get Edit
-        //public async Task<IActionResult> Edit_StockTrans(int id, int transType)
-        //{
-        //    StockEmpEditAddDTO stockTransDTO = await _userStockRepo.GetStockTransByIdAsync(id, transType);
-        //    ViewBag.subAccCodesStk = await _userStockRepo.GetSubCodesFromAccAsync(stockTransDTO.MainCodeStk);
-        //    ViewBag.subAccCodesAcc = await _userStockRepo.GetSubCodesFromAccAsync(stockTransDTO.MainCodeAcc);
-
-        //    return View(stockTransDTO);
-        //}
+        public async Task<IActionResult> Edit_PermissionForm(int id)
+        {
+            TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetTransMasterByIdAsync(id);
+            return View(permissionFormDTO);
+        }
 
         // Post Edit
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit_StockTrans(int id, int transType, StockEmpEditAddDTO stockTransDTO)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        await _userStockRepo.UpdateStockTransAsync(id, transType, stockTransDTO);
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(stockTransDTO);
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit_PermissionForm(int id, TransMasterEditAddDTO permissionFormDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                await _transMasterRepo.UpdateTransMasterAsync(id, permissionFormDTO);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(permissionFormDTO);
+        }
 
         // Delete
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Delete_StockTrans(int id, int transType)
-        //{
-        //    await _userStockRepo.DeleteStockTransAsync(id, transType);
-        //    return RedirectToAction(nameof(Index));
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete_PermissionForm(int id)
+        {
+            TransMaster permissionForm = await _transMasterRepo.GetByIdAsync(id);
+
+            await _transMasterRepo.DeleteAsync(permissionForm);
+            await _transMasterRepo.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

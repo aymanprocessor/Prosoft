@@ -10,7 +10,7 @@ namespace ProSoft.EF.DTOs.Stocks
 {
     public class TransMasterEditAddDTO
     {
-        public int TransMAsterID { get; set; }
+        //public int TransMAsterID { get; set; }
         public short StockCode { get; set; }
         public int TransType { get; set; }
         public long? DocNo { get; set; }

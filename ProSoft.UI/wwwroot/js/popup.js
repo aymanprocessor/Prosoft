@@ -3,8 +3,8 @@
 const openModalButtons = document.querySelectorAll("[data-modal-target]");
 const closeModalButtons = document.querySelectorAll("[data-close-button]");
 const overlays = document.querySelectorAll("#overlay");
-console.log(closeModalButtons);
-zz
+//console.log(closeModalButtons);
+
 //openModalButtons.forEach((button) => {
 //    button.addEventListener("click", openModalListener(event));
 //});
@@ -14,7 +14,7 @@ function openModalListener(event) {
 
     const modal = modalContainer.querySelector(".modal");
     const overlay = modalContainer.querySelector("#overlay");
-    console.log(modal, overlay);
+    //console.log(modal, overlay);
 
     openModal(modal, overlay);
 }
