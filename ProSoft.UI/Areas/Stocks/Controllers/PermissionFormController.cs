@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProSoft.Core.Repositories.Stocks;
 using ProSoft.EF.DTOs.Shared;
@@ -16,15 +17,17 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         private readonly IUserTransRepo _userTransRepo;
         private readonly ITransMasterRepo _transMasterRepo;
         private readonly IUserRepo _userRepo;
+        private readonly IMapper _mapper;
         public PermissionFormController(IUserTransRepo userTransRepo,
-            ITransMasterRepo transMasterRepo, IUserRepo userRepo)
+            ITransMasterRepo transMasterRepo, IUserRepo userRepo, IMapper mapper)
         {
             _userTransRepo = userTransRepo;
             _transMasterRepo = transMasterRepo;
             _userRepo = userRepo;
+            _mapper = mapper;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
             var userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
             List<PermissionDefViewDTO> permissionsDTO = await _userTransRepo.GetPermissionsForUserAsync(userCode);
@@ -32,7 +35,10 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
 
             List<StockViewDTO> stocksDTO = await _transMasterRepo.GetActiveStocksForUserAsync(userCode);
             ViewBag.Stocks = stocksDTO;
-            return View();
+
+            TransMaster permissionForm = await _transMasterRepo.GetByIdAsync(Convert.ToInt32(id));
+            TransMasterViewDTO permissionsFormDTO = await _transMasterRepo.GetForViewAsync(permissionForm);
+            return View(permissionsFormDTO);
         }
 
         public async Task<IActionResult> GetUserPermissionsForStock(int id)
@@ -70,8 +76,8 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
                 permissionFormDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
                 permissionFormDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
 
-                await _transMasterRepo.AddPermissionFormAsync(permissionFormDTO);
-                return RedirectToAction(nameof(Index));
+                TransMaster permissionForm = await _transMasterRepo.AddPermissionFormAsync(permissionFormDTO);
+                return RedirectToAction(nameof(Index), new { id = permissionForm.TransMAsterID });
             }
             return View(permissionFormDTO);
         }

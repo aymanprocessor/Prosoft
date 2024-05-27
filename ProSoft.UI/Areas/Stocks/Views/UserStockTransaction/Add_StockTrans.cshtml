@@ -6,7 +6,7 @@
     Layout = "_Layout";
 
     // Casting type to get all Permissions as a list
-    SelectList permissions = new SelectList(Model.Permissions, "UniqueType", "GDesc");
+    // SelectList permissions = new SelectList(Model.Permissions, "UniqueType", "GDesc");
 
     // Casting type to get all Stocks as a list
     SelectList stocks = new SelectList(Model.Stocks, "Stkcod", "Stknam");
@@ -159,7 +159,7 @@
             permissions.innerHTML = `<option value="">-- Choose --</option>`;
 
             $.ajax({
-                url: `/Stocks/UserStockTransaction/GetPermissionsForStock/@Model.UserId?stockCode=${stock.value}`,
+                url: `/Stocks/UserStockTransaction/GetStockPermissionsForAdd/@Model.UserId?stockCode=${stock.value}`,
                 success: function (result) {
                     for (let item of result) {
                         permissions.innerHTML +=
