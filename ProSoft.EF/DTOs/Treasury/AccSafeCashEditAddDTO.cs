@@ -1,5 +1,4 @@
-﻿using ProSoft.EF.DTOs.Shared;
-using ProSoft.EF.DTOs.Stocks;
+﻿using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.Models.Shared;
 using System;
 using System.Collections.Generic;

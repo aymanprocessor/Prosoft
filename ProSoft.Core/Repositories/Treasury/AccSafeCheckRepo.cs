@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using ProSoft.EF.DbContext;
 using ProSoft.EF.DTOs.Accounts;
-using ProSoft.EF.DTOs.Shared;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.DTOs.Treasury;
 using ProSoft.EF.IRepositories.Treasury;
@@ -151,6 +150,8 @@ namespace ProSoft.Core.Repositories.Treasury
             List<AccGlobalDef> accGlobalDefs = await _Context.accGlobalDefs.ToListAsync();
             List<AccMainCode> accMainCodes = await _Context.AccMainCodes.ToListAsync();
             List<AccSubCode> accSubCodes = await _Context.AccSubCodes.Where(obj => obj.MainCode == accSafeCheck.MainCode).ToListAsync();
+            var mainCode = (await _Context.EisPostings.FindAsync(13)).MainCode;
+            List<AccSubCode> banks = await _Context.AccSubCodes.Where(obj => obj.MainCode == mainCode).ToListAsync();
 
             accSafeCheckDTO.journalTypes = _mapper.Map<List<JournalTypeDTO>>(journalTypes);
             accSafeCheckDTO.costCenters = _mapper.Map<List<CostCenterViewDTO>>(costCenters);
@@ -158,6 +159,8 @@ namespace ProSoft.Core.Repositories.Treasury
             accSafeCheckDTO.accGlobalDefs = _mapper.Map<List<AccGlobalDefDTO>>(accGlobalDefs);
             accSafeCheckDTO.accMainCodes = _mapper.Map<List<AccMainCodeDTO>>(accMainCodes);
             accSafeCheckDTO.accSubCodes = _mapper.Map<List<AccSubCodeDTO>>(accSubCodes);
+            accSafeCheckDTO.banks = _mapper.Map<List<AccSubCodeDTO>>(banks);
+
 
             return accSafeCheckDTO;
         }
@@ -183,10 +186,10 @@ namespace ProSoft.Core.Repositories.Treasury
         }
 
 
-        public async Task<bool> HasRelatedDataAsync(int id)
+        public async Task<bool> HasRelatedDataAsync(int id,string doctype)
         {
             // Check if there are related records in custCollectionsDiscounts
-            var hasRelatedData = await _Context.custCollectionsDiscounts.AnyAsync(p => p.SafeCashId == id);
+            var hasRelatedData = await _Context.custCollectionsDiscounts.AnyAsync(p => p.SafeCashId == id && p.DocType == doctype);
             return hasRelatedData;
         }
 

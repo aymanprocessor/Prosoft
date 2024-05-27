@@ -135,5 +135,6 @@ namespace ProSoft.EF.DbContext
         public DbSet<CustCollectionsDiscount> custCollectionsDiscounts { get; set; }
         public DbSet<UserCashNo> userCashNos { get; set; }
         public DbSet<AccSafeCheck> AccSafeChecks { get; set; }
+        public DbSet<BankData> bankDatas { get; set; }
     }
 }

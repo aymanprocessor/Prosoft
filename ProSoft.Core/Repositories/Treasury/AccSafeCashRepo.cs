@@ -4,7 +4,6 @@ using Microsoft.VisualBasic;
 using ProSoft.EF.DbContext;
 using ProSoft.EF.DTOs.Accounts;
 using ProSoft.EF.DTOs.Medical.HospitalPatData;
-using ProSoft.EF.DTOs.Shared;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.DTOs.Treasury;
 using ProSoft.EF.IRepositories.Treasury;
@@ -204,10 +203,10 @@ namespace ProSoft.Core.Repositories.Treasury
             await _Context.SaveChangesAsync();
         }
 
-        public async Task<bool> HasRelatedDataAsync(int id)
+        public async Task<bool> HasRelatedDataAsync(int id, string doctype)
         {
             // Check if there are related records in custCollectionsDiscounts
-            var hasRelatedData = await _Context.custCollectionsDiscounts.AnyAsync(p => p.SafeCashId == id);
+            var hasRelatedData = await _Context.custCollectionsDiscounts.AnyAsync(p => p.SafeCashId == id && p.DocType ==doctype);
             return hasRelatedData;
         }
 

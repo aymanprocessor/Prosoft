@@ -1,0 +1,59 @@
+﻿@model BankDataDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Edit Bank";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@inject IViewLocalizer localizer
+@* <style>
+    .image {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.5;
+        z-index: -1;
+    }
+</style> *@
+<div class="container pt-2" style="min-height:100vh;">
+    @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
+
+    <h1 class="mt-4">@localizer["Edit Bank"]</h1>
+    <form method="post" asp-action="Edit_Bank" id="myForm">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly"></div>
+            @* hidden *@
+            <input asp-for="BankNo" hidden />
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3 ">
+                    <label asp-for="BankNo"></label>
+                    <input asp-for="BankNo" class="form-control" disabled />
+                    <span asp-validation-for="BankNo" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="BankDesc"></label>
+                    <input asp-for="BankDesc" class="form-control" />
+                    <span asp-validation-for="BankDesc" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex justify-content-md-center gap-2 ">
+                <button type="submit" class="btn btn-success" style="width:150px">
+                    @localizer["Save Changes"]
+                </button>
+                <a asp-controller="BankData" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>

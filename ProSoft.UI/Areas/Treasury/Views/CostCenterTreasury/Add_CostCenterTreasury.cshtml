@@ -1,0 +1,58 @@
+﻿@model GTablelDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Add Cost Center For Treaury";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@inject IViewLocalizer localizer
+@* <style>
+    .image {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.5;
+        z-index: -1;
+    }
+</style> *@
+<div class="container pt-2" style="min-height:100vh;">
+    @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
+
+    <h1 class="mt-4">@localizer["Add Cost Center Treasury"]</h1>
+    <form method="post" asp-action="Add_CostCenterTreasury" id="myForm">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly"></div>
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+
+                <div class="mb-3 ">
+                    <label asp-for="GCode"></label>
+                    <input asp-for="GCode" class="form-control" disabled value="@ViewBag.gtableID" />
+                    <span asp-validation-for="GCode" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="GDesc"></label>
+                    <input asp-for="GDesc" class="form-control" />
+                    <span asp-validation-for="GDesc" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex justify-content-md-center gap-2 ">
+                <button type="submit" class="btn btn-primary" style="width:150px">
+                    @localizer["Add Cost Center"]
+                </button>
+                <a asp-controller="CostCenterTreasury" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>

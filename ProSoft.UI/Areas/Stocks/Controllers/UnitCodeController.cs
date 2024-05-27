@@ -18,7 +18,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         {
             _unitCodeRepo = unitCodeRepo;
             _mapper = mapper;
-        }
+        } 
 
         public async Task<IActionResult> Index()
         {

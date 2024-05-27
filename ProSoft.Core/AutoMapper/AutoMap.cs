@@ -135,6 +135,9 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<CustCollectionsDiscountEditAddDTO, CustCollectionsDiscount>().ReverseMap();
             CreateMap<UserCashNoViewDTO, UserCashNo>().ReverseMap();
             CreateMap<UserCashNoEditAddDTO, UserCashNo>().ReverseMap();
+            CreateMap<BankDataDTO, BankData>().ReverseMap();
+            CreateMap<AccGlobalDefDTO, AccGlobalDef>().ReverseMap();
+            CreateMap<GTablelDTO, GTable>().ReverseMap();
             ////////// PatRecord ////////////////////
             CreateMap<CoronaryAngiographyReport, CoronaryDTO>().ReverseMap();
             CreateMap<PastHistory, PastHistoryDTO>().ReverseMap();

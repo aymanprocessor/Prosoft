@@ -324,7 +324,7 @@
   "Journal Type": "تصنيف اليومية",
   "Serial Type": "نوع المسلسل",
   "Other": "اخري",
-  "Banks": "بنوك",
+  "Banks": "البنوك",
   "Mechanical": "آلي",
   "Manual": "يدوي",
   "The Cash": "النقدية",
@@ -390,6 +390,20 @@
   "Add Disbursement Permission Check": "اضافة اذن صرف شيك",
   "Check Type": "شيك اجل",
   "Edit Disbursement Permission Check": "تعديل اذن صرف شيك",
+  "Add Bank": "اضافة بنك",
+  "Edit Bank": "تعديل بنك",
+  "Bank Name": "اسم البنك",
+  "Currencies": "العملات",
+  "Currency Symbol": "رمز العملة",
+  "Add Currency": "اضافة عملة",
+  "Edit Currency": "تعديل عملة",
+  "Currency Name": "اسم العملة",
+  "Cost Center Name": "اسم مركز التكلفة",
+  "Cost Center Treasury": "مراكز تكلفة للخزينة",
+  "Add Cost Center Treasury": "اضافة مركز تكلفة للخزينة",
+  "Edit Cost Center Treasury": "تعديل مركز تكلفة للخزينة",
+  "Add Cost Center": "اضافة مركز تكلفة",
+  "Edit Cost Center": "تعديل مركز تكلفة",
 
 
 
@@ -565,5 +579,6 @@
   "Prices Include Tax": "الاسعار شاملة الضريبة",
   "Doc No": "كود الاذن",
   "Permission Name": "اسم الاذن",
-  "Modify": "تعديل"
+  "Modify": "تعديل",
+  "Confirm Delete": "تأكيد الحذف"
 }

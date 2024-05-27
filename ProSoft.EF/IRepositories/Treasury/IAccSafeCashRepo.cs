@@ -20,6 +20,6 @@ namespace ProSoft.EF.IRepositories.Treasury
         Task AddAccSafeCashAsync(AccSafeCashEditAddDTO accSafeCashDTO);
         Task<AccSafeCashEditAddDTO> GetAccSafeCashByIdAsync(int id);
         Task EditAccSafeCashAsync(int id, AccSafeCashEditAddDTO accSafeCashDTO);
-        Task<bool> HasRelatedDataAsync(int id);
+        Task<bool> HasRelatedDataAsync(int id, string doctype);
     }
 }

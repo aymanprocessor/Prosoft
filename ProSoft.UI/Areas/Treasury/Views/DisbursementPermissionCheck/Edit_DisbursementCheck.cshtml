@@ -10,7 +10,7 @@
     SelectList accGlobalDef = new SelectList(Model.accGlobalDefs, "CoCode", "CodeDesc");
     SelectList mainAccCodes = new SelectList(Model.accMainCodes, "MainCode", "MainName");
     SelectList banks = new SelectList(Model.banks, "SubCode", "SubName");
-    // SelectList subAccCodes = new SelectList(Model.SubAccCodes, "SubCode", "SubName");
+    SelectList subAccCodes = new SelectList(Model.accSubCodes, "SubCode", "SubName");
 
 }
 @inject IViewLocalizer localizer
@@ -37,9 +37,16 @@
 
             <div asp-validation-summary="ModelOnly"></div>
             @* hidden *@
-            <input asp-for="DocNo" hidden value="@ViewBag.SerialID" />
-            <input asp-for="TranType" hidden value="@ViewBag.tranType" />
-            <input asp-for="FYear" hidden value="@ViewBag.fYear" />
+            <input asp-for="SafeCeckId" hidden />
+            <input asp-for="DocNo" hidden />
+            <input asp-for="TranType" hidden />
+            <input asp-for="FYear" hidden />
+            <input asp-for="Flag" hidden />
+            <input asp-for="FlagS" hidden />
+            <input asp-for="FlagPayStatus" hidden />
+            <input asp-for="DiscountVal" hidden />
+            <input asp-for="ProfitTax" hidden />
+            <input asp-for="FlagApr" hidden />
 
             <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
                 @*  <div class="mb-3">
@@ -175,12 +182,19 @@
                 </div>
                 <div class="mb-3">
                     <label asp-for="SubCode"></label>
-                    <select asp-for="SubCode" class="form-control text-center">
+                    <select asp-for="SubCode" asp-items="subAccCodes" class="form-control text-center">
                         <option value="">-- Choose --</option>
                     </select>
                     <span asp-validation-for="SubCode" class="text-danger"></span>
                 </div>
                 <div class="mb-3 d-flex gap-2">
+                    <div class="w-50">
+                        <label asp-for="SubCode2"></label>
+                        <select asp-for="SubCode2" asp-items="subAccCodes" class="form-control text-center">
+                            <option value="">-- Choose --</option>
+                        </select>
+                        <span asp-validation-for="SubCode2" class="text-danger"></span>
+                    </div>
                     <div class="w-50">
                         <label asp-for="AprovedFlag"></label>
                         <select asp-for="AprovedFlag" class="form-control text-center">
@@ -189,21 +203,14 @@
                         </select>
                         <span asp-validation-for="AprovedFlag" class="text-danger"></span>
                     </div>
-                    <div class="w-50">
-                        <label asp-for="SubCode"></label>
-                        <select asp-for="SubCode" class="form-control text-center">
-                            <option value="">-- Choose --</option>
-                        </select>
-                        <span asp-validation-for="SubCode" class="text-danger"></span>
-
-                    </div>
+                 
                 </div>
             </div>
 
             <!------------------------------------------------------------------------------->
 
             <div class="parent d-flex justify-content-md-center gap-2 ">
-                <button type="submit" class="btn btn-primary" style="width:150px">
+                <button type="submit" class="btn btn-success" style="width:150px">
                     @localizer["Save Changes"]
                 </button>
                 <a asp-controller="AccSafeCheck" asp-action="Index" asp-route-tranType="SFSIN" asp-route-flagType="oneANDtwo" class="btn btn-secondary" style="width:150px">
@@ -224,6 +231,8 @@
         let mainElement = e.target;
         let subElement = document.getElementById("SubCode");
         subElement.innerHTML = `<option value="">-- Choose --</option>`;
+        let subElement2 = document.getElementById("SubCode2");
+        subElement2.innerHTML = `<option value="">-- Choose --</option>`;
 
         $.ajax({
             url: `/Treasury/AccSafeCash/GetSubCodesFromAcc/${mainElement.value}`,
@@ -232,6 +241,9 @@
                 for (let item of result) {
                     subElement.innerHTML +=
                         `<option value="${item.subCode}">${item.subName}</option>`;
+                    subElement2.innerHTML +=
+                        `<option value="${item.subCode}">${item.subName}</option>`;
+
                 }
             }
         });

@@ -126,7 +126,7 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
         {
             AccSafeCheck accSafeCheck = await _accSafeCheckRepo.GetByIdAsync(id);
 
-            bool hasRelatedData = await _accSafeCheckRepo.HasRelatedDataAsync(id);
+            bool hasRelatedData = await _accSafeCheckRepo.HasRelatedDataAsync(id, accSafeCheck.TranType);
             if (hasRelatedData)
             {
                 var errorMessage = "Cannot delete this record because it has related data in another table!";

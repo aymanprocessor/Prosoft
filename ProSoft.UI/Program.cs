@@ -101,6 +101,9 @@ builder.Services.AddScoped<IAccSafeCashRepo, AccSafeCashRepo>();
 builder.Services.AddScoped<IAccSafeCheckRepo, AccSafeCheckRepo>();
 builder.Services.AddScoped<ICustCollectionsDiscountRepo, CustCollectionsDiscountRepo>();
 builder.Services.AddScoped<IUserCashNoRepo, UserCashNoRepo>();
+builder.Services.AddScoped<IBankDataRepo, BankDataRepo>();
+builder.Services.AddScoped<IAccGlobalDefRepo, AccGlobalDefRepo>();
+builder.Services.AddScoped<IGTableRepo, GTableRepo>();
 ////////// PatRecord ////////////////////
 builder.Services.AddScoped<ICoronaryRepo, CoronaryRepo>();
 builder.Services.AddScoped<IPastHistoryRepo, PastHistoryRepo>();

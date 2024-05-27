@@ -61,6 +61,11 @@ namespace ProSoft.Core.Repositories.Treasury
                 var accsafeCheck = await _Context.AccSafeChecks.FirstOrDefaultAsync(obj => obj.SafeCeckId == id && obj.TranType == docType);
                 custCollectionsDiscountDTO.ValuePay = accsafeCheck.ValuePay;
             }
+            else if (docType == "SFOUT")
+            {
+                var accsafeCheck = await _Context.AccSafeChecks.FirstOrDefaultAsync(obj => obj.SafeCeckId == id && obj.TranType == docType);
+                custCollectionsDiscountDTO.ValuePay = accsafeCheck.ValuePay;
+            }
             else
             {             
                 var accSafeCash = await _Context.AccSafeCashes.FirstOrDefaultAsync(obj => obj.SafeCashId == id && obj.DocType ==docType);
@@ -73,6 +78,15 @@ namespace ProSoft.Core.Repositories.Treasury
         {
             var custCollectionsDiscount = _mapper.Map<CustCollectionsDiscount>(custCollectionsDiscountDTO);
             if (custCollectionsDiscount.DocType == "SFSIN") 
+            {
+                var accsafeCheck = await _Context.AccSafeChecks.FirstOrDefaultAsync(obj => obj.SafeCeckId == id && obj.TranType == custCollectionsDiscountDTO.DocType);
+                custCollectionsDiscount.ReceiptNo = accsafeCheck.DocNo;
+                custCollectionsDiscount.ReceiptDate = accsafeCheck.DocDate;
+                custCollectionsDiscount.FYear = accsafeCheck.FYear;
+                custCollectionsDiscount.DocType = accsafeCheck.TranType;
+                custCollectionsDiscount.SafeCode = accsafeCheck.SafeCode;
+            }
+            else if (custCollectionsDiscount.DocType == "SFOUT")
             {
                 var accsafeCheck = await _Context.AccSafeChecks.FirstOrDefaultAsync(obj => obj.SafeCeckId == id && obj.TranType == custCollectionsDiscountDTO.DocType);
                 custCollectionsDiscount.ReceiptNo = accsafeCheck.DocNo;

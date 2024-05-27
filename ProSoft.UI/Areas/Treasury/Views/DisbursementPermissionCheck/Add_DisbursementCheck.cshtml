@@ -182,20 +182,20 @@
                 </div>
                 <div class="mb-3 d-flex gap-2">
                     <div class="w-50">
+                        <label asp-for="SubCode2"></label>
+                        <select asp-for="SubCode2" class="form-control text-center">
+                            <option value="">-- Choose --</option>
+                        </select>
+                        <span asp-validation-for="SubCode2" class="text-danger"></span>
+
+                    </div>
+                    <div class="w-50">
                         <label asp-for="AprovedFlag"></label>
                         <select asp-for="AprovedFlag" class="form-control text-center">
                             <option value="NO">@localizer["No"]</option>
                             <option value="APR">@localizer["Yes"]</option>
                         </select>
                         <span asp-validation-for="AprovedFlag" class="text-danger"></span>
-                    </div>
-                    <div class="w-50">
-                        <label asp-for="SubCode"></label>
-                        <select asp-for="SubCode" class="form-control text-center">
-                            <option value="">-- Choose --</option>
-                        </select>
-                        <span asp-validation-for="SubCode" class="text-danger"></span>
-
                     </div>
                 </div>
             </div>
@@ -206,7 +206,7 @@
                 <button type="submit" class="btn btn-primary" style="width:150px">
                     @localizer["Add Permission"]
                 </button>
-                <a asp-controller="AccSafeCheck" asp-action="Index" asp-route-tranType="SFSIN" asp-route-flagType="oneANDtwo" class="btn btn-secondary" style="width:150px">
+                <a asp-controller="DisbursementPermissionCheck" asp-action="Index" asp-route-tranType="SFSIN" asp-route-flagType="oneANDtwo" class="btn btn-secondary" style="width:150px">
                     @localizer["Cancel"]
                 </a>
             </div>
@@ -225,6 +225,8 @@
         let mainElement = e.target;
         let subElement = document.getElementById("SubCode");
         subElement.innerHTML = `<option value="">-- Choose --</option>`;
+        let subElement2 = document.getElementById("SubCode2");
+        subElement2.innerHTML = `<option value="">-- Choose --</option>`;
 
         $.ajax({
             url: `/Treasury/AccSafeCash/GetSubCodesFromAcc/${mainElement.value}`,
@@ -232,6 +234,8 @@
                 console.log(result);
                 for (let item of result) {
                     subElement.innerHTML +=
+                        `<option value="${item.subCode}">${item.subName}</option>`;
+                    subElement2.innerHTML +=
                         `<option value="${item.subCode}">${item.subName}</option>`;
                 }
             }

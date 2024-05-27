@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProSoft.EF.Models.Treasury;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProSoft.EF.Models.Shared
+namespace ProSoft.EF.Models.Treasury
 {
     [Table("G_TABLE")]
 
@@ -16,7 +15,7 @@ namespace ProSoft.EF.Models.Shared
     {
         [Key]
         [Column("G_CODE")]
-        public int? GCode { get; set; }
+        public int GCode { get; set; }
 
         [Column("G_DESC")]
         [StringLength(100)]
