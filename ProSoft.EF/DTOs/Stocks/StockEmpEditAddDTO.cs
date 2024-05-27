@@ -12,6 +12,7 @@ namespace ProSoft.EF.DTOs.Stocks
 {
     public class StockEmpEditAddDTO
     {
+        public int StockEmpID { get; set; }
         public int UserId { get; set; }
 
         [DisplayName("Stock")]

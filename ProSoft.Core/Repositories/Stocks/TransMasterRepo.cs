@@ -88,6 +88,22 @@ namespace ProSoft.Core.Repositories.Stocks
             return permissionsDTO;
         }
 
+        public async Task<TransMasterViewDTO> GetForViewAsync(TransMaster permissionForm)
+        {
+            if(permissionForm != null)
+            {
+                var permFormDTO = _mapper.Map<TransMasterViewDTO>(permissionForm);
+                permFormDTO.PermissionName = (await _Context.GeneralCodes
+                    .FindAsync(permissionForm.TransType)).GDesc;
+                permFormDTO.StockName = (await _Context.Stocks
+                    .FirstOrDefaultAsync(obj => obj.Stkcod == permissionForm.StockCode)).Stknam;
+                permFormDTO.UserName = (await _Context.Users
+                    .FirstOrDefaultAsync(obj => obj.UserCode == permissionForm.UserCode)).UserName;
+                return permFormDTO;
+            }
+            return null;
+        }
+
         public async Task<List<TransMasterViewDTO>> GetPermissionsFormsAsync(int stockID, int transType)
         {
             List<TransMaster> permissionsForms = await _DbSet.Where(obj => obj.StockCode == stockID
@@ -95,15 +111,8 @@ namespace ProSoft.Core.Repositories.Stocks
             var permissionsFormsDTO = new List<TransMasterViewDTO>(); //_mapper.Map<List<TransMasterViewDTO>>(permissionsForms);
             foreach (var item in permissionsForms)
             {
-                var permForm = _mapper.Map<TransMasterViewDTO>(item);
-                //permForm.DocNo = item.DocNo;
-                permForm.PermissionName = (await _Context.GeneralCodes
-                    .FindAsync(item.TransType)).GDesc;
-                permForm.StockName = (await _Context.Stocks
-                    .FirstOrDefaultAsync(obj => obj.Stkcod == item.StockCode)).Stknam;
-                permForm.UserName = (await _Context.Users
-                    .FirstOrDefaultAsync(obj => obj.UserCode == item.UserCode)).UserName;
-                permissionsFormsDTO.Add(permForm);
+                TransMasterViewDTO permFormDTO = await GetForViewAsync(item);
+                permissionsFormsDTO.Add(permFormDTO);
             }
             return permissionsFormsDTO;
         }
@@ -152,7 +161,7 @@ namespace ProSoft.Core.Repositories.Stocks
         //    };
         //}
 
-        public async Task AddPermissionFormAsync(TransMasterEditAddDTO permissionFormDTO)
+        public async Task<TransMaster> AddPermissionFormAsync(TransMasterEditAddDTO permissionFormDTO)
         {
             permissionFormDTO.FYear = DateTime.Now.Year;
             permissionFormDTO.FMonth = DateTime.Now.Month;
@@ -175,6 +184,7 @@ namespace ProSoft.Core.Repositories.Stocks
             var permissionForm = _mapper.Map<TransMaster>(permissionFormDTO);
             await AddAsync(permissionForm);
             await SaveChangesAsync();
+            return permissionForm;
         }
 
         public async Task UpdateTransMasterAsync(int id, TransMasterEditAddDTO permissionFormDTO)

@@ -8,6 +8,7 @@ namespace ProSoft.EF.DTOs.Stocks
 {
     public class StockEmpViewDTO
     {
+        public int StockEmpID { get; set; }
         public string PermissionName { get; set; }
         public int TransType { get; set; }
         public string StockName { get; set; }

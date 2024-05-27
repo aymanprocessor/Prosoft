@@ -387,6 +387,20 @@
   "Add Disbursement Permission Check": "Add Disbursement Permission Check",
   "Check Type": "Check Type",
   "Edit Disbursement Permission Check": "Edit Disbursement Permission Check",
+  "Add Bank": "Add Bank",
+  "Edit Bank": "Edit Bank",
+  "Bank Name": "Bank Name",
+  "Currencies": "Currencies",
+  "Currency Symbol": "Currency Symbol",
+  "Add Currency": "Add Currency",
+  "Edit Currency": "Edit Currency",
+  "Currency Name": "Currency Name",
+  "Cost Center Name": "Cost Center Name",
+  "Cost Center Treasury": "Cost Centers Treasury",
+  "Add Cost Center Treasury": "Add Cost Center Treasury",
+  "Edit Cost Center Treasury": "Edit Cost Center Treasury",
+  "Add Cost Center": "Add Cost Center",
+  "Edit Cost Center": "Edit Cost Center",
 
 
 
@@ -563,5 +577,6 @@
   "Prices Include Tax": "Prices Include Tax",
   "Doc No": "Doc No",
   "Permission Name": "Permission Name",
-  "Modify": "Modify"
+  "Modify": "Modify",
+  "Confirm Delete": "Confirm Delete"
 }

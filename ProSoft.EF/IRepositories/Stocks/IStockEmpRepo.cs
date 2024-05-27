@@ -15,10 +15,11 @@ namespace ProSoft.EF.IRepositories.Stocks
         Task<List<StockEmpViewDTO>> GetStockTransForUserAsync(int userCode);
         Task<StockEmpEditAddDTO> GetEmptyStockTransAsync(int userCode);
         Task<List<AccSubCodeDTO>> GetSubCodesFromAccAsync(string mainAccCode);
-        Task<List<PermissionDefViewDTO>> GetPermissionsForStock(int userCode, int stockCode);
-        Task<StockEmpEditAddDTO> GetStockTransByIdAsync(int userCode, int permit_uniqueType);
-        Task AddStockTransAsync(StockEmp userStock);
-        Task UpdateStockTransAsync(int userCode, int transType, StockEmpEditAddDTO userStockDTO);
-        Task DeleteStockTransAsync(int userCode, int transType);
+        Task<List<PermissionDefViewDTO>> GetStockPermissionsForAddAsync(int userCode, int stockCode);
+        Task<List<PermissionDefViewDTO>> GetStockPermissionsForEditAsync(int userCode, int stockCode, int transType);
+        Task<StockEmpEditAddDTO> GetStockTransByIdAsync(int id);
+        Task AddStockTransAsync(StockEmpEditAddDTO stockTransDTO);
+        Task UpdateStockTransAsync(int id, StockEmpEditAddDTO userStockDTO);
+        Task DeleteStockTransAsync(int id);
     }
 }

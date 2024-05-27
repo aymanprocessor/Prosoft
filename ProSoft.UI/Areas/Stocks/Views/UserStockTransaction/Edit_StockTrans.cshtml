@@ -31,24 +31,25 @@
         <div class="border p-3 mt-4">
 
             @* Hidden Inputs *@
+            <input asp-for="StockEmpID" type="hidden" />
             <input asp-for="BranchId" type="hidden" />
             <input asp-for="UserId" type="hidden" />
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
                 <div class="mb-3">
+                    <label asp-for="Stkcod"></label>
+                    <select asp-for="Stkcod" asp-items="stocks" class="form-control text-center" onchange="getPermissionsForStock(event)">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="Stkcod" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
                     <label asp-for="TransType"></label>
                     <select asp-for="TransType" asp-items="permissions" class="form-control text-center">
                         <option value="">-- Choose --</option>
                     </select>
                     <span asp-validation-for="TransType" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="Stkcod"></label>
-                    <select asp-for="Stkcod" asp-items="stocks" class="form-control text-center">
-                        <option value="">-- Choose --</option>
-                    </select>
-                    <span asp-validation-for="Stkcod" class="text-danger"></span>
                 </div>
             </div>
 
@@ -173,6 +174,22 @@
                     for (let item of result) {
                         subElement.innerHTML +=
                             `<option value="${item.subCode}">${item.subName}</option>`;
+                    }
+                }
+            });
+        }
+
+        function getPermissionsForStock(e) {
+            let stock = e.target;
+            let permissions = document.getElementById("TransType");
+            permissions.innerHTML = `<option value="">-- Choose --</option>`;
+
+            $.ajax({
+                url: `/Stocks/UserStockTransaction/GetStockPermissionsForEdit/@Model.UserId?stockCode=${stock.value}&transType=@Model.TransType`,
+                success: function (result) {
+                    for (let item of result) {
+                        permissions.innerHTML +=
+                            `<option value="${item.uniqueType}">${item.gDesc}</option>`;
                     }
                 }
             });
