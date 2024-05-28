@@ -30,9 +30,6 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         public async Task<IActionResult> Index(int? id)
         {
             var userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
-            List<PermissionDefViewDTO> permissionsDTO = await _userTransRepo.GetPermissionsForUserAsync(userCode);
-            ViewBag.Permissions = permissionsDTO;
-
             List<StockViewDTO> stocksDTO = await _transMasterRepo.GetActiveStocksForUserAsync(userCode);
             ViewBag.Stocks = stocksDTO;
 

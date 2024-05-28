@@ -404,6 +404,13 @@
   "Edit Cost Center Treasury": "تعديل مركز تكلفة للخزينة",
   "Add Cost Center": "اضافة مركز تكلفة",
   "Edit Cost Center": "تعديل مركز تكلفة",
+  "Registration No": "رقم القيد",
+  "SerialId": "مسلسل",
+  "Rate Currency": "معدل العملة",
+  "Add Transfer Permission": "اضافة اذن تحويل",
+  "Add Receive Permission": "اضافة اذن استلام",
+  "From Treasury": "من الخزينة",
+  "To Treasury": "الي الخزينة",
 
 
 
@@ -580,5 +587,6 @@
   "Doc No": "كود الاذن",
   "Permission Name": "اسم الاذن",
   "Modify": "تعديل",
-  "Confirm Delete": "تأكيد الحذف"
+  "Confirm Delete": "تأكيد الحذف",
+  "Sales Tax": "ض.مبيعات"
 }

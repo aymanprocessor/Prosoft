@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -56,17 +58,32 @@ namespace ProSoft.Core.Repositories.Stocks
 
         public async Task<List<StockViewDTO>> GetActiveStocksForUserAsync(int userCode)
         {
-            List<StockEmp> stockTrans = await _Context.StockEmps
+            List<StockEmp> stockTransList = await _Context.StockEmps
                 .Where(obj => obj.UserId == userCode && obj.StockDef == 1).ToListAsync();
+            List<Stock> stocksList = await _Context.Stocks.ToListAsync();
 
             var stocksDTO = new List<StockViewDTO>();
-            foreach (var item in stockTrans)
+            var isExisted = false;
+            foreach (var stock in stocksList)
             {
-                var stockDTO = new StockViewDTO();
-                stockDTO.Stkcod = (int)item.Stkcod;
-                stockDTO.Stknam = (await _Context.Stocks
-                    .FindAsync(item.Stkcod)).Stknam;
-                stocksDTO.Add(stockDTO);
+                foreach (var stockTrans in stockTransList)
+                {
+                    if (stock.Stkcod == stockTrans.Stkcod)
+                    {
+                        isExisted = true;
+                        break;
+                    }
+                    else
+                        isExisted = false;
+                }
+                if (isExisted)
+                {
+                    var stockDTO = new StockViewDTO();
+                    stockDTO.Stkcod = stock.Stkcod;
+                    stockDTO.Stknam = (await _Context.Stocks
+                        .FindAsync(stock.Stkcod)).Stknam;
+                    stocksDTO.Add(stockDTO);
+                }
             }
             return stocksDTO;
         }

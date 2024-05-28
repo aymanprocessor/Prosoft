@@ -76,45 +76,13 @@ namespace ProSoft.Core.Repositories.Stocks
             List<JournalType> journalTypes = await _Context.JournalTypes.ToListAsync();
 
             stockTransDTO.UserId = userCode;
-            stockTransDTO.Permissions = await GetPermissionsFor(userCode);
             stockTransDTO.Stocks = _mapper.Map<List<StockViewDTO>>(stocks);
             stockTransDTO.MainAccCodes = _mapper.Map<List<AccMainCodeDTO>>(mainAccCodes);
             stockTransDTO.JournalTypes = _mapper.Map<List<JournalTypeDTO>>(journalTypes);
             return stockTransDTO;
         }
 
-        private async Task<List<PermissionDefViewDTO>> GetPermissionsFor(int userCode, string action = "Add", int transType = 0)
-        {
-            List<UserTranss> userTrans = await _Context.UserTransactions
-                .Where(obj => obj.UsrId == userCode && obj.TransFlag == 1).ToListAsync();
-
-            var permissionsDTO = new List<PermissionDefViewDTO>();
-            foreach (var item in userTrans)
-            {
-                GeneralCode permission = await _Context.GeneralCodes
-                    .FirstOrDefaultAsync(obj => obj.GId == item.GId);
-                StockEmp stockTrans = await _Context.StockEmps.FirstOrDefaultAsync(
-                    obj => obj.TransType == permission.UniqueType && obj.UserId == userCode);
-
-                if (permission != null && stockTrans == null)
-                {
-                    var permissionDTO = _mapper.Map<PermissionDefViewDTO>(permission);
-                    permissionsDTO.Add(permissionDTO);
-                }
-            }
-            StockEmp stockTrans_2 = await _Context.StockEmps.FirstOrDefaultAsync(
-                obj => obj.TransType == transType && obj.UserId == userCode);
-            if(action == "Edit" && stockTrans_2 != null)
-            {
-                GeneralCode permission_2 = await _Context.GeneralCodes.FirstOrDefaultAsync(
-                    obj => obj.UniqueType == transType);
-                var permissionDTO_2 = _mapper.Map<PermissionDefViewDTO>(permission_2);
-                permissionsDTO.Add(permissionDTO_2);
-            }
-            return permissionsDTO;
-        }
-
-        public async Task<List<PermissionDefViewDTO>> GetStockPermissionsForAddAsync(int userCode, int stockCode)
+        public async Task<List<PermissionDefViewDTO>> GetUserStockPermissionsAsync(int userCode, int stockCode)
         {
             List<StockEmp> stockTransList = await _Context.StockEmps.Where(obj =>
                 obj.Stkcod == stockCode && obj.UserId == userCode).ToListAsync();
@@ -122,38 +90,32 @@ namespace ProSoft.Core.Repositories.Stocks
                 .Where(obj => obj.UsrId == userCode && obj.TransFlag == 1).ToListAsync();
 
             var permissionsDTO = new List<PermissionDefViewDTO>();
-            if (stockTransList.Count() == 0)
+            foreach (var userTrans in userTransList)
             {
-                foreach (var item in userTransList)
+                GeneralCode permission = await _Context.GeneralCodes.FindAsync(userTrans.GId);
+                var isExisted = false;
+                foreach (var stockTrans in stockTransList)
                 {
-                    GeneralCode perm = await _Context.GeneralCodes.FindAsync(item.GId);
-                    var permDTO = _mapper.Map<PermissionDefViewDTO>(perm);
-                    permissionsDTO.Add(permDTO);
-                }
-            }
-            else
-            {
-                foreach (var item in stockTransList)
-                {
-                    GeneralCode permission = await _Context.GeneralCodes
-                        .FirstOrDefaultAsync(obj => obj.UniqueType == item.TransType);
-                    foreach (var item1 in userTransList)
+                    if (permission.UniqueType == stockTrans.TransType)
                     {
-                        if(item1.GId != permission.GId)
-                        {
-                            GeneralCode perm = await _Context.GeneralCodes.FindAsync(item1.GId);
-                            var permDTO = _mapper.Map<PermissionDefViewDTO>(perm);
-                            permissionsDTO.Add(permDTO);
-                        }
+                        isExisted = true;
+                        break;
                     }
+                    else
+                        isExisted = false;
+                }
+                if (!isExisted)
+                {
+                    var permDTO = _mapper.Map<PermissionDefViewDTO>(permission);
+                    permissionsDTO.Add(permDTO);
                 }
             }
             return permissionsDTO;
         }
 
-        public async Task<List<PermissionDefViewDTO>> GetStockPermissionsForEditAsync(int userCode, int stockCode, int transType)
+        public async Task<List<PermissionDefViewDTO>> GetUserStockPermissionsForEditAsync(int userCode, int stockCode, int transType)
         {
-            List<PermissionDefViewDTO> permissionsDTO = await GetStockPermissionsForAddAsync(userCode, stockCode);
+            List<PermissionDefViewDTO> permissionsDTO = await GetUserStockPermissionsAsync(userCode, stockCode);
             GeneralCode permission = await _Context.GeneralCodes
                 .FirstOrDefaultAsync(obj => obj.UniqueType == transType);
             var permDTO = _mapper.Map<PermissionDefViewDTO>(permission);
@@ -171,7 +133,7 @@ namespace ProSoft.Core.Repositories.Stocks
             List<AccMainCode> mainAccCodes = await _Context.AccMainCodes.ToListAsync();
             List<JournalType> journalTypes = await _Context.JournalTypes.ToListAsync();
 
-            stockTransDTO.Permissions = await GetStockPermissionsForEditAsync(stockTransDTO.UserId, stockTransDTO.Stkcod, stockTransDTO.TransType);
+            stockTransDTO.Permissions = await GetUserStockPermissionsForEditAsync(stockTransDTO.UserId, stockTransDTO.Stkcod, stockTransDTO.TransType);
             stockTransDTO.Stocks = _mapper.Map<List<StockViewDTO>>(stocks);
             stockTransDTO.MainAccCodes = _mapper.Map<List<AccMainCodeDTO>>(mainAccCodes);
             stockTransDTO.JournalTypes = _mapper.Map<List<JournalTypeDTO>>(journalTypes);

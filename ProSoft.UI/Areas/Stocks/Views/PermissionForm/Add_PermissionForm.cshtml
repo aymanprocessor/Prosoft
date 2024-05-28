@@ -30,90 +30,11 @@
             <input asp-for="TransType" type="hidden" />
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
+            <div class="parent-permission d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
                 <div class="mb-3">
                     <label asp-for="DocDate"></label>
                     <input asp-for="DocDate" class="form-control" />
                     <span asp-validation-for="DocDate" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="SupInvNo"></label>
-                    <input asp-for="SupInvNo" class="form-control" />
-                    <span asp-validation-for="SupInvNo" class="text-danger"></span>
-                </div>
-            </div>
-
-            <!------------------------------------------------------------------------------->
-
-            <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
-                <div class="mb-3">
-                    <label asp-for="SupInvDate"></label>
-                    <input asp-for="SupInvDate" class="form-control" />
-                    <span asp-validation-for="SupInvDate" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="LotNo"></label>
-                    <input asp-for="LotNo" class="form-control" />
-                    <span asp-validation-for="LotNo" class="text-danger"></span>
-                </div>
-            </div>
-
-            <!------------------------------------------------------------------------------->
-
-            <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
-                <div class="mb-3">
-                    <label asp-for="RefDocNo"></label>
-                    <input asp-for="RefDocNo" class="form-control" />
-                    <span asp-validation-for="RefDocNo" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="SupNo"></label>
-                    <select asp-for="SupNo" asp-items="suppliers" class="form-control text-center">
-                        <option value="">-- Choose --</option>
-                    </select>
-                    <span asp-validation-for="SupNo" class="text-danger"></span>
-                </div>
-            </div>
-
-            <!------------------------------------------------------------------------------->
-
-            <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
-                <div class="mb-3">
-                    <label asp-for="DiscPers"></label>
-                    <input asp-for="DiscPers" class="form-control" />
-                    <span asp-validation-for="DiscPers" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="Descount"></label>
-                    <input asp-for="Descount" class="form-control" />
-                    <span asp-validation-for="Descount" class="text-danger"></span>
-                </div>
-            </div>
-
-            <!------------------------------------------------------------------------------->
-
-            <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
-                <div class="mb-3">
-                    <label asp-for="CustDisc2"></label>
-                    <input asp-for="CustDisc2" class="form-control" />
-                    <span asp-validation-for="CustDisc2" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="CustDisc1"></label>
-                    <input asp-for="CustDisc1" class="form-control" />
-                    <span asp-validation-for="CustDisc1" class="text-danger"></span>
-                </div>
-            </div>
-
-            <!------------------------------------------------------------------------------->
-
-            <div class="parent d-flex align-items-center justify-content-center gap-md-3 my-mobile ">
-                <div>
-                    <div class="d-flex align-items-center gap-2 mb-3">
-                        <input name="PriceIncTax" id="PriceIncTax" type="checkbox" value="0" class="form-check-input" onchange="changeValue(event)" />
-                        <label asp-for="PriceIncTax"></label>
-                    </div>
-                    <span asp-validation-for="PriceIncTax" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label asp-for="Flag3"></label>
@@ -127,7 +48,19 @@
 
             <!------------------------------------------------------------------------------->
 
-            <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
+            <div class="parent-permission d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="SupInvNo" style="width: 346px;"></label>
+                    <input asp-for="SupInvNo" class="form-control" />
+                    <span asp-validation-for="SupInvNo" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="SupNo"></label>
+                    <select asp-for="SupNo" asp-items="suppliers" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="SupNo" class="text-danger"></span>
+                </div>
                 <div class="mb-3">
                     <label asp-for="Pay"></label>
                     <select asp-for="Pay" class="form-control text-center">
@@ -135,6 +68,26 @@
                         <option value="c">نقدي</option>
                     </select>
                     <span asp-validation-for="Pay" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent-permission d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="SupInvDate" style=" width: 268px;"></label>
+                    <input asp-for="SupInvDate" class="form-control" />
+                    <span asp-validation-for="SupInvDate" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DiscPers"></label>
+                    <input asp-for="DiscPers" class="form-control" />
+                    <span asp-validation-for="DiscPers" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Descount"></label>
+                    <input asp-for="Descount" class="form-control" />
+                    <span asp-validation-for="Descount" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label asp-for="TotTransVal"></label>
@@ -145,27 +98,86 @@
 
             <!------------------------------------------------------------------------------->
 
-            <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
+            <div class="parent-permission d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
                 <div class="mb-3">
-                    <label asp-for="TaxValue"></label>
-                    <input asp-for="TaxValue" class="form-control" />
-                    <span asp-validation-for="TaxValue" class="text-danger"></span>
+                    <label asp-for="LotNo" style="width: 343px;"></label>
+                    <input asp-for="LotNo" class="form-control" />
+                    <span asp-validation-for="LotNo" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="TaxPrc"></label>
+                    <label asp-for="CustDisc2"></label>
+                    <input asp-for="CustDisc2" class="form-control" />
+                    <span asp-validation-for="CustDisc2" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="CustDisc1"></label>
+                    <input asp-for="CustDisc1" class="form-control" />
+                    <span asp-validation-for="CustDisc1" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="TaxPrc">@localizer["Sales Tax"]</label>
                     <input asp-for="TaxPrc" class="form-control" />
                     <span asp-validation-for="TaxPrc" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="TaxValue">%</label>
+                    <input asp-for="TaxValue" class="form-control" />
+                    <span asp-validation-for="TaxValue" class="text-danger"></span>
                 </div>
             </div>
 
             <!------------------------------------------------------------------------------->
 
-            <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
+            <div class="parent-permission d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="RefDocNo" style="width: 343px;"></label>
+                    <input asp-for="RefDocNo" class="form-control" />
+                    <span asp-validation-for="RefDocNo" class="text-danger"></span>
+                </div>
+                <div>
+                    <div class="d-flex align-items-center gap-2 mb-3 w-100">
+                        <input name="PriceIncTax" id="PriceIncTax" type="checkbox" value="0" class="form-check-input" onchange="changeValue(event)" />
+                        <label asp-for="PriceIncTax"></label>
+                    </div>
+                    <span asp-validation-for="PriceIncTax" class="text-danger"></span>
+                </div>
                 <div class="mb-3" style="width: 62%;">
                     <label asp-for="DueValue"></label>
                     <input asp-for="DueValue" class="form-control" />
                     <span asp-validation-for="DueValue" class="text-danger"></span>
                 </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-center justify-content-center gap-md-3 my-mobile ">
+
+@*                 <div class="mb-3">
+                    <label asp-for="Flag3"></label>
+                    <select asp-for="Flag3" class="form-control text-center">
+                        <option value="1">@localizer["No"]</option>
+                        <option value="2">@localizer["Yes"]</option>
+                    </select>
+                    <span asp-validation-for="Flag3" class="text-danger"></span>
+                </div> *@
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
+
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
+
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
+
             </div>
 
             <!------------------------------------------------------------------------------->

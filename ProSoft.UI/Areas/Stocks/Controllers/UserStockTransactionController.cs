@@ -46,12 +46,13 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         }
 
         //Ajax In Add_StockTrans
-        public async Task<IActionResult> GetStockPermissionsForAdd(int id, int stockCode)
+        public async Task<IActionResult> GetUserStockPermissions(int id, int stockCode)
         {
             List<PermissionDefViewDTO> permissionsDTO = await _userStockRepo
-                .GetStockPermissionsForAddAsync(id, stockCode);
+                .GetUserStockPermissionsAsync(id, stockCode);
             return Json(permissionsDTO);
         }
+
         //Ajax In Add_StockTrans
         public async Task<IActionResult> GetSubCodesFromAcc(string id)
         {
@@ -75,7 +76,6 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         {
             if (ModelState.IsValid)
             {
-                //StockEmp stockTrans = _mapper.Map<StockEmp>(stockTransDTO);
                 stockTransDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
                 stockTransDTO.UserId = id;
 
@@ -86,10 +86,10 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         }
 
         //Ajax In Edit_StockTrans
-        public async Task<IActionResult> GetStockPermissionsForEdit(int id, int stockCode, int transType)
+        public async Task<IActionResult> GetUserStockPermissionsForEdit(int id, int stockCode, int transType)
         {
             List<PermissionDefViewDTO> permissionsDTO = await _userStockRepo
-                .GetStockPermissionsForEditAsync(id, stockCode, transType);
+                .GetUserStockPermissionsForEditAsync(id, stockCode, transType);
             return Json(permissionsDTO);
         }
 
@@ -99,7 +99,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             StockEmpEditAddDTO stockTransDTO = await _userStockRepo.GetStockTransByIdAsync(id);
             ViewBag.subAccCodesStk = await _userStockRepo.GetSubCodesFromAccAsync(stockTransDTO.MainCodeStk);
             ViewBag.subAccCodesAcc = await _userStockRepo.GetSubCodesFromAccAsync(stockTransDTO.MainCodeAcc);
-
+            ViewBag.userName = (await _userRepo.GetUserByIdAsync(stockTransDTO.UserId)).UserName;
             return View(stockTransDTO);
         }
 
