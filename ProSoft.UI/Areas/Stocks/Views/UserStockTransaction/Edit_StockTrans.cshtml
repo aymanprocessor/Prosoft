@@ -26,7 +26,7 @@
 @inject IViewLocalizer localizer
 
 <div class="container pt-2">
-    <h1 class="mt-4">@localizer["Edit StockTransaction"] @localizer["For User"] : @ViewBag.userName</h1>
+    <h1 class="mt-4">@localizer["Edit StockTransaction"] @localizer["for user"] : @ViewBag.userName</h1>
     <form method="post" asp-action="Edit_StockTrans">
         <div class="border p-3 mt-4">
 
@@ -184,15 +184,28 @@
             let permissions = document.getElementById("TransType");
             permissions.innerHTML = `<option value="">-- Choose --</option>`;
 
-            $.ajax({
-                url: `/Stocks/UserStockTransaction/GetStockPermissionsForEdit/@Model.UserId?stockCode=${stock.value}&transType=@Model.TransType`,
-                success: function (result) {
-                    for (let item of result) {
-                        permissions.innerHTML +=
-                            `<option value="${item.uniqueType}">${item.gDesc}</option>`;
+            if (@Model.Stkcod != stock.value) {
+                $.ajax({
+                    url: `/Stocks/UserStockTransaction/GetUserStockPermissions/@Model.UserId?stockCode=${stock.value}`,
+                    success: function (result) {
+                        for (let item of result) {
+                            permissions.innerHTML +=
+                                `<option value="${item.uniqueType}">${item.gDesc}</option>`;
+                        }
                     }
-                }
-            });
+                });
+            }
+            else {
+                $.ajax({
+                    url: `/Stocks/UserStockTransaction/GetUserStockPermissionsForEdit/@Model.UserId?stockCode=${stock.value}&transType=@Model.TransType`,
+                    success: function (result) {
+                        for (let item of result) {
+                            permissions.innerHTML +=
+                                `<option value="${item.uniqueType}">${item.gDesc}</option>`;
+                        }
+                    }
+                });
+            }
         }
     </script>
 }
