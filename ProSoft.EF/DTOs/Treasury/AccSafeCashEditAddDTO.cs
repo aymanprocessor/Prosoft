@@ -21,6 +21,10 @@ namespace ProSoft.EF.DTOs.Treasury
         [Required(ErrorMessage = "The field is required")]
         public int? Flag { get; set; }
 
+        [DisplayName("Registration No")]
+        public long? AccTransNo { get; set; }
+
+
         [DisplayName("Journal")]
         [Required(ErrorMessage = "The field is required")]
         public int? AccTransType { get; set; }
@@ -60,6 +64,8 @@ namespace ProSoft.EF.DTOs.Treasury
         [Required(ErrorMessage = "The field is required")]
         public string? Commentt { get; set; }
         public int? CurSer { get; set; }
+
+        [DisplayName("Rate Currency")]
         public decimal? Rate1 { get; set; }
 
         [DisplayName("Currency")]

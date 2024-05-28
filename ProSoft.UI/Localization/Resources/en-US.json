@@ -401,6 +401,15 @@
   "Edit Cost Center Treasury": "Edit Cost Center Treasury",
   "Add Cost Center": "Add Cost Center",
   "Edit Cost Center": "Edit Cost Center",
+  "Registration No": "Registration No",
+  "SerialId": "SerialId",
+  "Rate Currency": "Rate Currency",
+  "Financing Entity": "Financing Entity",
+  "Receiver Name": "Receiver Name",
+  "Add Transfer Permission": "Add Transfer Permission",
+  "Add Receive Permission": "Add Receive Permission",
+  "From Treasury": "From Treasury",
+  "To Treasury": "To Treasury",
 
 
 
@@ -578,5 +587,6 @@
   "Doc No": "Doc No",
   "Permission Name": "Permission Name",
   "Modify": "Modify",
-  "Confirm Delete": "Confirm Delete"
+  "Confirm Delete": "Confirm Delete",
+  "Sales Tax": "Sales Tax"
 }

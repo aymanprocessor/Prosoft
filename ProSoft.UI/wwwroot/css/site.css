@@ -228,6 +228,7 @@ html {
     }
 }
 /* For styling Medical Records */
+
 /* Style the PopUp */
 
 /*
@@ -308,5 +309,32 @@ html {
     opacity: 1;
     pointer-events: all;
 }
-
 /* Style the PopUp */
+
+/* For styling Permissions */
+
+.parent-permission {
+    gap: 1rem !important;
+}
+
+    .parent-permission > div {
+        width: 50%;
+        display: flex;
+        align-items: center;
+    }
+
+    .parent-permission label {
+        width: 50%;
+        align-self: start;
+    }
+
+@media (max-width: 767px) {
+    .parent-record > div {
+        width: 100% !important;
+    }
+
+    .parent-record {
+        gap: 0px !important;
+    }
+}
+/* For styling Permissions */

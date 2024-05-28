@@ -55,6 +55,13 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
             return View(accSafeCashs);
         }
 
+        ///// ajacx//////
+        public async Task<IActionResult> GetNumbersToWord(decimal id)
+        {
+            string numberWord = ConvertNumberToArabicWords(id);
+            return Json(numberWord);
+        }
+
         //// Method to convert numbers to Arabic words
         private string ConvertNumberToArabicWords(decimal number)
         {
@@ -66,11 +73,11 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
 
             if (fractionalPart > 0)
             {
-                return $"{wholePartInWords} و {fractionalPartInWords}";
+                return $"{wholePartInWords} و {fractionalPartInWords} جنيها فقط" ;
             }
             else
             {
-                return wholePartInWords;
+                return $"{wholePartInWords} جنيها فقط";
             }
         }
 

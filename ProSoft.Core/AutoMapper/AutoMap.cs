@@ -106,7 +106,6 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<UserTranss, UserTransEditAddDTO>().ReverseMap();
             CreateMap<StoreTran, StoreTransDTO>().ReverseMap();
             CreateMap<UserTranss, UserTransViewDTO>().ReverseMap();
-            CreateMap<UserTranss, UserTransEditAddDTO>().ReverseMap();
             CreateMap<SupCode, SupCodeEditAddDTO>().ReverseMap();
             CreateMap<SupCode, SupCodeViewDTO>().ReverseMap();
             CreateMap<CityCode, CityCodeDTO>().ReverseMap();

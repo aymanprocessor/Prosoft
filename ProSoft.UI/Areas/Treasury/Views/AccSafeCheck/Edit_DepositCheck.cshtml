@@ -7,7 +7,7 @@
     SelectList journals = new SelectList(Model.journalTypes, "JournalCode", "JournalName");
     SelectList costCenters = new SelectList(Model.costCenters, "CostCode", "CostDesc");
     SelectList safeNames = new SelectList(Model.treasuryNames, "SafeCode", "SafeNames");
-    SelectList accGlobalDef = new SelectList(Model.accGlobalDefs, "CoCode", "CodeDesc");
+    SelectList accGlobalDef = new SelectList(Model.accGlobalDefs, "CodeNo", "CodeDesc");
     SelectList mainAccCodes = new SelectList(Model.accMainCodes, "MainCode", "MainName");
     SelectList subAccCodes = new SelectList(Model.accSubCodes, "SubCode", "SubName");
 

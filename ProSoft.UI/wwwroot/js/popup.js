@@ -3,10 +3,6 @@
 const openModalButtons = document.querySelectorAll("[data-modal-target]");
 const closeModalButtons = document.querySelectorAll("[data-close-button]");
 const overlays = document.querySelectorAll("#overlay");
-<<<<<<< HEAD
-
-=======
->>>>>>> 6536c3883ea190db88b366637bdba99f24429f38
 //console.log(closeModalButtons);
 
 //openModalButtons.forEach((button) => {
