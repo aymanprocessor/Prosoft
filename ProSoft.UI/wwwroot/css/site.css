@@ -325,7 +325,6 @@ html {
 
     .parent-permission label {
         width: 50%;
-        align-self: start;
     }
 
 @media (max-width: 767px) {
@@ -338,3 +337,18 @@ html {
     }
 }
 /* For styling Permissions */
+
+/* For styling Permissions Forms */
+.parent-permForm {
+    gap: 1rem !important;
+}
+
+.parent-permForm > div {
+    display: flex;
+    align-items: center;
+}
+
+.parent-permForm label {
+    color: blue;
+}
+/* For styling Permissions Forms */

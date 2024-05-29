@@ -44,7 +44,7 @@ namespace ProSoft.EF.DTOs.Stocks
         [DisplayName("Discount/Addition")]
         public decimal? CustDisc2 { get; set; }
 
-        [DisplayName("Value")]
+        [DisplayName("The Value")]
         public decimal? CustDisc1 { get; set; }
 
         [DisplayName("Prices Include Tax")]

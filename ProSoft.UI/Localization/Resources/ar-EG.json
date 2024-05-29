@@ -411,6 +411,19 @@
   "Add Receive Permission": "اضافة اذن استلام",
   "From Treasury": "من الخزينة",
   "To Treasury": "الي الخزينة",
+  "Financing Entity": "جهة التمويل",
+  "Depositor": "المودع",
+  "Net Check": "صافي الشيك",
+  "Follow up cash and checks": "متابعة النقدية والشيكات",
+  "Branches": "الفروع",
+  "Cash in Treasury": "نقدية بالخزينة",
+  "Incoming Checks": "شيكات وارده",
+  "Follow up Checks": "متابعة الشيكات",
+  "Filter By": "فيلتر بواسطة",
+  "Period": "الفترة",
+  "Receipt": "الايصال",
+  "From Receipt No": "من الايصال رقم",
+  "To Receipt No": "الي الايصال رقم",
 
 
 
@@ -588,5 +601,7 @@
   "Permission Name": "اسم الاذن",
   "Modify": "تعديل",
   "Confirm Delete": "تأكيد الحذف",
-  "Sales Tax": "ض.مبيعات"
+  "Sales Tax": "ض.مبيعات",
+  "percent": "النسبة",
+  "The Value": "القيمة"
 }
