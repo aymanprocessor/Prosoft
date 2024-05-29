@@ -63,6 +63,8 @@ namespace ProSoft.EF.DTOs.Treasury
         [Required(ErrorMessage = "The field is required")]
         public string? Commentt { get; set; }
         public int? CurSer { get; set; }
+
+        [DisplayName("Rate Currency")]
         public decimal? Rate1 { get; set; }
 
         [DisplayName("Currency")]
@@ -76,6 +78,8 @@ namespace ProSoft.EF.DTOs.Treasury
         [DisplayName("Debit Account (Sub)")]
         public string? SubCode { get; set; }
         public string? TranType { get; set; }
+        public int? AccTransNo { get; set; }
+
         public int? MCodeDtl { get; set; }
 
         [DisplayName("Drawee Bank")]
@@ -95,7 +99,6 @@ namespace ProSoft.EF.DTOs.Treasury
         public string? FlagApr { get; set; }
 
         [DisplayName("Drawee Bank")]
-        [Required(ErrorMessage = "The field is required")]
         public string? SubCodeBank { get; set; }
 
         [DisplayName("Check Type")]
@@ -104,6 +107,9 @@ namespace ProSoft.EF.DTOs.Treasury
         [DisplayName("Credit Account")]
         public string? SubCode2 { get; set; }
 
+        //for text wirte front on credit account
+        public string? mainName13 { get; set; }
+        public string? mainName17 { get; set; }
 
 
 

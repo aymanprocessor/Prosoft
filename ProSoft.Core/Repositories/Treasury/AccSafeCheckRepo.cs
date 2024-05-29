@@ -100,6 +100,8 @@ namespace ProSoft.Core.Repositories.Treasury
             var mainCode = (await _Context.EisPostings.FindAsync(13)).MainCode;
             List<AccSubCode> banks = await _Context.AccSubCodes.Where(obj=>obj.MainCode ==mainCode).ToListAsync();
 
+            var mainName13 = (await _Context.EisPostings.FindAsync(13)).ModuleN;
+            var mainName17 = (await _Context.EisPostings.FindAsync(17)).ModuleN;
 
             accSafeCeckDTO.journalTypes = _mapper.Map<List<JournalTypeDTO>>(journalTypes);
             accSafeCeckDTO.costCenters = _mapper.Map<List<CostCenterViewDTO>>(costCenters);
@@ -108,6 +110,8 @@ namespace ProSoft.Core.Repositories.Treasury
             accSafeCeckDTO.accMainCodes = _mapper.Map<List<AccMainCodeDTO>>(accMainCodes);
             accSafeCeckDTO.accSubCodes = _mapper.Map<List<AccSubCodeDTO>>(accSubCodes);
             accSafeCeckDTO.banks = _mapper.Map<List<AccSubCodeDTO>>(banks);
+            accSafeCeckDTO.mainName13 = mainName13;
+            accSafeCeckDTO.mainName17 = mainName17;
 
             return accSafeCeckDTO;
         }
@@ -150,8 +154,12 @@ namespace ProSoft.Core.Repositories.Treasury
             List<AccGlobalDef> accGlobalDefs = await _Context.accGlobalDefs.ToListAsync();
             List<AccMainCode> accMainCodes = await _Context.AccMainCodes.ToListAsync();
             List<AccSubCode> accSubCodes = await _Context.AccSubCodes.Where(obj => obj.MainCode == accSafeCheck.MainCode).ToListAsync();
+           
             var mainCode = (await _Context.EisPostings.FindAsync(13)).MainCode;
             List<AccSubCode> banks = await _Context.AccSubCodes.Where(obj => obj.MainCode == mainCode).ToListAsync();
+          
+            var mainName13 = (await _Context.EisPostings.FindAsync(13)).ModuleN;
+            var mainName17 = (await _Context.EisPostings.FindAsync(17)).ModuleN;
 
             accSafeCheckDTO.journalTypes = _mapper.Map<List<JournalTypeDTO>>(journalTypes);
             accSafeCheckDTO.costCenters = _mapper.Map<List<CostCenterViewDTO>>(costCenters);
@@ -160,7 +168,8 @@ namespace ProSoft.Core.Repositories.Treasury
             accSafeCheckDTO.accMainCodes = _mapper.Map<List<AccMainCodeDTO>>(accMainCodes);
             accSafeCheckDTO.accSubCodes = _mapper.Map<List<AccSubCodeDTO>>(accSubCodes);
             accSafeCheckDTO.banks = _mapper.Map<List<AccSubCodeDTO>>(banks);
-
+            accSafeCheckDTO.mainName13 = mainName13;
+            accSafeCheckDTO.mainName17 = mainName17;
 
             return accSafeCheckDTO;
         }

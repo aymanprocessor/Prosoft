@@ -58,11 +58,11 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
 
             if (fractionalPart > 0)
             {
-                return $"{wholePartInWords} و {fractionalPartInWords}";
+                return $"{wholePartInWords} و {fractionalPartInWords} جنيها فقط";
             }
             else
             {
-                return wholePartInWords;
+                return $"{wholePartInWords} جنيها فقط";
             }
         }
         //Ajax In Add_StockTrans

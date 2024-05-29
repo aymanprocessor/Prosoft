@@ -325,41 +325,44 @@
                                                 </a>
                                             </li>
                                         </ul>
-                                    </li>
-                                </ul>
 
-                                <ul class="submenu collapse p-0 show">
-                                    <li class="nav-item has-submenu">
-                                        <a class="nav-link hover-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
-                                            <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["The Checks"]
-                                        </a>
+                                        <ul class="submenu collapse p-0 show">
+                                            <li class="nav-item has-submenu">
+                                                <a class="nav-link hover-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                                    <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["The Checks"]
+                                                </a>
 
-                                        <ul class="submenu collapse p-0 ">
-                                            <li class="nav-item has-submenu">
-                                                <a asp-area="Treasury" asp-controller="AccSafeCheck" asp-action="Index" asp-route-tranType="SFSIN" asp-route-flagType="oneANDtwo" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
-                                                    @localizer["Deposit check in Treasury"]
-                                                </a>
-                                            </li>
-                                            <li class="nav-item has-submenu">
-                                                <a asp-area="Treasury" asp-controller="DisbursementPermissionCheck" asp-action="Index" asp-route-tranType="SFOUT" asp-route-flagType="oneANDtwo" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
-                                                    @localizer["Disbursement permission Checks"]
-                                                </a>
+                                                <ul class="submenu collapse p-0 ">
+                                                    <li class="nav-item has-submenu">
+                                                        <a asp-area="Treasury" asp-controller="AccSafeCheck" asp-action="Index" asp-route-tranType="SFSIN" asp-route-flagType="oneANDtwo" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                            @localizer["Deposit check in Treasury"]
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item has-submenu">
+                                                        <a asp-area="Treasury" asp-controller="DisbursementPermissionCheck" asp-action="Index" asp-route-tranType="SFOUT" asp-route-flagType="oneANDtwo" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                            @localizer["Disbursement permission Checks"]
+                                                        </a>
+                                                    </li>
+                                                </ul>
                                             </li>
                                         </ul>
+
                                     </li>
                                 </ul>
+
                             </li>
                             <li class="nav-item has-submenu">
                                 <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
                                     <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Reports"]
                                 </a>
-                              @*   <ul class="submenu collapse p-0 ">
+                                <ul class="submenu collapse p-0 ">
                                     <li class="nav-item has-submenu">
-                                        <a class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
-                                            @localizer["Analysis Results"]
+                                        <a asp-area="Treasury" asp-controller="ReportCashAndChecks" asp-action="Index" asp-route-tranType="SFOUT" asp-route-flagType="oneANDtwo" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                        @localizer["Follow up cash and checks"]
                                         </a>
-                                    </li>
-                                </ul> *@
+                                     </li>
+                                </ul>
+
                             </li>
                         </ul>
                     </li>

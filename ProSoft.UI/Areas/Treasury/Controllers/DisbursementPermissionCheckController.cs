@@ -59,11 +59,11 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
 
             if (fractionalPart > 0)
             {
-                return $"{wholePartInWords} و {fractionalPartInWords}";
+                return $"{wholePartInWords} و {fractionalPartInWords} جنيها فقط";
             }
             else
             {
-                return wholePartInWords;
+                return $"{wholePartInWords} جنيها فقط";
             }
         }
         //Ajax In Add_StockTrans
@@ -82,6 +82,8 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
             AccSafeCheckEditAddDTO accSafeCeckDTO = await _accSafeCheckRepo.GetEmptyAccSafeCeckAsync();
             ViewBag.tranType = tranType;
             ViewBag.fYear = fYear;
+            ViewBag.mainName13 = accSafeCeckDTO.mainName13;
+            ViewBag.mainName17 = accSafeCeckDTO.mainName17;
 
             return View(accSafeCeckDTO);
         }
@@ -103,6 +105,8 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
         public async Task<IActionResult> Edit_DisbursementCheck(int id)
         {
             AccSafeCheckEditAddDTO accSafeCheckDTO = await _accSafeCheckRepo.GetAccSafeCheckByIdAsync(id);
+            ViewBag.mainName13 = accSafeCheckDTO.mainName13;
+            ViewBag.mainName17 = accSafeCheckDTO.mainName17;
             return View(accSafeCheckDTO);
         }
 

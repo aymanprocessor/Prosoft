@@ -410,6 +410,18 @@
   "Add Receive Permission": "Add Receive Permission",
   "From Treasury": "From Treasury",
   "To Treasury": "To Treasury",
+  "Depositor": "Depositor",
+  "Net Check": "Net Check",
+  "Follow up cash and checks": "Follow up cash and checks",
+  "Branches": "Branches",
+  "Cash in Treasury": "Cash in Treasury",
+  "Incoming Checks": "Incoming Checks",
+  "Follow up Checks": "Follow up Checks",
+  "Filter By": "Filter By",
+  "Period": "Period",
+  "Receipt": "Receipt",
+  "From Receipt No": "From Receipt No",
+  "To Receipt No": "To Receipt No",
 
 
 
@@ -588,5 +600,7 @@
   "Permission Name": "Permission Name",
   "Modify": "Modify",
   "Confirm Delete": "Confirm Delete",
-  "Sales Tax": "Sales Tax"
+  "Sales Tax": "Sales Tax",
+  "percent": "percent",
+  "The Value": "The Value"
 }

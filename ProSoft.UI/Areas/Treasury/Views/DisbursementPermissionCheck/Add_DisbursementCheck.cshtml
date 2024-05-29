@@ -41,155 +41,52 @@
             <input asp-for="TranType" hidden value="@ViewBag.tranType" />
             <input asp-for="FYear" hidden value="@ViewBag.fYear" />
 
+            <!------------------------------------------------------------------------------->
+
             <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
-                @*  <div class="mb-3">
-                <label asp-for="SafeCashId"></label>
-                <input asp-for="SafeCashId" class="form-control" disabled value="@ViewBag.AccSafeCashID" />
-                <span asp-validation-for="SafeCashId" class="text-danger"></span>
-                </div> *@
-                <div class="mb-3 ">
+                <div class="mb-3" style="width: 100% !important;">
+                    @* <label asp-for="Flag"></label> *@
+                    <select asp-for="Flag" class="form-control text-center">
+                        <option value="1">@localizer["Posting of Invoices"]</option>
+                        <option value="2">@localizer["Posting of Treasury"]</option>
+                        <option value="3">@localizer["Posting of Pharmacy"]</option>
+                    </select>
+                    <span asp-validation-for="Flag" class="text-danger"></span>
+                </div>
+                <div class="d-flex justify-content-center gap-3" style="width: 100% !important;">
+                    <div class="mb-3 " style="width: 60% !important;">
+                        @* <label asp-for="AccTransType"></label> *@
+                        <select asp-for="AccTransType" asp-items="journals" class="form-control text-center">
+                            <option value="">-- Choose --</option>
+                        </select>
+                        <span asp-validation-for="AccTransType" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3 " style="width: 40% !important;">
+                        @* <label asp-for="AccTransNo"></label> *@
+                        <input asp-for="AccTransNo" class="form-control" />
+                        <span asp-validation-for="AccTransNo" class="text-danger"></span>
+                    </div>
+
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent-permission d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3" style="width: 100% !important;">
                     <label asp-for="DocNo"></label>
-                    <input asp-for="DocNo" class="form-control" disabled value="@ViewBag.SerialID" />
+                    <input asp-for="DocNo" class="form-control text-center" disabled value="@ViewBag.SerialID" />
                     <span asp-validation-for="DocNo" class="text-danger"></span>
                 </div>
-                <div class="mb-3 ">
-                    <label asp-for="DocDate"></label>
-                    <input asp-for="DocDate" class="form-control" />
-                    <span asp-validation-for="DocDate" class="text-danger"></span>
-                </div>
-                <div class="mb-3 ">
-                    <label asp-for="AccTransType"></label>
-                    <select asp-for="AccTransType" asp-items="journals" class="form-control text-center">
-                        <option value="">-- Choose --</option>
-                    </select>
-                    <span asp-validation-for="AccTransType" class="text-danger"></span>
-                </div>
-            </div>
-
-            <!------------------------------------------------------------------------------->
-
-            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
-                @*                 <div class="mb-3">
-                <label asp-for="Flag"></label>
-                <select asp-for="Flag" class="form-control text-center">
-                <option value="1">@localizer["Posting of Invoices"]</option>
-                <option value="2">@localizer["Posting of Treasury"]</option>
-                <option value="3">@localizer["Posting of Pharmacy"]</option>
-                </select>
-                <span asp-validation-for="Flag" class="text-danger"></span>
-                </div> *@
-                <div class="mb-3 ">
-                    <label asp-for="ChekNo"></label>
-                    <input asp-for="ChekNo" type="number" class="form-control" />
-                    <span asp-validation-for="ChekNo" class="text-danger"></span>
-                </div>
-                <div class="mb-3 ">
-                    <label asp-for="SattlDate"></label>
-                    <input asp-for="SattlDate" class="form-control" />
-                    <span asp-validation-for="SattlDate" class="text-danger"></span>
-                </div>
-                <div class="mb-3 ">
-                    <label asp-for="CurCode"></label>
-                    <select asp-for="CurCode" asp-items="accGlobalDef" class="form-control text-center">
-                        <option value="">-- Choose --</option>
-                    </select>
-                    <span asp-validation-for="CurCode" class="text-danger"></span>
-                </div>
-            </div>
-
-            <!------------------------------------------------------------------------------->
-
-            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
-                <div class="mb-3">
-                    <label asp-for="FlagPay"></label>
-                    <select asp-for="FlagPay" class="form-control text-center">
-                        <option value="1">@localizer["Check"]</option>
-                        <option value="2">@localizer["Transfer"]</option>
-                        <option value="3">@localizer["Visa"]</option>
-                    </select>
-                    <span asp-validation-for="FlagPay" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="SafeCode"></label>
-                    <select asp-for="SafeCode" asp-items="safeNames" class="form-control text-center">
-                        <option value="">-- Choose --</option>
-                    </select>
-                    <span asp-validation-for="SafeCode" class="text-danger"></span>
-                </div>
-                <div class="mb-3 ">
-                    <label asp-for="CostCenterCode"></label>
-                    <select asp-for="CostCenterCode" asp-items="costCenters" class="form-control text-center">
-                        <option value="">-- Choose --</option>
-                    </select>
-                    <span asp-validation-for="CostCenterCode" class="text-danger"></span>
-                </div>
-            </div>
-
-            <!------------------------------------------------------------------------------->
-
-            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
-                <div class="mb-3 ">
-                    <label asp-for="SubCodeBank"></label>
-                    <select asp-for="SubCodeBank" asp-items="banks" onchange="banks(event)" class="form-control text-center">
-                        <option value="">-- Choose --</option>
-                    </select>
-                    <span asp-validation-for="SubCodeBank" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="PersonName">@localizer["Drawee Bank"]</label>
-                    <input asp-for="PersonName" class="form-control" />
-                    <span asp-validation-for="PersonName" class="text-danger"></span>
-                </div>
-                <div class="mb-3 d-flex gap-2">
-                    <div>
-                        <label asp-for="ValuePay"></label>
-                        <input asp-for="ValuePay" type="number" class="form-control" />
-                        <span asp-validation-for="ValuePay" class="text-danger"></span>
-                    </div>
-                    <div>
-                        <label asp-for="CheckType"></label>
-                        <select asp-for="CheckType" class="form-control text-center">
-                            <option value="">-- Choose --</option>
-                            <option value="1">@localizer["Yes"]</option>
-                            <option value="0">@localizer["No"]</option>
-                        </select>
-                        <span asp-validation-for="ValuePay" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="mb-3 ">
-                    <label asp-for="Commentt"></label>
-                    <input asp-for="Commentt" class="form-control" />
-                    <span asp-validation-for="Commentt" class="text-danger"></span>
-                </div>
-            </div>
-
-            <!------------------------------------------------------------------------------->
-
-            <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
-                <div class="mb-3">
-                    <label asp-for="MainCode"></label>
-                    <select asp-for="MainCode" asp-items="mainAccCodes" class="form-control text-center" onchange="getSubCodes(event)">
-                        <option value="">-- Choose --</option>
-                    </select>
-                    <span asp-validation-for="MainCode" class="text-danger"></span>
-                </div>
-                <div class="mb-3">
-                    <label asp-for="SubCode"></label>
-                    <select asp-for="SubCode" class="form-control text-center">
-                        <option value="">-- Choose --</option>
-                    </select>
-                    <span asp-validation-for="SubCode" class="text-danger"></span>
-                </div>
-                <div class="mb-3 d-flex gap-2">
-                    <div class="w-50">
-                        <label asp-for="SubCode2"></label>
-                        <select asp-for="SubCode2" class="form-control text-center">
+                <div class="parent-permission d-flex justify-content-center gap-3" style="width: 100% !important;">
+                    <div class="mb-3 " style="width: 50% !important;">
+                        <label asp-for="CostCenterCode" class="ms-2"></label>
+                        <select asp-for="CostCenterCode" asp-items="costCenters" class="form-control text-center">
                             <option value="">-- Choose --</option>
                         </select>
-                        <span asp-validation-for="SubCode2" class="text-danger"></span>
-
+                        <span asp-validation-for="CostCenterCode" class="text-danger"></span>
                     </div>
-                    <div class="w-50">
+                    <div class="mb-3 " style="width: 50% !important;">
                         <label asp-for="AprovedFlag"></label>
                         <select asp-for="AprovedFlag" class="form-control text-center">
                             <option value="NO">@localizer["No"]</option>
@@ -197,16 +94,183 @@
                         </select>
                         <span asp-validation-for="AprovedFlag" class="text-danger"></span>
                     </div>
+
                 </div>
             </div>
 
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent-permission d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="parent-permission d-flex justify-content-center gap-3" style="width: 100% !important;">
+                    <div class="mb-3 " style="width: 100% !important;">
+                        <label asp-for="SafeCode"></label>
+                        <select asp-for="SafeCode" asp-items="safeNames" class="form-control text-center">
+                            <option value="">-- Choose --</option>
+                        </select>
+                        <span asp-validation-for="SafeCode" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="mb-3" style="width: 100% !important;">
+                    <label asp-for="DocDate"></label>
+                    <input asp-for="DocDate" class="form-control" />
+                    <span asp-validation-for="DocDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent-permission d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="parent-permission d-flex justify-content-center gap-3" style="width: 100% !important;">
+                    <label asp-for="CurCode" style="width: 48% !important;"></label>
+                    <div class="mb-3 " style="width: 40% !important;">
+                        <input asp-for="CurSer" class="form-control text-center" disabled value="1" />
+                    </div>
+                    <div class="mb-3 " style="width: 60% !important;">
+                        <select asp-for="CurCode" asp-items="accGlobalDef" class="form-control text-center">
+                            <option value="">-- Choose --</option>
+                        </select>
+                        <span asp-validation-for="CurCode" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="mb-3" style="width: 100% !important;">
+                    <label asp-for="Rate1"></label>
+                    <input asp-for="Rate1" class="form-control text-center" disabled value="1" />
+                    <span asp-validation-for="Rate1" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------->
+
+
+            <div class="parent-permission d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="parent-permission d-flex justify-content-center gap-3" style="width: 100% !important;">
+                    <div class="mb-3 " style="width: 100% !important;">
+                        <label asp-for="ChekNo"></label>
+                        <input asp-for="ChekNo" type="number" class="form-control" />
+                        <span asp-validation-for="ChekNo" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="mb-3" style="width: 100% !important;">
+                    <label asp-for="SattlDate"></label>
+                    <input asp-for="SattlDate" class="form-control" />
+                    <span asp-validation-for="SattlDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent-permission d-flex align-items-md-end justify-content-start  my-mobile gap-3 ">
+                <div class="mb-3" style="width: 100% !important;">
+                    <label asp-for="PersonName" style="width: 20% !important;"></label>
+                    <input asp-for="PersonName" class="form-control" />
+                    <span asp-validation-for="PersonName" class="text-danger"></span>
+
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent-permission d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3" style="width: 100% !important;">
+                    <label asp-for="ValuePay">@localizer["Net Check"]</label>
+                    <input asp-for="ValuePay" type="number" class="form-control" onchange="getNumbersWord(event)" />
+                    <span asp-validation-for="ValuePay" class="text-danger"></span>
+                </div>
+                <div class="mb-3" style="width: 100% !important;">
+                    <input id="numberToWord" disabled class="form-control" />
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent-permission d-flex align-items-md-end justify-content-start  my-mobile gap-3 ">
+                <div class="mb-3" style="width: 50% !important;">
+                    <label asp-for="FlagPay" style="width: 50% !important;"></label>
+                    <select asp-for="FlagPay" class="form-control text-center">
+                        <option value="1">@localizer["Check"]</option>
+                        <option value="2">@localizer["Transfer"]</option>
+                        <option value="3">@localizer["Visa"]</option>
+                    </select>
+                    <span asp-validation-for="FlagPay" class="text-danger"></span>
+
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent-permission d-flex align-items-md-end justify-content-start  my-mobile gap-3 ">
+                <div class="mb-3" style="width: 50% !important;">
+                    <label asp-for="CheckType" style="width: 50% !important;"></label>
+                    <select asp-for="CheckType" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                        <option value="1">@localizer["Yes"]</option>
+                        <option value="0">@localizer["No"]</option>
+                    </select>
+                    <span asp-validation-for="ValuePay" class="text-danger"></span>
+                    <span asp-validation-for="FlagPay" class="text-danger"></span>
+
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent-permission d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="parent-permission d-flex justify-content-center gap-3" style="width: 100% !important;">
+                    <label style="width: 48% !important;">@localizer["Debit Account"]</label>
+                    <div class="mb-3 " style="width: 50% !important;">
+                        @* <label asp-for="MainCode"></label> *@
+                        <select asp-for="MainCode" asp-items="mainAccCodes" class="form-control text-center" onchange="getSubCodes(event)">
+                            <option value="">-- Choose --</option>
+                        </select>
+                        <span asp-validation-for="MainCode" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3 " style="width: 50% !important;">
+                        @* <label asp-for="SubCode"></label> *@
+                        <select asp-for="SubCode" class="form-control text-center" onchange="getNameSub(event)">
+                            <option value="">-- Choose --</option>
+                        </select>
+                        <span asp-validation-for="SubCode" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="mb-3" style="width: 100% !important;">
+                    <input id="mainAndSub" class="form-control text-center" disabled />
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent-permission d-flex align-items-md-end justify-content-start  my-mobile gap-3 ">
+                <div class="mb-3" style="width: 100% !important;">
+                    <label asp-for="Commentt" style="width: 20% !important;"></label>
+                    <input asp-for="Commentt" class="form-control" />
+                    <span asp-validation-for="Commentt" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent-permission d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3" style="width: 100% !important;">
+                    <label asp-for="SubCode2"></label>
+                    <select asp-for="SubCode2" class="form-control text-center" onchange="getNameSub2(event)">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="SubCode2" class="text-danger"></span>
+                </div>
+                <div class="mb-3" style="width: 100% !important;">
+                    <input id="mainAndSub2" disabled class="form-control" />
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+            <input asp-for="mainName17" hidden value="@ViewBag.mainName17" />
+            <input asp-for="mainName13" hidden value="@ViewBag.mainName13" />
             <!------------------------------------------------------------------------------->
 
             <div class="parent d-flex justify-content-md-center gap-2 ">
                 <button type="submit" class="btn btn-primary" style="width:150px">
                     @localizer["Add Permission"]
                 </button>
-                <a asp-controller="DisbursementPermissionCheck" asp-action="Index" asp-route-tranType="SFSIN" asp-route-flagType="oneANDtwo" class="btn btn-secondary" style="width:150px">
+                <a asp-controller="DisbursementPermissionCheck" asp-action="Index" asp-route-tranType="SFOUT" asp-route-flagType="oneANDtwo" class="btn btn-secondary" style="width:150px">
                     @localizer["Cancel"]
                 </a>
             </div>
@@ -214,6 +278,19 @@
     </form>
 </div>
 <script>
+    function getNumbersWord(e) {
+        let number = e.target.value;
+        // console.log(number);
+
+        $.ajax({
+            url: `/Treasury/AccSafeCash/GetNumbersToWord/${number}`,
+            success: function (result) {
+                // console.log(result);
+                let numberToWord = document.getElementById("numberToWord");
+                numberToWord.value = result
+            }
+        });
+    }
     function banks(e)
     {
         const selectedOptionText = e.target.options[e.target.selectedIndex].text;
@@ -228,10 +305,20 @@
         let subElement2 = document.getElementById("SubCode2");
         subElement2.innerHTML = `<option value="">-- Choose --</option>`;
 
+
+        let mainName = e.target.options[e.target.selectedIndex].text;
+        // console.log(mainName)
+        let mainAndSub = document.getElementById("mainAndSub");
+        if (e.target.value) {
+            mainAndSub.value = mainName;
+        }
+        else
+            mainAndSub.value = "";
+
         $.ajax({
             url: `/Treasury/AccSafeCash/GetSubCodesFromAcc/${mainElement.value}`,
             success: function (result) {
-                console.log(result);
+              //  console.log(result);
                 for (let item of result) {
                     subElement.innerHTML +=
                         `<option value="${item.subCode}">${item.subName}</option>`;
@@ -240,5 +327,35 @@
                 }
             }
         });
+    }
+    function getNameSub(e) {
+
+        let subName = e.target.options[e.target.selectedIndex].text;
+        let mainAndSub = document.getElementById("mainAndSub");
+        let oldValue = mainAndSub.value;
+        if (e.target.value) {
+            mainAndSub.value = oldValue + ' - ' + subName;
+        }
+        else
+            mainAndSub.value = oldValue;
+
+    } 
+    function getNameSub2(e) {
+
+        let subName = e.target.options[e.target.selectedIndex].text;
+        let mainAndSub = document.getElementById("mainAndSub2");
+
+        let mainName17 = document.getElementById("mainName17").value;
+        let mainName13 = document.getElementById("mainName13").value;
+        let checkType = document.getElementById("CheckType").value;
+
+        if (checkType == 1) {
+            mainAndSub2.value = mainName17 + ' - ' + subName;
+        }
+        else if (checkType == 0)
+        {
+            mainAndSub2.value = mainName13 + ' - ' + subName;
+        }
+
     }
 </script>
