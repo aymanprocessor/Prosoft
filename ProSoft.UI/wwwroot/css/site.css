@@ -351,4 +351,24 @@ html {
 .parent-permForm label {
     color: blue;
 }
+
+@media (max-width: 767px) {
+    .parent-permForm > div,
+    .parent-permForm input:not([type="checkbox"]) {
+        width: 100% !important;
+    }
+
+    .parent-permForm label {
+        width: 140px !important;
+    }
+}
+
 /* For styling Permissions Forms */
+
+/* For styling Report treaturey Forms */
+.filter-box {
+    border: 1px solid grey;
+    border-radius: 5px;
+    padding: 10px 14px;
+}
+/* For styling Report treaturey  Forms */

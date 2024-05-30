@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "Add Permission Form";
     Layout = "_Layout";
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
 
     var suppliers = new SelectList(Model.Suppliers, "SupCode1", "SupName");
 }
@@ -26,6 +27,7 @@
         <div class="border p-3 mt-4">
 
             @* Hidden Inputs *@
+            <input asp-for="DocDate" type="hidden" />
             <input asp-for="StockCode" type="hidden" />
             <input asp-for="TransType" type="hidden" />
 
@@ -33,7 +35,14 @@
             <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
                 <div class="mb-3" style="width: 30%;">
                     <label asp-for="DocDate" style="width: 125px;"></label>
-                    <input asp-for="DocDate" class="form-control" style="width: 210px;" />
+                    @if (Model.EnableModify)
+                    {
+                    <input asp-for="DocDate" type="date" class="form-control" style="width: 210px;"/>
+                    }
+                    else
+                    {
+                    <input asp-for="DocDate" type="date" class="form-control" style="width: 210px;" disabled/>
+                    }
                     <span asp-validation-for="DocDate" class="text-danger"></span>
                 </div>
                 <div class="mb-3 justify-content-between" style="width: 35%;">
@@ -80,7 +89,7 @@
             <div class="parent-permForm d-flex align-items-md-start justify-content-between gap-md-1 my-mobile ">
                 <div class="mb-3" style="width: 30%;">
                     <label asp-for="SupInvDate" style="width: 125px;"></label>
-                    <input asp-for="SupInvDate" class="form-control" style="width: 210px;" />
+                    <input asp-for="SupInvDate" type="date" class="form-control" style="width: 210px;" />
                     <span asp-validation-for="SupInvDate" class="text-danger"></span>
                 </div>
                 <div class="d-flex justify-content-between" style="width: 35%;">
@@ -90,9 +99,9 @@
                         <span asp-validation-for="DiscPers" class="text-danger"></span>
                     </div>
                     <div class="mb-3 w-50 d-flex justify-content-between align-items-center">
-                        <label asp-for="Descount" style="width: 90px;"></label>
+                        <label asp-for="Descount" class="@(isRTL ? "me-2" : "ms-2")" style="width: 90px;"></label>
                         <input asp-for="Descount" type="number" class="form-control" style="width: 80px;" />
-                        <span asp-validation-for="Descount" class="text-danger"></span>
+                        <span asp-validation-for="Descount" class="text-danger d-none"></span>
                     </div>
                 </div>
                 <div class="mb-3" style="width: 35%;">
@@ -117,9 +126,9 @@
                         <span asp-validation-for="CustDisc2" class="text-danger"></span>
                     </div>
                     <div class="mb-3 w-50 d-flex justify-content-between align-items-center">
-                        <label asp-for="CustDisc1" style="width: 90px;"></label>
+                        <label asp-for="CustDisc1" class="@(isRTL ? "me-2" : "ms-2")" style="width: 90px;"></label>
                         <input asp-for="CustDisc1" type="number" class="form-control" style="width: 80px;" />
-                        <span asp-validation-for="CustDisc1" class="text-danger"></span>
+                        <span asp-validation-for="CustDisc1" class="text-danger d-none"></span>
                     </div>
                 </div>
                 <div class="d-flex justify-content-between" style="width: 35%;">
@@ -129,7 +138,7 @@
                         <span asp-validation-for="TaxPrc" class="text-danger d-none"></span>
                     </div>
                     <div class="mb-3 w-50 d-flex justify-content-between align-items-center">
-                        <label asp-for="TaxValue" style="width: 90px;">@localizer["percent"] %</label>
+                        <label asp-for="TaxValue" class="@(isRTL ? "me-4" : "ms-4")" style="width: 90px;">@localizer["percent"] %</label>
                         <input asp-for="TaxValue" type="number" class="form-control" style="width: 80px;" />
                         <span asp-validation-for="TaxValue" class="text-danger d-none"></span>
                     </div>
@@ -145,7 +154,7 @@
                     <span asp-validation-for="RefDocNo" class="text-danger"></span>
                 </div>
                 <div style="width: 35%;">
-                    <div class="d-flex align-items-center justify-content-end gap-2 mb-3 w-100">
+                    <div class="d-flex align-items-center justify-content-start justify-content-md-end gap-2 mb-3 w-100">
                         <input name="PriceIncTax" id="PriceIncTax" type="checkbox" value="0" class="form-check-input" onchange="changeValue(event)" />
                         <label asp-for="PriceIncTax" style="width: 180px;"></label>
                     </div>

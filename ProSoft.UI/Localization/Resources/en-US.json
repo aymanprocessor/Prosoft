@@ -422,6 +422,18 @@
   "Receipt": "Receipt",
   "From Receipt No": "From Receipt No",
   "To Receipt No": "To Receipt No",
+  "From Period": "From Period",
+  "To Period": "To Period",
+  "Treasury Transaction During Period from": "Treasury Transaction During Period from",
+  "Treasury Transaction For Receipt from": "Treasury Transaction For Receipt from",
+  "To": "To",
+  "Permission No": "Permission No",
+  "Name": "Name",
+  "Treasury Order": "Treasury Order",
+  "Expense": "Expense",
+  "Revenue": "Revenue",
+  "The Sum": "The Sum",
+  "Treasury Balance": "Treasury Balance",
 
 
 
@@ -602,5 +614,8 @@
   "Confirm Delete": "Confirm Delete",
   "Sales Tax": "Sales Tax",
   "percent": "percent",
-  "The Value": "The Value"
+  "The Value": "The Value",
+  "From Permission": "From Permission",
+  "Shipped to": "Shipped to",
+  "Permission Value": "Permission Value"
 }

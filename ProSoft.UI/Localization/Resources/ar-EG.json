@@ -419,11 +419,23 @@
   "Cash in Treasury": "نقدية بالخزينة",
   "Incoming Checks": "شيكات وارده",
   "Follow up Checks": "متابعة الشيكات",
-  "Filter By": "فيلتر بواسطة",
+  "Filter By": "ابحث بواسطة",
   "Period": "الفترة",
   "Receipt": "الايصال",
   "From Receipt No": "من الايصال رقم",
   "To Receipt No": "الي الايصال رقم",
+  "From Period": "من الفترة",
+  "To Period": "الي الفترة",
+  "Treasury Transaction During Period from": "حركة الخزينة خلال الفترة من",
+  "Treasury Transaction For Receipt from": "حركة الخزينة للايصالات من",
+  "To": "الي",
+  "Permission No": "رقم الاذن",
+  "Name": "الاسم",
+  "Treasury Order": "امر الخزينة",
+  "Expense": "مصروف",
+  "Revenue": "ايراد",
+  "The Sum": "اجمالي",
+  "Treasury Balance": "رصيد الخزينة",
 
 
 
@@ -603,5 +615,8 @@
   "Confirm Delete": "تأكيد الحذف",
   "Sales Tax": "ض.مبيعات",
   "percent": "النسبة",
-  "The Value": "القيمة"
+  "The Value": "القيمة",
+  "From Permission": "من الاذن",
+  "Shipped to": "صرف إلي",
+  "Permission Value": "فيمة الاذن"
 }

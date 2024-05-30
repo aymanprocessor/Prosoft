@@ -31,6 +31,7 @@ namespace ProSoft.EF.DbContext
         }
         // Shared //
         public DbSet<NationalityEi> NationalityEis { get; set; }
+        public DbSet<EisUserObject> EisUserObjects { get; set; }
         /////
         // Analysis //
         public DbSet<Itemanalysis> Itemanalyses { get; set; }

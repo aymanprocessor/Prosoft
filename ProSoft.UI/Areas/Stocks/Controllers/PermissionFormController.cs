@@ -32,6 +32,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             var userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
             List<StockViewDTO> stocksDTO = await _transMasterRepo.GetActiveStocksForUserAsync(userCode);
             ViewBag.Stocks = stocksDTO;
+            ViewBag.Date = DateTime.Now.ToString("dd-MM-yyyy");
 
             TransMaster permissionForm = await _transMasterRepo.GetByIdAsync(Convert.ToInt32(id));
             TransMasterViewDTO permissionsFormDTO = await _transMasterRepo.GetForViewAsync(permissionForm);
@@ -57,7 +58,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         public async Task<IActionResult> Add_PermissionForm(int id, int transType)
         {
             var userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
-            TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetNewTransMasterAsync(id, transType);
+            TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetNewTransMasterAsync(id, userCode, transType);
             permissionFormDTO.UserName = (await _userRepo.GetUserByIdAsync(userCode)).UserName;
 
             return View(permissionFormDTO);
