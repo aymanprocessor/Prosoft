@@ -11,8 +11,11 @@
 
 }
 @inject IViewLocalizer localizer
-@* <style>
-    .image {
+ <style>
+    .hide {
+        display: none !important;
+    }
+   /*  .image {
         top: 0px;
         left: 0px;
         width: 100%;
@@ -23,15 +26,15 @@
         background-position: center;
         opacity: 0.5;
         z-index: -1;
-    }
-</style> *@
+    } */
+</style>
 <div class="container pt-2 " style="min-height:90vh;">
     @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
 
-    <div class="d-flex justify-content-between align-items-center mt-4">
+    <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mt-4">
         <h1 class="header">@localizer["Follow up cash and checks"]</h1>
         <div class="d-flex gap-2">
-            <a asp-controller="AccSafeCash" asp-action="Add_PaymentReceipt" asp-route-docType="@ViewBag.docType" asp-route-safeCode="@ViewBag.safeCode" asp-route-fYear="@ViewBag.fYear" class="btn btn-sm btn-primary fs-6" style="width:120px">
+            <a class="btn btn-sm btn-primary fs-6" style="width:120px" onclick="CashTreasury(event)">
                 @localizer["Cash in Treasury"]
             </a>
             <a asp-controller="AccSafeCash" asp-action="Add_PaymentReceipt" asp-route-docType="@ViewBag.docType" asp-route-safeCode="@ViewBag.safeCode" asp-route-fYear="@ViewBag.fYear" class="btn btn-sm btn-primary fs-6" style="width:120px">
@@ -43,44 +46,248 @@
         </div>
     </div>
     <div class="overflow-auto" style="max-height:calc(100vh - 145px)">
-        <div class=" d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 my-2">
+        <div class=" d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 px-1 my-2">
             <div class="d-flex align-items-center flex-column flex-md-row w-100">
                 <label for="branches" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Branches"]</label>
-                <select id="branches" asp-items="branches" class="form-control text-center w-100" onchange="getUserPermissionsForStock(event)">
+                <select id="branches" asp-items="branches" class="form-control text-center w-100">
                     <option value="">-- Choose --</option>
                 </select>
             </div>
             <div class="d-flex align-items-center flex-column flex-md-row w-100">
                 <label for="safeName" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Treasury"]</label>
                 <input id="safeName" value="@Model.SafeNames" disabled class="form-control text-center w-100" />
+                <input id="safeCode" value="@Model.SafeCode" hidden disabled />
             </div>
             <div class="d-flex align-items-center flex-column flex-md-row w-100">
                 <label for="users" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Users"]</label>
-                <select id="users" asp-items="users" class="form-control text-center w-100" onchange="getPermissionsInStock(event)">
+                <select id="users" asp-items="users" class="form-control text-center w-100">
                     <option value="">-- Choose --</option>
                 </select>
             </div>
         </div>
+       
         <!---------------------------------------------------------->
-        <div class=" d-flex  align-items-center flex-column flex-md-row gap-3 my-2">
-            <div class="d-flex align-items-center flex-column flex-md-row" style="width:30% !important;">
-                <label for="filter" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Filter By"]</label>
-                <select id="filter"  class="form-control text-center">
-                    <option value="1">@localizer["Receipt"]</option>
-                    <option value="2">@localizer["Period"]</option>
+
+        <div class="filter-box d-flex align-items-center flex-column flex-md-row gap-3 my-2">
+            <div class="d-flex align-items-center flex-column flex-md-row w-100" style="width:40% !important;">
+                <label for="filter" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0" style="width:60% !important;">@localizer["Filter By"]</label>
+                <select id="filter"  class="form-control text-center" onchange="filter(event)">
+                    <option value="1">@localizer["Period"]</option>
+                    <option value="2">@localizer["Receipt"]</option>
                 </select>
             </div>
-            <div class="d-flex align-items-center flex-column flex-md-row gap-2" style="width:70% !important;">
-                <div class="d-flex">
-                    <label>@localizer["From Receipt No"]</label>
-                    <input class="form-control text-center" />
+
+            <div class="d-flex justify-content-end align-items-center flex-column flex-md-row gap-2 receipt-hide hide" style="width:70% !important;">
+                <div class="d-flex align-items-center w-100">
+                    <label style="width:60% !important;">@localizer["From Receipt No"]</label>
+                    <input id="fromReceipt" type="number" class="form-control text-center" />
                 </div>
-                <div class="d-flex">
-                    <label>@localizer["To Receipt No"]</label>
-                    <input class ="form-control text-center" />
+                <div class="d-flex align-items-center w-100">
+                    <label style="width:60% !important;">@localizer["To Receipt No"]</label>
+                    <input id="toReceipt" type="number" class="form-control text-center" />
                 </div>
             </div>
+
+            <div class="d-flex justify-content-end align-items-center flex-column flex-md-row gap-2 period" style="width:70% !important;">
+                <div class="d-flex align-items-center w-100">
+                    <label style="width:60% !important;">@localizer["From Period"]</label>
+                    <input id="fromPeriod" type="date" class="form-control text-center" />
+                </div>
+                <div class="d-flex align-items-center w-100">
+                    <label style="width:60% !important;">@localizer["To Period"]</label>
+                    <input id="toPeriod" type="date" class="form-control text-center" />
+                </div>
+            </div>
+
         </div>
+       
+        <!---------------------------------------------------------->
+
+        <div class="report">
+
+
+        </div>
+
     </div>
 </div>
+<script>
+    function CashTreasury(e) { 
+        var filterValue = document.getElementById("filter").value;
+        var fromPeriodValue = document.getElementById("fromPeriod").value;
+        var toPeriodValue = document.getElementById("toPeriod").value;
+        var fromReceiptValue = document.getElementById("fromReceipt").value;
+        var toReceiptValue = document.getElementById("toReceipt").value;
+        //
+        var safeCode = document.getElementById("safeCode").value;
+        var brancheValue = document.getElementById("branches").value;
+                var users = document.getElementById("users");
 
+        ////for Focus Like Validation /////
+        var users = document.getElementById("users");
+        var branche = document.getElementById("branches");
+        var fromPeriod = document.getElementById("fromPeriod");
+        var toPeriod = document.getElementById("toPeriod");
+        var fromReceipt = document.getElementById("fromReceipt");
+        var toReceipt = document.getElementById("toReceipt");
+
+        // if (!users.value) {
+        //     users.focus();
+        //     return;
+        // }
+        if (!branche.value) {
+            branche.focus();
+            return;
+        }
+        if (filterValue == 1) {
+            if (!fromPeriod.value) {
+                fromPeriod.focus();
+                return;
+            }
+            if (!toPeriod.value) {
+                toPeriod.focus();
+                return;
+            }
+        }
+        else if (filterValue == 2) {
+            if (!fromReceipt.value) {
+                fromReceipt.focus();
+                return;
+            }
+            if (!toReceipt.value) {
+                toReceipt.focus();
+                return;
+            }
+        }
+        var headReport = document.querySelector(".report");
+
+        let title;
+        if (filterValue == 1) {
+            title = "@localizer["Treasury Transaction During Period from"] " + fromPeriodValue + " @localizer["To"] " + toPeriodValue;
+        } else if (filterValue == 2) {
+            title = "@localizer["Treasury Transaction For Receipt from"] " + fromReceiptValue + " @localizer["To"] " + toReceiptValue;
+        }
+        headReport.innerHTML =
+            `
+        <div class="report-head d-flex justify-content-center align-items-center mt-4">
+             <h2 class="header">${title}</h2>
+        </div>
+
+        <div class=" p-0 mb-2 overflow-auto" style="max-height: 400px;">
+
+            <table id="myTable" class="table table-bordered table-hover cash-table" style="width:100%">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="align-middle text-center" rowspan="2">
+                            @localizer["Code"]
+                        </th>
+                        <th class="align-middle text-center" rowspan="2">
+                            @localizer["Expense"]
+                        </th>
+                        <th class="align-middle text-center" rowspan="2">
+                            @localizer["Revenue"]
+                        </th> 
+                        <th class="align-middle text-center" rowspan="2">
+                            @localizer["Permission Date"]
+                        </th>
+                        <th class="align-middle text-center" rowspan="2">
+                            @localizer["Permission No"]
+                        </th> 
+                        <th class="align-middle text-center" rowspan="2">
+                            @localizer["Voucher No"]
+                        </th> 
+                        <th class="align-middle text-center" rowspan="2">
+                            @localizer["Name"]
+                        </th>
+                        <th class="align-middle text-center" rowspan="2">
+                            @localizer["Note"]
+                        </th>
+                        <th class="align-middle text-center" rowspan="2">
+                            @localizer["Treasury Order"]
+                        </th>
+                    </tr>
+                   
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+            `;
+
+        let url;
+        if (filterValue == 1) {
+            url = `/Treasury/ReportCashAndChecks/GetCashTreasury/${brancheValue}?safeCode=${safeCode}&fromPeriod=${fromPeriodValue}&toPeriod=${toPeriodValue}`;
+        } else if (filterValue == 2) {
+            url = `/Treasury/ReportCashAndChecks/GetCashTreasury/${brancheValue}?safeCode=${safeCode}&fromReceipt=${fromReceiptValue}&toReceipt=${toReceiptValue}`;
+        }
+        var dataa = document.querySelector(".cash-table tbody");
+        dataa.innerHTML = "";  // Empty data
+        var indexx = 1;
+        $.ajax({
+            url: url,
+            success: function (result) {
+              //  console.log(result);
+                var expenseSum = 0;
+                var revenueSum = 0;
+                for (let item of result) {
+                    let docDate = new Date(item.docDate).toISOString().split('T')[0];
+                    const data = document.createElement("tr");
+                    data.innerHTML += `
+
+                            <td class="align-middle">${indexx}</td>
+                            <td class="align-middle">${item.expense}</td>
+                            <td class="align-middle">${item.revenue}</td>
+                            <td class="align-middle">${docDate}</td>
+                            <td class="align-middle">${item.docNo}</td>
+                            <td class="align-middle">${item.accTransNo}</td>
+                            <td class="align-middle">${item.personName}</td>
+                            <td class="align-middle">${item.commentt}</td>
+                            <td class="align-middle">${item.cshOrdNum}</td>
+                        `;
+                    expenseSum += item.expense;
+                    revenueSum += item.revenue;
+                    indexx++;
+                    dataa.appendChild(data);
+                }
+                const dataForSum = document.createElement("tr");
+                dataForSum.innerHTML =
+                    `
+                    <td class="align-middle">@localizer["The Sum"]</td>
+                    <td class="align-middle">${expenseSum}</td>
+                    <td class="align-middle">${revenueSum}</td>
+                    <td class="align-middle" colspan="6"> @localizer["Treasury Balance"] ==>  ${revenueSum - expenseSum} </td>
+
+                 `;
+                dataa.appendChild(dataForSum);
+
+
+            }
+        });
+
+    }
+
+
+
+
+    //Filter
+    function filter(e) { 
+        var filterBy = e.target.value;
+        console.log(filterBy);
+        var periodElements = document.querySelectorAll(".period");
+        var receiptElement = document.querySelector(".receipt-hide");
+
+        if (filterBy == 2) {
+            receiptElement.classList.remove("hide");
+            periodElements.forEach(e => {
+                e.classList.add("hide");
+            });
+        }
+        else if (filterBy == 1) {
+            receiptElement.classList.add("hide");
+            periodElements.forEach(e => {
+                e.classList.remove("hide");
+            });
+        }
+
+    }
+</script>

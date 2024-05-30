@@ -21,6 +21,7 @@ using ProSoft.EF.DTOs.Treasury;
 using ProSoft.EF.Models.Treasury;
 using ProSoft.EF.DTOs.MedicalRecords;
 using ProSoft.EF.Models.MedicalRecords;
+using ProSoft.EF.DTOs.Treasury.Report;
 
 namespace ProSoft.Core.AutoMapper
 {
@@ -137,6 +138,7 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<BankDataDTO, BankData>().ReverseMap();
             CreateMap<AccGlobalDefDTO, AccGlobalDef>().ReverseMap();
             CreateMap<GTablelDTO, GTable>().ReverseMap();
+            CreateMap<CashTreasuryDataDTO, AccSafeCash>().ReverseMap();
             ////////// PatRecord ////////////////////
             CreateMap<CoronaryAngiographyReport, CoronaryDTO>().ReverseMap();
             CreateMap<PastHistory, PastHistoryDTO>().ReverseMap();

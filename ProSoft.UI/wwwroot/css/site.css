@@ -1,20 +1,20 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 /*//////////////////////////////////////////////////////////////////////////////////////////*/
@@ -30,30 +30,36 @@ html {
     cursor: pointer;
     padding: 3px;
 }
-.input-field .show-hide:dir(RTL) {
-    right: auto;
-    left: 13px;
-}
+
+    .input-field .show-hide:dir(RTL) {
+        right: auto;
+        left: 13px;
+    }
 /* End Style for show & hide Password**/
 
 /* Style for Authentcation**/
 .registerParent > div {
     width: 50%;
 }
+
 @media (max-width: 767px) {
     .my-mobile {
         flex-direction: column !important;
     }
+
     .reverse {
         flex-direction: column-reverse;
     }
+
     .registerParent > div {
         width: 100% !important;
     }
+
     .login-form {
         width: 100%;
     }
 }
+
 @media (min-width: 768px) {
     .login-form {
         width: 65%;
@@ -72,15 +78,18 @@ html {
     overflow: auto;
 }
 
-#mySidebar ul {
-    font-size: 1rem;
-}
-#mySidebar ul li:hover {
-    background-color: #656565 !important;
-}
+    #mySidebar ul {
+        font-size: 1rem;
+    }
+
+        #mySidebar ul li:hover {
+            background-color: #656565 !important;
+        }
+
 .active-link {
     background-color: #656565 !important;
 }
+
 .nav-link {
     cursor: pointer;
 }
@@ -97,9 +106,10 @@ html {
         transition: .3s;
     }
 
-    #mySidebar:dir(RTL) {
-        transform: translateX(100%);
-    }
+        #mySidebar:dir(RTL) {
+            transform: translateX(100%);
+        }
+
     .overlay {
         opacity: 0;
         z-index: 1;
@@ -109,25 +119,27 @@ html {
         transition: .3s;
     }
 
-    .overlay.lay-active {
-        background-color: black;
-        opacity: .3;
-        pointer-events: all;
-    }
+        .overlay.lay-active {
+            background-color: black;
+            opacity: .3;
+            pointer-events: all;
+        }
+
     .toggler {
         display: block;
     }
+
     .content {
         margin-left: 0;
     }
-    .roleInput
-    {
-      width:100% !important;
+
+    .roleInput {
+        width: 100% !important;
     }
 }
 /* End Style for Authentcation**/
 .roleInput {
-    width:50%;
+    width: 50%;
 }
 
 /* Styling role input */
@@ -147,8 +159,8 @@ html {
     transition: all .3s;
 }
 
-.toggle-checkbox:checked + label/*,
-.toggle-checkbox:checked + .trans */{
+.toggle-checkbox:checked + label /*,
+.toggle-checkbox:checked + .trans */ {
     background-color: #5959f5;
     color: white;
     border-color: blue;
@@ -177,13 +189,13 @@ html {
     overflow: auto;
 }
 
-#mySidebar-patRecord ul {
-    font-size: 1rem;
-}
+    #mySidebar-patRecord ul {
+        font-size: 1rem;
+    }
 
-#mySidebar-patRecord ul li:hover {
-    background-color: #656565 !important;
-}
+        #mySidebar-patRecord ul li:hover {
+            background-color: #656565 !important;
+        }
 
 @media (max-width: 767px) {
     #mySidebar-patRecord {
@@ -193,9 +205,9 @@ html {
         transition: .3s;
     }
 
-    #mySidebar-patRecord:dir(RTL) {
-        transform: translateX(100%);
-    }
+        #mySidebar-patRecord:dir(RTL) {
+            transform: translateX(100%);
+        }
 }
 
 .internal-scroll {
@@ -203,20 +215,20 @@ html {
     overflow: auto;
 }
 
-.parent-record{
+.parent-record {
     gap: 1rem !important;
 }
 
-.parent-record > div {
-    width: 50%;
-    display: flex;
-    align-items: center;
-}
+    .parent-record > div {
+        width: 50%;
+        display: flex;
+        align-items: center;
+    }
 
-.parent-record label {
-    width: 140%;
-    align-self: start;
-}
+    .parent-record label {
+        width: 140%;
+        align-self: start;
+    }
 
 @media (max-width: 767px) {
     .parent-record > div {
@@ -268,14 +280,14 @@ html {
         font-weight: 500;
     }
 
-.modal-header .close-button {
-    cursor: pointer;
-    border: none;
-    outline: none;
-    background: none;
-    font-size: 2rem;
-    font-weight: 300;
-}
+    .modal-header .close-button {
+        cursor: pointer;
+        border: none;
+        outline: none;
+        background: none;
+        font-size: 2rem;
+        font-weight: 300;
+    }
 
 .modal-body {
     padding: 30px 15px;
@@ -305,10 +317,10 @@ html {
     pointer-events: none;
 }
 
-#overlay.active-popup {
-    opacity: 1;
-    pointer-events: all;
-}
+    #overlay.active-popup {
+        opacity: 1;
+        pointer-events: all;
+    }
 /* Style the PopUp */
 
 /* For styling Permissions */
@@ -343,12 +355,32 @@ html {
     gap: 1rem !important;
 }
 
-.parent-permForm > div {
-    display: flex;
-    align-items: center;
+    .parent-permForm > div {
+        display: flex;
+        align-items: center;
+    }
+
+    .parent-permForm label {
+        color: blue;
+    }
+
+@media (max-width: 767px) {
+    .parent-permForm > div,
+    .parent-permForm input:not([type="checkbox"]) {
+        width: 100% !important;
+    }
+
+    .parent-permForm label {
+        width: 140px !important;
+    }
 }
 
-.parent-permForm label {
-    color: blue;
-}
 /* For styling Permissions Forms */
+
+/* For styling Report treaturey Forms */
+.filter-box {
+    border: 1px solid grey;
+    border-radius: 5px;
+    padding: 10px 14px;
+}
+/* For styling Report treaturey  Forms */

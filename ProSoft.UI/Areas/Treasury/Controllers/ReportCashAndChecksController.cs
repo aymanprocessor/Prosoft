@@ -21,5 +21,12 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
             ReportCashAndChecksDTO reportCashAndChecks =await _reportCashChecksRepo.GetAllDataAsync(userCode);
             return View(reportCashAndChecks);
         }
+
+        //Cash Treasury
+        public async Task<IActionResult> GetCashTreasury(int id, int safeCode, int? fromReceipt, int? toReceipt, DateTime? fromPeriod, DateTime? toPeriod)
+        {
+            var reportData = await _reportCashChecksRepo.GetCashTreasuryData(id, safeCode, fromReceipt, toReceipt, fromPeriod, toPeriod);
+            return Json(reportData);
+        }
     }
 }

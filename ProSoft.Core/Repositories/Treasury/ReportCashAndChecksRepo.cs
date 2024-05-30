@@ -5,6 +5,7 @@ using ProSoft.EF.DTOs.Accounts;
 using ProSoft.EF.DTOs.Auth;
 using ProSoft.EF.DTOs.Shared;
 using ProSoft.EF.DTOs.Treasury;
+using ProSoft.EF.DTOs.Treasury.Report;
 using ProSoft.EF.IRepositories.Treasury;
 using ProSoft.EF.Models;
 using ProSoft.EF.Models.Accounts;
@@ -41,8 +42,48 @@ namespace ProSoft.Core.Repositories.Treasury
             reportCashAndChecksDTO.branchDTOs = _mapper.Map<List<BranchDTO>>(branches);
             reportCashAndChecksDTO.userDTOs = _mapper.Map<List<UserDTO>>(users);
             reportCashAndChecksDTO.SafeNames = safeName;
+            reportCashAndChecksDTO.SafeCode = safeCode;
 
             return reportCashAndChecksDTO;
+        }
+
+        public async Task<List<CashTreasuryDataDTO>> GetCashTreasuryData(int branchId, int safeCode, int? fromReceipt, int? toReceipt, DateTime? fromPeriod, DateTime? toPeriod)
+        {
+            var cashTreasuryDataDTOs = new List<CashTreasuryDataDTO>();
+            if (fromReceipt != null && toReceipt != null)
+            {
+                 cashTreasuryDataDTOs = await _Context.AccSafeCashes.Where(obj=>(obj.DocType=="SFCIN" || obj.DocType == "SFCOT") &&
+                      obj.BranchId == branchId && obj.SafeCode==safeCode && (obj.DocNo>= fromReceipt && obj.DocNo<= toReceipt))
+                    .Select(obj => new CashTreasuryDataDTO()
+                      {
+                          Expense = obj.DocType == "SFCOT" ? obj.ValuePay : 0 ,
+                          Revenue = obj.DocType == "SFCIN" ? (obj.ValuePay + (obj.ProfitTax ?? 0)) : 0 ,
+                          DocNo = obj.DocNo,
+                          DocDate = obj.DocDate,
+                          AccTransNo = obj.AccTransNo,
+                          PersonName = obj.PersonName,
+                          Commentt = obj.Commentt,
+                          CshOrdNum = obj.CshOrdNum,
+                      }).ToListAsync();
+            }
+            else if (fromPeriod != null && toPeriod != null)
+            {
+                   cashTreasuryDataDTOs = await _Context.AccSafeCashes.Where(obj=>(obj.DocType=="SFCIN" || obj.DocType == "SFCOT") &&
+                      obj.BranchId == branchId && obj.SafeCode == safeCode && (obj.DocDate>= fromPeriod && obj.DocDate<= toPeriod))
+                    .Select(obj => new CashTreasuryDataDTO()
+                      {
+                          Expense = obj.DocType == "SFCOT" ? obj.ValuePay : 0 ,
+                          Revenue = obj.DocType == "SFCIN" ? (obj.ValuePay + (obj.ProfitTax ?? 0)) : 0 ,
+                          DocNo = obj.DocNo,
+                          DocDate = obj.DocDate,
+                          AccTransNo = obj.AccTransNo,
+                          PersonName = obj.PersonName,
+                          Commentt = obj.Commentt,
+                          CshOrdNum = obj.CshOrdNum,
+                      }).ToListAsync();
+            }
+
+            return cashTreasuryDataDTOs;
         }
     }
 }

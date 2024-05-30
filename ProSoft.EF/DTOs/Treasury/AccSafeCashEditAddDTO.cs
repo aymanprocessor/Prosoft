@@ -88,6 +88,9 @@ namespace ProSoft.EF.DTOs.Treasury
         [DisplayName("Amount Deposited")]
         [Required(ErrorMessage = "The field is required")]
         public decimal? ValuePay { get; set; }
+        public decimal? ProfitTax { get; set; }
+        public int? CshOrdNum { get; set; }
+
 
 
         //Lists

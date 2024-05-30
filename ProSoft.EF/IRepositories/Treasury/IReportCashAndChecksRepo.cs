@@ -1,4 +1,5 @@
 ﻿using ProSoft.EF.DTOs.Treasury;
+using ProSoft.EF.DTOs.Treasury.Report;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace ProSoft.EF.IRepositories.Treasury
     public interface IReportCashAndChecksRepo
     {
         Task<ReportCashAndChecksDTO> GetAllDataAsync(int userCode);
+        Task<List<CashTreasuryDataDTO>> GetCashTreasuryData(int branchId, int safeCode, int? fromReceipt, int? toReceipt, DateTime? fromPeriod, DateTime? toPeriod);
 
     }
 }

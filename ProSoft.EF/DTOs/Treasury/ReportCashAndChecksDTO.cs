@@ -10,6 +10,7 @@ namespace ProSoft.EF.DTOs.Treasury
 {
     public class ReportCashAndChecksDTO
     {
+      public int? SafeCode { get; set; }
       public string? SafeNames { get; set; }
       public List<UserDTO>? userDTOs { get; set; }
       public List<BranchDTO>? branchDTOs { get; set; }
