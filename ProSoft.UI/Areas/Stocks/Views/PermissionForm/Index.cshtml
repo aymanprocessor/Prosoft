@@ -37,17 +37,35 @@
         <table id="myTable" class="table table-bordered table-hover" style="width:100%;">
             <thead class="table-dark">
                 <tr>
-                    <th class="align-middle">
+                    <th class="align-middle" style="min-width: 100px;">
                         @localizer["Doc No"]
                     </th>
-                    <th class="align-middle text-center" style="min-width: 150px;">
-                        @localizer["Permission Name"]
+                    <th class="align-middle" style="min-width: 100px;">
+                        @localizer["Permission Date"]
                     </th>
-                    <th class="align-middle text-center" style="min-width: 150px;">
+@*                     <th class="align-middle text-center" style="min-width: 150px;">
+                        @localizer["Permission Name"]
+                    </th> *@
+                    <th class="align-middle text-center" style="min-width: 100px;">
                         @localizer["Stock Name"]
                     </th>
-                    <th class="align-middle text-center" style="min-width: 150px;">
-                        @localizer["User Name"]
+                    <th class="align-middle text-center" style="min-width: 100px;">
+                        @localizer["The Supplier"]
+                    </th>
+                    <th class="align-middle text-center" style="min-width: 100px;">
+                        @localizer["Voucher No"]
+                    </th>
+                    <th class="align-middle text-center" style="min-width: 100px;">
+                        @localizer["Supplier Invoice No"]
+                    </th>
+                    <th class="align-middle text-center" style="min-width: 100px;">
+                        @localizer["From Permission"]
+                    </th>
+                    <th class="align-middle text-center" style="min-width: 100px;">
+                        @localizer["Shipped to"]
+                    </th>
+                    <th class="align-middle text-center" style="min-width: 100px;">
+                        @localizer["Supplier Invoice Date"]
                     </th>
                     <td></td>
                 </tr>
@@ -57,15 +75,21 @@
                 {
                 <tr class="align-middle text-center">
                     <td>@Model.DocNo</td>
-                    <td>@Model.PermissionName</td>
+                    <td>@Model.DocDate</td>
+                    @* <td>@Model.PermissionName</td> *@
                     <td>@Model.StockName</td>
-                    <td>@Model.UserName</td>
+                    <td>@Model.SupplierName</td>
+                    <td>@Model.AccTransNo</td>
+                    <td>@Model.SupInvNo</td>
+                    <td>@Model.DocNoFr</td>
+                    <td>@Model.StockCode2</td>
+                    <td>@Model.SupInvDate</td>
                     <td style="width: 325px;">
                         <a href="/Stocks/PermissionForm/Edit_PermissionForm/@Model.TransMAsterID" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
                         <form action="/Stocks/PermissionForm/Delete_PermissionForm" method="post" class="d-inline">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@Model.TransMAsterID" />
-                            <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width:100px">@localizer["Delete"]</button>
+                            <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width: 150px">@localizer["Delete"]</button>
                             <div class="modal-container">
                                 <div class="modal 4" id="modal">
                                     <div class="modal-header fs-4">
@@ -189,19 +213,27 @@
                 url: `/Stocks/PermissionForm/GetPermissionsForms/${stock.value}?transType=${permission.value}`,
                 success: function (result) {
                     for (let item of result) {
+                        let docDate = new Date(item.docDate).toISOString().split('T')[0];
+                        let supInvDate = new Date(item.supInvDate).toISOString().split('T')[0];
+                            // <td class="align-middle text-center">${item.permissionName}</td>
                         const userPerm = document.createElement("tr");
                         userPerm.innerHTML =
                             `
                             <td class="align-middle text-center">${item.docNo}</td>
-                            <td class="align-middle text-center">${item.permissionName}</td>
+                            <td class="align-middle text-center">${docDate}</td>
                             <td class="align-middle text-center">${item.stockName}</td>
-                            <td class="align-middle text-center">${item.userName}</td>
+                            <td class="align-middle text-center">${item.supplierName}</td>
+                            <td class="align-middle text-center">${item.accTransNo}</td>
+                            <td class="align-middle text-center">${item.supInvNo}</td>
+                            <td class="align-middle text-center">${item.docNoFr}</td>
+                            <td class="align-middle text-center">${item.stockCode2}</td>
+                            <td class="align-middle text-center">${supInvDate}</td>
                             <td class="text-center align-middle" style="width: 325px;">
                                 <a href="/Stocks/PermissionForm/Edit_PermissionForm/${item.transMAsterID}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
                                 <form action="/Stocks/PermissionForm/Delete_PermissionForm" method="post" class="d-inline">
                                         @Html.AntiForgeryToken()
                                     <input type="hidden" name="id" value="${item.transMAsterID}" />
-                                    <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width:100px">@localizer["Delete"]</button>
+                                    <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width: 150px">@localizer["Delete"]</button>
                                     <div class="modal-container">
                                         <div class="modal 4" id="modal">
                                             <div class="modal-header fs-4">

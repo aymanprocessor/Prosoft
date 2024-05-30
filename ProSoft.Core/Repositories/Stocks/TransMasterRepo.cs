@@ -116,6 +116,8 @@ namespace ProSoft.Core.Repositories.Stocks
                     .FirstOrDefaultAsync(obj => obj.Stkcod == permissionForm.StockCode)).Stknam;
                 permFormDTO.UserName = (await _Context.Users
                     .FirstOrDefaultAsync(obj => obj.UserCode == permissionForm.UserCode)).UserName;
+                permFormDTO.SupplierName = (await _Context.SupCodes
+                    .FirstOrDefaultAsync(obj => obj.SupCode1 == permissionForm.SupNo)).SupName;
                 return permFormDTO;
             }
             return null;
@@ -125,7 +127,7 @@ namespace ProSoft.Core.Repositories.Stocks
         {
             List<TransMaster> permissionsForms = await _DbSet.Where(obj => obj.StockCode == stockID
                 && obj.TransType == transType && obj.Flag3 == "1").ToListAsync();
-            var permissionsFormsDTO = new List<TransMasterViewDTO>(); //_mapper.Map<List<TransMasterViewDTO>>(permissionsForms);
+            var permissionsFormsDTO = new List<TransMasterViewDTO>();
             foreach (var item in permissionsForms)
             {
                 TransMasterViewDTO permFormDTO = await GetForViewAsync(item);
@@ -134,12 +136,18 @@ namespace ProSoft.Core.Repositories.Stocks
             return permissionsFormsDTO;
         }
 
-        public async Task<TransMasterEditAddDTO> GetNewTransMasterAsync(int stockID, int permissionID)
+        public async Task<TransMasterEditAddDTO> GetNewTransMasterAsync(int stockID, int userCode, int permissionID)
         {
             var permissionFormDTO = new TransMasterEditAddDTO();
             List<TransMaster> permissionForms = await _DbSet
                 .Where(obj => obj.StockCode == stockID && obj.TransType == permissionID
                 && obj.Flag3 == "1").ToListAsync();
+
+            EisUserObject userObj = await _Context.EisUserObjects
+                .FirstOrDefaultAsync(obj => obj.UserId == userCode &&
+                obj.ObjectName == "w_stores_trans" && obj.DefultId == 1);
+
+            permissionFormDTO.EnableModify = userObj != null;
 
             List<SupCode> suppliers = await _Context.SupCodes.ToListAsync();
             permissionFormDTO.Suppliers = _mapper.Map<List<SupCodeViewDTO>>(suppliers);
@@ -149,8 +157,9 @@ namespace ProSoft.Core.Repositories.Stocks
             GeneralCode permission = await _Context.GeneralCodes.FindAsync(permissionID);
             permissionFormDTO.TransType = permissionID;
 
-            permissionFormDTO.FYear = DateTime.Now.Year;
-            permissionFormDTO.MonthName = DateTime.Now.ToString("MMMM");
+            permissionFormDTO.DocDate = DateTime.UtcNow;
+            permissionFormDTO.FYear = DateTime.UtcNow.Year;
+            permissionFormDTO.MonthName = DateTime.UtcNow.ToString("MMMM");
             permissionFormDTO.PermissionsCount = permissionForms.Count();
             permissionFormDTO.StockName = stock?.Stknam;
             permissionFormDTO.PermissionName = permission?.GDesc;
@@ -180,8 +189,8 @@ namespace ProSoft.Core.Repositories.Stocks
 
         public async Task<TransMaster> AddPermissionFormAsync(TransMasterEditAddDTO permissionFormDTO)
         {
-            permissionFormDTO.FYear = DateTime.Now.Year;
-            permissionFormDTO.FMonth = DateTime.Now.Month;
+            permissionFormDTO.FYear = DateTime.UtcNow.Year;
+            permissionFormDTO.FMonth = DateTime.UtcNow.Month;
             permissionFormDTO.Flag2 = "0";
             permissionFormDTO.AmountVisa = 0;
             permissionFormDTO.CashAmount = 0;

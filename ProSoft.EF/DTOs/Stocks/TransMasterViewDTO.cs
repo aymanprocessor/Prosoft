@@ -10,7 +10,14 @@ namespace ProSoft.EF.DTOs.Stocks
     {
         public int TransMAsterID { get; set; }
         public long? DocNo { get; set; }
+        public DateTime? DocDate { get; set; }
+        public long DocNoFr { get; set; }
+        public short StockCode2 { get; set; }
         public string PermissionName { get; set; }
+        public string SupplierName { get; set; }
+        public long? AccTransNo { get; set; }
+        public string? SupInvNo { get; set; }
+        public DateTime? SupInvDate { get; set; }
         public string StockName { get; set; }
         public string UserName { get; set; }
     }

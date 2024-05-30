@@ -10,10 +10,10 @@ namespace ProSoft.EF.DTOs.Stocks
 {
     public class TransMasterEditAddDTO
     {
-        //public int TransMAsterID { get; set; }
         public short StockCode { get; set; }
         public int TransType { get; set; }
         public long? DocNo { get; set; }
+        public bool EnableModify { get; set; }
         public string? DocNo2 { get; set; }
 
         [DisplayName("Permission Date")]

@@ -459,7 +459,7 @@
 
                 @if (!User.IsInRole("Admin"))
                 {
-                    <a asp-action="ChangePassword" asp-controller="Account" class="btn btn-primary mt-auto align-self-center mb-2">Change My Password</a>
+                    <a asp-action="ChangePassword" asp-controller="Account" class="btn btn-primary mt-auto align-self-center mb-2">@localizer["Change My Password"]</a>
                 }
             </div>
         </div>
