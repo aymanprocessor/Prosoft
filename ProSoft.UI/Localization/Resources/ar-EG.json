@@ -436,6 +436,13 @@
   "Revenue": "ايراد",
   "The Sum": "اجمالي",
   "Treasury Balance": "رصيد الخزينة",
+  "Checks Wallet During Period from": "حافظة الشيكات خلال الفترة من",
+  "Checks Wallet For Receipt from": "حافظة الشيكات للايصالات من",
+  "Check Status": "حالة الشيك",
+  "Status Date": "تاريخ الحالة",
+  "Check Value": "قيمة الشيك",
+  "Credit": "دائن",
+  "Debit": "مدين",
 
 
 
@@ -618,5 +625,7 @@
   "The Value": "القيمة",
   "From Permission": "من الاذن",
   "Shipped to": "صرف إلي",
-  "Permission Value": "فيمة الاذن"
+  "Permission Value": "فيمة الاذن",
+  "User Journal": "يومية المستخدم",
+  "To Stock": "الي مخزن"
 }

@@ -434,6 +434,13 @@
   "Revenue": "Revenue",
   "The Sum": "The Sum",
   "Treasury Balance": "Treasury Balance",
+  "Checks Wallet During Period from": "Checks Wallet During Period from",
+  "Checks Wallet For Receipt from": "Checks Wallet For Receipt from",
+  "Check Status": "Check Status",
+  "Status Date": "Status Date",
+  "Check Value": "Check Value",
+  "Credit": "Credit",
+  "Debit": "Debit",
 
 
 
@@ -617,5 +624,7 @@
   "The Value": "The Value",
   "From Permission": "From Permission",
   "Shipped to": "Shipped to",
-  "Permission Value": "Permission Value"
+  "Permission Value": "Permission Value",
+  "User Journal": "User Journal",
+  "To Stock": "To Stock"
 }
