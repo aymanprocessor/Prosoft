@@ -43,9 +43,6 @@
                     <th class="align-middle" style="min-width: 100px;">
                         @localizer["Permission Date"]
                     </th>
-@*                     <th class="align-middle text-center" style="min-width: 150px;">
-                        @localizer["Permission Name"]
-                    </th> *@
                     <th class="align-middle text-center" style="min-width: 100px;">
                         @localizer["Stock Name"]
                     </th>
@@ -76,7 +73,6 @@
                 <tr class="align-middle text-center">
                     <td>@Model.DocNo</td>
                     <td>@Model.DocDate</td>
-                    @* <td>@Model.PermissionName</td> *@
                     <td>@Model.StockName</td>
                     <td>@Model.SupplierName</td>
                     <td>@Model.AccTransNo</td>
@@ -174,12 +170,15 @@
                 stock.focus();
                 return;
             }
-            else if (!permission.value) {
+            if (!permission.value) {
                 permission.focus();
                 return;
             }
 
-            linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_PermissionForm/${stock.value}?transType=${permission.value}`);
+            if(permission.value == 1)
+                linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_PermissionForm/${stock.value}?transType=${permission.value}`);
+            else if (permission.value == 2)
+                linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_DisburseForm/${stock.value}?transType=${permission.value}`);
         }
 
         function getUserPermissionsForStock(e) {

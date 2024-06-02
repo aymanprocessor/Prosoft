@@ -12,6 +12,8 @@ namespace ProSoft.EF.DTOs.Stocks
     {
         public short StockCode { get; set; }
         public int TransType { get; set; }
+
+        [DisplayName("Permission No")]
         public long? DocNo { get; set; }
         public bool EnableModify { get; set; }
         public string? DocNo2 { get; set; }
@@ -87,6 +89,8 @@ namespace ProSoft.EF.DTOs.Stocks
         public decimal? CustDisc5 { get; set; }
         public long? InvNo { get; set; }
         public int? SmNo { get; set; }
+
+        [DisplayName("To Stock")]
         public short? StockCode2 { get; set; }
         public int? DueMonth { get; set; }
         public int? DueYear { get; set; }
@@ -131,5 +135,6 @@ namespace ProSoft.EF.DTOs.Stocks
         public string? UserName { get; set; }
 
         public List<SupCodeViewDTO>? Suppliers {  get; set; }
+        public List<StockViewDTO>? Stocks {  get; set; }
     }
 }

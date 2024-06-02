@@ -2,7 +2,7 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Add Permission Form";
+    ViewData["Title"] = "Add Add_Permission Form";
     Layout = "_Layout";
     var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
 
@@ -165,38 +165,6 @@
                     <input asp-for="DueValue" type="number" class="form-control" style="width: 78%;" />
                     <span asp-validation-for="DueValue" class="text-danger"></span>
                 </div>
-            </div>
-
-            <!------------------------------------------------------------------------------->
-
-            <div class="parent d-flex align-items-center justify-content-center gap-md-3 my-mobile ">
-
-@*                 <div class="mb-3">
-                    <label asp-for="Flag3"></label>
-                    <select asp-for="Flag3" class="form-control text-center">
-                        <option value="1">@localizer["No"]</option>
-                        <option value="2">@localizer["Yes"]</option>
-                    </select>
-                    <span asp-validation-for="Flag3" class="text-danger"></span>
-                </div> *@
-            </div>
-
-            <!------------------------------------------------------------------------------->
-
-            <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
-
-            </div>
-
-            <!------------------------------------------------------------------------------->
-
-            <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
-
-            </div>
-
-            <!------------------------------------------------------------------------------->
-
-            <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
-
             </div>
 
             <!------------------------------------------------------------------------------->
