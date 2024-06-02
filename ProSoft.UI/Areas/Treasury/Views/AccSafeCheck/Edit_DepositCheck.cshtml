@@ -46,6 +46,7 @@
             <input asp-for="DiscountVal" hidden />
             <input asp-for="ProfitTax" hidden />
             <input asp-for="FlagApr" hidden />
+            <input asp-for="BranchId" hidden value="@ViewBag.branchId" />
 
             <!------------------------------------------------------------------------------->
 
@@ -214,14 +215,14 @@
                     </div>
                     <div class="mb-3 " style="width: 50% !important;">
                         @* <label asp-for="SubCode"></label> *@
-                        <select asp-for="SubCode" class="form-control text-center" onchange="getNameSub(event)">
+                        <select asp-for="SubCode" asp-items="subAccCodes" class="form-control text-center" onchange="getNameSub(event)">
                             <option value="">-- Choose --</option>
                         </select>
                         <span asp-validation-for="SubCode" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="mb-3" style="width: 100% !important;">
-                    <input id="mainAndSub" class="form-control text-center" disabled />
+                    <input id="mainAndSub" name="AccName" value="@Model.AccName" class="form-control text-center" style="pointer-events: none;background-color:#e9ecef;" />
                 </div>
             </div>
 

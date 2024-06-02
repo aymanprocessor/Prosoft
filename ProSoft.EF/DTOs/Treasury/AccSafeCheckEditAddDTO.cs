@@ -110,6 +110,8 @@ namespace ProSoft.EF.DTOs.Treasury
         //for text wirte front on credit account
         public string? mainName13 { get; set; }
         public string? mainName17 { get; set; }
+        public string? AccName { get; set; }
+        public int? BranchId { get; set; }
 
 
 

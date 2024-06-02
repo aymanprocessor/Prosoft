@@ -127,11 +127,11 @@ namespace ProSoft.Core.Repositories.Treasury
             else if (accSafeCeck.TranType == "SFOUT")
             {
                 accSafeCeck.MCodeDtl = 34;
-                accSafeCeck.CheckStatus = "1";
             }
 
             accSafeCeck.FlagS = "1";
             accSafeCeck.Flag = 1;
+            accSafeCeck.CheckStatus = "1";
             accSafeCeck.FlagPayStatus = "0";
             accSafeCeck.DiscountVal = 0;            
             accSafeCeck.ProfitTax = 0;            
@@ -187,8 +187,8 @@ namespace ProSoft.Core.Repositories.Treasury
             else if (accSafeCeck.TranType == "SFOUT")
             {
                 accSafeCeck.MCodeDtl = 34;
-                accSafeCeck.CheckStatus = "1";
             }
+            accSafeCeck.CheckStatus = "1";
             accSafeCeck.EntryDate = DateTime.Now;
             _Context.Update(accSafeCeck);
             await _Context.SaveChangesAsync();

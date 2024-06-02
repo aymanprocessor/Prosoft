@@ -90,6 +90,9 @@ namespace ProSoft.EF.DTOs.Treasury
         public decimal? ValuePay { get; set; }
         public decimal? ProfitTax { get; set; }
         public int? CshOrdNum { get; set; }
+        public int? UserCode { get; set; }
+        public int? BranchId { get; set; }
+
 
 
 

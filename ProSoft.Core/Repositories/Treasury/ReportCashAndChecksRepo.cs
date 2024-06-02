@@ -47,13 +47,13 @@ namespace ProSoft.Core.Repositories.Treasury
             return reportCashAndChecksDTO;
         }
 
-        public async Task<List<CashTreasuryDataDTO>> GetCashTreasuryData(int branchId, int safeCode, int? fromReceipt, int? toReceipt, DateTime? fromPeriod, DateTime? toPeriod)
+        public async Task<List<CashTreasuryDataDTO>> GetCashTreasuryData(int branchId, int userCode, int safeCode, int? fromReceipt, int? toReceipt, DateTime? fromPeriod, DateTime? toPeriod)
         {
             var cashTreasuryDataDTOs = new List<CashTreasuryDataDTO>();
             if (fromReceipt != null && toReceipt != null)
             {
                  cashTreasuryDataDTOs = await _Context.AccSafeCashes.Where(obj=>(obj.DocType=="SFCIN" || obj.DocType == "SFCOT") &&
-                      obj.BranchId == branchId && obj.SafeCode==safeCode && (obj.DocNo>= fromReceipt && obj.DocNo<= toReceipt))
+                      (branchId == 100 || obj.BranchId == branchId) && (userCode == 100 || obj.UserCode == userCode) && obj.SafeCode==safeCode && (obj.DocNo>= fromReceipt && obj.DocNo<= toReceipt))
                     .Select(obj => new CashTreasuryDataDTO()
                       {
                           Expense = obj.DocType == "SFCOT" ? obj.ValuePay : 0 ,
@@ -69,7 +69,7 @@ namespace ProSoft.Core.Repositories.Treasury
             else if (fromPeriod != null && toPeriod != null)
             {
                    cashTreasuryDataDTOs = await _Context.AccSafeCashes.Where(obj=>(obj.DocType=="SFCIN" || obj.DocType == "SFCOT") &&
-                      obj.BranchId == branchId && obj.SafeCode == safeCode && (obj.DocDate>= fromPeriod && obj.DocDate<= toPeriod))
+                      (branchId == 100 || obj.BranchId == branchId) && (userCode == 100 || obj.UserCode == userCode) && obj.SafeCode == safeCode && (obj.DocDate>= fromPeriod && obj.DocDate<= toPeriod))
                     .Select(obj => new CashTreasuryDataDTO()
                       {
                           Expense = obj.DocType == "SFCOT" ? obj.ValuePay : 0 ,
@@ -84,6 +84,49 @@ namespace ProSoft.Core.Repositories.Treasury
             }
 
             return cashTreasuryDataDTOs;
+        }
+
+        public async Task<List<FollowChecksDataDTO>> GetFollowChecksData(int branchId, int userCode, int safeCode, int? fromReceipt, int? toReceipt, DateTime? fromPeriod, DateTime? toPeriod)
+        {
+            var followChecksDataDTOs = new List<FollowChecksDataDTO>();
+            if (fromReceipt != null && toReceipt != null)
+            {
+                followChecksDataDTOs = await _Context.AccSafeChecks.Where(obj => (obj.TranType == "SFSIN" || obj.TranType == "SFOUT") &&
+                     (branchId == 100 || obj.BranchId == branchId) && (userCode == 100 || obj.UserCode == userCode) && obj.SafeCode == safeCode && (obj.DocNo >= fromReceipt && obj.DocNo <= toReceipt))
+                   .Select(obj => new FollowChecksDataDTO()
+                   {
+                       Credit = obj.TranType == "SFSIN" ? obj.ValuePay : 0,
+                       Debit = obj.TranType == "SFOUT" ? obj.ValuePay : 0,
+                       DocNo = obj.DocNo,
+                       DocDate = obj.DocDate,
+                       ChekNo = obj.ChekNo,
+                       SattlDate = obj.SattlDate,
+                       CheckStatus = obj.CheckStatus,
+                       ChekDate = obj.ChekDate,
+                       PersonName = obj.PersonName,
+                       AccName = obj.AccName,
+                   }).ToListAsync();
+            }
+            else if (fromPeriod != null && toPeriod != null)
+            {
+                followChecksDataDTOs = await _Context.AccSafeChecks.Where(obj => (obj.TranType == "SFSIN" || obj.TranType == "SFOUT") &&
+                   (branchId == 100 || obj.BranchId == branchId) && (userCode == 100 || obj.UserCode == userCode) && obj.SafeCode == safeCode && (obj.DocDate >= fromPeriod && obj.DocDate <= toPeriod))
+                 .Select(obj => new FollowChecksDataDTO()
+                 {
+                     Credit = obj.TranType == "SFSIN" ? obj.ValuePay : 0,
+                     Debit = obj.TranType == "SFOUT" ? obj.ValuePay : 0,
+                     DocNo = obj.DocNo,
+                     DocDate = obj.DocDate,
+                     ChekNo = obj.ChekNo,
+                     SattlDate = obj.SattlDate,
+                     CheckStatus = obj.CheckStatus,
+                     ChekDate = obj.ChekDate,
+                     PersonName = obj.PersonName,
+                     AccName = obj.AccName,
+                 }).ToListAsync();
+            }
+
+            return followChecksDataDTOs;
         }
     }
 }

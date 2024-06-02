@@ -12,6 +12,7 @@ using ProSoft.EF.Models.Shared;
 
 namespace ProSoft.EF.Models.Treasury
 {
+    [Table("ACC_SAFE_CHECK")]
     public class AccSafeCheck
     {
         [Key]
@@ -210,8 +211,12 @@ namespace ProSoft.EF.Models.Treasury
         [Column("G_VALUE_PAY", TypeName = "decimal(12, 3)")]
         public decimal? GValuePay { get; set; }
 
+        [Column("USER_CODE")]
+        public int? UserCode { get; set; }
+
         [Column("CSH_ORD_NUM")]
         public int? CshOrdNum { get; set; }
+
 
         public ICollection<CustCollectionsDiscount>? custCollectionsDiscounts { get; set; }
 

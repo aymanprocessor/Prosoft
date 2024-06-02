@@ -82,6 +82,9 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
             AccSafeCashEditAddDTO accSafeCashDTO = await _accSafeCashRepo.GetEmptyAccSafeCashAsync();
             ViewBag.docType = docType;
             ViewBag.fYear = fYear;
+            ViewBag.userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
+            ViewBag.branchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
+
 
             return View(accSafeCashDTO);
         }
@@ -101,6 +104,8 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
         //Get Edit
         public async Task<IActionResult> Edit_DisbursementPermission(int id)
         {
+            ViewBag.userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
+            ViewBag.branchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
             AccSafeCashEditAddDTO accSafeCashDTO = await _accSafeCashRepo.GetAccSafeCashByIdAsync(id);
             return View(accSafeCashDTO);
         }

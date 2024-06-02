@@ -40,6 +40,7 @@
             <input asp-for="DocNo" hidden value="@ViewBag.SerialID" />
             <input asp-for="TranType" hidden value="@ViewBag.tranType" />
             <input asp-for="FYear" hidden value="@ViewBag.fYear" />
+            <input asp-for="BranchId" hidden value="@ViewBag.branchId" />
 
             <!------------------------------------------------------------------------------->
 
@@ -232,7 +233,7 @@
                     </div>
                 </div>
                 <div class="mb-3" style="width: 100% !important;">
-                    <input id="mainAndSub" class="form-control text-center" disabled />
+                    <input id="mainAndSub" name="AccName" class="form-control text-center" style="pointer-events: none;background-color:#e9ecef;" />
                 </div>
             </div>
 

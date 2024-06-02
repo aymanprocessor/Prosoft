@@ -84,6 +84,8 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
             ViewBag.fYear = fYear;
             ViewBag.mainName13 = accSafeCeckDTO.mainName13;
             ViewBag.mainName17 = accSafeCeckDTO.mainName17;
+            ViewBag.branchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
+
 
             return View(accSafeCeckDTO);
         }
@@ -107,6 +109,8 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
             AccSafeCheckEditAddDTO accSafeCheckDTO = await _accSafeCheckRepo.GetAccSafeCheckByIdAsync(id);
             ViewBag.mainName13 = accSafeCheckDTO.mainName13;
             ViewBag.mainName17 = accSafeCheckDTO.mainName17;
+            ViewBag.branchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
+
             return View(accSafeCheckDTO);
         }
 

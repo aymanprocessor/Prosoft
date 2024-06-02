@@ -375,15 +375,14 @@ html {
     }
 }
 
-<<<<<<< HEAD
-=======
 .parent-permForm label {
     color: blue;
 }
 
 @media (max-width: 767px) {
     .parent-permForm > div,
-    .parent-permForm input:not([type="checkbox"]) {
+    .parent-permForm input:not([type="checkbox"]),
+    .parent-permForm select {
         width: 100% !important;
     }
 
@@ -392,7 +391,6 @@ html {
     }
 }
 
->>>>>>> 2a529a8a3e7dc1b713071418765f4ea5a75f7e4c
 /* For styling Permissions Forms */
 
 /* For styling Report treaturey Forms */
@@ -401,8 +399,4 @@ html {
     border-radius: 5px;
     padding: 10px 14px;
 }
-<<<<<<< HEAD
 /* For styling Report treaturey  Forms */
-=======
-/* For styling Report treaturey  Forms */
->>>>>>> 2a529a8a3e7dc1b713071418765f4ea5a75f7e4c

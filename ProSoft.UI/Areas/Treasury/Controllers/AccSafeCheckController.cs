@@ -80,6 +80,7 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
             AccSafeCheckEditAddDTO accSafeCeckDTO = await _accSafeCheckRepo.GetEmptyAccSafeCeckAsync();
             ViewBag.tranType = tranType;
             ViewBag.fYear = fYear;
+            ViewBag.branchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
 
             return View(accSafeCeckDTO);
         }
@@ -99,6 +100,7 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
         //Get Edit
         public async Task<IActionResult> Edit_DepositCheck(int id)
         {
+            ViewBag.branchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
             AccSafeCheckEditAddDTO accSafeCheckDTO = await _accSafeCheckRepo.GetAccSafeCheckByIdAsync(id);
             return View(accSafeCheckDTO);
         }
