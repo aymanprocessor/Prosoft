@@ -91,7 +91,8 @@ namespace ProSoft.EF.DTOs.Stocks
         public int? SmNo { get; set; }
 
         [DisplayName("To Stock")]
-        public short? StockCode2 { get; set; }
+        [Required(ErrorMessage = "The field is required")]
+        public short StockCode2 { get; set; }
         public int? DueMonth { get; set; }
         public int? DueYear { get; set; }
         public DateTime? RefDocDate { get; set; }
@@ -133,6 +134,7 @@ namespace ProSoft.EF.DTOs.Stocks
         public string? StockName { get; set; }
         public string? PermissionName { get; set; }
         public string? UserName { get; set; }
+        public string? JournalName { get; set; }
 
         public List<SupCodeViewDTO>? Suppliers {  get; set; }
         public List<StockViewDTO>? Stocks {  get; set; }

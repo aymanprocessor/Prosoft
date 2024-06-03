@@ -12,7 +12,7 @@ namespace ProSoft.EF.IRepositories.Stocks
 {
     public interface ITransMasterRepo: IRepository<TransMaster, int>
     {
-        Task<TransMasterEditAddDTO> GetTransMasterByIdAsync(int transMasterID);
+        Task<TransMasterEditAddDTO> GetPermissionFormByIdAsync(int transMasterID);
         Task<List<StockViewDTO>> GetActiveStocksForUserAsync(int userCode);
         Task<List<PermissionDefViewDTO>> GetUserPermissionsForStockAsync(int userCode, int stockID);
         Task<List<TransMasterViewDTO>> GetPermissionsFormsAsync(int stockID, int transType);
@@ -23,7 +23,9 @@ namespace ProSoft.EF.IRepositories.Stocks
         Task UpdateTransMasterAsync(int id, TransMasterEditAddDTO permissionFormDTO);
         //////////////////////////////////////////////////
         // Add Disburse Form => اذن صرف
+        Task<TransMasterEditAddDTO> GetDisburseFormByIdAsync(int transMasterID);
         Task<TransMasterEditAddDTO> GetNewDisburseFormAsync(int stockID, int userCode, int permissionID, int branchID);
         Task<TransMaster> AddDisburseFormAsync(TransMasterEditAddDTO permissionFormDTO);
+        Task UpdateDisburseFormAsync(int id, TransMasterEditAddDTO permissionFormDTO);
     }
 }

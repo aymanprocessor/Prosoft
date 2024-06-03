@@ -443,7 +443,9 @@
   "Check Value": "قيمة الشيك",
   "Credit": "دائن",
   "Debit": "مدين",
-
+  "Treasury or Bills": "خزينة او فواتير",
+  "Treasury Only": "خزينة فقط",
+  "Bills Only": "فواتير فقط",
 
 
 
@@ -627,5 +629,6 @@
   "Shipped to": "صرف إلي",
   "Permission Value": "فيمة الاذن",
   "User Journal": "يومية المستخدم",
-  "To Stock": "الي مخزن"
+  "To Stock": "الي مخزن",
+  "From Stock": "من مخزن"
 }

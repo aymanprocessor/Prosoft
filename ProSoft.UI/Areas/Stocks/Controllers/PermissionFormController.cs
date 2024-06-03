@@ -83,7 +83,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         // Get Edit
         public async Task<IActionResult> Edit_PermissionForm(int id)
         {
-            TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetTransMasterByIdAsync(id);
+            TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetPermissionFormByIdAsync(id);
             return View(permissionFormDTO);
         }
 
@@ -141,35 +141,35 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         }
 
         // Get Edit
-        //public async Task<IActionResult> Edit_PermissionForm(int id)
-        //{
-        //    TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetTransMasterByIdAsync(id);
-        //    return View(permissionFormDTO);
-        //}
+        public async Task<IActionResult> Edit_DisburseForm(int id)
+        {
+            TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetDisburseFormByIdAsync(id);
+            return View(permissionFormDTO);
+        }
 
         // Post Edit
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit_PermissionForm(int id, TransMasterEditAddDTO permissionFormDTO)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        await _transMasterRepo.UpdateTransMasterAsync(id, permissionFormDTO);
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(permissionFormDTO);
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit_DisburseForm(int id, TransMasterEditAddDTO permissionFormDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                await _transMasterRepo.UpdateDisburseFormAsync(id, permissionFormDTO);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(permissionFormDTO);
+        }
 
         // Delete
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Delete_PermissionForm(int id)
-        //{
-        //    TransMaster permissionForm = await _transMasterRepo.GetByIdAsync(id);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete_DisburseForm(int id)
+        {
+            TransMaster permissionForm = await _transMasterRepo.GetByIdAsync(id);
 
-        //    await _transMasterRepo.DeleteAsync(permissionForm);
-        //    await _transMasterRepo.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
+            await _transMasterRepo.DeleteAsync(permissionForm);
+            await _transMasterRepo.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
