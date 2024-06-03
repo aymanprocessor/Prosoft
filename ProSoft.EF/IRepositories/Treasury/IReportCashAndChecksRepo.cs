@@ -11,8 +11,9 @@ namespace ProSoft.EF.IRepositories.Treasury
     public interface IReportCashAndChecksRepo
     {
         Task<ReportCashAndChecksDTO> GetAllDataAsync(int userCode);
-        Task<List<CashTreasuryDataDTO>> GetCashTreasuryData(int branchId, int userCode, int safeCode, int? fromReceipt, int? toReceipt, DateTime? fromPeriod, DateTime? toPeriod);
-        Task<List<FollowChecksDataDTO>> GetFollowChecksData(int branchId, int userCode, int safeCode, int? fromReceipt, int? toReceipt, DateTime? fromPeriod, DateTime? toPeriod);
+        Task<List<CashTreasuryDataDTO>> GetCashTreasuryData(int branchId, int userCode, int safeCode, int? fromReceipt, int? toReceipt, DateTime? fromPeriod, DateTime? toPeriod, int treasuryOrBills);
+        Task<List<IncomingChecksDataDTO>> GetIncomingChecksData(int branchId, int userCode, int safeCode, int? fromReceipt, int? toReceipt, DateTime? fromPeriod, DateTime? toPeriod, int treasuryOrBills);
+        Task<List<FollowChecksDataDTO>> GetFollowChecksData(int branchId, int userCode, int safeCode, int? fromReceipt, int? toReceipt, DateTime? fromPeriod, DateTime? toPeriod, int treasuryOrBills);
 
     }
 }

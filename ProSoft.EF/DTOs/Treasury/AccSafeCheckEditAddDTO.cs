@@ -69,7 +69,7 @@ namespace ProSoft.EF.DTOs.Treasury
 
         [DisplayName("Currency")]
         //  [Required(ErrorMessage = "The field is required")]
-        public int? CurCode { get; set; }//Acc Global Def
+        public int? CurrencyCode { get; set; }//Acc Global Def
 
         [DisplayName("Debit Account (Main)")]
         [Required(ErrorMessage = "The field is required")]

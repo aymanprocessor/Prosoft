@@ -37,7 +37,7 @@
             <a class="btn btn-sm btn-primary fs-6" style="width:120px" onclick="CashTreasury(event)">
                 @localizer["Cash in Treasury"]
             </a>
-            <a class="btn btn-sm btn-primary fs-6" style="width:120px">
+            <a class="btn btn-sm btn-primary fs-6" style="width:120px" onclick="IncomingChecks(event)">
                 @localizer["Incoming Checks"]
             </a>
             <a class="btn btn-sm btn-primary fs-6" style="width:120px" onclick="FollowChecks(event)">
@@ -45,7 +45,7 @@
             </a>
         </div>
     </div>
-    <div class="overflow-auto" style="max-height:calc(100vh - 145px)">
+    <div class="overflow-auto"> @* style="max-height:calc(100vh - 145px)" *@
         <div class=" d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 px-1 my-2">
             <div class="d-flex align-items-center flex-column flex-md-row w-100">
                 <label for="branches" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Branches"]</label>
@@ -62,6 +62,14 @@
                 <label for="users" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Users"]</label>
                 <select id="users" asp-items="users" class="form-control text-center w-100">
                     <option value="100">-- All --</option>
+                </select>
+            </div>
+            <div class="d-flex align-items-center flex-column flex-md-row w-100">
+                <label for="treasuryOrBills" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0 text-center" style="width:87% !important;">@localizer["Treasury or Bills"]</label>
+                <select id="treasuryOrBills" class="form-control text-center w-100">
+                    <option value="100">-- All --</option>
+                    <option value="1">@localizer["Treasury Only"]</option>
+                    <option value="2">@localizer["Bills Only"]</option>
                 </select>
             </div>
         </div>
@@ -116,11 +124,13 @@
     var users = document.getElementById("users");
     var safeCode = document.getElementById("safeCode")
     var branche = document.getElementById("branches");
+    var treasuryOrBills = document.getElementById("treasuryOrBills");
     var fromPeriod = document.getElementById("fromPeriod");
     var toPeriod = document.getElementById("toPeriod");
     var fromReceipt = document.getElementById("fromReceipt");
     var toReceipt = document.getElementById("toReceipt");
 
+    //for repotrt Cash Treasury//
     function CashTreasury(e) {
 
         if (!branche.value) {
@@ -163,9 +173,10 @@
             `
         <div class="report-head d-flex justify-content-center align-items-center mt-4">
              <h2 class="header">${title}</h2>
+                 <button onclick="printReport()" class="btn btn-success" style="margin-inline-start: auto;">Print</button>
         </div>
 
-        <div class=" p-0 mb-2 overflow-auto">
+        <div class="print-table p-0 mb-2 overflow-auto">
 
             <table id="myTable" class="table table-bordered table-hover cash-table" style="width:100%">
                 <thead class="table-dark">
@@ -209,9 +220,9 @@
 
         let url;
         if (filter.value == 1) {
-            url = `/Treasury/ReportCashAndChecks/GetCashTreasury/${branche.value}?userCode=${users.value}&safeCode=${safeCode.value}&fromPeriod=${fromPeriod.value}&toPeriod=${toPeriod.value}`;
+            url = `/Treasury/ReportCashAndChecks/GetCashTreasury/${branche.value}?userCode=${users.value}&safeCode=${safeCode.value}&fromPeriod=${fromPeriod.value}&toPeriod=${toPeriod.value}&treasuryOrBills=${treasuryOrBills.value}`;
         } else if (filter.value == 2) {
-            url = `/Treasury/ReportCashAndChecks/GetCashTreasury/${branche.value}?userCode=${users.value}&safeCode=${safeCode.value}&fromReceipt=${fromReceipt.value}&toReceipt=${toReceipt.value}`;
+            url = `/Treasury/ReportCashAndChecks/GetCashTreasury/${branche.value}?userCode=${users.value}&safeCode=${safeCode.value}&fromReceipt=${fromReceipt.value}&toReceipt=${toReceipt.value}&treasuryOrBills=${treasuryOrBills.value}`;
         }
         var dataa = document.querySelector(".cash-table tbody");
         dataa.innerHTML = "";  // Empty data
@@ -263,6 +274,148 @@
         });
     }
 
+    //for repotrt Incoming Checks//
+    function IncomingChecks(e) {
+
+        if (!branche.value) {
+            branche.focus();
+            return;
+        }
+        // if (!users.value) {
+        //     users.focus();
+        //     return;
+        // }
+        if (filter.value == 1) {
+            if (!fromPeriod.value) {
+                fromPeriod.focus();
+                return;
+            }
+            if (!toPeriod.value) {
+                toPeriod.focus();
+                return;
+            }
+        }
+        else if (filter.value == 2) {
+            if (!fromReceipt.value) {
+                fromReceipt.focus();
+                return;
+            }
+            if (!toReceipt.value) {
+                toReceipt.focus();
+                return;
+            }
+        }
+        var headReport = document.querySelector(".report");
+
+        let title;
+        if (filter.value == 1) {
+            title = "@localizer["Checks Wallet During Period from"] " + fromPeriod.value + " @localizer["To"] " + toPeriod.value;
+        } else if (filter.value == 2) {
+            title = "@localizer["Checks Wallet For Receipt from"] " + fromReceipt.value + " @localizer["To"] " + toReceipt.value;
+        }
+        headReport.innerHTML =
+            `
+                <div class="report-head d-flex justify-content-center align-items-center mt-4">
+                     <h2 class="header">${title}</h2>
+                       <button onclick="printReport()" class="btn btn-success" style="margin-inline-start: auto;">Print</button>
+                </div>
+
+                <div class="print-table p-0 mb-2 overflow-auto">
+
+                    <table id="myTable" class="table table-bordered table-hover cash-table" style="width:100%">
+                        <thead class="table-dark">
+                            <tr>
+                                <th class="align-middle text-center" rowspan="2">
+                                     @localizer["Receipt No"]
+                                </th>
+                                <th class="align-middle text-center" rowspan="2" style="width:100px;">
+                                     @localizer["Receipt date"]
+                                </th>
+                                <th class="align-middle text-center" rowspan="2">
+                                     @localizer["Check Number"]
+                                </th>
+                                    <th class="align-middle text-center" rowspan="2" style="width:100px;">
+                                     @localizer["Due Date"]
+                                </th>
+                                <th class="align-middle text-center" rowspan="2">
+                                     @localizer["Currency"]
+                                </th>
+                                    <th class="align-middle text-center" rowspan="2">
+                                    @localizer["Check Value"]
+                                </th>
+                                <th class="align-middle text-center" rowspan="2">
+                                    @localizer["Check Status"]
+                                </th>
+                                <th class="align-middle text-center" rowspan="2">
+                                    @localizer["Status Date"]
+                                </th>
+                                 <th class="align-middle text-center" rowspan="2" style="width:200px;">
+                                    @localizer["Drawee Bank"]
+                                </th>
+                                <th class="align-middle text-center" rowspan="2">
+                                    @localizer["Depositor"]
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+
+                    `;
+
+        let url;
+        if (filter.value == 1) {
+            url = `/Treasury/ReportCashAndChecks/GetIncomingChecks/${branche.value}?userCode=${users.value}&safeCode=${safeCode.value}&fromPeriod=${fromPeriod.value}&toPeriod=${toPeriod.value}&treasuryOrBills=${treasuryOrBills.value}`;
+        } else if (filter.value == 2) {
+            url = `/Treasury/ReportCashAndChecks/GetIncomingChecks/${branche.value}?userCode=${users.value}&safeCode=${safeCode.value}&fromReceipt=${fromReceipt.value}&toReceipt=${toReceipt.value}&treasuryOrBills=${treasuryOrBills.value}`;
+        }
+        var dataa = document.querySelector(".cash-table tbody");
+        dataa.innerHTML = "";  // Empty data
+        $.ajax({
+            url: url,
+            success: function (result) {
+                //  console.log(result);
+                var checkValueSum = 0;
+                for (let item of result) {
+                    let docDate = new Date(item.docDate).toISOString().split('T')[0];
+                    let sattleDate = new Date(item.sattlDate).toISOString().split('T')[0];
+                    let checkDate = item.chekDate == null ? " " : new Date(item.chekDate).toISOString().split('T')[0];
+                    var currencyCode = item.currencyCode == 1 ? "جنية مصري" : " ";
+                    var checkStatus = item.checkStatus == 1 ? "بالخزينة" : " ";
+                    const data = document.createElement("tr");
+                    data.innerHTML += `
+
+                                    <td class="align-middle">${item.docNo}</td>
+                                    <td class="align-middle">${docDate}</td>
+                                    <td class="align-middle">${item.chekNo}</td>
+                                    <td class="align-middle">${sattleDate}</td>
+                                    <td class="align-middle">${currencyCode}</td>
+                                    <td class="align-middle">${item.checkValue}</td>
+                                    <td class="align-middle">${checkStatus}</td>
+                                    <td class="align-middle">${checkDate}</td>
+                                    <td class="align-middle">${item.personName}</td>
+                                    <td class="align-middle">${item.accName}</td>
+                                    `;
+                    checkValueSum += item.checkValue;
+                    dataa.appendChild(data);
+                }
+                const dataForSum = document.createElement("tr");
+                //    dataForSum.style.backgroundColor = "#e6dfdf";
+                dataForSum.innerHTML =
+                    `
+                            <td class="align-middle" colspan="5"></td>
+                            <td class="align-middle" style="background-color: #e6dfdf;">${checkValueSum}</td>
+                            <td class="align-middle" colspan="4"></td>
+
+                         `;
+                dataa.appendChild(dataForSum);
+
+            }
+        });
+    }
+
+    //for repotrt Follow Checks//
     function FollowChecks(e) {
 
         if (!branche.value) {
@@ -305,7 +458,7 @@
             `
             <div class="report-head d-flex justify-content-center align-items-center mt-4">
                  <h2 class="header">${title}</h2>
-               <button onclick="printReport()" class="btn btn-success">Print</button>
+                   <button onclick="printReport()" class="btn btn-success" style="margin-inline-start: auto;">Print</button>
             </div>
 
             <div class="print-table p-0 mb-2 overflow-auto">
@@ -360,9 +513,9 @@
 
         let url;
         if (filter.value == 1) {
-            url = `/Treasury/ReportCashAndChecks/GetFollowChecks/${branche.value}?userCode=${users.value}&safeCode=${safeCode.value}&fromPeriod=${fromPeriod.value}&toPeriod=${toPeriod.value}`;
+            url = `/Treasury/ReportCashAndChecks/GetFollowChecks/${branche.value}?userCode=${users.value}&safeCode=${safeCode.value}&fromPeriod=${fromPeriod.value}&toPeriod=${toPeriod.value}&treasuryOrBills=${treasuryOrBills.value}`;
         } else if (filter.value == 2) {
-            url = `/Treasury/ReportCashAndChecks/GetFollowChecks/${branche.value}?userCode=${users.value}&safeCode=${safeCode.value}&fromReceipt=${fromReceipt.value}&toReceipt=${toReceipt.value}`;
+            url = `/Treasury/ReportCashAndChecks/GetFollowChecks/${branche.value}?userCode=${users.value}&safeCode=${safeCode.value}&fromReceipt=${fromReceipt.value}&toReceipt=${toReceipt.value}&treasuryOrBills=${treasuryOrBills.value}`;
         }
         var dataa = document.querySelector(".cash-table tbody");
         dataa.innerHTML = "";  // Empty data
@@ -416,7 +569,7 @@
         let tableReport = document.querySelector(".print-table");
         let originalContent = document.body.innerHTML;//all body
 
-        head.querySelector("button").style.visibility = "hidden";
+        head.querySelector("button").style.display = "none";
         document.body.innerHTML = head.outerHTML + tableReport.outerHTML;
         window.print();
         document.body.innerHTML = originalContent;

@@ -129,15 +129,15 @@
 
             <div class="parent-permission d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
                 <div class="parent-permission d-flex justify-content-center gap-3" style="width: 100% !important;">
-                    <label asp-for="CurCode" style="width: 48% !important;"></label>
+                    <label asp-for="CurrencyCode" style="width: 48% !important;"></label>
                     <div class="mb-3 " style="width: 40% !important;">
                         <input asp-for="CurSer" class="form-control text-center" disabled value="1" />
                     </div>
                     <div class="mb-3 " style="width: 60% !important;">
-                        <select asp-for="CurCode" asp-items="accGlobalDef" class="form-control text-center">
+                        <select asp-for="CurrencyCode" asp-items="accGlobalDef" class="form-control text-center">
                             <option value="">-- Choose --</option>
                         </select>
-                        <span asp-validation-for="CurCode" class="text-danger"></span>
+                        <span asp-validation-for="CurrencyCode" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="mb-3" style="width: 100% !important;">

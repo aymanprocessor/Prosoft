@@ -441,6 +441,9 @@
   "Check Value": "Check Value",
   "Credit": "Credit",
   "Debit": "Debit",
+  "Treasury or Bills": "Treasury or Bills",
+  "Treasury Only": "Treasury Only",
+  "Bills Only": "Bills Only",
 
 
 
@@ -626,5 +629,6 @@
   "Shipped to": "Shipped to",
   "Permission Value": "Permission Value",
   "User Journal": "User Journal",
-  "To Stock": "To Stock"
+  "To Stock": "To Stock",
+  "From Stock": "From Stock"
 }

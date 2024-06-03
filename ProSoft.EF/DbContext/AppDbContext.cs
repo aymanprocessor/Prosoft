@@ -123,6 +123,9 @@ namespace ProSoft.EF.DbContext
         // Accounts //
         public DbSet<AccMainCode> AccMainCodes { get; set; }
         public DbSet<AccSubCode> AccSubCodes { get; set; }
+        public DbSet<UserJournalType> UserJournalTypes { get; set; }
+        public DbSet<AccTransMaster> AccTransMasters { get; set; }
+        public DbSet<AccTransDetail> AccTransDetails { get; set; }
         ////////////////////
         // System //
         public DbSet<EisPosting> EisPostings { get; set; }
