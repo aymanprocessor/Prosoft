@@ -303,6 +303,7 @@
   "User Dependence": "اعتماد المستخدم",
   "Treasury No": "رقم الخزينة",
   "Voucher No": "رقم القيد",
+  "Voucher Date": "تاريخ القيد",
   "Data Entry": "مدخل البيانات",
   "Data Editor": "معدل البيانات",
   "Treasury System": "نظام الخزينة",
@@ -446,6 +447,19 @@
   "Treasury or Bills": "خزينة او فواتير",
   "Treasury Only": "خزينة فقط",
   "Bills Only": "فواتير فقط",
+  "Recording Restrictions": "تسجيل القيود",
+  "Journals": "اليوميات",
+  "Cancel Journal Entry": "الغاء قيد يومية",
+  "User Journal Types": "يوميات المستخدم",
+  "Recording Journal Entries": "تسجيل قيود اليوميات",
+  "Total Voucher": "اجمالي القيد",
+  "Voucher Type": "نوع القيد",
+  "Come From": "وارد من",
+  "Closed Voucher": "قيد مغلق",
+  "Opened Voucher": "قيد مفتوح",
+  "Add Voucher": "اضافة قيد",
+  "Edit Voucher": "تعديل قيد",
+  "No.": "رقم",
 
 
 
@@ -618,7 +632,7 @@
   "Due Value": "القيمة المستحقة",
   "Discount/Addition": "خصم/اضافة",
   "Prices Include Tax": "الاسعار شاملة الضريبة",
-  "Doc No": "كود الاذن",
+  "Doc No": "رقم الاذن",
   "Permission Name": "اسم الاذن",
   "Modify": "تعديل",
   "Confirm Delete": "تأكيد الحذف",
@@ -630,5 +644,8 @@
   "Permission Value": "فيمة الاذن",
   "User Journal": "يومية المستخدم",
   "To Stock": "الي مخزن",
-  "From Stock": "من مخزن"
+  "From Stock": "من مخزن",
+  "Disburse Permission No": "رقم اذن الصرف",
+  "Delivery Permission Date": "تاريخ اذن التسليم",
+  "Disburse Permission Date": "تاريخ اذن الصرف"
 }

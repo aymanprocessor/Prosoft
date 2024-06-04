@@ -259,7 +259,7 @@ namespace ProSoft.Core.Repositories.Stocks
                 .FirstOrDefaultAsync(obj => obj.UserCode == permissionFormDTO.UserCode &&
                 obj.BranchId == permissionFormDTO.BranchId);
             permissionFormDTO.JournalName = (await _Context.JournalTypes
-                .FirstOrDefaultAsync(obj => obj.JournalCode.ToString() == userJournal.JournalCode))
+                .FirstOrDefaultAsync(obj => obj.JournalCode == userJournal.JournalCode))
                 .JournalName;
 
             return permissionFormDTO;
@@ -303,7 +303,7 @@ namespace ProSoft.Core.Repositories.Stocks
             UserJournalType userJournal = await _Context.UserJournalTypes
                 .FirstOrDefaultAsync(obj => obj.UserCode == userCode && obj.BranchId == branchID);
             permissionFormDTO.JournalName = (await _Context.JournalTypes
-                .FirstOrDefaultAsync(obj => obj.JournalCode.ToString() == userJournal.JournalCode))
+                .FirstOrDefaultAsync(obj => obj.JournalCode == userJournal.JournalCode))
                 .JournalName;
 
             return permissionFormDTO;

@@ -1,0 +1,109 @@
+﻿@model AccTransMasterEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Add Treasury";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    SelectList accGlobalDef = new SelectList(Model.accGlobalDefs, "CodeNo", "CodeDesc");
+}
+@inject IViewLocalizer localizer
+@* <style>
+    .image {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.5;
+        z-index: -1;
+    }
+</style> *@
+<div class="container pt-2" style="min-height:100vh;">
+    @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
+
+    <div class="d-flex justify-content-between align-items-center mt-3 ">
+        <h1 >@localizer["Add Voucher"]</h1>
+        <h3>@Model.JournalName @localizer["Branch"] @localizer["No."] @ViewBag.branchId</h3>
+    </div>
+
+    <form method="post" asp-action="Add_AccTransMaster" id="myForm">
+        <div class="border p-3 mt-1">
+
+            <div asp-validation-summary="ModelOnly"></div>.
+            @* hidden *@
+
+            <input asp-for="TransNo" hidden value="@ViewBag.TransNo" />
+            <input asp-for="TransType" hidden value="@ViewBag.journalCode" />
+            <input asp-for="CoCode" hidden value="@ViewBag.branchId" />
+            <input asp-for="FYear" hidden value="@ViewBag.frear" />
+            <input asp-for="UserCodeModify" hidden value="@ViewBag.userCode" />
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent-permission d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <label asp-for="MCode"></label>
+                    <input asp-for="MCode" class="form-control" disabled />
+                    <span asp-validation-for="MCode" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="OkPost"></label>
+                    <select asp-for="OkPost" class="form-control text-center">
+                        <option value="0"> @localizer["Opened Voucher"]</option>
+                        <option value="2">@localizer["Closed Voucher"]</option>
+                    </select>
+                    <span asp-validation-for="OkPost" class="text-danger"></span>
+                </div>
+                @* <div class="parent-permission d-flex justify-content-center gap-3"> *@
+                <div class="mb-3">
+                    @* style="width: 120%;" *@
+                    <label asp-for="CurCode"></label>
+                    <select asp-for="CurCode" asp-items="accGlobalDef" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="CurCode" class="text-danger"></span>
+                </div>
+                @* <div class="mb-3" style="width: 45%;">
+                    <label asp-for="CurRate"></label>
+                    <input asp-for="CurRate" class="form-control" hidden disabled value="1" />
+                    <span asp-validation-for="CurRate" class="text-danger"></span>
+                    </div>
+                </div> *@
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent-permission d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <label asp-for="TransNo"></label>
+                    <input asp-for="TransNo" class="form-control" disabled value="@ViewBag.TransNo" />
+                    <span asp-validation-for="TransNo" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="TransDate"></label>
+                    <input asp-for="TransDate" class="form-control" />
+                    <span asp-validation-for="TransDate" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="TransDesc"></label>
+                    <input asp-for="TransDesc" class="form-control" />
+                    <span asp-validation-for="TransDesc" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex justify-content-md-center gap-2 ">
+                <button type="submit" class="btn btn-primary" style="width:150px">
+                    @localizer["Add Voucher"]
+                </button>
+                <a asp-controller="AccTransMaster" asp-action="Index" asp-route-journalCode="@Model.JournalCode" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>

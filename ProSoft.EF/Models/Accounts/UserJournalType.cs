@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProSoft.EF.Models.Treasury;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -18,12 +19,13 @@ namespace ProSoft.EF.Models.Accounts
         [Column("USER_CODE")]
         public int? UserCode { get; set; }
 
-        [Column("JOURNAL_CODE")]
-        [StringLength(5)]
-        [Unicode(false)]
-        public string? JournalCode { get; set; }
-
         [Column("BRANCH_ID")]
         public int? BranchId { get; set; }
+
+        [Column("JOURNAL_CODE")]
+        public int? JournalCode { get; set; }
+
+        [ForeignKey("JournalCode")]
+        public JournalType? JournalType { get; set; }
     }
 }

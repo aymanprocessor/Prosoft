@@ -396,6 +396,23 @@
                             </li>
                             <li class="nav-item has-submenu">
                                 <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
+                                    <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Recording Restrictions"]
+                                </a>
+                                <ul class="submenu collapse p-0 ">
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Accounts" asp-controller="UserJournalType" asp-action="JournalTypeForUser" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                            @localizer["Journals"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Treasury" asp-controller="CostCenterTreasury" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                            @localizer["Cancel Journal Entry"]
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item has-submenu">
+                                <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
                                     <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Transactions"]
                                 </a>
                                 <ul class="submenu collapse p-0 ">

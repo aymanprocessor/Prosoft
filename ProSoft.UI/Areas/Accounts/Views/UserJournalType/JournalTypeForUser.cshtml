@@ -1,0 +1,66 @@
+﻿@model List<UserJournalTypeDTO>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "User Journal Types";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@inject IViewLocalizer localizer
+@* <style>
+    .image {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.5;
+        z-index: -1;
+    }
+</style> *@
+<div class="container pt-2 " style="min-height:90vh;">
+    @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
+
+    <div class="d-flex justify-content-between align-items-center mt-4 ">
+        <h1 class="header">@localizer["User Journal Types"]</h1>
+
+    </div>
+    <div class="overflow-auto" style="max-height:calc(100vh - 145px)">
+        <table id="myTable" class="table table-bordered table-hover" style="width:100%">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        @localizer["Code"]
+                    </th>
+                    <th>
+                        @localizer["Journal Name"]
+                    </th> 
+                    <th>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var jou in Model)
+                {
+                    <tr class="align-middle">
+                        <td>
+                            @jou.JournalCode
+                        </td>
+                        <td>
+                            @jou.JournalName
+                        </td>
+                        <td width="30%" class="text-center">
+                            <a asp-controller="AccTransMaster" asp-action="Index" asp-route-journalCode="@jou.JournalCode" class="btn btn-sm btn-primary mb-1 fs-6" style="width:150px">
+                                <i class="bi bi-pencil"></i> @localizer["Recording Restrictions"]
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

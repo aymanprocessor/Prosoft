@@ -31,9 +31,8 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             return View(journalTypeDTOs);
         }
 
-
         //Get add
-        public async Task<IActionResult> Add_JournalType(int id)
+        public async Task<IActionResult> Add_JournalType(int journalCode)
         {
             ViewBag.JournalID = await _journalTypeRepo.GetNewIdAsync();
             return View();

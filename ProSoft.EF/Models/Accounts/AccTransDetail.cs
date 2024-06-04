@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ProSoft.EF.Models.Medical.HospitalPatData;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -135,5 +136,10 @@ namespace ProSoft.EF.Models.Accounts
         [Column("USER_DATE_MODIFY", TypeName = "datetime")]
         public DateTime? UserDateModify { get; set; }
 
+        [Column("TRANS_ID")]
+        public int TransId { get; set; }
+
+        [ForeignKey("TransId")]
+        public AccTransMaster? AccTransMasters { get; set; }
     }
 }

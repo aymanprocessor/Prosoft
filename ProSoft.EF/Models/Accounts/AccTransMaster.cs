@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ProSoft.EF.Models.Treasury;
 
 namespace ProSoft.EF.Models.Accounts
 {
@@ -101,5 +102,7 @@ namespace ProSoft.EF.Models.Accounts
 
         [Column("USER_DATE_MODIFY", TypeName = "datetime")]
         public DateTime? UserDateModify { get; set; }
+        public ICollection<AccTransDetail>? AccTransDetails { get; set; }
+
     }
 }
