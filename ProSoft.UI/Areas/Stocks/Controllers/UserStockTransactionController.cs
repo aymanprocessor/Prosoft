@@ -18,14 +18,14 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
     [Area(nameof(Stocks))]
     public class UserStockTransactionController : Controller
     {
-        private readonly IStockEmpRepo _userStockRepo;
+        private readonly IStockEmpRepo _stockEmpRepo;
         private readonly IUserRepo _userRepo;
         private readonly IMapper _mapper; 
 
-        public UserStockTransactionController(IStockEmpRepo serStockRepo
+        public UserStockTransactionController(IStockEmpRepo stockEmpRepo
             , IUserRepo userRepo, IMapper mapper)
         {
-            _userStockRepo = serStockRepo;
+            _stockEmpRepo = stockEmpRepo;
             _userRepo = userRepo;
             _mapper = mapper;
         }
@@ -40,7 +40,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         //Ajax In Index
         public async Task<IActionResult> GetStockTransForUser(int id)
         {
-            List<StockEmpViewDTO> stockTransDTO = await _userStockRepo
+            List<StockEmpViewDTO> stockTransDTO = await _stockEmpRepo
                 .GetStockTransForUserAsync(id);
             return Json(stockTransDTO);
         }
@@ -48,7 +48,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         //Ajax In Add_StockTrans
         public async Task<IActionResult> GetUserStockPermissions(int id, int stockCode)
         {
-            List<PermissionDefViewDTO> permissionsDTO = await _userStockRepo
+            List<PermissionDefViewDTO> permissionsDTO = await _stockEmpRepo
                 .GetUserStockPermissionsAsync(id, stockCode);
             return Json(permissionsDTO);
         }
@@ -56,7 +56,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         //Ajax In Add_StockTrans
         public async Task<IActionResult> GetSubCodesFromAcc(string id)
         {
-            List<AccSubCodeDTO> subAccCodesDTO = await _userStockRepo
+            List<AccSubCodeDTO> subAccCodesDTO = await _stockEmpRepo
                 .GetSubCodesFromAccAsync(id);
             return Json(subAccCodesDTO);
         }
@@ -65,7 +65,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         public async Task<IActionResult> Add_StockTrans(int id)
         {
             ViewBag.userName = (await _userRepo.GetUserByIdAsync(id)).UserName;
-            StockEmpEditAddDTO stockTransDTO = await _userStockRepo.GetEmptyStockTransAsync(id);
+            StockEmpEditAddDTO stockTransDTO = await _stockEmpRepo.GetEmptyStockTransAsync(id);
             return View(stockTransDTO);
         }
 
@@ -79,7 +79,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
                 stockTransDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
                 stockTransDTO.UserId = id;
 
-                await _userStockRepo.AddStockTransAsync(stockTransDTO);
+                await _stockEmpRepo.AddStockTransAsync(stockTransDTO);
                 return RedirectToAction(nameof(Index));
             }
             return View(stockTransDTO);
@@ -88,7 +88,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         //Ajax In Edit_StockTrans
         public async Task<IActionResult> GetUserStockPermissionsForEdit(int id, int stockCode, int transType)
         {
-            List<PermissionDefViewDTO> permissionsDTO = await _userStockRepo
+            List<PermissionDefViewDTO> permissionsDTO = await _stockEmpRepo
                 .GetUserStockPermissionsForEditAsync(id, stockCode, transType);
             return Json(permissionsDTO);
         }
@@ -96,9 +96,9 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         // Get Edit
         public async Task<IActionResult> Edit_StockTrans(int id)
         {
-            StockEmpEditAddDTO stockTransDTO = await _userStockRepo.GetStockTransByIdAsync(id);
-            ViewBag.subAccCodesStk = await _userStockRepo.GetSubCodesFromAccAsync(stockTransDTO.MainCodeStk);
-            ViewBag.subAccCodesAcc = await _userStockRepo.GetSubCodesFromAccAsync(stockTransDTO.MainCodeAcc);
+            StockEmpEditAddDTO stockTransDTO = await _stockEmpRepo.GetStockTransByIdAsync(id);
+            ViewBag.subAccCodesStk = await _stockEmpRepo.GetSubCodesFromAccAsync(stockTransDTO.MainCodeStk);
+            ViewBag.subAccCodesAcc = await _stockEmpRepo.GetSubCodesFromAccAsync(stockTransDTO.MainCodeAcc);
             ViewBag.userName = (await _userRepo.GetUserByIdAsync(stockTransDTO.UserId)).UserName;
             return View(stockTransDTO);
         }
@@ -110,7 +110,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _userStockRepo.UpdateStockTransAsync(id, stockTransDTO);
+                await _stockEmpRepo.UpdateStockTransAsync(id, stockTransDTO);
                 return RedirectToAction(nameof(Index));
             }
             return View(stockTransDTO);
@@ -121,7 +121,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete_StockTrans(int id)
         {
-            await _userStockRepo.DeleteStockTransAsync(id);
+            await _stockEmpRepo.DeleteStockTransAsync(id);
             return RedirectToAction(nameof(Index));
         }
     }

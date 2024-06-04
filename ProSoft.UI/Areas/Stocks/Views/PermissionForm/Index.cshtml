@@ -107,7 +107,7 @@
                         }
                         else
                         {
-                        <a href="/Stocks/PermissionForm/Edit_DisburseForm/@Model.TransMAsterID" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
+                        <a href="/Stocks/PermissionForm/Edit_PermissionForm/@Model.TransMAsterID" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
                         <form action="/Stocks/PermissionForm/Delete_PermissionForm" method="post" class="d-inline">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@Model.TransMAsterID" />
@@ -202,10 +202,12 @@
                 return;
             }
 
-            if(permission.value == 1)
-                linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_PermissionForm/${stock.value}?transType=${permission.value}`);
-            else if (permission.value == 2)
+            if (permission.value == 2)
                 linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_DisburseForm/${stock.value}?transType=${permission.value}`);
+            if (permission.value == 6)
+                linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_SalesInvoice/${stock.value}?transType=${permission.value}`);
+            else
+                linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_PermissionForm/${stock.value}?transType=${permission.value}`);
         }
 
         function getUserPermissionsForStock(e) {
@@ -231,6 +233,8 @@
                 stock.focus();
                 return;
             }
+            if (!permission.value)
+                return;
 
             let userPermissions = document.querySelector("#myTable tbody");
             userPermissions.innerHTML = "";  // Empty the table
@@ -241,13 +245,15 @@
                     for (let item of result) {
                         let docDate = new Date(item.docDate).toISOString().split('T')[0];
                         let supInvDate = new Date(item.supInvDate).toISOString().split('T')[0];
-                        const userPerm = document.createElement("tr");
+                        let userPerm = document.createElement("tr");
 
                         let actions;
                         if (item.transType == 2)
-                            actions = ["Edit_DisburseForm", "Delete_DisburseForm"];
+                            actions = ["Edit_DisburseForm"];
+                        else if (item.transType == 6)
+                            actions = ["Edit_SalesInvoice"];
                         else
-                            actions = ["Edit_PermissionForm", "Delete_PermissionForm"];
+                            actions = ["Edit_PermissionForm"];
 
                         userPerm.innerHTML =
                             `
@@ -262,7 +268,7 @@
                             <td class="align-middle text-center">${supInvDate}</td>
                             <td class="text-center align-middle" style="width: 325px;">
                                 <a href="/Stocks/PermissionForm/${actions[0]}/${item.transMAsterID}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
-                                <form action="/Stocks/PermissionForm/${actions[1]}" method="post" class="d-inline">
+                                <form action="/Stocks/PermissionForm/Delete_PermissionForm" method="post" class="d-inline">
                                         @Html.AntiForgeryToken()
                                     <input type="hidden" name="id" value="${item.transMAsterID}" />
                                     <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width: 150px">@localizer["Delete"]</button>

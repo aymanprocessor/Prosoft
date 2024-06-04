@@ -19,6 +19,20 @@ namespace ProSoft.EF.Models.Accounts
         [Column("USER_CODE")]
         public int? UserCode { get; set; }
 
+<<<<<<< HEAD
+||||||| 8386149
+        [Column("JOURNAL_CODE")]
+        [StringLength(5)]
+        [Unicode(false)]
+        public string? JournalCode { get; set; }
+
+=======
+        [Column("JOURNAL_CODE")]
+        [StringLength(5)]
+        [Unicode(false)]
+        public int? JournalCode { get; set; }
+
+>>>>>>> abe1c2d5b9bec770d681c7ae4595029f1a34450d
         [Column("BRANCH_ID")]
         public int? BranchId { get; set; }
 

@@ -11,6 +11,7 @@ namespace ProSoft.EF.DTOs.Stocks
         public int StockEmpID { get; set; }
         public string PermissionName { get; set; }
         public int TransType { get; set; }
+        public int Stkcod { get; set; }
         public string StockName { get; set; }
         public int StockDef { get; set; }
         public int ShowPrice { get; set; }

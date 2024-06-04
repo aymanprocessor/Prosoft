@@ -154,6 +154,8 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         {
             if (ModelState.IsValid)
             {
+                permissionFormDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
+                permissionFormDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
                 await _transMasterRepo.UpdateDisburseFormAsync(id, permissionFormDTO);
                 return RedirectToAction(nameof(Index));
             }
@@ -161,15 +163,76 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         }
 
         // Delete
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete_DisburseForm(int id)
-        {
-            TransMaster permissionForm = await _transMasterRepo.GetByIdAsync(id);
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Delete_DisburseForm(int id)
+        //{
+        //    TransMaster permissionForm = await _transMasterRepo.GetByIdAsync(id);
 
-            await _transMasterRepo.DeleteAsync(permissionForm);
-            await _transMasterRepo.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+        //    await _transMasterRepo.DeleteAsync(permissionForm);
+        //    await _transMasterRepo.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
+
+        //////////////////////////////////////////////////
+        // Add Sales Invoice => فاتورة مبيعات
+        // Get Add
+        public async Task<IActionResult> Add_SalesInvoice(int id, int transType)
+        {
+            var userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
+            var branchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
+            TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo
+                .GetNewDisburseFormAsync(id, userCode, transType, branchId);
+            permissionFormDTO.UserName = (await _userRepo.GetUserByIdAsync(userCode)).UserName;
+
+            return View(permissionFormDTO);
         }
+
+        //Post Add
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Add_SalesInvoice(int id, TransMasterEditAddDTO permissionFormDTO)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        permissionFormDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
+        //        permissionFormDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
+        //        TransMaster permissionForm = await _transMasterRepo.AddDisburseFormAsync(permissionFormDTO);
+        //        return RedirectToAction(nameof(Index), new { id = permissionForm.TransMAsterID });
+        //    }
+        //    return View(permissionFormDTO);
+        //}
+
+        // Get Edit
+        //public async Task<IActionResult> Edit_SalesInvoice(int id)
+        //{
+        //    TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetDisburseFormByIdAsync(id);
+        //    return View(permissionFormDTO);
+        //}
+
+        // Post Edit
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit_SalesInvoice(int id, TransMasterEditAddDTO permissionFormDTO)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        await _transMasterRepo.UpdateDisburseFormAsync(id, permissionFormDTO);
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(permissionFormDTO);
+        //}
+
+        // Delete
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Delete_SalesInvoice(int id)
+        //{
+        //    TransMaster permissionForm = await _transMasterRepo.GetByIdAsync(id);
+
+        //    await _transMasterRepo.DeleteAsync(permissionForm);
+        //    await _transMasterRepo.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
     }
 }
