@@ -95,7 +95,6 @@ builder.Services.AddScoped<ITransMasterRepo, TransMasterRepo>();
 builder.Services.AddScoped<IEisPostingRepo, EisPostingRepo>();
 ///////////////// Treasury /////////////
 builder.Services.AddScoped<ITreasuryNameRepo, TreasuryNameRepo>();
-///////////////// Treasury /////////////
 builder.Services.AddScoped<IJournalTypeRepo, JournalTypeRepo>();
 builder.Services.AddScoped<IAccSafeCashRepo, AccSafeCashRepo>();
 builder.Services.AddScoped<IAccSafeCheckRepo, AccSafeCheckRepo>();

@@ -151,7 +151,14 @@
                 </div>
                 <div style="width: 35%;">
                     <div class="d-flex align-items-center justify-content-start justify-content-md-end gap-2 mb-3 w-100">
-                        <input name="PriceIncTax" id="PriceIncTax" type="checkbox" value="0" class="form-check-input" onchange="changeValue(event)" />
+                        @if(Model.PriceIncTax == 1)
+                        {
+                        <input name="PriceIncTax" id="PriceIncTax" type="checkbox" class="form-check-input" value="1" checked onchange="changeValue(event)" />
+                        }
+                        else
+                        {
+                        <input name="PriceIncTax" id="PriceIncTax" type="checkbox" class="form-check-input" value="0" onchange="changeValue(event)" />
+                        }
                         <label asp-for="PriceIncTax" style="width: 180px;"></label>
                     </div>
                     <span asp-validation-for="PriceIncTax" class="text-danger"></span>

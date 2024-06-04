@@ -303,6 +303,7 @@
   "User Dependence": "User Dependence",
   "Treasury No": "Treasury No",
   "Voucher No": "Voucher No",
+  "Voucher Date": "Voucher Date",
   "Data Entry": "Data Entry",
   "Data Editor": "Data Editor",
   "Treasury System": "Treasury System",
@@ -444,6 +445,20 @@
   "Treasury or Bills": "Treasury or Bills",
   "Treasury Only": "Treasury Only",
   "Bills Only": "Bills Only",
+  "Recording Restrictions": "Recording Restrictions",
+  "Journals": "Journals",
+  "Cancel Journal Entry": "Cancel Journal Entry",
+  "User Journal Types": "User Journal Types",
+  "Recording Journal Entries": "Recording Journal Entries",
+  "Total Voucher": "Total Voucher",
+  "Voucher Type": "Voucher Type",
+  "Come From": "Come From",
+  "Closed Voucher": "Closed Voucher",
+  "Opened Voucher": "Opened Voucher",
+  "Add Voucher": "Add Voucher",
+  "Edit Voucher": "Edit Voucher",
+  "No.": "No",
+
 
 
 
@@ -630,5 +645,8 @@
   "Permission Value": "Permission Value",
   "User Journal": "User Journal",
   "To Stock": "To Stock",
-  "From Stock": "From Stock"
+  "From Stock": "From Stock",
+  "Disburse Permission No": "Disburse Permission No",
+  "Delivery Permission Date": "Delivery Permission Date",
+  "Disburse Permission Date": "Disburse Permission Date"
 }

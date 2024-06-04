@@ -27,8 +27,9 @@ namespace ProSoft.Core.Repositories.Stocks
 
         public async Task<List<StockEmpViewDTO>> GetStockTransForUserAsync(int userCode)
         {
-            List<StockEmp> stockTrans = await _Context.StockEmps
-                .Where(obj => obj.UserId == userCode).ToListAsync();
+            List<StockEmp> stockTrans = await _DbSet
+                .Where(obj => obj.UserId == userCode).OrderBy(obj => obj.Stkcod)
+                .ThenBy(obj => obj.TransType).ToListAsync();
 
             var stockTransDTO = new List<StockEmpViewDTO>();
             foreach (var item in stockTrans)
@@ -84,7 +85,7 @@ namespace ProSoft.Core.Repositories.Stocks
 
         public async Task<List<PermissionDefViewDTO>> GetUserStockPermissionsAsync(int userCode, int stockCode)
         {
-            List<StockEmp> stockTransList = await _Context.StockEmps.Where(obj =>
+            List<StockEmp> stockTransList = await _DbSet.Where(obj =>
                 obj.Stkcod == stockCode && obj.UserId == userCode).ToListAsync();
             List<UserTranss> userTransList = await _Context.UserTransactions
                 .Where(obj => obj.UsrId == userCode && obj.TransFlag == 1).ToListAsync();

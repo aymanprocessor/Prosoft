@@ -27,7 +27,7 @@
         <div class="border p-3 mt-4">
 
             @* Hidden Inputs *@
-            <input asp-for="DocDate" type="hidden" />
+            @* <input asp-for="DocDate" type="hidden" /> *@
             <input asp-for="StockCode" type="hidden" />
             <input asp-for="TransType" type="hidden" />
 
@@ -37,11 +37,11 @@
                     <label asp-for="DocDate" style="width: 125px;"></label>
                     @if (Model.EnableModify)
                     {
-                    <input asp-for="DocDate" type="date" class="form-control" style="width: 210px;"/>
+                    <input asp-for="DocDate" class="form-control" style="width: 210px;"/>
                     }
                     else
                     {
-                    <input asp-for="DocDate" type="date" class="form-control" style="width: 210px;" disabled/>
+                    <input asp-for="DocDate" class="form-control" style="width: 210px; pointer-events: none; background-color: #e9ecef" />
                     }
                     <span asp-validation-for="DocDate" class="text-danger"></span>
                 </div>

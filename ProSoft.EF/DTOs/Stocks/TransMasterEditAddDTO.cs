@@ -87,6 +87,8 @@ namespace ProSoft.EF.DTOs.Stocks
         public decimal? CustDisc3 { get; set; }
         public decimal? CustDisc4 { get; set; }
         public decimal? CustDisc5 { get; set; }
+
+        [DisplayName("Invoice No")]
         public long? InvNo { get; set; }
         public int? SmNo { get; set; }
 

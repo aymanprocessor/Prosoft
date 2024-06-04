@@ -21,7 +21,7 @@ namespace ProSoft.EF.Models.Accounts
         [Column("JOURNAL_CODE")]
         [StringLength(5)]
         [Unicode(false)]
-        public string? JournalCode { get; set; }
+        public int? JournalCode { get; set; }
 
         [Column("BRANCH_ID")]
         public int? BranchId { get; set; }
