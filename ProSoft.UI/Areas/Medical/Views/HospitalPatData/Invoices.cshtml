@@ -295,11 +295,9 @@
                         // <td class="align-middle">${item.regionDesc}</td>
                     result.sort((a, b) => b.masterId - a.masterId)
                     for (let item of result) {
-                        
-                        //convert to date not time//
-                        const patAdDate = new Date(item.patAdDate);
-                        // Format the date as needed (e.g., "YYYY-MM-DD")
-                        const PatAdDate = patAdDate.toISOString().split('T')[0];
+
+                        //convert to date not time// Format the date as needed (e.g., "YYYY-MM-DD")
+                        const PatAdDate = new Date(item.patAdDate).toISOString().split('T')[0];
                         //////////////////
 
                         const patAdmission = document.createElement("tr");

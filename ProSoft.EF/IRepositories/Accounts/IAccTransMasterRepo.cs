@@ -16,6 +16,7 @@ namespace ProSoft.EF.IRepositories.Accounts
         Task<AccTransMasterEditAddDTO> GetEmptyAccTransMasterAsync(int journalCode);
         Task<int> GetNewtranNoAsync(int journalCode, int fYear, int branchId);
         Task AddAccTransMasterAsync(AccTransMasterEditAddDTO accTransMasterDTO);
-
+        Task<AccTransMasterEditAddDTO> GetAccTransMasterByIdAsync(int id);
+        Task EditAccTransMasterAsync(int id, AccTransMasterEditAddDTO accTransMasterDTO);
     }
 }

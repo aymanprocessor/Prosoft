@@ -94,6 +94,15 @@ namespace ProSoft.EF.Models.Accounts
         [Unicode(false)]
         public string? DocNo { get; set; }
 
+        [Column("DOC_DATE")]
+        [Precision(6)]
+        public DateTime? DocDate { get; set; }
+
+        [Column("LINE_DESC")]
+        [StringLength(200)]
+        [Unicode(false)]
+        public string? LineDesc { get; set; }
+
         [Column("POST_RECIPT")]
         public int? PostRecipt { get; set; }
 

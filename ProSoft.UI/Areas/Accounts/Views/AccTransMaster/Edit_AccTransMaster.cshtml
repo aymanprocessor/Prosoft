@@ -2,7 +2,7 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Add Voucher";
+    ViewData["Title"] = "Edit Voucher";
     Layout = "~/Views/Shared/_Layout.cshtml";
     SelectList accGlobalDef = new SelectList(Model.accGlobalDefs, "CodeNo", "CodeDesc");
 }
@@ -25,22 +25,25 @@
     @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
 
     <div class="d-flex justify-content-between align-items-center mt-3 ">
-        <h1 >@localizer["Add Voucher"]</h1>
+        <h1>@localizer["Edit Voucher"]</h1>
         <h3>@Model.JournalName @localizer["Branch"] @localizer["No."] @ViewBag.branchId</h3>
     </div>
 
-    <form method="post" asp-action="Add_AccTransMaster" id="myForm">
+    <form method="post" asp-action="Edit_AccTransMaster" id="myForm">
         <div class="border p-3 mt-1">
 
             <div asp-validation-summary="ModelOnly"></div>.
             @* hidden *@
 
-            <input asp-for="TransNo" hidden value="@ViewBag.TransNo" />
-            <input asp-for="TransType" hidden value="@ViewBag.journalCode" />
-            <input asp-for="CoCode" hidden value="@ViewBag.branchId" />
-            <input asp-for="FYear" hidden value="@ViewBag.frear" />
+            <input asp-for="TransId" hidden  />
+            <input asp-for="TransNo" hidden  />
+            <input asp-for="TransType" hidden  />
+            <input asp-for="OkPost" hidden/>
+            <input asp-for="CoCode" hidden  />
+            <input asp-for="FYear" hidden />
+            <input asp-for="EntryDate" hidden />
+            <input asp-for="YearTransNo" hidden />
             <input asp-for="UserCodeModify" hidden value="@ViewBag.userCode" />
-             <input asp-for="OkPost" hidden value="0" />
 
             <!------------------------------------------------------------------------------->
 
@@ -52,7 +55,6 @@
                 </div>
                 <div class="mb-3 ">
                     <label asp-for="OkPost"></label>
-
                     <select asp-for="OkPost" class="form-control text-center" disabled>
                         <option value="0"> @localizer["Opened Voucher"]</option>
                         <option value="1">@localizer["Closed Voucher"]</option>
@@ -69,10 +71,10 @@
                     <span asp-validation-for="CurCode" class="text-danger"></span>
                 </div>
                 @* <div class="mb-3" style="width: 45%;">
-                    <label asp-for="CurRate"></label>
-                    <input asp-for="CurRate" class="form-control" hidden disabled value="1" />
-                    <span asp-validation-for="CurRate" class="text-danger"></span>
-                    </div>
+                <label asp-for="CurRate"></label>
+                <input asp-for="CurRate" class="form-control" hidden disabled value="1" />
+                <span asp-validation-for="CurRate" class="text-danger"></span>
+                </div>
                 </div> *@
             </div>
 
@@ -81,7 +83,7 @@
             <div class="parent-permission d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
                 <div class="mb-3">
                     <label asp-for="TransNo"></label>
-                    <input asp-for="TransNo" class="form-control" disabled value="@ViewBag.TransNo" />
+                    <input asp-for="TransNo" class="form-control" disabled />
                     <span asp-validation-for="TransNo" class="text-danger"></span>
                 </div>
                 <div class="mb-3 ">
@@ -97,11 +99,11 @@
             </div>
 
             <!------------------------------------------------------------------------------->
-            
+
             <div class="parent-permission d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
                 <div class="mb-3">
                     <label asp-for="DocNo"></label>
-                    <input asp-for="DocNo" class="form-control"/>
+                    <input asp-for="DocNo" class="form-control" />
                     <span asp-validation-for="DocNo" class="text-danger"></span>
                 </div>
                 <div class="mb-3 ">
@@ -116,9 +118,9 @@
 
             <div class="parent d-flex justify-content-md-center gap-2 ">
                 <button type="submit" class="btn btn-primary" style="width:150px">
-                    @localizer["Add Voucher"]
+                    @localizer["Save Changes"]
                 </button>
-                <a asp-controller="AccTransMaster" asp-action="Index" asp-route-journalCode="@Model.JournalCode" class="btn btn-secondary" style="width:150px">
+                <a asp-controller="AccTransMaster" asp-action="Index" asp-route-journalCode="@Model.TransType" class="btn btn-secondary" style="width:150px">
                     @localizer["Cancel"]
                 </a>
             </div>

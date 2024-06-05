@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProSoft.Core.Repositories.Accounts;
 using ProSoft.EF.DTOs.Accounts;
+using ProSoft.EF.DTOs.Treasury;
 using ProSoft.EF.IRepositories.Accounts;
 using ProSoft.EF.Models.Accounts;
+using ProSoft.EF.Models.Treasury;
 
 namespace ProSoft.UI.Areas.Accounts.Controllers
 {
@@ -13,11 +15,9 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
     public class AccTransMasterController : Controller
     {
         private readonly IAccTransMasterRepo _accTransMasterRepo;
-        private readonly IMapper _mapper;
         public AccTransMasterController(IAccTransMasterRepo accTransMasterRepo, IMapper mapper)
         {
             _accTransMasterRepo = accTransMasterRepo;
-            _mapper = mapper;
         }
 
         public async Task<IActionResult> Index(int journalCode)
@@ -58,6 +58,40 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
 
             }
             return View();
+        }
+
+        //Get Edit
+        public async Task<IActionResult> Edit_AccTransMaster(int id)
+        {
+            AccTransMasterEditAddDTO accTransMasterDTO = await _accTransMasterRepo.GetAccTransMasterByIdAsync(id);
+            ViewBag.userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
+
+            return View(accTransMasterDTO);
+        }
+
+        //Post Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit_AccTransMaster(int id, AccTransMasterEditAddDTO accTransMasterDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                await _accTransMasterRepo.EditAccTransMasterAsync(id, accTransMasterDTO);
+                return RedirectToAction("Index", "AccTransMaster", new { journalCode = accTransMasterDTO.TransType });
+            }
+            return View(accTransMasterDTO);
+        }
+
+        //Delete
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete_AccTransMaster(int id, AccTransMasterEditAddDTO accTransMasterDTO)
+        {
+            AccTransMaster accTransMaster = await _accTransMasterRepo.GetByIdAsync(id);
+
+            await _accTransMasterRepo.DeleteAsync(accTransMaster);
+            await _accTransMasterRepo.SaveChangesAsync();
+            return RedirectToAction("Index", "AccTransMaster", new { journalCode = accTransMaster.TransType });
         }
     }
 }

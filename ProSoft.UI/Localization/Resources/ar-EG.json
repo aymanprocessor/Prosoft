@@ -460,6 +460,13 @@
   "Add Voucher": "اضافة قيد",
   "Edit Voucher": "تعديل قيد",
   "No.": "رقم",
+  "EG Debit": "مدين مصري",
+  "EG Credit": "دائن مصري",
+  "File No": "اسم المستند",
+  "File Date": "تاريخ المستند",
+  "Terms of Voucher": "بنود القيد",
+
+
 
 
 
@@ -647,5 +654,12 @@
   "From Stock": "من مخزن",
   "Disburse Permission No": "رقم اذن الصرف",
   "Delivery Permission Date": "تاريخ اذن التسليم",
-  "Disburse Permission Date": "تاريخ اذن الصرف"
+  "Disburse Permission Date": "تاريخ اذن الصرف",
+  "Last Supply No for Customer": "رقم اخر توريد للعميل",
+  "Supply Order Date": "تاريخ امر التوريد",
+  "Tax Invoice": "فاتورة الضريبة",
+  "The Representative": "المندوب",
+  "Permitted Discount": "خصم مسموح",
+  "The Customer": "العميل",
+  "The Receiver": "المستلم"
 }

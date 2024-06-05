@@ -127,6 +127,8 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<UserJournalTypeDTO, UserJournalType>().ReverseMap();
             CreateMap<AccTransMasterViewDTO, AccTransMaster>().ReverseMap();
             CreateMap<AccTransMasterEditAddDTO, AccTransMaster>().ReverseMap();
+            CreateMap<AccTransDetailViewDTO, AccTransDetail>().ReverseMap();
+            CreateMap<AccTransDetailEditAddDTO, AccTransDetail>().ReverseMap();
             ////////// Treasury ////////////////////
             CreateMap<TreasuryNameViewDTO, SafeName>().ReverseMap();
             CreateMap<TreasuryNameEditAddDTO, SafeName>().ReverseMap();

@@ -46,6 +46,14 @@ namespace ProSoft.EF.DTOs.Accounts
         public decimal? CurRate { get; set; }
         public string? TransType { get; set; }
 
+        [DisplayName("File No")]
+        public string? DocNo { get; set; }
+
+        [DisplayName("File Date")]
+        public DateTime? DocDate { get; set; }
+
+
+
         public string? JournalName { get; set; }
         public int? JournalCode { get; set; }
         public int? UserCodeModify { get; set; }
