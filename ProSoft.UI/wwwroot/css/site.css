@@ -351,20 +351,16 @@ html {
 /* For styling Permissions */
 
 /* For styling Permissions Forms */
-.parent-permForm {
+/*.parent-permForm {
     gap: 1rem !important;
+}*/
+
+.parent-permForm > div {
+    display: flex;
+    align-items: center;
 }
 
-    .parent-permForm > div {
-        display: flex;
-        align-items: center;
-    }
-
-    .parent-permForm label {
-        color: blue;
-    }
-
-@media (max-width: 767px) {
+/*@media (max-width: 767px) {
     .parent-permForm > div,
     .parent-permForm input:not([type="checkbox"]) {
         width: 100% !important;
@@ -373,11 +369,7 @@ html {
     .parent-permForm label {
         width: 140px !important;
     }
-}
-
-.parent-permForm label {
-    color: blue;
-}
+}*/
 
 @media (max-width: 767px) {
     .parent-permForm > div,
@@ -385,9 +377,19 @@ html {
     .parent-permForm select {
         width: 100% !important;
     }
+    
+    .parent-permForm > div div {
+        width: 100% !important;
+    }
 
     .parent-permForm label {
         width: 140px !important;
+    }
+    .parent-permForm label:dir(ltr){
+        text-align: left !important;
+    }
+    .parent-permForm label:dir(rtl){
+        text-align: right !important;
     }
 }
 

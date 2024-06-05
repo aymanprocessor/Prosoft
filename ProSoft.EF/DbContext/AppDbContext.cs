@@ -52,8 +52,8 @@ namespace ProSoft.EF.DbContext
         public DbSet<CompanyGroup> CompanyGroups { get; set; }
 
         public DbSet<Doctor> Doctors { get; set; }
-        public DbSet<DocSubDtl> DocSubDtls { get; set; }
 
+        public DbSet<DocSubDtl> DocSubDtls { get; set; }
 
         public DbSet<MainClinic> MainClinics { get; set; }
 
@@ -118,6 +118,7 @@ namespace ProSoft.EF.DbContext
         public DbSet<AdjectiveCust> AdjectiveCusts { get; set; }
         public DbSet<StockEmp> StockEmps { get; set; }
         public DbSet<TransMaster> TransMasters { get; set; }
+        public DbSet<SalesmenDatum> SalesmenData { get; set; }
 
         ////////////////////
         // Accounts //

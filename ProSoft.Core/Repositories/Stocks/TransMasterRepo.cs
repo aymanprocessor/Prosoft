@@ -3,11 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using ProSoft.EF.DbContext;
 using ProSoft.EF.DTOs.Shared;
 using ProSoft.EF.DTOs.Stocks;
+using ProSoft.EF.DTOs.Treasury;
 using ProSoft.EF.IRepositories.Stocks;
 using ProSoft.EF.Models;
 using ProSoft.EF.Models.Accounts;
 using ProSoft.EF.Models.Shared;
 using ProSoft.EF.Models.Stocks;
+using ProSoft.EF.Models.Treasury;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -268,7 +270,8 @@ namespace ProSoft.Core.Repositories.Stocks
             return permissionFormDTO;
         }
 
-        public async Task<TransMasterEditAddDTO> GetNewDisburseFormAsync(int stockID, int userCode, int permissionID, int branchID)
+        public async Task<TransMasterEditAddDTO> GetNewDisburseFormAsync(int stockID, int userCode,
+            int permissionID, int branchID)
         {
             var permissionFormDTO = new TransMasterEditAddDTO();
             List<TransMaster> permissionForms = await _DbSet
@@ -297,7 +300,8 @@ namespace ProSoft.Core.Repositories.Stocks
                 && obj.StockCode == stockID && obj.BranchId == branchID
                 && obj.FYear == permissionFormDTO.FYear)
                 .ToListAsync();
-            permissionFormDTO.DocNo = filteredPermissions.Count != 0 ? filteredPermissions.Max(obj => obj.DocNo) + 1 : 1;
+            permissionFormDTO.DocNo = filteredPermissions.Count != 0 ?
+                filteredPermissions.Max(obj => obj.DocNo) + 1 : 1;
 
             permissionFormDTO.PermissionsCount = permissionForms.Count();
             permissionFormDTO.StockName = stock?.Stknam;
@@ -381,127 +385,139 @@ namespace ProSoft.Core.Repositories.Stocks
         //////////////////////////////////////////////////
         // Add Sales Invoice => فاتورة مبيعات
 
-        //public async Task<TransMasterEditAddDTO> GetDisburseFormByIdAsync(int transMasterID)
-        //{
-        //    TransMaster permissionForm = await GetByIdAsync(transMasterID);
-        //    var permissionFormDTO = _mapper.Map<TransMasterEditAddDTO>(permissionForm);
+        public async Task<TransMasterEditAddDTO> GetSalesInvoiceByIdAsync(int transMasterID)
+        {
+            TransMaster permissionForm = await GetByIdAsync(transMasterID);
+            var permissionFormDTO = _mapper.Map<TransMasterEditAddDTO>(permissionForm);
 
-        //    List<TransMaster> permissionForms = await _DbSet
-        //        .Where(obj => obj.StockCode == permissionFormDTO.StockCode
-        //        && obj.TransType == permissionFormDTO.TransType
-        //        && obj.Flag3 == "1").ToListAsync();
+            List<TransMaster> permissionForms = await _DbSet
+                .Where(obj => obj.StockCode == permissionFormDTO.StockCode
+                && obj.TransType == permissionFormDTO.TransType
+                && obj.Flag3 == "1").ToListAsync();
 
-        //    EisUserObject userObj = await _Context.EisUserObjects
-        //        .FirstOrDefaultAsync(obj => obj.UserId == permissionFormDTO.UserCode &&
-        //        obj.ObjectName == "w_stores_trans" && obj.DefultId == 1);
+            EisUserObject userObj = await _Context.EisUserObjects
+                .FirstOrDefaultAsync(obj => obj.UserId == permissionFormDTO.UserCode &&
+                obj.ObjectName == "w_stores_trans" && obj.DefultId == 1);
 
-        //    permissionFormDTO.EnableModify = userObj != null;
+            permissionFormDTO.EnableModify = userObj != null;
 
-        //    List<Stock> stocks = await _Context.Stocks.ToListAsync();
-        //    permissionFormDTO.Stocks = _mapper.Map<List<StockViewDTO>>(stocks);
+            List<SafeName> receivers = await _Context.SafeNames.ToListAsync();
+            permissionFormDTO.Receivers = _mapper.Map<List<TreasuryNameViewDTO>>(receivers);
 
-        //    Stock stock = await _Context.Stocks.FindAsync((int)permissionFormDTO.StockCode);
-        //    GeneralCode permission = await _Context.GeneralCodes.FindAsync(permissionFormDTO.TransType);
-        //    AppUser user = await _Context.Users.FirstOrDefaultAsync(obj => obj.UserCode ==
-        //        permissionFormDTO.UserCode);
+            List<CustCode> customers = await _Context.CustCodes.ToListAsync();
+            permissionFormDTO.Customers = _mapper.Map<List<CustCodeViewDTO>>(customers);
 
-        //    permissionFormDTO.MonthName = CultureInfo.CurrentCulture.
-        //        DateTimeFormat.GetMonthName((int)permissionFormDTO.FMonth);
-        //    permissionFormDTO.PermissionsCount = permissionForms.Count();
-        //    permissionFormDTO.StockName = stock?.Stknam;
-        //    permissionFormDTO.PermissionName = permission?.GDesc;
-        //    permissionFormDTO.UserName = user?.UserName;
+            List<SalesmenDatum> salesMen = await _Context.SalesmenData.ToListAsync();
+            permissionFormDTO.SalesMen = _mapper.Map<List<SalesmenDataViewDTO>>(salesMen);
 
-        //    UserJournalType userJournal = await _Context.UserJournalTypes
-        //        .FirstOrDefaultAsync(obj => obj.UserCode == permissionFormDTO.UserCode &&
-        //        obj.BranchId == permissionFormDTO.BranchId);
-        //    permissionFormDTO.JournalName = (await _Context.JournalTypes
-        //        .FirstOrDefaultAsync(obj => obj.JournalCode == userJournal.JournalCode))
-        //        .JournalName;
+            Stock stock = await _Context.Stocks.FindAsync((int)permissionFormDTO.StockCode);
+            GeneralCode permission = await _Context.GeneralCodes.FindAsync(permissionFormDTO.TransType);
+            AppUser user = await _Context.Users.FirstOrDefaultAsync(obj => obj.UserCode ==
+                permissionFormDTO.UserCode);
 
-        //    return permissionFormDTO;
-        //}
+            permissionFormDTO.MonthName = CultureInfo.CurrentCulture.
+                DateTimeFormat.GetMonthName((int)permissionFormDTO.FMonth);
+            permissionFormDTO.PermissionsCount = permissionForms.Count();
+            permissionFormDTO.StockName = stock?.Stknam;
+            permissionFormDTO.PermissionName = permission?.GDesc;
+            permissionFormDTO.UserName = user?.UserName;
 
-        //public async Task<TransMasterEditAddDTO> GetNewSalesInvoiceAsync(int stockID, int userCode, int permissionID, int branchID)
-        //{
-        //    var permissionFormDTO = new TransMasterEditAddDTO();
-        //    List<TransMaster> permissionForms = await _DbSet
-        //        .Where(obj => obj.StockCode == stockID && obj.TransType == permissionID
-        //        && obj.Flag3 == "1").ToListAsync();
+            UserJournalType userJournal = await _Context.UserJournalTypes
+                .FirstOrDefaultAsync(obj => obj.UserCode == permissionFormDTO.UserCode &&
+                obj.BranchId == permissionFormDTO.BranchId);
+            permissionFormDTO.JournalName = (await _Context.JournalTypes
+                .FirstOrDefaultAsync(obj => obj.JournalCode == userJournal.JournalCode))
+                .JournalName;
 
-        //    EisUserObject userObj = await _Context.EisUserObjects
-        //        .FirstOrDefaultAsync(obj => obj.UserId == userCode &&
-        //        obj.ObjectName == "w_stores_trans" && obj.DefultId == 1);
+            return permissionFormDTO;
+        }
 
-        //    permissionFormDTO.EnableModify = userObj != null;
+        public async Task<TransMasterEditAddDTO> GetNewSalesInvoiceAsync(int stockID, int userCode,
+            int permissionID, int branchID)
+        {
+            var permissionFormDTO = new TransMasterEditAddDTO();
+            List<TransMaster> permissionForms = await _DbSet
+                .Where(obj => obj.StockCode == stockID && obj.TransType == permissionID
+                && obj.Flag3 == "1").ToListAsync();
 
-        //    List<Stock> stocks = await _Context.Stocks.ToListAsync();
-        //    permissionFormDTO.Stocks = _mapper.Map<List<StockViewDTO>>(stocks);
+            EisUserObject userObj = await _Context.EisUserObjects
+                .FirstOrDefaultAsync(obj => obj.UserId == userCode &&
+                obj.ObjectName == "w_stores_trans" && obj.DefultId == 1);
 
-        //    Stock stock = await _Context.Stocks.FindAsync(stockID);
-        //    permissionFormDTO.StockCode = (short)stockID;
-        //    GeneralCode permission = await _Context.GeneralCodes.FindAsync(permissionID);
-        //    permissionFormDTO.TransType = permissionID;
+            permissionFormDTO.EnableModify = userObj != null;
 
-        //    permissionFormDTO.DocDate = DateTime.Now;
-        //    permissionFormDTO.FYear = DateTime.Now.Year;
-        //    permissionFormDTO.MonthName = DateTime.Now.ToString("MMMM");
+            List<SafeName> receivers = await _Context.SafeNames.ToListAsync();
+            permissionFormDTO.Receivers = _mapper.Map<List<TreasuryNameViewDTO>>(receivers);
 
-        //    var filteredPermissions = await _DbSet.Where(obj => obj.TransType == permissionID
-        //        && obj.StockCode == stockID && obj.BranchId == branchID
-        //        && obj.FYear == permissionFormDTO.FYear)
-        //        .ToListAsync();
-        //    permissionFormDTO.DocNo = filteredPermissions.Count != 0 ? filteredPermissions.Max(obj => obj.DocNo) + 1 : 1;
+            List<CustCode> customers = await _Context.CustCodes.ToListAsync();
+            permissionFormDTO.Customers = _mapper.Map<List<CustCodeViewDTO>>(customers);
 
-        //    permissionFormDTO.PermissionsCount = permissionForms.Count();
-        //    permissionFormDTO.StockName = stock?.Stknam;
-        //    permissionFormDTO.PermissionName = permission?.GDesc;
+            List<SalesmenDatum> salesMen = await _Context.SalesmenData.ToListAsync();
+            permissionFormDTO.SalesMen = _mapper.Map<List<SalesmenDataViewDTO>>(salesMen);
 
-        //    UserJournalType userJournal = await _Context.UserJournalTypes
-        //        .FirstOrDefaultAsync(obj => obj.UserCode == userCode && obj.BranchId == branchID);
-        //    permissionFormDTO.JournalName = (await _Context.JournalTypes
-        //        .FirstOrDefaultAsync(obj => obj.JournalCode == userJournal.JournalCode))
-        //        .JournalName;
+            Stock stock = await _Context.Stocks.FindAsync(stockID);
+            permissionFormDTO.StockCode = (short)stockID;
+            GeneralCode permission = await _Context.GeneralCodes.FindAsync(permissionID);
+            permissionFormDTO.TransType = permissionID;
 
-        //    return permissionFormDTO;
-        //}
+            permissionFormDTO.DocDate = DateTime.Now;
+            permissionFormDTO.FYear = DateTime.Now.Year;
+            permissionFormDTO.MonthName = DateTime.Now.ToString("MMMM");
 
-        //public async Task<TransMaster> AddDisburseFormAsync(TransMasterEditAddDTO permissionFormDTO)
-        //{
-        //    permissionFormDTO.DocDate = DateTime.Now;
-        //    permissionFormDTO.FYear = DateTime.Now.Year;
-        //    permissionFormDTO.FMonth = DateTime.Now.Month;
-        //    permissionFormDTO.RefDocNo = "0";
-        //    permissionFormDTO.TotTransVal = 0;
-        //    permissionFormDTO.Descount = 0;
-        //    permissionFormDTO.CustDisc1 = 0;
-        //    permissionFormDTO.StatusBal = "R";
-        //    permissionFormDTO.DiscPers = 0;
-        //    permissionFormDTO.Flag = "1";
-        //    permissionFormDTO.SaleStatus = "N";
-        //    permissionFormDTO.Flag2 = "0";
-        //    permissionFormDTO.AmountVisa = 0;
-        //    permissionFormDTO.CustDisc2 = 0;
-        //    permissionFormDTO.CustDisc4 = 0;
-        //    permissionFormDTO.TaxPrc = 0;
-        //    permissionFormDTO.TaxValue = 0;
-        //    permissionFormDTO.DueValue = 0;
-        //    permissionFormDTO.InvNo = 0;
-        //    permissionFormDTO.Flag3 = "1";
-        //    permissionFormDTO.InvType = "0";
-        //    permissionFormDTO.ShowRow = 3;
+            var filteredPermissions = await _DbSet.Where(obj => obj.TransType == permissionID
+                && obj.StockCode == stockID && obj.BranchId == branchID
+                && obj.FYear == permissionFormDTO.FYear)
+                .ToListAsync();
+            permissionFormDTO.DocNo = filteredPermissions.Count != 0 ? filteredPermissions.Max(obj => obj.DocNo) + 1 : 1;
 
-        //    var filteredPermissions = await _DbSet.Where(obj => obj.TransType == permissionFormDTO.TransType
-        //        && obj.StockCode == permissionFormDTO.StockCode && obj.BranchId ==
-        //        permissionFormDTO.BranchId && obj.FYear == permissionFormDTO.FYear)
-        //        .ToListAsync();
-        //    permissionFormDTO.SerSys = filteredPermissions.Count != 0 ? filteredPermissions.Max(obj => obj.SerSys) + 1 : 1;
+            permissionFormDTO.PermissionsCount = permissionForms.Count();
+            permissionFormDTO.StockName = stock?.Stknam;
+            permissionFormDTO.PermissionName = permission?.GDesc;
 
-        //    var permissionForm = _mapper.Map<TransMaster>(permissionFormDTO);
-        //    await AddAsync(permissionForm);
-        //    await SaveChangesAsync();
-        //    return permissionForm;
-        //}
+            UserJournalType userJournal = await _Context.UserJournalTypes
+                .FirstOrDefaultAsync(obj => obj.UserCode == userCode && obj.BranchId == branchID);
+            permissionFormDTO.JournalName = (await _Context.JournalTypes
+                .FirstOrDefaultAsync(obj => obj.JournalCode == userJournal.JournalCode))
+                .JournalName;
+
+            return permissionFormDTO;
+        }
+
+        public async Task<TransMaster> AddSalesInvoiceAsync(TransMasterEditAddDTO permissionFormDTO)
+        {
+            permissionFormDTO.DocDate = DateTime.Now;
+            permissionFormDTO.FYear = DateTime.Now.Year;
+            permissionFormDTO.FMonth = DateTime.Now.Month;
+            permissionFormDTO.RefDocNo = "0";
+            permissionFormDTO.TotTransVal = 0;
+            permissionFormDTO.Descount = 0;
+            permissionFormDTO.StatusBal = "R";
+            permissionFormDTO.Flag = "1";
+            permissionFormDTO.Flag2 = "0";
+            permissionFormDTO.AmountVisa = 0;
+            permissionFormDTO.CashAmount = 0;
+            permissionFormDTO.SaleStatus = "N";
+            permissionFormDTO.AddPers = 10;
+            permissionFormDTO.CustDisc1 = 0;
+            permissionFormDTO.CustDisc2 = 0;
+            permissionFormDTO.CustDisc4 = 0;
+            permissionFormDTO.CustDisc5 = 0;
+            permissionFormDTO.DueValue = 0;
+            permissionFormDTO.InvType = permissionFormDTO.InvType == "1" ? permissionFormDTO.InvType : "0";
+            permissionFormDTO.PriceIncTax = permissionFormDTO.PriceIncTax == 1 ? permissionFormDTO.PriceIncTax : 0;
+            permissionFormDTO.ShowRow = 3;
+
+            var filteredPermissions = await _DbSet.Where(obj => obj.TransType == permissionFormDTO.TransType
+                && obj.StockCode == permissionFormDTO.StockCode && obj.BranchId ==
+                permissionFormDTO.BranchId && obj.FYear == permissionFormDTO.FYear)
+                .ToListAsync();
+            permissionFormDTO.SerSys = filteredPermissions.Count != 0 ? filteredPermissions.Max(obj => obj.SerSys) + 1 : 1;
+
+            var permissionForm = _mapper.Map<TransMaster>(permissionFormDTO);
+            await AddAsync(permissionForm);
+            await SaveChangesAsync();
+            return permissionForm;
+        }
 
         //public async Task UpdateDisburseFormAsync(int id, TransMasterEditAddDTO permissionFormDTO)
         //{

@@ -458,6 +458,11 @@
   "Add Voucher": "Add Voucher",
   "Edit Voucher": "Edit Voucher",
   "No.": "No",
+  "EG Debit": "EG Debit",
+  "EG Credit": "EG Credit",
+  "File No": "File No",
+  "File Date": "File Date",
+  "Terms of Voucher": "Terms of Voucher",
 
 
 
@@ -648,5 +653,12 @@
   "From Stock": "From Stock",
   "Disburse Permission No": "Disburse Permission No",
   "Delivery Permission Date": "Delivery Permission Date",
-  "Disburse Permission Date": "Disburse Permission Date"
+  "Disburse Permission Date": "Disburse Permission Date",
+  "Last Supply No for Customer": "Last Supply No for Customer",
+  "Supply Order Date": "Supply Order Date",
+  "Tax Invoice": "Tax Invoice",
+  "The Representative": "The Representative",
+  "Permitted Discount": "Permitted Discount",
+  "The Customer": "The Customer",
+  "The Receiver": "The Receiver"
 }

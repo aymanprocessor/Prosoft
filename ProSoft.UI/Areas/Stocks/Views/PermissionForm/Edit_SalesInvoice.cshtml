@@ -2,7 +2,7 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Add Sales Invoice";
+    ViewData["Title"] = "Edit Sales Invoice";
     Layout = "_Layout";
     var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
 
@@ -25,7 +25,7 @@
             <span class="fw-bold">@localizer["User Name"] : @Model.UserName</span>
         </p>
     </div>
-    <form method="post" asp-action="Add_SalesInvoice">
+    <form method="post" asp-action="Edit_SalesInvoice">
         <div class="border p-3 mt-4">
 
             @* Hidden Inputs *@
@@ -128,14 +128,28 @@
                 <div class="gap-md-1">
                     <div class="d-flex align-items-center mb-3">
                         <div class="d-flex align-items-center justify-content-start justify-content-md-end gap-2 mb-2">
+                            @if(Model.PriceIncTax == 1)
+                            {
+                            <input name="PriceIncTax" id="PriceIncTax" type="checkbox" value="1" checked class="form-check-input" onchange="changeValue(event)" />
+                            }
+                            else
+                            {
                             <input name="PriceIncTax" id="PriceIncTax" type="checkbox" value="0" class="form-check-input" onchange="changeValue(event)" />
+                            }
                             <label asp-for="PriceIncTax" style="width: 180px;"></label>
                         </div>
                         <span asp-validation-for="PriceIncTax" class="text-danger"></span>
                     </div>
                     <div class="d-flex align-items-center mb-3">
                         <div class="d-flex align-items-center justify-content-start justify-content-md-end gap-2 mb-2">
+                            @if(Model.InvType == "1")
+                            {
+                            <input name="InvType" id="InvType" type="checkbox" value="1" checked class="form-check-input" onchange="changeValue(event)" />
+                            }
+                            else
+                            {
                             <input name="InvType" id="InvType" type="checkbox" value="0" class="form-check-input" onchange="changeValue(event)" />
+                            }
                             <label asp-for="InvType" style="width: 180px;">@localizer["Tax Invoice"]</label>
                         </div>
                         <span asp-validation-for="PriceIncTax" class="text-danger"></span>
