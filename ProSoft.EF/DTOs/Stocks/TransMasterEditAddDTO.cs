@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProSoft.EF.DTOs.Treasury;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -140,5 +141,8 @@ namespace ProSoft.EF.DTOs.Stocks
 
         public List<SupCodeViewDTO>? Suppliers {  get; set; }
         public List<StockViewDTO>? Stocks {  get; set; }
+        public List<CustCodeViewDTO>? Customers {  get; set; }
+        public List<TreasuryNameViewDTO>? Receivers {  get; set; }
+        public List<SalesmenDataViewDTO>? SalesMen {  get; set; }
     }
 }
