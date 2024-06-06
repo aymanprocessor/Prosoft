@@ -162,18 +162,6 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             return View(permissionFormDTO);
         }
 
-        // Delete
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Delete_DisburseForm(int id)
-        //{
-        //    TransMaster permissionForm = await _transMasterRepo.GetByIdAsync(id);
-
-        //    await _transMasterRepo.DeleteAsync(permissionForm);
-        //    await _transMasterRepo.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
-
         //////////////////////////////////////////////////
         // Add Sales Invoice => فاتورة مبيعات
         // Get Add
@@ -211,13 +199,66 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         }
 
         // Post Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit_SalesInvoice(int id, TransMasterEditAddDTO permissionFormDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                permissionFormDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
+                permissionFormDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
+                await _transMasterRepo.UpdateSalesInvoiceAsync(id, permissionFormDTO);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(permissionFormDTO);
+        }
+
+        //////////////////////////////////////////////////
+        // Add Sales Invoice => تسوية مدينة
+        // Get Add
+        public async Task<IActionResult> Add_DebitSettlement(int id, int transType)
+        {
+            var userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
+            var branchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
+            TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo
+                .GetNewDebitSettlementAsync(id, userCode, transType, branchId);
+            permissionFormDTO.UserName = (await _userRepo.GetUserByIdAsync(userCode)).UserName;
+
+            return View(permissionFormDTO);
+        }
+
+        //Post Add
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Add_DebitSettlement(int id, TransMasterEditAddDTO permissionFormDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                permissionFormDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
+                permissionFormDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
+                TransMaster permissionForm = await _transMasterRepo.AddDebitSettlementAsync(permissionFormDTO);
+                return RedirectToAction(nameof(Index), new { id = permissionForm.TransMAsterID });
+            }
+            return View(permissionFormDTO);
+        }
+
+        // Get Edit
+        //public async Task<IActionResult> Edit_DebitSettlement(int id)
+        //{
+        //    TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetSalesInvoiceByIdAsync(id);
+        //    return View(permissionFormDTO);
+        //}
+
+        // Post Edit
         //[HttpPost]
         //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit_SalesInvoice(int id, TransMasterEditAddDTO permissionFormDTO)
+        //public async Task<IActionResult> Edit_DebitSettlement(int id, TransMasterEditAddDTO permissionFormDTO)
         //{
         //    if (ModelState.IsValid)
         //    {
-        //        await _transMasterRepo.UpdateDisburseFormAsync(id, permissionFormDTO);
+        //        permissionFormDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
+        //        permissionFormDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
+        //        await _transMasterRepo.UpdateSalesInvoiceAsync(id, permissionFormDTO);
         //        return RedirectToAction(nameof(Index));
         //    }
         //    return View(permissionFormDTO);

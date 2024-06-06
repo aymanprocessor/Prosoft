@@ -25,7 +25,7 @@ using ProSoft.EF.DTOs.Treasury.Report;
 
 namespace ProSoft.Core.AutoMapper
 {
-    public class AutoMap: Profile
+    public class AutoMap : Profile
     {
         public AutoMap()
         {

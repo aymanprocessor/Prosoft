@@ -466,10 +466,23 @@
   "File No": "رقم المستند",
   "File Date": "تاريخ المستند",
   "Terms of Voucher": "بنود القيد",
+<<<<<<< HEAD
   "Cur Debit": "مدين بالعملة",
   "Cur Credit": "دائن بالعملة",
   "The Difference": "الفرق",
   "Add Cost": "اضافة تكلفة",
+||||||| e13c5e9
+
+
+=======
+  "Cur Debit": "مدين بالعملة",
+  "Cur Credit": "دائن بالعملة",
+  "The Difference": "الفرق",
+  "Add Cost": "اضافة تكلفة",
+
+
+
+>>>>>>> 386f3b9f74fa9cb530a114c2026755ea4b73c862
 
 
 
@@ -658,11 +671,13 @@
   "Disburse Permission No": "رقم اذن الصرف",
   "Delivery Permission Date": "تاريخ اذن التسليم",
   "Disburse Permission Date": "تاريخ اذن الصرف",
-  "Last Supply No for Customer": "رقم اخر توريد للعميل",
+  "Supply Order No for Customer": "رقم امر توريد العميل",
   "Supply Order Date": "تاريخ امر التوريد",
   "Tax Invoice": "فاتورة الضريبة",
   "The Representative": "المندوب",
   "Permitted Discount": "خصم مسموح",
   "The Customer": "العميل",
-  "The Receiver": "المستلم"
+  "The Receiver": "المستلم",
+  "Value Total": "اجمالي القيمة",
+  "Addressed To": "موجهة الي"
 }
