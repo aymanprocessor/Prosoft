@@ -1,5 +1,4 @@
 ﻿using ProSoft.EF.DTOs.Accounts;
-using ProSoft.EF.DTOs.Stocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

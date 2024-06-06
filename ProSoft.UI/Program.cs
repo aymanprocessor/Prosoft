@@ -108,6 +108,7 @@ builder.Services.AddScoped<IReportCashAndChecksRepo, ReportCashAndChecksRepo>();
 builder.Services.AddScoped<IUserJournalTypeRepo, UserJournalTypeRepo>();
 builder.Services.AddScoped<IAccTransMasterRepo, AccTransMasterRepo>();
 builder.Services.AddScoped<IAccTransDetailRepo, AccTransDetailRepo>();
+builder.Services.AddScoped<ICostCenterRepo, CostCenterRepo>();
 ////////// PatRecord ////////////////////
 builder.Services.AddScoped<ICoronaryRepo, CoronaryRepo>();
 builder.Services.AddScoped<IPastHistoryRepo, PastHistoryRepo>();

@@ -85,7 +85,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
         //Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete_AccTransMaster(int id, AccTransMasterEditAddDTO accTransMasterDTO)
+        public async Task<IActionResult> Delete_AccTransMaster(int id)
         {
             AccTransMaster accTransMaster = await _accTransMasterRepo.GetByIdAsync(id);
 

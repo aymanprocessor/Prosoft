@@ -7,12 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProSoft.EF.DTOs.Stocks
+namespace ProSoft.EF.DTOs.Accounts
 {
     public class CostCenterViewDTO
     {
         public int CostCode { get; set; }
 
         public string CostDesc { get; set; }
+        public int? CostVisible { get; set; }
+
     }
 }

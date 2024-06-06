@@ -205,6 +205,9 @@
                 success: function (result) {
                     // console.log(result);
                     var index = 1;
+                    var valDepSum = 0;
+                    var valCreditSum = 0;
+
                     for (let item of result) {
 
                         //convert to date not time// Format the date as needed (e.g., "YYYY-MM-DD")
@@ -221,8 +224,8 @@
                             <td class="align-middle">${item.docNo}</td>
                             <td class="align-middle">${DocDate}</td>
                             <td class="align-middle">${item.lineDesc}</td>
-                             <td class="text-center ">
-                             <a href="/Accounts/AccTransDetail/Edit_AccTransDetailn/${item.transDtlId}?redirect=Invoices" class="btn btn-sm btn-success mb-1  fs-6" style="width:150px">
+                            <td class="text-center ">
+                               <a href="/Accounts/AccTransDetail/Edit_AccTransDetail/${item.transDtlId}" class="btn btn-sm btn-success mb-1  fs-6" style="width:150px">
                                     <i class="bi bi-pencil"></i> @localizer["Edit"]
                                 </a>
                               <form action="/Accounts/AccTransDetail/Delete_AccTransDetail" method="post" class="d-inline ms-1">
@@ -250,8 +253,31 @@
                             </td>
                                     `;
                         index++;
+                        valDepSum += item.valDep;
+                        valCreditSum += item.valCredit;
                         acctransDtls.appendChild(acctransDtl);
                     }
+                    const dataForSum = document.createElement("tr");
+                    //    dataForSum.style.backgroundColor = "#e6dfdf";
+                    dataForSum.innerHTML =
+                        `
+                                <td colspan="2" style="text-align: center;">@localizer["The Sum"]</td>
+                                <td style="background-color: #e6dfdf;border:1px solid White;">${valDepSum}</td>
+                                <td style="background-color: #e6dfdf;">${valCreditSum}</td>
+                                <td class="align-middle" colspan="4"></td>
+                             `;
+                    acctransDtls.appendChild(dataForSum);
+                    ///////////////////////////////////////////////////////////
+                    var diffrent = valDepSum - valCreditSum;
+                    const dataForSum2 = document.createElement("tr");
+                    //    dataForSum.style.backgroundColor = "#e6dfdf";
+                    dataForSum2.innerHTML =
+                        `
+                            <td colspan="2" style="text-align: center;">@localizer["The Difference"]</td>
+                            <td colspan="2" style="background-color: #e6dfdf;text-align: center; border:1px solid White;">${diffrent}</td>
+                            <td colspan="4"></td>
+                        `;
+                    acctransDtls.appendChild(dataForSum2);
                 }
             });
         }

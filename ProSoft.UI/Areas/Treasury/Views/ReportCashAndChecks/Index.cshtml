@@ -258,10 +258,10 @@
                 var totalBalance = revenueSum - expenseSum;
                 dataForSum.innerHTML =
                     `
-                    <td class="align-middle">@localizer["The Sum"]</td>
-                    <td class="align-middle">${expenseSum}</td>
-                    <td class="align-middle">${revenueSum}</td>
-                    <td class="align-middle" colspan="6"> @localizer["Treasury Balance"] ==>  
+                     <td text-align: center;>@localizer["The Sum"]</td>
+                    <td>${expenseSum}</td>
+                    <td>${revenueSum}</td>
+                    <td colspan="6"> @localizer["Treasury Balance"] ==>  
                         <span id="numbers">${totalBalance}</span>
                         <span id="numberToWord" class="@(isRTL ? "me-4" : "ms-4")"></span>
                     </td>
@@ -404,9 +404,9 @@
                 //    dataForSum.style.backgroundColor = "#e6dfdf";
                 dataForSum.innerHTML =
                     `
-                            <td class="align-middle" colspan="5"></td>
-                            <td class="align-middle" style="background-color: #e6dfdf;">${checkValueSum}</td>
-                            <td class="align-middle" colspan="4"></td>
+                            <td colspan="5"></td>
+                            <td style="background-color: #e6dfdf;">${checkValueSum}</td>
+                            <td colspan="4"></td>
 
                          `;
                 dataa.appendChild(dataForSum);

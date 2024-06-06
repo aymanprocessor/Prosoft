@@ -2,10 +2,11 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Add Term";
+    ViewData["Title"] = "Edit Term";
     Layout = "~/Views/Shared/_Layout.cshtml";
     SelectList costcenter = new SelectList(Model.CostCenters, "CostCode", "CostDesc");
     SelectList mainAccCodes = new SelectList(Model.MainAccCodes, "MainCode", "MainName");
+    SelectList subAccCodes = new SelectList(Model.SubAccCodes, "SubCode", "SubName");
 }
 @inject IViewLocalizer localizer
 @* <style>
@@ -26,17 +27,18 @@
     @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
 
     <div class="d-flex justify-content-between align-items-center mt-3 ">
-        <h1>@localizer["Add Term"]</h1>
+        <h1>@localizer["Edit Term"]</h1>
         @* <h3>@Model.JournalName @localizer["Branch"] @localizer["No."] @ViewBag.branchId</h3> *@
     </div>
 
-    <form method="post" asp-action="Add_AccTransDetail" id="myForm">
+    <form method="post" asp-action="Edit_AccTransDetail" id="myForm">
         <div class="border p-3 mt-1">
 
             <div asp-validation-summary="ModelOnly"></div>.
             @* hidden *@
 
-            <input asp-for="UserCode" hidden value="@ViewBag.userCode" />
+            <input asp-for="TransDtlId" hidden />
+            <input asp-for="UserCodeModify" hidden value="@ViewBag.userCode" />
             <input asp-for="FYear" hidden />
             <input asp-for="TransNo" hidden />
             <input asp-for="TransType" hidden />
@@ -46,6 +48,9 @@
             <input asp-for="CoCode" hidden  />
             <input asp-for="DocDate" hidden  />
             <input asp-for="TransId" hidden  />
+            <input asp-for="TransSerial" hidden  />
+            <input asp-for="EntryDate" hidden  />
+            <input asp-for="UserCode" hidden  />
 
             <!------------------------------------------------------------------------------->
 
@@ -59,7 +64,7 @@
                 </div>
                 <div class="mb-3">
                     <label asp-for="SubCode"></label>
-                    <select asp-for="SubCode" class="form-control text-center" onchange="getNameSub(event)">
+                    <select asp-for="SubCode" asp-items="subAccCodes" class="form-control text-center" onchange="getNameSub(event)">
                         <option value="">-- Choose --</option>
                     </select>
                     <span asp-validation-for="SubCode" class="text-danger"></span>
@@ -74,22 +79,22 @@
             <div class="parent-permission d-flex align-items-md-end justify-content-center  my-mobile gap-3 " z>
                 <div class="mb-3">
                     <label asp-for="ValDep"></label>
-                    <input asp-for="ValDep" class="form-control text-center" value="0" />
+                    <input asp-for="ValDep" type="number" class="form-control text-center" />
                     <span asp-validation-for="ValDep" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label asp-for="ValCredit"></label>
-                    <input asp-for="ValCredit" class="form-control text-center" value="0" />
+                    <input asp-for="ValCredit" type="number" class="form-control text-center"  />
                     <span asp-validation-for="ValCredit" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label asp-for="ValDepCur"></label>
-                    <input asp-for="ValDepCur" class="form-control text-center" value="0" />
+                    <input asp-for="ValDepCur" type="number" class="form-control text-center" />
                     <span asp-validation-for="ValDepCur" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label asp-for="ValCreditCur"></label>
-                    <input asp-for="ValCreditCur" class="form-control text-center" value="0" />
+                    <input asp-for="ValCreditCur" type="number" class="form-control text-center" />
                     <span asp-validation-for="ValCreditCur" class="text-danger"></span>
                 </div>
             </div>
@@ -99,12 +104,12 @@
             <div class="parent-permission d-flex align-items-md-end justify-content-center  my-mobile gap-3 " z>
                 <div class="mb-3">
                     <label asp-for="DocNo"></label>
-                    <input asp-for="DocNo" class="form-control text-center" value="@Model.DocNo"/>
+                    <input asp-for="DocNo" class="form-control text-center" />
                     <span asp-validation-for="DocNo" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <label asp-for="DocDate"></label>
-                    <input name="DocDate" id="DocDate" class="form-control text-center" disabled value="@Model.DocDate" />
+                    <inputasp-for="DocDate"class="form-control text-center" />
                     <span asp-validation-for="DocDate" class="text-danger"></span>
                 </div>
                 <div class="mb-3 ">
@@ -116,7 +121,7 @@
                 </div>
                 <div class="mb-3">
                     <label asp-for="LineDesc"></label>
-                    <input asp-for="LineDesc" class="form-control text-center" value="@Model.LineDesc" />
+                    <input asp-for="LineDesc" class="form-control text-center" />
                     <span asp-validation-for="LineDesc" class="text-danger"></span>
                 </div>
             </div>
@@ -125,7 +130,7 @@
 
             <div class="parent d-flex justify-content-md-center gap-2 ">
                 <button type="submit" class="btn btn-primary" style="width:150px">
-                    @localizer["Add Term"]
+                    @localizer["Save Changes"]
                 </button>
                 <a asp-controller="AccTransMaster" asp-action="Index" asp-route-journalCode="@Model.TransType" class="btn btn-secondary" style="width:150px">
                     @localizer["Cancel"]

@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using ProSoft.EF.Models.Accounts;
 using ProSoft.EF.Models.MedicalRecords;
 using ProSoft.EF.Models.Shared;
-using ProSoft.EF.Models.Stocks;
 
 namespace ProSoft.EF.Models.Treasury;
 

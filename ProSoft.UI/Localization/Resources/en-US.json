@@ -184,6 +184,7 @@
   "Edit SubClinic": "Edit SubClinic",
   "Revenue Department": "Revenue Department",
   "Cost Center": "Cost Center",
+  "Cost Centers": "Cost Centers",
   "Add Service": "Add Service",
   "Tax Category": "Tax Category",
   "Send Invoice": "Send Invoice",
@@ -463,7 +464,10 @@
   "File No": "File No",
   "File Date": "File Date",
   "Terms of Voucher": "Terms of Voucher",
-
+  "Cur Debit": "Cur Debit",
+  "Cur Credit": "Cur Credit",
+  "The Difference": "The Difference",
+  "Add Cost": "Add Cost",
 
 
 

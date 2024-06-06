@@ -1,4 +1,4 @@
-﻿using ProSoft.EF.DTOs.Stocks;
+﻿using ProSoft.EF.DTOs.Accounts;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

@@ -5,6 +5,7 @@ using ProSoft.EF.DTOs.Accounts;
 using ProSoft.EF.DTOs.Treasury;
 using ProSoft.EF.IRepositories.Accounts;
 using ProSoft.EF.Models.Accounts;
+using ProSoft.EF.Models.Shared;
 using ProSoft.EF.Models.Treasury;
 using System;
 using System.Collections.Generic;
@@ -48,11 +49,68 @@ namespace ProSoft.Core.Repositories.Accounts
         public async Task<AccTransDetailEditAddDTO> GetEmptyAccTransDetailAsync(int id,int journalCode)
         {
             AccTransMaster accTransMaster = await _Context.AccTransMasters.FindAsync(id);
+
             AccTransDetailEditAddDTO accTransDetailDTO = new AccTransDetailEditAddDTO();
+            accTransDetailDTO.DocNo = accTransMaster.DocNo;
+            accTransDetailDTO.DocDate = accTransMaster.DocDate;
+            accTransDetailDTO.LineDesc = accTransMaster.TransDesc;
+            accTransDetailDTO.FYear = accTransMaster.FYear;
+            accTransDetailDTO.TransDate = accTransMaster.TransDate;
+            accTransDetailDTO.TransNo = accTransMaster.TransNo;
+            accTransDetailDTO.CurCode = accTransMaster.CurCode;
+            accTransDetailDTO.TransType = accTransMaster.TransType;
+            accTransDetailDTO.YearTransNo = accTransMaster.YearTransNo;
+            accTransDetailDTO.CoCode = accTransMaster.CoCode;
+            accTransDetailDTO.TransId =id;
+
+            List<CostCenter> costCenters = await _Context.CostCenters.ToListAsync();
+            List<AccMainCode> mainAccCodes = await _Context.AccMainCodes.ToListAsync();
+
+            accTransDetailDTO.CostCenters = _mapper.Map<List<CostCenterViewDTO>>(costCenters);
+            accTransDetailDTO.MainAccCodes = _mapper.Map<List<AccMainCodeDTO>>(mainAccCodes);
 
             //accTransDetailDTO.JournalName = (await _Context.JournalTypes.FindAsync(journalCode)).JournalName;
             //accTransDetailDTO.JournalCode = (await _Context.JournalTypes.FindAsync(journalCode)).JournalCode;
             return accTransDetailDTO;
+        }
+
+        public async Task AddAccTransDetailAsync(AccTransDetailEditAddDTO accTransDetailDTO)
+        {
+            AccTransDetail accTransDetail = _mapper.Map<AccTransDetail>(accTransDetailDTO);
+
+            var count =(await _Context.AccTransDetails.Where(obj=>obj.TransId == accTransDetailDTO.TransId).ToListAsync()).Count;
+            accTransDetail.TransSerial = count + 1;
+
+            accTransDetail.EntryDate = DateTime.Now;
+            await _Context.AddAsync(accTransDetail);
+            await _Context.SaveChangesAsync();
+        }
+        public async Task<AccTransDetailEditAddDTO> GetAccTransDetailByIdAsync(int id)
+        {
+            AccTransDetail accTransDetail = await _Context.AccTransDetails.FirstOrDefaultAsync(obj => obj.TransDtlId == id);
+
+            AccTransDetailEditAddDTO accTransDetailDTO = _mapper.Map<AccTransDetailEditAddDTO>(accTransDetail);
+
+            List<CostCenter> costCenters = await _Context.CostCenters.ToListAsync();
+            List<AccMainCode> mainAccCodes = await _Context.AccMainCodes.ToListAsync();
+            List<AccSubCode> accSubCodes = await _Context.AccSubCodes.Where(obj=>obj.MainCode== accTransDetail.MainCode).ToListAsync();
+
+
+            accTransDetailDTO.CostCenters = _mapper.Map<List<CostCenterViewDTO>>(costCenters);
+            accTransDetailDTO.MainAccCodes = _mapper.Map<List<AccMainCodeDTO>>(mainAccCodes);
+            accTransDetailDTO.SubAccCodes = _mapper.Map<List<AccSubCodeDTO>>(accSubCodes);
+
+
+            return accTransDetailDTO;
+        }
+        public async Task EditAccTransDetailAsync(int id, AccTransDetailEditAddDTO accTransDetailDTO)
+        {
+
+            AccTransDetail accTransDetail = await _Context.AccTransDetails.FirstOrDefaultAsync(obj => obj.TransDtlId == id);
+            _mapper.Map(accTransDetailDTO, accTransDetail);
+            accTransDetail.UserDateModify = DateTime.Now;
+            _Context.Update(accTransDetail);
+            await _Context.SaveChangesAsync();
         }
     }
 }

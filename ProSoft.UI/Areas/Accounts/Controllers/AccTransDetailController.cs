@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProSoft.Core.Repositories.Accounts;
 using ProSoft.EF.DTOs.Accounts;
 using ProSoft.EF.IRepositories.Accounts;
+using ProSoft.EF.Models.Accounts;
 
 namespace ProSoft.UI.Areas.Accounts.Controllers
 {
@@ -24,12 +25,8 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
         //Get add
         public async Task<IActionResult> Add_AccTransDetail(int id, int journalCode)
         {
-            //ViewBag.TransNo = await _accTransMasterRepo.GetNewtranNoAsync(journalCode, fYear, branchId);
              AccTransDetailEditAddDTO accTransDetailDTO = await _accTransDetailRepo.GetEmptyAccTransDetailAsync(id,journalCode);
-            //ViewBag.branchId = branchId;
-            //ViewBag.journalCode = journalCode;
-            //ViewBag.frear = fYear;
-            //ViewBag.userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
+            ViewBag.userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
 
             return View(accTransDetailDTO);
         }
@@ -37,15 +34,49 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
         //Post add
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add_AccTransDetail(AccTransMasterEditAddDTO accTransMasterDTO)
+        public async Task<IActionResult> Add_AccTransDetail(AccTransDetailEditAddDTO accTransDetailDTO)
         {
             if (ModelState.IsValid)
             {
-              //  await _accTransMasterRepo.AddAccTransMasterAsync(accTransMasterDTO);
-                return RedirectToAction("Index", "AccTransMaster", new { journalCode = accTransMasterDTO.TransType });
+                 await _accTransDetailRepo.AddAccTransDetailAsync(accTransDetailDTO);
+                return RedirectToAction("Index", "AccTransMaster", new { journalCode = accTransDetailDTO.TransType });
 
             }
             return View();
+        }
+
+        //Get Edit
+        public async Task<IActionResult> Edit_AccTransDetail(int id)
+        {
+            AccTransDetailEditAddDTO accTransDetailDTO = await _accTransDetailRepo.GetAccTransDetailByIdAsync(id);
+            ViewBag.userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
+
+            return View(accTransDetailDTO);
+        }
+
+        //Post Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit_AccTransDetail(int id, AccTransDetailEditAddDTO accTransDetailDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                await _accTransDetailRepo.EditAccTransDetailAsync(id, accTransDetailDTO);
+                return RedirectToAction("Index", "AccTransMaster", new { journalCode = accTransDetailDTO.TransType });
+            }
+            return View(accTransDetailDTO);
+        }
+
+        //Delete
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete_AccTransDetail(int id)
+        {
+            AccTransDetail accTransDetail = await _accTransDetailRepo.GetByIdAsync(id);
+
+            await _accTransDetailRepo.DeleteAsync(accTransDetail);
+            await _accTransDetailRepo.SaveChangesAsync();
+            return RedirectToAction("Index", "AccTransMaster", new { journalCode = accTransDetail.TransType });
         }
     }
 }

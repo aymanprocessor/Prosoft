@@ -70,7 +70,6 @@ namespace ProSoft.Core.Repositories.Accounts
             accTransMaster.YearTransNo = (accTransMasterDTO.FYear +"_"+ accTransMasterDTO.TransNo).ToString();
             await _Context.AddAsync(accTransMaster);
             await _Context.SaveChangesAsync();
-
         }
         public async Task<AccTransMasterEditAddDTO> GetAccTransMasterByIdAsync(int id)
         {

@@ -98,11 +98,6 @@ namespace ProSoft.EF.Models.Accounts
         [Precision(6)]
         public DateTime? DocDate { get; set; }
 
-        [Column("LINE_DESC")]
-        [StringLength(200)]
-        [Unicode(false)]
-        public string? LineDesc { get; set; }
-
         [Column("POST_RECIPT")]
         public int? PostRecipt { get; set; }
 

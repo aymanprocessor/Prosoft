@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using ProSoft.EF.Models.Medical.HospitalPatData;
 using ProSoft.EF.Models.Treasury;
 
-namespace ProSoft.EF.Models.Stocks;
+namespace ProSoft.EF.Models.Accounts;
 
 [Table("COST_CENTERS")]
 public partial class CostCenter
