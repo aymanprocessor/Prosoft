@@ -13,7 +13,7 @@
 @inject IViewLocalizer localizer
 
 <div class="container pt-2">
-    <h1 class="mt-4">@Model.PermissionName</h1>
+    <h1 class="mt-4">@localizer["Modify"] @Model.PermissionName</h1>
     <div class="border p-2">
         <p class="d-flex justify-content-between align-items-center flex-column flex-md-row fs-4 m-0">
             <span class="fw-bold">@localizer["The Month"] : @Model.MonthName</span>
@@ -30,6 +30,9 @@
 
             @* Hidden Inputs *@
             <input asp-for="DocNo" type="hidden" />
+            <input asp-for="SerSys" type="hidden" />
+            <input asp-for="FYear" type="hidden" />
+            <input asp-for="FMonth" type="hidden" />
             <input asp-for="StockCode" type="hidden" />
             <input asp-for="TransType" type="hidden" />
 
@@ -72,13 +75,13 @@
                     </div>
                     <div class="d-flex align-items-center mb-3">
                         <label asp-for="SupInvDate" class="text-center" style="width: 136px">@localizer["Disburse Permission Date"]</label>
-                        <input asp-for="SupInvDate" class="form-control" style="width: 200px;" disabled />
+                        <input asp-for="SupInvDate" class="form-control" style="width: 200px;" />
                     </div>
                 </div>
                 <div>
                     <div class="d-flex align-items-center mb-3">
                         <label asp-for="StockName" class="text-center" style="width: 125px;">@localizer["Stock"]</label>
-                        <input asp-for="StockName" class="form-control" style="width: 250px" disabled />
+                        <input asp-for="StockName" class="form-control" style="width: 250px;" disabled />
                     </div>
                 </div>
             </div>
@@ -94,7 +97,7 @@
                     </div>
                     <div class="d-flex align-items-center mb-3">
                         <label asp-for="DueDate" class="text-center" style="width: 130px">@localizer["Invoice Date"]</label>
-                        <input asp-for="DueDate" class="form-control" style="width: 200px;" disabled />
+                        <input asp-for="DueDate" class="form-control" style="width: 200px;" />
                         <span asp-validation-for="InvNo" class="text-danger"></span>
                     </div>
                 </div>
@@ -115,13 +118,13 @@
             <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-3 my-mobile ">
                 <div class="flex-column flex-md-row gap-md-1">
                     <div class="d-flex align-items-center mb-3">
-                        <label asp-for="DocNo2" style="width: 150px;">@localizer["Last Supply No for Customer"]</label>
-                        <input asp-for="DocNo2" class="form-control" style="width: 200px;" />
+                        <label asp-for="DocNo2" style="width: 150px;">@localizer["Supply Order No for Customer"]</label>
+                        <input asp-for="DocNo2" type="number" class="form-control" style="width: 200px;" />
                         <span asp-validation-for="DocNo2" class="text-danger"></span>
                     </div>
                     <div class="d-flex align-items-center mb-3">
                         <label asp-for="RefDocDate" class="text-center" style="width: 130px">@localizer["Supply Order Date"]</label>
-                        <input asp-for="RefDocDate" class="form-control" style="width: 200px;" disabled />
+                        <input asp-for="RefDocDate" class="form-control" style="width: 200px;" />
                         <span asp-validation-for="RefDocDate" class="text-danger"></span>
                     </div>
                 </div>
@@ -163,12 +166,12 @@
                 <div class="gap-md-1">
                     <div class="d-flex align-items-center mb-3">
                         <label asp-for="TaxValue" style="width: 150px;">@localizer["Tax"]</label>
-                        <input asp-for="TaxValue" class="form-control" style="width: 200px;" />
+                        <input asp-for="TaxValue" type="number" class="form-control" style="width: 200px;" />
                         <span asp-validation-for="TaxValue" class="text-danger"></span>
                     </div>
                     <div class="d-flex align-items-center mb-3">
                         <label asp-for="TaxPrc" class="text-center" style="width: 130px">@localizer["percent"]</label>
-                        <input asp-for="TaxPrc" class="form-control" style="width: 200px;" />
+                        <input asp-for="TaxPrc" type="number" class="form-control" style="width: 200px;" />
                         <span asp-validation-for="TaxPrc" class="text-danger"></span>
                     </div>
                 </div>
@@ -176,7 +179,6 @@
                     <div class="d-flex align-items-center mb-3">
                         <label asp-for="SmNo" class="text-center" style="width: 125px;">@localizer["The Representative"]</label>
                         <select asp-for="SmNo" asp-items="salesMen" class="form-control text-center" style="width: 250px;">
-                            <option value="">-- Choose --</option>
                         </select>
                         <span asp-validation-for="SmNo" class="text-danger"></span>
                     </div>
@@ -189,12 +191,12 @@
                 <div class="gap-md-1">
                     <div class="d-flex align-items-center mb-3">
                         <label asp-for="Descount" style="width: 150px;">@localizer["Permitted Discount"]</label>
-                        <input asp-for="Descount" class="form-control" style="width: 200px;" />
+                        <input asp-for="Descount" type="number" class="form-control" style="width: 200px;" />
                         <span asp-validation-for="Descount" class="text-danger"></span>
                     </div>
                     <div class="d-flex align-items-center mb-3">
                         <label asp-for="DiscPers" class="text-center" style="width: 130px">@localizer["percent"]</label>
-                        <input asp-for="DiscPers" class="form-control" style="width: 200px;" />
+                        <input asp-for="DiscPers" type="number" class="form-control" style="width: 200px;" />
                         <span asp-validation-for="DiscPers" class="text-danger"></span>
                     </div>
                 </div>
@@ -202,7 +204,6 @@
                     <div class="d-flex align-items-center mb-3">
                         <label asp-for="CustNo" class="text-center" style="width: 125px;">@localizer["The Customer"]</label>
                         <select asp-for="CustNo" asp-items="customers" class="form-control text-center" style="width: 250px;">
-                            <option value="">-- Choose --</option>
                         </select>
                         <span asp-validation-for="CustNo" class="text-danger"></span>
                     </div>
@@ -216,7 +217,6 @@
                     <div class="d-flex align-items-center mb-3">
                         <label asp-for="SideId" style="width: 150px;">@localizer["The Receiver"]</label>
                         <select asp-for="SideId" asp-items="receivers" class="form-control text-center" style="width: 250px;">
-                            <option value="">-- Choose --</option>
                         </select>
                         <span asp-validation-for="SideId" class="text-danger"></span>
                     </div>
@@ -226,7 +226,7 @@
             <!------------------------------------------------------------------------------->
 
             <div class="parent d-flex justify-content-md-center gap-2">
-                <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add"]</button>
+                <button type="submit" class="btn btn-success" style="width:150px">@localizer["Save Changes"]</button>
                 <a asp-controller="PermissionForm" asp-action="Index" class="btn btn-secondary" style="width:150px">
                     @localizer["Cancel"]
                 </a>

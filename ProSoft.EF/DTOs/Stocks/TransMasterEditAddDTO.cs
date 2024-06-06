@@ -1,4 +1,5 @@
-﻿using ProSoft.EF.DTOs.Treasury;
+﻿using ProSoft.EF.DTOs.Auth;
+using ProSoft.EF.DTOs.Treasury;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -128,8 +129,8 @@ namespace ProSoft.EF.DTOs.Stocks
         public long? DocNoFr { get; set; }
         public string? TaxBase { get; set; }
         public string? DiscountBase { get; set; }
-        public DateTime? EntryDate { get; set; }
-        public DateTime? ModifyDate { get; set; }
+        //public DateTime? EntryDate { get; set; }
+        //public DateTime? ModifyDate { get; set; }
         public int? SendFr { get; set; }
         /////////////////////////////////////////////////
         public string? MonthName { get; set; }
@@ -144,5 +145,6 @@ namespace ProSoft.EF.DTOs.Stocks
         public List<CustCodeViewDTO>? Customers {  get; set; }
         public List<TreasuryNameViewDTO>? Receivers {  get; set; }
         public List<SalesmenDataViewDTO>? SalesMen {  get; set; }
+        public List<UserDTO>? Users {  get; set; }
     }
 }

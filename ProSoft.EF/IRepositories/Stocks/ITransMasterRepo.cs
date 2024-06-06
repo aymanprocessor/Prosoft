@@ -32,5 +32,12 @@ namespace ProSoft.EF.IRepositories.Stocks
         Task<TransMasterEditAddDTO> GetSalesInvoiceByIdAsync(int transMasterID);
         Task<TransMasterEditAddDTO> GetNewSalesInvoiceAsync(int stockID, int userCode, int permissionID, int branchID);
         Task<TransMaster> AddSalesInvoiceAsync(TransMasterEditAddDTO permissionFormDTO);
+        Task UpdateSalesInvoiceAsync(int id, TransMasterEditAddDTO permissionFormDTO);
+        //////////////////////////////////////////////////
+        // Add Sales Invoice => تسوية مدينة
+        Task<TransMasterEditAddDTO> GetDebitSettlementByIdAsync(int transMasterID);
+        Task<TransMasterEditAddDTO> GetNewDebitSettlementAsync(int stockID, int userCode, int permissionID, int branchID);
+        Task<TransMaster> AddDebitSettlementAsync(TransMasterEditAddDTO permissionFormDTO);
+        Task UpdateDebitSettlementAsync(int id, TransMasterEditAddDTO permissionFormDTO);
     }
 }

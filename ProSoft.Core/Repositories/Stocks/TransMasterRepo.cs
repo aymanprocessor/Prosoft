@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ProSoft.EF.DbContext;
+using ProSoft.EF.DTOs.Auth;
 using ProSoft.EF.DTOs.Shared;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.DTOs.Treasury;
@@ -490,7 +491,6 @@ namespace ProSoft.Core.Repositories.Stocks
             permissionFormDTO.FMonth = DateTime.Now.Month;
             permissionFormDTO.RefDocNo = "0";
             permissionFormDTO.TotTransVal = 0;
-            permissionFormDTO.Descount = 0;
             permissionFormDTO.StatusBal = "R";
             permissionFormDTO.Flag = "1";
             permissionFormDTO.Flag2 = "0";
@@ -514,38 +514,139 @@ namespace ProSoft.Core.Repositories.Stocks
             permissionFormDTO.SerSys = filteredPermissions.Count != 0 ? filteredPermissions.Max(obj => obj.SerSys) + 1 : 1;
 
             var permissionForm = _mapper.Map<TransMaster>(permissionFormDTO);
+            permissionForm.EntryDate = DateTime.Now;
+
             await AddAsync(permissionForm);
             await SaveChangesAsync();
             return permissionForm;
         }
 
-        //public async Task UpdateDisburseFormAsync(int id, TransMasterEditAddDTO permissionFormDTO)
-        //{
-        //    permissionFormDTO.RefDocNo = "0";
-        //    permissionFormDTO.TotTransVal = 0;
-        //    permissionFormDTO.Descount = 0;
-        //    permissionFormDTO.CustDisc1 = 0;
-        //    permissionFormDTO.StatusBal = "R";
-        //    permissionFormDTO.DiscPers = 0;
-        //    permissionFormDTO.Flag = "1";
-        //    permissionFormDTO.SaleStatus = "N";
-        //    permissionFormDTO.Flag2 = "0";
-        //    permissionFormDTO.AmountVisa = 0;
-        //    permissionFormDTO.CustDisc2 = 0;
-        //    permissionFormDTO.CustDisc4 = 0;
-        //    permissionFormDTO.TaxPrc = 0;
-        //    permissionFormDTO.TaxValue = 0;
-        //    permissionFormDTO.DueValue = 0;
-        //    permissionFormDTO.InvNo = 0;
-        //    permissionFormDTO.Flag3 = "1";
-        //    permissionFormDTO.InvType = "0";
-        //    permissionFormDTO.ShowRow = 3;
+        public async Task UpdateSalesInvoiceAsync(int id, TransMasterEditAddDTO permissionFormDTO)
+        {
+            permissionFormDTO.RefDocNo = "0";
+            permissionFormDTO.TotTransVal = 0;
+            permissionFormDTO.StatusBal = "R";
+            permissionFormDTO.Flag = "1";
+            permissionFormDTO.Flag2 = "0";
+            permissionFormDTO.AmountVisa = 0;
+            permissionFormDTO.CashAmount = 0;
+            permissionFormDTO.SaleStatus = "N";
+            permissionFormDTO.AddPers = 10;
+            permissionFormDTO.CustDisc1 = 0;
+            permissionFormDTO.CustDisc2 = 0;
+            permissionFormDTO.CustDisc4 = 0;
+            permissionFormDTO.CustDisc5 = 0;
+            permissionFormDTO.DueValue = 0;
+            permissionFormDTO.InvType = permissionFormDTO.InvType == "1" ? permissionFormDTO.InvType : "0";
+            permissionFormDTO.PriceIncTax = permissionFormDTO.PriceIncTax == 1 ? permissionFormDTO.PriceIncTax : 0;
+            permissionFormDTO.ShowRow = 3;
 
-        //    TransMaster permissionForm = await GetByIdAsync(id);
-        //    _mapper.Map(permissionFormDTO, permissionForm);
+            TransMaster permissionForm = await GetByIdAsync(id);
+            _mapper.Map(permissionFormDTO, permissionForm);
+            permissionForm.ModifyDate = DateTime.Now;
 
-        //    await UpdateAsync(permissionForm);
-        //    await SaveChangesAsync();
-        //}
+            await UpdateAsync(permissionForm);
+            await SaveChangesAsync();
+        }
+
+        //////////////////////////////////////////////////
+        // Add Sales Invoice => تسوية مدينة
+
+        public Task<TransMasterEditAddDTO> GetDebitSettlementByIdAsync(int transMasterID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<TransMasterEditAddDTO> GetNewDebitSettlementAsync(int stockID, int userCode,
+            int permissionID, int branchID)
+        {
+            var permissionFormDTO = new TransMasterEditAddDTO();
+            List<TransMaster> permissionForms = await _DbSet
+                .Where(obj => obj.StockCode == stockID && obj.TransType == permissionID
+                && obj.Flag3 == "1").ToListAsync();
+
+            EisUserObject userObj = await _Context.EisUserObjects
+                .FirstOrDefaultAsync(obj => obj.UserId == userCode &&
+                obj.ObjectName == "w_stores_trans" && obj.DefultId == 1);
+
+            permissionFormDTO.EnableModify = userObj != null;
+
+            List<AppUser> users = await _Context.Users.ToListAsync();
+            permissionFormDTO.Users = _mapper.Map<List<UserDTO>>(users);
+
+            Stock stock = await _Context.Stocks.FindAsync(stockID);
+            permissionFormDTO.StockCode = (short)stockID;
+            GeneralCode permission = await _Context.GeneralCodes.FindAsync(permissionID);
+            permissionFormDTO.TransType = permissionID;
+
+            permissionFormDTO.DocDate = DateTime.Now;
+            permissionFormDTO.FYear = DateTime.Now.Year;
+            permissionFormDTO.MonthName = DateTime.Now.ToString("MMMM");
+
+            var filteredPermissions = await _DbSet.Where(obj => obj.TransType == permissionID
+                && obj.StockCode == stockID && obj.BranchId == branchID
+                && obj.FYear == permissionFormDTO.FYear)
+                .ToListAsync();
+            permissionFormDTO.DocNo = filteredPermissions.Count != 0 ? filteredPermissions.Max(obj => obj.DocNo) + 1 : 1;
+
+            permissionFormDTO.PermissionsCount = permissionForms.Count();
+            permissionFormDTO.StockName = stock?.Stknam;
+            permissionFormDTO.PermissionName = permission?.GDesc;
+
+            UserJournalType userJournal = await _Context.UserJournalTypes
+                .FirstOrDefaultAsync(obj => obj.UserCode == userCode && obj.BranchId == branchID);
+            permissionFormDTO.JournalName = (await _Context.JournalTypes
+                .FirstOrDefaultAsync(obj => obj.JournalCode == userJournal.JournalCode))
+                .JournalName;
+
+            return permissionFormDTO;
+        }
+
+        public async Task<TransMaster> AddDebitSettlementAsync(TransMasterEditAddDTO permissionFormDTO)
+        {
+            permissionFormDTO.DocDate = DateTime.Now;
+            permissionFormDTO.FYear = DateTime.Now.Year;
+            permissionFormDTO.FMonth = DateTime.Now.Month;
+            permissionFormDTO.RefDocNo = permissionFormDTO.RefDocNo is not (null or "") ?
+                permissionFormDTO.RefDocNo : "0";
+            permissionFormDTO.TotTransVal = 0;
+            permissionFormDTO.Descount = 0;
+            permissionFormDTO.StatusBal = "S";
+            permissionFormDTO.Flag = "1";
+            permissionFormDTO.Flag2 = "0";
+            permissionFormDTO.Pay = "Y";
+            permissionFormDTO.AmountVisa = 0;
+            permissionFormDTO.CashAmount = permissionFormDTO.CashAmount is not (null or 0) ?
+                permissionFormDTO.CashAmount : 0;
+
+            permissionFormDTO.SaleStatus = "N";
+            permissionFormDTO.AddPers = 10;
+            permissionFormDTO.CustDisc1 = 0;
+            permissionFormDTO.CustDisc2 = 0;
+            permissionFormDTO.CustDisc4 = 0;
+            permissionFormDTO.CustDisc5 = 0;
+            permissionFormDTO.DueValue = 0;
+            permissionFormDTO.InvType = permissionFormDTO.InvType == "1" ? permissionFormDTO.InvType : "0";
+            permissionFormDTO.PriceIncTax = permissionFormDTO.PriceIncTax == 1 ? permissionFormDTO.PriceIncTax : 0;
+            permissionFormDTO.ShowRow = 3;
+
+            var filteredPermissions = await _DbSet.Where(obj => obj.TransType == permissionFormDTO.TransType
+                && obj.StockCode == permissionFormDTO.StockCode && obj.BranchId ==
+                permissionFormDTO.BranchId && obj.FYear == permissionFormDTO.FYear)
+                .ToListAsync();
+            permissionFormDTO.SerSys = filteredPermissions.Count != 0 ? filteredPermissions.Max(obj => obj.SerSys) + 1 : 1;
+
+            var permissionForm = _mapper.Map<TransMaster>(permissionFormDTO);
+            permissionForm.EntryDate = DateTime.Now;
+
+            await AddAsync(permissionForm);
+            await SaveChangesAsync();
+            return permissionForm;
+        }
+
+        public Task UpdateDebitSettlementAsync(int id, TransMasterEditAddDTO permissionFormDTO)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

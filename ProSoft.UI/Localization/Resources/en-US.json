@@ -184,6 +184,7 @@
   "Edit SubClinic": "Edit SubClinic",
   "Revenue Department": "Revenue Department",
   "Cost Center": "Cost Center",
+  "Cost Centers": "Cost Centers",
   "Add Service": "Add Service",
   "Tax Category": "Tax Category",
   "Send Invoice": "Send Invoice",
@@ -463,6 +464,11 @@
   "File No": "File No",
   "File Date": "File Date",
   "Terms of Voucher": "Terms of Voucher",
+  "Cur Debit": "Cur Debit",
+  "Cur Credit": "Cur Credit",
+  "The Difference": "The Difference",
+  "Add Cost": "Add Cost",
+
 
 
 
@@ -654,11 +660,13 @@
   "Disburse Permission No": "Disburse Permission No",
   "Delivery Permission Date": "Delivery Permission Date",
   "Disburse Permission Date": "Disburse Permission Date",
-  "Last Supply No for Customer": "Last Supply No for Customer",
+  "Supply Order No for Customer": "Supply Order No for Customer",
   "Supply Order Date": "Supply Order Date",
   "Tax Invoice": "Tax Invoice",
   "The Representative": "The Representative",
   "Permitted Discount": "Permitted Discount",
   "The Customer": "The Customer",
-  "The Receiver": "The Receiver"
+  "The Receiver": "The Receiver",
+  "Value Total": "Value Total",
+  "Addressed To": "Addressed To"
 }

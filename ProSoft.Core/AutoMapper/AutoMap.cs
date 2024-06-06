@@ -25,7 +25,7 @@ using ProSoft.EF.DTOs.Treasury.Report;
 
 namespace ProSoft.Core.AutoMapper
 {
-    public class AutoMap: Profile
+    public class AutoMap : Profile
     {
         public AutoMap()
         {
@@ -78,7 +78,6 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<ServiceClinicViewDTO, ServiceClinic>().ReverseMap();
             CreateMap<ServClinicEditAddDTO, ServiceClinic>().ReverseMap();
             CreateMap<ServiceTypeViewDTO, ServiceType>().ReverseMap();
-            CreateMap<CostCenterViewDTO, CostCenter>().ReverseMap();
             CreateMap<EisSectionTypeDTO, EisSectionType>().ReverseMap();
             CreateMap<DoctorPrecentViewDTO, DoctorsPercent>().ReverseMap();
             CreateMap<DoctorPrecentEditAddDTO, DoctorsPercent>().ReverseMap();
@@ -129,6 +128,8 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<AccTransMasterEditAddDTO, AccTransMaster>().ReverseMap();
             CreateMap<AccTransDetailViewDTO, AccTransDetail>().ReverseMap();
             CreateMap<AccTransDetailEditAddDTO, AccTransDetail>().ReverseMap();
+            CreateMap<CostCenterViewDTO, CostCenter>().ReverseMap();
+            CreateMap<CostCenterEditAddDTO, CostCenter>().ReverseMap();
             ////////// Treasury ////////////////////
             CreateMap<TreasuryNameViewDTO, SafeName>().ReverseMap();
             CreateMap<TreasuryNameEditAddDTO, SafeName>().ReverseMap();
