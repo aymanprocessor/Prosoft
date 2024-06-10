@@ -41,11 +41,11 @@
                     <span asp-validation-for="DocNo" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="SupInvNo" style="width: 70%;">@localizer["Disburse Permission No"]</label>
+                    <label style="width: 70%;">@localizer["Disburse Permission No"]</label>
                     <input asp-for="SupInvNo" class="form-control" style="pointer-events: none; background-color: #e9ecef" />
                 </div>
                 <div class="mb-3">
-                    <label asp-for="AccTransNo" style="width: 40%;">@localizer["Voucher No"]</label>
+                    <label style="width: 40%;">@localizer["Voucher No"]</label>
                     <input asp-for="AccTransNo" class="form-control" style="pointer-events: none; background-color: #e9ecef" />
                 </div>
                 <div class="mb-3">
@@ -59,14 +59,14 @@
             <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
                 <div class="flex-column flex-md-row gap-md-1">
                     <div class="d-flex align-items-center mb-3 w-50">
-                        <label asp-for="DocDate" style="width: 150px;">@localizer["Delivery Permission Date"]</label>
+                        <label style="width: 150px;">@localizer["Delivery Permission Date"]</label>
                         @if (Model.EnableModify)
                         {
-                        <input asp-for="DocDate" class="form-control" style="width: 200px;" />
+                        <input asp-for="DocDate" type="date" class="form-control" style="width: 200px;" />
                         }
                         else
                         {
-                        <input asp-for="DocDate" class="form-control" style="width: 200px; pointer-events: none; background-color: #e9ecef" />
+                        <input asp-for="DocDate" type="date" class="form-control" style="width: 200px; pointer-events: none; background-color: #e9ecef" />
                         }
                         <span asp-validation-for="DocDate" class="text-danger"></span>
                     </div>

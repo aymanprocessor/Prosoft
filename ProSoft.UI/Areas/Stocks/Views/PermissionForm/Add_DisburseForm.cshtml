@@ -39,7 +39,7 @@
                     <span asp-validation-for="DocNo" class="text-danger"></span>
                 </div>
                 <div class="mb-3 justify-content-between" style="width: 35%;">
-                    <label asp-for="AccTransNo">@localizer["Voucher No"]</label>
+                    <label>@localizer["Voucher No"]</label>
                     <input asp-for="AccTransNo" class="form-control" style="width: 72%; pointer-events: none; background-color: #e9ecef" />
                 </div>
                 <div class="mb-3" style="width: 35%;">
@@ -52,14 +52,14 @@
 
             <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
                 <div class="mb-3" style="width: 30%">
-                    <label asp-for="DocDate" style="width: 125px;"></label>
+                    <label style="width: 125px;">@localizer["Permission Date"]</label>
                     @if (Model.EnableModify)
                     {
-                    <input asp-for="DocDate" class="form-control" style="width: 210px;" />
+                    <input asp-for="DocDate" type="date" class="form-control" style="width: 210px;" />
                     }
                     else
                     {
-                    <input asp-for="DocDate" class="form-control" style="width: 210px; pointer-events: none; background-color: #e9ecef" />
+                    <input asp-for="DocDate" type="date" class="form-control" style="width: 210px; pointer-events: none; background-color: #e9ecef" />
                     }
                     <span asp-validation-for="DocDate" class="text-danger"></span>
                 </div>

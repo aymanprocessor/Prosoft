@@ -1,0 +1,122 @@
+﻿@model TransMasterEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Add Return Permission Form";
+    Layout = "_Layout";
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+
+    var suppliers = new SelectList(Model.Customers, "SupCode1", "SupName");
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+    <h1 class="mt-4">@Model.PermissionName</h1>
+    <div class="border p-2">
+        <p class="d-flex justify-content-between align-items-center flex-column flex-md-row fs-4 m-0">
+            <span class="fw-bold">@localizer["The Month"] : @Model.MonthName</span>
+            <span class="fw-bold">@localizer["The Year"] : @Model.FYear</span>
+            <span class="fw-bold">@localizer["Number of Permissions"] : @Model.PermissionsCount</span>
+        </p>
+        <p class="d-flex justify-content-between align-items-center flex-column flex-md-row fs-4 m-0">
+            <span class="fw-bold">@localizer["Stock Name"] : @Model.StockName</span>
+            <span class="fw-bold">@localizer["User Name"] : @Model.UserName</span>
+        </p>
+    </div>
+    <form method="post" asp-action="Add_ReqDisburse">
+        <div class="border p-3 mt-4">
+
+            @* Hidden Inputs *@
+            <input asp-for="DocNo" type="hidden" />
+            <input asp-for="StockCode" type="hidden" />
+            <input asp-for="TransType" type="hidden" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="DocNo" style="width: 45%;"></label>
+                    <input asp-for="DocNo" class="form-control" disabled />
+                    <span asp-validation-for="DocNo" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label style="width: 40%;">@localizer["Voucher No"]</label>
+                    <input asp-for="AccTransNo" class="form-control" style="pointer-events: none; background-color: #e9ecef" />
+                </div>
+                <div class="mb-3">
+                    <label style="width: 80%;">@localizer["User Journal"]</label>
+                    <input asp-for="JournalName" class="form-control" style="pointer-events: none; background-color: #e9ecef" />
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
+                <div class="d-flex align-items-center mb-3">
+                    <label style="width: 150px;">@localizer["Permission Date"]</label>
+                    @if (Model.EnableModify)
+                    {
+                    <input asp-for="DocDate" type="date" class="form-control" style="width: 200px;" />
+                    }
+                    else
+                    {
+                    <input asp-for="DocDate" type="date" class="form-control" style="width: 200px; pointer-events: none; background-color: #e9ecef" />
+                    }
+                    <span asp-validation-for="DocDate" class="text-danger"></span>
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <label asp-for="StockCode" class="text-center" style="width: 125px;"></label>
+                    <input asp-for="StockName" class="form-control text-center" style="width: 250px;">
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
+                <div class="d-flex align-items-center mb-3">
+                    <label asp-for="SupInvNo" style="width: 150px;"></label>
+                    <input asp-for="SupInvNo" class="form-control text-center" style="width: 200px;">
+                    <span asp-validation-for="SupInvNo" class="text-danger"></span>
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <label asp-for="Flag3" class="text-center" style="width: 125px;">@localizer["Permission Approval"]</label>
+                    <select asp-for="Flag3" class="form-control text-center" style="width: 250px;">
+                        <option value="1">@localizer["No"]</option>
+                        <option value="2">@localizer["Yes"]</option>
+                    </select>
+                    <span asp-validation-for="Flag3" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
+                <div class="d-flex align-items-center mb-3">
+                    <label asp-for="SupInvDate" style="width: 150px;"></label>
+                    <input asp-for="SupInvDate" class="form-control text-center" style="width: 200px;">
+                    <span asp-validation-for="SupInvDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
+                <div class="d-flex align-items-center mb-3">
+                    <label asp-for="SupNo" style="width: 150px;">@localizer["To Supplier"]</label>
+                    <select asp-for="SupNo" asp-items="suppliers" class="form-control text-center" style="width: 200px;">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="SupNo" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex justify-content-md-center gap-2">
+                <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add"]</button>
+                <a asp-controller="PermissionForm" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>

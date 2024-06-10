@@ -22,22 +22,34 @@ namespace ProSoft.EF.IRepositories.Stocks
         Task<TransMaster> AddPermissionFormAsync(TransMasterEditAddDTO permissionFormDTO);
         Task UpdateTransMasterAsync(int id, TransMasterEditAddDTO permissionFormDTO);
         //////////////////////////////////////////////////
-        // Add Disburse Form => اذن صرف
+        // Disburse Form => اذن صرف
         Task<TransMasterEditAddDTO> GetDisburseFormByIdAsync(int transMasterID);
         Task<TransMasterEditAddDTO> GetNewDisburseFormAsync(int stockID, int userCode, int permissionID, int branchID);
         Task<TransMaster> AddDisburseFormAsync(TransMasterEditAddDTO permissionFormDTO);
         Task UpdateDisburseFormAsync(int id, TransMasterEditAddDTO permissionFormDTO);
         //////////////////////////////////////////////////
-        // Add Sales Invoice => فاتورة مبيعات
+        // Sales Invoice => فاتورة مبيعات
         Task<TransMasterEditAddDTO> GetSalesInvoiceByIdAsync(int transMasterID);
         Task<TransMasterEditAddDTO> GetNewSalesInvoiceAsync(int stockID, int userCode, int permissionID, int branchID);
         Task<TransMaster> AddSalesInvoiceAsync(TransMasterEditAddDTO permissionFormDTO);
         Task UpdateSalesInvoiceAsync(int id, TransMasterEditAddDTO permissionFormDTO);
         //////////////////////////////////////////////////
-        // Add Sales Invoice => تسوية مدينة
-        Task<TransMasterEditAddDTO> GetDebitSettlementByIdAsync(int transMasterID);
-        Task<TransMasterEditAddDTO> GetNewDebitSettlementAsync(int stockID, int userCode, int permissionID, int branchID);
-        Task<TransMaster> AddDebitSettlementAsync(TransMasterEditAddDTO permissionFormDTO);
-        Task UpdateDebitSettlementAsync(int id, TransMasterEditAddDTO permissionFormDTO);
+        // Debit or Credit Settlement => تسوية مدينةاو دائنة
+        Task<TransMasterEditAddDTO> GetSettlementByIdAsync(int transMasterID);
+        Task<TransMasterEditAddDTO> GetNewSettlementAsync(int stockID, int userCode, int permissionID, int branchID);
+        Task<TransMaster> AddSettlementAsync(TransMasterEditAddDTO permissionFormDTO);
+        Task UpdateSettlementAsync(int id, TransMasterEditAddDTO permissionFormDTO);
+        //////////////////////////////////////////////////
+        // Requirements Disburse Form => اذن صرف مستلزمات
+        Task<TransMasterEditAddDTO> GetReqDisburseByIdAsync(int transMasterID);
+        Task<TransMasterEditAddDTO> GetNewReqDisburseAsync(int stockID, int userCode, int permissionID, int branchID);
+        Task<TransMaster> AddReqDisburseAsync(TransMasterEditAddDTO permissionFormDTO);
+        Task UpdateReqDisburseAsync(int id, TransMasterEditAddDTO permissionFormDTO);
+        //////////////////////////////////////////////////
+        // Return Permission Form => اذن ارتجاع لمورد
+        Task<TransMasterEditAddDTO> GetReturnPermissionByIdAsync(int transMasterID);
+        Task<TransMasterEditAddDTO> GetNewReturnPermissionAsync(int stockID, int userCode, int permissionID, int branchID);
+        Task<TransMaster> AddReturnPermissionAsync(TransMasterEditAddDTO permissionFormDTO);
+        Task UpdateReturnPermissionAsync(int id, TransMasterEditAddDTO permissionFormDTO);
     }
 }
