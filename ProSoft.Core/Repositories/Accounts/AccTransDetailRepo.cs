@@ -5,6 +5,7 @@ using ProSoft.EF.DTOs.Accounts;
 using ProSoft.EF.DTOs.Treasury;
 using ProSoft.EF.IRepositories.Accounts;
 using ProSoft.EF.Models.Accounts;
+using ProSoft.EF.Models.Medical.HospitalPatData;
 using ProSoft.EF.Models.Shared;
 using ProSoft.EF.Models.Treasury;
 using System;
@@ -73,7 +74,31 @@ namespace ProSoft.Core.Repositories.Accounts
             //accTransDetailDTO.JournalCode = (await _Context.JournalTypes.FindAsync(journalCode)).JournalCode;
             return accTransDetailDTO;
         }
+        //get all details for trans master
+        public async Task<decimal> GetValDep(int transId)
+        {
+            List<AccTransDetail> accTransDetails = await _Context.AccTransDetails
+                 .Where(obj => obj.TransId == transId).ToListAsync();
 
+            decimal valDep = 0;
+            foreach (var item in accTransDetails)
+            {
+                valDep += Convert.ToDecimal(item.ValDep ?? 0);
+            }
+            return valDep;
+        }
+        public async Task<decimal> GetValCredit(int transId)
+        {
+            List<AccTransDetail> accTransDetails = await _Context.AccTransDetails
+                 .Where(obj => obj.TransId == transId).ToListAsync();
+
+            decimal valCredit = 0;
+            foreach (var item in accTransDetails)
+            {
+                valCredit += Convert.ToDecimal(item.ValCredit ?? 0);
+            }
+            return valCredit;
+        }
         public async Task AddAccTransDetailAsync(AccTransDetailEditAddDTO accTransDetailDTO)
         {
             AccTransDetail accTransDetail = _mapper.Map<AccTransDetail>(accTransDetailDTO);
@@ -110,6 +135,13 @@ namespace ProSoft.Core.Repositories.Accounts
             _mapper.Map(accTransDetailDTO, accTransDetail);
             accTransDetail.UserDateModify = DateTime.Now;
             _Context.Update(accTransDetail);
+            await _Context.SaveChangesAsync();
+        }
+
+        public async Task DeletedAllDetailAsync(int id)
+        {
+            List<AccTransDetail> accTransDetails = await _Context.AccTransDetails.Where(obj => obj.TransId == id).ToListAsync();
+            _Context.RemoveRange(accTransDetails);
             await _Context.SaveChangesAsync();
         }
     }

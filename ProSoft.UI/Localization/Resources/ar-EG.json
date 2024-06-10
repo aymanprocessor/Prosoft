@@ -466,23 +466,18 @@
   "File No": "رقم المستند",
   "File Date": "تاريخ المستند",
   "Terms of Voucher": "بنود القيد",
-<<<<<<< HEAD
   "Cur Debit": "مدين بالعملة",
   "Cur Credit": "دائن بالعملة",
   "The Difference": "الفرق",
   "Add Cost": "اضافة تكلفة",
-||||||| e13c5e9
-
-
-=======
-  "Cur Debit": "مدين بالعملة",
-  "Cur Credit": "دائن بالعملة",
-  "The Difference": "الفرق",
-  "Add Cost": "اضافة تكلفة",
+  "Confirm": "للتاكيد",
+  "Are you sure that Voucher is balanced and the difference is zero ?": "هل انت متاكد من ان القيد متزن والفرق بيساوي صفر ؟",
+  "If balance not equal Zero will delet all terms for Voucher !": "في حالة القيد غير متزن سيتم حذف جميع البنود الخاصة بالقيد !",
 
 
 
->>>>>>> 386f3b9f74fa9cb530a114c2026755ea4b73c862
+
+
 
 
 
@@ -679,5 +674,12 @@
   "The Customer": "العميل",
   "The Receiver": "المستلم",
   "Value Total": "اجمالي القيمة",
-  "Addressed To": "موجهة الي"
+  "Addressed To": "موجهة الي",
+  "Choose": "اختيار",
+  "Close Case": "حالة اغلاق",
+  "Permission Close": "اغلاق الاذن",
+  "Side / Customer": "الجهة / العميل",
+  "The Patient": "المريض",
+  "The User": "المستخدم",
+  "To Supplier": "الي المورد"
 }

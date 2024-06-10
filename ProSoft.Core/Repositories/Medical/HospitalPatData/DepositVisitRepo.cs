@@ -7,6 +7,7 @@ using ProSoft.EF.IRepositories.Medical.HospitalPatData;
 using ProSoft.EF.Models.Accounts;
 using ProSoft.EF.Models.Medical.HospitalPatData;
 using ProSoft.EF.Models.Shared;
+using ProSoft.EF.Models.Treasury;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -103,7 +104,75 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
 
             await _Context.AddAsync(deposit);
             await _Context.SaveChangesAsync();
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////
+            
+            SystemTable systemTable = await _Context.SystemTables.FindAsync(35);
+            var userCode = depositDTO.UserCode;
+
+            if (systemTable.SysValue == 1)
+            {
+                UserCashNo userCashNo = await _Context.userCashNos.FirstOrDefaultAsync(obj=>obj.UserCode == userCode);
+                UserJournalType userJournalType = await _Context.UserJournalTypes.FirstOrDefaultAsync(obj=>obj.UserCode == userCode);
+                AccSafeCash accSafeCash = await _Context.AccSafeCashes
+                 .FirstOrDefaultAsync(obj=>obj.BranchId == deposit.BranchId && obj.FYear == deposit.FYear && obj.MasterId==deposit.MasterId && obj.DocType=="SFCIN" && obj.DocNo == deposit.SafeDocNo &&obj.Flag ==2 && obj.SafeCode == deposit.CashNo);
+
+                int newDocNo;
+                if (accSafeCash is not null)
+                {
+                     _Context.Remove(accSafeCash);
+                    await _Context.SaveChangesAsync();
+                }
+                else if(accSafeCash is null)
+                {
+                    if (deposit.SafeDocNo == null)
+                    {
+                        List<AccSafeCash> accSafeCashs = await _Context.AccSafeCashes
+                            .Where(obj => obj.BranchId == deposit.BranchId && obj.FYear == deposit.FYear && obj.DocType == "SFCIN" && obj.SafeCode == deposit.CashNo).ToListAsync();
+                        if (accSafeCashs.Count != 0)
+                        {
+                            newDocNo = (int)(accSafeCashs.Max(obj => obj.DocNo)) + 1;
+                        }
+                        else { newDocNo = 1; }
+                    }
+                    else { newDocNo = (int)deposit.SafeDocNo; }
+                }
+                int jorKiedNo;
+
+                if (deposit.JorKiedNo == null)
+                {
+                    List<AccTransMaster> accTransMasters = await _Context.AccTransMasters
+                            .Where(obj => obj.CoCode == deposit.BranchId && obj.FYear == deposit.FYear &&  obj.TransType == userJournalType.JournalCode.ToString()).ToListAsync();
+                    if (accTransMasters.Count != 0)
+                    {
+                        jorKiedNo = (int)(accTransMasters.Max(obj => obj.TransNo)) + 1;
+                    }
+                    else { jorKiedNo = 1; }
+                }
+                else { jorKiedNo = (int)deposit.JorKiedNo; }
+
+                EisPosting eisPosting = await _Context.EisPostings.FirstOrDefaultAsync(obj=>obj.PostId == 15 && obj.BranchId ==deposit.BranchId);
+                var mainCodeEisPosting = eisPosting.MainCode;//الرئيسي
+                var subCodeEisPosting = eisPosting.SubCode;//الفرعي
+
+                string commentt;
+                if (deposit.DepositDesc !=null)
+                {
+                    commentt = "مدفوعات مقدمة:" +" "+ deposit.DepositDesc;
+                }
+                else { commentt = "مدفوعات مقدمة:"; }
+
+                var patName = (await _Context.Pats.FirstOrDefaultAsync(obj=>obj.PatId ==deposit.PatId)).PatName;
+                var companyName = (await _Context.Companies.FindAsync(patAdmission.CompId)).CompName;
+                if (patAdmission.MainInvNo == null)
+                {
+                    commentt = "المريض:" + " " + patName + " "+ "الجهة:" + companyName;
+                }
+                else { commentt = "المريض:" + " " + patName + " " + "الجهة: " + companyName+ " "+ "الرقم: " + patAdmission.MainInvNo; }
+
+            }
         }
+
 
         public async Task EditDepositAsync(int id, DepositEditAddDTO depositDTO)
         {

@@ -12,9 +12,12 @@ namespace ProSoft.EF.IRepositories.Accounts
     {
         Task<List<AccTransDetailViewDTO>> GetAccTransDetailAsync(int transId, int journalCode);
         Task<AccTransDetailEditAddDTO> GetEmptyAccTransDetailAsync(int id, int journalCode);
+        Task<decimal> GetValDep(int transId);
+        Task<decimal> GetValCredit(int transId);
         Task AddAccTransDetailAsync(AccTransDetailEditAddDTO accTransDetailDTO);
         Task<AccTransDetailEditAddDTO> GetAccTransDetailByIdAsync(int id);
         Task EditAccTransDetailAsync(int id, AccTransDetailEditAddDTO accTransDetailDTO);
+        Task DeletedAllDetailAsync(int id);
 
     }
 }

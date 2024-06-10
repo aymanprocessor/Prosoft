@@ -130,6 +130,7 @@ namespace ProSoft.EF.DbContext
         ////////////////////
         // System //
         public DbSet<EisPosting> EisPostings { get; set; }
+        public DbSet<SystemTable> SystemTables { get; set; }
 
         ////////////////////
         // Treasury //

@@ -27,6 +27,8 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
         {
              AccTransDetailEditAddDTO accTransDetailDTO = await _accTransDetailRepo.GetEmptyAccTransDetailAsync(id,journalCode);
             ViewBag.userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
+            ViewBag.valDepSum = await _accTransDetailRepo.GetValDep(id);
+            ViewBag.valCreditSum = await _accTransDetailRepo.GetValCredit(id);
 
             return View(accTransDetailDTO);
         }
@@ -39,7 +41,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             if (ModelState.IsValid)
             {
                  await _accTransDetailRepo.AddAccTransDetailAsync(accTransDetailDTO);
-                return RedirectToAction("Index", "AccTransMaster", new { journalCode = accTransDetailDTO.TransType });
+                return RedirectToAction("Add_AccTransDetail", "AccTransDetail", new {id = accTransDetailDTO.TransId, journalCode = accTransDetailDTO.TransType });
 
             }
             return View();
@@ -77,6 +79,12 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             await _accTransDetailRepo.DeleteAsync(accTransDetail);
             await _accTransDetailRepo.SaveChangesAsync();
             return RedirectToAction("Index", "AccTransMaster", new { journalCode = accTransDetail.TransType });
+        }
+
+        public async Task<IActionResult> DeletedAllDetail(int id,int journalCode)
+        {
+            await _accTransDetailRepo.DeletedAllDetailAsync(id);
+            return RedirectToAction("Index", "AccTransMaster", new { journalCode = journalCode });
         }
     }
 }

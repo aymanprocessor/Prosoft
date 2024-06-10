@@ -340,11 +340,11 @@ html {
     }
 
 @media (max-width: 767px) {
-    .parent-record > div {
+    .parent-permission > div {
         width: 100% !important;
     }
 
-    .parent-record {
+    .parent-permission {
         gap: 0px !important;
     }
 }
