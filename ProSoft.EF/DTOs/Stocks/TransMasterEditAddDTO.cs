@@ -1,4 +1,5 @@
 ﻿using ProSoft.EF.DTOs.Auth;
+using ProSoft.EF.DTOs.Medical.HospitalPatData;
 using ProSoft.EF.DTOs.Treasury;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,8 @@ namespace ProSoft.EF.DTOs.Stocks
 {
     public class TransMasterEditAddDTO
     {
+        [DisplayName("Stock")]
+        [Required(ErrorMessage = "The field is required")]
         public short StockCode { get; set; }
         public int TransType { get; set; }
 
@@ -129,8 +132,6 @@ namespace ProSoft.EF.DTOs.Stocks
         public long? DocNoFr { get; set; }
         public string? TaxBase { get; set; }
         public string? DiscountBase { get; set; }
-        //public DateTime? EntryDate { get; set; }
-        //public DateTime? ModifyDate { get; set; }
         public int? SendFr { get; set; }
         /////////////////////////////////////////////////
         public string? MonthName { get; set; }
@@ -146,5 +147,6 @@ namespace ProSoft.EF.DTOs.Stocks
         public List<TreasuryNameViewDTO>? Receivers {  get; set; }
         public List<SalesmenDataViewDTO>? SalesMen {  get; set; }
         public List<UserDTO>? Users {  get; set; }
+        public List<PatViewDTO>? Patients {  get; set; }
     }
 }

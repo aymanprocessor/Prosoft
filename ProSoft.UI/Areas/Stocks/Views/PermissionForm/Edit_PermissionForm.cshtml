@@ -37,8 +37,15 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
                 <div class="mb-3" style="width: 30%;">
-                    <label asp-for="DocDate" style="width: 125px;"></label>
-                    <input asp-for="DocDate" class="form-control" style="width: 210px;" />
+                    <label style="width: 125px;">@localizer["Permission Date"]</label>
+                    @if (Model.EnableModify)
+                    {
+                    <input asp-for="DocDate" type="date" class="form-control" style="width: 210px;" />
+                    }
+                    else
+                    {
+                    <input asp-for="DocDate" type="date" class="form-control" style="width: 210px; pointer-events: none; background-color: #e9ecef" />
+                    }
                     <span asp-validation-for="DocDate" class="text-danger"></span>
                 </div>
                 <div class="mb-3 justify-content-between" style="width: 35%;">

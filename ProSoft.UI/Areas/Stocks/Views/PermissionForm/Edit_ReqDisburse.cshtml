@@ -2,16 +2,19 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Add Debit Settlement";
+    ViewData["Title"] = "Edit Requirements Disburse Form";
     Layout = "_Layout";
     var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
 
-    var users = new SelectList(Model.Users, "UserCode", "UserName");
+    var stocks = new SelectList(Model.Stocks, "Stkcod", "Stknam");
+    var customers = new SelectList(Model.Customers, "CustCode1", "CustName");
+    var patients = new SelectList(Model.Patients, "PatId", "PatName");
+    var receivers = new SelectList(Model.Receivers, "SafeCode", "SafeNames");
 }
 @inject IViewLocalizer localizer
 
 <div class="container pt-2">
-    <h1 class="mt-4">@Model.PermissionName</h1>
+    <h1 class="mt-4">@localizer["Modify"] @Model.PermissionName</h1>
     <div class="border p-2">
         <p class="d-flex justify-content-between align-items-center flex-column flex-md-row fs-4 m-0">
             <span class="fw-bold">@localizer["The Month"] : @Model.MonthName</span>
@@ -23,12 +26,14 @@
             <span class="fw-bold">@localizer["User Name"] : @Model.UserName</span>
         </p>
     </div>
-    <form method="post" asp-action="Add_DebitSettlement">
+    <form method="post" asp-action="Edit_ReqDisburse">
         <div class="border p-3 mt-4">
 
             @* Hidden Inputs *@
             <input asp-for="DocNo" type="hidden" />
-            <input asp-for="StockCode" type="hidden" />
+            <input asp-for="SerSys" type="hidden" />
+            <input asp-for="FYear" type="hidden" />
+            <input asp-for="FMonth" type="hidden" />
             <input asp-for="TransType" type="hidden" />
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -39,11 +44,7 @@
                     <span asp-validation-for="DocNo" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="SupInvNo" style="width: 70%;">@localizer["Disburse Permission No"]</label>
-                    <input asp-for="SupInvNo" class="form-control" style="pointer-events: none; background-color: #e9ecef" />
-                </div>
-                <div class="mb-3">
-                    <label asp-for="AccTransNo" style="width: 40%;">@localizer["Voucher No"]</label>
+                    <label style="width: 40%;">@localizer["Voucher No"]</label>
                     <input asp-for="AccTransNo" class="form-control" style="pointer-events: none; background-color: #e9ecef" />
                 </div>
                 <div class="mb-3">
@@ -56,24 +57,24 @@
 
             <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
                 <div class="d-flex align-items-center mb-3">
-                    <label asp-for="DocDate" style="width: 150px;">@localizer["Date"]</label>
+                    <label style="width: 150px;">@localizer["Permission Date"]</label>
                     @if (Model.EnableModify)
                     {
-                    <input asp-for="DocDate" class="form-control" style="width: 200px;" />
+                    <input asp-for="DocDate" type="date" class="form-control" style="width: 200px;" />
                     }
                     else
                     {
-                    <input asp-for="DocDate" class="form-control" style="width: 200px; pointer-events: none; background-color: #e9ecef" />
+                    <input asp-for="DocDate" type="date" class="form-control" style="width: 200px; pointer-events: none; background-color: #e9ecef" />
                     }
                     <span asp-validation-for="DocDate" class="text-danger"></span>
                 </div>
                 <div class="d-flex align-items-center mb-3">
-                    <label asp-for="Flag3" class="text-center" style="width: 125px;">@localizer["User Dependence"]</label>
-                    <select asp-for="Flag3" class="form-control text-center" style="width: 250px;">
-                        <option value="1">@localizer["No"]</option>
-                        <option value="2">@localizer["Yes"]</option>
+                    <label asp-for="ShowRow" class="text-center" style="width: 125px;">@localizer["Permission Close"]</label>
+                    <select asp-for="ShowRow" class="form-control text-center" style="width: 250px;">
+                        <option value="3">@localizer["Choose"]</option>
+                        <option value="2">@localizer["Close Case"]</option>
                     </select>
-                    <span asp-validation-for="Flag3" class="text-danger"></span>
+                    <span asp-validation-for="ShowRow" class="text-danger"></span>
                 </div>
             </div>
 
@@ -81,13 +82,10 @@
 
             <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
                 <div class="d-flex align-items-center mb-3">
-                    <label asp-for="StockName" style="width: 150px;">@localizer["Stock"]</label>
-                    <input asp-for="StockName" class="form-control" style="width: 200px;" disabled />
-                </div>
-                <div class="d-flex align-items-center mb-3">
-                    <label asp-for="CashAmount" class="text-center" style="width: 125px">@localizer["Value Total"]</label>
-                    <input asp-for="CashAmount" type="number" class="form-control" style="width: 250px;" />
-                    <span asp-validation-for="CashAmount" class="text-danger"></span>
+                    <label asp-for="StockCode" style="width: 150px;"></label>
+                    <select asp-for="StockCode" asp-items="stocks" class="form-control text-center" style="width: 200px;">
+                    </select>
+                    <span asp-validation-for="StockCode" class="text-danger"></span>
                 </div>
             </div>
 
@@ -95,25 +93,46 @@
 
             <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
                 <div class="d-flex align-items-center mb-3">
-                    <label asp-for="UserConfirm" style="width: 150px;">@localizer["Addressed To"]</label>
-                    <select asp-for="UserConfirm" asp-items="users" class="form-control text-center" style="width: 200px;">
+                    <label asp-for="CustNo" style="width: 150px;">@localizer["Side / Customer"]</label>
+                    <select asp-for="CustNo" asp-items="customers" class="form-control text-center" style="width: 200px;">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="CustNo" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
+                <div class="d-flex align-items-center mb-3">
+                    <label asp-for="UserConfirm" style="width: 150px;">@localizer["The Patient"]</label>
+                    <select asp-for="UserConfirm" asp-items="patients" class="form-control text-center" style="width: 200px;">
                         <option value="">-- Choose --</option>
                     </select>
                     <span asp-validation-for="UserConfirm" class="text-danger"></span>
                 </div>
-                <div class="d-none align-items-center mb-3">
-                    <label asp-for="RefDocNo" style="width: 150px;"></label>
-                    <select asp-for="RefDocNo" asp-items="users" class="form-control text-center" style="width: 250px;">
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
+                <div class="d-flex align-items-center mb-3">
+                    <label asp-for="UserName" style="width: 150px;">@localizer["The User"]</label>
+                    <input asp-for="UserName" class="form-control text-center" style="width: 200px;" disabled>
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <label asp-for="Remark" class="text-center" style="width: 125px;">@localizer["The Receiver"]</label>
+                    <select asp-for="Remark" asp-items="receivers" class="form-control text-center" style="width: 250px;">
                         <option value="">-- Choose --</option>
                     </select>
-                    <span asp-validation-for="RefDocNo" class="text-danger"></span>
+                    <span asp-validation-for="Remark" class="text-danger"></span>
                 </div>
             </div>
 
             <!------------------------------------------------------------------------------->
 
             <div class="parent d-flex justify-content-md-center gap-2">
-                <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add"]</button>
+                <button type="submit" class="btn btn-success" style="width:150px">@localizer["Save Changes"]</button>
                 <a asp-controller="PermissionForm" asp-action="Index" class="btn btn-secondary" style="width:150px">
                     @localizer["Cancel"]
                 </a>

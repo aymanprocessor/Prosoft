@@ -464,21 +464,16 @@
   "File No": "File No",
   "File Date": "File Date",
   "Terms of Voucher": "Terms of Voucher",
-<<<<<<< HEAD
   "Cur Debit": "Cur Debit",
   "Cur Credit": "Cur Credit",
   "The Difference": "The Difference",
   "Add Cost": "Add Cost",
-||||||| e13c5e9
-
-=======
-  "Cur Debit": "Cur Debit",
-  "Cur Credit": "Cur Credit",
-  "The Difference": "The Difference",
-  "Add Cost": "Add Cost",
+  "Confirm": "Confirm",
+  "Are you sure that Voucher is balanced and the difference is zero ?": "Are you sure that Voucher is balanced and the difference is zero ?",
+  "If balance not equal Zero will delet all terms for Voucher !": "If balance not equal Zero will delet all terms for Voucher !",
 
 
->>>>>>> 386f3b9f74fa9cb530a114c2026755ea4b73c862
+
 
 
 
@@ -677,5 +672,11 @@
   "The Customer": "The Customer",
   "The Receiver": "The Receiver",
   "Value Total": "Value Total",
-  "Addressed To": "Addressed To"
+  "Addressed To": "Addressed To",
+  "Choose": "Choose",
+  "Close Case": "Close Case",
+  "Permission Close": "Permission Close",
+  "The Patient": "The Patient",
+  "The User": "The User",
+  "To Supplier": "To Supplier"
 }
