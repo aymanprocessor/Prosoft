@@ -114,13 +114,13 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         }
 
         //////////////////////////////////////////////////
-        // Disburse Form => اذن صرف
+        // Disburse or Convert Permission => اذن صرف او تحويل
         // Get Add
-        public async Task<IActionResult> Add_DisburseForm(int id, int transType)
+        public async Task<IActionResult> Add_DisburseOrConvertForm(int id, int transType)
         {
             var userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
             var branchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
-            TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetNewDisburseFormAsync(id, userCode, transType, branchId);
+            TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetNewDisburseOrConvertFormAsync(id, userCode, transType, branchId);
             permissionFormDTO.UserName = (await _userRepo.GetUserByIdAsync(userCode)).UserName;
 
             return View(permissionFormDTO);
@@ -129,35 +129,35 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         //Post Add
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add_DisburseForm(int id, TransMasterEditAddDTO permissionFormDTO)
+        public async Task<IActionResult> Add_DisburseOrConvertForm(int id, TransMasterEditAddDTO permissionFormDTO)
         {
             if (ModelState.IsValid)
             {
                 permissionFormDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
                 permissionFormDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
-                TransMaster permissionForm = await _transMasterRepo.AddDisburseFormAsync(permissionFormDTO);
+                TransMaster permissionForm = await _transMasterRepo.AddDisburseOrConvertFormAsync(permissionFormDTO);
                 return RedirectToAction(nameof(Index), new { id = permissionForm.TransMAsterID });
             }
             return View(permissionFormDTO);
         }
 
         // Get Edit
-        public async Task<IActionResult> Edit_DisburseForm(int id)
+        public async Task<IActionResult> Edit_DisburseOrConvertForm(int id)
         {
-            TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetDisburseFormByIdAsync(id);
+            TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetDisburseOrConvertFormByIdAsync(id);
             return View(permissionFormDTO);
         }
 
         // Post Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit_DisburseForm(int id, TransMasterEditAddDTO permissionFormDTO)
+        public async Task<IActionResult> Edit_DisburseOrConvertForm(int id, TransMasterEditAddDTO permissionFormDTO)
         {
             if (ModelState.IsValid)
             {
                 permissionFormDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
                 permissionFormDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
-                await _transMasterRepo.UpdateDisburseFormAsync(id, permissionFormDTO);
+                await _transMasterRepo.UpdateDisburseOrConvertFormAsync(id, permissionFormDTO);
                 return RedirectToAction(nameof(Index));
             }
             return View(permissionFormDTO);
@@ -331,31 +331,82 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         }
 
         //Post Add
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Add_ReturnPermission(int id, TransMasterEditAddDTO permissionFormDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                permissionFormDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
+                permissionFormDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
+                TransMaster permissionForm = await _transMasterRepo.AddReturnPermissionAsync(permissionFormDTO);
+                return RedirectToAction(nameof(Index), new { id = permissionForm.TransMAsterID });
+            }
+            return View(permissionFormDTO);
+        }
+
+        // Get Edit
+        public async Task<IActionResult> Edit_ReturnPermission(int id)
+        {
+            TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetReturnPermissionByIdAsync(id);
+            return View(permissionFormDTO);
+        }
+
+        // Post Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit_ReturnPermission(int id, TransMasterEditAddDTO permissionFormDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                permissionFormDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
+                permissionFormDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
+                await _transMasterRepo.UpdateReqDisburseAsync(id, permissionFormDTO);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(permissionFormDTO);
+        }
+
+        //////////////////////////////////////////////////
+        // Convert Permission => اذن تحويل
+        // Get Add
+        public async Task<IActionResult> Add_ConvertPermission(int id, int transType)
+        {
+            var userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
+            var branchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
+            TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo
+                .GetNewReturnPermissionAsync(id, userCode, transType, branchId);
+            permissionFormDTO.UserName = (await _userRepo.GetUserByIdAsync(userCode)).UserName;
+
+            return View(permissionFormDTO);
+        }
+
+        //Post Add
         //[HttpPost]
         //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Add_ReqDisburse(int id, TransMasterEditAddDTO permissionFormDTO)
+        //public async Task<IActionResult> Add_ConvertPermission(int id, TransMasterEditAddDTO permissionFormDTO)
         //{
         //    if (ModelState.IsValid)
         //    {
         //        permissionFormDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
         //        permissionFormDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
-        //        TransMaster permissionForm = await _transMasterRepo.AddReqDisburseAsync(permissionFormDTO);
+        //        TransMaster permissionForm = await _transMasterRepo.AddReturnPermissionAsync(permissionFormDTO);
         //        return RedirectToAction(nameof(Index), new { id = permissionForm.TransMAsterID });
         //    }
         //    return View(permissionFormDTO);
         //}
 
         // Get Edit
-        //public async Task<IActionResult> Edit_ReqDisburse(int id)
+        //public async Task<IActionResult> Edit_ConvertPermission(int id)
         //{
-        //    TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetReqDisburseByIdAsync(id);
+        //    TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetReturnPermissionByIdAsync(id);
         //    return View(permissionFormDTO);
         //}
 
         // Post Edit
         //[HttpPost]
         //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit_ReqDisburse(int id, TransMasterEditAddDTO permissionFormDTO)
+        //public async Task<IActionResult> Edit_ConvertPermission(int id, TransMasterEditAddDTO permissionFormDTO)
         //{
         //    if (ModelState.IsValid)
         //    {

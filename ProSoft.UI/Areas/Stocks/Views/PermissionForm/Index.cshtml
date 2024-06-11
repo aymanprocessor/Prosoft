@@ -82,20 +82,21 @@
                     <td style="width: 325px;">
                         @switch (Model.TransType)
                         {
-                            case 2:
-                                <a href="/Stocks/PermissionForm/Edit_DisburseForm/@Model.TransMAsterID" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
-                                break;
-                            case 6:
-                                <a href="/Stocks/PermissionForm/Edit_SalesInvoice/@Model.TransMAsterID" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
+                            case 4:
+                            case 13:
+                                    <a href="/Stocks/PermissionForm/Edit_DisburseOrConvertForm/@Model.TransMAsterID" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
                                 break;
                             case 12:
-                            case 13:
-                                <a href="/Stocks/PermissionForm/Edit_Settlement/@Model.TransMAsterID" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
-                                break;
-                            case 21:
-                                <a href="/Stocks/PermissionForm/Edit_ReqDisburse/@Model.TransMAsterID" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
+                                <a href="/Stocks/PermissionForm/Edit_SalesInvoice/@Model.TransMAsterID" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
                                 break;
                             case 24:
+                            case 26:
+                                <a href="/Stocks/PermissionForm/Edit_Settlement/@Model.TransMAsterID" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
+                                break;
+                            case 5:
+                                <a href="/Stocks/PermissionForm/Edit_ReqDisburse/@Model.TransMAsterID" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
+                                break;
+                            case 30:
                                 <a href="/Stocks/PermissionForm/Edit_ReturnPermission/@Model.TransMAsterID" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
                                 break;
                             default:
@@ -219,39 +220,18 @@
                 return;
             }
 
-            switch (permission.value) {
-                case 2:
-                    linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_DisburseForm/${stock.value}?transType=${permission.value}`);
-                    break;
-                case 6:
-                    linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_SalesInvoice/${stock.value}?transType=${permission.value}`);
-                    break;
-                case 12:
-                case 13:
-                    linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_Settlement/${stock.value}?transType=${permission.value}`);
-                    break;
-                case 21:
-                    linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_ReqDisburse/${stock.value}?transType=${permission.value}`);
-                    break;
-                case 24:
-                    linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_ReturnPermission/${stock.value}?transType=${permission.value}`);
-                    break;
-                default:
-                    linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_PermissionForm/${stock.value}?transType=${permission.value}`);
-                    break;
-            }
-            // if (permission.value == 2)
-            //     linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_DisburseForm/${stock.value}?transType=${permission.value}`);
-            // else if (permission.value == 6)
-            //     linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_SalesInvoice/${stock.value}?transType=${permission.value}`);
-            // else if (permission.value == 12 || permission.value == 13)
-            //     linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_Settlement/${stock.value}?transType=${permission.value}`);
-            // else if (permission.value == 21)
-            //     linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_ReqDisburse/${stock.value}?transType=${permission.value}`);
-            // else if (permission.value == 24)
-            //     linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_ReturnPermission/${stock.value}?transType=${permission.value}`);
-            // else
-            //     linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_PermissionForm/${stock.value}?transType=${permission.value}`);
+            if (permission.value == 4 || permission.value == 13)
+                linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_DisburseOrConvertForm/${stock.value}?transType=${permission.value}`);
+            else if (permission.value == 12)
+                linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_SalesInvoice/${stock.value}?transType=${permission.value}`);
+            else if (permission.value == 24 || permission.value == 26)
+                linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_Settlement/${stock.value}?transType=${permission.value}`);
+            else if (permission.value == 5)
+                linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_ReqDisburse/${stock.value}?transType=${permission.value}`);
+            else if (permission.value == 30)
+                linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_ReturnPermission/${stock.value}?transType=${permission.value}`);
+            else
+                linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_PermissionForm/${stock.value}?transType=${permission.value}`);
         }
 
         function getUserPermissionsForStock(e) {
@@ -264,11 +244,22 @@
                 success: function (result) {
                     for (let item of result) {
                         permissions.innerHTML +=
-                            `<option value="${item.gId}">${item.gDesc}</option>`;
+                            `<option value="${item.uniqueType}">${item.gDesc}</option>`;
                     }
                 }
             });
         }
+
+        function formatDate(date) {
+            let myDate = new Date(date);
+            let mm = myDate.getMonth() + 1; // getMonth() is zero-based
+            let dd = myDate.getDate();
+
+            return [myDate.getFullYear(),
+            (mm > 9 ? '' : '0') + mm,
+            (dd > 9 ? '' : '0') + dd
+            ].join('-');
+        };
 
         function getPermissionsInStock(e) {
             let permission = e.target;
@@ -287,44 +278,35 @@
                 url: `/Stocks/PermissionForm/GetPermissionsForms/${stock.value}?transType=${permission.value}`,
                 success: function (result) {
                     for (let item of result) {
-                        let docDate = new Date(item.docDate).toISOString().split('T')[0];
-                        let supInvDate = new Date(item.supInvDate).toISOString().split('T')[0];
+                        // let docDate = new Date(item.docDate).toISOString().split('T')[0];
+                        // let supInvDate = new Date(item.supInvDate).toISOString().split('T')[0];
+                        let docDate = formatDate(item.docDate);
+                        let supInvDate = formatDate(item.supInvDate);
                         let userPerm = document.createElement("tr");
-
+                        
                         let actions;
                         switch (item.transType) {
-                            case 2:
-                                actions = ["Edit_DisburseForm"];
-                                break;
-                            case 6:
-                                actions = ["Edit_SalesInvoice"];
+                            case 4:
+                            case 13:
+                                actions = ["Edit_DisburseOrConvertForm"];
                                 break;
                             case 12:
-                            case 13:
-                                actions = ["Edit_Settlement"];
-                                break;
-                            case 21:
-                                actions = ["Edit_ReqDisburse"];
+                                actions = ["Edit_SalesInvoice"];
                                 break;
                             case 24:
+                            case 26:
+                                actions = ["Edit_Settlement"];
+                                break;
+                            case 5:
+                                actions = ["Edit_ReqDisburse"];
+                                break;
+                            case 30:
                                 actions = ["Edit_ReturnPermission"];
                                 break;
                             default:
                                 actions = ["Edit_PermissionForm"];
                                 break;
                         }
-                        // if (item.transType == 2)
-                        //     actions = ["Edit_DisburseForm"];
-                        // else if (item.transType == 6)
-                        //     actions = ["Edit_SalesInvoice"];
-                        // else if (item.transType == 12 || item.transType == 13)
-                        //     actions = ["Edit_Settlement"];
-                        // else if (item.transType == 21)
-                        //     actions = ["Edit_ReqDisburse"];
-                        // else if (item.transType == 24)
-                        //     actions = ["Edit_ReturnPermission"];
-                        // else
-                        //     actions = ["Edit_PermissionForm"];
 
                         userPerm.innerHTML =
                             `
