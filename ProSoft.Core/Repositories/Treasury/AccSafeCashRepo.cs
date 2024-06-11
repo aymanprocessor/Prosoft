@@ -43,6 +43,7 @@ namespace ProSoft.Core.Repositories.Treasury
                         DocDate = obj.DocDate,
                         PersonName = obj.PersonName,
                         ValuePay = obj.ValuePay,
+                        Commentt = obj.Commentt,
                     }).ToListAsync();
             }
             else if (flagType == "oneANDtwoAndthree")
@@ -56,7 +57,8 @@ namespace ProSoft.Core.Repositories.Treasury
                         SafeName = obj.SafeName.SafeNames,
                         DocDate = obj.DocDate,
                         PersonName = obj.PersonName,
-                        ValuePay = obj.ValuePay
+                        ValuePay = obj.ValuePay,
+                        Commentt = obj.Commentt,
                     }).ToListAsync();
             }
 

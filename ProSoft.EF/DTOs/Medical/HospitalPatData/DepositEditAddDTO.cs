@@ -49,11 +49,9 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
         public int? PostUser { get; set; }
 
         [DisplayName("Treasury No")]
-        [Required(ErrorMessage = "The field is required")]
         public int? SafeDocNo { get; set; }
 
         [DisplayName("Voucher No")]
-        [Required(ErrorMessage = "The field is required")]
         public int? JorKiedNo { get; set; }
 
         public int? FYear { get; set; }

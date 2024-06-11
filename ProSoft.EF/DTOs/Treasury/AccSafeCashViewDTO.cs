@@ -20,7 +20,7 @@ namespace ProSoft.EF.DTOs.Treasury
 
         public decimal? ValuePay { get; set; }
         public string? ValuePayWord { get; set; }
-
+        public string? Commentt { get; set; }
         public int? SafeCode { get; set; }
         public int? FYear { get; set; }
 

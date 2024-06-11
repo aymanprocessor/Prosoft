@@ -473,6 +473,8 @@
   "Confirm": "للتاكيد",
   "Are you sure that Voucher is balanced and the difference is zero ?": "هل انت متاكد من ان القيد متزن والفرق بيساوي صفر ؟",
   "If balance not equal Zero will delet all terms for Voucher !": "في حالة القيد غير متزن سيتم حذف جميع البنود الخاصة بالقيد !",
+  "Joining Users With Journals": "ربط المستخدم باليوميات",
+  "User Journals Types": "انواع اليوميات للمستخدم",
 
 
 
@@ -681,5 +683,7 @@
   "Side / Customer": "الجهة / العميل",
   "The Patient": "المريض",
   "The User": "المستخدم",
-  "To Supplier": "الي المورد"
+  "To Supplier": "الي المورد",
+  "Record Number": "رقم المحضر",
+  "Record Date": "تاريخ المحضر"
 }

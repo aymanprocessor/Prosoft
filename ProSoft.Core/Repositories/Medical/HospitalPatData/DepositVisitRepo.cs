@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using ProSoft.EF.DbContext;
 using ProSoft.EF.DTOs.Accounts;
 using ProSoft.EF.DTOs.Medical.HospitalPatData;
@@ -101,29 +102,62 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             PatAdmission patAdmission =await _Context.PatAdmissions.FirstOrDefaultAsync(obj=>obj.MasterId==id);
             deposit.PatId = patAdmission.PatId;
             deposit.ModId = 11;
+            UserCashNo userCashNo = await _Context.userCashNos.FirstOrDefaultAsync(obj => obj.UserCode == deposit.UserCode);
+            deposit.CashNo = userCashNo.SafeCode;
 
             await _Context.AddAsync(deposit);
             await _Context.SaveChangesAsync();
 
+            await PostingToCashAcc(deposit, patAdmission);
+
             ///////////////////////////////////////////////////////////////////////////////////////////////
-            
+        
+        }
+        ///get name of maincode + subcode ////
+        private async Task<string> GetAccountName(string mainCode, string subCode)
+        {
+            AccMainCode myMainCode = await _Context.AccMainCodes
+                .FirstOrDefaultAsync(obj => obj.MainCode == mainCode);
+            string mainName = myMainCode.MainName;
+
+            AccSubCode mySubCode = await _Context.AccSubCodes
+                .FirstOrDefaultAsync(obj => obj.SubCode == subCode && obj.MainCode == mainCode);
+            string subName = mySubCode! != null ? mySubCode.SubName : string.Empty;
+
+            return subName != "" ? $"{mainName} / {subName}" : mainName;
+        }
+
+        public async Task EditDepositAsync(int id, DepositEditAddDTO depositDTO)
+        {
+            Deposit deposit = await _Context.Deposits.FirstOrDefaultAsync(obj => obj.DpsSer == id);
+            deposit.ModId = 11;
+            _mapper.Map(depositDTO, deposit);
+            _Context.Update(deposit);
+            await _Context.SaveChangesAsync();
+        }
+
+        public async Task<string> PostingToCashAcc(Deposit deposit, PatAdmission patAdmission)
+        {
             SystemTable systemTable = await _Context.SystemTables.FindAsync(35);
-            var userCode = depositDTO.UserCode;
+            var userCode = deposit.UserCode;
+            var depositId = deposit.DpsSer;
+
 
             if (systemTable.SysValue == 1)
             {
-                UserCashNo userCashNo = await _Context.userCashNos.FirstOrDefaultAsync(obj=>obj.UserCode == userCode);
-                UserJournalType userJournalType = await _Context.UserJournalTypes.FirstOrDefaultAsync(obj=>obj.UserCode == userCode);
+                UserCashNo userCashNo = await _Context.userCashNos.FirstOrDefaultAsync(obj => obj.UserCode == userCode);
+                UserJournalType userJournalType = await _Context.UserJournalTypes.FirstOrDefaultAsync(obj => obj.UserCode == userCode);
                 AccSafeCash accSafeCash = await _Context.AccSafeCashes
-                 .FirstOrDefaultAsync(obj=>obj.BranchId == deposit.BranchId && obj.FYear == deposit.FYear && obj.MasterId==deposit.MasterId && obj.DocType=="SFCIN" && obj.DocNo == deposit.SafeDocNo &&obj.Flag ==2 && obj.SafeCode == deposit.CashNo);
+                 .FirstOrDefaultAsync(obj => obj.BranchId == deposit.BranchId && obj.FYear == deposit.FYear && obj.MasterId == deposit.MasterId && obj.DocType == "SFCIN" && obj.DocNo == deposit.SafeDocNo && obj.Flag == 2 && obj.SafeCode == deposit.CashNo);
 
-                int newDocNo;
+                int newDocNo = 0;
                 if (accSafeCash is not null)
                 {
-                     _Context.Remove(accSafeCash);
+                    _Context.Remove(accSafeCash);
                     await _Context.SaveChangesAsync();
+                    newDocNo = (int)deposit.SafeDocNo;
                 }
-                else if(accSafeCash is null)
+                else if (accSafeCash is null)
                 {
                     if (deposit.SafeDocNo == null)
                     {
@@ -142,7 +176,7 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
                 if (deposit.JorKiedNo == null)
                 {
                     List<AccTransMaster> accTransMasters = await _Context.AccTransMasters
-                            .Where(obj => obj.CoCode == deposit.BranchId && obj.FYear == deposit.FYear &&  obj.TransType == userJournalType.JournalCode.ToString()).ToListAsync();
+                            .Where(obj => obj.CoCode == deposit.BranchId && obj.FYear == deposit.FYear && obj.TransType == userJournalType.JournalCode.ToString()).ToListAsync();
                     if (accTransMasters.Count != 0)
                     {
                         jorKiedNo = (int)(accTransMasters.Max(obj => obj.TransNo)) + 1;
@@ -151,36 +185,111 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
                 }
                 else { jorKiedNo = (int)deposit.JorKiedNo; }
 
-                EisPosting eisPosting = await _Context.EisPostings.FirstOrDefaultAsync(obj=>obj.PostId == 15 && obj.BranchId ==deposit.BranchId);
+                EisPosting eisPosting = await _Context.EisPostings.FirstOrDefaultAsync(obj => obj.PostId == 15 && obj.BranchId == deposit.BranchId);
                 var mainCodeEisPosting = eisPosting.MainCode;//الرئيسي
                 var subCodeEisPosting = eisPosting.SubCode;//الفرعي
+                string nameOfMainAndSub = await GetAccountName(mainCodeEisPosting, subCodeEisPosting);
 
+                ///////////////////////////////////////////////////
+                ///
                 string commentt;
-                if (deposit.DepositDesc !=null)
+                if (deposit.DepositDesc != null)
                 {
-                    commentt = "مدفوعات مقدمة:" +" "+ deposit.DepositDesc;
+                    commentt = "مدفوعات مقدمة:" + " " + deposit.DepositDesc;
                 }
                 else { commentt = "مدفوعات مقدمة:"; }
 
-                var patName = (await _Context.Pats.FirstOrDefaultAsync(obj=>obj.PatId ==deposit.PatId)).PatName;
+                var patName = (await _Context.Pats.FirstOrDefaultAsync(obj => obj.PatId == deposit.PatId)).PatName;
                 var companyName = (await _Context.Companies.FindAsync(patAdmission.CompId)).CompName;
+                string description;
                 if (patAdmission.MainInvNo == null)
                 {
-                    commentt = "المريض:" + " " + patName + " "+ "الجهة:" + companyName;
+                    description = "المريض:" + " " + patName + " " + "الجهة:" + companyName;
                 }
-                else { commentt = "المريض:" + " " + patName + " " + "الجهة: " + companyName+ " "+ "الرقم: " + patAdmission.MainInvNo; }
+                else { description = "المريض:" + " " + patName + " " + "الجهة: " + companyName + " " + "الرقم: " + patAdmission.MainInvNo; }
+
+                if (deposit.DpsType == 1)
+                {
+                    AccSafeCash newAccSafeCash = new AccSafeCash();
+                    newAccSafeCash.BranchId = deposit.BranchId;
+                    newAccSafeCash.FYear = deposit.FYear;
+                    newAccSafeCash.DocType = "SFCIN";
+                    newAccSafeCash.DocNo = newDocNo;
+                    newAccSafeCash.DocDate = deposit.DpsDate;
+                    newAccSafeCash.CurCode = 1;
+                    newAccSafeCash.PersonName = description;
+                    newAccSafeCash.ValuePay = deposit.DpsVal;
+                    newAccSafeCash.Commentt = commentt;
+                    newAccSafeCash.CurSer = 1;
+                    newAccSafeCash.Flag = 2;
+                    newAccSafeCash.Rate1 = 1;
+                    DateTime dpsDate = (DateTime)deposit.DpsDate;
+                    int monthNumber = dpsDate.Month;
+                    newAccSafeCash.FMonth = monthNumber;
+                    newAccSafeCash.SafeCode = deposit.CashNo;
+                    newAccSafeCash.MasterId = deposit.MasterId;
+                    newAccSafeCash.MainCode = mainCodeEisPosting;
+                    newAccSafeCash.SubCode = subCodeEisPosting;
+                    newAccSafeCash.AccName = nameOfMainAndSub;
+                    newAccSafeCash.AccTransType = userJournalType.JournalCode;
+                    newAccSafeCash.DiscountVal = 0;
+                    newAccSafeCash.AprovedFlag = "APR";
+                    newAccSafeCash.UserCode = deposit.UserCode;
+                    newAccSafeCash.EntryType = 1;
+                    newAccSafeCash.AccTransNo = jorKiedNo;
+                    newAccSafeCash.PostRecipt = deposit.PostRecipt;
+                    await _Context.AddAsync(newAccSafeCash);
+                    //await _Context.SaveChangesAsync();
+                    int result = await _Context.SaveChangesAsync(); //for return message after enhance method
+                    if (result == 0)
+                    {
+                        return "Failed to add the new AccSafeCash record.";
+                    }
+                    else
+                    {
+                        Deposit depositUpdate = await _Context.Deposits.FindAsync(depositId);
+                        depositUpdate.SafeDocNo = newDocNo;
+                        await _Context.SaveChangesAsync();
+                        return "AccSafeCash record added successfully.";
+                    }
+                }
+                else
+                {
+                    Deposit depositUpdate = await _Context.Deposits.FindAsync(depositId);
+                    depositUpdate.SafeDocNo =0;
+                    await _Context.SaveChangesAsync();                 
+                }
+                /////////////////////////Accounts//////////////////////////////////
+                AccTransMaster accTransMaster = await _Context.AccTransMasters
+                    .FirstOrDefaultAsync(obj => obj.CoCode==deposit.BranchId &&obj.FYear ==deposit.FYear && obj.MasterId ==deposit.MasterId &&obj.TransNo == jorKiedNo && obj.TransType == userJournalType.JournalCode.ToString());
+                List<AccTransDetail> accTransDetails =await _Context.AccTransDetails.Where(obj=>obj.TransId == accTransMaster.TransId).ToListAsync();
+                int newTransNo = 0;
+                if (accTransMaster is not null) 
+                {
+                   newTransNo = (int)accTransMaster.TransNo;
+                   _Context.Remove(accTransMaster);
+                   _Context.RemoveRange(accTransDetails);
+                   await _Context.SaveChangesAsync();
+                }
+                else if (accTransMaster is null)
+                {
+                    if (deposit.JorKiedNo == null)
+                    {
+                        List<AccTransMaster> accTransMasters = await _Context.AccTransMasters
+                            .Where(obj => obj.CoCode == deposit.BranchId && obj.FYear == deposit.FYear && obj.TransType == userJournalType.JournalCode.ToString()).ToListAsync();
+                        if (accTransMasters.Count != 0)
+                        {
+                            newTransNo = (int)(accTransMasters.Max(obj => obj.TransNo)) + 1;
+                        }
+                        else { newTransNo = 1; }
+                    }
+                    else { newDocNo = (int)deposit.SafeDocNo; }
+                }
 
             }
-        }
 
 
-        public async Task EditDepositAsync(int id, DepositEditAddDTO depositDTO)
-        {
-            Deposit deposit = await _Context.Deposits.FirstOrDefaultAsync(obj => obj.DpsSer == id);
-            deposit.ModId = 11;
-            _mapper.Map(depositDTO, deposit);
-            _Context.Update(deposit);
-            await _Context.SaveChangesAsync();
+            return "";
         }
     }
 }
