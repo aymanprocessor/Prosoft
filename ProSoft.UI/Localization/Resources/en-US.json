@@ -471,6 +471,8 @@
   "Confirm": "Confirm",
   "Are you sure that Voucher is balanced and the difference is zero ?": "Are you sure that Voucher is balanced and the difference is zero ?",
   "If balance not equal Zero will delet all terms for Voucher !": "If balance not equal Zero will delet all terms for Voucher !",
+  "Joining Users With Journals": "Joining Users With Journals",
+  "User Journals Types": "User Journals Types",
 
 
 
@@ -678,5 +680,7 @@
   "Permission Close": "Permission Close",
   "The Patient": "The Patient",
   "The User": "The User",
-  "To Supplier": "To Supplier"
+  "To Supplier": "To Supplier",
+  "Record Number": "Record Number",
+  "Record Date": "Record Date"
 }

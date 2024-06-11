@@ -2,7 +2,7 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Add Return Permission Form";
+    ViewData["Title"] = "Edit Return Permission Form";
     Layout = "_Layout";
     var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
 
@@ -11,7 +11,7 @@
 @inject IViewLocalizer localizer
 
 <div class="container pt-2">
-    <h1 class="mt-4">@Model.PermissionName</h1>
+    <h1 class="mt-4">@localizer["Modify"] @Model.PermissionName</h1>
     <div class="border p-2">
         <p class="d-flex justify-content-between align-items-center flex-column flex-md-row fs-4 m-0">
             <span class="fw-bold">@localizer["The Month"] : @Model.MonthName</span>
@@ -23,11 +23,14 @@
             <span class="fw-bold">@localizer["User Name"] : @Model.UserName</span>
         </p>
     </div>
-    <form method="post" asp-action="Add_ReturnPermission">
+    <form method="post" asp-action="Edit_ReturnPermission">
         <div class="border p-3 mt-4">
 
             @* Hidden Inputs *@
             <input asp-for="DocNo" type="hidden" />
+            <input asp-for="SerSys" type="hidden" />
+            <input asp-for="FYear" type="hidden" />
+            <input asp-for="FMonth" type="hidden" />
             <input asp-for="StockCode" type="hidden" />
             <input asp-for="TransType" type="hidden" />
 
@@ -112,7 +115,7 @@
             <!------------------------------------------------------------------------------->
 
             <div class="parent d-flex justify-content-md-center gap-2">
-                <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add"]</button>
+                <button type="submit" class="btn btn-success" style="width:150px">@localizer["Save Changes"]</button>
                 <a asp-controller="PermissionForm" asp-action="Index" class="btn btn-secondary" style="width:150px">
                     @localizer["Cancel"]
                 </a>
