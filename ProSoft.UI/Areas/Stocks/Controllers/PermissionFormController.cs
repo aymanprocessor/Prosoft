@@ -361,61 +361,10 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             {
                 permissionFormDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
                 permissionFormDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
-                await _transMasterRepo.UpdateReqDisburseAsync(id, permissionFormDTO);
+                await _transMasterRepo.UpdateReturnPermissionAsync(id, permissionFormDTO);
                 return RedirectToAction(nameof(Index));
             }
             return View(permissionFormDTO);
         }
-
-        //////////////////////////////////////////////////
-        // Convert Permission => اذن تحويل
-        // Get Add
-        public async Task<IActionResult> Add_ConvertPermission(int id, int transType)
-        {
-            var userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
-            var branchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
-            TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo
-                .GetNewReturnPermissionAsync(id, userCode, transType, branchId);
-            permissionFormDTO.UserName = (await _userRepo.GetUserByIdAsync(userCode)).UserName;
-
-            return View(permissionFormDTO);
-        }
-
-        //Post Add
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Add_ConvertPermission(int id, TransMasterEditAddDTO permissionFormDTO)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        permissionFormDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
-        //        permissionFormDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
-        //        TransMaster permissionForm = await _transMasterRepo.AddReturnPermissionAsync(permissionFormDTO);
-        //        return RedirectToAction(nameof(Index), new { id = permissionForm.TransMAsterID });
-        //    }
-        //    return View(permissionFormDTO);
-        //}
-
-        // Get Edit
-        //public async Task<IActionResult> Edit_ConvertPermission(int id)
-        //{
-        //    TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetReturnPermissionByIdAsync(id);
-        //    return View(permissionFormDTO);
-        //}
-
-        // Post Edit
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit_ConvertPermission(int id, TransMasterEditAddDTO permissionFormDTO)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        permissionFormDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
-        //        permissionFormDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
-        //        await _transMasterRepo.UpdateReqDisburseAsync(id, permissionFormDTO);
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(permissionFormDTO);
-        //}
     }
 }

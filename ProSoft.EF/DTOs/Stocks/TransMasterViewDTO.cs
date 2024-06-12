@@ -23,5 +23,7 @@ namespace ProSoft.EF.DTOs.Stocks
         public string StockName { get; set; }
         public string StockName2 { get; set; }
         public string UserName { get; set; }
+        public int UserCode { get; set; }
+        public int ShowTransPrice { get; set; }
     }
 }

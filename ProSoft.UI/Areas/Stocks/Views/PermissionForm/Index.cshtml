@@ -103,30 +103,6 @@
                                 <a href="/Stocks/PermissionForm/Edit_PermissionForm/@Model.TransMAsterID" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
                                 break;
                         }
-@*                         @if(Model.TransType == 2)
-                        {
-                        <a href="/Stocks/PermissionForm/Edit_DisburseForm/@Model.TransMAsterID" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
-                        }
-                        else if(Model.TransType == 6)
-                        {
-                        <a href="/Stocks/PermissionForm/Edit_SalesInvoice/@Model.TransMAsterID" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
-                        }
-                        else if(Model.TransType is (12 or 13))
-                        {
-                        <a href="/Stocks/PermissionForm/Edit_Settlement/@Model.TransMAsterID" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
-                        }
-                        else if(Model.TransType == 21)
-                        {
-                        <a href="/Stocks/PermissionForm/Edit_ReqDisburse/@Model.TransMAsterID" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
-                        }
-                        else if(Model.TransType == 24)
-                        {
-                        <a href="/Stocks/PermissionForm/Edit_ReturnPermission/@Model.TransMAsterID" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
-                        }
-                        else
-                        {
-                        <a href="/Stocks/PermissionForm/Edit_PermissionForm/@Model.TransMAsterID" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
-                        } *@
                         <form action="/Stocks/PermissionForm/Delete_PermissionForm" method="post" class="d-inline">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@Model.TransMAsterID" />
@@ -157,12 +133,12 @@
 
     @* /////////////////////////////////////////////////////////////////// *@
 
-    @* Table for UserStock Transactions *@
+    @* Table for Permission Details *@
 
-@*     <div class="transactions-table-head d-flex justify-content-between align-items-center mt-3 mb-1">
-        <h2 class="header">@localizer["Transactions of Stocks for User"] :</h2>
+    <div class="details-table-head d-flex justify-content-between align-items-center mt-3 mb-1">
+        <h2 class="header">@localizer["The Items"]</h2>
         <a class="btn btn-sm btn-primary fs-6" style="width:150px">
-            @localizer["Add Permission Form"]
+            @localizer["Add Item"]
         </a>
     </div>
 
@@ -201,7 +177,7 @@
             <tbody>
             </tbody>
         </table>
-    </div> *@
+    </div>
 </div>
 
 @section Scripts {
@@ -220,18 +196,28 @@
                 return;
             }
 
-            if (permission.value == 4 || permission.value == 13)
-                linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_DisburseOrConvertForm/${stock.value}?transType=${permission.value}`);
-            else if (permission.value == 12)
-                linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_SalesInvoice/${stock.value}?transType=${permission.value}`);
-            else if (permission.value == 24 || permission.value == 26)
-                linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_Settlement/${stock.value}?transType=${permission.value}`);
-            else if (permission.value == 5)
-                linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_ReqDisburse/${stock.value}?transType=${permission.value}`);
-            else if (permission.value == 30)
-                linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_ReturnPermission/${stock.value}?transType=${permission.value}`);
-            else
-                linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_PermissionForm/${stock.value}?transType=${permission.value}`);
+            switch (permission.value) {
+                case "4":
+                case "13":
+                    linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_DisburseOrConvertForm/${stock.value}?transType=${permission.value}`);
+                    break;
+                case "12":
+                    linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_SalesInvoice/${stock.value}?transType=${permission.value}`);
+                    break;
+                case "24":
+                case "26":
+                    linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_Settlement/${stock.value}?transType=${permission.value}`);
+                    break;
+                case "5":
+                    linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_ReqDisburse/${stock.value}?transType=${permission.value}`);
+                    break;
+                case "30":
+                    linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_ReturnPermission/${stock.value}?transType=${permission.value}`);
+                    break;
+                default:
+                    linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_PermissionForm/${stock.value}?transType=${permission.value}`);
+                    break;
+            }
         }
 
         function getUserPermissionsForStock(e) {
@@ -278,12 +264,10 @@
                 url: `/Stocks/PermissionForm/GetPermissionsForms/${stock.value}?transType=${permission.value}`,
                 success: function (result) {
                     for (let item of result) {
-                        // let docDate = new Date(item.docDate).toISOString().split('T')[0];
-                        // let supInvDate = new Date(item.supInvDate).toISOString().split('T')[0];
-                        let docDate = formatDate(item.docDate);
-                        let supInvDate = formatDate(item.supInvDate);
                         let userPerm = document.createElement("tr");
                         
+                        let docDate = formatDate(item.docDate);
+                        let supInvDate = formatDate(item.supInvDate);
                         let actions;
                         switch (item.transType) {
                             case 4:
@@ -344,8 +328,75 @@
                                 </form>
                             </td>
                             `;
+                        userPerm.style.cursor = "pointer";
+                        userPerm.onclick = function (event) {
+                            GetPermissionDetails(event, item.transMAsterID, item.showTransPrice);
+                        }
                         userPermissions.appendChild(userPerm);
                     }
+                }
+            });
+        }
+
+        // Displaying Permission Details
+        function GetPermissionDetails(e, transMAsterID, showTransPrice) {
+            var transDetails = document.querySelector("#myTable_2 tbody");
+
+            // Handle active clic
+            let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");;
+
+            allItemRows.forEach(row => {
+                row.classList.remove("active-row");
+            });
+
+            let clickedTarget = e.target.parentElement
+            clickedTarget.classList.add("active-row");
+            ///////////////////////////////////////////////////////////////////
+
+            // Catch header for transDetails
+            let transDetailsHead = document.querySelector(".details-table-head");
+            let transDetailsHeader = transDetailsHead.querySelector(".header"); // Display Header for details
+            transDetailsHeader.innerHTML = "@localizer["The Items"]";
+
+            let transDetailsAddButton = transDetailsHead.querySelector("a");
+            if(showTransPrice)
+                transDetailsAddButton.setAttribute("href", `/Stocks/PermissionFormDetails/Add_TransDetailWithPrice/${transMAsterID}`);
+            else
+                transDetailsAddButton.setAttribute("href", `/Stocks/PermissionFormDetails/Add_TransDetail/${transMAsterID}`);
+            ///////////////////////////////////////////////////////////////////
+
+            // Handle ajax call
+            transDetails.innerHTML = "";  // Empty the body
+
+            $.ajax({
+                url: `/Stocks/PermissionFormDetails/GetPermissionDetails/${transMAsterID}`,
+                success: function (result) {
+                    console.log(result);
+                    // for (let item of result) {
+                    //     const clinic = document.createElement("tr");
+                    //     clinic.innerHTML +=
+                    //         `
+                    //                 <td class="trans-id align-middle">${item.counter}</td>
+                    //                 ${item.itmServFlag == 3 ?
+                    //             `<td class="align-middle">${item.servDesc}</td>`
+                    //             : `<td class="align-middle">${item.subName}</td>`
+                    //         }
+                    //                 <td class="align-middle">${item.drDesc}</td>
+                    //                 <td class="align-middle">${item.unitPrice}</td>
+                    //                 <td class="align-middle">${item.patientValue}</td>
+                    //                 <td class="align-middle">${item.extraVal}</td>
+                    //                 <td class="align-middle">${item.extraVal2}</td>
+                    //                 <td class="align-middle">${item.compValue}</td>
+                    //                 <td class="align-middle">${item.compValue + item.patientValue}</td>
+
+                    //             `;
+                    //     //for click to call ajax
+                    //     clinic.style.cursor = "pointer";
+                    //     clinic.onclick = function (event) {
+                    //         GetAnalysisDetail(event, item.checkId, item.sClinicId);//, item.subCode, item.mainCode
+                    //     };
+                    //     clinicTrans.appendChild(clinic);
+                    // }
                 }
             });
         }
