@@ -3,11 +3,16 @@ using Microsoft.EntityFrameworkCore;
 using ProSoft.EF.DbContext;
 using ProSoft.EF.DTOs.Accounts;
 using ProSoft.EF.DTOs.Medical.HospitalPatData;
+using ProSoft.EF.DTOs.Shared;
+using ProSoft.EF.DTOs.Treasury;
 using ProSoft.EF.IRepositories.Accounts;
 using ProSoft.EF.Models.Accounts;
+using ProSoft.EF.Models.Treasury;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,6 +37,34 @@ namespace ProSoft.Core.Repositories.Accounts
                 })
                 .ToListAsync();
             return userJournalTypeDTOs;
+        }
+        public async Task<UserJournalTypeDTO> GetEmptyUserJournalTypeAsync(int userCode)
+        {
+            UserJournalTypeDTO userJournalTypeDTO = new UserJournalTypeDTO();
+
+            List<JournalType> journalTypes = new List<JournalType>();
+            List<UserJournalType> userJournalTypes = await _Context.UserJournalTypes.Where(obj=>obj.UserCode == userCode).ToListAsync();
+            List<JournalType> allJournalTypes = await _Context.JournalTypes.ToListAsync();
+            foreach (var jou in allJournalTypes)
+            {
+                var isExisted = false;
+                foreach (var user in userJournalTypes)
+                {
+                    if (jou.JournalCode == user.JournalCode)
+                    {
+                        isExisted = true;
+                        break;
+                    }
+                    else
+                        isExisted = false;
+                }
+                if (!isExisted)
+                {
+                    journalTypes.Add(jou);
+                }
+            }
+            userJournalTypeDTO.JournalTypes = _mapper.Map<List<JournalTypeDTO>>(journalTypes);
+            return userJournalTypeDTO;
         }
     }
 }

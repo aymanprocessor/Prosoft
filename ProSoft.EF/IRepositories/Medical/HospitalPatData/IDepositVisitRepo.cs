@@ -1,4 +1,5 @@
-﻿using ProSoft.EF.DTOs.Medical.HospitalPatData;
+﻿using ProSoft.EF.DTOs.Accounts;
+using ProSoft.EF.DTOs.Medical.HospitalPatData;
 using ProSoft.EF.Models.Medical.HospitalPatData;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,8 @@ namespace ProSoft.EF.IRepositories.Medical.HospitalPatData
         Task AddDepositDtllAsync(int id, DepositEditAddDTO depositDTO);
         Task<DepositEditAddDTO> GetDepositByIdAsync(int id);
         Task EditDepositAsync(int id, DepositEditAddDTO depositDTO);
-        Task<string> PostingToCashAcc(Deposit deposit, PatAdmission patAdmission);
+        Task<string> PostingToCash(Deposit deposit, PatAdmission patAdmission);
+        Task<PostingAccMasterMINIDTO> PostingToAcctransMaster(Deposit deposit, PatAdmission patAdmission);
+        Task<string> PostingToAcctransDetail(Deposit deposit, PatAdmission patAdmission, int transNo,int transId);
     }
 }

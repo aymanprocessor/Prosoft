@@ -11,5 +11,6 @@ namespace ProSoft.EF.IRepositories.Accounts
     public interface IUserJournalTypeRepo : IRepository<UserJournalType,int>
     {
         Task<List<UserJournalTypeDTO>> GetUserJournalTypesForUser(int userCode);
+        Task<UserJournalTypeDTO> GetEmptyUserJournalTypeAsync(int userCode);
     }
 }

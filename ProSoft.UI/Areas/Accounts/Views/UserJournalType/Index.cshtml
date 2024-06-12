@@ -10,6 +10,8 @@
 <div class="text-center">
     <h1 class="mb-2">@localizer["Joining Users With Journals"] </h1>
 </div>
+ 
+<input id="journalCount" type="hidden" value="@ViewBag.journalCount" />
 
 <div class="container pt-2" style=" min-height:100vh;">
     <div class="d-flex justify-content-between align-items-center flex-column flex-md-row my-2">
@@ -134,7 +136,16 @@
             $.ajax({
                 url: `/Accounts/UserJournalType/GetJournalTypeForUser/${userCode}`,
                 success: function (result) {
-                    //  console.log(result);
+                     // console.log(result);
+                    var countJournal = document.getElementById("journalCount").value;
+                    if (result.length == countJournal) {
+                        transAddLink.classList.add("btn-secondary");
+                        transAddLink.style.pointerEvents = "none";
+                    }
+                    else if (result.length < countJournal) {
+                        transAddLink.classList.remove("btn-secondary");
+                        transAddLink.style.pointerEvents = "all";
+                    }
                     for (let item of result) {
                         const userTrans = document.createElement("tr");
                         userTrans.innerHTML =
