@@ -299,5 +299,7 @@ namespace ProSoft.EF.Models.Stocks
 
         [Column("SEND_FR")]
         public int? SendFr { get; set; }
+
+        public ICollection<TransDtl>? TransDetails { get; set; }
     }
 }

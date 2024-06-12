@@ -146,6 +146,11 @@ namespace ProSoft.Core.Repositories.Stocks
             foreach (var item in permissionsForms)
             {
                 TransMasterViewDTO permFormDTO = await GetForViewAsync(item);
+                StockEmp stockTrans = await _Context.StockEmps.FirstOrDefaultAsync(obj => obj.Stkcod == stockID &&
+                    obj.TransType == transType && obj.UserId == permFormDTO.UserCode);
+                if(stockTrans != null)
+                    permFormDTO.ShowTransPrice = (int)stockTrans.ShowPrice;
+                
                 permissionsFormsDTO.Add(permFormDTO);
             }
             return permissionsFormsDTO;
@@ -1027,9 +1032,36 @@ namespace ProSoft.Core.Repositories.Stocks
             return permissionForm;
         }
 
-        public Task UpdateReturnPermissionAsync(int id, TransMasterEditAddDTO permissionFormDTO)
+        public async Task UpdateReturnPermissionAsync(int id, TransMasterEditAddDTO permissionFormDTO)
         {
-            throw new NotImplementedException();
+            permissionFormDTO.RefDocNo = "0";
+            permissionFormDTO.TotTransVal = 0;
+            permissionFormDTO.Descount = 0;
+            permissionFormDTO.StatusBal = "R";
+            permissionFormDTO.Flag = "1";
+            permissionFormDTO.Flag2 = "0";
+            permissionFormDTO.AmountVisa = 0;
+            permissionFormDTO.CashAmount = 0;
+            permissionFormDTO.SaleStatus = "N";
+            permissionFormDTO.AddPers = 10;
+            permissionFormDTO.DiscPers = 0;
+            permissionFormDTO.CustDisc1 = 0;
+            permissionFormDTO.CustDisc2 = 0;
+            permissionFormDTO.CustDisc4 = 0;
+            permissionFormDTO.CustDisc5 = 0;
+            permissionFormDTO.TaxPrc = 0;
+            permissionFormDTO.TaxValue = 0;
+            permissionFormDTO.DueValue = 0;
+            permissionFormDTO.InvNo = 0;
+            permissionFormDTO.InvType = "0";
+            permissionFormDTO.ShowRow = 3;
+
+            TransMaster permissionForm = await GetByIdAsync(id);
+            _mapper.Map(permissionFormDTO, permissionForm);
+            permissionForm.ModifyDate = DateTime.Now;
+
+            await UpdateAsync(permissionForm);
+            await SaveChangesAsync();
         }
     }
 }

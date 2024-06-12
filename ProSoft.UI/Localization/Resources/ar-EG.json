@@ -633,7 +633,7 @@
   "Go To Medical Records": "الذهاب الي السجلات الطبية",
   "GO TO RECORD": "الذهاب للسجلات",
   "Permissions Forms": "نماذج الاذون",
-  "Add Permission Form": "اضافة نموذج اذن",
+  "Add Permission Form": "اضافة اذن",
   "Are you sure you want to delete this item ?": "هل انت متاكد من حذف هذا العنصر ؟",
   "The Month": "الشهر",
   "The Year": "السنة",
@@ -685,5 +685,8 @@
   "The User": "المستخدم",
   "To Supplier": "الي المورد",
   "Record Number": "رقم المحضر",
-  "Record Date": "تاريخ المحضر"
+  "Record Date": "تاريخ المحضر",
+  "Permission Details": "تفاصيل الاذن",
+  "Add Item": "اضافة صنف",
+  "The Items": "الاصناف",
 }
