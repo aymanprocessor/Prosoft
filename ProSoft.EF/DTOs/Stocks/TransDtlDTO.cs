@@ -8,34 +8,42 @@ using System.Threading.Tasks;
 
 namespace ProSoft.EF.DTOs.Stocks
 {
-    public class TransDtlViewDTO
+    public class TransDtlDTO
     {
         public int TransDtlId { get; set; }
 
         public int TransMAsterID { get; set; }
 
+        [DisplayName("The Item")]
         public string? ItemMaster { get; set; }
 
         public string? ItemMasterName { get; set; }
         
+        [DisplayName("The Barcode")]
         public string? ItmBarcode { get; set; }
         
+        [DisplayName("The Quantity")]
         public decimal? UnitQty { get; set; }
         
+        [DisplayName("The Unit")]
         public int? UnitCode { get; set; }
 
         public int? UnitCodeName { get; set; }
         
+        [DisplayName("Unit Price")]
         public decimal? Price { get; set; }
         
+        [DisplayName("Under Tax")]
         public short? ItmHaveTax { get; set; }
         
+        [DisplayName("Tax")]
         public decimal? TaxVal { get; set; }
 
-        [DisplayName("Stock")]
+        [DisplayName("The Total")]
         [Required(ErrorMessage = "The field is required")]
         public decimal ItemVal { get; set; }
         
+        [DisplayName("Expire Date")]
         public DateTime? ExpireDate { get; set; }
 
         //[Column("STOCK_CODE")]

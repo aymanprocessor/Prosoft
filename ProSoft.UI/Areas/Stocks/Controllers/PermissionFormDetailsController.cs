@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.IRepositories.Stocks;
 using ProSoft.EF.Models.Stocks;
 
@@ -17,43 +18,45 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
 
         public async Task<IActionResult> GetPermissionDetails(int id)
         {
-            return Json("");
+            List<TransDtlWithPriceDTO> transDtlListDTO = await _transDtlRepo.GetPermissionDetailsAsync(id);
+            return Json(transDtlListDTO);
         }
 
         // Get Add
         public async Task<IActionResult> Add_TransDetailWithPrice(int id)
         {
-            TransDtl permissionFormDTO = await _transDtlRepo.GetByIdAsync(id);
-            return View(permissionFormDTO);
+            TransDtlWithPriceDTO transDtlDTO = await _transDtlRepo.GetNewTransDtlAsync();
+            return View(transDtlDTO);
         }
 
         // Post Add
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Add_TransDetailWithPrice(int id, TransMasterEditAddDTO permissionFormDTO)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        permissionFormDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
-        //        permissionFormDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Add_TransDetailWithPrice(int id, TransDtlWithPriceDTO transDtlDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                transDtlDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
+                transDtlDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
+                transDtlDTO.TransMasterID = id;
 
-        //        TransMaster permissionForm = await _transMasterRepo.AddPermissionFormAsync(permissionFormDTO);
-        //        return RedirectToAction(nameof(Index), new { id = permissionForm.TransMAsterID });
-        //    }
-        //    return View(permissionFormDTO);
-        //}
+                await _transDtlRepo.addTransDtlWithPriceAsync(transDtlDTO);
+                return RedirectToAction("Index", "PermissionForm");
+            }
+            return View(transDtlDTO);
+        }
 
         // Get Edit
-        //public async Task<IActionResult> Edit_PermissionForm(int id)
-        //{
-        //    TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetPermissionFormByIdAsync(id);
-        //    return View(permissionFormDTO);
-        //}
+        public async Task<IActionResult> Edit_TransDetailWithPrice(int id)
+        {
+            TransDtlWithPriceDTO transDtlDTO = await _transDtlRepo.GetTransDtlWithPriceByIdAsync(id);
+            return View(transDtlDTO);
+        }
 
         // Post Edit
         //[HttpPost]
         //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit_PermissionForm(int id, TransMasterEditAddDTO permissionFormDTO)
+        //public async Task<IActionResult> Edit_TransDetailWithPrice(int id, TransMasterEditAddDTO permissionFormDTO)
         //{
         //    if (ModelState.IsValid)
         //    {

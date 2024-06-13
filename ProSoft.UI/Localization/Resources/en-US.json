@@ -473,6 +473,12 @@
   "If balance not equal Zero will delet all terms for Voucher !": "If balance not equal Zero will delet all terms for Voucher !",
   "Joining Users With Journals": "Joining Users With Journals",
   "User Journals Types": "User Journals Types",
+  "Posting to treasury Done.": "Posting to treasury Done.",
+  "Failed to post in treasury.": "Failed to post in treasury.",
+  "Posting to Account Done.": "Posting to Account Done.",
+  "Failed to post in Account.": "Failed to post in Account.",
+  "Finish Posting done": "Finish Posting done",
+  "Choose User": "Choose User",
 
 
 
@@ -686,4 +692,14 @@
   "Permission Details": "Permission Details",
   "Add Item": "Add Item",
   "The Items": "The Items",
+  "The Item": "The Item",
+  "The Total": "The Total",
+  "Expire Date": "Expire Date",
+  "Unit Price": "Unit Price",
+  "The Unit": "The Unit",
+  "The Quantity": "The Quantity",
+  "The Barcode": "The Barcode",
+  "Serial_M": "Serial_M",
+  "Item Name": "Item Name",
+  "Edit Item": "Edit Item"
 }
