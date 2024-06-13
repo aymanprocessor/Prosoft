@@ -70,41 +70,39 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             return View();
         }
 
-        ////Get Edit
-        //public async Task<IActionResult> Edit_UserJournalType(int id)
-        //{
-        //    JournalType journalType = await _journalTypeRepo.GetByIdAsync(id);
-        //    JournalTypeDTO journalTypeDTO = _mapper.Map<JournalTypeDTO>(journalType);
-        //    return View(journalTypeDTO);
-        //}
+        //Get Edit
+        public async Task<IActionResult> Edit_UserJournalType(int id)
+        {
+            UserJournalTypeDTO userJournalTypeDTO= await _userJournalTypeRepo.GetUserJournalTypeByIdAsync(id);
+            ViewBag.userCode = userJournalTypeDTO.UserCode;
 
-        ////Post Edit
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit_UserJournalType(int id, JournalTypeDTO journalTypeDTO)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        JournalType journalType = await _journalTypeRepo.GetByIdAsync(id);
-        //        _mapper.Map(journalTypeDTO, journalType);
+            return View(userJournalTypeDTO);
+        }
 
-        //        await _journalTypeRepo.UpdateAsync(journalType);
-        //        await _journalTypeRepo.SaveChangesAsync();
-        //        return RedirectToAction("Index", "JournalType");
-        //    }
-        //    return View(journalTypeDTO);
-        //}
+        //Post Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit_UserJournalType(int id, UserJournalTypeDTO userJournalTypeDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                userJournalTypeDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
+                await _userJournalTypeRepo.EditUserJournalTypeAsync(id, userJournalTypeDTO);
+                return RedirectToAction("Index", "UserJournalType");
+            }
+            return View(userJournalTypeDTO);
+        }
 
-        //// Delete
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Delete_UserJournalType(int id)
-        //{
-        //    JournalType journalType = await _journalTypeRepo.GetByIdAsync(id);
+        // Delete
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete_UserJournalType(int id)
+        {
+            UserJournalType userJournalType = await _userJournalTypeRepo.GetByIdAsync(id);
 
-        //    await _journalTypeRepo.DeleteAsync(journalType);
-        //    await _journalTypeRepo.SaveChangesAsync();
-        //    return RedirectToAction("Index", "JournalType");
-        //}
+            await _userJournalTypeRepo.DeleteAsync(userJournalType);
+            await _userJournalTypeRepo.SaveChangesAsync();
+            return RedirectToAction("Index", "UserJournalType");
+        }
     }
 }

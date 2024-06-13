@@ -269,6 +269,12 @@
                     acctransDtls.appendChild(dataForSum);
                     ///////////////////////////////////////////////////////////
                     var diffrent = valDepSum - valCreditSum;
+
+                    //DeletedAllDetail
+                    if (diffrent != 0) {
+                        window.location.href = `/Accounts/AccTransDetail/DeletedAllDetail/${id}?journalCode=${journalCode}`;
+                    }
+
                     const dataForSum2 = document.createElement("tr");
                     //    dataForSum.style.backgroundColor = "#e6dfdf";
                     dataForSum2.innerHTML =
@@ -278,6 +284,8 @@
                             <td colspan="4"></td>
                         `;
                     acctransDtls.appendChild(dataForSum2);
+
+                   
                 }
             });
         }

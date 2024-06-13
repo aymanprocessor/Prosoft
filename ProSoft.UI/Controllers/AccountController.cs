@@ -105,7 +105,10 @@ namespace ProSoft.UI.Controllers
         //Get Login
         public async Task<IActionResult> Login()
         {
-            return View();
+            List<AppUser> users = await _userRepo.GetAllUsersAsync();
+            var userLoginDTOs = new UserLoginDTO();
+            userLoginDTOs.users = _mapper.Map<List<UserDTO>>(users);
+            return View(userLoginDTOs);
         }
         //Get Login
         [HttpPost]

@@ -15,9 +15,9 @@ namespace ProSoft.EF.IRepositories.Medical.HospitalPatData
         Task<PatAdmissionViewDTO> GetPatData(int id);
         Task<int> GetNewIdAsync();
         Task<DepositEditAddDTO> GetEmptyDepositAsync(int id);
-        Task AddDepositDtllAsync(int id, DepositEditAddDTO depositDTO);
+        Task<DepositIndexMessagesDTO> AddDepositDtllAsync(int id, DepositEditAddDTO depositDTO);
         Task<DepositEditAddDTO> GetDepositByIdAsync(int id);
-        Task EditDepositAsync(int id, DepositEditAddDTO depositDTO);
+        Task<DepositIndexMessagesDTO> EditDepositAsync(int id, DepositEditAddDTO depositDTO);
         Task<string> PostingToCash(Deposit deposit, PatAdmission patAdmission);
         Task<PostingAccMasterMINIDTO> PostingToAcctransMaster(Deposit deposit, PatAdmission patAdmission);
         Task<string> PostingToAcctransDetail(Deposit deposit, PatAdmission patAdmission, int transNo,int transId);

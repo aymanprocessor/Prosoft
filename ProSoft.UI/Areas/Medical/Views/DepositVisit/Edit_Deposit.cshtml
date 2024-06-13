@@ -38,6 +38,8 @@
             <input asp-for="BranchId" type="hidden" />
             <input asp-for="PatId" type="hidden" />
             <input asp-for="MasterId" type="hidden" />
+            <input asp-for="SafeDocNo" type="hidden" />
+            <input asp-for="JorKiedNo" type="hidden" />
 
             <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
                 <div class="mb-3">
@@ -129,12 +131,12 @@
             <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
                 <div class="mb-3">
                     <label asp-for="SafeDocNo"></label>
-                    <input asp-for="SafeDocNo" class="form-control" />
+                    <input asp-for="SafeDocNo" disabled class="form-control"/>
                     <span asp-validation-for="SafeDocNo" class="text-danger"></span>
                 </div>
                 <div class="mb-3 ">
                     <label asp-for="JorKiedNo"></label>
-                    <input asp-for="JorKiedNo" class="form-control" />
+                    <input asp-for="JorKiedNo" disabled class="form-control" />
                     <span asp-validation-for="JorKiedNo" class="text-danger"></span>
                 </div>
             </div>

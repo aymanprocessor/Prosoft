@@ -12,5 +12,7 @@ namespace ProSoft.EF.IRepositories.Accounts
     {
         Task<List<UserJournalTypeDTO>> GetUserJournalTypesForUser(int userCode);
         Task<UserJournalTypeDTO> GetEmptyUserJournalTypeAsync(int userCode);
+        Task<UserJournalTypeDTO> GetUserJournalTypeByIdAsync(int id);
+        Task EditUserJournalTypeAsync(int id, UserJournalTypeDTO userJournalTypeDTO);
     }
 }

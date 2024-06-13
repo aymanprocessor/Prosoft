@@ -32,6 +32,7 @@ namespace ProSoft.Core.Repositories.Accounts
             List<UserJournalTypeDTO> userJournalTypeDTOs = await _Context.UserJournalTypes.Where(obj => obj.UserCode == userCode)
                 .Select(obj => new UserJournalTypeDTO()
                 {
+                    UserJournalId = obj.UserJournalId,
                     JournalCode = obj.JournalCode,
                     JournalName = obj.JournalType.JournalName
                 })
@@ -65,6 +66,52 @@ namespace ProSoft.Core.Repositories.Accounts
             }
             userJournalTypeDTO.JournalTypes = _mapper.Map<List<JournalTypeDTO>>(journalTypes);
             return userJournalTypeDTO;
+        }
+
+        public async Task<UserJournalTypeDTO> GetUserJournalTypeByIdAsync(int id)
+        {
+            UserJournalType userJournalType = await _Context.UserJournalTypes.FirstOrDefaultAsync(obj => obj.UserJournalId == id);
+
+            //filter list
+            List<JournalType> journalTypes = new List<JournalType>();
+            List<UserJournalType> userJournalTypes = await _Context.UserJournalTypes.Where(obj => obj.UserCode == userJournalType.UserCode).ToListAsync();
+            List<JournalType> allJournalTypes = await _Context.JournalTypes.ToListAsync();
+            foreach (var jou in allJournalTypes)
+            {
+                var isExisted = false;
+                foreach (var user in userJournalTypes)
+                {
+                    if (jou.JournalCode == user.JournalCode)
+                    {
+                        isExisted = true;
+                        break;
+                    }
+                    else
+                        isExisted = false;
+                }
+                if (!isExisted)
+                {
+                    journalTypes.Add(jou);
+                }
+            }
+            //to send journal type he choose it
+            JournalType journalType = await _Context.JournalTypes.FirstOrDefaultAsync(obj => obj.JournalCode == userJournalType.JournalCode);
+            journalTypes.Add(journalType);
+
+            var userJournalTypeDTO = _mapper.Map<UserJournalTypeDTO>(userJournalType);
+            userJournalTypeDTO.JournalTypes = _mapper.Map<List<JournalTypeDTO>>(journalTypes);
+
+            return userJournalTypeDTO;
+        }
+
+        public async Task EditUserJournalTypeAsync(int id, UserJournalTypeDTO userJournalTypeDTO)
+        {
+
+            UserJournalType userJournalType = await _Context.UserJournalTypes.FirstOrDefaultAsync(obj => obj.UserJournalId == id);
+            _mapper.Map(userJournalTypeDTO, userJournalType);
+      
+            _Context.Update(userJournalType);
+            await _Context.SaveChangesAsync();
         }
     }
 }

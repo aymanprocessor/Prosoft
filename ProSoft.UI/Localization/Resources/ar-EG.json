@@ -475,6 +475,12 @@
   "If balance not equal Zero will delet all terms for Voucher !": "في حالة القيد غير متزن سيتم حذف جميع البنود الخاصة بالقيد !",
   "Joining Users With Journals": "ربط المستخدم باليوميات",
   "User Journals Types": "انواع اليوميات للمستخدم",
+  "Posting to treasury Done.": "تم الترحيل الي الخزينة",
+  "Failed to post in treasury.": "فشل الترحيل الي الخزينة",
+  "Posting to Account Done.": "تم الترحيل الي الحسابات",
+  "Failed to post in Account.": "فشل الترحيل الي الحسابات",
+  "Finish Posting done": "تم انتهاء الترحيل",
+  "Choose User": "اختر مستخدم",
 
 
 
@@ -689,4 +695,14 @@
   "Permission Details": "تفاصيل الاذن",
   "Add Item": "اضافة صنف",
   "The Items": "الاصناف",
+  "The Item": "الصنف",
+  "The Total": "الاجمالي",
+  "Expire Date": "تاريخ الصلاحية",
+  "Unit Price": "سعر الوحدة",
+  "The Unit": "الوحدة",
+  "The Quantity": "الكمية",
+  "The Barcode": "الباركود",
+  "Serial_M": "م",
+  "Item Name": "اسم الصنف",
+  "Edit Item": "تعديل صنف"
 }

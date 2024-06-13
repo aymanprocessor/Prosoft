@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using RemoteAttribute = Microsoft.AspNetCore.Mvc.RemoteAttribute;
+using ProSoft.EF.Models;
 
 namespace ProSoft.EF.DTOs.Auth
 {
@@ -25,5 +26,8 @@ namespace ProSoft.EF.DTOs.Auth
 
         [Display(Name = "Remember Me")]
         public bool rememberMe { get; set; }
+
+        //lists
+        public List<UserDTO>? users { get; set; }
     }
 }

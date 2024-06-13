@@ -13,7 +13,7 @@
  
 <input id="journalCount" type="hidden" value="@ViewBag.journalCount" />
 
-<div class="container pt-2" style=" min-height:100vh;">
+<div class="container pt-2" style="min-height:100vh;">
     <div class="d-flex justify-content-between align-items-center flex-column flex-md-row my-2">
         <div style="width: 40%;">
             <input type="text" id="searchInput" class="form-control" oninput="searchUsers(event)" placeholder="@localizer["Search users by useer code or name ..."]">
@@ -136,7 +136,7 @@
             $.ajax({
                 url: `/Accounts/UserJournalType/GetJournalTypeForUser/${userCode}`,
                 success: function (result) {
-                     // console.log(result);
+                      console.log(result);
                     var countJournal = document.getElementById("journalCount").value;
                     if (result.length == countJournal) {
                         transAddLink.classList.add("btn-secondary");
@@ -152,9 +152,10 @@
                             `
                                             <td class="align-middle text-center">${item.journalCode}</td>
                                             <td class="align-middle text-center">${item.journalName}</td>
-                                            <td class="text-center align-middle">
-                                            <a href="/Accounts/UserJournalType/Edit_UserJournalType/${item.userJournalId}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
-                                           <form action="/Accounts/UserJournalType/Delete_UserJournalType" method="post" class="d-inline">
+                                          <td class="text-center align-middle" style="width:30%;">
+                                        <a href="/Accounts/UserJournalType/Edit_UserJournalType/${item.userJournalId}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
+                                           
+                                        <form action="/Accounts/UserJournalType/Delete_UserJournalType" method="post" class="d-inline">
         @Html.AntiForgeryToken()
                                                 <input type="hidden" name="id" value="${item.userJournalId}" />
                                                 <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width:150px">@localizer["Delete"]</button>

@@ -22,7 +22,18 @@
 </style>
 <div class="container pt-2 " style="min-height:90vh;">
     <img class="image" src="/background.jpg" style="position:absolute;" />
-
+    @if (!string.IsNullOrEmpty(ViewBag.AccTransDetailMessage) &&
+    !string.IsNullOrEmpty(ViewBag.AccTransMasterMessage) &&
+    !string.IsNullOrEmpty(ViewBag.AccSafeCashMessage))
+    {
+        <div class="d-flex justify-content-center">
+            <div class="alert alert-danger  text-center" role="alert" style="width:50%;">
+                <p class="mb-0">@localizer[ViewBag.AccSafeCashMessage] - @localizer[ViewBag.AccTransMasterMessage] - @localizer[ViewBag.AccTransDetailMessage]</p>
+                <a asp-controller="DepositVisit" asp-action="Index" asp-route-id="@ViewBag.VisitID" class="position-absolute text-decoration-none text-black fs-4"
+                   style="right: 5px !important; top: -7px !important;">&times;</a>
+            </div>
+        </div>
+    }
     <div class="d-flex justify-content-between align-items-center mt-4 ">
         <h1 class="header">@localizer["Deposits"]</h1>
         <h3>@localizer["Visit No"] : @ViewBag.VisitID - @localizer["For Patient"] : @ViewBag.PatName</h3>

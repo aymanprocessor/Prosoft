@@ -19,12 +19,15 @@ namespace ProSoft.UI.Areas.Medical.Controllers
             _depositRepo = depositRepo;
             _mapper = mapper;
         }
-        public async Task<IActionResult> Index(int id)
+        public async Task<IActionResult> Index(int id ,string? cash, string? master, string? detail)
         {
             List<DepositViewDTO> depositDTOs = await _depositRepo.GetAllDepositesAsync(id);
             PatAdmissionViewDTO patAdmissionDTO = await _depositRepo.GetPatData(id);
             ViewBag.VisitID = patAdmissionDTO.MasterId;
             ViewBag.PatName = patAdmissionDTO.PatName;
+            ViewBag.AccSafeCashMessage = cash;
+            ViewBag.AccTransMasterMessage = master;
+            ViewBag.AccTransDetailMessage = detail;
             return View(depositDTOs);
         }
 
@@ -48,8 +51,8 @@ namespace ProSoft.UI.Areas.Medical.Controllers
                 depositDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
                 depositDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
 
-                await _depositRepo.AddDepositDtllAsync(id, depositDTO);
-                return RedirectToAction("Index", "DepositVisit" , new {id});
+                DepositIndexMessagesDTO allMessage = await _depositRepo.AddDepositDtllAsync(id, depositDTO);
+                return RedirectToAction("Index", "DepositVisit" , new {id ,cash =allMessage.AccSafeCashMessage,master= allMessage.AccTransMasterMessage,detail =allMessage.AccTransDetailMessage});
             }
             return View();
         }
@@ -70,8 +73,8 @@ namespace ProSoft.UI.Areas.Medical.Controllers
             {
                 depositDTO.UserModify = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
 
-                await _depositRepo.EditDepositAsync(id, depositDTO);
-                return RedirectToAction("Index", "DepositVisit", new { id =depositDTO.MasterId });
+                DepositIndexMessagesDTO allMessage = await _depositRepo.EditDepositAsync(id, depositDTO);
+                return RedirectToAction("Index", "DepositVisit", new { id =depositDTO.MasterId, cash = allMessage.AccSafeCashMessage, master = allMessage.AccTransMasterMessage, detail = allMessage.AccTransDetailMessage });
             }
             return View(depositDTO);
         }

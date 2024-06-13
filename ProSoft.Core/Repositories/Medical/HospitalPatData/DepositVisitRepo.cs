@@ -95,7 +95,7 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             return depositDTO;
         }
 
-        public async Task AddDepositDtllAsync(int id, DepositEditAddDTO depositDTO)
+        public async Task<DepositIndexMessagesDTO> AddDepositDtllAsync(int id, DepositEditAddDTO depositDTO)
         {
             Deposit deposit = _mapper.Map<Deposit>(depositDTO);
             deposit.MasterId = id;
@@ -114,7 +114,12 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
           var accTransMasterMessage = accTransMaster.Message;        
           var transNo = accTransMaster.TransNo;        
           var transId = accTransMaster.TransId;        
-          var accTransDetailMessage = await PostingToAcctransDetail(deposit, patAdmission, transNo, transId);        
+          var accTransDetailMessage = await PostingToAcctransDetail(deposit, patAdmission, transNo, transId);
+          var allMessage = new DepositIndexMessagesDTO();
+            allMessage.AccSafeCashMessage = accSafeCashMessage;
+            allMessage.AccTransMasterMessage = accTransMasterMessage;
+            allMessage.AccTransDetailMessage = accTransDetailMessage;
+          return allMessage;
         }
         ///get name of maincode + subcode ////
         private async Task<string> GetAccountName(string mainCode, string subCode)
@@ -130,7 +135,7 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             return subName != "" ? $"{mainName} / {subName}" : mainName;
         }
 
-        public async Task EditDepositAsync(int id, DepositEditAddDTO depositDTO)
+        public async Task<DepositIndexMessagesDTO> EditDepositAsync(int id, DepositEditAddDTO depositDTO)
         {
             Deposit deposit = await _Context.Deposits.FirstOrDefaultAsync(obj => obj.DpsSer == id);
             deposit.ModId = 11;
@@ -140,7 +145,17 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             PatAdmission patAdmission = await _Context.PatAdmissions.FirstOrDefaultAsync(obj => obj.MasterId == deposit.MasterId);
 
             var accSafeCashMessage = await PostingToCash(deposit, patAdmission);
-            var accTransMasterMessage = await PostingToAcctransMaster(deposit, patAdmission);
+
+            PostingAccMasterMINIDTO accTransMaster = await PostingToAcctransMaster(deposit, patAdmission);
+            var accTransMasterMessage = accTransMaster.Message;
+            var transNo = accTransMaster.TransNo;
+            var transId = accTransMaster.TransId;
+            var accTransDetailMessage = await PostingToAcctransDetail(deposit, patAdmission, transNo, transId);
+            var allMessage = new DepositIndexMessagesDTO();
+            allMessage.AccSafeCashMessage = accSafeCashMessage;
+            allMessage.AccTransMasterMessage = accTransMasterMessage;
+            allMessage.AccTransDetailMessage = accTransDetailMessage;
+            return allMessage;
         }
 
         public async Task<string> PostingToCash(Deposit deposit, PatAdmission patAdmission)
@@ -252,14 +267,14 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
                     int result = await _Context.SaveChangesAsync(); //for return message after enhance method
                     if (result == 0)
                     {
-                        return "Failed to add the new AccSafeCash record.";
+                        return "Failed to post in treasury.";
                     }
                     else
                     {
                         Deposit depositUpdate = await _Context.Deposits.FindAsync(depositId);
                         depositUpdate.SafeDocNo = newDocNo;
                         await _Context.SaveChangesAsync();
-                        return "AccSafeCash record added successfully.";
+                        return "Posting to treasury Done.";
                     }
                 }
                 else
@@ -378,7 +393,7 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
                 int result = await _Context.SaveChangesAsync(); //for return message after enhance method
                 if (result== 0)
                 {
-                    postingAccMasterMINIDTO.Message = "AccTransMaster record added successfully No";
+                    postingAccMasterMINIDTO.Message = "Failed to post in Account.";
                     postingAccMasterMINIDTO.TransNo = 0;
                     return postingAccMasterMINIDTO;
 
@@ -388,7 +403,7 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
                     Deposit depositUpdate = await _Context.Deposits.FindAsync(depositId);
                     depositUpdate.JorKiedNo = newTransNo;
                     await _Context.SaveChangesAsync();
-                    postingAccMasterMINIDTO.Message = "AccTransMaster record added successfully No";
+                    postingAccMasterMINIDTO.Message = "Posting to Account Done.";
                     postingAccMasterMINIDTO.TransNo = newTransNo;
                     postingAccMasterMINIDTO.TransId = newAccTransMaster.TransId;
                     return postingAccMasterMINIDTO;
@@ -399,14 +414,6 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
 
             return postingAccMasterMINIDTO;
         }
-
-
-
-
-
-
-
-
 
 
 
@@ -550,11 +557,71 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
                 {
                     return "Failed to add the new AccTransDetail record.";
                 }
+                await _Context.SaveChangesAsync();
+                //else
+                //{
+                //   
+                //    return "AccTransDetail record added successfully.";
+                //}
+                var eisPostingg = await _Context.EisPostings.FirstOrDefaultAsync(obj => obj.PostId == 15 && obj.BranchId == deposit.BranchId);
+                if (eisPosting == null) 
+                {
+                    return "please enter cash code in accounts";
+                }
                 else
                 {
+                    mainCodeEisPosting = eisPostingg.MainCode;//الرئيسي
+                    subCodeEisPosting = eisPostingg.SubCode;//الفرعي
+                    nameOfMainAndSub = await GetAccountName(mainCodeEisPosting, subCodeEisPosting);
+                    balanceFlag = (await _Context.AccMainCodes.FirstOrDefaultAsync(obj => obj.MainCode == mainCodeEisPosting)).BalanceFlag;
+                    if (balanceFlag == "P")
+                    {
+                        balanceFlag = "102";
+                    }
+
+                    //inserting///
+
+                    AccTransDetail newAccTransDetail2 = new AccTransDetail();
+                    newAccTransDetail2.CoCode = deposit.BranchId;
+                    newAccTransDetail2.FYear = deposit.FYear;
+                    newAccTransDetail2.TransType = userJournalType.JournalCode.ToString();
+                    newAccTransDetail2.TransNo = transNo;
+                    newAccTransDetail2.TransDate = deposit.DpsDate;
+                    newAccTransDetail2.MainCode = mainCodeEisPosting;
+                    newAccTransDetail2.SubCode = subCodeEisPosting;
+                    newAccTransDetail2.ValDep = 0;
+                    newAccTransDetail2.ValCredit = deposit.DpsVal;
+                    newAccTransDetail2.ValDepCur = 0;
+                    newAccTransDetail2.ValCreditCur = deposit.DpsVal;
+                    newAccTransDetail2.DocNo = transNo.ToString();
+                    newAccTransDetail2.DocStatus = null;
+                    newAccTransDetail2.DocDate = deposit.DpsDate;
+                    newAccTransDetail2.CostCenterCode = balanceFlag;
+                    newAccTransDetail2.AccName = nameOfMainAndSub;
+                    newAccTransDetail2.LineDesc = commentt;
+                    newAccTransDetail2.OkPost = "0";
+                    newAccTransDetail2.CurCode = "1";
+                    newAccTransDetail2.DocCode = null;
+                    newAccTransDetail2.YearTransNo = yearTransNo;
+                     dpsDate = (DateTime)deposit.DpsDate;
+                     monthNumber = dpsDate.Month;
+                    newAccTransDetail2.FMonth = monthNumber;
+                    newAccTransDetail2.UserCode = deposit.UserCode;
+                    newAccTransDetail2.EntryType = 1;
+                    newAccTransDetail2.TransSerial = 2;
+                    newAccTransDetail2.PostRecipt = deposit.PostRecipt;
+                    newAccTransDetail2.TransId = transId != 0 ? transId : 0;
+
+                    await _Context.AddAsync(newAccTransDetail2);
+                    //await _Context.SaveChangesAsync();
+                     result = await _Context.SaveChangesAsync(); //for return message after enhance method
+                    if (result == 0)
+                    {
+                        return "Failed to post in Account.";
+                    }
                     await _Context.SaveChangesAsync();
-                    return "AccTransDetail record added successfully.";
                 }
+                return "Finish Posting done";
             }
             return "";
         }

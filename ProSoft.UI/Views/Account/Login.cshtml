@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    SelectList users = new SelectList(Model.users, "UserCode", "UserName");
 }
 @inject IViewLocalizer localizer
 
@@ -13,8 +14,11 @@
                 <h2 class="text-primary">@localizer["User Login"]</h2>
             </div>
             <div class="mb-3">
-                <label asp-for="UserCode"></label>
-                <input asp-for="UserCode" class="form-control" />
+                <label asp-for="UserCode">@localizer["User Name"]</label>
+                @* <input asp-for="UserCode" class="form-control" /> *@
+                <select asp-for="UserCode" asp-items="users" class="form-control text-center">
+                    <option value="">@localizer["Choose User"]</option>
+                </select>
                 <span asp-validation-for="UserCode" class="text-danger"></span>
             </div>
             <div class="mb-3 ">
