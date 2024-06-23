@@ -481,6 +481,18 @@
   "Failed to post in Account.": "فشل الترحيل الي الحسابات",
   "Finish Posting done": "تم انتهاء الترحيل",
   "Choose User": "اختر مستخدم",
+  "Print From Voucher To Voucher": "طباعة من  قيد لقيد",
+  "Vouchers in Accounts": "القيود في الحسابات",
+  "From Voucher": "من قيد",
+  "To Voucher": "الي قيد",
+  "All": "الكل",
+  "Analytical Journal During Period from": "يومية تحليلية خلال فترة من",
+  "Analytical Journal For Voucher from": "يومية تحليلية للقيود من",
+  "Debit Value": "القيمة مدين",
+  "Credit Value": "القيمة دائن",
+  "Voucher": "القيد",
+  "kinship": "صلة القرابة",
+
 
 
 
@@ -704,5 +716,6 @@
   "The Barcode": "الباركود",
   "Serial_M": "م",
   "Item Name": "اسم الصنف",
-  "Edit Item": "تعديل صنف"
+  "Edit Item": "تعديل صنف",
+  "Item Status": "حالة الصنف"
 }

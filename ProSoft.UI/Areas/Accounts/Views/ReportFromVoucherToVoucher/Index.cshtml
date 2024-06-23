@@ -1,0 +1,245 @@
+﻿@model ReportFromToVoucherDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Print From Voucher To Voucher";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+
+    SelectList JournalTypes = new SelectList(Model.JournalTypes, "JournalCode", "JournalName");
+
+}
+@inject IViewLocalizer localizer
+<style>
+    .hide {
+        display: none !important;
+    }
+    /*  .image {
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.5;
+            z-index: -1;
+        } */
+</style>
+<div class="container pt-2 " style="min-height:100vh;">
+    @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
+
+    <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mt-4">
+        <h1 class="header">@localizer["Print From Voucher To Voucher"]</h1>
+        <div class="d-flex gap-2">
+            <a class="btn btn-sm btn-primary fs-6" style="width:150px" onclick="FromVoucherToVoucher(event)">
+                @localizer["Vouchers in Accounts"]
+            </a>
+        </div>
+    </div>
+    <div class="overflow-auto">
+        <div class=" d-flex justify-content-center align-items-center flex-column flex-md-row gap-3 px-1 my-2">
+            <div class="d-flex align-items-center flex-column flex-md-row w-50">
+                <label for="journals" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Journal"]</label>
+                <select id="journals" asp-items="JournalTypes" class="form-control text-center w-100">
+                    <option value="100">-- @localizer["All"] --</option>
+                </select>
+            </div>
+        </div>
+        <!---------------------------------------------------------->
+
+        <div class="filter-box d-flex align-items-center flex-column flex-md-row gap-3 my-2">
+            <div class="d-flex align-items-center flex-column flex-md-row w-100" style="width:40% !important;">
+                <label for="filter" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0" style="width:60% !important;">@localizer["Filter By"]</label>
+                <select id="filter" class="form-control text-center" onchange="filtering(event)">
+                    <option value="1">@localizer["Period"]</option>
+                    <option value="2">@localizer["Voucher"]</option>
+                </select>
+            </div>
+
+            <div class="d-flex justify-content-end align-items-center flex-column flex-md-row gap-2 receipt-hide hide" style="width:70% !important;">
+                <div class="d-flex align-items-center w-100">
+                    <label style="width:60% !important;">@localizer["From Voucher"]</label>
+                    <input id="fromReceipt" type="number" class="form-control text-center" />
+                </div>
+                <div class="d-flex align-items-center w-100">
+                    <label style="width:60% !important;">@localizer["To Voucher"]</label>
+                    <input id="toReceipt" type="number" class="form-control text-center" />
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end align-items-center flex-column flex-md-row gap-2 period" style="width:70% !important;">
+                <div class="d-flex align-items-center w-100">
+                    <label style="width:60% !important;">@localizer["From Period"]</label>
+                    <input id="fromPeriod" type="date" class="form-control text-center" />
+                </div>
+                <div class="d-flex align-items-center w-100">
+                    <label style="width:60% !important;">@localizer["To Period"]</label>
+                    <input id="toPeriod" type="date" class="form-control text-center" />
+                </div>
+            </div>
+
+        </div>
+
+        <!---------------------------------------------------------->
+
+        <div class="report">
+        </div>
+
+    </div>
+</div>
+<script>
+    var filter = document.getElementById("filter")
+    var journal = document.getElementById("journals");
+    var fromPeriod = document.getElementById("fromPeriod");
+    var toPeriod = document.getElementById("toPeriod");
+    var fromReceipt = document.getElementById("fromReceipt");
+    var toReceipt = document.getElementById("toReceipt");
+
+    //for report From Voucher To Voucher//
+    function FromVoucherToVoucher(e) {
+        if (filter.value == 1) {
+            if (!fromPeriod.value) {
+                fromPeriod.focus();
+                return;
+            }
+            if (!toPeriod.value) {
+                toPeriod.focus();
+                return;
+            }
+        }
+        else if (filter.value == 2) {
+            if (!fromReceipt.value) {
+                fromReceipt.focus();
+                return;
+            }
+            if (!toReceipt.value) {
+                toReceipt.focus();
+                return;
+            }
+        }
+        var headReport = document.querySelector(".report");
+
+        let title;
+        if (filter.value == 1) {
+            title = "@localizer["Analytical Journal During Period from"] " + fromPeriod.value + " @localizer["To"] " + toPeriod.value;
+        } else if (filter.value == 2) {
+            title = "@localizer["Analytical Journal For Voucher from"] " + fromReceipt.value + " @localizer["To"] " + toReceipt.value;
+        }
+        headReport.innerHTML =
+            `
+                <div class="report-head d-flex justify-content-center align-items-center mt-4">
+                     <h2 class="header">${title}</h2>
+                         <button onclick="printReport()" class="btn btn-success" style="margin-inline-start: auto;">Print</button>
+                </div>
+
+                <div class="print-table p-0 mb-2 overflow-auto">
+
+                    <table id="myTable" class="table table-bordered table-hover Voucher-table" style="width:100%">
+                        <thead class="table-dark">
+                            <tr>
+                                <th class="align-middle text-center" rowspan="2">
+                                   @localizer["Voucher No"]
+                                </th>
+                                <th class="align-middle text-center" rowspan="2">
+                                   @localizer["Voucher Date"]
+                                </th>
+                                <th class="align-middle text-center" rowspan="2">
+                                   @localizer["Account Name"]
+                                </th>
+                                <th class="align-middle text-center" rowspan="2">
+                                   @localizer["Note"]
+                                </th>
+                                <th class="align-middle text-center" rowspan="2">
+                                   @localizer["Debit Value"]
+                                </th>
+                                <th class="align-middle text-center" rowspan="2">
+                                   @localizer["Credit Value"]
+                                </th>
+
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+
+            `;
+        let url;
+        if (filter.value == 1) {
+            url = `/Accounts/ReportFromVoucherToVoucher/GetFromToVoucher/${journal.value}?fromPeriod=${fromPeriod.value}&toPeriod=${toPeriod.value}`;
+        } else if (filter.value == 2) {
+            url = `/Accounts/ReportFromVoucherToVoucher/GetFromToVoucher/${journal.value}?fromReceipt=${fromReceipt.value}&toReceipt=${toReceipt.value}`;
+        }
+        var dataa = document.querySelector(".Voucher-table tbody");
+        dataa.innerHTML = "";  // Empty data
+        $.ajax({
+            url: url,
+            success: function (result) {
+                //  console.log(result);
+                var valDepSum = 0;
+                var valCreditSum = 0;
+                for (let item of result) {
+                    let transDate = new Date(item.transDate).toISOString().split('T')[0];
+                    const data = document.createElement("tr");
+                    data.innerHTML += `
+
+                            <td class="align-middle">${item.transNo}</td>
+                            <td class="align-middle">${transDate}</td>
+                            <td class="align-middle">${item.accountName}</td>
+                            <td class="align-middle">${item.lineDesc}</td>
+                            <td class="align-middle">${item.valDep}</td>
+                            <td class="align-middle">${item.valCredit}</td>
+                        `;
+                    valDepSum += item.valDep;
+                    valCreditSum += item.valCredit;
+                    dataa.appendChild(data);
+                }
+                const dataForSum = document.createElement("tr");
+                //    dataForSum.style.backgroundColor = "#e6dfdf";
+                dataForSum.innerHTML =
+                    `
+                        <td colspan="4"></td>
+                        <td style="background-color: #e6dfdf;">${valDepSum}</td>
+                        <td style="background-color: #e6dfdf;">${valCreditSum}</td>
+                    `;
+                dataa.appendChild(dataForSum);
+
+            }
+        });
+    }
+    function printReport() {
+        let head = document.querySelector(".report-head");
+        let tableReport = document.querySelector(".print-table");
+        let originalContent = document.body.innerHTML;//all body
+
+        head.querySelector("button").style.display = "none";
+        document.body.innerHTML = head.outerHTML + tableReport.outerHTML;
+        window.print();
+        document.body.innerHTML = originalContent;
+    }
+
+    //Filter
+    function filtering(e) {
+        var filterBy = e.target.value;
+        // console.log(filterBy);
+        var periodElements = document.querySelectorAll(".period");
+        var receiptElement = document.querySelector(".receipt-hide");
+
+        if (filterBy == 2) {
+            receiptElement.classList.remove("hide");
+            periodElements.forEach(e => {
+                e.classList.add("hide");
+            });
+        }
+        else if (filterBy == 1) {
+            receiptElement.classList.add("hide");
+            periodElements.forEach(e => {
+                e.classList.remove("hide");
+            });
+        }
+
+    }
+</script>
