@@ -1,0 +1,78 @@
+﻿@model TransDtlDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Edit Item For Permission";
+    Layout = "_Layout";
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+
+    var subItems = new SelectList(Model.SubItems, "SubId", "SubName");
+    var unitCodes = new SelectList(Model.UnitCodes, "Code", "Names");
+    var itemStatusList = new SelectList(Model.ItemStatusList, "Code", "Names");
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+    <h1 class="mt-4">@localizer["Edit Item"]</h1>
+    <form method="post" asp-action="Edit_TransDetail">
+        <div class="border p-3 mt-4">
+
+            @* Hidden Inputs *@
+            <input asp-for="Serial" type="hidden" />
+            <input asp-for="TransMAsterID" type="hidden" />
+            <input asp-for="TransDtlId" type="hidden" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
+                <div class="mb-3" style="width: 33%;">
+                    <label asp-for="ItemMaster" class="text-center" style="width: 45%;"></label>
+                    <select asp-for="ItemMaster" asp-items="subItems" class="form-control text-center" style="width: 78%;">
+                    </select>
+                    <span asp-validation-for="ItemMaster" class="text-danger"></span>
+                </div>
+                <div class="mb-3" style="width: 33%;">
+                    <label asp-for="ItmBarcode" class="text-center" style="width: 40%;"></label>
+                    <input asp-for="ItmBarcode" class="form-control" style="width: 72%;" />
+                    <span asp-validation-for="ItmBarcode" class="text-danger"></span>
+                </div>
+                <div class="mb-3" style="width: 33%;">
+                    <label asp-for="UnitQty" class="text-center" style="width: 80%;"></label>
+                    <input asp-for="UnitQty" class="form-control" style="width: 210px;" />
+                    <span asp-validation-for="UnitQty" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
+                <div class="mb-3" style="width: 33%">
+                    <label asp-for="UnitCode" class="text-center" style="width: 45%;"></label>
+                    <select asp-for="UnitCode" asp-items="unitCodes" class="form-control text-center" style="width: 78%;">
+                    </select>
+                    <span asp-validation-for="UnitCode" class="text-danger"></span>
+                </div>
+                <div class="mb-3" style="width: 33%;">
+                    <label asp-for="Flag1" class="text-center" style="width: 40%;"></label>
+                    <select asp-for="Flag1" asp-items="itemStatusList" class="form-control text-center" style="width: 72%;">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="Flag1" class="text-danger"></span>
+                </div>
+                <div class="mb-3" style="width: 33%;">
+                    <label asp-for="ExpireDate" class="text-center" style="width: 80%;"></label>
+                    <input asp-for="ExpireDate" type="date" class="form-control" />
+                    <span asp-validation-for="ExpireDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex justify-content-md-center gap-2">
+                <button type="submit" class="btn btn-success" style="width:150px">@localizer["Save Changes"]</button>
+                <a asp-controller="PermissionForm" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>

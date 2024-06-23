@@ -479,6 +479,17 @@
   "Failed to post in Account.": "Failed to post in Account.",
   "Finish Posting done": "Finish Posting done",
   "Choose User": "Choose User",
+  "Print From Voucher To Voucher": "Print From Voucher To Voucher",
+  "Vouchers in Accounts": "Vouchers in Accounts",
+  "From Voucher": "From Voucher",
+  "To Voucher": "To Voucher",
+  "All": "All",
+  "Debit Value": "Debit Value",
+  "Credit Value": "Credit Value",
+  "Voucher": "Voucher",
+  "kinship": "kinship",
+
+
 
 
 
@@ -701,5 +712,6 @@
   "The Barcode": "The Barcode",
   "Serial_M": "Serial_M",
   "Item Name": "Item Name",
-  "Edit Item": "Edit Item"
+  "Edit Item": "Edit Item",
+  "Item Status": "Item Status"
 }

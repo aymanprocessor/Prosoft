@@ -17,10 +17,10 @@
         <div class="border p-3 mt-4">
 
             @* Hidden Inputs *@
-            @*             <input asp-for="DocNo" type="hidden" />
-            <input asp-for="StockCode" type="hidden" />
-            <input asp-for="TransType" type="hidden" /> *@
-
+            <input asp-for="Serial" type="hidden" />
+            <input asp-for="TransMasterID" type="hidden" />
+            <input asp-for="TransDtlId" type="hidden" />
+            
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
                 <div class="mb-3" style="width: 33%;">
@@ -36,7 +36,7 @@
                 </div>
                 <div class="mb-3" style="width: 33%;">
                     <label asp-for="UnitQty" class="text-center" style="width: 80%;"></label>
-                    <input asp-for="UnitQty" class="form-control" value="1" style="width: 210px;" onchange="setTotal()" />
+                    <input asp-for="UnitQty" type="number" class="form-control" style="width: 210px;" onchange="setTotal()" />
                     <span asp-validation-for="UnitQty" class="text-danger"></span>
                 </div>
             </div>
@@ -52,13 +52,20 @@
                 </div>
                 <div class="mb-3" style="width: 33%;">
                     <label asp-for="Price" class="text-center" style="width: 40%;"></label>
-                    <input asp-for="Price" type="number" value="" class="form-control" style="width: 72%;" onchange="setTotal()" />
+                    <input asp-for="Price" type="number" class="form-control" style="width: 72%;" onchange="setTotal()" />
                     <span asp-validation-for="Price" class="text-danger"></span>
                 </div>
                 <div class="mb-3" style="width: 33%;">
                     <div class="d-flex align-items-center">
                         <div class="d-flex align-items-center justify-content-start justify-content-md-end gap-2 @(isRTL ? "me-3" : "ms-3") mb-2">
-                            <input name="ItmHaveTax" id="ItmHaveTax" type="checkbox" value="0" class="form-check-input" onchange="changeValue(event)" />
+                            @if(Model.ItmHaveTax == 1)
+                            {
+                            <input name="ItmHaveTax" id="ItmHaveTax" type="checkbox" value="1" checked class="form-check-input" onchange="changeValue(event)" />
+                            }
+                            else
+                            {
+                            <input name="ItmHaveTax" id="ItmHaveTax" type="checkbox" value="0" class="form-check-input" onchange="changeValue(event)" />    
+                            }
                             <label asp-for="ItmHaveTax" style="width: 80%;"></label>
                         </div>
                         <span asp-validation-for="ItmHaveTax" class="text-danger"></span>
@@ -71,7 +78,7 @@
             <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
                 <div class="mb-3" style="width: 33%">
                     <label asp-for="TaxVal" class="text-center" style="width: 45%;"></label>
-                    <input asp-for="TaxVal" type="number" value="" class="form-control" style="width: 78%;" />
+                    <input asp-for="TaxVal" type="number" class="form-control" style="width: 78%;" />
                     <span asp-validation-for="TaxVal" class="text-danger"></span>
                 </div>
                 <div class="mb-3" style="width: 33%;">
@@ -80,7 +87,7 @@
                     <span asp-validation-for="ExpireDate" class="text-danger"></span>
                 </div>
                 <div class="mb-3" style="width: 33%;">
-                    <label asp-for="ItemVal" class="text-center" style="width: 80%;"></label>
+                    <label asp-for="ItemVal" for="" class="text-center" style="width: 80%;"></label>
                     <input asp-for="ItemVal" type="number" class="form-control" style="width: 210px; pointer-events: none; background-color: #e9ecef" />
                     <span asp-validation-for="ItemVal" class="text-danger"></span>
                 </div>

@@ -44,6 +44,21 @@ namespace ProSoft.Core.Repositories.Stocks
             return transDtlListDTO;
         }
 
+        ////////////////////////////////////////////////////////////////////////////
+        // For Showing Trans Price
+        public async Task<TransDtlWithPriceDTO> GetNewTransDtlWithPriceAsync()
+        {
+            var transDtlDTO = new TransDtlWithPriceDTO();
+
+            List<SubItem> subItems = await _Context.SubItems.ToListAsync();
+            transDtlDTO.SubItems = _mapper.Map<List<SubItemViewDTO>>(subItems);
+
+            List<UnitCode> unitCodes = await _Context.UnitCodes.ToListAsync();
+            transDtlDTO.UnitCodes = _mapper.Map<List<UnitCodeDTO>>(unitCodes);
+
+            return transDtlDTO;
+        }
+
         public async Task<TransDtlWithPriceDTO> GetTransDtlWithPriceByIdAsync(int transDtlID)
         {
             TransDtl transDtl = await GetByIdAsync(transDtlID);
@@ -58,23 +73,7 @@ namespace ProSoft.Core.Repositories.Stocks
             return transDtlDTO;
         }
 
-        public async Task<TransDtlWithPriceDTO> GetNewTransDtlAsync()
-        {
-            var transDtlDTO = new TransDtlWithPriceDTO();
-
-            List<SubItem> subItems = await _Context.SubItems.ToListAsync();
-            transDtlDTO.SubItems = _mapper.Map<List<SubItemViewDTO>>(subItems);
-
-            List<UnitCode> unitCodes = await _Context.UnitCodes.ToListAsync();
-            transDtlDTO.UnitCodes = _mapper.Map<List<UnitCodeDTO>>(unitCodes);
-
-            //List<UnitCode> itemStatusList = await _Context.UnitCodes.Where(obj => obj.Flag1 == 3).ToListAsync();
-            //transDtlDTO.ItemStatusList = _mapper.Map<List<UnitCodeDTO>>(itemStatusList);
-
-            return transDtlDTO;
-        }
-
-        public async Task addTransDtlWithPriceAsync(TransDtlWithPriceDTO transDtlDTO)
+        public async Task AddTransDtlWithPriceAsync(TransDtlWithPriceDTO transDtlDTO)
         {
             TransMaster transMaster = await _Context.TransMasters
                 .FirstOrDefaultAsync(obj => obj.TransMAsterID == transDtlDTO.TransMasterID);
@@ -87,6 +86,87 @@ namespace ProSoft.Core.Repositories.Stocks
             transDtl.Serial = transDtlList.Count != 0 ? transDtlList.Max(obj => obj.Serial) + 1 : 1;
 
             await AddAsync(transDtl);
+            await SaveChangesAsync();
+        }
+
+        public async Task UpdateTransDtlWithPriceAsync(int id, TransDtlWithPriceDTO transDtlDTO)
+        {
+            TransDtl transDtl = await GetByIdAsync(id);
+
+            TransMaster transMaster = await _Context.TransMasters
+                .FirstOrDefaultAsync(obj => obj.TransMAsterID == transDtlDTO.TransMasterID);
+
+            _mapper.Map(transDtlDTO, transDtl);
+            _mapper.Map(transMaster, transDtl);
+
+            transDtl.PostPos = 1;
+
+            await UpdateAsync(transDtl);
+            await SaveChangesAsync();
+        }
+
+        ////////////////////////////////////////////////////////////////////////////
+        // For Not Showing Trans Price
+        public async Task<TransDtlDTO> GetNewTransDtlAsync()
+        {
+            var transDtlDTO = new TransDtlDTO();
+
+            List<SubItem> subItems = await _Context.SubItems.ToListAsync();
+            transDtlDTO.SubItems = _mapper.Map<List<SubItemViewDTO>>(subItems);
+
+            List<UnitCode> unitCodes = await _Context.UnitCodes.ToListAsync();
+            transDtlDTO.UnitCodes = _mapper.Map<List<UnitCodeDTO>>(unitCodes);
+
+            List<UnitCode> itemStatusList = await _Context.UnitCodes.Where(obj => obj.Flag1 == 3).ToListAsync();
+            transDtlDTO.ItemStatusList = _mapper.Map<List<UnitCodeDTO>>(itemStatusList);
+
+            return transDtlDTO;
+        }
+
+        public async Task<TransDtlDTO> GetTransDtlByIdAsync(int transDtlID)
+        {
+            TransDtl transDtl = await GetByIdAsync(transDtlID);
+            var transDtlDTO = _mapper.Map<TransDtlDTO>(transDtl);
+
+            List<SubItem> subItems = await _Context.SubItems.ToListAsync();
+            transDtlDTO.SubItems = _mapper.Map<List<SubItemViewDTO>>(subItems);
+
+            List<UnitCode> unitCodes = await _Context.UnitCodes.ToListAsync();
+            transDtlDTO.UnitCodes = _mapper.Map<List<UnitCodeDTO>>(unitCodes);
+
+            List<UnitCode> itemStatusList = await _Context.UnitCodes.Where(obj => obj.Flag1 == 3).ToListAsync();
+            transDtlDTO.ItemStatusList = _mapper.Map<List<UnitCodeDTO>>(itemStatusList);
+
+            return transDtlDTO;
+        }
+
+        public async Task AddTransDtlAsync(TransDtlDTO transDtlDTO)
+        {
+            TransMaster transMaster = await _Context.TransMasters
+                .FirstOrDefaultAsync(obj => obj.TransMAsterID == transDtlDTO.TransMAsterID);
+
+            var transDtl = _mapper.Map<TransDtl>(transDtlDTO);
+            _mapper.Map(transMaster, transDtl);
+
+            transDtl.ItemMaster2 = 0;
+            List<TransDtl> transDtlList = await _DbSet.Where(obj => obj.TransMAsterID == transDtl.TransMAsterID).ToListAsync();
+            transDtl.Serial = transDtlList.Count != 0 ? transDtlList.Max(obj => obj.Serial) + 1 : 1;
+
+            await AddAsync(transDtl);
+            await SaveChangesAsync();
+        }
+
+        public async Task UpdateTransDtlAsync(int id, TransDtlDTO transDtlDTO)
+        {
+            TransDtl transDtl = await GetByIdAsync(id);
+
+            TransMaster transMaster = await _Context.TransMasters
+                .FirstOrDefaultAsync(obj => obj.TransMAsterID == transDtlDTO.TransMAsterID);
+
+            _mapper.Map(transDtlDTO, transDtl);
+            _mapper.Map(transMaster, transDtl);
+
+            await UpdateAsync(transDtl);
             await SaveChangesAsync();
         }
     }

@@ -5,46 +5,49 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ProSoft.EF.DTOs.Medical.HospitalPatData;
 
 namespace ProSoft.EF.DTOs.Stocks
 {
     public class TransDtlDTO
     {
         public int TransDtlId { get; set; }
-
         public int TransMAsterID { get; set; }
+        public long? Serial { get; set; }
 
         [DisplayName("The Item")]
-        public string? ItemMaster { get; set; }
+        [Required(ErrorMessage = "The field is required")]
+        public string ItemMaster { get; set; }
 
         public string? ItemMasterName { get; set; }
-        
+
         [DisplayName("The Barcode")]
-        public string? ItmBarcode { get; set; }
+        [Required(ErrorMessage = "The field is required")]
+        public string ItmBarcode { get; set; }
         
         [DisplayName("The Quantity")]
-        public decimal? UnitQty { get; set; }
+        [Required(ErrorMessage = "The field is required")]
+        public decimal UnitQty { get; set; }
         
         [DisplayName("The Unit")]
-        public int? UnitCode { get; set; }
+        [Required(ErrorMessage = "The field is required")]
+        public int UnitCode { get; set; }
 
         public int? UnitCodeName { get; set; }
         
-        [DisplayName("Unit Price")]
-        public decimal? Price { get; set; }
-        
-        [DisplayName("Under Tax")]
-        public short? ItmHaveTax { get; set; }
-        
-        [DisplayName("Tax")]
-        public decimal? TaxVal { get; set; }
+        [DisplayName("Item Status")]
+        public int? Flag1 { get; set; }
 
-        [DisplayName("The Total")]
-        [Required(ErrorMessage = "The field is required")]
-        public decimal ItemVal { get; set; }
-        
         [DisplayName("Expire Date")]
         public DateTime? ExpireDate { get; set; }
+
+        public int? UserCode { get; set; }
+        public int? BranchId { get; set; }
+        public int? ItemMaster2 { get; set; }
+
+        public List<SubItemViewDTO>? SubItems { get; set; }
+        public List<UnitCodeDTO>? UnitCodes { get; set; }
+        public List<UnitCodeDTO>? ItemStatusList { get; set; }
 
         //[Column("STOCK_CODE")]
         //public short? StockCode { get; set; }
@@ -60,7 +63,6 @@ namespace ProSoft.EF.DTOs.Stocks
         //public DateTime? DocDate { get; set; }
 
         //[Column("SERIAL")]
-        //public long? Serial { get; set; }
 
         //[Column("MAIN_CODE")]
         //[StringLength(10)]
@@ -116,7 +118,6 @@ namespace ProSoft.EF.DTOs.Stocks
         //public string? RefDocNo { get; set; }
 
         //[Column("FLAG1")]
-        //public int? Flag1 { get; set; }
 
         //[Column("ITEM_MASTER_ORE")]
         //[StringLength(3)]
@@ -125,7 +126,6 @@ namespace ProSoft.EF.DTOs.Stocks
 
 
         //[Column("BRANCH_ID")]
-        //public int? BranchId { get; set; }
 
         //[Column("PRICE_WITH_TAX", TypeName = "decimal(11, 3)")]
         //public decimal? PriceWithTax { get; set; }
@@ -177,10 +177,8 @@ namespace ProSoft.EF.DTOs.Stocks
         //public string? ItemDefine { get; set; }
 
         //[Column("USER_CODE")]
-        //public int? UserCode { get; set; }
 
         //[Column("ITEM_MASTER2")]
-        //public int? ItemMaster2 { get; set; }
 
         //[Column("PRICE3", TypeName = "decimal(11, 3)")]
         //public decimal? Price3 { get; set; }
