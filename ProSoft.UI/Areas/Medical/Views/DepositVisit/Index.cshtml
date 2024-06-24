@@ -61,7 +61,12 @@
                         @localizer["Note"]
                     </th>
                     <th>
-                        @localizer["Action"]
+                        @localizer["Voucher No"]
+                    </th>
+                    <th>
+                        @localizer["Treasury No"]
+                    </th>
+                    <th>
                     </th>
                 </tr>
             </thead>
@@ -92,6 +97,12 @@
                         </td>
                         <td>
                             @dep.DepositDesc
+                        </td>
+                        <td>
+                            @dep.JorKiedNo
+                        </td>
+                        <td>
+                            @dep.SafeDocNo
                         </td>
                         <td width="30%" class="text-center">
                             <a asp-controller="DepositVisit" asp-action="Edit_Deposit" asp-route-ID="@dep.DpsSer" class="btn btn-sm btn-success mb-1 fs-6" style="width:150px">

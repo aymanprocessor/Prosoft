@@ -76,6 +76,8 @@ builder.Services.AddScoped<ICompanyGroupRepo, CompanyGroupRepo>();
 builder.Services.AddScoped<ICompanyRepo, CompanyRepo>();
 builder.Services.AddScoped<ICompanyDtlRepo, CompanyDtlRepo>();
 builder.Services.AddScoped<IDepositVisitRepo, DepositVisitRepo>();
+builder.Services.AddScoped<IkinshipRepo, kinshipRepo>();
+builder.Services.AddScoped<IDrTimeSheetRepo, DrTimeSheetRepo>();
 ///////////////// Stock /////////////
 builder.Services.AddScoped<IStockTypeRepo, StockTypeRepo>();
 builder.Services.AddScoped<IBranchRepo, BranchRepo>();

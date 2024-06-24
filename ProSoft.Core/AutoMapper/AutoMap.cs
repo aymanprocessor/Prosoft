@@ -91,6 +91,7 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<CompanyDtlEditAddDTO, CompanyDtl>().ReverseMap();
             CreateMap<DepositViewDTO, Deposit>().ReverseMap();
             CreateMap<DepositEditAddDTO, Deposit>().ReverseMap();
+            CreateMap<DrTimeSheetDTO, Drtimsheet>().ReverseMap();
             ////////// Stocks ////////////////////
             CreateMap<KindStore, KindStoreDTO>().ReverseMap();
             CreateMap<Branch, BranchDTO>().ReverseMap();

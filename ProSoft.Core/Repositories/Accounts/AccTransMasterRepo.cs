@@ -55,6 +55,7 @@ namespace ProSoft.Core.Repositories.Accounts
             List<AccGlobalDef> accGlobalDefs = await _Context.accGlobalDefs.ToListAsync();
             accTransMasterDTO.accGlobalDefs = _mapper.Map<List<AccGlobalDefDTO>>(accGlobalDefs);
 
+            accTransMasterDTO.MCode = 1;
             accTransMasterDTO.JournalName = (await _Context.JournalTypes.FindAsync(journalCode)).JournalName;
             accTransMasterDTO.JournalCode = (await _Context.JournalTypes.FindAsync(journalCode)).JournalCode;
             return accTransMasterDTO;

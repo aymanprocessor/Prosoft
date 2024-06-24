@@ -122,12 +122,16 @@
             </div>
 
             <!------------------------------------------------------------------------------->
-            <button type="button" class="btn btn-dark" onclick="totalDifference()">@localizer["The Difference"] : </button>
-            <span id="totalDifference"> </span>
-            <!------------------------------------------------------------------------------->
-
-            <input type="hidden" id="valDepSum" value="@ViewBag.valDepSum" />
-            <input type="hidden" id="valCreditSum" value="@ViewBag.valCreditSum" />
+            <span>
+                @localizer["The Sum"] : @localizer["Debit"] 
+                <input id="valDepSum" value="@ViewBag.valDepSum" style="pointer-events:none;background-color: #e9ecef;border: none; width: 70px; text-align: center; " />
+                @localizer["Credit"]
+                <input id="valCreditSum" value="@ViewBag.valCreditSum" style="pointer-events:none;background-color: #e9ecef;border: none; width: 70px; text-align: center;" />
+            </span>
+            <div class="mt-2">
+                <button type="button" class="btn btn-dark" onclick="totalDifference()">@localizer["The Difference"] : </button>
+                <span id="totalDifference"> </span>
+            </div>
 
             <!------------------------------------------------------------------------------->
 
@@ -135,12 +139,12 @@
                 <button type="submit" class="btn btn-primary" style="width:150px">
                     @localizer["Add Term"]
                 </button>
-       
-@*                 <a asp-controller="AccTransMaster" asp-action="Index" asp-route-journalCode="@Model.TransType" class="btn btn-secondary" style="width:150px">
-                    @localizer["Cancel"]
-                </a> *@
 
-                <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-secondary" data-modal-target style="width:150px;height:100%;">@localizer["Cancel"]</button>
+                <a id="cancelButton" asp-controller="AccTransMaster" asp-action="Index" asp-route-journalCode="@Model.TransType" class="btn btn-secondary" style="width:150px;display: none;">
+                    @localizer["Cancel"]
+                </a> 
+
+                <button id="cancelButton2" type="button" onclick="openModalListener(event)" class="btn btn-sm btn-secondary" data-modal-target style="width:150px;height:100%;">@localizer["Cancel"]</button>
                 <div class="modal-container">
                     <div class="modal 4" id="modal">
                         <div class="modal-header fs-4">
@@ -148,8 +152,9 @@
                             <button type="button" onclick="closeModelListener(event)" data-close-button class="close-button">&times;</button>
                         </div>
                         <div class="modal-body fs-4">    
-                            <p>@localizer["Are you sure that Voucher is balanced and the difference is zero ?"]</p>
-                            <p>@localizer["If balance not equal Zero will delet all terms for Voucher !"]</p>
+@*                             <p>@localizer["Are you sure that Voucher is balanced and the difference is zero ?"]</p>
+                            <p>@localizer["If balance not equal Zero will delet all terms for Voucher !"]</p> *@
+                            <p>@localizer["Voucher is Not balanced will delet all terms !"]</p>
                         </div>
                         <div class="modal-footer fs-4">
                             <button type="button" onclick="closeModelListener(event)" data-close-button class="btn btn-secondary">@localizer["No"]</button>
@@ -178,6 +183,17 @@
          console.log(totalValue);
         var totalDifference = document.getElementById("totalDifference");
         totalDifference.innerHTML = '  ' + totalValue + ' '; // Adjust decimal places as needed
+        // Show or hide cancel button based on the total difference value
+
+        var cancelButton = document.getElementById("cancelButton");
+        var cancelButton2 = document.getElementById("cancelButton2");
+        if (totalValue === 0) {
+            cancelButton.style.display = 'inline-block';
+            cancelButton2.style.display = 'none';
+        } else {
+            cancelButton.style.display = 'none';
+            cancelButton2.style.display = 'inline-block';
+        }
     }
 
     function valDep() { 

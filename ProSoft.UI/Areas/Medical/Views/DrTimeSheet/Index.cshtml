@@ -1,20 +1,20 @@
-﻿@model List<UserDTO>
+﻿@model List<DoctorViewDTO>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Joining Users With Treasurys";
+    ViewData["Title"] = "Doctors Appointments";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @inject IViewLocalizer localizer
 
 <div class="text-center">
-    <h1 class="mb-2">@localizer["Joining Users With Treasurys"] </h1>
+    <h1 class="mb-2">@localizer["Doctors Appointments"] </h1>
 </div>
 
 <div class="container pt-2" style=" min-height:100vh;">
     <div class="d-flex justify-content-between align-items-center flex-column flex-md-row my-2">
         <div style="width: 40%;">
-            <input type="text" id="searchInput" class="form-control" oninput="searchUsers(event)" placeholder="@localizer["Search users by user code or name ..."]">
+            <input type="text" id="searchInput" class="form-control" oninput="searchUsers(event)" placeholder="@localizer["Search Doctors by doctor code or name ..."]">
         </div>
     </div>
     <div class="overflow-auto" style="height: 225px;">
@@ -25,16 +25,16 @@
                         @localizer["Code"]
                     </th>
                     <th class="align-middle" style="min-width: 150px;">
-                        @localizer["User Name"]
+                        @localizer["Doctor Name"]
                     </th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr onclick="getSafeTransactions(event, @item.UserCode)" style="cursor:pointer;">
-                        <td class="align-middle">@item.UserCode</td>
-                        <td class="align-middle user-name">@item.UserName</td>
+                    <tr onclick="getDoctorsAppointments(event, @item.DrId)" style="cursor:pointer;">
+                        <td class="align-middle">@item.DrId</td>
+                        <td class="align-middle user-name">@item.DrDesc</td>
                     </tr>
                 }
             </tbody>
@@ -43,12 +43,12 @@
 
     @* /////////////////////////////////////////////////////////////////// *@
 
-    @* Table for UserSafe Transactions *@
+    @* Table for Doctor Appointments *@
 
     <div class="transactions-table-head d-flex justify-content-between align-items-center mt-3 mb-1">
-        <h2 class="header">@localizer["Transactions of Safes for User"] :</h2>
+        <h2 class="header">@localizer["Doctor Appointments"] :</h2>
         <a class="btn btn-sm btn-primary fs-6" style="width:150px">
-            @localizer["Add New Transaction"]
+            @localizer["Add Appointments"]
         </a>
     </div>
 
@@ -61,19 +61,16 @@
                         @localizer["Serial"]
                     </th>
                     <th>
-                        @localizer["Treasury"]
+                        @localizer["Day"]
                     </th>
                     <th>
-                        @localizer["Posting To Safes"]
+                        @localizer["Period"]
                     </th>
                     <th class="text-center">
-                        @localizer["Activation"]
+                        @localizer["From"]
                     </th>
                     <th>
-                        @localizer["Sub Safe Treasury"]
-                    </th>
-                    <th>
-                        @localizer["Main Safe Treasury"]
+                        @localizer["To"]
                     </th>
                     <th></th>
                 </tr>
@@ -84,45 +81,45 @@
     </div>
 </div>
 
-@section Scripts {
-    <script>
-        function searchUsers(e) {
-            let input = e.target;
-            let filterValue = input.value.toLowerCase();
-            let rows = document.querySelectorAll("#myTable tbody tr");
+<script>
+    function searchUsers(e) {
+        let input = e.target;
+        let filterValue = input.value.toLowerCase();
+        let rows = document.querySelectorAll("#myTable tbody tr");
 
-            if (!filterValue) {
-                for (let i = 0, len = rows.length; i < len; i++) {
-                    rows[i].style.display = "";
-                }
-                return;
+        if (!filterValue) {
+            for (let i = 0, len = rows.length; i < len; i++) {
+                rows[i].style.display = "";
             }
-            // Loop through all table rows, hide those that do not match the search query
-            for (let i = 0, len1 = rows.length; i < len1; i++) {
-                let elements = rows[i].querySelectorAll("td");
-                for (let j = 0, len2 = elements.length; j < len2; j++) {
-                    let td = elements[j];
-                    if (td) {
-                        let tdValue = td.textContent || td.innerText;
-                        tdValue = tdValue.toLowerCase();
-                        if (tdValue.indexOf(filterValue) > -1) {
-                            rows[i].style.display = "";
-                            break;
-                        } else {
-                            rows[i].style.display = "none";
-                        }
+            return;
+        }
+        
+        // Loop through all table rows, hide those that do not match the search query
+        for (let i = 0, len1 = rows.length; i < len1; i++) {
+            let elements = rows[i].querySelectorAll("td");
+            for (let j = 0, len2 = elements.length; j < len2; j++) {
+                let td = elements[j];
+                if (td) {
+                    let tdValue = td.textContent || td.innerText;
+                    tdValue = tdValue.toLowerCase();
+                    if (tdValue.indexOf(filterValue) > -1) {
+                        rows[i].style.display = "";
+                        break;
+                    } else {
+                        rows[i].style.display = "none";
                     }
                 }
             }
         }
-
-        function getSafeTransactions(e, userCode) {
+    }
+    
+            function getDoctorsAppointments(e, DrId) {
             // Handle active click
             let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");;
             let clickedTarget = e.target.parentElement;
 
             ///////////////////////////////////////////////////////////////////
-            let userTransactions = document.querySelector("#myTable_2 tbody");
+            let drAppointments = document.querySelector("#myTable_2 tbody");
             let transactionsHead = document.querySelector(".transactions-table-head");
             let transactionsHeader = transactionsHead.querySelector(".header");
             let transAddLink = transactionsHead.querySelector("a");
@@ -135,44 +132,31 @@
             clickedTarget.classList.add("active-row");
 
             let userName = clickedTarget.querySelector(".user-name").innerText;
-            transactionsHeader.innerHTML = `@localizer["Transactions of Safes for User"] : ${userName}`;
+            transactionsHeader.innerHTML = `@localizer["Doctor Appointments"] : ${userName}`;
 
-            transAddLink.setAttribute("href", `/Treasury/UserCashNo/Add_UserCashNo/${userCode}`);
+            transAddLink.setAttribute("href", `/Treasury/UserCashNo/Add_UserCashNo/${DrId}`);
 
-            userTransactions.innerHTML = "";  // Empty the table
+            drAppointments.innerHTML = "";  // Empty the table
 
             $.ajax({
-                url: `/Treasury/UserCashNo/GetSafeTransForUser/${userCode}`,
+                url: `/Medical/DrTimeSheet/GetAppointmentsForDr/${DrId}`,
                 success: function (result) {
                   //  console.log(result);
-                  //to disable l add when user has Treasury
-                    let count = 0;
-                    if (result.length > 0) {
-                        transAddLink.classList.add("btn-secondary");
-                        transAddLink.style.pointerEvents = "none";
-                    }
-                    else {
-                        transAddLink.classList.remove("btn-secondary");
-                        transAddLink.style.pointerEvents = "all";
-                    }
+                    let index = 0;
                     for (let item of result) {
-                        count++;
-                        let actdeactFlag = item.actdeactFlag == 1 ? `<i class="fa-solid fa-check"></i>` : "";
-                        let cshUsr = item.cshUsr == 'Y' ? `<i class="fa-solid fa-check"></i>` : "";
-
-                        const userTrans = document.createElement("tr");
-                        userTrans.innerHTML =
+                        index++;
+                        const drAppointment = document.createElement("tr");
+                        drAppointment.innerHTML =
                             `
-                                    <td class="align-middle text-center">${count}</td>
-                                    <td class="align-middle text-center">${item.safeNames}</td>
-                                    <td class="align-middle text-center">${actdeactFlag}</td>
-                                    <td class="align-middle text-center">${cshUsr}</td>
-                                    <td class="align-middle text-center">${item.safeSub}</td>
-                                    <td class="align-middle text-center">${item.safeMain}</td>
-                                    <td class="text-center align-middle" style="width: 325px;">
+                                <td class="align-middle text-center">${index}</td>
+                                <td class="align-middle text-center">${item.dayNumber}</td>
+                                <td class="align-middle text-center">${item.exPeriod}</td>
+                                <td class="align-middle text-center">${item.timfrom}</td>
+                                <td class="align-middle text-center">${item.timto}</td>
+                                <td class="text-center align-middle" style="width: 325px;">
                                     <a href="/Treasury/UserCashNo/Edit_UserCashNo/${item.userCashID}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
                                     <form action="/Treasury/UserCashNo/Delete_UserCashNo" method="post" class="d-inline">
-        @Html.AntiForgeryToken()
+                                 @Html.AntiForgeryToken()
                                             <input type="hidden" name="id" value="${item.userCashID}" />
                                         <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width:150px">@localizer["Delete"]</button>
                                         <div class="modal-container">
@@ -194,10 +178,10 @@
                                         </form>
                                     </td>
                                     `;
-                        userTransactions.appendChild(userTrans);
+                        drAppointments.appendChild(drAppointment);
                     }
                 }
             });
         }
-    </script>
-}
+
+</Script>

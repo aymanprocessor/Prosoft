@@ -25,13 +25,15 @@
 
     <div class="d-flex justify-content-between align-items-center mt-4 ">
         <h1 class="header">@localizer["Recording Journal Entries"]</h1>
+        <input type="text" id="searchInput" class="form-control w-50" oninput="searchVoucher(event)" placeholder="@localizer["Search ..."]">
+
         <a asp-controller="AccTransMaster" asp-action="Add_AccTransMaster" asp-route-journalCode="@ViewBag.journalCode" asp-route-fYear="@ViewBag.fYear" asp-route-branchId="@ViewBag.branchId" class="btn btn-sm btn-primary fs-6" style="width:150px">
             @localizer["Add Voucher"]
         </a>
 
     </div>
     <div class="overflow-auto" style="max-height:calc(100vh - 145px)">
-        <table id="myTable" class="table table-bordered table-hover" style="width:100%">
+        <table id="myTable1" class="table table-bordered table-hover" style="width:100%">
             <thead class="table-dark">
                 <tr>
                     <th>
@@ -85,9 +87,51 @@
                             }
                         </td>
                         <td>
-                            @jou.MCode
+                            @if (@jou.MCode == 1)
+                            {
+                                @localizer["Accounts System"]
+                            }
+                            else if (@jou.MCode == 11)
+                            {
+                                @localizer["Medical System"]
+                            }
+                            else if (@jou.MCode == 4)
+                            {
+                                @localizer["Treasury System"]
+                            }
                         </td>
-                        <td width="30%" class="text-center">
+                        @if(@jou.MCode !=1)
+                        {
+                            <td width="30%" class="text-center">
+                                <a asp-controller="AccTransMaster" asp-action="Edit_AccTransMaster" asp-route-ID="@jou.TransId" class="btn btn-sm btn-secondary mb-1 fs-6" style="width:150px;pointer-events:none;">
+                                <i class="bi bi-pencil"></i> @localizer["Edit"]
+                            </a>
+                                <form asp-action="Delete_AccTransMaster" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@jou.TransId" />
+                                    <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-secondary mb-1  fs-6" data-modal-target style="width:150px;pointer-events:none;">@localizer["Delete"]</button>
+                                    <div class="modal-container">
+                                        <div class="modal 4" id="modal">
+                                            <div class="modal-header fs-4">
+                                                <div class="title">@localizer["Confirm Delete"]</div>
+                                                <button type="button" onclick="closeModelListener(event)" data-close-button class="close-button">&times;</button>
+                                            </div>
+                                            <div class="modal-body fs-4">
+                                                @localizer["Are you sure you want to delete this item ?"]
+                                            </div>
+                                            <div class="modal-footer fs-4">
+                                                <button type="button" onclick="closeModelListener(event)" data-close-button class="btn btn-secondary">@localizer["No"]</button>
+                                                <button class="btn btn-danger">@localizer["Yes"]</button>
+                                            </div>
+                                        </div>
+                                        <div onclick="overlayListener(event)" id="overlay"></div>
+                                    </div>
+                                </form>
+                            </td>
+                        }
+                        else
+                        {
+                          <td width="30%" class="text-center">
                             <a asp-controller="AccTransMaster" asp-action="Edit_AccTransMaster" asp-route-ID="@jou.TransId" class="btn btn-sm btn-success mb-1 fs-6" style="width:150px">
                                 <i class="bi bi-pencil"></i> @localizer["Edit"]
                             </a>
@@ -113,7 +157,8 @@
                                     <div onclick="overlayListener(event)" id="overlay"></div>
                                 </div>
                             </form>
-                        </td>
+                        </td>    
+                        }
                     </tr>
                 }
             </tbody>
@@ -125,6 +170,7 @@
 
     <div class="accTransDtl-table-head d-flex justify-content-between align-items-center mt-4">
         <h2 class="header accTrans-Dtl">@localizer["Terms of Voucher"]</h2>
+        <input type="text" id="searchInput" class="form-control w-50" oninput="searchTerms(event)" placeholder="@localizer["Search ..."]">
 
         <a class="btn btn-sm btn-primary fs-6" style="width:150px">
             @localizer["Add Term"]
@@ -172,6 +218,66 @@
 
 
 <script>
+    function searchVoucher(e) {
+        let input = e.target;
+        let filterValue = input.value.toLowerCase();
+        let rows = document.querySelectorAll("#myTable1 tbody tr");
+
+        if (!filterValue) {
+            for (let i = 0, len = rows.length; i < len; i++) {
+                rows[i].style.display = "";
+            }
+            return;
+        }
+
+        // Loop through all table rows, hide those that do not match the search query
+        for (let i = 0, len1 = rows.length; i < len1; i++) {
+            let elements = rows[i].querySelectorAll("td");
+            for (let j = 0, len2 = elements.length; j < len2; j++) {
+                let td = elements[j];
+                if (td) {
+                    let tdValue = td.textContent || td.innerText;
+                    tdValue = tdValue.toLowerCase();
+                    if (tdValue.indexOf(filterValue) > -1) {
+                        rows[i].style.display = "";
+                        break;
+                    } else {
+                        rows[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    }
+    function searchTerms(e) {
+        let input = e.target;
+        let filterValue = input.value.toLowerCase();
+        let rows = document.querySelectorAll("#myTable tbody tr");
+
+        if (!filterValue) {
+            for (let i = 0, len = rows.length; i < len; i++) {
+                rows[i].style.display = "";
+            }
+            return;
+        }
+
+        // Loop through all table rows, hide those that do not match the search query
+        for (let i = 0, len1 = rows.length; i < len1; i++) {
+            let elements = rows[i].querySelectorAll("td");
+            for (let j = 0, len2 = elements.length; j < len2; j++) {
+                let td = elements[j];
+                if (td) {
+                    let tdValue = td.textContent || td.innerText;
+                    tdValue = tdValue.toLowerCase();
+                    if (tdValue.indexOf(filterValue) > -1) {
+                        rows[i].style.display = "";
+                        break;
+                    } else {
+                        rows[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    }
     @* Ajax for AccTransDtl *@
         function GetAccTransDtl(e, id, journalCode) {
             var acctransDtls = document.querySelector(".accTransDtl-table tbody");

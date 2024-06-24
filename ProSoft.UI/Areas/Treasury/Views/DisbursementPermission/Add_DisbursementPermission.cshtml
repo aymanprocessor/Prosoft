@@ -46,8 +46,8 @@
             <!------------------------------------------------------------------------------->
 
             <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
-                <div class="mb-3" style="width: 100% !important;">
-                    @* <label asp-for="Flag"></label> *@
+                <div class="d-flex align-items-center justify-content-between mb-3" style="width: 100% !important;">
+                    <label asp-for="Flag" style="width: 10% !important;"></label>
                     <select asp-for="Flag" class="form-control text-center">
                         <option value="1">@localizer["Posting of Invoices"]</option>
                         <option value="2">@localizer["Posting of Treasury"]</option>
@@ -56,15 +56,15 @@
                     <span asp-validation-for="Flag" class="text-danger"></span>
                 </div>
                 <div class="d-flex justify-content-center gap-3" style="width: 100% !important;">
-                    <div class="mb-3 " style="width: 60% !important;">
-                        @* <label asp-for="AccTransType"></label> *@
+                    <div class="d-flex align-items-center justify-content-between mb-3" style="width: 60% !important;">
+                        <label asp-for="AccTransType" style="width: 25% !important;"></label>
                         <select asp-for="AccTransType" asp-items="journals" class="form-control text-center">
                             <option value="">-- Choose --</option>
                         </select>
                         <span asp-validation-for="AccTransType" class="text-danger"></span>
                     </div>
-                    <div class="mb-3 " style="width: 40% !important;">
-                        @* <label asp-for="AccTransNo"></label> *@
+                    <div class="d-flex align-items-center justify-content-between mb-3" style="width: 40% !important;">
+                        <label asp-for="AccTransNo" style="width: 50% !important;"></label>
                         <input asp-for="AccTransNo" class="form-control" />
                         <span asp-validation-for="AccTransNo" class="text-danger"></span>
                     </div>

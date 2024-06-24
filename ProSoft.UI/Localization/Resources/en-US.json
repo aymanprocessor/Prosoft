@@ -488,11 +488,16 @@
   "Credit Value": "Credit Value",
   "Voucher": "Voucher",
   "kinship": "kinship",
-
-
-
-
-
+  "Add kinship": "Add kinship",
+  "Edit kinship": "Edit kinship",
+  "Doctors Appointments": "Doctors Appointments",
+  "Search Doctors by doctor code or name ...": "Search Doctors by doctor code or name ...",
+  "Add Appointments": "Add Appointments",
+  "Edit Appointment": "Edit Appointment",
+  "Main Safe Treasury": "Main Safe Treasury",
+  "Sub Safe Treasury": "Sub Safe Treasury",
+  "Voucher is Not balanced will delet all terms !": "Voucher is Not balanced  will delet all terms !",
+  "Search ...": "Search ...",
 
 
 
@@ -581,7 +586,7 @@
   "Add New Permission Name": "Add New Permission Name",
   "Joining Users With Transactions": "Joining Users With Transactions",
   "Transactions of User": "Transactions of User",
-  "Search users by useer code or name ...": "Search users by useer codeor name ...",
+  "Search users by user code or name ...": "Search users by user codeor name ...",
   "Permissions": "Permissions",
   "Add Transaction For User": "Add Transaction For User",
   "Transaction Type": "Transaction Type",

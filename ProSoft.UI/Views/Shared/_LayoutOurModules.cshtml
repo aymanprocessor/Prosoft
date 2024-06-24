@@ -81,6 +81,11 @@
                                                 </a>
                                             </li>
                                             <li class="nav-item has-submenu">
+                                                <a asp-area="Medical" asp-controller="DrTimeSheet" asp-action="Index" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                                    @localizer["Doctors Appointments"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
                                                 <a asp-area="Medical" asp-controller="MainClinic" asp-action="Index" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
                                                     @localizer["Department services"]
                                                 </a>
@@ -91,7 +96,7 @@
                                                 </a>
                                             </li>
                                             <li class="nav-item has-submenu">
-                                                <a asp-area="Medical" asp-controller=" kinship" asp-action="Index" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                                <a asp-area="Medical" asp-controller="kinship" asp-action="Index" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
                                                     @localizer["kinship"]
                                                 </a>
                                             </li>

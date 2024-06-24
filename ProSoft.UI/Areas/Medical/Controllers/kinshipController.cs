@@ -27,7 +27,7 @@ namespace ProSoft.UI.Areas.Medical.Controllers
             return View(gTablelDTOs);
         }
         // Get Add
-        public async Task<IActionResult> Add_CostCenterTreasury()
+        public async Task<IActionResult> Add_kinship()
         {
             return View();
         }
@@ -35,12 +35,12 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         // Post Add
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add_CostCenterTreasury(GTablelDTO gTablelDTO)
+        public async Task<IActionResult> Add_kinship(GTablelDTO gTablelDTO)
         {
             if (ModelState.IsValid)
             {
                 GTable gTable = _mapper.Map<GTable>(gTablelDTO);
-                gTable.Flag = 30;
+                gTable.Flag = 40;
                 await _ikinshipRepo.AddAsync(gTable);
                 await _ikinshipRepo.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -49,7 +49,7 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         }
 
         // Get Edit
-        public async Task<IActionResult> Edit_CostCenterTreasury(int id)
+        public async Task<IActionResult> Edit_kinship(int id)
         {
             GTable gTable = await _ikinshipRepo.GetByIdAsync(id);
             GTablelDTO gTablelDTO = _mapper.Map<GTablelDTO>(gTable);
@@ -59,7 +59,7 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         // Post Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit_CostCenterTreasury(int id, GTablelDTO gTablelDTO)
+        public async Task<IActionResult> Edit_kinship(int id, GTablelDTO gTablelDTO)
         {
             if (ModelState.IsValid)
             {
@@ -76,7 +76,7 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         // Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete_CostCenterTreasury(int id)
+        public async Task<IActionResult> Delete_kinship(int id)
         {
             GTable gTable = await _ikinshipRepo.GetByIdAsync(id);
 

@@ -37,6 +37,8 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
                      DpsType = (int)obj.DpsType,
                      DpsVal =(decimal)obj.DpsVal,
                      DepositDesc = obj.DepositDesc,
+                     JorKiedNo =obj.JorKiedNo,
+                     SafeDocNo = obj.SafeDocNo
                      //EinvType = (int)obj.EinvType,
                      //WinvItemsFlg = obj.WinvItemsFlg,
                  })

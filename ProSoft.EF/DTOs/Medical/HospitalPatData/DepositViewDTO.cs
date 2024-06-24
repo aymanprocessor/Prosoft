@@ -14,6 +14,9 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
         public decimal DpsVal { get; set; }
         public string DepositDesc { get; set; }
         public int? MasterId { get; set; }
+        public int? JorKiedNo { get; set; }
+        public int? SafeDocNo { get; set; }
+
 
 
 
