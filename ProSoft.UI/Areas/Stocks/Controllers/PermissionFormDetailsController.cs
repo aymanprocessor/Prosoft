@@ -22,11 +22,17 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             return Json(transDtlListDTO);
         }
 
+        public async Task<IActionResult> GetBarCode(int transMAsterID, int serial, int itemMaster)
+        {
+            var barCode = await _transDtlRepo.GetBarCodeAsync(transMAsterID, serial, itemMaster);
+            return Json(barCode);
+        }
+
         // For Showing Trans Price
         // Get Add
         public async Task<IActionResult> Add_TransDetailWithPrice(int id)
         {
-            TransDtlWithPriceDTO transDtlDTO = await _transDtlRepo.GetNewTransDtlWithPriceAsync();
+            TransDtlWithPriceDTO transDtlDTO = await _transDtlRepo.GetNewTransDtlWithPriceAsync(id);
             return View(transDtlDTO);
         }
 
@@ -76,7 +82,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         // Get Add
         public async Task<IActionResult> Add_TransDetail(int id)
         {
-            TransDtlDTO transDtlDTO = await _transDtlRepo.GetNewTransDtlAsync();
+            TransDtlDTO transDtlDTO = await _transDtlRepo.GetNewTransDtlAsync(id);
             return View(transDtlDTO);
         }
 
@@ -89,7 +95,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             {
                 transDtlDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
                 transDtlDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
-                transDtlDTO.TransMAsterID = id;
+                transDtlDTO.TransMasterID = id;
 
                 await _transDtlRepo.AddTransDtlAsync(transDtlDTO);
                 return RedirectToAction("Index", "PermissionForm");

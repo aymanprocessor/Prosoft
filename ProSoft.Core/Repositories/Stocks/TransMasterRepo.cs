@@ -258,7 +258,7 @@ namespace ProSoft.Core.Repositories.Stocks
 
             permissionFormDTO.EnableModify = userObj != null;
 
-            List<Stock> stocks = await _Context.Stocks.ToListAsync();
+            List<Stock> stocks = await _Context.Stocks.Where(obj => obj.Stkcod != permissionFormDTO.StockCode).ToListAsync();
             permissionFormDTO.Stocks = _mapper.Map<List<StockViewDTO>>(stocks);
 
             Stock stock = await _Context.Stocks.FindAsync((int)permissionFormDTO.StockCode);
@@ -298,7 +298,7 @@ namespace ProSoft.Core.Repositories.Stocks
 
             permissionFormDTO.EnableModify = userObj != null;
 
-            List<Stock> stocks = await _Context.Stocks.ToListAsync();
+            List<Stock> stocks = await _Context.Stocks.Where(obj => obj.Stkcod != stockID).ToListAsync();
             permissionFormDTO.Stocks = _mapper.Map<List<StockViewDTO>>(stocks);
 
             Stock stock = await _Context.Stocks.FindAsync(stockID);

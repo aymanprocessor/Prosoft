@@ -17,18 +17,21 @@
     <form method="post" asp-action="Add_TransDetail">
         <div class="border p-3 mt-4">
 
+            @* Hidden Inputs *@
+            <input asp-for="Serial" type="hidden" />
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
                 <div class="mb-3" style="width: 33%;">
                     <label asp-for="ItemMaster" class="text-center" style="width: 45%;"></label>
-                    <select asp-for="ItemMaster" asp-items="subItems" class="form-control text-center" style="width: 78%;">
+                    <select asp-for="ItemMaster" asp-items="subItems" class="form-control text-center" style="width: 78%;" onchange="getBarCode(event)">
                         <option value="">-- Choose --</option>
                     </select>
                     <span asp-validation-for="ItemMaster" class="text-danger"></span>
                 </div>
                 <div class="mb-3" style="width: 33%;">
-                    <label asp-for="ItmBarcode" class="text-center" style="width: 40%;"></label>
-                    <input asp-for="ItmBarcode" class="form-control" style="width: 72%;" />
+                    <label asp-for="ItmBarcode" for="" class="text-center" style="width: 40%;"></label>
+                    <input asp-for="ItmBarcode" class="form-control" style="width: 72%; pointer-events: none; background-color: #e9ecef" />
                     <span asp-validation-for="ItmBarcode" class="text-danger"></span>
                 </div>
                 <div class="mb-3" style="width: 33%;">
@@ -73,3 +76,20 @@
         </div>
     </form>
 </div>
+
+@section Scripts {
+    <script>
+        function getBarCode(e) {
+            let itemMaster = e.target.value;
+
+            if (itemMaster) {
+                $.ajax({
+                    url: `/Stocks/PermissionFormDetails/GetBarCode?transMAsterID=${@Model.TransMasterID}&serial=${@Model.Serial}&itemMaster=${itemMaster}`,
+                    success: function (result) {
+                        document.getElementById("ItmBarcode").value = result;
+                    }
+                });
+            }
+        }
+    </script>
+}

@@ -19,7 +19,7 @@
 
             @* Hidden Inputs *@
             <input asp-for="Serial" type="hidden" />
-            <input asp-for="TransMAsterID" type="hidden" />
+            <input asp-for="TransMasterID" type="hidden" />
             <input asp-for="TransDtlId" type="hidden" />
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -31,13 +31,13 @@
                     <span asp-validation-for="ItemMaster" class="text-danger"></span>
                 </div>
                 <div class="mb-3" style="width: 33%;">
-                    <label asp-for="ItmBarcode" class="text-center" style="width: 40%;"></label>
-                    <input asp-for="ItmBarcode" class="form-control" style="width: 72%;" />
+                    <label asp-for="ItmBarcode" for="" class="text-center" style="width: 40%;"></label>
+                    <input asp-for="ItmBarcode" class="form-control" style="width: 72%; pointer-events: none; background-color: #e9ecef" />
                     <span asp-validation-for="ItmBarcode" class="text-danger"></span>
                 </div>
                 <div class="mb-3" style="width: 33%;">
                     <label asp-for="UnitQty" class="text-center" style="width: 80%;"></label>
-                    <input asp-for="UnitQty" class="form-control" style="width: 210px;" />
+                    <input asp-for="UnitQty" type="number" class="form-control" style="width: 210px;" />
                     <span asp-validation-for="UnitQty" class="text-danger"></span>
                 </div>
             </div>

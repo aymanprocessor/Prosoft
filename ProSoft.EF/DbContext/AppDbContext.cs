@@ -120,6 +120,7 @@ namespace ProSoft.EF.DbContext
         public DbSet<TransMaster> TransMasters { get; set; }
         public DbSet<SalesmenDatum> SalesmenData { get; set; }
         public DbSet<TransDtl> TransDtls { get; set; }
+        public DbSet<ItemBatch> ItemBatches { get; set; }
 
         ////////////////////
         // Accounts //
