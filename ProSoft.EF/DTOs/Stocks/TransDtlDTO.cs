@@ -12,7 +12,7 @@ namespace ProSoft.EF.DTOs.Stocks
     public class TransDtlDTO
     {
         public int TransDtlId { get; set; }
-        public int TransMAsterID { get; set; }
+        public int TransMasterID { get; set; }
         public long? Serial { get; set; }
 
         [DisplayName("The Item")]

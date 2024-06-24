@@ -11,13 +11,14 @@ namespace ProSoft.EF.IRepositories.Stocks
     public interface ITransDtlRepo: IRepository<TransDtl, int>
     {
         Task<List<TransDtlWithPriceDTO>> GetPermissionDetailsAsync(int transMasterID);
+        Task<string> GetBarCodeAsync(int transMAsterID, int serial, int itemMaster);
         // For Showing Trans Price
-        Task<TransDtlWithPriceDTO> GetNewTransDtlWithPriceAsync();
+        Task<TransDtlWithPriceDTO> GetNewTransDtlWithPriceAsync(int transMAsterID);
         Task<TransDtlWithPriceDTO> GetTransDtlWithPriceByIdAsync(int transDtlID);
         Task AddTransDtlWithPriceAsync(TransDtlWithPriceDTO transDtlDTO);
         Task UpdateTransDtlWithPriceAsync(int id, TransDtlWithPriceDTO transDtlDTO);
         // For Not Showing Trans Price
-        Task<TransDtlDTO> GetNewTransDtlAsync();
+        Task<TransDtlDTO> GetNewTransDtlAsync(int transMAsterID);
         Task<TransDtlDTO> GetTransDtlByIdAsync(int transDtlID);
         Task AddTransDtlAsync(TransDtlDTO transDtlDTO);
         Task UpdateTransDtlAsync(int id, TransDtlDTO transDtlDTO);
