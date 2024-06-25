@@ -170,7 +170,7 @@
             <!------------------------------------------------------------------------------->
 
             <div class="parent d-flex justify-content-md-center gap-2">
-                <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add"]</button>
+                <button type="submit" onclick="checkForTransDetails()" class="btn btn-primary" style="width:150px">@localizer["Add"]</button>
                 <a asp-controller="PermissionForm" asp-action="Index" class="btn btn-secondary" style="width:150px">
                     @localizer["Cancel"]
                 </a>
@@ -187,6 +187,10 @@
                 target.value = 1;
             else
                 target.value = 0;
+        }
+
+        function checkForTransDetails() {
+            let target = e.target;
         }
     </script>
 }

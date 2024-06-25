@@ -78,7 +78,14 @@
             <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
                 <div class="mb-3" style="width: 33%">
                     <label asp-for="TaxVal" class="text-center" style="width: 45%;"></label>
-                    <input asp-for="TaxVal" type="number" class="form-control" style="width: 78%;" />
+                    @if (Model.ItmHaveTax != 0)
+                    {
+                    <input asp-for="TaxVal" type="number" class="form-control" style="width: 78%;" onchange="setTotal()" />
+                    }
+                    else
+                    {
+                    <input asp-for="TaxVal" type="number" disabled class="form-control" style="width: 78%;" onchange="setTotal()" />
+                    }
                     <span asp-validation-for="TaxVal" class="text-danger"></span>
                 </div>
                 <div class="mb-3" style="width: 33%;">
@@ -107,19 +114,35 @@
 
 @section Scripts {
     <script>
+        function enableTax(ifUnderTax) {
+            let tax = document.getElementById("TaxVal");
+            if (ifUnderTax)
+                tax.removeAttribute("disabled");
+            else
+                tax.setAttribute("disabled", '');
+        }
+
         function changeValue(e) {
             let target = e.target;
             if (target.checked)
                 target.value = 1;
             else
                 target.value = 0;
+            enableTax(target.checked);
+            setTotal();
         }
 
         function setTotal() {
             let quantity = document.getElementById("UnitQty");
             let price = document.getElementById("Price");
             let total = document.getElementById("ItemVal");
+            let underTax = document.getElementById("ItmHaveTax");
 
+            if (underTax.checked) {
+                let tax = document.getElementById("TaxVal");
+                total.value = quantity.value * price.value + parseFloat(tax.value);
+                return;
+            }
             total.value = quantity.value * price.value;
         }
     </script>

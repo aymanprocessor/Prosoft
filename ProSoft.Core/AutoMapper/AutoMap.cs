@@ -92,6 +92,7 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<DepositViewDTO, Deposit>().ReverseMap();
             CreateMap<DepositEditAddDTO, Deposit>().ReverseMap();
             CreateMap<DrTimeSheetDTO, Drtimsheet>().ReverseMap();
+            CreateMap<UsersSectionDTO, UsersSection>().ReverseMap();
             ////////// Stocks ////////////////////
             CreateMap<KindStore, KindStoreDTO>().ReverseMap();
             CreateMap<Branch, BranchDTO>().ReverseMap();
@@ -117,6 +118,7 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<StockEmp, StockEmpEditAddDTO>().ReverseMap();
             CreateMap<TransMaster, TransMasterViewDTO>().ReverseMap();
             CreateMap<TransMaster, TransMasterEditAddDTO>().ReverseMap();
+            CreateMap<TransMaster, TransMaster>().ReverseMap();
             CreateMap<TransDtl, TransDtlDTO>().ReverseMap();
             CreateMap<TransDtl, TransDtlWithPriceDTO>().ReverseMap();
             CreateMap<TransDtl, TransMaster>().ReverseMap();
