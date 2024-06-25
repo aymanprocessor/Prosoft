@@ -365,6 +365,15 @@ namespace ProSoft.Core.Repositories.Stocks
             var permissionForm = _mapper.Map<TransMaster>(permissionFormDTO);
             permissionForm.EntryDate = DateTime.Now;
 
+            //if It Is a Convert Permission
+            if (permissionForm.TransType == 13)
+            {
+                var ReceivePermissionForm = _mapper.Map<TransMaster>(permissionFormDTO);
+                ReceivePermissionForm.TransType = 23;
+                await AddAsync(ReceivePermissionForm);
+                await SaveChangesAsync();
+            }
+
             await AddAsync(permissionForm);
             await SaveChangesAsync();
             return permissionForm;

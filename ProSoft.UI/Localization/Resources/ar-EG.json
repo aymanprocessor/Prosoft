@@ -505,6 +505,29 @@
   "Sub Safe Treasury": "الخزينة الفرعية",
   "Voucher is Not balanced will delet all terms !": "القيد غير متزن وسيتم حذف جميع البنود !",
   "Search ...": "ابحث ...",
+  "Currency Rate": "معدل العملة",
+  "Add Appointment": "اضافة معاد",
+  "Add Appointment To Dr : ": "اضافة معاد للطبيب :",
+  "Saturday": "السبت",
+  "Sunday": "الاحد",
+  "Monday": "الاثنين",
+  "Tuesday": "الثلاثاء",
+  "Wednesday": "الاربعاء",
+  "Thursday": "الخميس",
+  "Friday": "الجمعة",
+  "Morning": "صباحي",
+  "Evening": "مسائي",
+  "Night": "ليلي",
+  "Edit Appointment To Dr : ": "تعديل معاد للطبيب :",
+  "Joining Users With Medical Services": "ربط المستخدم بالخدمات الطبية",
+  "Medical Services For User": "الخدمات الطبية للمستخدم",
+  "Default": "افتراضي",
+
+
+
+
+
+
 
 
 
@@ -722,5 +745,7 @@
   "The Quantity": "الكمية",
   "The Barcode": "الباركود",
   "Serial_M": "م",
-  "Item Name": "اسم الصنف"
+  "Item Name": "اسم الصنف",
+  "Edit Item": "تعديل صنف",
+  "Item Status": "حالة الصنف",
 }

@@ -138,11 +138,7 @@ namespace ProSoft.Core.Repositories.Stocks
                 .FirstOrDefaultAsync(obj => obj.TransMAsterID == transDtlDTO.TransMasterID);
 
             _mapper.Map(transDtlDTO, transDtl);
-
-
             _mapper.Map(transMaster, transDtl);
-
-            transDtl.PostPos = 1;
 
             await UpdateAsync(transDtl);
             await SaveChangesAsync();
@@ -193,11 +189,16 @@ namespace ProSoft.Core.Repositories.Stocks
                 .FirstOrDefaultAsync(obj => obj.TransMAsterID == transDtlDTO.TransMasterID);
 
             var transDtl = _mapper.Map<TransDtl>(transDtlDTO);
-            _mapper.Map(transMaster, transDtl);
-
+            transDtl.StockCode = 1;
+            transDtl.SubCode = 2;
+            transDtl.ItemQty = 1;
+            transDtl.Price = 0;
+            transDtl.ItemUnitQty = 0;
+            transDtl.Price2 = 0;
+            transDtl.ItemVal2 = 0;
+            transDtl.Flag1 = transDtl.Flag1 != null ? transDtl.Flag1 : 1;
             transDtl.ItemMaster2 = 0;
-            //List<TransDtl> transDtlList = await _DbSet.Where(obj => obj.TransMAsterID == transDtl.TransMAsterID).ToListAsync();
-            //transDtl.Serial = transDtlList.Count != 0 ? transDtlList.Max(obj => obj.Serial) + 1 : 1;
+            _mapper.Map(transMaster, transDtl);
 
             await AddAsync(transDtl);
             await SaveChangesAsync();
