@@ -29,6 +29,9 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
                     ExPeriod = obj.ExPeriod,
                     Timfrom = obj.Timfrom,
                     Timto = obj.Timto,
+                    DrId = obj.DrId,
+                    DrTimId = (int)obj.DrTimId,
+                    BranchId = obj.BranchId,
                 })
                 .ToListAsync();
             return drtimsheetDTOs;

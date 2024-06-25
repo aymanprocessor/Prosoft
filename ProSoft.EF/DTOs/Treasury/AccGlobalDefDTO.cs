@@ -24,5 +24,8 @@ namespace ProSoft.EF.DTOs.Treasury
         [DisplayName("Currency Symbol")]
         public string? Symbol { get; set; }
 
+        [DisplayName("Currency Rate")]
+        [Required(ErrorMessage = "The field is required")]
+        public decimal? CurRate { get; set; }
     }
 }

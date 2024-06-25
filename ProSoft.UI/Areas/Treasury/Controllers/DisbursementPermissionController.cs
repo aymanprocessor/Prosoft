@@ -52,14 +52,14 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
         private string ConvertNumberToArabicWords(decimal number)
         {
             long wholePart = (long)number;
-            int fractionalPart = (int)((number - wholePart) * 100); // Adjust this if you need more precision
+            int fractionalPart = (int)((number - wholePart) * 100); // Consider only two decimal places
 
             string wholePartInWords = wholePart.ToWords(new CultureInfo("ar"));
             string fractionalPartInWords = fractionalPart.ToWords(new CultureInfo("ar"));
 
             if (fractionalPart > 0)
             {
-                return $"{wholePartInWords} و {fractionalPartInWords} جنيها فقط";
+                return $"{wholePartInWords} جنيها و {fractionalPartInWords} قرشاً فقط";
             }
             else
             {
@@ -79,10 +79,12 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
         {
             // ViewBag.AccSafeCashID = await _accSafeCashRepo.GetNewIdAsync();
             ViewBag.SerialID = await _accSafeCashRepo.GetNewSerialAsync(docType, safeCode, fYear);
-            AccSafeCashEditAddDTO accSafeCashDTO = await _accSafeCashRepo.GetEmptyAccSafeCashAsync();
+            var userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
+
+            AccSafeCashEditAddDTO accSafeCashDTO = await _accSafeCashRepo.GetEmptyAccSafeCashAsync(userCode);
             ViewBag.docType = docType;
             ViewBag.fYear = fYear;
-            ViewBag.userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
+            ViewBag.userCode = userCode;
             ViewBag.branchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
 
 
@@ -104,9 +106,10 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
         //Get Edit
         public async Task<IActionResult> Edit_DisbursementPermission(int id)
         {
-            ViewBag.userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
+            var userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
+            ViewBag.userCode = userCode;
             ViewBag.branchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
-            AccSafeCashEditAddDTO accSafeCashDTO = await _accSafeCashRepo.GetAccSafeCashByIdAsync(id);
+            AccSafeCashEditAddDTO accSafeCashDTO = await _accSafeCashRepo.GetAccSafeCashByIdAsync(id, userCode);
             return View(accSafeCashDTO);
         }
 

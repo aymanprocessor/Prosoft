@@ -84,13 +84,53 @@ namespace ProSoft.Core.Repositories.Treasury
             return subAccCodesDTO;
         }
 
-        public async Task<AccSafeCheckEditAddDTO> GetEmptyAccSafeCeckAsync()
+        public async Task<AccSafeCheckEditAddDTO> GetEmptyAccSafeCeckAsync(int userCode)
         {
             AccSafeCheckEditAddDTO accSafeCeckDTO = new AccSafeCheckEditAddDTO();
 
-            List<JournalType> journalTypes = await _Context.JournalTypes.ToListAsync();
+            List<JournalType> journalTypes = new List<JournalType>();
+            List<UserJournalType> userJournalTypes = await _Context.UserJournalTypes.Where(obj => obj.UserCode == userCode).ToListAsync();
+            List<JournalType> allJournalTypes = await _Context.JournalTypes.ToListAsync();
+            foreach (var jou in allJournalTypes)
+            {
+                var isExisted = false;
+                foreach (var user in userJournalTypes)
+                {
+                    if (jou.JournalCode == user.JournalCode)
+                    {
+                        isExisted = true;
+                        break;
+                    }
+                    else
+                        isExisted = false;
+                }
+                if (isExisted)
+                {
+                    journalTypes.Add(jou);
+                }
+            }
+            List<SafeName> safeNames = new List<SafeName>();
+            List<UserCashNo> userCashNos = await _Context.userCashNos.Where(obj => obj.UserCode == userCode).ToListAsync();
+            List<SafeName> allsafeNames = await _Context.SafeNames.ToListAsync();
+            foreach (var jou in allsafeNames)
+            {
+                var isExisted = false;
+                foreach (var user in userCashNos)
+                {
+                    if (jou.SafeCode == user.SafeCode)
+                    {
+                        isExisted = true;
+                        break;
+                    }
+                    else
+                        isExisted = false;
+                }
+                if (isExisted)
+                {
+                    safeNames.Add(jou);
+                }
+            }
             List<CostCenter> costCenters = await _Context.CostCenters.ToListAsync();
-            List<SafeName> safeNames = await _Context.SafeNames.ToListAsync();
             List<AccGlobalDef> accGlobalDefs = await _Context.accGlobalDefs.ToListAsync();
             List<AccMainCode> accMainCodes = await _Context.AccMainCodes.ToListAsync();
             List<AccSubCode> accSubCodes = await _Context.AccSubCodes.ToListAsync();
@@ -140,15 +180,55 @@ namespace ProSoft.Core.Repositories.Treasury
             await _Context.SaveChangesAsync();
         }
 
-        public async Task<AccSafeCheckEditAddDTO> GetAccSafeCheckByIdAsync(int id)
+        public async Task<AccSafeCheckEditAddDTO> GetAccSafeCheckByIdAsync(int id, int userCode)
         {
             AccSafeCheck accSafeCheck = await _Context.AccSafeChecks.FirstOrDefaultAsync(obj => obj.SafeCeckId == id);
 
             AccSafeCheckEditAddDTO accSafeCheckDTO = _mapper.Map<AccSafeCheckEditAddDTO>(accSafeCheck);
 
-            List<JournalType> journalTypes = await _Context.JournalTypes.ToListAsync();
+            List<JournalType> journalTypes = new List<JournalType>();
+            List<UserJournalType> userJournalTypes = await _Context.UserJournalTypes.Where(obj => obj.UserCode == userCode).ToListAsync();
+            List<JournalType> allJournalTypes = await _Context.JournalTypes.ToListAsync();
+            foreach (var jou in allJournalTypes)
+            {
+                var isExisted = false;
+                foreach (var user in userJournalTypes)
+                {
+                    if (jou.JournalCode == user.JournalCode)
+                    {
+                        isExisted = true;
+                        break;
+                    }
+                    else
+                        isExisted = false;
+                }
+                if (isExisted)
+                {
+                    journalTypes.Add(jou);
+                }
+            }
+            List<SafeName> safeNames = new List<SafeName>();
+            List<UserCashNo> userCashNos = await _Context.userCashNos.Where(obj => obj.UserCode == userCode).ToListAsync();
+            List<SafeName> allsafeNames = await _Context.SafeNames.ToListAsync();
+            foreach (var jou in allsafeNames)
+            {
+                var isExisted = false;
+                foreach (var user in userCashNos)
+                {
+                    if (jou.SafeCode == user.SafeCode)
+                    {
+                        isExisted = true;
+                        break;
+                    }
+                    else
+                        isExisted = false;
+                }
+                if (isExisted)
+                {
+                    safeNames.Add(jou);
+                }
+            }
             List<CostCenter> costCenters = await _Context.CostCenters.ToListAsync();
-            List<SafeName> safeNames = await _Context.SafeNames.ToListAsync();
             List<AccGlobalDef> accGlobalDefs = await _Context.accGlobalDefs.ToListAsync();
             List<AccMainCode> accMainCodes = await _Context.AccMainCodes.ToListAsync();
             List<AccSubCode> accSubCodes = await _Context.AccSubCodes.Where(obj => obj.MainCode == accSafeCheck.MainCode).ToListAsync();

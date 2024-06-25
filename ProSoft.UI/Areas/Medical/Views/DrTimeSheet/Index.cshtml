@@ -134,7 +134,7 @@
             let userName = clickedTarget.querySelector(".user-name").innerText;
             transactionsHeader.innerHTML = `@localizer["Doctor Appointments"] : ${userName}`;
 
-            transAddLink.setAttribute("href", `/Treasury/UserCashNo/Add_UserCashNo/${DrId}`);
+            transAddLink.setAttribute("href", `/Medical/DrTimeSheet/Add_DrTimeSheet/${DrId}`);
 
             drAppointments.innerHTML = "";  // Empty the table
 
@@ -144,20 +144,54 @@
                   //  console.log(result);
                     let index = 0;
                     for (let item of result) {
+                        console.log(result);
                         index++;
+                        //convert to date not time// Format the date as needed (e.g., "YYYY-MM-DD")
+                        const dateFrom = new Date(item.timfrom);
+                        const optionsFrom = { hour: '2-digit', minute: '2-digit', hour12: true };
+                        const Timfrom = dateFrom.toLocaleTimeString('en-US', optionsFrom);
+                        ////
+                        const dateTo = new Date(item.timto);
+                        const optionsTo = { hour: '2-digit', minute: '2-digit', hour12: true };
+                        const Timto = dateTo.toLocaleTimeString('en-US', optionsTo);
+                        // 
+                        let exPeriod;
+                        let dayNumber;
+                        if(item.exPeriod == 1)
+                        {exPeriod = "@localizer["Morning"]"; }
+                        else if(item.exPeriod == 2)
+                        {exPeriod = "@localizer["Evening"]"; }
+                         else if(item.exPeriod == 3)
+                        {exPeriod = "@localizer["Night"]"; }
+                        ///
+                         if(item.dayNumber == 1)
+                        {dayNumber = "@localizer["Sunday"]"; }
+                        else if(item.dayNumber == 2)
+                        {dayNumber = "@localizer["Monday"]"; }
+                         else if(item.dayNumber == 3)
+                        {dayNumber = "@localizer["Tuesday"]"; }
+                        else if(item.dayNumber == 4)
+                        {dayNumber = "@localizer["Wednesday"]"; }
+                         else if(item.dayNumber == 5)
+                        {dayNumber = "@localizer["Thursday"]"; }
+                        else if(item.dayNumber == 6)
+                        {dayNumber = "@localizer["Friday"]"; }
+                         else if(item.dayNumber == 7)
+                        {dayNumber = "@localizer["Thursday"]"; }
+
                         const drAppointment = document.createElement("tr");
                         drAppointment.innerHTML =
                             `
                                 <td class="align-middle text-center">${index}</td>
-                                <td class="align-middle text-center">${item.dayNumber}</td>
-                                <td class="align-middle text-center">${item.exPeriod}</td>
-                                <td class="align-middle text-center">${item.timfrom}</td>
-                                <td class="align-middle text-center">${item.timto}</td>
+                                <td class="align-middle text-center">${dayNumber}</td>
+                                <td class="align-middle text-center">${exPeriod}</td>
+                                <td class="align-middle text-center">${Timfrom}</td>
+                                <td class="align-middle text-center">${Timto}</td>
                                 <td class="text-center align-middle" style="width: 325px;">
-                                    <a href="/Treasury/UserCashNo/Edit_UserCashNo/${item.userCashID}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
-                                    <form action="/Treasury/UserCashNo/Delete_UserCashNo" method="post" class="d-inline">
-                                 @Html.AntiForgeryToken()
-                                            <input type="hidden" name="id" value="${item.userCashID}" />
+                                 <a href="/Medical/DrTimeSheet/Edit_DrTimeSheet/${item.drTimId}?drId=${DrId}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
+                                  <form action="/Medical/DrTimeSheet/Delete_DrTimeSheet" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="${item.drTimId}" />
                                         <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width:150px">@localizer["Delete"]</button>
                                         <div class="modal-container">
                                             <div class="modal 4" id="modal">

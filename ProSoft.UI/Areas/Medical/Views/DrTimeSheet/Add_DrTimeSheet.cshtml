@@ -1,0 +1,88 @@
+﻿@model DrTimeSheetDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Add Appointment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@inject IViewLocalizer localizer
+@* <style>
+    .image {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.5;
+        z-index: -1;
+    }
+</style> *@
+<div class="container pt-2" style="min-height:100vh;">
+    @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
+
+    <h1 class="mt-4">@localizer["Add Appointment To Dr : "] @ViewBag.DrName </h1>
+    <form method="post" asp-action="Add_DrTimeSheet" id="myForm">
+        <div class="border p-3 mt-4">
+            @* hidden *@
+            <input asp-for="DrId" hidden value="@ViewBag.DrId" />
+
+            <div asp-validation-summary="ModelOnly"></div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3 ">
+                    <label asp-for="DayNumber"></label>
+                    <select asp-for="DayNumber" class="form-control text-center">
+                        <option value="1">@localizer["Sunday"]</option>
+                        <option value="2">@localizer["Monday"]</option>
+                        <option value="3">@localizer["Tuesday"]</option>
+                        <option value="4">@localizer["Wednesday"]</option>
+                        <option value="5">@localizer["Thursday"]</option>
+                        <option value="6">@localizer["Friday"]</option>
+                        <option value="7">@localizer["Saturday"]</option>
+                    </select>
+                    <span asp-validation-for="DayNumber" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="ExPeriod"></label>
+                    <select asp-for="ExPeriod" class="form-control text-center">
+                        <option value="1">@localizer["Morning"]</option>
+                        <option value="2">@localizer["Evening"]</option>
+                        <option value="3">@localizer["Night"]</option>
+                    </select>
+                    <span asp-validation-for="ExPeriod" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3 ">
+                    <label asp-for="Timfrom"></label>
+                    <input asp-for="Timfrom" type="time" class="form-control" />
+                    <span asp-validation-for="Timfrom" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="Timto"></label>
+                    <input asp-for="Timto" type="time" class="form-control" />
+                    <span asp-validation-for="Timto" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex justify-content-md-center gap-2 ">
+                <button type="submit" class="btn btn-primary" style="width:150px">
+                    @localizer["Add Appointment"]
+                </button>
+                <a asp-controller="DrTimeSheet" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>

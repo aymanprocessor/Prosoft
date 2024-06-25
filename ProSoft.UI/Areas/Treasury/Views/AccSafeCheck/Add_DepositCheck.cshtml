@@ -57,7 +57,7 @@
                     <div class="mb-3 " style="width: 60% !important;">
                         @* <label asp-for="AccTransType"></label> *@
                         <select asp-for="AccTransType" asp-items="journals" class="form-control text-center">
-                            <option value="">-- Choose --</option>
+
                         </select>
                         <span asp-validation-for="AccTransType" class="text-danger"></span>
                     </div>
@@ -105,7 +105,6 @@
                     <div class="mb-3 " style="width: 100% !important;">
                         <label asp-for="SafeCode"></label>
                         <select asp-for="SafeCode" asp-items="safeNames" class="form-control text-center">
-                            <option value="">-- Choose --</option>
                         </select>
                         <span asp-validation-for="SafeCode" class="text-danger"></span>
                     </div>
