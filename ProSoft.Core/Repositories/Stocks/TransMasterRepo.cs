@@ -27,12 +27,10 @@ namespace ProSoft.Core.Repositories.Stocks
     public class TransMasterRepo : Repository<TransMaster, int>, ITransMasterRepo
     {
         private readonly IMapper _mapper;
-        private readonly IUserTransRepo _userTransRepo;
         public TransMasterRepo(AppDbContext Context, IMapper mapper,
             IUserTransRepo userTransRepo) : base(Context)
         {
             _mapper = mapper;
-            _userTransRepo = userTransRepo;
         }
 
         public async Task<TransMasterEditAddDTO> GetPermissionFormByIdAsync(int transMasterID)
@@ -110,6 +108,20 @@ namespace ProSoft.Core.Repositories.Stocks
                 permissionsDTO.Add(permissionDTO);
             }
             return permissionsDTO;
+        }
+
+        public async Task<bool> CheckForDetailsAsync(int transMAsterID)
+        {
+            List<TransDtl> transDetails = await _Context.TransDtls
+                .Where(obj => obj.TransMAsterID == transMAsterID).ToListAsync();
+            return transDetails.Count != 0;
+        }
+
+        public async Task ApprovePermissionAsync(int transMAsterID)
+        {
+            TransMaster transMaster = await GetByIdAsync(transMAsterID);
+            transMaster.Flag3 = "2";
+            await SaveChangesAsync();
         }
 
         public async Task<TransMasterViewDTO> GetForViewAsync(TransMaster permissionForm)

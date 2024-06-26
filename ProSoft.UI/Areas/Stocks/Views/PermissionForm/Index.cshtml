@@ -69,7 +69,7 @@
             <tbody>
                 @if(Model != null)
                 {
-                <tr class="align-middle text-center">
+                <tr onclick="GetPermissionDetails(event, @Model.TransMAsterID, @Model.ShowTransPrice);" class="align-middle text-center" style="cursor: pointer;">
                     <td>@Model.DocNo</td>
                     <td>@Model.DocDate</td>
                     <td>@Model.StockName</td>
@@ -80,11 +80,12 @@
                     <td>@Model.StockName2</td>
                     <td>@Model.SupInvDate</td>
                     <td style="width: 325px;">
+                        <a onclick="approvePermission(event, @Model.TransMAsterID)" class="btn btn-sm btn-primary mb-1 fs-6" style="width: 150px">@localizer["Approve"]</a>
                         @switch (Model.TransType)
                         {
                             case 4:
                             case 13:
-                                    <a href="/Stocks/PermissionForm/Edit_DisburseOrConvertForm/@Model.TransMAsterID" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
+                                <a href="/Stocks/PermissionForm/Edit_DisburseOrConvertForm/@Model.TransMAsterID" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
                                 break;
                             case 12:
                                 <a href="/Stocks/PermissionForm/Edit_SalesInvoice/@Model.TransMAsterID" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
@@ -226,7 +227,6 @@
                     linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_ReturnPermission/${stock.value}?transType=${permission.value}`);
                     break;
                 case "23":
-                    // linkButton.setAttribute("href", `/Stocks/PermissionForm/Add_StockReceivePermission/${stock.value}?transType=${permission.value}`);
                     linkButton.removeAttribute("href");
                     break;
                 default:
@@ -247,6 +247,40 @@
                         permissions.innerHTML +=
                             `<option value="${item.uniqueType}">${item.gDesc}</option>`;
                     }
+                }
+            });
+        }
+
+        function approvePermission(e, transMAsterID) {
+            $.ajax({
+                url: `/Stocks/PermissionForm/ApprovePermission/${transMAsterID}`,
+                success: function (result) {
+                    if (result == false) {
+                        let button = e.target;
+                        let myAlert = document.createElement("div");
+                        myAlert.innerHTML =
+                            `
+                        <div class="modal-container">
+                            <div class="modal 4" id="modal">
+                                <div class="modal-header fs-4">
+                                    <div class="title">@localizer["Warning"] !</div>
+                                    <button type="button" onclick="closeAlert(event)" data-close-button class="close-button">&times;</button>
+                                </div>
+                                <div class="modal-body fs-4">
+                                    @localizer["You can not approve this permission with no items."]
+                                </div>
+                                <div class="modal-footer fs-4">
+                                    <button type="button" onclick="closeAlert(event)" data-close-button class="btn btn-primary">@localizer["Ok"]</button>
+                                </div>
+                            </div>
+                            <div onclick="closeOverlay(event)" id="overlay"></div>
+                        </div>
+                        `;
+                        button.insertAdjacentHTML("afterend", myAlert.innerHTML);
+                        openAlert(e);
+                    }
+                    else
+                        window.location.href = "/Stocks/PermissionForm/Index";
                 }
             });
         }
@@ -326,6 +360,7 @@
                             <td class="align-middle text-center">${item.stockName2}</td>
                             <td class="align-middle text-center">${supInvDate}</td>
                             <td class="text-center align-middle" style="width: 325px;">
+                                <a onclick="approvePermission(event, ${item.transMAsterID})" class="btn btn-sm btn-primary mb-1 fs-6" style="width: 150px">@localizer["Approve"]</a>
                                 <a href="/Stocks/PermissionForm/${actions[0]}/${item.transMAsterID}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
                                 <form action="/Stocks/PermissionForm/Delete_PermissionForm" method="post" class="d-inline">
                                         @Html.AntiForgeryToken()

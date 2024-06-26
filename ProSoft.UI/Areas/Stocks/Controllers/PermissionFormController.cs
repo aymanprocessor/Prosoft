@@ -53,6 +53,15 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             return Json(permissionsFormsDTO);
         }
 
+        public async Task<IActionResult> ApprovePermission(int id)
+        {
+            bool ifHasDetails = await _transMasterRepo.CheckForDetailsAsync(id);
+            if (ifHasDetails)
+                await _transMasterRepo.ApprovePermissionAsync(id);
+
+            return Json(ifHasDetails);
+        }
+
         //////////////////////////////////////////////////
         // Permission Form
         // Get Add

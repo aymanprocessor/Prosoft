@@ -30,6 +30,7 @@
             <input asp-for="DocNo" type="hidden" />
             <input asp-for="StockCode" type="hidden" />
             <input asp-for="TransType" type="hidden" />
+            <input asp-for="Flag3" type="hidden" value="1" />
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
@@ -67,19 +68,26 @@
                     <label asp-for="StockName" style="width: 20%;">@localizer["From Stock"]</label>
                     <input asp-for="StockName" class="form-control" style="width: 72%;" disabled />
                 </div>
-                <div class="mb-3" style="width: 35%;">
+                <div class="mb-3" style="width: 35%">
+                    <label asp-for="StockCode2" style="width: 32%;"></label>
+                    <select asp-for="StockCode2" asp-items="stocks" class="form-control text-center" style="width: 78%;">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="StockCode2" class="text-danger"></span>
+                </div>
+@*                 <div class="mb-3" style="width: 35%;">
                     <label asp-for="Flag3" style="width: 32%;"></label>
                     <select asp-for="Flag3" class="form-control text-center" style="width: 78%;">
                         <option value="1">@localizer["No"]</option>
                         <option value="2">@localizer["Yes"]</option>
                     </select>
                     <span asp-validation-for="Flag3" class="text-danger"></span>
-                </div>
+                </div> *@
             </div>
 
             <!------------------------------------------------------------------------------->
 
-            <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
+@*             <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
                 <div class="mb-3" style="width: 30%">
                     <label asp-for="StockCode2" style="width: 125px;"></label>
                     <select asp-for="StockCode2" asp-items="stocks" class="form-control text-center" style="width: 210px;">
@@ -87,7 +95,7 @@
                     </select>
                     <span asp-validation-for="StockCode2" class="text-danger"></span>
                 </div>
-            </div>
+            </div> *@
 
             <!------------------------------------------------------------------------------->
 

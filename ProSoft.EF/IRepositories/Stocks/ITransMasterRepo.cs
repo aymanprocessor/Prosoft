@@ -16,6 +16,8 @@ namespace ProSoft.EF.IRepositories.Stocks
         Task<List<StockViewDTO>> GetActiveStocksForUserAsync(int userCode);
         Task<List<PermissionDefViewDTO>> GetUserPermissionsForStockAsync(int userCode, int stockID);
         Task<List<TransMasterViewDTO>> GetPermissionsFormsAsync(int stockID, int transType);
+        Task<bool> CheckForDetailsAsync(int transMAsterID);
+        Task ApprovePermissionAsync(int transMAsterID);
         Task<TransMasterViewDTO> GetForViewAsync(TransMaster permissionForm);
         // Add Permission Form
         Task<TransMasterEditAddDTO> GetNewTransMasterAsync(int stockID, int userCode, int uniqueType);
