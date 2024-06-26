@@ -35,6 +35,7 @@
             <input asp-for="FMonth" type="hidden" />
             <input asp-for="StockCode" type="hidden" />
             <input asp-for="TransType" type="hidden" />
+            <input asp-for="Flag3" type="hidden" />
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
@@ -89,26 +90,16 @@
             <!------------------------------------------------------------------------------->
 
             <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
-                <div class="flex-column flex-md-row gap-md-1">
+                <div class="justify-content-between flex-column flex-md-row gap-md-1 w-100">
                     <div class="d-flex align-items-center mb-3">
                         <label asp-for="InvNo" style="width: 150px;">@localizer["Invoice No"]</label>
                         <input asp-for="InvNo" class="form-control" style="width: 200px;" />
                         <span asp-validation-for="InvNo" class="text-danger"></span>
                     </div>
                     <div class="d-flex align-items-center mb-3">
-                        <label asp-for="DueDate" class="text-center" style="width: 130px">@localizer["Invoice Date"]</label>
-                        <input asp-for="DueDate" class="form-control" style="width: 200px;" />
+                        <label asp-for="DueDate" class="text-center" style="width: 125px">@localizer["Invoice Date"]</label>
+                        <input asp-for="DueDate" class="form-control" style="width: 250px;" />
                         <span asp-validation-for="InvNo" class="text-danger"></span>
-                    </div>
-                </div>
-                <div>
-                    <div class="d-flex align-items-center mb-3">
-                        <label asp-for="Flag3" class="text-center" style="width: 125px;">@localizer["User Dependence"]</label>
-                        <select asp-for="Flag3" class="form-control text-center" style="width: 250px;">
-                            <option value="1">@localizer["No"]</option>
-                            <option value="2">@localizer["Yes"]</option>
-                        </select>
-                        <span asp-validation-for="Flag3" class="text-danger"></span>
                     </div>
                 </div>
             </div>

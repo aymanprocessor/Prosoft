@@ -56,3 +56,26 @@ function closeModal(modal, overlay) {
     modal.classList.remove("active-popup");
     overlay.classList.remove("active-popup");
 }
+
+////////////////////////////////////////////////////
+// For Alerts That Aren't In The Dom
+
+function openAlert(event) {
+    setTimeout(() => {
+        openModalListener(event);
+    }, 50)
+}
+
+function closeOverlay(event) {
+    overlayListener(event);
+    setTimeout(() => {
+        event.target.closest(".modal-container").remove();
+    }, 200)
+}
+
+function closeAlert(event) {
+    closeModelListener(event);
+    setTimeout(() => {
+        event.target.closest(".modal-container").remove();
+    }, 200)
+}

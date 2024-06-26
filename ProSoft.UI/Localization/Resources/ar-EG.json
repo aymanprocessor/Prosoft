@@ -519,9 +519,13 @@
   "Evening": "مسائي",
   "Night": "ليلي",
   "Edit Appointment To Dr : ": "تعديل معاد للطبيب :",
-  "Joining Users With Medical Services": "ربط المستخدم بالخدمات الطبية",
+  "Joining Users With Medical Services": "ربط المستخدم بمستوي الخدمات الطبية",
   "Medical Services For User": "الخدمات الطبية للمستخدم",
   "Default": "افتراضي",
+  "Add Section For User": "اضافة قسم للمستخدم",
+  "Edit Section For User": "تعديل قسم للمستخدم",
+  "The Sum Debit": "اجمالي مدين",
+  "The Sum Credit": "اجمالي دائن",
 
 
 
@@ -748,4 +752,8 @@
   "Item Name": "اسم الصنف",
   "Edit Item": "تعديل صنف",
   "Item Status": "حالة الصنف",
+  "Warning": "تحذير",
+  "You can not approve this permission with no items.": "انت لا تستطيع اعتماد هذا الاذن بدون اصناف.",
+  "Approve": "اعتماد",
+  "Ok": "حسناً"
 }

@@ -30,6 +30,7 @@
             <input asp-for="DocNo" type="hidden" />
             <input asp-for="StockCode" type="hidden" />
             <input asp-for="TransType" type="hidden" />
+            <input asp-for="Flag3" type="hidden" value="1" />
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
@@ -67,14 +68,14 @@
                     }
                     <span asp-validation-for="DocDate" class="text-danger"></span>
                 </div>
-                <div class="d-flex align-items-center mb-3">
+@*                 <div class="d-flex align-items-center mb-3">
                     <label asp-for="Flag3" class="text-center" style="width: 125px;">@localizer["Permission Approval"]</label>
                     <select asp-for="Flag3" class="form-control text-center" style="width: 250px;">
                         <option value="1">@localizer["No"]</option>
                         <option value="2">@localizer["Yes"]</option>
                     </select>
                     <span asp-validation-for="Flag3" class="text-danger"></span>
-                </div>
+                </div> *@
             </div>
 
             <!------------------------------------------------------------------------------->
