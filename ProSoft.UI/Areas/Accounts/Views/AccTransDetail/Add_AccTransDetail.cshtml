@@ -123,19 +123,17 @@
 
             <!------------------------------------------------------------------------------->
             <span>
-                @localizer["The Sum"] : @localizer["Debit"] 
-                <input id="valDepSum" value="@ViewBag.valDepSum" style="pointer-events:none;background-color: #e9ecef;border: none; width: 70px; text-align: center; " />
-                @localizer["Credit"]
-                <input id="valCreditSum" value="@ViewBag.valCreditSum" style="pointer-events:none;background-color: #e9ecef;border: none; width: 70px; text-align: center;" />
+                <button type="button" class="btn btn-dark">@localizer["The Sum Debit"]</button>
+                 :   <input id="valDepSum" value="@ViewBag.valDepSum" style="pointer-events:none;background-color: #e9ecef;border: none; width: 70px; text-align: center; " />
+                <button type="button" class="btn btn-dark">@localizer["The Sum Credit"]</button>
+                :   <input id="valCreditSum" value="@ViewBag.valCreditSum" style="pointer-events:none;background-color: #e9ecef;border: none; width: 70px; text-align: center;" />
             </span>
-            <div class="mt-2">
-                <button type="button" class="btn btn-dark" onclick="totalDifference()">@localizer["The Difference"] : </button>
-                <span id="totalDifference"> </span>
-            </div>
+            <button type="button" class="btn btn-dark" onclick="totalDifference()">@localizer["The Difference"] : </button>
+            <span id="totalDifference"> </span>
 
             <!------------------------------------------------------------------------------->
 
-            <div class="parent text-center" style="height:37px;">
+            <div class="parent text-center mt-2" style="height:37px;">
                 <button type="submit" class="btn btn-primary" style="width:150px">
                     @localizer["Add Term"]
                 </button>

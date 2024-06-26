@@ -65,18 +65,6 @@ namespace ProSoft.Core.Repositories.Treasury
             return accSafeCashDTOs;
         }
 
-        //public async Task<int> GetNewIdAsync()
-        //{
-        //    int newID;
-        //    if (_DbSet.Count() != 0)
-        //    {
-        //        var lastID = await _DbSet.MaxAsync(obj => obj.SafeCashId);
-        //        newID = lastID + 1;
-        //    }
-        //    else
-        //        newID = 1;
-        //    return newID;
-        //}
         public async Task<int> GetNewSerialAsync(string docType, int safeCode, int fYear)
         {
             int newSerial;
@@ -188,6 +176,8 @@ namespace ProSoft.Core.Repositories.Treasury
 
             await _Context.AddAsync(accSafeCash);
             await _Context.SaveChangesAsync();
+
+            ///Posting/// 
         }
 
         public async Task<AccSafeCashEditAddDTO> GetAccSafeCashByIdAsync(int id,int userCode)
@@ -290,5 +280,129 @@ namespace ProSoft.Core.Repositories.Treasury
             return hasRelatedData;
         }
 
+        //public async Task<PostingAccMasterMINIDTO> PostingToAcctransMaster(AccSafeCash accSafeCash)
+        //{
+        //    SystemTable systemTable = await _Context.SystemTables.FindAsync(35);
+        //    var userCode = accSafeCash.UserCode;
+        //    var depositId = accSafeCash.DpsSer;
+        //    PostingAccMasterMINIDTO postingAccMasterMINIDTO = new PostingAccMasterMINIDTO();
+
+
+        //    if (systemTable.SysValue == 1)
+        //    {
+        //        UserCashNo userCashNo = await _Context.userCashNos.FirstOrDefaultAsync(obj => obj.UserCode == userCode);
+        //        UserJournalType userJournalType = await _Context.UserJournalTypes.FirstOrDefaultAsync(obj => obj.UserCode == userCode);
+        //        AccSafeCash accSafeCash = await _Context.AccSafeCashes
+        //         .FirstOrDefaultAsync(obj => obj.BranchId == deposit.BranchId && obj.FYear == deposit.FYear && obj.MasterId == deposit.MasterId && obj.DocType == "SFCIN" && obj.DocNo == deposit.SafeDocNo && obj.Flag == 2 && obj.SafeCode == deposit.CashNo);
+
+        //        int newDocNo = 0;
+        //        int jorKiedNo;
+
+        //        if (deposit.JorKiedNo == null)
+        //        {
+        //            List<AccTransMaster> accTransMasters = await _Context.AccTransMasters
+        //                    .Where(obj => obj.CoCode == deposit.BranchId && obj.FYear == deposit.FYear && obj.TransType == userJournalType.JournalCode.ToString()).ToListAsync();
+        //            if (accTransMasters.Count != 0)
+        //            {
+        //                jorKiedNo = (int)(accTransMasters.Max(obj => obj.TransNo)) + 1;
+        //            }
+        //            else { jorKiedNo = 1; }
+        //        }
+        //        else { jorKiedNo = (int)deposit.JorKiedNo; }
+
+
+        //        ///////////////////////////////////////////////////
+
+        //        string commentt;
+        //        if (deposit.DepositDesc != null)
+        //        {
+        //            commentt = "مدفوعات مقدمة:" + " " + deposit.DepositDesc;
+        //        }
+        //        else { commentt = "مدفوعات مقدمة:"; }
+
+        //        /////////////////////////Account Master//////////////////////////////////
+
+        //        AccTransMaster accTransMaster = await _Context.AccTransMasters
+        //            .FirstOrDefaultAsync(obj => obj.CoCode == deposit.BranchId && obj.FYear == deposit.FYear && obj.MasterId == deposit.MasterId && obj.TransNo == jorKiedNo && obj.TransType == userJournalType.JournalCode.ToString());
+
+        //        if (accTransMaster != null)
+        //        {
+        //            List<AccTransDetail> accTransDetails = await _Context.AccTransDetails.Where(obj => obj.TransId == accTransMaster.TransId).ToListAsync();
+        //            if (accTransDetails != null)
+        //            {
+        //                _Context.RemoveRange(accTransDetails);
+        //                await _Context.SaveChangesAsync();
+        //            }
+        //        }
+        //        int newTransNo = 0;
+        //        if (accTransMaster is not null)
+        //        {
+        //            newTransNo = (int)accTransMaster.TransNo;
+        //            _Context.Remove(accTransMaster);
+        //            await _Context.SaveChangesAsync();
+        //        }
+        //        else if (accTransMaster is null)
+        //        {
+        //            if (deposit.JorKiedNo == null)
+        //            {
+        //                List<AccTransMaster> accTransMasters = await _Context.AccTransMasters
+        //                    .Where(obj => obj.CoCode == deposit.BranchId && obj.FYear == deposit.FYear && obj.TransType == userJournalType.JournalCode.ToString()).ToListAsync();
+        //                if (accTransMasters.Count != 0)
+        //                {
+        //                    newTransNo = (int)(accTransMasters.Max(obj => obj.TransNo)) + 1;
+        //                }
+        //                else { newTransNo = 1; }
+        //            }
+        //            else { newDocNo = (int)deposit.SafeDocNo; }
+        //        }
+        //        var yearTransNo = (deposit.FYear + "_" + newTransNo).ToString();
+
+        //        //inserting///
+
+        //        AccTransMaster newAccTransMaster = new AccTransMaster();
+        //        newAccTransMaster.CoCode = deposit.BranchId;
+        //        newAccTransMaster.FYear = deposit.FYear;
+        //        newAccTransMaster.TransType = userJournalType.JournalCode.ToString();
+        //        newAccTransMaster.TransNo = newTransNo;
+        //        newAccTransMaster.TransDate = deposit.DpsDate;
+        //        newAccTransMaster.TransDesc = commentt;
+        //        newAccTransMaster.TotalTrans = deposit.DpsVal;
+        //        newAccTransMaster.OkPost = "0";
+        //        newAccTransMaster.CurCode = "1";
+        //        newAccTransMaster.CurRate = 1;
+        //        newAccTransMaster.YearTransNo = yearTransNo;
+        //        DateTime dpsDate = (DateTime)deposit.DpsDate;
+        //        int monthNumber = dpsDate.Month;
+        //        newAccTransMaster.FMonth = monthNumber;
+        //        newAccTransMaster.MasterId = deposit.MasterId;
+        //        newAccTransMaster.MCode = deposit.ModId;
+        //        newAccTransMaster.PostRecipt = deposit.PostRecipt;
+        //        newAccTransMaster.EntryDate = DateTime.Now;
+        //        await _Context.AddAsync(newAccTransMaster);
+        //        //await _Context.SaveChangesAsync();
+        //        int result = await _Context.SaveChangesAsync(); //for return message after enhance method
+        //        if (result == 0)
+        //        {
+        //            postingAccMasterMINIDTO.Message = "Failed to post in Account.";
+        //            postingAccMasterMINIDTO.TransNo = 0;
+        //            return postingAccMasterMINIDTO;
+
+        //        }
+        //        else
+        //        {
+        //            Deposit depositUpdate = await _Context.Deposits.FindAsync(depositId);
+        //            depositUpdate.JorKiedNo = newTransNo;
+        //            await _Context.SaveChangesAsync();
+        //            postingAccMasterMINIDTO.Message = "Posting to Account Done.";
+        //            postingAccMasterMINIDTO.TransNo = newTransNo;
+        //            postingAccMasterMINIDTO.TransId = newAccTransMaster.TransId;
+        //            return postingAccMasterMINIDTO;
+        //        }
+
+        //    }
+
+
+        //    return postingAccMasterMINIDTO;
+        //}
     }
 }

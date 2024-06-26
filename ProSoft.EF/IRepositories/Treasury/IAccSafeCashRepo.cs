@@ -1,6 +1,7 @@
 ﻿using ProSoft.EF.DTOs.Accounts;
 using ProSoft.EF.DTOs.Medical.HospitalPatData;
 using ProSoft.EF.DTOs.Treasury;
+using ProSoft.EF.Models.Medical.HospitalPatData;
 using ProSoft.EF.Models.Treasury;
 using System;
 using System.Collections.Generic;
@@ -21,5 +22,6 @@ namespace ProSoft.EF.IRepositories.Treasury
         Task<AccSafeCashEditAddDTO> GetAccSafeCashByIdAsync(int id,int userCode);
         Task EditAccSafeCashAsync(int id, AccSafeCashEditAddDTO accSafeCashDTO);
         Task<bool> HasRelatedDataAsync(int id, string doctype);
+        //Task<PostingAccMasterMINIDTO> PostingToAcctransMaster(AccSafeCash accSafeCash);
     }
 }

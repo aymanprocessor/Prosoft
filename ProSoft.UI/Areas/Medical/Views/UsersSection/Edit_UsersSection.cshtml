@@ -1,0 +1,51 @@
+﻿@model UsersSectionDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Edit Section";
+    Layout = "_Layout";
+
+    SelectList mainClinics = new SelectList(Model.MainClinics, "ClinicId", "ClinicDesc");
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+    <h1 class="mt-4">@localizer["Edit Section For User"] : @ViewBag.userName</h1>
+    <form method="post" asp-action="Edit_UsersSection">
+        <div class="border p-3 mt-4">
+            @* hidden *@
+            <input asp-for="USecId" hidden />
+            <input asp-for="UserCode" hidden/>
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="ClinicId"></label>
+                    <select asp-for="ClinicId" asp-items="mainClinics" class="form-control text-center">
+                        @* <option value="">-- @localizer["Choose"] --</option> *@
+                        @* <option value="1000">-- @localizer["All"] --</option> *@
+                    </select>
+                    <span asp-validation-for="ClinicId" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DefaultId"></label>
+                    <select asp-for="DefaultId" class="form-control text-center">
+                        <option value="0">@localizer["No"]</option>
+                        <option value="1">@localizer["Yes"]</option>
+                    </select>
+                    <span asp-validation-for="DefaultId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex justify-content-md-center gap-2">
+                <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Save Changes"]</button>
+                <a asp-controller="UsersSection" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>

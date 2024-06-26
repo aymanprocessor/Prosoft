@@ -101,7 +101,6 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
             ViewBag.userCode = userCode;
             ViewBag.branchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
             
-
             return View(accSafeCashDTO);
         }
         //Post add

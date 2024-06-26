@@ -513,9 +513,13 @@
   "Evening": "Evening",
   "Night": "Night",
   "Edit Appointment To Dr : ": "Edit Appointment To Dr : ",
-  "Joining Users With Medical Services": "Joining Users With Medical Services",
+  "Joining Users With Medical Services": "Joining Users With Level of Medical Services",
   "Medical Services For User": "Medical Services For User",
   "Default": "Default",
+  "Add Section For User": "Add Section For User",
+  "Edit Section For User": "Edit Section For User",
+  "The Sum Debit": "The Sum Debit",
+  "The Sum Credit": "The Sum Credit",
 
 
 
@@ -741,5 +745,9 @@
   "Serial_M": "Serial_M",
   "Item Name": "Item Name",
   "Edit Item": "Edit Item",
-  "Item Status": "Item Status"
+  "Item Status": "Item Status",
+  "Warning": "Warning",
+  "You can not approve this permission with no items.": "You can not approve this permission with no items.",
+  "Approve": "Approve",
+  "Ok": "Ok"
 }
