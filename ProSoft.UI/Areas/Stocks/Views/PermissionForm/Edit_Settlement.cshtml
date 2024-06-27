@@ -33,6 +33,7 @@
             <input asp-for="FMonth" type="hidden" />
             <input asp-for="StockCode" type="hidden" />
             <input asp-for="TransType" type="hidden" />
+            <input asp-for="Flag3" type="hidden" />
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
@@ -71,12 +72,8 @@
                     <span asp-validation-for="DocDate" class="text-danger"></span>
                 </div>
                 <div class="d-flex align-items-center mb-3">
-                    <label asp-for="Flag3" class="text-center" style="width: 125px;">@localizer["Permission Approval"]</label>
-                    <select asp-for="Flag3" class="form-control text-center" style="width: 250px;">
-                        <option value="1">@localizer["No"]</option>
-                        <option value="2">@localizer["Yes"]</option>
-                    </select>
-                    <span asp-validation-for="Flag3" class="text-danger"></span>
+                    <label asp-for="StockName" style="width: 125px;">@localizer["Stock"]</label>
+                    <input asp-for="StockName" class="form-control" style="width: 250px;" disabled />
                 </div>
             </div>
 
@@ -84,32 +81,16 @@
 
             <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
                 <div class="d-flex align-items-center mb-3">
-                    <label asp-for="StockName" style="width: 150px;">@localizer["Stock"]</label>
-                    <input asp-for="StockName" class="form-control" style="width: 200px;" disabled />
-                </div>
-                <div class="d-flex align-items-center mb-3">
-                    <label asp-for="CashAmount" class="text-center" style="width: 125px">@localizer["Value Total"]</label>
-                    <input asp-for="CashAmount" type="number" class="form-control" style="width: 250px;" />
+                    <label asp-for="CashAmount" style="width: 150px">@localizer["Value Total"]</label>
+                    <input asp-for="CashAmount" type="number" class="form-control" style="width: 200px;" />
                     <span asp-validation-for="CashAmount" class="text-danger"></span>
                 </div>
-            </div>
-
-            <!------------------------------------------------------------------------------->
-
-            <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
                 <div class="d-flex align-items-center mb-3">
-                    <label asp-for="UserConfirm" style="width: 150px;">@localizer["Addressed To"]</label>
-                    <select asp-for="UserConfirm" asp-items="users" class="form-control text-center" style="width: 200px;">
+                    <label asp-for="UserConfirm" style="width: 125px;">@localizer["Addressed To"]</label>
+                    <select asp-for="UserConfirm" asp-items="users" class="form-control text-center" style="width: 250px;">
                         <option value="">-- Choose --</option>
                     </select>
                     <span asp-validation-for="UserConfirm" class="text-danger"></span>
-                </div>
-                <div class="d-none align-items-center mb-3">
-                    <label asp-for="RefDocNo" style="width: 150px;"></label>
-                    <select asp-for="RefDocNo" asp-items="users" class="form-control text-center" style="width: 250px;">
-                        <option value="">-- Choose --</option>
-                    </select>
-                    <span asp-validation-for="RefDocNo" class="text-danger"></span>
                 </div>
             </div>
 

@@ -122,6 +122,9 @@ namespace ProSoft.EF.DbContext
         public DbSet<TransDtl> TransDtls { get; set; }
         public DbSet<ItemBatch> ItemBatches { get; set; }
         public DbSet<UsersSection> UsersSections { get; set; }
+        public DbSet<ItmReorder> ItmReorders { get; set; }
+        public DbSet<MainItemStock> MainItemStocks { get; set; }
+
         ////////////////////
         // Accounts //
         public DbSet<AccMainCode> AccMainCodes { get; set; }

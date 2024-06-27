@@ -1,0 +1,7 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Permissions Forms";
+    Layout = "_Layout";
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+}
+@inject IViewLocalizer localizer

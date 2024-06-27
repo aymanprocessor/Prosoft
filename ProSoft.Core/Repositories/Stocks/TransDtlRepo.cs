@@ -69,7 +69,6 @@ namespace ProSoft.Core.Repositories.Stocks
                 return newBarCode;
             }
             return string.Empty;
-            //throw new NotImplementedException();
         }
 
         ////////////////////////////////////////////////////////////////////////////
@@ -127,6 +126,18 @@ namespace ProSoft.Core.Repositories.Stocks
             transDtl.PostPos = 1;
 
             await AddAsync(transDtl);
+
+            var ls_Item_Barcode = string.Empty;
+            if (transDtl.UnitQty == 1)
+                ls_Item_Barcode = transDtl.ItemMaster;
+            else if(transDtl.UnitQty > 1)
+                ls_Item_Barcode = $"{transDtl.ItemMaster}_{transDtl.Serial}";
+
+            var newItemBatch = new ItemBatch();
+            newItemBatch.ItemMaster = transDtl.ItemMaster;
+            newItemBatch.ItmBatch = await GetBarCodeAsync(transDtl.TransMAsterID, int.Parse(transDtl.Serial.ToString()), int.Parse(transDtl.ItemMaster));
+            newItemBatch.SerBatch = int.Parse(transDtl.Serial.ToString());
+
             await SaveChangesAsync();
         }
 

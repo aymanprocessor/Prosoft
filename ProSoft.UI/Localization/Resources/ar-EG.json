@@ -755,5 +755,7 @@
   "Warning": "تحذير",
   "You can not approve this permission with no items.": "انت لا تستطيع اعتماد هذا الاذن بدون اصناف.",
   "Approve": "اعتماد",
-  "Ok": "حسناً"
+  "Ok": "حسناً",
+  "The Codes": "الاكواد",
+  "Order Limit": "حد الطلب",
 }
