@@ -122,6 +122,7 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<TransDtl, TransDtlDTO>().ReverseMap();
             CreateMap<TransDtl, TransDtlWithPriceDTO>().ReverseMap();
             CreateMap<TransDtl, TransMaster>().ReverseMap();
+            CreateMap<ItemBatch, ItemBatchHistory>().ReverseMap();
             ////////// System ////////////////////
             CreateMap<EisPosting, EisPostingViewDTO>().ReverseMap();
             CreateMap<EisPosting, EisPostingEditAddDTO>().ReverseMap();

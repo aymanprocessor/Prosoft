@@ -18,7 +18,7 @@
 <div class="container pt-2" style=" min-height:100vh;">
     <div class="d-flex justify-content-between align-items-start align-items-md-center flex-column flex-md-row my-2">
         <div style="width: 40%;">
-            <input type="text" id="searchInput" class="form-control" oninput="searchUsers(event)" placeholder="@localizer["Search users by useer code or name ..."]">
+            <input type="text" id="searchInput" class="form-control" oninput="searchUsers(event)" placeholder="@localizer["Search users by user code or name ..."]">
         </div>
         <div class="d-flex align-items-md-center align-items-start flex-column flex-md-row" style="width: 50%;">
             <label for="transType" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Transaction Type"]</label>
@@ -59,7 +59,7 @@
         <h2 class="header">@localizer["Transactions of User"] :</h2>
     </div>
 
-    <div class="border border-success p-0 mb-2 border-opacity-75 overflow-auto" style="max-height: 300px;">
+    <div class="p-0 mb-2 border-opacity-75 overflow-auto" style="max-height: 300px;">
 
         <table id="myTable_2" class="table table-bordered table-hover" style="width:100%">
             <thead class="table-dark">
@@ -92,6 +92,9 @@
             <tbody>
             </tbody>
         </table>
+        <div class="spinner-container d-flex justify-content-center align-items-center d-none" style="height: 100px;">
+            <div class="spinner"></div>
+        </div>
     </div>
 </div>
 
@@ -151,9 +154,14 @@
 
                 userTransactions.innerHTML = "";  // Empty the table
 
+                let spinner = userTransactions.parentElement.parentElement.querySelector(".spinner-container");
+                spinner.classList.remove("d-none");
+
                 $.ajax({
                     url: `/Stocks/UserTransaction/GetPermissionsForUser/${userCode}?transType=${transType}`,
                     success: function (result) {
+                        spinner.classList.add("d-none");
+
                         for (let item of result) {
                             let ueIns = item.ueIns == 1 ? `<i class="fa-solid fa-check"></i>` : "";
                             let ueDel = item.ueDel == 1 ? `<i class="fa-solid fa-check"></i>` : "";
