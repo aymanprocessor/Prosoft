@@ -520,6 +520,14 @@
   "Edit Section For User": "Edit Section For User",
   "The Sum Debit": "The Sum Debit",
   "The Sum Credit": "The Sum Credit",
+  "Doctor's fees": "Doctor's Fees",
+  "Doctor fees": "Doctor's Fees",
+  "Print Doctor's Fees": "Print Doctor's Fees",
+  "Section": "Section",
+  "Customer/Side": "Customer/Side",
+  "Net Value": "Net Value",
+  "Doctor Fees from patient sending during period": "Doctor Fees from patient sending during period",
+
 
 
 
@@ -752,4 +760,13 @@
   "Ok": "Ok",
   "The Codes": "The Codes",
   "Order Limit": "Order Limit",
+  "From Item": "From Item",
+  "To Item": "To Item",
+  "From Date": "From Date",
+  "To Date": "To Date",
+  "Code Search": "Code Search",
+  "Name Search": "Name Search",
+  "Item Code": "Item Code",
+  "Max Quantity": "Max Quantity",
+  "Min Quantity": "Min Quantity"
 }

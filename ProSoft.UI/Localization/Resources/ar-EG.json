@@ -204,7 +204,7 @@
   "Visit": "زيارة",
   "Consultation": "استشارة",
   "Examination": "كشف",
-  "Service": "خدمة",
+  "Service": "الخدمة",
   "Dr Ratio": "نسبة الطبيب",
   "Dr Value": "قيمة الطبيب",
   "Center Value": "قيمة المركز",
@@ -526,6 +526,14 @@
   "Edit Section For User": "تعديل قسم للمستخدم",
   "The Sum Debit": "اجمالي مدين",
   "The Sum Credit": "اجمالي دائن",
+  "Doctor's fees": "مستحقات الطبيب",
+  "Doctor fees": "مستحقات الطبيب",
+  "Print Doctor's Fees": "طباعة مستحقات طبيب",
+  "Section": "القسم",
+  "Customer/Side": "العميل/الجهة",
+  "Net Value": "صافي القيمة",
+  "Doctor Fees from patient sending during period": "مستحقات الطبيب من الحالات المرسلة خلال الفترة",
+
 
 
 
@@ -758,4 +766,13 @@
   "Ok": "حسناً",
   "The Codes": "الاكواد",
   "Order Limit": "حد الطلب",
+  "From Item": "من صنف",
+  "To Item": "الي صنف",
+  "From Date": "من تاريخ",
+  "To Date": "الي تاريخ",
+  "Code Search": "بحث بالكود",
+  "Name Search": "بحث بالوصف",
+  "Item Code": "كود الصنف",
+  "Max Quantity": "اقصي كمية",
+  "Min Quantity": "اقل كمية"
 }

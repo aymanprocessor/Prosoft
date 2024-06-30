@@ -79,6 +79,7 @@ builder.Services.AddScoped<IDepositVisitRepo, DepositVisitRepo>();
 builder.Services.AddScoped<IkinshipRepo, kinshipRepo>();
 builder.Services.AddScoped<IDrTimeSheetRepo, DrTimeSheetRepo>();
 builder.Services.AddScoped<IUsersSectionRepo, UsersSectionRepo>();
+builder.Services.AddScoped<IReportDoctorFeesRepo, ReportDoctorFeesRepo>();
 ///////////////// Stock /////////////
 builder.Services.AddScoped<IStockTypeRepo, StockTypeRepo>();
 builder.Services.AddScoped<IBranchRepo, BranchRepo>();

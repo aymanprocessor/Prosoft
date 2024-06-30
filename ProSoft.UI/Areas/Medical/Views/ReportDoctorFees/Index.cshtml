@@ -1,0 +1,227 @@
+﻿@model ReportDoctorFeesDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Print Doctor's Fees";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+
+    SelectList Doctors = new SelectList(Model.Doctors, "DrId", "DrDesc");
+
+}
+@inject IViewLocalizer localizer
+<style>
+    .hide {
+        display: none !important;
+    }
+    /*  .image {
+                top: 0px;
+                left: 0px;
+                width: 100%;
+                height: 100%;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-size: cover;
+                background-position: center;
+                opacity: 0.5;
+                z-index: -1;
+            } */
+</style>
+<div class="container pt-2 " style="min-height:100vh;">
+    @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
+
+    <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mt-4">
+        <h1 class="header">@localizer["Print Doctor's Fees"]</h1>
+        <div class="d-flex gap-2">
+            <a class="btn btn-sm btn-primary fs-6" style="width:150px" onclick="DoctorFees(event)">
+                @localizer["Doctor's fees"]
+            </a>
+        </div>
+    </div>
+    <div class="overflow-auto">
+
+        <div class="filter-box d-flex align-items-center flex-column flex-md-row gap-3 my-2">
+            <div class="d-flex align-items-center flex-column flex-md-row w-100" style="width:40% !important;">
+                <label for="doctors" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Doctors"]</label>
+                <select id="doctors" asp-items="Doctors" class="form-control text-center w-100">
+                    <option value="100">-- @localizer["All"] --</option>
+                </select>
+            </div>
+            <div class="d-flex justify-content-end align-items-center flex-column flex-md-row gap-2 period" style="width:70% !important;">
+                <div class="d-flex align-items-center w-100">
+                    <label style="width:60% !important;">@localizer["From Period"]</label>
+                    <input id="fromPeriod" type="date" class="form-control text-center" />
+                </div>
+                <div class="d-flex align-items-center w-100">
+                    <label style="width:60% !important;">@localizer["To Period"]</label>
+                    <input id="toPeriod" type="date" class="form-control text-center" />
+                </div>
+            </div>
+
+        </div>
+
+        <!---------------------------------------------------------->
+
+        <div class="report">
+        </div>
+
+    </div>
+</div>
+<script>
+    var doctor = document.getElementById("doctors");
+    var fromPeriod = document.getElementById("fromPeriod");
+    var toPeriod = document.getElementById("toPeriod");
+
+    //for report From Voucher To Voucher//
+    function DoctorFees(e) {
+        if (!fromPeriod.value) {
+            fromPeriod.focus();
+            return;
+        }
+        if (!toPeriod.value) {
+            toPeriod.focus();
+            return;
+        }
+        // Get the selected doctor's name
+        const drName = doctor.options[doctor.selectedIndex].textContent;
+        var headReport = document.querySelector(".report");
+
+        let title;
+
+        title = "@localizer["Doctor fees"] " + drName + " @localizer["From"] " + fromPeriod.value + " @localizer["To"] " + toPeriod.value;
+
+        headReport.textContent = title;
+        headReport.innerHTML =
+            `
+                    <div class="report-head d-flex justify-content-center align-items-center mt-4">
+                         <h2 class="header">${title}</h2>
+                             <button onclick="printReport()" class="btn btn-success" style="margin-inline-start: auto;">Print</button>
+                    </div>
+
+                    <div class="print-table p-0 mb-2 overflow-auto">
+
+                        <table id="myTable" class="table table-bordered table-hover Voucher-table" style="width:100%">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th class="align-middle text-center" rowspan="2">
+                                           @localizer["Section"]
+                                    </th>
+                                    <th class="align-middle text-center" colspan="2">
+                                           @localizer["The Patient"]
+                                    </th>
+                                    <th class="align-middle text-center" rowspan="2">
+                                           @localizer["Customer/Side"]
+                                    </th>
+                                    <th class="align-middle text-center" rowspan="2">
+                                           @localizer["Service"]
+                                    </th>
+                                    <th class="align-middle text-center" rowspan="2">
+                                           @localizer["Invoice No"]
+                                    </th>
+                                    <th class="align-middle text-center" rowspan="2">
+                                           @localizer["Date"]
+                                    </th>
+                                    <th class="align-middle text-center" rowspan="2">
+                                           @localizer["The Value"]
+                                    </th>
+                                    <th class="align-middle text-center" rowspan="2">
+                                           @localizer["Tax"]
+                                    </th>
+                                    <th class="align-middle text-center" rowspan="2">
+                                           @localizer["Net Value"]
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th class="align-middle text-center">
+                                           @localizer["Code"]
+                                    </th>
+                                    <th class="align-middle text-center">
+                                           @localizer["Description"]
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+
+                `;
+        let url;
+
+        url = `/Medical/ReportDoctorFees/GetDoctorFees/${doctor.value}?fromPeriod=${fromPeriod.value}&toPeriod=${toPeriod.value}`;
+
+        var dataa = document.querySelector(".Voucher-table tbody");
+        dataa.innerHTML = "";  // Empty data
+        $.ajax({
+            url: url,
+            success: function (result) {
+                //  console.log(result);
+                var drDueValSum = 0;
+                var drTaxSum = 0;
+                var drSendVal = 0;
+                for (let item of result) {
+                    let patAdDate = new Date(item.patAdDate).toISOString().split('T')[0];
+                    const data = document.createElement("tr");
+                    data.innerHTML += `
+
+                                <td class="align-middle">${item.regionDesc}</td>
+                                <td class="align-middle">${item.patId}</td>
+                                <td class="align-middle">${item.patName}</td>
+                                <td class="align-middle">${item.companyName}</td>
+                                <td class="align-middle">${item.servDesc}</td>
+                                <td class="align-middle">${item.mainInvNo}</td>
+                                <td class="align-middle">${patAdDate}</td>
+                                <td class="align-middle">${item.drDueVal}</td>
+                                <td class="align-middle">${item.drTax}</td>
+                                <td class="align-middle">${item.drDueVal - item.drTax}</td>
+
+                            `;
+                    drDueValSum += item.drDueVal;
+                    drTaxSum += item.drTax;
+                    drSendVal +=item.drSendVal;
+                    dataa.appendChild(data);
+                }
+                const dataForSum = document.createElement("tr");
+                //    dataForSum.style.backgroundColor = "#e6dfdf";
+                dataForSum.innerHTML =
+                    `
+                            <td class="text-center" colspan="7">@localizer["The Total"]</td>
+                            <td style="background-color: #e6dfdf;">${drDueValSum}</td>
+                            <td style="background-color: #e6dfdf;">${drTaxSum}</td>
+                            <td style="background-color: #e6dfdf;">${drDueValSum - drTaxSum}</td>
+                        `;
+                dataa.appendChild(dataForSum);
+                const dataForSum1 = document.createElement("tr");
+                //    dataForSum.style.backgroundColor = "#e6dfdf";
+                dataForSum1.innerHTML =
+                    `
+                                 <td class="text-center" colspan="7">@localizer["Doctor Fees from patient sending during period"]</td>
+                                 <td style="background-color: #e6dfdf;">${drSendVal}</td>
+                      `;
+                dataa.appendChild(dataForSum1);
+                const dataForSum2 = document.createElement("tr");
+                //    dataForSum.style.backgroundColor = "#e6dfdf";
+                dataForSum2.innerHTML =
+                    `
+                                <td class="text-center" colspan="7">@localizer["The Total"]</td>
+                                <td style="background-color: #e6dfdf;">${drDueValSum + drSendVal}</td>
+                                <td style="background-color: #e6dfdf;">${drTaxSum}</td>
+                                <td style="background-color: #e6dfdf;">${drDueValSum + drSendVal - drTaxSum}</td>
+                       `;
+                dataa.appendChild(dataForSum2);
+
+            }
+        });
+    }
+    function printReport() {
+        let head = document.querySelector(".report-head");
+        let tableReport = document.querySelector(".print-table");
+        let originalContent = document.body.innerHTML;//all body
+
+        head.querySelector("button").style.display = "none";
+        document.body.innerHTML = head.outerHTML + tableReport.outerHTML;
+        window.print();
+        document.body.innerHTML = originalContent;
+    }
+
+</script>
