@@ -88,6 +88,9 @@
             <tbody>
             </tbody>
         </table>
+        <div class="spinner-container d-flex justify-content-center align-items-center d-none" style="height: 100px;">
+            <div class="spinner"></div>
+        </div>
     </div>
 </div>
 
@@ -149,9 +152,14 @@
 
             userTransactions.innerHTML = "";  // Empty the table
 
+            let spinner = userTransactions.parentElement.parentElement.querySelector(".spinner-container");
+            spinner.classList.remove("d-none");
+
             $.ajax({
                 url: `/Stocks/UserStockTransaction/GetStockTransForUser/${userCode}`,
                 success: function (result) {
+                    spinner.classList.add("d-none");
+
                     let count = 0;
                     for (let item of result) {
                         count++;

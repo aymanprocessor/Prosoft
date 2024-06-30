@@ -9,12 +9,10 @@ using System.Threading.Tasks;
 
 namespace ProSoft.EF.Models.Stocks
 {
-    [Table("ITEM_BATCH")]
-    public class ItemBatch
+    [Keyless]
+    [Table("ITEM_BATCH_HISTORY")]
+    public class ItemBatchHistory
     {
-        [Key]
-        public int ItemBatchID {  get; set; }
-
         [Column("ITEM_MASTER")]
         [StringLength(30)]
         [Unicode(false)]

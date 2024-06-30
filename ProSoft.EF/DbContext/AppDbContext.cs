@@ -124,6 +124,7 @@ namespace ProSoft.EF.DbContext
         public DbSet<UsersSection> UsersSections { get; set; }
         public DbSet<ItmReorder> ItmReorders { get; set; }
         public DbSet<MainItemStock> MainItemStocks { get; set; }
+        public DbSet<ItemBatchHistory> ItemBatchHistories { get; set; }
 
         ////////////////////
         // Accounts //
