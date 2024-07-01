@@ -23,6 +23,8 @@ namespace ProSoft.EF.DTOs.Treasury
         public string? Commentt { get; set; }
         public int? SafeCode { get; set; }
         public int? FYear { get; set; }
+        public long? AccTransNo { get; set; }
+
 
     }
 }

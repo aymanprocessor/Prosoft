@@ -18,9 +18,9 @@ namespace ProSoft.EF.IRepositories.Treasury
         Task<int> GetNewSerialAsync(string docType, int safeCode, int fYear);
         Task<List<AccSubCodeDTO>> GetSubCodesFromAccAsync(string mainAccCode);
         Task<AccSafeCashEditAddDTO> GetEmptyAccSafeCashAsync(int userCode);
-        Task AddAccSafeCashAsync(AccSafeCashEditAddDTO accSafeCashDTO);
+        Task<string> AddAccSafeCashAsync(AccSafeCashEditAddDTO accSafeCashDTO);
         Task<AccSafeCashEditAddDTO> GetAccSafeCashByIdAsync(int id,int userCode);
-        Task EditAccSafeCashAsync(int id, AccSafeCashEditAddDTO accSafeCashDTO);
+        Task<string> EditAccSafeCashAsync(int id, AccSafeCashEditAddDTO accSafeCashDTO);
         Task<bool> HasRelatedDataAsync(int id, string doctype);
         Task<string> PostingToAcctrans(AccSafeCash accSafeCash);
     }

@@ -29,7 +29,7 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
             _userCashNoRepo = userCashNoRepo;
         }
 
-        public async Task<IActionResult> Index(string docType,string? flagType ,string? errorMessage)
+        public async Task<IActionResult> Index(string docType,string? flagType ,string? errorMessage ,string? message = "")
         {
             var userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
             var userCashNoDTO = await _userCashNoRepo.GetSafeTransByIdAsync(userCode);
@@ -52,6 +52,7 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
             ViewBag.safeCode = safeCode;
             ViewBag.fYear = fYear;
             ViewBag.error = errorMessage;
+            ViewBag.message = message;
             return View(accSafeCashs);
         }
 
@@ -110,8 +111,8 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _accSafeCashRepo.AddAccSafeCashAsync(accSafeCashDTO);
-                return RedirectToAction("Index", "AccSafeCash" ,new { docType = "SFCIN", flagType = "oneANDtwo" });
+              string message=  await _accSafeCashRepo.AddAccSafeCashAsync(accSafeCashDTO);
+                return RedirectToAction("Index", "AccSafeCash" ,new { docType = "SFCIN", flagType = "oneANDtwo", message });
             }
             return View();
         }
@@ -133,8 +134,8 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _accSafeCashRepo.EditAccSafeCashAsync(id, accSafeCashDTO);
-                return RedirectToAction("Index", "AccSafeCash", new { docType = "SFCIN", flagType = "oneANDtwo" });
+                string message =  await _accSafeCashRepo.EditAccSafeCashAsync(id, accSafeCashDTO);
+                return RedirectToAction("Index", "AccSafeCash", new { docType = "SFCIN", flagType = "oneANDtwo", message });
             }
             return View(accSafeCashDTO);
         }

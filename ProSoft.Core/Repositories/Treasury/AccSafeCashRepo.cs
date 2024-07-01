@@ -46,6 +46,7 @@ namespace ProSoft.Core.Repositories.Treasury
                         PersonName = obj.PersonName,
                         ValuePay = obj.ValuePay,
                         Commentt = obj.Commentt,
+                        AccTransNo =obj.AccTransNo
                     }).ToListAsync();
             }
             else if (flagType == "oneANDtwoAndthree")
@@ -153,7 +154,7 @@ namespace ProSoft.Core.Repositories.Treasury
             return accSafeCashDTO;
         }
 
-        public async Task AddAccSafeCashAsync(AccSafeCashEditAddDTO accSafeCashDTO)
+        public async Task<string> AddAccSafeCashAsync(AccSafeCashEditAddDTO accSafeCashDTO)
         {
             AccSafeCash accSafeCash = _mapper.Map<AccSafeCash>(accSafeCashDTO);
             //accSafeCash.DocType = "SFCIN";
@@ -175,11 +176,19 @@ namespace ProSoft.Core.Repositories.Treasury
             }
             accSafeCash.SerId = 1;
             accSafeCash.EntryDate = DateTime.Now;
-
+            if (accSafeCash.Rate1 == null)
+            {
+                accSafeCash.Rate1 = 1;
+            }
             await _Context.AddAsync(accSafeCash);
             await _Context.SaveChangesAsync();
 
-            ///Posting/// 
+            if (accSafeCash.AprovedFlag == "APR")
+            {
+                string message = await PostingToAcctrans(accSafeCash);
+                return message;    
+            }
+            return "";
         }
 
         public async Task<AccSafeCashEditAddDTO> GetAccSafeCashByIdAsync(int id,int userCode)
@@ -247,7 +256,7 @@ namespace ProSoft.Core.Repositories.Treasury
             return accSafeCashDTO;
         }
 
-        public async Task EditAccSafeCashAsync(int id, AccSafeCashEditAddDTO accSafeCashDTO)
+        public async Task<string> EditAccSafeCashAsync(int id, AccSafeCashEditAddDTO accSafeCashDTO)
         {
 
             AccSafeCash accSafeCash = await _Context.AccSafeCashes.FirstOrDefaultAsync(obj => obj.SafeCashId == id);
@@ -270,9 +279,20 @@ namespace ProSoft.Core.Repositories.Treasury
                 accSafeCash.MCodeDtl = 36;
             }
             accSafeCash.SerId = 1;
+            if (accSafeCash.Rate1 ==null)
+            {
+                accSafeCash.Rate1 = 1;
+            }
             accSafeCash.EntryDate = DateTime.Now;
             _Context.Update(accSafeCash);
             await _Context.SaveChangesAsync();
+
+            if (accSafeCash.AprovedFlag == "APR")
+            {
+                string message = await PostingToAcctrans(accSafeCash);
+                return message;
+            }
+            return "";
         }
 
         public async Task<bool> HasRelatedDataAsync(int id, string doctype)
@@ -306,7 +326,7 @@ namespace ProSoft.Core.Repositories.Treasury
                 if (userJournalType is not null && userCashNo is not null)
                 {
                     accSafeCash.AccTransType = userJournalType.JournalCode; //هحط اليومية في ال column acctranstype
-                    var lsCommentt = accSafeCash.Commentt + "ايصال توريد نقدي رقم :" + accSafeCash.DocNo;
+                    var lsCommentt = accSafeCash.Commentt +":"+ "ايصال توريد نقدي رقم :" + accSafeCash.DocNo;
                     var lsMainSubSafe = userCashNo.MainCode +"*"+userCashNo.SubCode;
                     var lsAccNameDept = await GetAccountName(userCashNo.MainCode, userCashNo.SubCode);
                     var lsAccNameCredit = await GetAccountName(accSafeCash.MainCode, accSafeCash.SubCode);
@@ -331,7 +351,7 @@ namespace ProSoft.Core.Repositories.Treasury
                          // return postingAccMasterMINIDTO;
                         }
                         //delete master And Detail
-                        _Context.Remove(accTransMaster); 
+                         _Context.Remove(accTransMaster); 
                         List<AccTransDetail> accTransDetails = await _Context.AccTransDetails.Where(obj => obj.TransId == accTransMaster.TransId).ToListAsync();
                         if (accTransDetails != null)
                         {
@@ -360,6 +380,7 @@ namespace ProSoft.Core.Repositories.Treasury
                         newAccTransMaster.DocNo = accSafeCash.DocNo.ToString();
                         newAccTransMaster.EntryDate = DateTime.Now;
                         await _Context.AddAsync(newAccTransMaster);
+                        await _Context.SaveChangesAsync();
 
                         ///////////////Inserting to Detail
 
@@ -370,8 +391,8 @@ namespace ProSoft.Core.Repositories.Treasury
                         newAccTransDetail.TransNo = (int)accSafeCash.AccTransNo;
                         newAccTransDetail.TransDate = accSafeCash.DocDate;
                         newAccTransDetail.TransSerial = 1;
-                        newAccTransDetail.MainCode = accSafeCash.MainCode;
-                        newAccTransDetail.SubCode = accSafeCash.SubCode;
+                        newAccTransDetail.MainCode = userCashNo.MainCode;
+                        newAccTransDetail.SubCode = userCashNo.SubCode;
                         newAccTransDetail.ValDep = ldValueEgy;
                         newAccTransDetail.ValCredit = 0;
                         newAccTransDetail.ValDepCur = accSafeCash.ValuePay;
@@ -396,6 +417,116 @@ namespace ProSoft.Core.Repositories.Treasury
                         newAccTransDetail.TransId = newAccTransMaster.TransId != 0 ? newAccTransMaster.TransId : 0;
 
                         await _Context.AddAsync(newAccTransDetail);
+                        await _Context.SaveChangesAsync();
+
+                        ///////////////Inserting Discount in accTransdetails
+                        List<CustCollectionsDiscount> custCollectionsDiscounts =await _Context.custCollectionsDiscounts.Where(obj=>obj.SafeCashId == accSafeCash.SafeCashId).ToListAsync();
+                            var totalDiscValue=0.0;
+                            var llSerial = 0;
+                            string lsCostCenterCodeC;
+                            var ldDiscValueAll= 0.0;
+
+                        if (custCollectionsDiscounts.Count !=0)
+                        {
+                            foreach (var item in custCollectionsDiscounts)
+                            {
+                                var lsMainCode = item.MainCode;
+                                var lsSubCode = item.SubCode;
+                                var ldDiscValue = item.DiscValue;
+                                totalDiscValue += (double)ldDiscValue;
+                                ldDiscValueAll =  totalDiscValue;
+                                var lsAccNameDepitC = await GetAccountName(item.MainCode, item.SubCode);
+                                llSerial ++;
+                                if ((item.MainCode).Substring(0, 1) == "1" || (item.MainCode).Substring(0, 1) == "2")
+                                {
+                                    lsCostCenterCodeC = null;
+                                }
+                                else
+                                {
+                                    lsCostCenterCodeC = accSafeCash.CostCenterCode.ToString();
+                                }
+
+                                //Inserting
+                                AccTransDetail newAccTransDetailC = new AccTransDetail();
+
+                                newAccTransDetailC.CoCode = accSafeCash.BranchId;
+                                newAccTransDetailC.FYear = accSafeCash.FYear;
+                                newAccTransDetailC.TransType = userJournalType.JournalCode.ToString();
+                                newAccTransDetailC.TransNo = (int)accSafeCash.AccTransNo;
+                                newAccTransDetailC.TransDate = accSafeCash.DocDate;
+                                newAccTransDetailC.TransSerial = llSerial;
+                                newAccTransDetailC.MainCode = item.MainCode;
+                                newAccTransDetailC.SubCode = item.SubCode;
+                                newAccTransDetailC.ValDep = ldDiscValue;
+                                newAccTransDetailC.ValCredit = 0;
+                                newAccTransDetailC.ValDepCur = ldDiscValue;
+                                newAccTransDetailC.ValCreditCur = 0;
+                                newAccTransDetailC.DocNo = accSafeCash.DocNo.ToString();
+                                newAccTransDetailC.DocStatus = null;
+                                newAccTransDetailC.DocDate = accSafeCash.DocDate;
+                                newAccTransDetailC.CostCenterCode = lsCostCenterCodeC;
+                                newAccTransDetailC.AccName = lsAccNameDepitC;
+                                newAccTransDetailC.LineDesc = lsCommentt;
+                                newAccTransDetailC.OkPost = "0";
+                                newAccTransDetailC.CurCode = accSafeCash.CurCode.ToString();
+                                newAccTransDetailC.DocCode = null;
+                                newAccTransDetailC.YearTransNo = lsYearTransNo;
+                                DateTime dpsDate3 = (DateTime)accSafeCash.DocDate;
+                                int monthNumber3 = dpsDate.Month;
+                                newAccTransDetailC.FMonth = monthNumber3;
+                                newAccTransDetailC.UserCode = accSafeCash.UserCode;
+                                newAccTransDetailC.EntryType = accSafeCash.EntryType;
+                                newAccTransDetailC.EntryDate = DateTime.Now;
+                                newAccTransDetailC.MCodeDtl = accSafeCash.MCodeDtl; ;
+                                newAccTransDetailC.TransId = newAccTransMaster.TransId != 0 ? newAccTransMaster.TransId : 0;
+                                await _Context.AddAsync(newAccTransDetailC);
+                            }
+                        }
+
+                        //Inserting
+                        string lsCostCenterCodeC_d;
+                        if ((accSafeCash.MainCode).Substring(0, 1) == "1" || (accSafeCash.MainCode).Substring(0, 1) == "2")
+                        {
+                            lsCostCenterCodeC_d = null;
+                        }
+                        else
+                        {
+                            lsCostCenterCodeC_d = accSafeCash.CostCenterCode.ToString();
+                        }
+                        AccTransDetail newAccTransDetailC_d = new AccTransDetail();
+
+                        newAccTransDetailC_d.CoCode = accSafeCash.BranchId;
+                        newAccTransDetailC_d.FYear = accSafeCash.FYear;
+                        newAccTransDetailC_d.TransType = userJournalType.JournalCode.ToString();
+                        newAccTransDetailC_d.TransNo = (int)accSafeCash.AccTransNo;
+                        newAccTransDetailC_d.TransDate = accSafeCash.DocDate;
+                        newAccTransDetailC_d.TransSerial = llSerial + 1;
+                        newAccTransDetailC_d.MainCode = accSafeCash.MainCode;
+                        newAccTransDetailC_d.SubCode = accSafeCash.SubCode;
+                        newAccTransDetailC_d.ValDep = 0;
+                        newAccTransDetailC_d.ValCredit = ldValueEgy + (decimal)ldDiscValueAll;
+                        newAccTransDetailC_d.ValDepCur = 0;
+                        newAccTransDetailC_d.ValCreditCur = accSafeCash.ValuePay;
+                        newAccTransDetailC_d.DocNo = accSafeCash.DocNo.ToString();
+                        newAccTransDetailC_d.DocStatus = null;
+                        newAccTransDetailC_d.DocDate = accSafeCash.DocDate;
+                        newAccTransDetailC_d.CostCenterCode = lsCostCenterCodeC_d;
+                        newAccTransDetailC_d.AccName = lsAccNameCredit;
+                        newAccTransDetailC_d.LineDesc = lsCommentt;
+                        newAccTransDetailC_d.OkPost = "0";
+                        newAccTransDetailC_d.CurCode = accSafeCash.CurCode.ToString();
+                        newAccTransDetailC_d.DocCode = null;
+                        newAccTransDetailC_d.YearTransNo = lsYearTransNo;
+                        DateTime dpsDate4 = (DateTime)accSafeCash.DocDate;
+                        int monthNumber4 = dpsDate.Month;
+                        newAccTransDetailC_d.FMonth = monthNumber4;
+                        newAccTransDetailC_d.UserCode = accSafeCash.UserCode;
+                        newAccTransDetailC_d.EntryType = accSafeCash.EntryType;
+                        newAccTransDetailC_d.EntryDate = DateTime.Now;
+                        newAccTransDetailC_d.MCodeDtl = accSafeCash.MCodeDtl; ;
+                        newAccTransDetailC_d.TransId = newAccTransMaster.TransId != 0 ? newAccTransMaster.TransId : 0;
+                        await _Context.AddAsync(newAccTransDetailC_d);
+
                         int result = await _Context.SaveChangesAsync(); //for return message after enhance method
                         if (result == 0)
                         {
@@ -405,8 +536,218 @@ namespace ProSoft.Core.Repositories.Treasury
                         {
                             return "Posting to Account Done."; 
 
-                            ///اللي عليه الدور ترحيل الخصومات وهسال هل لو الخصومات 
                         }     
+                    }
+                   
+                    //قيد اول مرة
+                    else
+                    {
+                        EF.Models.Shared.SystemTable systemTable = await _Context.SystemTables.FindAsync(2);
+
+                        int llDoc ;
+                        if (systemTable.SysValue ==1)
+                        {
+                             llDoc = (int)(await _Context.AccTransMasters.Where(obj => obj.CoCode == accSafeCash.BranchId && obj.FYear == accSafeCash.FYear && obj.TransType == userJournalType.JournalCode.ToString() && obj.FMonth == accSafeCash.FMonth).MaxAsync(obj=>obj.TransNo)) + 1;
+                        }
+                        else if (systemTable.SysValue == 2 || systemTable.SysValue == 3)
+                        {
+                             llDoc = (int)(await _Context.AccTransMasters.Where(obj => obj.CoCode == accSafeCash.BranchId && obj.FYear == accSafeCash.FYear && obj.TransType == userJournalType.JournalCode.ToString()).MaxAsync(obj => obj.TransNo)) + 1;
+                        }
+                        else
+                        {
+                            return "برجاء تحديد مسلسل الحركة شهري ام ثانوي اولا ثم اعد المحاولة";
+                        }
+                        var llSerial = 0;
+                        lsYearTransNo = accSafeCash.FYear + "_" + llDoc;
+                        
+                        //Istert AccTransMaster
+
+                        AccTransMaster newAccTransMaster = new AccTransMaster();
+                        newAccTransMaster.CoCode = accSafeCash.BranchId;
+                        newAccTransMaster.FYear = accSafeCash.FYear;
+                        newAccTransMaster.TransType = userJournalType.JournalCode.ToString();
+                        newAccTransMaster.TransNo = llDoc;
+                        newAccTransMaster.TransDate = accSafeCash.DocDate;
+                        newAccTransMaster.TransDesc = lsCommentt;
+                        newAccTransMaster.TotalTrans = ldValueEgy;
+                        newAccTransMaster.OkPost = "0";
+                        newAccTransMaster.CurCode = accSafeCash.CurCode.ToString();
+                        newAccTransMaster.CurRate = accSafeCash.Rate1;
+                        newAccTransMaster.YearTransNo = lsYearTransNo;
+                        DateTime dpsDate = (DateTime)accSafeCash.DocDate;
+                        int monthNumber = dpsDate.Month;
+                        newAccTransMaster.FMonth = monthNumber;
+                        newAccTransMaster.MCode = moduleId;
+                        newAccTransMaster.MCodeDtl = accSafeCash.MCodeDtl;
+                        newAccTransMaster.DocNo = accSafeCash.DocNo.ToString();
+                        newAccTransMaster.EntryDate = DateTime.Now;
+                        await _Context.AddAsync(newAccTransMaster);
+                        await _Context.SaveChangesAsync();
+                        /////////////////////////////////////////////////////
+                        if ((userCashNo.MainCode).Substring(0, 1) == "1" || (userCashNo.MainCode).Substring(0, 1) == "2")
+                        {
+                            lsCostCenterCode = null;
+                        }
+                        else
+                        {
+                            lsCostCenterCode = accSafeCash.CostCenterCode.ToString();
+                        }
+                        llSerial = 1;
+
+                        //Istert AccTransDetails
+
+                        AccTransDetail newAccTransDetail = new AccTransDetail();
+                        newAccTransDetail.CoCode = accSafeCash.BranchId;
+                        newAccTransDetail.FYear = accSafeCash.FYear;
+                        newAccTransDetail.TransType = userJournalType.JournalCode.ToString();
+                        newAccTransDetail.TransNo = llDoc;
+                        newAccTransDetail.TransDate = accSafeCash.DocDate;
+                        newAccTransDetail.TransSerial = llSerial;
+                        newAccTransDetail.MainCode = userCashNo.MainCode;
+                        newAccTransDetail.SubCode = userCashNo.SubCode;
+                        newAccTransDetail.ValDep = ldValueEgy;
+                        newAccTransDetail.ValCredit = 0;
+                        newAccTransDetail.ValDepCur = accSafeCash.ValuePay;
+                        newAccTransDetail.ValCreditCur = 0;
+                        newAccTransDetail.DocNo = accSafeCash.DocNo.ToString();
+                        newAccTransDetail.DocStatus = null;
+                        newAccTransDetail.DocDate = accSafeCash.DocDate;
+                        newAccTransDetail.CostCenterCode = lsCostCenterCode;
+                        newAccTransDetail.AccName = lsAccNameDept;
+                        newAccTransDetail.LineDesc = lsCommentt;
+                        newAccTransDetail.OkPost = "0";
+                        newAccTransDetail.CurCode = accSafeCash.CurCode.ToString();
+                        newAccTransDetail.DocCode = null;
+                        newAccTransDetail.YearTransNo = lsYearTransNo;
+                        DateTime dpsDate2 = (DateTime)accSafeCash.DocDate;
+                        int monthNumber2 = dpsDate.Month;
+                        newAccTransDetail.FMonth = monthNumber2;
+                        newAccTransDetail.UserCode = accSafeCash.UserCode;
+                        newAccTransDetail.EntryType = accSafeCash.EntryType;
+                        newAccTransDetail.EntryDate = DateTime.Now;
+                        newAccTransDetail.MCodeDtl = accSafeCash.MCodeDtl; ;
+                        newAccTransDetail.TransId = newAccTransMaster.TransId != 0 ? newAccTransMaster.TransId : 0;
+
+                        await _Context.AddAsync(newAccTransDetail);
+
+                        //Istert AccTransDetails Discount
+                        List<CustCollectionsDiscount> custCollectionsDiscounts = await _Context.custCollectionsDiscounts.Where(obj => obj.SafeCashId == accSafeCash.SafeCashId).ToListAsync();
+                        var totalDiscValue = 0.0;
+                        var llSeriall = 0;
+                        string lsCostCenterCodeC;
+                        var ldDiscValueAll = 0.0;
+                        if (custCollectionsDiscounts.Count != 0)
+                        {
+                            foreach (var item in custCollectionsDiscounts)
+                            {
+                                var lsMainCode = item.MainCode;
+                                var lsSubCode = item.SubCode;
+                                var ldDiscValue = item.DiscValue;
+                                totalDiscValue += (double)ldDiscValue;
+                                ldDiscValueAll = totalDiscValue;
+                                var lsAccNameDepitC = await GetAccountName(item.MainCode, item.SubCode);
+                                llSeriall++;
+                                if ((item.MainCode).Substring(0, 1) == "1" || (item.MainCode).Substring(0, 1) == "2")
+                                {
+                                    lsCostCenterCodeC = null;
+                                }
+                                else
+                                {
+                                    lsCostCenterCodeC = accSafeCash.CostCenterCode.ToString();
+                                }
+
+                                //Inserting
+                                AccTransDetail newAccTransDetailC = new AccTransDetail();
+
+                                newAccTransDetailC.CoCode = accSafeCash.BranchId;
+                                newAccTransDetailC.FYear = accSafeCash.FYear;
+                                newAccTransDetailC.TransType = userJournalType.JournalCode.ToString();
+                                newAccTransDetailC.TransNo = llDoc;
+                                newAccTransDetailC.TransDate = accSafeCash.DocDate;
+                                newAccTransDetailC.TransSerial = llSeriall;
+                                newAccTransDetailC.MainCode = item.MainCode;
+                                newAccTransDetailC.SubCode = item.SubCode;
+                                newAccTransDetailC.ValDep = ldDiscValue;
+                                newAccTransDetailC.ValCredit = 0;
+                                newAccTransDetailC.ValDepCur = ldDiscValue;
+                                newAccTransDetailC.ValCreditCur = 0;
+                                newAccTransDetailC.DocNo = accSafeCash.DocNo.ToString();
+                                newAccTransDetailC.DocStatus = null;
+                                newAccTransDetailC.DocDate = accSafeCash.DocDate;
+                                newAccTransDetailC.CostCenterCode = lsCostCenterCodeC;
+                                newAccTransDetailC.AccName = lsAccNameDepitC;
+                                newAccTransDetailC.LineDesc = lsCommentt;
+                                newAccTransDetailC.OkPost = "0";
+                                newAccTransDetailC.CurCode = accSafeCash.CurCode.ToString();
+                                newAccTransDetailC.DocCode = null;
+                                newAccTransDetailC.YearTransNo = lsYearTransNo;
+                                DateTime dpsDate3 = (DateTime)accSafeCash.DocDate;
+                                int monthNumber3 = dpsDate.Month;
+                                newAccTransDetailC.FMonth = monthNumber3;
+                                newAccTransDetailC.UserCode = accSafeCash.UserCode;
+                                newAccTransDetailC.EntryType = accSafeCash.EntryType;
+                                newAccTransDetailC.EntryDate = DateTime.Now;
+                                newAccTransDetailC.MCodeDtl = accSafeCash.MCodeDtl; ;
+                                newAccTransDetailC.TransId = newAccTransMaster.TransId != 0 ? newAccTransMaster.TransId : 0;
+                                await _Context.AddAsync(newAccTransDetailC);
+                            }
+                        }
+                        //Inserting
+                        string lsCostCenterCodeC_d;
+                        if ((accSafeCash.MainCode).Substring(0, 1) == "1" || (accSafeCash.MainCode).Substring(0, 1) == "2")
+                        {
+                            lsCostCenterCodeC_d = null;
+                        }
+                        else
+                        {
+                            lsCostCenterCodeC_d = accSafeCash.CostCenterCode.ToString();
+                        }
+                        AccTransDetail newAccTransDetailC_d = new AccTransDetail();
+
+                        newAccTransDetailC_d.CoCode = accSafeCash.BranchId;
+                        newAccTransDetailC_d.FYear = accSafeCash.FYear;
+                        newAccTransDetailC_d.TransType = userJournalType.JournalCode.ToString();
+                        newAccTransDetailC_d.TransNo = llDoc;
+                        newAccTransDetailC_d.TransDate = accSafeCash.DocDate;
+                        newAccTransDetailC_d.TransSerial = llSeriall + 1;
+                        newAccTransDetailC_d.MainCode = accSafeCash.MainCode;
+                        newAccTransDetailC_d.SubCode = accSafeCash.SubCode;
+                        newAccTransDetailC_d.ValDep = 0;
+                        newAccTransDetailC_d.ValCredit = ldValueEgy + (decimal)ldDiscValueAll;
+                        newAccTransDetailC_d.ValDepCur = 0;
+                        newAccTransDetailC_d.ValCreditCur = accSafeCash.ValuePay;
+                        newAccTransDetailC_d.DocNo = accSafeCash.DocNo.ToString();
+                        newAccTransDetailC_d.DocStatus = null;
+                        newAccTransDetailC_d.DocDate = accSafeCash.DocDate;
+                        newAccTransDetailC_d.CostCenterCode = lsCostCenterCodeC_d;
+                        newAccTransDetailC_d.AccName = lsAccNameCredit;
+                        newAccTransDetailC_d.LineDesc = lsCommentt;
+                        newAccTransDetailC_d.OkPost = "0";
+                        newAccTransDetailC_d.CurCode = accSafeCash.CurCode.ToString();
+                        newAccTransDetailC_d.DocCode = null;
+                        newAccTransDetailC_d.YearTransNo = lsYearTransNo;
+                        DateTime dpsDate4 = (DateTime)accSafeCash.DocDate;
+                        int monthNumber4 = dpsDate.Month;
+                        newAccTransDetailC_d.FMonth = monthNumber4;
+                        newAccTransDetailC_d.UserCode = accSafeCash.UserCode;
+                        newAccTransDetailC_d.EntryType = accSafeCash.EntryType;
+                        newAccTransDetailC_d.EntryDate = DateTime.Now;
+                        newAccTransDetailC_d.MCodeDtl = accSafeCash.MCodeDtl; ;
+                        newAccTransDetailC_d.TransId = newAccTransMaster.TransId != 0 ? newAccTransMaster.TransId : 0;
+                        await _Context.AddAsync(newAccTransDetailC_d);
+
+                        accSafeCash.AccTransNo = llDoc;
+                         _Context.Update(accSafeCash);
+                        int result = await _Context.SaveChangesAsync(); //for return message after enhance method
+                        if (result == 0)
+                        {
+                            return "Failed to post in Account.";
+                        }
+                        else
+                        {
+                            return "Posting to Account Done.";
+
+                        }
                     }
                 }
             }

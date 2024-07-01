@@ -25,7 +25,7 @@ namespace ProSoft.Core.Repositories.Accounts
         }
         public async Task<List<AccTransDetailViewDTO>> GetAccTransDetailAsync(int transId, int journalCode)
         {
-            List<AccTransDetail> accTransDetails = await _Context.AccTransDetails.Where(obj => obj.TransType == journalCode.ToString() &&obj.TransId==transId).ToListAsync();
+            List<AccTransDetail> accTransDetails = await _Context.AccTransDetails.Where(obj => obj.TransType == journalCode.ToString() && obj.TransId==transId).ToListAsync();
             var accTransDetailDTOs = new List<AccTransDetailViewDTO>();
             foreach (var item in accTransDetails)
             {
