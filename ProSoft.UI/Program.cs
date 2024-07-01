@@ -96,6 +96,7 @@ builder.Services.AddScoped<ICustomerRepo, CustomerRepo>();
 builder.Services.AddScoped<IStockEmpRepo, StockEmpRepo>();
 builder.Services.AddScoped<ITransMasterRepo, TransMasterRepo>();
 builder.Services.AddScoped<ITransDtlRepo, TransDtlRepo>();
+builder.Services.AddScoped<IOrderLimitRepo, OrderLimitRepo>();
 ///////////////// System /////////////
 builder.Services.AddScoped<IEisPostingRepo, EisPostingRepo>();
 ///////////////// Treasury /////////////

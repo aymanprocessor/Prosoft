@@ -12,21 +12,12 @@
     <div class="page-head d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 my-2">
         <div class="d-flex align-items-center flex-column flex-md-row w-50">
             <label for="stocks" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0" style="width: 100px">@localizer["Stock"]</label>
-            <select id="stocks" asp-items="stocks" class="form-control text-center w-100" onchange="getUserPermissionsForStock(event)">
+            <select id="stocks" asp-items="stocks" class="form-control text-center w-100" onchange="getOrderLimits(event)">
                 <option value="">-- Choose --</option>
             </select>
         </div>
-@*         <div class="d-flex align-items-center flex-column flex-md-row w-50">
-            <label for="permissions" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Permissions"]</label>
-            <select id="permissions" class="form-control text-center w-100" onchange="getPermissionsInStock(event)">
-                <option value="">-- Choose --</option>
-            </select>
-        </div> *@
-@*         <a onclick="goToAddPermissionForm(event, 'permissions', 'stocks')" class="btn btn-sm btn-primary fs-6" style="width:150px">
-            @localizer["Add Permission Form"]
-        </a> *@
     </div>
-    <div class="page-head d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 my-2">
+    <div class="page-head d-flex justify-content-between align-items-center flex-column flex-md-row gap-2 my-2">
         <div class="d-flex align-items-center flex-column flex-md-row w-50">
             <label for="fromItem" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0" style="width: 100px">@localizer["From Item"]</label>
             <input id="fromItem" class="form-control text-center w-100" />
@@ -35,8 +26,9 @@
             <label for="toItem" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0" style="width: 100px">@localizer["To Item"]</label>
             <input id="toItem" class="form-control text-center w-100" />
         </div>
+        <button class="btn btn-primary" style="width: 150px">@localizer["Search"]</button>
     </div>
-    <div class="page-head d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 my-2">
+    <div class="page-head d-flex justify-content-between align-items-center flex-column flex-md-row gap-2 my-2">
         <div class="d-flex align-items-center flex-column flex-md-row w-50">
             <label for="fromDate" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0" style="width: 100px">@localizer["From Date"]</label>
             <input id="fromDate" type="date" class="form-control text-center w-100" />
@@ -45,10 +37,11 @@
             <label for="toDate" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0" style="width: 100px">@localizer["To Date"]</label>
             <input id="toDate" type="date" class="form-control text-center w-100" />
         </div>
+        <button class="btn btn-primary" style="width: 150px">@localizer["Search"]</button>
     </div>
     <div class="page-head d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 my-2">
         <div class="d-flex align-items-center flex-column flex-md-row w-50 gap-2">
-            <input id="fromDate" type="number" class="form-control text-center w-100" />
+            <input id="fromDate" type="text" class="form-control text-center w-100" />
             <button class="btn btn-primary" style="width: 150px">@localizer["Code Search"]</button>
         </div>
         <div class="d-flex align-items-center flex-column flex-md-row w-50 gap-2">
@@ -87,3 +80,13 @@
     </div>
 </div>
 
+@section Scripts {
+    <script>
+        function getOrderLimits(e) {
+            let stock = e.target;
+            let dateFrom = document.getElementById("fromDate");
+            let dateTo = document.getElementById("toDate");
+            console.log(dateFrom.value == "");
+        }
+    </script>
+}
