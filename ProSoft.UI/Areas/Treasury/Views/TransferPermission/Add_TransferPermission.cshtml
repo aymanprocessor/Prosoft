@@ -8,6 +8,7 @@
     SelectList gtables = new SelectList(Model.gTablels, "GCode", "GDesc");
     SelectList costCenters = new SelectList(Model.costCenters, "CostCode", "CostDesc");
     SelectList safeNames = new SelectList(Model.treasuryNames, "SafeCode", "SafeNames");
+    SelectList safeNames2 = new SelectList(Model.treasuryNames2, "SafeCode", "SafeNames");
     SelectList accGlobalDef = new SelectList(Model.accGlobalDefs, "CodeNo", "CodeDesc");
     SelectList mainAccCodes = new SelectList(Model.accMainCodes, "MainCode", "MainName");
     // SelectList subAccCodes = new SelectList(Model.SubAccCodes, "SubCode", "SubName");
@@ -114,7 +115,7 @@
                     <label asp-for="AprovedFlag"></label>
                     <select asp-for="AprovedFlag" class="form-control text-center">
                         <option value="NO">@localizer["No"]</option>
-                        <option value="APR">@localizer["Yes"]</option>
+                        <option value="APP">@localizer["Yes"]</option>
                     </select>
                     <span asp-validation-for="AprovedFlag" class="text-danger"></span>
                 </div>
@@ -126,7 +127,7 @@
                 <div class="parent-permission d-flex justify-content-center gap-3" style="width: 100% !important;">
                     <div class="mb-3 " style="width: 100% !important;">
                         <label asp-for="SafeCode2">@localizer["To Treasury"]</label>
-                        <select asp-for="SafeCode2" asp-items="safeNames" class="form-control text-center">
+                        <select asp-for="SafeCode2" asp-items="safeNames2" class="form-control text-center">
                             <option value="">-- Choose --</option>
                         </select>
                         <span asp-validation-for="SafeCode2" class="text-danger"></span>

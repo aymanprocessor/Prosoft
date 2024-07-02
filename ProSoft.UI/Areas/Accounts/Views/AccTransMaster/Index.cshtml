@@ -352,7 +352,7 @@
                             <td class="align-middle">${item.docNo}</td>
                             <td class="align-middle">${DocDate}</td>
                             <td class="align-middle">${item.lineDesc}</td>
-                                 <td class="text-center ">
+                                 <td class="text-center" width="30%">
                                      <a href="/Accounts/AccTransDetail/Edit_AccTransDetail/${item.transDtlId}" class="btn btn-sm  ${editStyle} mb-1  fs-6" style="width:150px;${style}">
                                         <i class="bi bi-pencil"></i> @localizer["Edit"]
                                     </a>
@@ -390,13 +390,13 @@
                     dataForSum.innerHTML =
                         `
                                 <td colspan="2" style="text-align: center;">@localizer["The Sum"]</td>
-                                <td style="background-color: #e6dfdf;border:1px solid White;">${valDepSum}</td>
-                                <td style="background-color: #e6dfdf;">${valCreditSum}</td>
+                                    <td style="background-color: #e6dfdf;border:1px solid White;">${valDepSum.toFixed(2)}</td>
+                                    <td style="background-color: #e6dfdf;">${valCreditSum.toFixed(2)}</td>
                                 <td class="align-middle" colspan="4"></td>
                              `;
                     acctransDtls.appendChild(dataForSum);
                     ///////////////////////////////////////////////////////////
-                    var diffrent = valDepSum - valCreditSum;
+                    var diffrent = valDepSum.toFixed(2) - valCreditSum.toFixed(2);
 
                     //DeletedAllDetail
                     if (diffrent != 0) {

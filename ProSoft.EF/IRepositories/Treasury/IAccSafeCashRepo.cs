@@ -22,6 +22,7 @@ namespace ProSoft.EF.IRepositories.Treasury
         Task<AccSafeCashEditAddDTO> GetAccSafeCashByIdAsync(int id,int userCode);
         Task<string> EditAccSafeCashAsync(int id, AccSafeCashEditAddDTO accSafeCashDTO);
         Task<bool> HasRelatedDataAsync(int id, string doctype);
-        Task<string> PostingToAcctrans(AccSafeCash accSafeCash);
+        Task<string> PostingToAcctrans_PaymentReceipt(AccSafeCash accSafeCash);
+        Task<string> PostingToAcctrans_DisbursementPermission(AccSafeCash accSafeCash);
     }
 }

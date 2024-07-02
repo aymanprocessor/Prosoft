@@ -100,6 +100,7 @@ namespace ProSoft.EF.DTOs.Treasury
         public List<GTablelDTO>? gTablels { get; set; }
         public List<CostCenterViewDTO>? costCenters { get; set; }
         public List<TreasuryNameViewDTO>? treasuryNames { get; set; }
+        public List<TreasuryNameViewDTO>? treasuryNames2 { get; set; }
         public List<AccGlobalDefDTO>? accGlobalDefs { get; set; }
         public List<AccMainCodeDTO>? accMainCodes { get; set; }
         public List<AccSubCodeDTO>? accSubCodes { get; set; }
