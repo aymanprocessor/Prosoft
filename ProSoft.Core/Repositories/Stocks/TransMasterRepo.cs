@@ -27,8 +27,7 @@ namespace ProSoft.Core.Repositories.Stocks
     public class TransMasterRepo : Repository<TransMaster, int>, ITransMasterRepo
     {
         private readonly IMapper _mapper;
-        public TransMasterRepo(AppDbContext Context, IMapper mapper,
-            IUserTransRepo userTransRepo) : base(Context)
+        public TransMasterRepo(AppDbContext Context, IMapper mapper) : base(Context)
         {
             _mapper = mapper;
         }
@@ -145,6 +144,10 @@ namespace ProSoft.Core.Repositories.Stocks
                     permFormDTO.SupplierName = (await _Context.SupCodes
                         .FirstOrDefaultAsync(obj => obj.SupCode1 == permissionForm.SupNo)).SupName;
                 }
+                StockEmp stockTrans = await _Context.StockEmps.FirstOrDefaultAsync(obj => 
+                    obj.Stkcod == permissionForm.StockCode && obj.TransType == permissionForm.TransType &&
+                    obj.UserId == permFormDTO.UserCode);
+                permFormDTO.ShowTransPrice = (int)stockTrans.ShowPrice;
                 return permFormDTO;
             }
             return null;

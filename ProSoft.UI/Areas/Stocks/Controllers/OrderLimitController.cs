@@ -29,7 +29,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         {
             var branchID = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
             List<ItmReorderDTO> orderLimitDTOs = await _orderLimitRepo.GetItemsLimitsAsync(date1, date2, stockID, branchID);
-            return View();
+            return Json(orderLimitDTOs);
         }
     }
 }
