@@ -31,8 +31,9 @@ namespace ProSoft.Core.Repositories.Stocks
             {
                 if (item.ItemMaster is not (null or ""))
                 {
-                    item.ItemMasterName = (await _Context.SubItems
-                        .FirstOrDefaultAsync(obj => obj.SubId.ToString() == item.ItemMaster)).SubName;
+                    SubItem subItem = await _Context.SubItems
+                        .FirstOrDefaultAsync(obj => obj.SubId.ToString() == item.ItemMaster);
+                    item.ItemMasterName = subItem != null ? subItem.SubName : "";
                 }
                 if (item.UnitCode != 0)
                 {
@@ -50,7 +51,7 @@ namespace ProSoft.Core.Repositories.Stocks
 
             List<ItemBatch> batchList = await _Context.ItemBatches.Where(obj =>
                 obj.StockCode == transMAster.StockCode && obj.TransN == transMAster.DocNo &&
-                obj.ItemMaster == itemMaster.ToString() && obj.Serial == serial && obj.FYear == transMAster.FYear)
+                obj.ItemMaster == itemMaster.ToString() && obj.FYear == transMAster.FYear)
                 .ToListAsync();
             if(batchList.Count == 0)
             {
@@ -114,8 +115,10 @@ namespace ProSoft.Core.Repositories.Stocks
             newItemBatch.ItmBatchMax = long.Parse(ls_maxSer_max);
             newItemBatch.BranchId = transDtl.BranchId;
             newItemBatch.UserCodeModify = transDtl.UserCode;
+            newItemBatch.Serial = (int)transDtl.Serial;
 
             await _Context.AddAsync(newItemBatch);
+            transDtl.ItmBarcode = newItemBatch.ItmBatch;
         }
 
         ////////////////////////////////////////////////////////////////////////////
@@ -267,7 +270,10 @@ namespace ProSoft.Core.Repositories.Stocks
                         await _Context.AddAsync(itemHistory);
                     }
                     foreach (var item in itemBatchesToRemove)
+                    {
                         _Context.Remove(item);
+                        await SaveChangesAsync();
+                    }
 
                     await InsertItemBatchAsync(transDtl);
                 }
