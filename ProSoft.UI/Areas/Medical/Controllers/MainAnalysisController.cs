@@ -9,7 +9,7 @@ using ProSoft.EF.Models.Medical.Analysis;
 namespace ProSoft.UI.Areas.Medical.Controllers
 {
     [Authorize]
-    [Area("Medical")]
+    [Area(nameof(Medical))]
     public class MainAnalysisController : Controller
     {
         private readonly IMainRepo _mainRepo;

@@ -6,7 +6,7 @@
     Layout = "_Layout";
     var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
 
-    var subItems = new SelectList(Model.SubItems, "SubId", "SubName");
+    var subItems = new SelectList(Model.SubItems, "ItemCode", "SubName");
     var unitCodes = new SelectList(Model.UnitCodes, "Code", "Names");
     var itemStatusList = new SelectList(Model.ItemStatusList, "Code", "Names");
 }
@@ -24,7 +24,7 @@
             <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
                 <div class="mb-3" style="width: 33%;">
                     <label asp-for="ItemMaster" class="text-center" style="width: 45%;"></label>
-                    <select asp-for="ItemMaster" asp-items="subItems" class="form-control text-center" style="width: 78%;" onchange="getBarCode(event)">
+                    <select asp-for="ItemMaster" asp-items="subItems" class="form-control text-center" style="width: 78%;">
                         <option value="">-- Choose --</option>
                     </select>
                     <span asp-validation-for="ItemMaster" class="text-danger"></span>
@@ -76,20 +76,3 @@
         </div>
     </form>
 </div>
-
-@section Scripts {
-    <script>
-        function getBarCode(e) {
-            let itemMaster = e.target.value;
-
-            if (itemMaster) {
-                $.ajax({
-                    url: `/Stocks/PermissionFormDetails/GetBarCode?transMAsterID=${@Model.TransMasterID}&serial=${@Model.Serial}&itemMaster=${itemMaster}`,
-                    success: function (result) {
-                        document.getElementById("ItmBarcode").value = result;
-                    }
-                });
-            }
-        }
-    </script>
-}

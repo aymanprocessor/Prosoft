@@ -527,6 +527,21 @@
   "Customer/Side": "Customer/Side",
   "Net Value": "Net Value",
   "Doctor Fees from patient sending during period": "Doctor Fees from patient sending during period",
+  "Opening Balances": "Opening Balances",
+  "Main Account Code": "Main Account Code",
+  "Sub Account Code": "Sub Account Code",
+  "Payment Receipts Cash": "Payment Receipts Cash",
+  "Receive Permissions Cash": "Receive Permissions Cash",
+  "Disbursement permissions Cash": "Disbursement permissions Cash",
+  "Transfer Permissions Cash": "Add Transfer Permissions Cash",
+  "Add Payment Receipt Cash": "Add Payment Receipt Cash",
+  "Add Receive Permission Cash": "Add Receive Permission Cash",
+  "Add Disbursement permission Cash": "Add Disbursement permission Cash",
+  "Add Transfer Permission Cash": "Add Transfer Permission Cash",
+  "Edit Payment Receipt Cash": "Edit Payment Receipt Cash",
+  "Edit Receive Permission Cash": "Edit Receive Permission Cash",
+  "Edit Disbursement permission Cash": "Edit Disbursement permission Cash",
+  "Edit Transfer Permission Cash": "Edit Transfer Permission Cash",
 
 
 
@@ -770,4 +785,7 @@
   "Max Quantity": "Max Quantity",
   "Min Quantity": "Min Quantity",
   "Search": "Search",
+  "You Can't Delete it because of Posting To Accounts": "You Can't Delete it because of Posting To Accounts",
+  "This Permission is approved": "This Permission is approved",
+  "Shipped from / to": "Shipped from / to"
 }

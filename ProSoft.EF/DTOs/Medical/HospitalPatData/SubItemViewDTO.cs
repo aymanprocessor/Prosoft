@@ -10,5 +10,6 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
     {
         public int SubId { get; set; }
         public string SubName { get; set; }
+        public string ItemCode { get; set; }
     }
 }

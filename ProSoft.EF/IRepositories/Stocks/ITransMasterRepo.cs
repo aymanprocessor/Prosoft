@@ -17,7 +17,9 @@ namespace ProSoft.EF.IRepositories.Stocks
         Task<List<PermissionDefViewDTO>> GetUserPermissionsForStockAsync(int userCode, int stockID);
         Task<List<TransMasterViewDTO>> GetPermissionsFormsAsync(int stockID, int transType);
         Task<bool> CheckForDetailsAsync(int transMAsterID);
+        Task<int> IfPossibleToDeleteAsync(int transMAsterID);
         Task ApprovePermissionAsync(int transMAsterID);
+        Task DeletePermissionFormAsync(int transMAsterID);
         Task<TransMasterViewDTO> GetForViewAsync(TransMaster permissionForm);
         // Add Permission Form
         Task<TransMasterEditAddDTO> GetNewTransMasterAsync(int stockID, int userCode, int uniqueType);
@@ -29,6 +31,10 @@ namespace ProSoft.EF.IRepositories.Stocks
         Task<TransMasterEditAddDTO> GetNewDisburseOrConvertFormAsync(int stockID, int userCode, int uniqueType, int branchID);
         Task<TransMaster> AddDisburseOrConvertFormAsync(TransMasterEditAddDTO permissionFormDTO);
         Task UpdateDisburseOrConvertFormAsync(int id, TransMasterEditAddDTO permissionFormDTO);
+        //////////////////////////////////////////////////
+        // Stock Receive Permission => اذن استلام من مخزن
+        Task<TransMasterEditAddDTO> GetStockReceiveFormByIdAsync(int transMasterID);
+        Task UpdateStockReceiveFormAsync(int id, TransMasterEditAddDTO permissionFormDTO);
         //////////////////////////////////////////////////
         // Sales Invoice => فاتورة مبيعات
         Task<TransMasterEditAddDTO> GetSalesInvoiceByIdAsync(int transMasterID);

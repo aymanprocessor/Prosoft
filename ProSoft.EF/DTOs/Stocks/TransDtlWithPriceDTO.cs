@@ -14,6 +14,7 @@ namespace ProSoft.EF.DTOs.Stocks
         public int TransDtlId { get; set; }
         public int TransMasterID { get; set; }
         public long? Serial { get; set; }
+        public int TransType { get; set; }
 
         [DisplayName("The Item")]
         [Required(ErrorMessage = "The field is required")]
@@ -63,7 +64,6 @@ namespace ProSoft.EF.DTOs.Stocks
         //public short? StockCode { get; set; }
 
         //[Column("TRANS_TYPE")]
-        //public int? TransType { get; set; }
 
         //[Column("DOC_NO")]
         //public long? DocNo { get; set; }

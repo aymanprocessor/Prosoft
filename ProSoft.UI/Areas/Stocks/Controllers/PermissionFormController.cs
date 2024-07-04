@@ -6,6 +6,7 @@ using ProSoft.EF.DTOs.Shared;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.IRepositories;
 using ProSoft.EF.IRepositories.Stocks;
+using ProSoft.EF.Models.Accounts;
 using ProSoft.EF.Models.Stocks;
 
 namespace ProSoft.UI.Areas.Stocks.Controllers
@@ -18,6 +19,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         private readonly ITransMasterRepo _transMasterRepo;
         private readonly IUserRepo _userRepo;
         private readonly IMapper _mapper;
+
         public PermissionFormController(IUserTransRepo userTransRepo,
             ITransMasterRepo transMasterRepo, IUserRepo userRepo, IMapper mapper)
         {
@@ -109,16 +111,22 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             }
             return View(permissionFormDTO);
         }
+        
+        public async Task<IActionResult> IfPossibleToDelete(int id)
+        {
+            // flag == 1 => لا يجوز الحذف بسبب الترحيل للحسابات
+            // flag == 2 => لا يجوز الحذف بسبب عدم الاعتماد
+            // flag == 3 => يتم الحذف
+            int flag = await _transMasterRepo.IfPossibleToDeleteAsync(id);
+            return Json(flag);
+        }
 
         // Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete_PermissionForm(int id)
         {
-            TransMaster permissionForm = await _transMasterRepo.GetByIdAsync(id);
-
-            await _transMasterRepo.DeleteAsync(permissionForm);
-            await _transMasterRepo.SaveChangesAsync();
+            await _transMasterRepo.DeletePermissionFormAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
@@ -201,26 +209,26 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         //}
 
         // Get Edit
-        //public async Task<IActionResult> Edit_StockReceivePermission(int id)
-        //{
-        //    TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetDisburseOrConvertFormByIdAsync(id);
-        //    return View(permissionFormDTO);
-        //}
+        public async Task<IActionResult> Edit_StockReceivePermission(int id)
+        {
+            TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetDisburseOrConvertFormByIdAsync(id);
+            return View(permissionFormDTO);
+        }
 
         // Post Edit
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit_StockReceivePermission(int id, TransMasterEditAddDTO permissionFormDTO)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        permissionFormDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
-        //        permissionFormDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
-        //        await _transMasterRepo.UpdateDisburseOrConvertFormAsync(id, permissionFormDTO);
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(permissionFormDTO);
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit_StockReceivePermission(int id, TransMasterEditAddDTO permissionFormDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                permissionFormDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
+                permissionFormDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
+                await _transMasterRepo.UpdateStockReceiveFormAsync(id, permissionFormDTO);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(permissionFormDTO);
+        }
 
         //////////////////////////////////////////////////
         // Sales Invoice => فاتورة مبيعات
