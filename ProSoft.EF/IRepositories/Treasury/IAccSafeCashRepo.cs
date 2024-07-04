@@ -16,6 +16,7 @@ namespace ProSoft.EF.IRepositories.Treasury
         Task<List<AccSafeCashViewDTO>> GetAccSafeCashAsync(string docType, string flagType, int fYear ,int safeCode);
        // Task<int> GetNewIdAsync();
         Task<int> GetNewSerialAsync(string docType, int safeCode, int fYear);
+        Task<UserCashNoEditAddDTO> GetMainSubForSafe(int safeCode);
         Task<List<AccSubCodeDTO>> GetSubCodesFromAccAsync(string mainAccCode);
         Task<AccSafeCashEditAddDTO> GetEmptyAccSafeCashAsync(int userCode);
         Task<string> AddAccSafeCashAsync(AccSafeCashEditAddDTO accSafeCashDTO);

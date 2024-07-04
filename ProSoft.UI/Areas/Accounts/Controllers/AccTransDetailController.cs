@@ -48,11 +48,12 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
         }
 
         //Get Edit
-        public async Task<IActionResult> Edit_AccTransDetail(int id)
+        public async Task<IActionResult> Edit_AccTransDetail(int id, int tranMaster)
         {
             AccTransDetailEditAddDTO accTransDetailDTO = await _accTransDetailRepo.GetAccTransDetailByIdAsync(id);
             ViewBag.userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
-
+            ViewBag.valDepSum = await _accTransDetailRepo.GetValDep(tranMaster);
+            ViewBag.valCreditSum = await _accTransDetailRepo.GetValCredit(tranMaster);
             return View(accTransDetailDTO);
         }
 
@@ -64,7 +65,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             if (ModelState.IsValid)
             {
                 await _accTransDetailRepo.EditAccTransDetailAsync(id, accTransDetailDTO);
-                return RedirectToAction("Index", "AccTransMaster", new { journalCode = accTransDetailDTO.TransType });
+                return RedirectToAction("Add_AccTransDetail", "AccTransDetail", new { id = accTransDetailDTO.TransId, tranMaster = accTransDetailDTO.TransId });
             }
             return View(accTransDetailDTO);
         }

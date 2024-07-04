@@ -166,7 +166,7 @@
     </div>
     @* /////////////////////////////////////////////////////////////////// *@
 
-    @* Table for PatAdmissions *@
+    @* Table for accTransDtl *@
 
     <div class="accTransDtl-table-head d-flex justify-content-between align-items-center mt-4">
         <h2 class="header accTrans-Dtl">@localizer["Terms of Voucher"]</h2>
@@ -353,7 +353,7 @@
                             <td class="align-middle">${DocDate}</td>
                             <td class="align-middle">${item.lineDesc}</td>
                                  <td class="text-center" width="30%">
-                                     <a href="/Accounts/AccTransDetail/Edit_AccTransDetail/${item.transDtlId}" class="btn btn-sm  ${editStyle} mb-1  fs-6" style="width:150px;${style}">
+                             <a href="/Accounts/AccTransDetail/Edit_AccTransDetail/${item.transDtlId}?tranMaster=${id}" class="btn btn-sm  ${editStyle} mb-1  fs-6" style="width:150px;${style}">
                                         <i class="bi bi-pencil"></i> @localizer["Edit"]
                                     </a>
                                   <form action="/Accounts/AccTransDetail/Delete_AccTransDetail" method="post" class="d-inline ms-1">

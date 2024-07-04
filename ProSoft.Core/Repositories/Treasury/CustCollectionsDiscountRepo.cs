@@ -95,7 +95,16 @@ namespace ProSoft.Core.Repositories.Treasury
                 custCollectionsDiscount.DocType = accsafeCheck.TranType;
                 custCollectionsDiscount.SafeCode = accsafeCheck.SafeCode;
             }
-            else 
+            else if (custCollectionsDiscount.DocType == "SFTIN")
+            {
+                var accsafeCheck = await _Context.AccSafeChecks.FirstOrDefaultAsync(obj => obj.SafeCeckId == id && obj.TranType == custCollectionsDiscountDTO.DocType);
+                custCollectionsDiscount.ReceiptNo = accsafeCheck.DocNo;
+                custCollectionsDiscount.ReceiptDate = accsafeCheck.DocDate;
+                custCollectionsDiscount.FYear = accsafeCheck.FYear;
+                custCollectionsDiscount.DocType = accsafeCheck.TranType;
+                custCollectionsDiscount.SafeCode = accsafeCheck.SafeCode;
+            }
+            else if (custCollectionsDiscount.DocType == "SFTOT")
             {
                 var accSafeCash = await _Context.AccSafeCashes.FirstOrDefaultAsync(obj => obj.SafeCashId == id);
                 custCollectionsDiscount.ReceiptNo = accSafeCash.DocNo;
@@ -103,10 +112,22 @@ namespace ProSoft.Core.Repositories.Treasury
                 custCollectionsDiscount.FYear = accSafeCash.FYear;
                 custCollectionsDiscount.DocType = accSafeCash.DocType;
                 custCollectionsDiscount.SafeCode = accSafeCash.SafeCode;
+                await _Context.AddAsync(custCollectionsDiscount);
+                await _Context.SaveChangesAsync();
+                //تحول للاستلام
+                CustCollectionsDiscount custCollectionsDiscountForRecieve = _mapper.Map<CustCollectionsDiscount>(custCollectionsDiscount);
+                custCollectionsDiscountForRecieve.DocType = "SFTIN";
+                custCollectionsDiscountForRecieve.SafeCode = accSafeCash.SafeCode2;
+                custCollectionsDiscountForRecieve.SafeCashId = id-1;
+                custCollectionsDiscountForRecieve.DiscountCode = null;
+                await _Context.AddAsync(custCollectionsDiscountForRecieve);
+                await _Context.SaveChangesAsync();
             }
-
-            await _Context.AddAsync(custCollectionsDiscount);
-            await _Context.SaveChangesAsync();
+            if (custCollectionsDiscount.DocType == "SFTOT" || custCollectionsDiscount.DocType == "SFOUT")
+            {
+                await _Context.AddAsync(custCollectionsDiscount);
+                await _Context.SaveChangesAsync();    
+            }
         }
         public async  Task<CustCollectionsDiscountEditAddDTO> GetcustCollectionsDiscountByIdAsync(int id)
         {
@@ -143,6 +164,15 @@ namespace ProSoft.Core.Repositories.Treasury
         {
             CustCollectionsDiscount custCollectionsDiscount = _DbSet.Find(id);
             _mapper.Map(custCollectionsDiscountDTO, custCollectionsDiscount);
+            if (custCollectionsDiscountDTO.DocType =="SFTOT")
+            {
+                CustCollectionsDiscount custCollectionsDiscountForRecieve = _mapper.Map<CustCollectionsDiscount>(custCollectionsDiscountDTO);
+                custCollectionsDiscountForRecieve.DocType = "SFTIN";
+                custCollectionsDiscountForRecieve.DiscountCode = custCollectionsDiscountDTO.DiscountCode - 1;//الخاص بالاستلام  id عشان اجيب ال 
+            //  custCollectionsDiscountForRecieve.SafeCode = accSafeCash.SafeCode2; //عشان اعرض في الاستلام الخزينة اللي هيتحول ليها
+                _Context.Update(custCollectionsDiscountForRecieve);
+                await _Context.SaveChangesAsync();
+            }
             _Context.Update(custCollectionsDiscount);
             await _Context.SaveChangesAsync();
         }

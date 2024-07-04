@@ -68,9 +68,30 @@
 
             <div class="parent d-flex justify-content-md-center gap-2">
                 <button type="submit" class="btn btn-success" style="width:150px">@localizer["Save Changes"]</button>
-                <a asp-controller="CustCollectionsDiscount" asp-action="Index" asp-route-Id="@Model.SafeCashId" class="btn btn-secondary" style="width:150px">
-                    @localizer["Cancel"]
-                </a>
+                @if (Model.DocType == "SFCIN")
+                {
+                    <a asp-controller="AccSafeCash" asp-action="Index" asp-route-docType="@Model.DocType" asp-route-flagType="oneANDtwo" class="btn btn-secondary" style="width:150px">
+                        @localizer["Cancel"]
+                    </a>
+                }
+                else if (Model.DocType== "SFCOT")
+                {
+                    <a asp-controller="DisbursementPermission" asp-action="Index" asp-route-docType="@Model.DocType" asp-route-flagType="oneANDtwo" class="btn btn-secondary" style="width:150px">
+                        @localizer["Cancel"]
+                    </a>
+                }
+                else if (Model.DocType== "SFTIN")
+                {
+                    <a asp-controller="ReceivePermission" asp-action="Index" asp-route-docType="@Model.DocType" asp-route-flagType="oneANDtwoAndthree" class="btn btn-secondary" style="width:150px">
+                        @localizer["Cancel"]
+                    </a>
+                }
+                else if (Model.DocType == "SFTOT")
+                {
+                    <a asp-controller="TransferPermission" asp-action="Index" asp-route-docType="@Model.DocType" asp-route-flagType="oneANDtwoAndthree" class="btn btn-secondary" style="width:150px">
+                        @localizer["Cancel"]
+                    </a>
+                }
             </div>
         </div>
     </form>

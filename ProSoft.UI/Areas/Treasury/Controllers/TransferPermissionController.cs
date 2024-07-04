@@ -77,6 +77,7 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
         //Get Add
         public async Task<IActionResult> Add_TransferPermission(string docType, int safeCode, int fYear)
         {
+
             // ViewBag.AccSafeCashID = await _accSafeCashRepo.GetNewIdAsync();
             ViewBag.SerialID = await _accSafeCashRepo.GetNewSerialAsync(docType, safeCode, fYear);
             var userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);

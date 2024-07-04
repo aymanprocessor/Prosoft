@@ -22,7 +22,7 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
             List<CustCollectionsDiscountViewDTO> custCollectionsDiscounts = await _custCollectionsDiscountRepo.GetAllCustCollectionsDiscountAsync(id, docType);
             ViewBag.SafeCashID = id;
             ViewBag.docType = docType;
-            return View(custCollectionsDiscounts);
+            return Json(custCollectionsDiscounts);
         }
 
         // Get Add
@@ -44,7 +44,22 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
             {
                 custCollectionsDiscountDTO.SafeCashId = id;
                 await _custCollectionsDiscountRepo.AddcustCollectionsDiscountAsync(id,custCollectionsDiscountDTO);
-                return RedirectToAction(nameof(Index),new {id, docType = custCollectionsDiscountDTO.DocType});
+                if (custCollectionsDiscountDTO.DocType == "SFCIN")
+                {
+                  return RedirectToAction("Index", "AccSafeCash", new {docType = custCollectionsDiscountDTO.DocType, flagType = "oneANDtwo" }); 
+                }
+                else if (custCollectionsDiscountDTO.DocType == "SFCOT")
+                {
+                    return RedirectToAction("Index", "DisbursementPermission", new { docType = custCollectionsDiscountDTO.DocType, flagType = "oneANDtwo" });
+
+                }
+                else if (custCollectionsDiscountDTO.DocType == "SFTIN")
+                {
+                    return RedirectToAction("Index", "ReceivePermission", new { docType = custCollectionsDiscountDTO.DocType, flagType = "oneANDtwoAndthree" });
+
+                }
+                return RedirectToAction("Index", "TransferPermission", new { docType = custCollectionsDiscountDTO.DocType, flagType = "oneANDtwoAndthree" });
+
             }
             return View(custCollectionsDiscountDTO);
         }
@@ -67,7 +82,21 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
             if (ModelState.IsValid)
             {
                 await _custCollectionsDiscountRepo.EditcustCollectionsDiscountAsync(id, custCollectionsDiscountDTO);
-                return RedirectToAction(nameof(Index), new { id = custCollectionsDiscountDTO.SafeCashId, docType = custCollectionsDiscountDTO.DocType });
+                if (custCollectionsDiscountDTO.DocType == "SFCIN")
+                {
+                    return RedirectToAction("Index", "AccSafeCash", new { docType = custCollectionsDiscountDTO.DocType, flagType = "oneANDtwo" });
+                }
+                else if (custCollectionsDiscountDTO.DocType == "SFCOT")
+                {
+                    return RedirectToAction("Index", "DisbursementPermission", new { docType = custCollectionsDiscountDTO.DocType, flagType = "oneANDtwo" });
+
+                }
+                else if (custCollectionsDiscountDTO.DocType == "SFTIN")
+                {
+                    return RedirectToAction("Index", "ReceivePermission", new { docType = custCollectionsDiscountDTO.DocType, flagType = "oneANDtwoAndthree" });
+
+                }
+                return RedirectToAction("Index", "TransferPermission", new { docType = custCollectionsDiscountDTO.DocType, flagType = "oneANDtwoAndthree" });
             }
             return View(custCollectionsDiscountDTO);
         }
@@ -81,7 +110,22 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
 
             await _custCollectionsDiscountRepo.DeleteAsync(custCollectionsDiscount);
             await _custCollectionsDiscountRepo.SaveChangesAsync();
-            return RedirectToAction(nameof(Index) ,new {id = custCollectionsDiscount.SafeCashId, docType = custCollectionsDiscount.DocType });
+            if (custCollectionsDiscount.DocType == "SFCIN")
+            {
+                return RedirectToAction("Index", "AccSafeCash", new { docType = custCollectionsDiscount.DocType, flagType = "oneANDtwo" });
+            }
+            else if (custCollectionsDiscount.DocType == "SFCOT")
+            {
+                return RedirectToAction("Index", "DisbursementPermission", new { docType = custCollectionsDiscount.DocType, flagType = "oneANDtwo" });
+
+            }
+            else if (custCollectionsDiscount.DocType == "SFTIN")
+            {
+                return RedirectToAction("Index", "ReceivePermission", new { docType = custCollectionsDiscount.DocType, flagType = "oneANDtwoAndthree" });
+
+            }
+            return RedirectToAction("Index", "TransferPermission", new { docType = custCollectionsDiscount.DocType, flagType = "oneANDtwoAndthree" });
+
         }
     }
 }

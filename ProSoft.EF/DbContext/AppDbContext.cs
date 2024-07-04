@@ -133,6 +133,7 @@ namespace ProSoft.EF.DbContext
         public DbSet<UserJournalType> UserJournalTypes { get; set; }
         public DbSet<AccTransMaster> AccTransMasters { get; set; }
         public DbSet<AccTransDetail> AccTransDetails { get; set; }
+        public DbSet<AccStartBal> AccStartBals { get; set; }
         ////////////////////
         // System //
         public DbSet<EisPosting> EisPostings { get; set; }

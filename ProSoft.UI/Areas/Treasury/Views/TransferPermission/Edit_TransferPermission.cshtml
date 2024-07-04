@@ -32,7 +32,7 @@
 <div class="container pt-2" style="min-height:100vh;">
     @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
 
-    <h1 class="mt-4">@localizer["Edit Permission"]</h1>
+    <h1 class="mt-4">@localizer["Edit Transfer Permission Cash"]</h1>
     <form method="post" asp-action="Edit_TransferPermission" id="myForm">
         <div class="border p-3 mt-4">
 
@@ -128,7 +128,7 @@
                 <div class="parent-permission d-flex justify-content-center gap-3" style="width: 100% !important;">
                     <div class="mb-3 " style="width: 100% !important;">
                         <label asp-for="SafeCode2">@localizer["To Treasury"]</label>
-                        <select asp-for="SafeCode2" asp-items="safeNames2" class="form-control text-center">
+                        <select asp-for="SafeCode2" asp-items="safeNames2" class="form-control text-center" onchange="getMainASubSafe(event)">
                             <option value="">-- Choose --</option>
                         </select>
                         <span asp-validation-for="SafeCode2" class="text-danger"></span>
@@ -246,6 +246,21 @@
     </form>
 </div>
 <script>
+    function getMainASubSafe(e) {
+        var safeCode = e.target.value;
+        var mainCode = document.getElementById("MainCode");
+        var subCode = document.getElementById("SubCode");
+
+        $.ajax({
+            url: `/Treasury/AccSafeCash/GetMainSubForSafe/${safeCode}`,
+            success: function (result) {
+                //console.log(result);
+                mainCode.value = result.mainCode;
+                getSubCodes(result.subCode);
+            }
+        });
+
+    }
     function getNumbersWord(e) {
         let number = e.target.value;
         // console.log(number);
@@ -259,20 +274,21 @@
             }
         });
     }
-    function getSubCodes(e) {
-        let mainElement = e.target;
+   
+    function getSubCodes(subCode) {
+        let mainElement = document.getElementById("MainCode");
         let subElement = document.getElementById("SubCode");
-
-        let mainName = e.target.options[e.target.selectedIndex].text;
+        
+        let mainName = mainElement.options[mainElement.selectedIndex].text;
         // console.log(mainName)
         let mainAndSub = document.getElementById("mainAndSub");
-        if (e.target.value) {
+        if (mainElement.value) {
             mainAndSub.value = mainName;
         }
         else
             mainAndSub.value = "";
 
-        subElement.innerHTML = `<option value="">-- Choose --</option>`;
+        //  subElement.innerHTML = `<option value="">-- Choose --</option>`;
 
         $.ajax({
             url: `/Treasury/AccSafeCash/GetSubCodesFromAcc/${mainElement.value}`,
@@ -282,6 +298,15 @@
                     subElement.innerHTML +=
                         `<option value="${item.subCode}">${item.subName}</option>`;
                 }
+                subElement.value = subCode;
+                let subName = subElement.options[subElement.selectedIndex].text;
+                let mainAndSub = document.getElementById("mainAndSub");
+                let oldValue = mainAndSub.value;
+                if (subElement.value) {
+                    mainAndSub.value = oldValue + ' - ' + subName;
+                }
+                else
+                    mainAndSub.value = oldValue;
             }
         });
     }

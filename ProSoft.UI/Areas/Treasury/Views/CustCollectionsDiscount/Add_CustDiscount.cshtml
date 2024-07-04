@@ -18,7 +18,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input asp-for="ValuePay" hidden disabled value="@ViewBag.ValuePay" />
             <input asp-for="DocType" hidden  value="@ViewBag.docType" />
-
+         
             <!------------------------------------------------------------------------------->
 
             <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
@@ -57,9 +57,30 @@
 
             <div class="parent d-flex justify-content-md-center gap-2">
                 <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add Discount"]</button>
-                <a asp-controller="CustCollectionsDiscount" asp-action="Index" asp-route-Id="@ViewBag.custDiscountID" asp-route-docType="@ViewBag.docType" class="btn btn-secondary" style="width:150px">
-                    @localizer["Cancel"]
-                </a>
+                @if (@ViewBag.docType == "SFCIN")
+                {
+                    <a asp-controller="AccSafeCash" asp-action="Index" asp-route-docType="@ViewBag.docType" asp-route-flagType="oneANDtwo" class="btn btn-secondary" style="width:150px">
+                        @localizer["Cancel"]
+                    </a>
+                }
+                else if (@ViewBag.docType == "SFCOT")
+                {
+                    <a asp-controller="DisbursementPermission" asp-action="Index" asp-route-docType="@ViewBag.docType" asp-route-flagType="oneANDtwo" class="btn btn-secondary" style="width:150px">
+                        @localizer["Cancel"]
+                    </a>
+                }
+                else if (@ViewBag.docType == "SFTIN")
+                {
+                    <a asp-controller="ReceivePermission" asp-action="Index" asp-route-docType="@ViewBag.docType" asp-route-flagType="oneANDtwoAndthree" class="btn btn-secondary" style="width:150px">
+                        @localizer["Cancel"]
+                    </a>
+                }
+                else if (@ViewBag.docType == "SFTOT")
+                {
+                    <a asp-controller="TransferPermission" asp-action="Index" asp-route-docType="@ViewBag.docType" asp-route-flagType="oneANDtwoAndthree" class="btn btn-secondary" style="width:150px">
+                        @localizer["Cancel"]
+                    </a>
+                }
             </div>
         </div>
     </form>

@@ -82,6 +82,12 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
             }
         }
 
+        ///// get main and sub for safecode from usercash no
+        public async Task<IActionResult> GetMainSubForSafe(int id)
+        {
+            var mainAndSub = await _accSafeCashRepo.GetMainSubForSafe(id);
+            return Json(mainAndSub);
+        }
 
         //Ajax In Add_StockTrans
         public async Task<IActionResult> GetSubCodesFromAcc(string id)

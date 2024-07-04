@@ -1,0 +1,179 @@
+﻿@model List<UserJournalTypeDTO>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Opening Balances";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@inject IViewLocalizer localizer
+@* <style>
+    .image {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.5;
+        z-index: -1;
+    }
+</style> *@
+<div class="container pt-2 " style="min-height:90vh;">
+    @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
+    <h1 class="header text-center">@localizer["Opening Balances"]</h1>
+
+    <div class="d-flex justify-content-between align-items-center mt-1 ">
+        <h3 class="header">@localizer["User Journal Types"]</h3>
+
+    </div>
+    <div class="overflow-auto" style="max-height:calc(100vh - 145px)">
+        <table id="myTable" class="table table-bordered table-hover" style="width:100%">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        @localizer["Code"]
+                    </th>
+                    <th>
+                        @localizer["Journal Name"]
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var jou in Model)
+                {
+                    <tr onclick="GetAccStartBal(event,@jou.JournalCode)" style="cursor:pointer;" class="align-middle">
+                        <td>
+                            @jou.JournalCode
+                        </td>
+                        <td>
+                            @jou.JournalName
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    @* /////////////////////////////////////////////////////////////////// *@
+
+    @* Table for AccStartBal *@
+
+@*     <div class="accStartBal-table-head d-flex justify-content-between align-items-center mt-4">
+         <h2 class="header accTrans-Dtl">@localizer["Terms of Voucher"]</h2>
+
+        <a class="btn btn-sm btn-primary fs-6" style="width:150px">
+            @localizer["Add Term"]
+        </a>
+        
+    </div> *@
+
+    <div class=" p-0 mb-2 border-opacity-75 overflow-auto">
+
+        <table id="myTable" class="table table-bordered table-hover accStartBal-table" style="width:100%">
+            <thead class="table-dark">
+                <tr class="align-middle">
+                    <th>
+                        @localizer["Main Account Code"]
+                    </th>
+                    <th>
+                        @localizer["Sub Account Code"]
+                    </th>
+                    <th>
+                        @localizer["Account Name"]
+                    </th>
+                    <th>
+                        @localizer["Debit"]
+                    </th>
+                    <th>
+                        @localizer["Credit"]
+                    </th>
+                    <th>
+                        @localizer["Cost Center"]
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+    </div>
+    @* /////////////////////////////////////////////////////////////////// *@
+</div>
+
+<script>
+    @* Ajax for AccStartBal *@
+        function GetAccStartBal(e,id) {
+            var accStartBals = document.querySelector(".accStartBal-table tbody");
+            // Handle active clic
+            let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");;
+            allItemRows.forEach(row => {
+                row.classList.remove("active-row");
+            });
+
+            let clickedTarget = e.target.parentElement
+            clickedTarget.classList.add("active-row");
+            ///////////////////////////////////////////////////////////////////
+
+            // Catch header for Acc trans Detail and reset it
+           // let acctransDtlHead = document.querySelector(".accTransDtl-table-head");
+
+            //let acctransDtlHeader = acctransDtlHead.querySelector(".header.accTrans-Dtl"); // Display Header for patAdmisson
+           // acctransDtlHeader.innerHTML = "@localizer["Terms of Voucher"]";
+
+            //let acctransDtlAddButton = acctransDtlHead.querySelector("a");
+
+           // acctransDtlAddButton.setAttribute("href", `/Accounts/AccTransDetail/Add_AccTransDetail/${id}?journalCode=${journalCode}`);
+            // console.log(acctransDtlAddButton);
+            ///////////////////////////////////////////////////////////////////
+
+            // Handle ajax call
+            accStartBals.innerHTML = "";  // Empty the body
+
+            $.ajax({
+                url: `/Accounts/AccStartBal/GetAccStartBal/${id}`,
+                success: function (result) {
+                    // console.log(result);
+                    var index = 1;
+                    var fDepOrSum = 0;
+                    var fCreditOrSum = 0;
+                    for (let item of result) {
+                    //    console.log(result)
+                        const costCenterName = item.costCenterName ? item.costCenterName : "@localizer["Without"]";
+
+                        const accStartBal = document.createElement("tr");
+                        accStartBal.innerHTML +=
+                            `
+                                <td class="item-id align-middle">${item.mainCode}</td>
+                                <td class="item-id align-middle">${item.subCode}</td>
+                                <td class="item-id align-middle">${item.accName}</td>
+                                <td class="align-middle">${item.fDepOr}</td>
+                                <td class="align-middle">${item.fCreditOr}</td>
+                                <td class="align-middle">${costCenterName}</td>
+                                <td class="text-center" width="15%">
+                                   <a href="/Accounts/AccStartBal/Edit_AccStartBal/${item.startBalId}" class="btn btn-sm  btn-success mb-1  fs-6" style="width:150px;">
+                                       <i class="bi bi-pencil"></i> @localizer["Edit"]
+                                   </a>
+                                </td>
+                             `;
+                        fDepOrSum += item.fDepOr;
+                        fCreditOrSum += item.fCreditOr;
+                        accStartBals.appendChild(accStartBal);
+                    }
+                    const dataForSum = document.createElement("tr");
+                    //    dataForSum.style.backgroundColor = "#e6dfdf";
+                    dataForSum.innerHTML =
+                        `
+                                    <td colspan="3" style="text-align: center;">@localizer["The Sum"]</td>
+                                    <td style="background-color: #e6dfdf;border:1px solid White;">${fDepOrSum.toFixed(2)}</td>
+                                    <td style="background-color: #e6dfdf;">${fCreditOrSum.toFixed(2)}</td>
+                                    <td class="align-middle" colspan="1"></td>
+                                 `;
+                    accStartBals.appendChild(dataForSum);
+                }
+            });
+        }
+</script>

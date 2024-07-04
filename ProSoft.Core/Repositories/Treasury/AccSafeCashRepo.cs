@@ -84,6 +84,14 @@ namespace ProSoft.Core.Repositories.Treasury
                 newSerial = 1;
             return newSerial;
         }
+
+        ///// get main and sub for safecode from usercash no
+        public async Task<UserCashNoEditAddDTO> GetMainSubForSafe(int safeCode)
+        {
+            UserCashNo userCashNo = await _Context.userCashNos.FirstOrDefaultAsync(obj=>obj.SafeCode ==safeCode);
+            UserCashNoEditAddDTO userCashNoEditAddDTO = _mapper.Map<UserCashNoEditAddDTO>(userCashNo);
+            return userCashNoEditAddDTO;
+        }
         public async Task<List<AccSubCodeDTO>> GetSubCodesFromAccAsync(string mainAccCode)
         {
             List<AccSubCode> subAccCodes = await _Context.AccSubCodes
@@ -178,6 +186,11 @@ namespace ProSoft.Core.Repositories.Treasury
             else if (accSafeCash.DocType == "SFTOT")
             {
                 accSafeCash.MCodeDtl = 36;
+                AccSafeCash accSafeCashForRecive = _mapper.Map<AccSafeCash>(accSafeCashDTO);
+                    accSafeCashForRecive.DocType = "SFTIN";
+                accSafeCashForRecive.SafeCode = accSafeCash.SafeCode2; //عشان اعرض في الاستلام الخزينة اللي هيتحول ليها
+                await _Context.AddAsync(accSafeCashForRecive);
+                await _Context.SaveChangesAsync();
             }
             accSafeCash.SerId = 1;
             accSafeCash.EntryDate = DateTime.Now;
@@ -195,7 +208,7 @@ namespace ProSoft.Core.Repositories.Treasury
             }
             else if (accSafeCash.AprovedFlag == "APP" && accSafeCash.DocType == "SFCOT")
             {
-                string message = await PostingToAcctrans_PaymentReceipt(accSafeCash);
+                string message = await PostingToAcctrans_DisbursementPermission(accSafeCash);
                 return message;
             }
             else if (accSafeCash.AprovedFlag == "APR" && accSafeCash.DocType == "SFTIN")
@@ -205,7 +218,7 @@ namespace ProSoft.Core.Repositories.Treasury
             }
             else if (accSafeCash.AprovedFlag == "APP" && accSafeCash.DocType == "SFTOT")
             {
-                string message = await PostingToAcctrans_PaymentReceipt(accSafeCash);
+                string message = await PostingToAcctrans_DisbursementPermission(accSafeCash);
                 return message;
             }
 
@@ -300,6 +313,12 @@ namespace ProSoft.Core.Repositories.Treasury
             else if (accSafeCash.DocType == "SFTOT")
             {
                 accSafeCash.MCodeDtl = 36;
+                AccSafeCash accSafeCashForRecive = _mapper.Map<AccSafeCash>(accSafeCashDTO);
+                accSafeCashForRecive.DocType = "SFTIN";
+                accSafeCashForRecive.SafeCashId = accSafeCash.SafeCashId - 1;//الخاص بالاستلام  id عشان اجيب ال 
+                accSafeCashForRecive.SafeCode = accSafeCash.SafeCode2; //عشان اعرض في الاستلام الخزينة اللي هيتحول ليها
+                 _Context.Update(accSafeCashForRecive);
+                await _Context.SaveChangesAsync();
             }
             accSafeCash.SerId = 1;
             if (accSafeCash.Rate1 ==null)

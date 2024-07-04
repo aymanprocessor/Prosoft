@@ -533,6 +533,21 @@
   "Customer/Side": "العميل/الجهة",
   "Net Value": "صافي القيمة",
   "Doctor Fees from patient sending during period": "مستحقات الطبيب من الحالات المرسلة خلال الفترة",
+  "Opening Balances": "الارصدة الافتتاحية",
+  "Main Account Code": "كود الحساب الرئيسي",
+  "Sub Account Code": "كود الحساب الفرعي",
+  "Payment Receipts Cash": "أُذون توريد نقدية",
+  "Receive Permissions Cash": "أُذون استلام نقدية",
+  "Disbursement permissions Cash": "أُذون صرف نقدية",
+  "Transfer Permissions Cash": "أُذون تحويل نقدية",
+  "Add Payment Receipt Cash": "اضافة اذن توريد نقدية",
+  "Add Receive Permission Cash": "اضافة اذن استلام نقدية",
+  "Add Disbursement permission Cash": "اضافة اذن صرف نقدية",
+  "Add Transfer Permission Cash": "اضافة اذن تحويل نقدية",
+  "Edit Payment Receipt Cash": "تعديل اذن توريد نقدية",
+  "Edit Receive Permission Cash": "تعديل اذن استلام نقدية",
+  "Edit Disbursement permission Cash": "تعديل اذن صرف نقدية",
+  "Edit Transfer Permission Cash": "تعديل اذن تحويل نقدية",
 
 
 
@@ -776,4 +791,7 @@
   "Max Quantity": "اقصي كمية",
   "Min Quantity": "اقل كمية",
   "Search": "بحث",
+  "You Can't Delete it because of Posting To Accounts": "لا يجوز الحذف بسبب الترحيل الي الحسابات",
+  "This Permission is approved": "هذا الاذن معتمد",
+  "Shipped from / to": "صرف من / الي"
 }
