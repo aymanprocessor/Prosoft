@@ -45,13 +45,32 @@ namespace ProSoft.Core.Repositories.Stocks
             return transDtlListDTO;
         }
 
+        public async Task AddToReceiveFormAsync(TransDtl convertTransDtl)
+        {
+            TransMaster convertTransMaster = await _Context.TransMasters.FindAsync(convertTransDtl.TransMAsterID);
+            
+            TransMaster receiveTransMaster = await _Context.TransMasters.FirstOrDefaultAsync(obj =>
+                obj.TransType == 23 && obj.DocNoFr == convertTransMaster.DocNo &&
+                obj.StockCode == convertTransMaster.StockCode2);
+
+            var receiveTransDtl = _mapper.Map<TransDtl>(convertTransDtl);
+            List<TransDtl> transDtlList = await _DbSet.Where(obj => obj.TransMAsterID == receiveTransMaster.TransMAsterID)
+                .ToListAsync();
+            receiveTransDtl.Serial = transDtlList.Count != 0 ? transDtlList.Max(obj => obj.Serial) + 1 : 1;
+
+            _mapper.Map(receiveTransMaster, receiveTransDtl);
+            //receiveTransDtl.TransDtlId = null;
+            await AddAsync(receiveTransDtl);
+            //await SaveChangesAsync();
+        }
+
         public async Task<string> GetBarCodeAsync(int transMAsterID, int serial, int itemMaster)
         {
             TransMaster transMAster = await _Context.TransMasters.FindAsync(transMAsterID);
 
             List<ItemBatch> batchList = await _Context.ItemBatches.Where(obj =>
                 obj.StockCode == transMAster.StockCode && obj.TransN == transMAster.DocNo &&
-                obj.ItemMaster == itemMaster.ToString() && obj.FYear == transMAster.FYear)
+                obj.ItemMaster == itemMaster.ToString() && obj.Serial == serial && obj.FYear == transMAster.FYear)
                 .ToListAsync();
             if(batchList.Count == 0)
             {
@@ -183,46 +202,6 @@ namespace ProSoft.Core.Repositories.Stocks
             await AddAsync(transDtl);
             /////////////////////////////////////////////////
             // Add to ItemBatch
-            #region Old Insert ItemBatch
-            //var ls_Item_Barcode = string.Empty;
-            //if (transDtl.UnitQty == 1)
-            //    ls_Item_Barcode = transDtl.ItemMaster;
-            //else if(transDtl.UnitQty > 1)
-            //    ls_Item_Barcode = $"{transDtl.ItemMaster}_{transDtl.Serial}";
-
-            //var newItemBatch = new ItemBatch();
-            //newItemBatch.ItemMaster = transDtl.ItemMaster;
-            //newItemBatch.ItmBatch = await GetBarCodeAsync(transDtl.TransMAsterID, int.Parse(transDtl.Serial.ToString()), int.Parse(transDtl.ItemMaster));
-            //newItemBatch.SerBatch = int.Parse(transDtl.Serial.ToString());
-            //newItemBatch.TmBarcode = ls_Item_Barcode;
-            //newItemBatch.UnitQty = 1;
-            //newItemBatch.Price = transDtl.Price;
-            //newItemBatch.ReqDate = DateTime.Now;
-            //newItemBatch.UserCode = transDtl.UserCode;
-            //newItemBatch.ExpDate = transDtl.ExpireDate;
-            //newItemBatch.TransN = transDtl.DocNo;
-            //newItemBatch.StockCode = transDtl.StockCode;
-            //newItemBatch.Flag1 = (await _Context.SubItems.FirstOrDefaultAsync(obj =>
-            //        obj.MainCode == transDtl.MainCode && obj.ItemCode == transDtl.ItemMaster)).Flag1;
-            //newItemBatch.BatchCounter = (await _Context.SubItems.FirstOrDefaultAsync(obj =>
-            //        obj.MainCode == transDtl.MainCode && obj.ItemCode == transDtl.ItemMaster &&
-            //        obj.Flag1 == newItemBatch.Flag1)).BatchCounter;
-            //newItemBatch.UnitQty = newItemBatch.BatchCounter == 1 ? 1 : transDtl.UnitQty;
-            //newItemBatch.FYear = transDtl.FYear;
-
-            //List<ItemBatch> newBatchList = await _Context.ItemBatches.Where(obj =>
-            //    obj.StockCode == transMaster.StockCode && obj.FYear == transMaster.FYear)
-            //    .ToListAsync();
-            //var itemBatch = newBatchList.Count != 0 ? newBatchList.Max(obj => obj.ItmBatchMax) + 1 : 1;
-            //var ls_maxSer_max = $"000000{itemBatch}"[^6..];
-
-            //newItemBatch.ItmBatchMax = long.Parse(ls_maxSer_max);
-            //newItemBatch.BranchId = transDtl.BranchId;
-            //newItemBatch.UserCodeModify = transDtl.UserCode;
-
-            //await _Context.AddAsync(newItemBatch); 
-            #endregion
-
             if(transDtl.TransType == 2)
                 await InsertItemBatchAsync(transDtl);
             await SaveChangesAsync();
@@ -338,6 +317,10 @@ namespace ProSoft.Core.Repositories.Stocks
             transDtl.Flag1 = transDtl.Flag1 != null ? transDtl.Flag1 : 1;
             transDtl.ItemMaster2 = 0;
             _mapper.Map(transMaster, transDtl);
+            /////////////////////////////////////////////////
+            // Add To Receive Form
+            if (transDtl.TransType == 13)
+                await AddToReceiveFormAsync(transDtl);
 
             await AddAsync(transDtl);
             await SaveChangesAsync();

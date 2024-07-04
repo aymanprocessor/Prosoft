@@ -22,8 +22,7 @@ namespace ProSoft.EF.DTOs.Stocks
         public string? ItemMasterName { get; set; }
 
         [DisplayName("The Barcode")]
-        [Required(ErrorMessage = "The field is required")]
-        public string ItmBarcode { get; set; }
+        public string? ItmBarcode { get; set; }
         
         [DisplayName("The Quantity")]
         [Required(ErrorMessage = "The field is required")]

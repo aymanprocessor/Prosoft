@@ -26,7 +26,7 @@
             <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
                 <div class="mb-3" style="width: 33%;">
                     <label asp-for="ItemMaster" class="text-center" style="width: 45%;"></label>
-                    <select asp-for="ItemMaster" asp-items="subItems" class="form-control text-center" style="width: 78%;">
+                    <select asp-for="ItemMaster" asp-items="subItems" class="form-control text-center" style="width: 78%; pointer-events: none; background-color: #e9ecef">
                     </select>
                     <span asp-validation-for="ItemMaster" class="text-danger"></span>
                 </div>
