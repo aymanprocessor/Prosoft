@@ -22,7 +22,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             return Json(transDtlListDTO);
         }
 
-        public async Task<IActionResult> GetBarCode(int transMAsterID, int serial, int itemMaster)
+        public async Task<IActionResult> GetBarCode(int transMAsterID, int serial, string itemMaster)
         {
             var barCode = await _transDtlRepo.GetBarCodeAsync(transMAsterID, serial, itemMaster);
             return Json(barCode);
