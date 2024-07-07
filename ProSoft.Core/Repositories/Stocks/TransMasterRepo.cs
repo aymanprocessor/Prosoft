@@ -460,6 +460,17 @@ namespace ProSoft.Core.Repositories.Stocks
             permissionFormDTO.ShowRow = 3;
 
             TransMaster permissionForm = await GetByIdAsync(id);
+
+            TransMaster receiveTransMaster = null;
+            if (permissionForm.TransType == 13)
+            {
+                receiveTransMaster = await _Context.TransMasters
+                    .FirstOrDefaultAsync(obj => obj.TransType == 23 &&
+                    obj.DocNoFr == permissionForm.DocNo && obj.StockCode == permissionForm.StockCode2);
+                receiveTransMaster.StockCode = permissionFormDTO.StockCode2;
+                receiveTransMaster.ModifyDate = DateTime.Now;
+                await UpdateAsync(receiveTransMaster);
+            }
             _mapper.Map(permissionFormDTO, permissionForm);
             permissionForm.ModifyDate = DateTime.Now;
 

@@ -12,7 +12,8 @@ namespace ProSoft.EF.IRepositories.Stocks
     {
         Task<List<TransDtlWithPriceDTO>> GetPermissionDetailsAsync(int transMasterID);
         Task AddToReceiveFormAsync(TransDtl convertTransDtl);
-        Task<string> GetBarCodeAsync(int transMAsterID, int serial, int itemMaster);
+        Task UpdateReceiveFormDetailsAsync(TransMaster convertTransMaster);
+        Task<string> GetBarCodeAsync(int transMAsterID, int serial, string itemMaster);
         Task InsertItemBatchAsync(TransDtl transDtl);
         // For Showing Trans Price
         Task<TransDtlWithPriceDTO> GetNewTransDtlWithPriceAsync(int transMAsterID);
