@@ -22,6 +22,8 @@
 </style> *@
 <div class="container pt-2 " style="min-height:90vh;">
     @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
+    @* hidden *@
+    <input id="journaltype" type="hidden" value="@ViewBag.id" />
     <h1 class="header text-center">@localizer["Opening Balances"]</h1>
 
     <div class="d-flex justify-content-between align-items-center mt-1 ">
@@ -29,7 +31,7 @@
 
     </div>
     <div class="overflow-auto" style="max-height:calc(100vh - 145px)">
-        <table id="myTable" class="table table-bordered table-hover" style="width:100%">
+        <table id="myTable1" class="table table-bordered table-hover" style="width:100%">
             <thead class="table-dark">
                 <tr>
                     <th>
@@ -60,13 +62,13 @@
 
     @* Table for AccStartBal *@
 
-@*     <div class="accStartBal-table-head d-flex justify-content-between align-items-center mt-4">
-         <h2 class="header accTrans-Dtl">@localizer["Terms of Voucher"]</h2>
+    @*     <div class="accStartBal-table-head d-flex justify-content-between align-items-center mt-4">
+    <h2 class="header accTrans-Dtl"></h2>
 
-        <a class="btn btn-sm btn-primary fs-6" style="width:150px">
-            @localizer["Add Term"]
-        </a>
-        
+    <a class="btn btn-sm btn-primary fs-6" style="width:150px">
+    @localizer["Add Term"]
+    </a>
+
     </div> *@
 
     <div class=" p-0 mb-2 border-opacity-75 overflow-auto">
@@ -103,77 +105,87 @@
     </div>
     @* /////////////////////////////////////////////////////////////////// *@
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-    @* Ajax for AccStartBal *@
-        function GetAccStartBal(e,id) {
-            var accStartBals = document.querySelector(".accStartBal-table tbody");
-            // Handle active clic
-            let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");;
-            allItemRows.forEach(row => {
-                row.classList.remove("active-row");
-            });
+    // Function to handle initial click based on journalCode
+    function clickForShow() {
+        var journalCode = document.getElementById("journaltype").value.toLowerCase();
+        let rows = document.querySelectorAll("#myTable1 tbody tr");
 
-            let clickedTarget = e.target.parentElement
-            clickedTarget.classList.add("active-row");
-            ///////////////////////////////////////////////////////////////////
-
-            // Catch header for Acc trans Detail and reset it
-           // let acctransDtlHead = document.querySelector(".accTransDtl-table-head");
-
-            //let acctransDtlHeader = acctransDtlHead.querySelector(".header.accTrans-Dtl"); // Display Header for patAdmisson
-           // acctransDtlHeader.innerHTML = "@localizer["Terms of Voucher"]";
-
-            //let acctransDtlAddButton = acctransDtlHead.querySelector("a");
-
-           // acctransDtlAddButton.setAttribute("href", `/Accounts/AccTransDetail/Add_AccTransDetail/${id}?journalCode=${journalCode}`);
-            // console.log(acctransDtlAddButton);
-            ///////////////////////////////////////////////////////////////////
-
-            // Handle ajax call
-            accStartBals.innerHTML = "";  // Empty the body
-
-            $.ajax({
-                url: `/Accounts/AccStartBal/GetAccStartBal/${id}`,
-                success: function (result) {
-                    // console.log(result);
-                    var index = 1;
-                    var fDepOrSum = 0;
-                    var fCreditOrSum = 0;
-                    for (let item of result) {
-                    //    console.log(result)
-                        const costCenterName = item.costCenterName ? item.costCenterName : "@localizer["Without"]";
-
-                        const accStartBal = document.createElement("tr");
-                        accStartBal.innerHTML +=
-                            `
-                                <td class="item-id align-middle">${item.mainCode}</td>
-                                <td class="item-id align-middle">${item.subCode}</td>
-                                <td class="item-id align-middle">${item.accName}</td>
-                                <td class="align-middle">${item.fDepOr}</td>
-                                <td class="align-middle">${item.fCreditOr}</td>
-                                <td class="align-middle">${costCenterName}</td>
-                                <td class="text-center" width="15%">
-                                   <a href="/Accounts/AccStartBal/Edit_AccStartBal/${item.startBalId}" class="btn btn-sm  btn-success mb-1  fs-6" style="width:150px;">
-                                       <i class="bi bi-pencil"></i> @localizer["Edit"]
-                                   </a>
-                                </td>
-                             `;
-                        fDepOrSum += item.fDepOr;
-                        fCreditOrSum += item.fCreditOr;
-                        accStartBals.appendChild(accStartBal);
-                    }
-                    const dataForSum = document.createElement("tr");
-                    //    dataForSum.style.backgroundColor = "#e6dfdf";
-                    dataForSum.innerHTML =
-                        `
-                                    <td colspan="3" style="text-align: center;">@localizer["The Sum"]</td>
-                                    <td style="background-color: #e6dfdf;border:1px solid White;">${fDepOrSum.toFixed(2)}</td>
-                                    <td style="background-color: #e6dfdf;">${fCreditOrSum.toFixed(2)}</td>
-                                    <td class="align-middle" colspan="1"></td>
-                                 `;
-                    accStartBals.appendChild(dataForSum);
+        // Loop through all table rows
+        for (let i = 0, len1 = rows.length; i < len1; i++) {
+            let firstTd = rows[i].querySelector("td:first-child");  // Select the first td in the row
+            if (firstTd) {
+                let tdValue = firstTd.textContent || firstTd.innerText;
+                tdValue = tdValue.toLowerCase();
+                if (tdValue.indexOf(journalCode) > -1) {  // Compare with journalCode
+                    rows[i].click();  
+                    break;
                 }
-            });
+            }
         }
+    }
+
+    // Function to handle click event on row
+    function GetAccStartBal(e, id) {
+        var accStartBals = document.querySelector(".accStartBal-table tbody");
+
+        // Handle active click
+        let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");
+        allItemRows.forEach(row => {
+            row.classList.remove("active-row");
+        });
+        e.target.parentElement.classList.add("active-row");
+
+        // Handle ajax call
+        accStartBals.innerHTML = "";  // Empty the body
+
+        $.ajax({
+            url: `/Accounts/AccStartBal/GetAccStartBal/${id}`,
+            success: function (result) {
+                var fDepOrSum = 0;
+                var fCreditOrSum = 0;
+
+                for (let item of result) {
+                    const costCenterName = item.costCenterName ? item.costCenterName : "@localizer["Without"]";
+
+                    const accStartBal = document.createElement("tr");
+                    accStartBal.innerHTML +=
+                        `
+                            <td class="item-id align-middle">${item.mainCode}</td>
+                            <td class="item-id align-middle">${item.subCode}</td>
+                            <td class="item-id align-middle">${item.accName}</td>
+                            <td class="align-middle">${item.fDepOr}</td>
+                            <td class="align-middle">${item.fCreditOr}</td>
+                            <td class="align-middle">${costCenterName}</td>
+                            <td class="text-center" width="15%">
+                                <a href="/Accounts/AccStartBal/Edit_AccStartBal/${item.startBalId}" class="btn btn-sm btn-success mb-1 fs-6" style="width:150px;">
+                                    <i class="bi bi-pencil"></i> @localizer["Edit"]
+                                </a>
+                            </td>
+                            `;
+                    fDepOrSum += item.fDepOr;
+                    fCreditOrSum += item.fCreditOr;
+                    accStartBals.appendChild(accStartBal);
+                }
+
+                const dataForSum = document.createElement("tr");
+                dataForSum.innerHTML =
+                    `
+                        <td colspan="3" style="text-align: center;">@localizer["The Sum"]</td>
+                        <td style="background-color: #e6dfdf;border:1px solid White;">${fDepOrSum.toFixed(2)}</td>
+                        <td style="background-color: #e6dfdf;">${fCreditOrSum.toFixed(2)}</td>
+                        <td class="align-middle" colspan="1"></td>
+                        `;
+                accStartBals.appendChild(dataForSum);
+            }
+        });
+    }
+
+    // Call the function to initiate the click based on journalCode
+    var journalCode = document.getElementById("journaltype").value;
+    if (journalCode != 0) {
+        clickForShow();
+    }
 </script>

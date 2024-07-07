@@ -102,5 +102,22 @@ namespace ProSoft.Core.Repositories.Accounts
 
             return subName != "" ? $"{mainName} / {subName}" : mainName;
         }
+
+        public async Task<AccStartBalEditAddDTO> GetAccStartBalById(int id)
+        {
+            AccStartBal accStartBal = await _Context.AccStartBals.FirstOrDefaultAsync(obj=>obj.StartBalId == id);
+            AccStartBalEditAddDTO accStartBalDTO = _mapper.Map<AccStartBalEditAddDTO>(accStartBal);
+
+            List<CostCenter> costCenters = await _Context.CostCenters.ToListAsync();
+            accStartBalDTO.CostCenters = _mapper.Map<List<CostCenterViewDTO>>(costCenters);
+            return accStartBalDTO;
+        }
+        public async Task EditAccStartBalAsync(int id, AccStartBalEditAddDTO accStartBalDTO)
+        {
+            AccStartBal accStartBal = await _Context.AccStartBals.FirstOrDefaultAsync(obj => obj.StartBalId == id);
+            _mapper.Map(accStartBalDTO, accStartBal);
+            _Context.Update(accStartBal);
+            await _Context.SaveChangesAsync();
+        }
     }
 }

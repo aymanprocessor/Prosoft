@@ -171,6 +171,12 @@ namespace ProSoft.Core.Repositories.Treasury
         {
             AccSafeCash accSafeCash = _mapper.Map<AccSafeCash>(accSafeCashDTO);
             //accSafeCash.DocType = "SFCIN";
+            accSafeCash.SerId = 1;
+            accSafeCash.EntryDate = DateTime.Now;
+                if (accSafeCash.Rate1 == null)
+                {
+                    accSafeCash.Rate1 = 1;
+                }
             if (accSafeCash.DocType == "SFCIN")
             {
                 accSafeCash.MCodeDtl = 31;
@@ -187,16 +193,12 @@ namespace ProSoft.Core.Repositories.Treasury
             {
                 accSafeCash.MCodeDtl = 36;
                 AccSafeCash accSafeCashForRecive = _mapper.Map<AccSafeCash>(accSafeCashDTO);
-                    accSafeCashForRecive.DocType = "SFTIN";
-                accSafeCashForRecive.SafeCode = accSafeCash.SafeCode2; //عشان اعرض في الاستلام الخزينة اللي هيتحول ليها
+                  accSafeCashForRecive.DocType = "SFTIN";
+                  accSafeCashForRecive.EntryDate = DateTime.Now;
+                  accSafeCashForRecive.MCodeDtl = 36;
+                  accSafeCashForRecive.SerId = 1;
+                  accSafeCashForRecive.SafeCode = accSafeCash.SafeCode2; //عشان اعرض في الاستلام الخزينة اللي هيتحول ليها
                 await _Context.AddAsync(accSafeCashForRecive);
-                await _Context.SaveChangesAsync();
-            }
-            accSafeCash.SerId = 1;
-            accSafeCash.EntryDate = DateTime.Now;
-            if (accSafeCash.Rate1 == null)
-            {
-                accSafeCash.Rate1 = 1;
             }
             await _Context.AddAsync(accSafeCash);
             await _Context.SaveChangesAsync();
@@ -315,6 +317,7 @@ namespace ProSoft.Core.Repositories.Treasury
                 accSafeCash.MCodeDtl = 36;
                 AccSafeCash accSafeCashForRecive = _mapper.Map<AccSafeCash>(accSafeCashDTO);
                 accSafeCashForRecive.DocType = "SFTIN";
+                accSafeCashForRecive.MCodeDtl = 36;
                 accSafeCashForRecive.SafeCashId = accSafeCash.SafeCashId - 1;//الخاص بالاستلام  id عشان اجيب ال 
                 accSafeCashForRecive.SafeCode = accSafeCash.SafeCode2; //عشان اعرض في الاستلام الخزينة اللي هيتحول ليها
                  _Context.Update(accSafeCashForRecive);
@@ -325,7 +328,6 @@ namespace ProSoft.Core.Repositories.Treasury
             {
                 accSafeCash.Rate1 = 1;
             }
-            accSafeCash.EntryDate = DateTime.Now;
             _Context.Update(accSafeCash);
             await _Context.SaveChangesAsync();
 
@@ -349,7 +351,7 @@ namespace ProSoft.Core.Repositories.Treasury
                 string message = await PostingToAcctrans_DisbursementPermission(accSafeCash);
                 return message;
             }
-            return "لم يتم الترحيل للحسابات";
+            return "";
         }
 
         public async Task<bool> HasRelatedDataAsync(int id, string doctype)

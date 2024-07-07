@@ -164,17 +164,19 @@ namespace ProSoft.Core.Repositories.Treasury
         {
             CustCollectionsDiscount custCollectionsDiscount = _DbSet.Find(id);
             _mapper.Map(custCollectionsDiscountDTO, custCollectionsDiscount);
+            _Context.Update(custCollectionsDiscount);
+            await _Context.SaveChangesAsync();
             if (custCollectionsDiscountDTO.DocType =="SFTOT")
             {
-                CustCollectionsDiscount custCollectionsDiscountForRecieve = _mapper.Map<CustCollectionsDiscount>(custCollectionsDiscountDTO);
-                custCollectionsDiscountForRecieve.DocType = "SFTIN";
-                custCollectionsDiscountForRecieve.DiscountCode = custCollectionsDiscountDTO.DiscountCode - 1;//الخاص بالاستلام  id عشان اجيب ال 
-            //  custCollectionsDiscountForRecieve.SafeCode = accSafeCash.SafeCode2; //عشان اعرض في الاستلام الخزينة اللي هيتحول ليها
+                CustCollectionsDiscount custCollectionsDiscountForRecieve = _DbSet.Find(id+1);
+                custCollectionsDiscountForRecieve.DiscPrc = custCollectionsDiscountDTO.DiscPrc;
+                custCollectionsDiscountForRecieve.DiscValue = custCollectionsDiscountDTO.DiscValue;
+               // custCollectionsDiscountForRecieve.DocType = "SFTIN";
+               //custCollectionsDiscountForRecieve.SafeCode = accSafeCash.SafeCode2; //عشان اعرض في الاستلام الخزينة اللي هيتحول ليها
                 _Context.Update(custCollectionsDiscountForRecieve);
                 await _Context.SaveChangesAsync();
             }
-            _Context.Update(custCollectionsDiscount);
-            await _Context.SaveChangesAsync();
+            
         }
     }
 }

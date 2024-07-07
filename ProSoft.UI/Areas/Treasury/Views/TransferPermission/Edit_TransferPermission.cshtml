@@ -190,14 +190,14 @@
                     <label style="width: 48% !important;">@localizer["Financing Entity"]</label>
                     <div class="mb-3 " style="width: 50% !important;">
                         @* <label asp-for="MainCode"></label> *@
-                        <select asp-for="MainCode" asp-items="mainAccCodes" class="form-control text-center" onchange="getSubCodes(event)">
+                        <select asp-for="MainCode" asp-items="mainAccCodes" class="form-control text-center" style="pointer-events:none;" onchange="getSubCodes(event)">
                             <option value="">-- Choose --</option>
                         </select>
                         <span asp-validation-for="MainCode" class="text-danger"></span>
                     </div>
                     <div class="mb-3 " style="width: 50% !important;">
                         @* <label asp-for="SubCode"></label> *@
-                        <select asp-for="SubCode" asp-items="subAccCodes" class="form-control text-center" onchange="getNameSub(event)">
+                        <select asp-for="SubCode" asp-items="subAccCodes" class="form-control text-center" style="pointer-events:none;" onchange="getNameSub(event)">
                             <option value="">-- Choose --</option>
                         </select>
                         <span asp-validation-for="SubCode" class="text-danger"></span>
@@ -288,7 +288,7 @@
         else
             mainAndSub.value = "";
 
-        //  subElement.innerHTML = `<option value="">-- Choose --</option>`;
+          subElement.innerHTML = "";
 
         $.ajax({
             url: `/Treasury/AccSafeCash/GetSubCodesFromAcc/${mainElement.value}`,

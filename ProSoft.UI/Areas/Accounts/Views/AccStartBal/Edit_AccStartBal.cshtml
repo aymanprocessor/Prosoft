@@ -1,0 +1,69 @@
+﻿@model AccStartBalEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Edit Opening Balances";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    SelectList costCenter = new SelectList(Model.CostCenters, "CostCode", "CostDesc");
+
+}
+@inject IViewLocalizer localizer
+@* <style>
+    .image {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.5;
+        z-index: -1;
+    }
+</style> *@
+<div class="container pt-2" style="min-height:100vh;">
+    @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
+
+    <h1 class="mt-4">@localizer["Edit Opening Balances"]</h1>
+    <form method="post" asp-action="Edit_AccStartBal" id="myForm">
+        <div class="border p-3 mt-4">
+            @* hidden *@
+            <input asp-for="StartBalId" type="hidden" />
+            <input asp-for="TransType" type="hidden" />
+
+            <div asp-validation-summary="ModelOnly"></div>
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3 ">
+                    <label asp-for="FDepOr"></label>
+                    <input asp-for="FDepOr" type="number" class="form-control text-center" />
+                    <span asp-validation-for="FDepOr" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="FCreditOr"></label>
+                    <input asp-for="FCreditOr" type="number" class="form-control text-center" />
+                    <span asp-validation-for="FCreditOr" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="CostCenterCode" class="ms-2"></label>
+                    <select asp-for="CostCenterCode" asp-items="costCenter" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="CostCenterCode" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex justify-content-md-center gap-2 ">
+                <button type="submit" class="btn btn-success" style="width:150px">
+                    @localizer["Save Changes"]
+                </button>
+                <a asp-controller="AccStartBal" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>

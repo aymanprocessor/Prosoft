@@ -288,7 +288,7 @@
         else
             mainAndSub.value = "";
 
-      //  subElement.innerHTML = `<option value="">-- Choose --</option>`;
+        subElement.innerHTML = "";
 
         $.ajax({
             url: `/Treasury/AccSafeCash/GetSubCodesFromAcc/${mainElement.value}`,

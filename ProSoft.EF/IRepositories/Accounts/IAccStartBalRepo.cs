@@ -11,5 +11,7 @@ namespace ProSoft.EF.IRepositories.Accounts
     public interface IAccStartBalRepo :IRepository<AccStartBal,int>
     {
         Task<List<AccStartBalViewDTO>> GetAccStartBalAsync(int journalCode, int fYear, int branch);
+        Task<AccStartBalEditAddDTO> GetAccStartBalById(int id);
+        Task EditAccStartBalAsync(int id, AccStartBalEditAddDTO accStartBalDTO);
     }
 }
