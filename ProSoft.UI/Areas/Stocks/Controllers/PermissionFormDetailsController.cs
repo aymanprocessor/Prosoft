@@ -47,8 +47,8 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
                 transDtlDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
                 transDtlDTO.TransMasterID = id;
 
-                await _transDtlRepo.AddTransDtlWithPriceAsync(transDtlDTO);
-                return RedirectToAction("Index", "PermissionForm");
+                TransDtl transDtl = await _transDtlRepo.AddTransDtlWithPriceAsync(transDtlDTO);
+                return RedirectToAction("Index", "PermissionForm", new { transDtlId = transDtl.TransDtlId });
             }
             return View(transDtlDTO);
         }
@@ -131,10 +131,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete_TransDetail(int id)
         {
-            TransDtl transDetail = await _transDtlRepo.GetByIdAsync(id);
-
-            await _transDtlRepo.DeleteAsync(transDetail);
-            await _transDtlRepo.SaveChangesAsync();
+            await _transDtlRepo.DeleteTransDtlAsync(id);
             return RedirectToAction("Index", "PermissionForm");
         }
     }

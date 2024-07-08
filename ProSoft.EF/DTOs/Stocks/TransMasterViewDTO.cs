@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProSoft.EF.Models.Stocks;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace ProSoft.EF.DTOs.Stocks
         public DateTime? DocDate { get; set; }
         public int? TransType { get; set; }
         public long DocNoFr { get; set; }
+        public short StockCode { get; set; }
         public short StockCode2 { get; set; }
         public string PermissionName { get; set; }
         public string SupplierName { get; set; }
@@ -25,5 +27,6 @@ namespace ProSoft.EF.DTOs.Stocks
         public string UserName { get; set; }
         public int UserCode { get; set; }
         public int ShowTransPrice { get; set; }
+        public TransDtlWithPriceDTO? TransDtlDTO { get; set; }
     }
 }

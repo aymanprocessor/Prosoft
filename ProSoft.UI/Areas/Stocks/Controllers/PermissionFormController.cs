@@ -15,21 +15,23 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
     [Area(nameof(Stocks))]
     public class PermissionFormController : Controller
     {
-        private readonly IUserTransRepo _userTransRepo;
+        //private readonly IUserTransRepo _userTransRepo;
         private readonly ITransMasterRepo _transMasterRepo;
         private readonly IUserRepo _userRepo;
-        private readonly IMapper _mapper;
+        private readonly ITransDtlRepo _transDtlRepo;
+        //private readonly IMapper _mapper;
 
-        public PermissionFormController(IUserTransRepo userTransRepo,
-            ITransMasterRepo transMasterRepo, IUserRepo userRepo, IMapper mapper)
+        public PermissionFormController(/*IUserTransRepo userTransRepo,*/
+            ITransMasterRepo transMasterRepo, IUserRepo userRepo, ITransDtlRepo transDtlRepo/*, IMapper mapper*/)
         {
-            _userTransRepo = userTransRepo;
+            //_userTransRepo = userTransRepo;
             _transMasterRepo = transMasterRepo;
             _userRepo = userRepo;
-            _mapper = mapper;
+            _transDtlRepo = transDtlRepo;
+            //_mapper = mapper;
         }
 
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(int? id, int? transDtlId)
         {
             var userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
             List<StockViewDTO> stocksDTO = await _transMasterRepo.GetActiveStocksForUserAsync(userCode);
@@ -37,6 +39,21 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
 
             TransMaster permissionForm = await _transMasterRepo.GetByIdAsync(Convert.ToInt32(id));
             TransMasterViewDTO permissionsFormDTO = await _transMasterRepo.GetForViewAsync(permissionForm);
+            //permissionsFormDTO = permissionsFormDTO != null ? permissionsFormDTO : new();
+            
+            TransDtl transDtl = await _transDtlRepo.GetByIdAsync(Convert.ToInt32(transDtlId));
+            TransDtlWithPriceDTO transDtlDTO = await _transDtlRepo.GetForViewAsync(transDtl);
+
+            if(permissionsFormDTO != null)
+                permissionsFormDTO.TransDtlDTO = transDtlDTO;// != null ? transDtlDTO : new();
+            //if(id is not (null or 0))
+            //{
+
+            //    return View(permissionsFormDTO);
+            //}
+            //if(transDtlId is not (null or 0))
+            //{
+            //}
             return View(permissionsFormDTO);
         }
 
@@ -209,26 +226,26 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         //}
 
         // Get Edit
-        public async Task<IActionResult> Edit_StockReceivePermission(int id)
-        {
-            TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetDisburseOrConvertFormByIdAsync(id);
-            return View(permissionFormDTO);
-        }
+        //public async Task<IActionResult> Edit_StockReceivePermission(int id)
+        //{
+        //    TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetDisburseOrConvertFormByIdAsync(id);
+        //    return View(permissionFormDTO);
+        //}
 
         // Post Edit
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit_StockReceivePermission(int id, TransMasterEditAddDTO permissionFormDTO)
-        {
-            if (ModelState.IsValid)
-            {
-                permissionFormDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
-                permissionFormDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
-                await _transMasterRepo.UpdateStockReceiveFormAsync(id, permissionFormDTO);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(permissionFormDTO);
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit_StockReceivePermission(int id, TransMasterEditAddDTO permissionFormDTO)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        permissionFormDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
+        //        permissionFormDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
+        //        await _transMasterRepo.UpdateStockReceiveFormAsync(id, permissionFormDTO);
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(permissionFormDTO);
+        //}
 
         //////////////////////////////////////////////////
         // Sales Invoice => فاتورة مبيعات
