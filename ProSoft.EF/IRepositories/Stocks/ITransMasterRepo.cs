@@ -33,8 +33,8 @@ namespace ProSoft.EF.IRepositories.Stocks
         Task UpdateDisburseOrConvertFormAsync(int id, TransMasterEditAddDTO permissionFormDTO);
         //////////////////////////////////////////////////
         // Stock Receive Permission => اذن استلام من مخزن
-        Task<TransMasterEditAddDTO> GetStockReceiveFormByIdAsync(int transMasterID);
-        Task UpdateStockReceiveFormAsync(int id, TransMasterEditAddDTO permissionFormDTO);
+        //Task<TransMasterEditAddDTO> GetStockReceiveFormByIdAsync(int transMasterID);
+        //Task UpdateStockReceiveFormAsync(int id, TransMasterEditAddDTO permissionFormDTO);
         //////////////////////////////////////////////////
         // Sales Invoice => فاتورة مبيعات
         Task<TransMasterEditAddDTO> GetSalesInvoiceByIdAsync(int transMasterID);

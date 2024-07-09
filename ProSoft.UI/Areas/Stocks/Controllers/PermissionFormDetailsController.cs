@@ -22,6 +22,18 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             return Json(transDtlListDTO);
         }
 
+        public async Task<IActionResult> GetItem(string itemBarcode)
+        {
+            var itemCode = await _transDtlRepo.GetItemAsync(itemBarcode);
+            return Json(itemCode);
+        }
+
+        public async Task<IActionResult> GetOldBarCode(string itemCode)
+        {
+            var barCode = await _transDtlRepo.GetOldBarCodeAsync(itemCode);
+            return Json(barCode);
+        }
+
         public async Task<IActionResult> GetBarCode(int transMAsterID, int serial, string itemMaster)
         {
             var barCode = await _transDtlRepo.GetBarCodeAsync(transMAsterID, serial, itemMaster);
@@ -47,8 +59,9 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
                 transDtlDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
                 transDtlDTO.TransMasterID = id;
 
-                await _transDtlRepo.AddTransDtlWithPriceAsync(transDtlDTO);
-                return RedirectToAction("Index", "PermissionForm");
+                TransDtl transDtl = await _transDtlRepo.AddTransDtlWithPriceAsync(transDtlDTO);
+                //return RedirectToAction("Index", "PermissionForm", new { id });
+                return View(nameof(Add_TransDetailWithPrice));
             }
             return View(transDtlDTO);
         }
@@ -98,7 +111,9 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
                 transDtlDTO.TransMasterID = id;
 
                 await _transDtlRepo.AddTransDtlAsync(transDtlDTO);
-                return RedirectToAction("Index", "PermissionForm");
+                //return RedirectToAction("Index", "PermissionForm");
+
+                return RedirectToAction(nameof(Add_TransDetail), new { id });
             }
             return View(transDtlDTO);
         }
@@ -131,10 +146,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete_TransDetail(int id)
         {
-            TransDtl transDetail = await _transDtlRepo.GetByIdAsync(id);
-
-            await _transDtlRepo.DeleteAsync(transDetail);
-            await _transDtlRepo.SaveChangesAsync();
+            await _transDtlRepo.DeleteTransDtlAsync(id);
             return RedirectToAction("Index", "PermissionForm");
         }
     }

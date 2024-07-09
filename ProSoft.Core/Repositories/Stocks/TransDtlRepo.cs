@@ -24,25 +24,42 @@ namespace ProSoft.Core.Repositories.Stocks
 
         public async Task<List<TransDtlWithPriceDTO>> GetPermissionDetailsAsync(int transMasterID)
         {
-            List<TransDtl> transDtlList = await _DbSet.Where(obj => obj.TransMAsterID == transMasterID).ToListAsync();
-            var transDtlListDTO = _mapper.Map<List<TransDtlWithPriceDTO>>(transDtlList);
+            List<TransDtl> transDtlList = await _DbSet.Where(obj => obj.TransMAsterID == transMasterID)
+                .OrderByDescending(obj => obj.Serial).ToListAsync();
+            var transDtlListDTO = new List<TransDtlWithPriceDTO>();
 
-            foreach (var item in transDtlListDTO)
+            foreach (var item in transDtlList)
             {
-                if (item.ItemMaster is not (null or ""))
+                TransDtlWithPriceDTO transDtlDTO = await GetForViewAsync(item);
+                StockEmp stockTrans = await _Context.StockEmps.FirstOrDefaultAsync(obj =>
+                    obj.Stkcod == item.StockCode && obj.TransType == item.TransType &&
+                    obj.UserId == item.UserCode);
+
+                transDtlDTO.ShowTransPrice = (int)stockTrans.ShowPrice;
+                transDtlListDTO.Add(transDtlDTO);
+            }
+            return transDtlListDTO;
+        }
+
+        public async Task<TransDtlWithPriceDTO> GetForViewAsync(TransDtl transDtl)
+        {
+            if(transDtl != null)
+            {
+                var transDtlDTO = _mapper.Map<TransDtlWithPriceDTO>(transDtl);
+                if (transDtl.ItemMaster is not (null or ""))
                 {
                     SubItem subItem = await _Context.SubItems
-                        .FirstOrDefaultAsync(obj => obj.ItemCode == item.ItemMaster);
-                    item.ItemMasterName = subItem != null ? subItem.SubName : "";
+                        .FirstOrDefaultAsync(obj => obj.ItemCode == transDtl.ItemMaster);
+                    transDtlDTO.ItemMasterName = subItem != null ? subItem.SubName : "";
                 }
-                if (item.UnitCode != 0)
+                if (transDtl.UnitCode != 0)
                 {
-                    item.UnitCodeName = (await _Context.UnitCodes
-                        .FirstOrDefaultAsync(obj => obj.Code == item.UnitCode)).Names;
+                    transDtlDTO.UnitCodeName = (await _Context.UnitCodes
+                        .FirstOrDefaultAsync(obj => obj.Code == transDtl.UnitCode)).Names;
                 }
+                return transDtlDTO;
             }
-
-            return transDtlListDTO;
+            return null;
         }
 
         public async Task AddToReceiveFormAsync(TransDtl convertTransDtl)
@@ -59,38 +76,41 @@ namespace ProSoft.Core.Repositories.Stocks
             receiveTransDtl.Serial = transDtlList.Count != 0 ? transDtlList.Max(obj => obj.Serial) + 1 : 1;
 
             _mapper.Map(receiveTransMaster, receiveTransDtl);
-            //receiveTransDtl.TransDtlId = 0;
             await AddAsync(receiveTransDtl);
-            //await SaveChangesAsync();
         }
 
-        public async Task UpdateReceiveFormDetailsAsync(TransMaster convertTransMaster)
+        public async Task UpdateReceiveFormDetailAsync(TransDtl convertTransDtl)
         {
-            //TransMaster convertTransMaster = await _Context.TransMasters.FindAsync(convertTransDtl.TransMAsterID);
-            
-            TransMaster receiveTransMaster = await _Context.TransMasters.FirstOrDefaultAsync(obj =>
-                obj.TransType == 23 && obj.DocNoFr == convertTransMaster.DocNo &&
-                obj.StockCode == convertTransMaster.StockCode2);
+            TransMaster transMaster = await _Context.TransMasters
+                .FirstOrDefaultAsync(obj => obj.TransMAsterID == convertTransDtl.TransMAsterID);
+            if (convertTransDtl.TransType == 13)
+            {
+                TransDtl receiveTransDtl = await _DbSet.FirstOrDefaultAsync(obj => obj.TransType == 23 &&
+                    obj.DocNoFr == transMaster.DocNo && obj.StockCode == transMaster.StockCode2 &&
+                    obj.Serial == convertTransDtl.Serial);
 
-            //var receiveTransDtl = _mapper.Map<TransDtl>(convertTransMaster);
-            List<TransDtl> transDtlList = await _DbSet.Where(obj => obj.TransMAsterID == receiveTransMaster.TransMAsterID)
-                .ToListAsync();
-            foreach(var item in transDtlList)
-                await DeleteAsync(item);
-            
-            //await SaveChangesAsync();
+                receiveTransDtl.UnitQty = convertTransDtl.UnitQty;
+                receiveTransDtl.UnitCode = convertTransDtl.UnitCode;
+                receiveTransDtl.Price = convertTransDtl.Price;
+                receiveTransDtl.ItmHaveTax = convertTransDtl.ItmHaveTax;
+                receiveTransDtl.TaxVal = convertTransDtl.TaxVal;
+                receiveTransDtl.ItemVal = convertTransDtl.ItemVal;
+                receiveTransDtl.Flag1 = convertTransDtl.Flag1;
+                receiveTransDtl.ExpireDate = convertTransDtl.ExpireDate;
+                await UpdateAsync(receiveTransDtl);
+            }
+        }
 
-            List<TransDtl> newTransDtlList = await _DbSet.Where(obj => obj.TransMAsterID == convertTransMaster.TransMAsterID)
-                .ToListAsync();
-            foreach(var item in newTransDtlList)
-                await AddToReceiveFormAsync(item);
+        public async Task<string> GetItemAsync(string itemBarcode)
+        {
+            ItemBatch itemBatch = await _Context.ItemBatches.FirstOrDefaultAsync(obj => obj.ItmBatch == itemBarcode);
+            return itemBatch != null ? itemBatch.ItemMaster : string.Empty;
+        }
 
-            //await SaveChangesAsync();
-
-            //receiveTransDtl.Serial = transDtlList.Count != 0 ? transDtlList.Max(obj => obj.Serial) + 1 : 1;
-
-            //_mapper.Map(receiveTransMaster, receiveTransDtl);
-            //await AddAsync(receiveTransDtl);
+        public async Task<string> GetOldBarCodeAsync(string itemCode)
+        {
+            ItemBatch itemBatch = await _Context.ItemBatches.FirstOrDefaultAsync(obj => obj.ItemMaster == itemCode);
+            return itemBatch != null ? itemBatch.ItmBatch : string.Empty;
         }
 
         public async Task<string> GetBarCodeAsync(int transMAsterID, int serial, string itemMaster)
@@ -173,14 +193,24 @@ namespace ProSoft.Core.Repositories.Stocks
         // For Showing Trans Price
         public async Task<TransDtlWithPriceDTO> GetNewTransDtlWithPriceAsync(int transMAsterID)
         {
+            TransMaster transMaster = await _Context.TransMasters.FindAsync(transMAsterID);
+
             var transDtlDTO = new TransDtlWithPriceDTO();
-            transDtlDTO.TransMasterID = transMAsterID;
+            _mapper.Map(transMaster, transDtlDTO);
+            transDtlDTO.PermissionName = (await _Context.GeneralCodes.FirstOrDefaultAsync(obj =>
+                obj.UniqueType == transMaster.TransType)).GDesc;
 
             List<TransDtl> transDtlList = await _DbSet.Where(obj => obj.TransMAsterID == transMAsterID).ToListAsync();
             transDtlDTO.Serial = transDtlList.Count != 0 ? transDtlList.Max(obj => obj.Serial) + 1 : 1;
 
             List<SubItem> subItems = await _Context.SubItems.ToListAsync();
-            transDtlDTO.SubItems = _mapper.Map<List<SubItemViewDTO>>(subItems);
+            transDtlDTO.SubItems = subItems.Select(obj => new SubItemViewDTO
+            {
+                SubId = obj.SubId,
+                SubName = obj.SubName,
+                ItemCode = obj.ItemCode,
+                CodeAndName = $"{obj.SubName} / {obj.ItemCode}",
+            }).ToList();
 
             List<UnitCode> unitCodes = await _Context.UnitCodes.ToListAsync();
             transDtlDTO.UnitCodes = _mapper.Map<List<UnitCodeDTO>>(unitCodes);
@@ -202,7 +232,7 @@ namespace ProSoft.Core.Repositories.Stocks
             return transDtlDTO;
         }
 
-        public async Task AddTransDtlWithPriceAsync(TransDtlWithPriceDTO transDtlDTO)
+        public async Task<TransDtl> AddTransDtlWithPriceAsync(TransDtlWithPriceDTO transDtlDTO)
         {
             TransMaster transMaster = await _Context.TransMasters
                 .FirstOrDefaultAsync(obj => obj.TransMAsterID == transDtlDTO.TransMasterID);
@@ -227,13 +257,18 @@ namespace ProSoft.Core.Repositories.Stocks
             _mapper.Map(transMaster, transDtl);
 
             transDtl.PostPos = 1;
-
-            await AddAsync(transDtl);
             /////////////////////////////////////////////////
             // Add to ItemBatch
             if(transDtl.TransType == 2)
                 await InsertItemBatchAsync(transDtl);
+            /////////////////////////////////////////////////
+            // Add To Receive Form Detail
+            else if (transDtl.TransType == 13)
+                await AddToReceiveFormAsync(transDtl);
+
+            await AddAsync(transDtl);
             await SaveChangesAsync();
+            return transDtl;
         }
 
         public async Task UpdateTransDtlWithPriceAsync(int id, TransDtlWithPriceDTO transDtlDTO)
@@ -284,6 +319,10 @@ namespace ProSoft.Core.Repositories.Stocks
                     await InsertItemBatchAsync(transDtl);
                 }
             }
+            /////////////////////////////////////////////////
+            // Update Receive Form Detail
+            else if (transDtl.TransType == 13)
+                await UpdateReceiveFormDetailAsync(transDtl);
 
             await UpdateAsync(transDtl);
             await SaveChangesAsync();
@@ -293,14 +332,24 @@ namespace ProSoft.Core.Repositories.Stocks
         // For Not Showing Trans Price
         public async Task<TransDtlDTO> GetNewTransDtlAsync(int transMAsterID)
         {
+            TransMaster transMaster = await _Context.TransMasters.FindAsync(transMAsterID);
+
             var transDtlDTO = new TransDtlDTO();
-            transDtlDTO.TransMasterID = transMAsterID;
+            _mapper.Map(transMaster, transDtlDTO);
+            transDtlDTO.PermissionName = (await _Context.GeneralCodes.FirstOrDefaultAsync(obj =>
+                obj.UniqueType == transMaster.TransType)).GDesc;
 
             List<TransDtl> transDtlList = await _DbSet.Where(obj => obj.TransMAsterID == transMAsterID).ToListAsync();
             transDtlDTO.Serial = transDtlList.Count != 0 ? transDtlList.Max(obj => obj.Serial) + 1 : 1;
 
             List<SubItem> subItems = await _Context.SubItems.ToListAsync();
-            transDtlDTO.SubItems = _mapper.Map<List<SubItemViewDTO>>(subItems);
+            transDtlDTO.SubItems = subItems.Select(obj => new SubItemViewDTO
+            {
+                SubId = obj.SubId,
+                SubName = obj.SubName,
+                ItemCode = obj.ItemCode,
+                CodeAndName = $"{obj.SubName} / {obj.ItemCode}",
+            }).ToList();
 
             List<UnitCode> unitCodes = await _Context.UnitCodes.ToListAsync();
             transDtlDTO.UnitCodes = _mapper.Map<List<UnitCodeDTO>>(unitCodes);
@@ -328,7 +377,7 @@ namespace ProSoft.Core.Repositories.Stocks
             return transDtlDTO;
         }
 
-        public async Task AddTransDtlAsync(TransDtlDTO transDtlDTO)
+        public async Task<TransDtl> AddTransDtlAsync(TransDtlDTO transDtlDTO)
         {
             TransMaster transMaster = await _Context.TransMasters
                 .FirstOrDefaultAsync(obj => obj.TransMAsterID == transDtlDTO.TransMasterID);
@@ -351,6 +400,7 @@ namespace ProSoft.Core.Repositories.Stocks
 
             await AddAsync(transDtl);
             await SaveChangesAsync();
+            return transDtl;
         }
 
         public async Task UpdateTransDtlAsync(int id, TransDtlDTO transDtlDTO)
@@ -362,24 +412,32 @@ namespace ProSoft.Core.Repositories.Stocks
 
             _mapper.Map(transDtlDTO, transDtl);
             _mapper.Map(transMaster, transDtl);
+            /////////////////////////////////////////////////
+            // Update Receive Form Detail
+            if (transDtl.TransType == 13)
+                await UpdateReceiveFormDetailAsync(transDtl);
+
+            await UpdateAsync(transDtl);
+            await SaveChangesAsync();
+        }
+
+        public async Task DeleteTransDtlAsync(int id)
+        {
+            TransDtl transDtl = await GetByIdAsync(id);
 
             if (transDtl.TransType == 13)
             {
+                TransMaster transMaster = await _Context.TransMasters
+                    .FirstOrDefaultAsync(obj => obj.TransMAsterID == transDtl.TransMAsterID);
+
                 TransDtl receiveTransDtl = await _DbSet.FirstOrDefaultAsync(obj => obj.TransType == 23 &&
                     obj.DocNoFr == transMaster.DocNo && obj.StockCode == transMaster.StockCode2 &&
                     obj.Serial == transDtl.Serial);
-                TransMaster receiveTransMaster = await _Context.TransMasters
-                    .FirstOrDefaultAsync(obj => obj.TransMAsterID == receiveTransDtl.TransMAsterID);
 
-                receiveTransDtl.UnitQty = transDtl.UnitQty;
-                receiveTransDtl.UnitCode = transDtl.UnitCode;
-                receiveTransDtl.Flag1 = transDtl.Flag1;
-                receiveTransDtl.ExpireDate = transDtl.ExpireDate;
-                await UpdateAsync(receiveTransDtl);
+                await DeleteAsync(receiveTransDtl);
             }
-                //await UpdateReceiveFormDetailsAsync(transMaster);
 
-            await UpdateAsync(transDtl);
+            await DeleteAsync(transDtl);
             await SaveChangesAsync();
         }
     }

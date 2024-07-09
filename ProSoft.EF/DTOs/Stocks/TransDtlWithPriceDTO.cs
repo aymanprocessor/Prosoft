@@ -56,6 +56,8 @@ namespace ProSoft.EF.DTOs.Stocks
         public DateTime? ExpireDate { get; set; }
         public int? UserCode { get; set; }
         public int? BranchId { get; set; }
+        public int? ShowTransPrice { get; set; }
+        public string PermissionName { get; set; }
 
         public List<SubItemViewDTO>? SubItems { get; set; }
         public List<UnitCodeDTO>? UnitCodes { get; set; }

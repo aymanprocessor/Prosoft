@@ -11,19 +11,23 @@ namespace ProSoft.EF.IRepositories.Stocks
     public interface ITransDtlRepo: IRepository<TransDtl, int>
     {
         Task<List<TransDtlWithPriceDTO>> GetPermissionDetailsAsync(int transMasterID);
+        Task<TransDtlWithPriceDTO> GetForViewAsync(TransDtl transDtl);
         Task AddToReceiveFormAsync(TransDtl convertTransDtl);
-        Task UpdateReceiveFormDetailsAsync(TransMaster convertTransMaster);
+        Task UpdateReceiveFormDetailAsync(TransDtl convertTransDtl);
+        Task<string> GetItemAsync(string itemBarcode);
+        Task<string> GetOldBarCodeAsync(string itemCode);
         Task<string> GetBarCodeAsync(int transMAsterID, int serial, string itemMaster);
         Task InsertItemBatchAsync(TransDtl transDtl);
         // For Showing Trans Price
         Task<TransDtlWithPriceDTO> GetNewTransDtlWithPriceAsync(int transMAsterID);
         Task<TransDtlWithPriceDTO> GetTransDtlWithPriceByIdAsync(int transDtlID);
-        Task AddTransDtlWithPriceAsync(TransDtlWithPriceDTO transDtlDTO);
+        Task<TransDtl> AddTransDtlWithPriceAsync(TransDtlWithPriceDTO transDtlDTO);
         Task UpdateTransDtlWithPriceAsync(int id, TransDtlWithPriceDTO transDtlDTO);
         // For Not Showing Trans Price
         Task<TransDtlDTO> GetNewTransDtlAsync(int transMAsterID);
         Task<TransDtlDTO> GetTransDtlByIdAsync(int transDtlID);
-        Task AddTransDtlAsync(TransDtlDTO transDtlDTO);
+        Task<TransDtl> AddTransDtlAsync(TransDtlDTO transDtlDTO);
         Task UpdateTransDtlAsync(int id, TransDtlDTO transDtlDTO);
+        Task DeleteTransDtlAsync(int id);
     }
 }

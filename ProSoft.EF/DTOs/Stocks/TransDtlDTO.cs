@@ -18,6 +18,7 @@ namespace ProSoft.EF.DTOs.Stocks
         [DisplayName("The Item")]
         [Required(ErrorMessage = "The field is required")]
         public string ItemMaster { get; set; }
+        public string? ShowItemMaster { get; set; }
 
         public string? ItemMasterName { get; set; }
 
@@ -43,6 +44,7 @@ namespace ProSoft.EF.DTOs.Stocks
         public int? UserCode { get; set; }
         public int? BranchId { get; set; }
         public int? ItemMaster2 { get; set; }
+        public string? PermissionName { get; set; }
 
         public List<SubItemViewDTO>? SubItems { get; set; }
         public List<UnitCodeDTO>? UnitCodes { get; set; }

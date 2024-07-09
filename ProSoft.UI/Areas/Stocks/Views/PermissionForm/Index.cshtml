@@ -30,6 +30,7 @@
         <a onclick="goToAddPermissionForm(event, 'permissions', 'stocks')" class="btn btn-sm btn-primary fs-6" style="width:150px">
             @localizer["Add Permission Form"]
         </a>
+        <input id="docNo" type="hidden" value="@ViewBag.docNo" />
     </div>
 
     <div class="overflow-auto" style="height: 225px;">
@@ -108,7 +109,7 @@
                         <form action="/Stocks/PermissionForm/Delete_PermissionForm" method="post" class="d-inline">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@Model.TransMAsterID" />
-                            <button type="button" onclick="deleteTransMaster(event, @Model.TransMAsterID)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width: 150px">@localizer["Delete"]</button>
+                            <button type="button" onclick="deleteTransMaster(event, @Model.TransMAsterID)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width: 60px">@localizer["Delete"]</button>
                             <div class="modal-container">
                                 <div class="modal 4" id="modal">
                                     <div class="modal-header fs-4">
@@ -407,7 +408,7 @@
                             <form action="/Stocks/PermissionForm/Delete_PermissionForm" method="post" class="d-inline">
                                     @Html.AntiForgeryToken()
                                 <input type="hidden" name="id" value="${item.transMAsterID}" />
-                                        <button type="button" onclick="deleteTransMaster(event, ${item.transMAsterID})" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width: 60px">@localizer["Delete"]</button>
+                                <button type="button" onclick="deleteTransMaster(event, ${item.transMAsterID})" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width: 60px">@localizer["Delete"]</button>
                                 <div class="modal-container">
                                     <div class="modal 4" id="modal">
                                         <div class="modal-header fs-4">
@@ -571,5 +572,43 @@
                 }
             });
         }
+        function clickForShow() {
+            var journalCode = document.getElementById("journaltype").value.toLowerCase();
+            let rows = document.querySelectorAll("#myTable1 tbody tr");
+
+            // Loop through all table rows
+            for (let i = 0, len1 = rows.length; i < len1; i++) {
+                let firstTd = rows[i].querySelector("td:first-child");  // Select the first td in the row
+                if (firstTd) {
+                    let tdValue = firstTd.textContent || firstTd.innerText;
+                    tdValue = tdValue.toLowerCase();
+                    if (tdValue.indexOf(journalCode) > -1) {  // Compare with journalCode
+                        firstTd.click();
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Function to handle initial click based on DocNo on first table
+        (function () {
+            let permissionNum = document.getElementById("docNo").value;
+            let rows = document.querySelectorAll("#myTable tbody tr");
+
+            if (permissionNum != null || permissionNum != 0) {
+                // Loop through all table rows
+                for (let i = 0, len1 = rows.length; i < len1; i++) {
+                    let firstTd = rows[i].querySelector("td:first-child");  // Select the first td in the row
+                    if (firstTd) {
+                        let tdValue = firstTd.textContent || firstTd.innerText;
+                        tdValue = tdValue.toLowerCase();
+                        if (tdValue.indexOf(permissionNum) > -1) {  // Compare with journalCode
+                            firstTd.click();
+                            break;
+                        }
+                    }
+                }
+            }
+        })();
     </script>
 }
