@@ -6,13 +6,13 @@
     Layout = "_Layout";
     var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
 
-    var subItems = new SelectList(Model.SubItems, "ItemCode", "SubName");
+    var subItems = new SelectList(Model.SubItems, "ItemCode", "CodeAndName");
     var unitCodes = new SelectList(Model.UnitCodes, "Code", "Names");
 }
 @inject IViewLocalizer localizer
 
 <div class="container pt-2">
-    <h1 class="mt-4">@localizer["Add Item"]</h1>
+    <h1 class="mt-4">@localizer["Add Item To"] @Model.PermissionName</h1>
     <form method="post" asp-action="Add_TransDetailWithPrice">
         <div class="border p-3 mt-4">
 
@@ -151,5 +151,16 @@
             }
             total.value = quantity.value * price.value;
         }
+    </script>
+
+    @* For Custom Select Element *@
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#ItemMaster').select2({
+                placeholder: "-- Choose --",
+                allowClear: true
+            });
+        });
     </script>
 }

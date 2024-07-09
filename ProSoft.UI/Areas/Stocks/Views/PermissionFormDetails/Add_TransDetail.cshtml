@@ -6,14 +6,14 @@
     Layout = "_Layout";
     var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
 
-    var subItems = new SelectList(Model.SubItems, "ItemCode", "SubName");
+    var subItems = new SelectList(Model.SubItems, "ItemCode", "CodeAndName");
     var unitCodes = new SelectList(Model.UnitCodes, "Code", "Names");
     var itemStatusList = new SelectList(Model.ItemStatusList, "Code", "Names");
 }
 @inject IViewLocalizer localizer
 
 <div class="container pt-2">
-    <h1 class="mt-4">@localizer["Add Item"]</h1>
+    <h1 class="mt-4">@localizer["Add Item To"] @Model.PermissionName</h1>
     <form method="post" asp-action="Add_TransDetail">
         <div class="border p-3 mt-4">
 
@@ -23,16 +23,21 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
                 <div class="mb-3" style="width: 33%;">
-                    <label asp-for="ItemMaster" class="text-center" style="width: 45%;"></label>
-                    <select asp-for="ItemMaster" asp-items="subItems" class="form-control text-center" style="width: 78%;">
+                    <label asp-for="ItmBarcode" class="text-center" style="width: 45%;"></label>
+                    <input asp-for="ItmBarcode" class="form-control" style="width: 38%;" onchange="getItem(event)" />
+                    <select asp-for="ShowItemMaster" asp-items="subItems" class="form-control text-center"
+                        style="width: 38%; pointer-events: none; background-color: #e9ecef">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="ItmBarcode" class="text-danger"></span>
+                </div>
+                <div class="mb-3" style="width: 33%;">
+                    <label asp-for="ItemMaster" class="text-center" style="width: 40%;"></label>
+                    <select asp-for="ItemMaster" asp-items="subItems" class="form-control text-center" style="width: 72%;"
+                        onchange="getOldBarCode(event)">
                         <option value="">-- Choose --</option>
                     </select>
                     <span asp-validation-for="ItemMaster" class="text-danger"></span>
-                </div>
-                <div class="mb-3" style="width: 33%;">
-                    <label asp-for="ItmBarcode" for="" class="text-center" style="width: 40%;"></label>
-                    <input asp-for="ItmBarcode" class="form-control" style="width: 72%; pointer-events: none; background-color: #e9ecef" />
-                    <span asp-validation-for="ItmBarcode" class="text-danger"></span>
                 </div>
                 <div class="mb-3" style="width: 33%;">
                     <label asp-for="UnitQty" class="text-center" style="width: 80%;"></label>
@@ -76,3 +81,45 @@
         </div>
     </form>
 </div>
+
+@section Scripts {
+    <script>
+        function getItem(e) {
+            let itemBarcode = e.target.value;
+
+            if (itemBarcode) {
+                $.ajax({
+                    url: `/Stocks/PermissionFormDetails/GetItem?itemBarcode=${itemBarcode}`,
+                    success: function (result) {
+                        document.getElementById("ShowItemMaster").value = result;
+                    }
+                });
+            }
+        }
+
+        function getOldBarCode(e) {
+            let itemMaster = e.target.value;
+
+            if (itemMaster) {
+                $.ajax({
+                    url: `/Stocks/PermissionFormDetails/GetOldBarCode?itemCode=${itemMaster}`,
+                    success: function (result) {
+                        document.getElementById("ItmBarcode").value = result;
+                        document.getElementById("ShowItemMaster").value = "";
+                    }
+                });
+            }
+        }
+    </script>
+
+    @* For Custom Select Element *@
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#ItemMaster').select2({
+                placeholder: "-- Choose --",
+                allowClear: true
+            });
+        });
+    </script>
+}

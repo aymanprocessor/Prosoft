@@ -31,7 +31,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             //_mapper = mapper;
         }
 
-        public async Task<IActionResult> Index(int? id, int? transDtlId)
+        public async Task<IActionResult> Index(int? id/*, int? transDtlId*/)
         {
             var userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
             List<StockViewDTO> stocksDTO = await _transMasterRepo.GetActiveStocksForUserAsync(userCode);
@@ -39,21 +39,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
 
             TransMaster permissionForm = await _transMasterRepo.GetByIdAsync(Convert.ToInt32(id));
             TransMasterViewDTO permissionsFormDTO = await _transMasterRepo.GetForViewAsync(permissionForm);
-            //permissionsFormDTO = permissionsFormDTO != null ? permissionsFormDTO : new();
-            
-            TransDtl transDtl = await _transDtlRepo.GetByIdAsync(Convert.ToInt32(transDtlId));
-            TransDtlWithPriceDTO transDtlDTO = await _transDtlRepo.GetForViewAsync(transDtl);
-
-            if(permissionsFormDTO != null)
-                permissionsFormDTO.TransDtlDTO = transDtlDTO;// != null ? transDtlDTO : new();
-            //if(id is not (null or 0))
-            //{
-
-            //    return View(permissionsFormDTO);
-            //}
-            //if(transDtlId is not (null or 0))
-            //{
-            //}
+            ViewBag.docNo = permissionsFormDTO?.DocNo;
             return View(permissionsFormDTO);
         }
 

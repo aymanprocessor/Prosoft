@@ -543,6 +543,11 @@
   "Edit Disbursement permission Cash": "Edit Disbursement permission Cash",
   "Edit Transfer Permission Cash": "Edit Transfer Permission Cash",
   "Edit Opening Balances": "Edit Opening Balances",
+  "Last Level": "Last Level",
+  "Nature of Account": "Nature of Account",
+  "General Teacher": "General Teacher",
+  "Accounts": "Accounts",
+  "Accounts guide": "Accounts guide",
 
 
 
@@ -787,5 +792,6 @@
   "Search": "Search",
   "You Can't Delete it because of Posting To Accounts": "You Can't Delete it because of Posting To Accounts",
   "This Permission is approved": "This Permission is approved",
-  "Shipped from / to": "Shipped from / to"
+  "Shipped from / to": "Shipped from / to",
+  "Add Item To": "Add Item To"
 }
