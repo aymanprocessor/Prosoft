@@ -14,8 +14,8 @@
 
 }
 @inject IViewLocalizer localizer
-@* <style>
-    .image {
+<style>
+/*     .image {
         top: 0px;
         left: 0px;
         width: 100%;
@@ -26,14 +26,19 @@
         background-position: center;
         opacity: 0.5;
         z-index: -1;
+    } */
+    .labelStyleee
+    {
+        color: blue;
+        font-weight: bold;
     }
-</style> *@
+</style>
 <div class="container pt-2" style="min-height:100vh;">
     @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
 
     <h1 class="mt-4">@localizer["Edit Receive Permission Cash"]</h1>
     <form method="post" asp-action="Edit_ReceivePermission" id="myForm">
-        <div class="border p-3 mt-4">
+        <div class=" p-3 mt-4" style="border:1px solid;">
 
             <div asp-validation-summary="ModelOnly"></div>
             @* hidden *@
@@ -48,8 +53,8 @@
 
             <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
                 <div class="d-flex align-items-center justify-content-between mb-3" style="width: 100% !important;">
-                    <label asp-for="Flag" style="width: 10% !important;"></label>
-                    <select asp-for="Flag" class="form-control text-center">
+                    <label class="labelStyleee" asp-for="Flag" style="width: 10% !important;font-weight: bold;"></label>
+                    <select asp-for="Flag" class="form-control text-center" style="pointer-events:none;background-color: #404197;font-weight: bold;color:white;">
                         <option value="1">@localizer["Posting of Invoices"]</option>
                         <option value="2">@localizer["Posting of Treasury"]</option>
                         <option value="3">@localizer["Posting of Pharmacy"]</option>
@@ -58,15 +63,15 @@
                 </div>
                 <div class="d-flex justify-content-center gap-3" style="width: 100% !important;">
                     <div class="d-flex align-items-center justify-content-between mb-3" style="width: 60% !important;">
-                        <label asp-for="AccTransType" style="width: 25% !important;"></label>
-                        <select asp-for="AccTransType" asp-items="journals" class="form-control text-center">
+                        <label class="labelStyleee" asp-for="AccTransType" style="width: 25% !important;font-weight: bold;"></label>
+                        <select asp-for="AccTransType" asp-items="journals" class="form-control text-center" style="pointer-events:none;background-color: #404197;font-weight: bold;color:white;">
 
                         </select>
                         <span asp-validation-for="AccTransType" class="text-danger"></span>
                     </div>
                     <div class="d-flex align-items-center justify-content-between mb-3" style="width: 40% !important;">
-                        <label asp-for="AccTransNo" style="width: 50% !important;"></label>
-                        <input asp-for="AccTransNo" class="form-control" />
+                        <label class="labelStyleee" asp-for="AccTransNo" style="width: 50% !important;font-weight: bold;"></label>
+                        <input asp-for="AccTransNo" class="form-control" style="pointer-events:none;background-color: #404197;font-weight: bold;color:white;" />
                         <span asp-validation-for="AccTransNo" class="text-danger"></span>
                     </div>
 
@@ -77,7 +82,7 @@
 
             <div class="parent-permission d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
                 <div class="mb-3" style="width: 100% !important;">
-                    <label asp-for="EntryType"></label>
+                    <label class="labelStyleee" asp-for="EntryType"></label>
                     <select asp-for="EntryType" asp-items="gtables" class="form-control text-center">
                         <option value="">-- Choose --</option>
                     </select>
@@ -85,13 +90,13 @@
                 </div>
                 <div class="parent-permission d-flex justify-content-center gap-3" style="width: 100% !important;">
                     <div class="mb-3 " style="width: 20% !important;">
-                        <label asp-for="SerId" class="ms-2">@localizer["SerialId"]</label>
-                        <input asp-for="SerId" disabled value="1" class="form-control" />
+                        <label class="labelStyleee" asp-for="SerId" class="ms-2">@localizer["SerialId"]</label>
+                        <input asp-for="SerId" disabled value="1" class="form-control" style="pointer-events:none;" />
                         <span asp-validation-for="SerId" class="text-danger"></span>
                     </div>
                     <div class="mb-3 " style="width: 80% !important;">
-                        <label asp-for="CostCenterCode"></label>
-                        <select asp-for="CostCenterCode" asp-items="costCenters" class="form-control text-center">
+                        <label class="labelStyleee" asp-for="CostCenterCode" style="margin-right: 70px;width: 30%;"></label>
+                        <select asp-for="CostCenterCode" asp-items="costCenters" class="form-control text-center" style="pointer-events:none;">
                             <option value="">-- Choose --</option>
                         </select>
                         <span asp-validation-for="CostCenterCode" class="text-danger"></span>
@@ -104,18 +109,18 @@
 
             <div class="parent-permission d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
                 <div class="parent-permission d-flex justify-content-center gap-3" style="width: 100% !important;">
-                    <label asp-for="DocNo" style="width: 48% !important;"></label>
+                    <label class="labelStyleee" asp-for="DocNo" style="width: 48% !important;"></label>
                     <div class="mb-3 " style="width: 60% !important;">
-                        <input asp-for="DocNo" class="form-control text-center" disabled />
+                        <input asp-for="DocNo" class="form-control text-center" disabled style="pointer-events:none;" />
                         <span asp-validation-for="DocNo" class="text-danger"></span>
                     </div>
                     <div class="mb-3 " style="width: 40% !important;">
-                        <input asp-for="FYear" disabled class="form-control text-center" />
+                        <input asp-for="FYear" disabled class="form-control text-center" style="pointer-events:none;" />
                     </div>
                 </div>
                 <div class="mb-3" style="width: 100% !important;">
-                    <label asp-for="AprovedFlag"></label>
-                    <select asp-for="AprovedFlag" class="form-control text-center">
+                    <label class="labelStyleee" asp-for="AprovedFlag"></label>
+                    <select asp-for="AprovedFlag" class="form-control text-center" style="border: 1px solid blue;">
                         <option value="NO">@localizer["No"]</option>
                         <option value="APR">@localizer["Yes"]</option>
                     </select>
@@ -128,15 +133,15 @@
             <div class="parent-permission d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
                 <div class="parent-permission d-flex justify-content-center gap-3" style="width: 100% !important;">
                     <div class="mb-3 " style="width: 100% !important;">
-                        <label asp-for="SafeCode"></label>
-                        <select asp-for="SafeCode" asp-items="safeNames" class="form-control text-center">
+                        <label class="labelStyleee" asp-for="SafeCode"></label>
+                        <select asp-for="SafeCode" asp-items="safeNames" class="form-control text-center" style="pointer-events:none;">
                         </select>
                         <span asp-validation-for="SafeCode" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="mb-3" style="width: 100% !important;">
-                    <label asp-for="DocDate"></label>
-                    <input asp-for="DocDate" class="form-control" />
+                    <label class="labelStyleee" asp-for="DocDate"></label>
+                    <input asp-for="DocDate" class="form-control" type="date" style="pointer-events:none;" />
                     <span asp-validation-for="DocDate" class="text-danger"></span>
                 </div>
             </div>
@@ -145,19 +150,19 @@
 
             <div class="parent-permission d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
                 <div class="parent-permission d-flex justify-content-center gap-3" style="width: 100% !important;">
-                    <label asp-for="CurCode" style="width: 48% !important;"></label>
+                    <label class="labelStyleee" asp-for="CurCode" style="width: 48% !important;"></label>
                     <div class="mb-3 " style="width: 40% !important;">
                         <input asp-for="CurSer" class="form-control text-center" style="pointer-events:none; background-color:#e9ecef;" />
                     </div>
                     <div class="mb-3 " style="width: 60% !important;">
-                        <select asp-for="CurCode" asp-items="accGlobalDef" onchange="Currency(event)" class="form-control text-center">
+                        <select asp-for="CurCode" asp-items="accGlobalDef" onchange="Currency(event)" class="form-control text-center" style="pointer-events:none;">
                         </select>
                         <span asp-validation-for="CurCode" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="mb-3" style="width: 100% !important;">
-                    <label asp-for="Rate1"></label>
-                    <input asp-for="Rate1" class="form-control text-center" disabled value="1" />
+                    <label class="labelStyleee" asp-for="Rate1"></label>
+                    <input asp-for="Rate1" class="form-control text-center" disabled value="1" style="pointer-events:none;" />
                     <span asp-validation-for="Rate1" class="text-danger"></span>
                 </div>
             </div>
@@ -166,8 +171,8 @@
 
             <div class="parent-permission d-flex align-items-md-end justify-content-start  my-mobile gap-3 ">
                 <div class="mb-3" style="width: 100% !important;">
-                    <label asp-for="PersonName" style="width: 20% !important;"></label>
-                    <input asp-for="PersonName" class="form-control" />
+                    <label class="labelStyleee" asp-for="PersonName" style="width: 20% !important;"></label>
+                    <input asp-for="PersonName" class="form-control" style="pointer-events:none;" />
                     <span asp-validation-for="PersonName" class="text-danger"></span>
 
                 </div>
@@ -177,8 +182,8 @@
 
             <div class="parent-permission d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
                 <div class="mb-3" style="width: 100% !important;">
-                    <label asp-for="ValuePay"></label>
-                    <input asp-for="ValuePay" type="number" class="form-control" onchange="getNumbersWord(event)" />
+                    <label class="labelStyleee" asp-for="ValuePay"></label>
+                    <input asp-for="ValuePay" type="number" class="form-control" onchange="getNumbersWord(event)" style="pointer-events:none;" />
                     <span asp-validation-for="ValuePay" class="text-danger"></span>
                 </div>
                 <div class="mb-3" style="width: 100% !important;">
@@ -190,8 +195,8 @@
 
             <div class="parent-permission d-flex align-items-md-end justify-content-start  my-mobile gap-3 ">
                 <div class="mb-3" style="width: 100% !important;">
-                    <label asp-for="Commentt" style="width: 20% !important;"></label>
-                    <input asp-for="Commentt" class="form-control" />
+                    <label class="labelStyleee" asp-for="Commentt" style="width: 20% !important;"></label>
+                    <input asp-for="Commentt" class="form-control" style="pointer-events:none;" />
                     <span asp-validation-for="Commentt" class="text-danger"></span>
                 </div>
             </div>
@@ -200,17 +205,17 @@
 
             <div class="parent-permission d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
                 <div class="parent-permission d-flex justify-content-center gap-3" style="width: 100% !important;">
-                    <label style="width: 48% !important;">@localizer["Credit Account"]</label>
+                    <label class="labelStyleee" style="width: 48% !important;">@localizer["Credit Account"]</label>
                     <div class="mb-3 " style="width: 50% !important;">
                         @* <label asp-for="MainCode"></label> *@
-                        <select asp-for="MainCode" asp-items="mainAccCodes" class="form-control text-center" onchange="getSubCodes(event)">
+                        <select asp-for="MainCode" asp-items="mainAccCodes" class="form-control text-center" onchange="getSubCodes(event)" style="pointer-events:none;">
                             <option value="">-- Choose --</option>
                         </select>
                         <span asp-validation-for="MainCode" class="text-danger"></span>
                     </div>
                     <div class="mb-3 " style="width: 50% !important;">
                         @* <label asp-for="SubCode"></label> *@
-                        <select asp-for="SubCode" asp-items="subAccCodes" class="form-control text-center" onchange="getNameSub(event)">
+                        <select asp-for="SubCode" asp-items="subAccCodes" class="form-control text-center" onchange="getNameSub(event)" style="pointer-events:none;">
                             <option value="">-- Choose --</option>
                         </select>
                         <span asp-validation-for="SubCode" class="text-danger"></span>

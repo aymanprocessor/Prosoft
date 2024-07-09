@@ -549,6 +549,11 @@
   "Edit Disbursement permission Cash": "تعديل اذن صرف نقدية",
   "Edit Transfer Permission Cash": "تعديل اذن تحويل نقدية",
   "Edit Opening Balances": "تعديل الارصدة الافتتاحية",
+  "Last Level": "اخر مستوي",
+  "Nature of Account": "طبيعة الحساب",
+  "General Teacher": "اللاستاذ العام",
+  "Accounts": "الحسابات",
+  "Accounts guide": "دليل الحسابات",
 
 
 
@@ -793,5 +798,6 @@
   "Search": "بحث",
   "You Can't Delete it because of Posting To Accounts": "لا يجوز الحذف بسبب الترحيل الي الحسابات",
   "This Permission is approved": "هذا الاذن معتمد",
-  "Shipped from / to": "صرف من / الي"
+  "Shipped from / to": "صرف من / الي",
+  "Add Item To": "اضافة صنف الي"
 }

@@ -47,7 +47,7 @@
                 </div>
                 <div class="mb-3 ">
                     <label asp-for="CostCenterCode" class="ms-2"></label>
-                    <select asp-for="CostCenterCode" asp-items="costCenter" class="form-control text-center">
+                    <select asp-for="CostCenterCode" asp-items="costCenter" class="form-control text-center" id="costCenterSelect">
                         <option value="">-- Choose --</option>
                     </select>
                     <span asp-validation-for="CostCenterCode" class="text-danger"></span>
@@ -67,3 +67,14 @@
         </div>
     </form>
 </div>
+@section Scripts{
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#costCenterSelect').select2({
+            placeholder: "-- Choose --",
+            allowClear: true
+        });
+    });
+</script>
+}

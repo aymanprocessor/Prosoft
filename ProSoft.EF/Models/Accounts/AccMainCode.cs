@@ -58,6 +58,8 @@ public partial class AccMainCode
     [Unicode(false)]
     public string? MainSubType { get; set; }
 
-   // public ICollection<AccSafeCash>? AccSafeCashes { get; set; }
+    [Column("LAST_LEVEL")]
+    public int? LastLevel { get; set; }
+    // public ICollection<AccSafeCash>? AccSafeCashes { get; set; }
 
 }

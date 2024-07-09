@@ -117,6 +117,7 @@ builder.Services.AddScoped<IAccTransDetailRepo, AccTransDetailRepo>();
 builder.Services.AddScoped<ICostCenterRepo, CostCenterRepo>();
 builder.Services.AddScoped<IReportFromToVoucherRepo, ReportFromToVoucherRepo>();
 builder.Services.AddScoped<IAccStartBalRepo, AccStartBalRepo>();
+builder.Services.AddScoped<IAccMainCodeRepo, AccMainCodeRepo>();
 ////////// PatRecord ////////////////////
 builder.Services.AddScoped<ICoronaryRepo, CoronaryRepo>();
 builder.Services.AddScoped<IPastHistoryRepo, PastHistoryRepo>();

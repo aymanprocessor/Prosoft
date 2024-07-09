@@ -22,7 +22,7 @@ namespace ProSoft.Core.Repositories.Medical.Analysis
             _Context = Context;
             _mapper = mapper;
         }
-
+        
         public async Task<List<MainViewDTO>> GetMainsByLevelAsync(double level)
         {
             List<MedicalAnalysisMain> mainLevels = await _Context.MedicalAnalysisMains

@@ -120,7 +120,7 @@
                 let tdValue = firstTd.textContent || firstTd.innerText;
                 tdValue = tdValue.toLowerCase();
                 if (tdValue.indexOf(journalCode) > -1) {  // Compare with journalCode
-                    rows[i].click();  
+                    firstTd.click();
                     break;
                 }
             }

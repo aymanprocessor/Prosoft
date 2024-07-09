@@ -1,32 +1,34 @@
-﻿
+﻿@inject IViewLocalizer localizer
 @{
-    List<MainViewDTO> GetMainLevel_4(string code) //function recieve maincode
+    List<AccMainCodeDTO> GetMainLevel_4(string code) //function recieve maincode
     {
         string subString = code.Substring(0, 3);
-        List<MainViewDTO> mainLevel_4 = (List<MainViewDTO>)ViewBag?.MainLevel_4;
+        List<AccMainCodeDTO> mainLevel_4 = (List<AccMainCodeDTO>)ViewBag?.MainLevel_4;
 
         return mainLevel_4.Where(obj => obj.MainCode.Substring(0, 3) == subString).ToList();
     }
-    List<MainViewDTO> GetMainLevel_5(string code)
+    List<AccMainCodeDTO> GetMainLevel_5(string code)
     {
         string subString = code.Substring(0, 5);
-        List<MainViewDTO> mainLevel_5 = (List<MainViewDTO>)ViewBag?.MainLevel_5;
+        List<AccMainCodeDTO> mainLevel_5 = (List<AccMainCodeDTO>)ViewBag?.MainLevel_5;
 
         return mainLevel_5.Where(obj => obj.MainCode.Substring(0, 5) == subString).ToList();
     }
-    
+
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
     string F_Year = User.Claims.FirstOrDefault(c => c.Type == "F_Year").Value;
 }
 
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en" dir="@(isRTL ? "RTL" : "LTR")">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Medical Analysis</title>
+    <title>Accounts</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/layout_MedAnalysis.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/layout_ourModules.css" asp-append-version="true" />
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
           integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
@@ -37,33 +39,33 @@
     <div class="d-flex">
         <div id="mySidebar" class="col-2 bg-dark p-0">
             <div class="vh-100 p-1 d-flex flex-column">
-                <a asp-area="Medical" asp-controller="MainAnalysis" asp-action="index" class="d-flex my-2 justify-content-center text-white text-decoration-none">
-                    <span class="fs-3 d-sm-inline">Analysis Index</span>
+                <a asp-area="Accounts" asp-controller="AccMainCode" asp-action="Index" class="nav-link d-flex my-2 justify-content-center text-white text-decoration-none">
+                    <span class="fs-4 d-sm-inline">@localizer["Accounts guide"]</span>
                 </a>
-                <a asp-area="Medical" asp-controller="MainAnalysis" asp-action="MainLevel_3" class="d-flex my-2 justify-content-start ps-2 text-white text-decoration-none">
-                    <span class="fs-5 d-sm-inline">Medical Analysis</span>
+                <a asp-area="Accounts" asp-controller="AccMainCode" asp-action="MainLevel_3" class="d-flex my-2 justify-content-start ps-2 text-white text-decoration-none">
+                    <span class="fs-5 d-sm-inline">@localizer["Accounts"]</span>
                 </a>
-                <ul class="nav nav-pills flex-column">
+                <ul class="nav nav-pills flex-column p-0">
                     @foreach (var item in ViewBag?.MainLevel_3)
                     {
                         <li class="nav-item has-submenu">
-                            <a asp-area="Medical" asp-controller="MainAnalysis" asp-action="MainLevel_4" asp-route-id="@item.MainCode" class="nav-link hover-link">
-                                <i class="fa-solid fa-caret-right me-2"></i> @item.MainName
+                            <a asp-area="Accounts" asp-controller="AccMainCode" asp-action="MainLevel_4" asp-route-id="@item.MainCode" class="nav-link hover-link">
+                                <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i> @item.MainName
                             </a>
 
                             <ul class="submenu collapse p-0">
                                 @foreach (var sub in GetMainLevel_4(item.MainCode))
                                 {
                                     <li class="nav-item has-submenu">
-                                        <a asp-area="Medical" asp-controller="MainAnalysis" asp-action="MainLevel_5" asp-route-id="@sub.MainCode" class="nav-link hover-link ps-4">
-                                            <i class="fa-solid fa-caret-right mx-2"></i> @sub.MainName
+                                        <a asp-area="Accounts" asp-controller="AccMainCode" asp-action="MainLevel_5" asp-route-id="@sub.MainCode" class="nav-link hover-link ps-4">
+                                            <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i> @sub.MainName
                                         </a>
 
                                         <ul class="submenu collapse p-0">
                                             @foreach (var subitem in GetMainLevel_5(sub.MainCode))
                                             {
                                                 <li class="nav-item">
-                                                    <a asp-area="Medical" asp-controller="MainAnalysis" asp-action="MainLevel_6" asp-route-id="@subitem.MainCode" class="nav-link hover-link ms-4 ps-4">
+                                                    <a asp-area="Accounts" asp-controller="AccMainCode" asp-action="MainLevel_6" asp-route-id="@subitem.MainCode" class="nav-link hover-link ms-4 ps-4">
                                                         @subitem.MainName
                                                     </a>
                                                 </li>
@@ -77,18 +79,17 @@
                         </li>
                     }
                 </ul>
-
-                <a asp-area="Medical" asp-controller="LabUnits" asp-action="Index" class="btn btn-primary mt-auto align-self-center mb-2">Go To Lab Units</a>
             </div>
         </div>
 
-        <div class="content position-relative" style="flex: 1; ">
+        <div class="content pb-3 position-relative" style="flex: 1;">
             <div class="d-flex justify-content-between align-items-center gap-2 p-2 shadow-sm rounded">
                 <button class="toggler btn btn-secondary rounded-4" onclick="toggleNav()">☰</button>
                 <span class="fw-bold text-capitalize">@User.Identity.Name</span>
-                <span class="fw-bold">@F_Year</span>
-                <div class="d-flex align-items-center gap-2 ms-auto">
-                    <a asp-action="Logout" asp-controller="Account" class="btn btn-secondary">Log out</a>
+                <span class="fw-bold"> / @F_Year</span>
+                <div class="d-flex align-items-center gap-2 @(isRTL ? "me-auto" : "ms-auto")">
+                    <partial name="_SelectLanguagePartial" />
+                    <a asp-action="Logout" asp-controller="Account" class="btn btn-secondary">@localizer["Log out"]</a>
                 </div>
             </div>
             @RenderBody()
