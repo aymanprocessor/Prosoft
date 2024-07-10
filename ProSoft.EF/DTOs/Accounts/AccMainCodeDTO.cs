@@ -14,6 +14,8 @@ namespace ProSoft.EF.DTOs.Accounts
         public string? BalanceFlag { get; set; }
         public string? MainSubType { get; set; }
         public string? OstazType { get; set; }
+        public string? ParentCode { get; set; }
+
 
     }
 }

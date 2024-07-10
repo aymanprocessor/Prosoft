@@ -18,7 +18,7 @@ namespace ProSoft.EF.DTOs.Accounts
         [Required(ErrorMessage = "The field is required")]
         public string MainName { get; set; }
 
-        [DisplayName("Debit")]
+        [DisplayName("Last Level")]
         [Required(ErrorMessage = "The field is required")]
         public int? LastLevel { get; set; }
 

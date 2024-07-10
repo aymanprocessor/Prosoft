@@ -10,8 +10,8 @@
     <div class="d-flex justify-content-between align-items-center mt-4 ">
         <h1 class="header">@localizer["Accounts"]</h1>
 
-        <a asp-controller="MainAnalysis" asp-action="AddMainLevel_3" class="btn btn-sm btn-primary fs-6" style="width:150px">
-            Add Main Analysis
+        <a asp-controller="AccMainCode" asp-action="AddMainLevel_3" class="btn btn-sm btn-primary fs-6" style="width:150px">
+            @localizer["Add Main Account"]
         </a>
 
         @*<a onclick="goTo('Add_LabReports')" class="btn btn-sm btn-primary" style="width:150px">
@@ -54,30 +54,67 @@
                         @analysis.MainName
                     </td>
                     <td>
-                        @analysis.BalanceFlag
+                        @if (analysis.BalanceFlag == "B")
+                        {
+                            @localizer["Budget"]
+                        }
+                        else if (analysis.BalanceFlag == "P")
+                        {
+                            @localizer["Profit and Loss"]
+                        }
+                        else if (analysis.BalanceFlag == "N")
+                        {
+                            @localizer["Without"]
+                        }
                     </td>
                     <td>
-                        @analysis.MainSubType
+                        @if (analysis.MainSubType == "mn")
+                        {
+                            @localizer["Main Balance"]
+                        }
+                        else if (analysis.MainSubType == "sb")
+                        {
+                            @localizer["Sub Balance"]
+                        }
+                        else if (analysis.MainSubType == "N")
+                        {
+                            @localizer["Without"]
+                        }
                     </td>
                     <td>
-                        @analysis.OstazType
+                        @if (analysis.OstazType == "mn")
+                        {
+                            @localizer["Main Balance"]
+                        }
+                        else if (analysis.OstazType == "sb")
+                        {
+                            @localizer["Sub Balance"]
+                        }
+                        else if (analysis.OstazType == "tot")
+                        {
+                            @localizer["The Sum"]
+                        }
+                        else if (analysis.OstazType == "no")
+                        {
+                            @localizer["Without"]
+                        }
                     </td>
                     <td>
                         @if (analysis.LastLevel == 1)
                         {
-                            <span>Yes</span>
+                            @localizer["Yes"]
                         }
                         else if (analysis.LastLevel == 0)
                         {
-                            <span>No</span>
+                            @localizer["No"]
                         }
                     </td>
 
                     <td width="30%" class="text-center">
-                        <a asp-controller="AccTransMaster" asp-action="Edit_AccTransMaster" asp-route-ID="@analysis.MainCode" class="btn btn-sm btn-success mb-1 fs-6" style="width:150px;">
+                        <a asp-controller="AccMainCode" asp-action="EditMainLevel_3" asp-route-ID="@analysis.MainCode" class="btn btn-sm btn-success mb-1 fs-6" style="width:150px;">
                             <i class="bi bi-pencil"></i> @localizer["Edit"]
                         </a>
-                        <form asp-action="Delete_AccTransMaster" method="post" class="d-inline">
+                        <form asp-action="DeleteMainLevel_3" method="post" class="d-inline">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@analysis.MainCode" />
                             <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width:150px;">@localizer["Delete"]</button>

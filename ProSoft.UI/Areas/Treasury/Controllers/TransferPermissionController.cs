@@ -109,6 +109,11 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
             ViewBag.userCode = userCode;
             ViewBag.branchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
             AccSafeCashEditAddDTO accSafeCashDTO = await _accSafeCashRepo.GetAccSafeCashByIdAsync(id, userCode);
+            if (accSafeCashDTO.AprovedFlag == "APR")
+            {
+                return RedirectToAction("Index", "AccSafeCash", new { docType = "SFCIN", flagType = "oneANDtwo", message = "This permission is approved !" });
+
+            }
             return View(accSafeCashDTO);
         }
 
@@ -138,6 +143,10 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
                 var errorMessage = "Cannot delete this record because it has related data in another table!";
                 //ViewBag.ErrorMessage = "Cannot delete this record because it has related data in another table.";
                 return RedirectToAction("Index", "TransferPermission", new { docType = "SFTOT", flagType = "oneANDtwoAndthree", errorMessage });
+            }
+            if (accSafeCash.AprovedFlag == "APR")
+            {
+                return RedirectToAction("Index", "AccSafeCash", new { docType = "SFCIN", flagType = "oneANDtwo", message = "This permission is approved !" });
             }
             await _accSafeCashRepo.DeleteAsync(accSafeCash);
             await _accSafeCashRepo.SaveChangesAsync();

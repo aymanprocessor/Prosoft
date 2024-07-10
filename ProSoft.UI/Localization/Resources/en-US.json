@@ -548,6 +548,17 @@
   "General Teacher": "General Teacher",
   "Accounts": "Accounts",
   "Accounts guide": "Accounts guide",
+  "This permission is approved !": "This permission is approved !",
+  "Add Main Account": "Add Main Account",
+  "Add Sub Account": "Add Sub Account",
+  "Budget": "Budget",
+  "Profit and Loss": "Profit and Loss",
+  "Main Balance": "Main Balance",
+  "Sub Balance": "Sub Balance",
+  "Add": "Add",
+  "Add To Accounts": "Add To Accounts",
+  "Edit To Accounts": "Edit To Accounts",
+  "Add To": "Add To",
 
 
 
@@ -793,5 +804,6 @@
   "You Can't Delete it because of Posting To Accounts": "You Can't Delete it because of Posting To Accounts",
   "This Permission is approved": "This Permission is approved",
   "Shipped from / to": "Shipped from / to",
-  "Add Item To": "Add Item To"
+  "Add Item To": "Add Item To",
+  "Edit Item In": "Edit Item In"
 }

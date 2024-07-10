@@ -37,7 +37,7 @@
 </head>
 <body>
     <div class="d-flex">
-        <div id="mySidebar" class="col-2 bg-dark p-0">
+        <div id="mySidebar" class="col-2 bg-dark p-0" style="width: 245px;">
             <div class="vh-100 p-1 d-flex flex-column">
                 <a asp-area="Accounts" asp-controller="AccMainCode" asp-action="Index" class="nav-link d-flex my-2 justify-content-center text-white text-decoration-none">
                     <span class="fs-4 d-sm-inline">@localizer["Accounts guide"]</span>
@@ -85,6 +85,9 @@
         <div class="content pb-3 position-relative" style="flex: 1;">
             <div class="d-flex justify-content-between align-items-center gap-2 p-2 shadow-sm rounded">
                 <button class="toggler btn btn-secondary rounded-4" onclick="toggleNav()">☰</button>
+                <a class="btn btn-secondary rounded-circle" href="/Home/Index" title="go to modules">
+                    <i class="fa-solid @(isRTL ? "fa-chevron-right" : "fa-chevron-left")"></i>
+                </a>
                 <span class="fw-bold text-capitalize">@User.Identity.Name</span>
                 <span class="fw-bold"> / @F_Year</span>
                 <div class="d-flex align-items-center gap-2 @(isRTL ? "me-auto" : "ms-auto")">
@@ -103,6 +106,7 @@
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/popup.js"></script>
     <script type="text/javascript">
         function toggleNav() {
             const navBar = document.getElementById("mySidebar");

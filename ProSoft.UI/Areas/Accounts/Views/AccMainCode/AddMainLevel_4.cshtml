@@ -1,0 +1,101 @@
+﻿@model AccMainCodeEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Add Voucher";
+    Layout = "_LayoutAccounting";
+}
+@inject IViewLocalizer localizer
+@* <style>
+    .image {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.5;
+        z-index: -1;
+    }
+</style> *@
+<div class="container pt-2" style="min-height:100vh;">
+    @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
+
+    <div class="d-flex justify-content-between align-items-center mt-3 ">
+        <h1>@localizer["Add To"] @ViewBag.CurrentName</h1>
+    </div>
+
+    <form method="post" asp-action="AddMainLevel_4" id="myForm">
+        <div class="border p-3 mt-1">
+
+            <div asp-validation-summary="ModelOnly"></div>.
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent-permission d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <label asp-for="MainCode"></label>
+                    <input asp-for="MainCode" class="form-control" value="@ViewBag.maincode" />
+                    <span asp-validation-for="MainCode" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="MainName"></label>
+                    <input asp-for="MainName" class="form-control" />
+                    <span asp-validation-for="MainName" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="LastLevel"></label>
+                    <select asp-for="LastLevel" class="form-control text-center" >
+                        <option value="0">@localizer["No"]</option>
+                        <option value="1"> @localizer["Yes"]</option>
+                    </select>
+                    <span asp-validation-for="LastLevel" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent-permission d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <label asp-for="BalanceFlag"></label>
+                    <select asp-for="BalanceFlag" class="form-control text-center" >
+                        <option value="B"> @localizer["Budget"]</option>
+                        <option value="P">@localizer["Profit and Loss"]</option>
+                        <option value="N">@localizer["Without"]</option>
+                    </select>
+                    <span asp-validation-for="BalanceFlag" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="MainSubType"></label>
+                    <select asp-for="MainSubType" class="form-control text-center" >
+                        <option value="mn"> @localizer["Main Balance"]</option>
+                        <option value="sb">@localizer["Sub Balance"]</option>
+                        <option value="N">@localizer["Without"]</option>
+                    </select>
+                    <span asp-validation-for="MainSubType" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="OstazType"></label>
+                    <select asp-for="OstazType" class="form-control text-center" >
+                        <option value="mn"> @localizer["Main Balance"]</option>
+                        <option value="sb">@localizer["Sub Balance"]</option>
+                        <option value="tot">@localizer["The Sum"]</option>
+                        <option value="N">@localizer["Without"]</option>
+                    </select>
+                    <span asp-validation-for="OstazType" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex justify-content-md-center gap-2 ">
+                <button type="submit" class="btn btn-primary" style="width:150px">
+                    @localizer["Add"]
+                </button>
+                <a asp-controller="AccMainCode" asp-action="MainLevel_4" asp-route-id="@ViewBag.parent" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>

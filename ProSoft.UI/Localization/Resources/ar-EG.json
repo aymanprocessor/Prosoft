@@ -554,6 +554,17 @@
   "General Teacher": "اللاستاذ العام",
   "Accounts": "الحسابات",
   "Accounts guide": "دليل الحسابات",
+  "This permission is approved !": "هذا الاذن معتمد !",
+  "Add Main Account": "اضافة حساب رئيسي",
+  "Add Sub Account": "اضافة حساب فرعي",
+  "Budget": "ميزانية",
+  "Profit and Loss": "ارباح وخسائر",
+  "Main Balance": "رصيد رئيسي",
+  "Sub Balance": "رصيد فرعي",
+  "Add": "اضافة",
+  "Add To Accounts": "اضافة للحسابات",
+  "Edit To Accounts": "تعديل للحسابات",
+  "Add To": "اضافة الي",
 
 
 
@@ -799,5 +810,6 @@
   "You Can't Delete it because of Posting To Accounts": "لا يجوز الحذف بسبب الترحيل الي الحسابات",
   "This Permission is approved": "هذا الاذن معتمد",
   "Shipped from / to": "صرف من / الي",
-  "Add Item To": "اضافة صنف الي"
+  "Add Item To": "اضافة صنف الي",
+  "Edit Item In": "تعديل صنف في"
 }
