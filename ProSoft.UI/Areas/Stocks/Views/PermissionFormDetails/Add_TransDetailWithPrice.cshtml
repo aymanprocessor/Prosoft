@@ -21,6 +21,8 @@
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
+                @if(Model.TransType == 2)
+                {
                 <div class="mb-3" style="width: 33%;">
                     <label asp-for="ItemMaster" class="text-center" style="width: 45%;"></label>
                     <select asp-for="ItemMaster" asp-items="subItems" class="form-control text-center" style="width: 78%;" onchange="getBarCode(event)">
@@ -33,10 +35,35 @@
                     <input asp-for="ItmBarcode" class="form-control" style="width: 72%; pointer-events: none; background-color: #e9ecef" />
                     <span asp-validation-for="ItmBarcode" class="text-danger"></span>
                 </div>
+                }
+                else
+                {
                 <div class="mb-3" style="width: 33%;">
-                    <label asp-for="UnitQty" class="text-center" style="width: 80%;"></label>
-                    <input asp-for="UnitQty" type="number" class="form-control" value="1" style="width: 210px;" onchange="setTotal()" />
-                    <span asp-validation-for="UnitQty" class="text-danger"></span>
+                    <label asp-for="ItmBarcode" class="text-center" style="width: 45%;"></label>
+                    <input asp-for="ItmBarcode" class="form-control" style="width: 38%;" onchange="getItem(event)" />
+                    <select asp-for="ShowItemMaster" asp-items="subItems" class="form-control text-center"
+                            style="width: 38%; pointer-events: none; background-color: #e9ecef">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="ItmBarcode" class="text-danger"></span>
+                </div>
+                <div class="mb-3" style="width: 33%;">
+                    <label asp-for="ItemMaster" class="text-center" style="width: 40%;"></label>
+                    <select asp-for="ItemMaster" asp-items="subItems" class="form-control text-center" style="width: 72%;"
+                            onchange="setToNull()">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="ItemMaster" class="text-danger"></span>
+                </div>
+                }
+                <div class="mb-3" style="width: 33%;">
+                    <div class="d-flex align-items-center">
+                        <div class="d-flex align-items-center justify-content-start justify-content-md-end gap-2 @(isRTL ? "me-3" : "ms-3") mb-2">
+                            <input name="ItmHaveTax" id="ItmHaveTax" type="checkbox" value="0" class="form-check-input" onchange="changeValue(event)" />
+                            <label asp-for="ItmHaveTax" style="width: 80%;"></label>
+                        </div>
+                        <span asp-validation-for="ItmHaveTax" class="text-danger"></span>
+                    </div>
                 </div>
             </div>
 
@@ -51,18 +78,14 @@
                     <span asp-validation-for="UnitCode" class="text-danger"></span>
                 </div>
                 <div class="mb-3" style="width: 33%;">
-                    <label asp-for="Price" class="text-center" style="width: 40%;"></label>
-                    <input asp-for="Price" type="number" value="" class="form-control" style="width: 72%;" onchange="setTotal()" />
-                    <span asp-validation-for="Price" class="text-danger"></span>
+                    <label asp-for="UnitQty" class="text-center" style="width: 40%;"></label>
+                    <input asp-for="UnitQty" type="number" class="form-control" value="1" style="width: 72%;" onchange="setTotal()" />
+                    <span asp-validation-for="UnitQty" class="text-danger"></span>
                 </div>
                 <div class="mb-3" style="width: 33%;">
-                    <div class="d-flex align-items-center">
-                        <div class="d-flex align-items-center justify-content-start justify-content-md-end gap-2 @(isRTL ? "me-3" : "ms-3") mb-2">
-                            <input name="ItmHaveTax" id="ItmHaveTax" type="checkbox" value="0" class="form-check-input" onchange="changeValue(event)" />
-                            <label asp-for="ItmHaveTax" style="width: 80%;"></label>
-                        </div>
-                        <span asp-validation-for="ItmHaveTax" class="text-danger"></span>
-                    </div>
+                    <label asp-for="Price" class="text-center" style="width: 80%;"></label>
+                    <input asp-for="Price" type="number" value="" class="form-control" style="width: 210px;" onchange="setTotal()" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
                 </div>
             </div>
 
@@ -97,7 +120,7 @@
 
             <div class="parent d-flex justify-content-md-center gap-2">
                 <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add"]</button>
-                <a asp-controller="PermissionForm" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                <a asp-controller="PermissionForm" asp-action="Index" asp-route-id="@Model.TransMasterID" class="btn btn-secondary" style="width:150px">
                     @localizer["Cancel"]
                 </a>
             </div>
@@ -120,7 +143,7 @@
             }
         }
 
-        function enableTax (ifUnderTax) {
+        function enableTax(ifUnderTax) {
             let tax = document.getElementById("TaxVal");
             if (ifUnderTax)
                 tax.removeAttribute("disabled");
@@ -150,6 +173,26 @@
                 return;
             }
             total.value = quantity.value * price.value;
+        }
+
+        function getItem(e) {
+            let itemBarcode = e.target.value;
+
+            if (itemBarcode) {
+                $.ajax({
+                    url: `/Stocks/PermissionFormDetails/GetItem?itemBarcode=${itemBarcode}`,
+                    success: function (result) {
+                        document.getElementById("ShowItemMaster").value = result;
+                    }
+                });
+            }
+            else
+                document.getElementById("ShowItemMaster").value = "";
+        }
+
+        function setToNull() {
+            document.getElementById("ItmBarcode").value = "";
+            document.getElementById("ShowItemMaster").value = "";
         }
     </script>
 
