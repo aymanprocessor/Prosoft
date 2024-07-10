@@ -572,23 +572,6 @@
                 }
             });
         }
-        function clickForShow() {
-            var journalCode = document.getElementById("journaltype").value.toLowerCase();
-            let rows = document.querySelectorAll("#myTable1 tbody tr");
-
-            // Loop through all table rows
-            for (let i = 0, len1 = rows.length; i < len1; i++) {
-                let firstTd = rows[i].querySelector("td:first-child");  // Select the first td in the row
-                if (firstTd) {
-                    let tdValue = firstTd.textContent || firstTd.innerText;
-                    tdValue = tdValue.toLowerCase();
-                    if (tdValue.indexOf(journalCode) > -1) {  // Compare with journalCode
-                        firstTd.click();
-                        break;
-                    }
-                }
-            }
-        }
 
         // Function to handle initial click based on DocNo on first table
         (function () {

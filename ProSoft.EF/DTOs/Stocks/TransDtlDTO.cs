@@ -16,10 +16,8 @@ namespace ProSoft.EF.DTOs.Stocks
         public long? Serial { get; set; }
 
         [DisplayName("The Item")]
-        [Required(ErrorMessage = "The field is required")]
-        public string ItemMaster { get; set; }
+        public string? ItemMaster { get; set; }
         public string? ShowItemMaster { get; set; }
-
         public string? ItemMasterName { get; set; }
 
         [DisplayName("The Barcode")]

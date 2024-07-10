@@ -12,7 +12,7 @@
 @inject IViewLocalizer localizer
 
 <div class="container pt-2">
-    <h1 class="mt-4">@localizer["Edit Item"]</h1>
+    <h1 class="mt-4">@localizer["Edit Item In"] @Model.PermissionName</h1>
     <form method="post" asp-action="Edit_TransDetailWithPrice">
         <div class="border p-3 mt-4">
 

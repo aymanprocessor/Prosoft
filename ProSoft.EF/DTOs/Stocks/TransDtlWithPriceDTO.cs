@@ -17,14 +17,12 @@ namespace ProSoft.EF.DTOs.Stocks
         public int TransType { get; set; }
 
         [DisplayName("The Item")]
-        [Required(ErrorMessage = "The field is required")]
-        public string ItemMaster { get; set; }
-
+        public string? ItemMaster { get; set; }
+        public string? ShowItemMaster { get; set; }
         public string? ItemMasterName { get; set; }
 
         [DisplayName("The Barcode")]
-        [Required(ErrorMessage = "The field is required")]
-        public string ItmBarcode { get; set; }
+        public string? ItmBarcode { get; set; }
 
         [DisplayName("The Quantity")]
         [Required(ErrorMessage = "The field is required")]
@@ -57,7 +55,7 @@ namespace ProSoft.EF.DTOs.Stocks
         public int? UserCode { get; set; }
         public int? BranchId { get; set; }
         public int? ShowTransPrice { get; set; }
-        public string PermissionName { get; set; }
+        public string? PermissionName { get; set; }
 
         public List<SubItemViewDTO>? SubItems { get; set; }
         public List<UnitCodeDTO>? UnitCodes { get; set; }

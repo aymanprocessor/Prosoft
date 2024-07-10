@@ -810,6 +810,13 @@
   "You Can't Delete it because of Posting To Accounts": "لا يجوز الحذف بسبب الترحيل الي الحسابات",
   "This Permission is approved": "هذا الاذن معتمد",
   "Shipped from / to": "صرف من / الي",
+<<<<<<< HEAD
   "Add Item To": "اضافة صنف الي",
   "Edit Item In": "تعديل صنف في"
+||||||| b76b3fe
+  "Add Item To": "اضافة صنف الي"
+=======
+  "Add Item To": "اضافة صنف الي",
+  "Edit Item In": "تعديل صنف في",
+>>>>>>> a82b9141a780220bd968f054315946ba813d7dd5
 }

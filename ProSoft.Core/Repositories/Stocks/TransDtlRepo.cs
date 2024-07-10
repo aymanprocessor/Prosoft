@@ -197,6 +197,7 @@ namespace ProSoft.Core.Repositories.Stocks
 
             var transDtlDTO = new TransDtlWithPriceDTO();
             _mapper.Map(transMaster, transDtlDTO);
+
             transDtlDTO.PermissionName = (await _Context.GeneralCodes.FirstOrDefaultAsync(obj =>
                 obj.UniqueType == transMaster.TransType)).GDesc;
 
@@ -209,7 +210,7 @@ namespace ProSoft.Core.Repositories.Stocks
                 SubId = obj.SubId,
                 SubName = obj.SubName,
                 ItemCode = obj.ItemCode,
-                CodeAndName = $"{obj.SubName} / {obj.ItemCode}",
+                CodeAndName = $"{obj.SubName} \\ {obj.ItemCode}",
             }).ToList();
 
             List<UnitCode> unitCodes = await _Context.UnitCodes.ToListAsync();
@@ -223,8 +224,18 @@ namespace ProSoft.Core.Repositories.Stocks
             TransDtl transDtl = await GetByIdAsync(transDtlID);
             var transDtlDTO = _mapper.Map<TransDtlWithPriceDTO>(transDtl);
 
+            transDtlDTO.PermissionName = (await _Context.GeneralCodes.FirstOrDefaultAsync(obj =>
+                obj.UniqueType == transDtl.TransType)).GDesc;
+            transDtlDTO.ShowItemMaster = transDtlDTO.ItemMaster;
+
             List<SubItem> subItems = await _Context.SubItems.ToListAsync();
-            transDtlDTO.SubItems = _mapper.Map<List<SubItemViewDTO>>(subItems);
+            transDtlDTO.SubItems = subItems.Select(obj => new SubItemViewDTO
+            {
+                SubId = obj.SubId,
+                SubName = obj.SubName,
+                ItemCode = obj.ItemCode,
+                CodeAndName = $"{obj.SubName} \\ {obj.ItemCode}",
+            }).ToList();
 
             List<UnitCode> unitCodes = await _Context.UnitCodes.ToListAsync();
             transDtlDTO.UnitCodes = _mapper.Map<List<UnitCodeDTO>>(unitCodes);
@@ -257,9 +268,10 @@ namespace ProSoft.Core.Repositories.Stocks
             _mapper.Map(transMaster, transDtl);
 
             transDtl.PostPos = 1;
+            transDtl.ItemMaster = transDtlDTO.ShowItemMaster != null ? transDtlDTO.ShowItemMaster : transDtlDTO.ItemMaster;
             /////////////////////////////////////////////////
             // Add to ItemBatch
-            if(transDtl.TransType == 2)
+            if (transDtl.TransType == 2)
                 await InsertItemBatchAsync(transDtl);
             /////////////////////////////////////////////////
             // Add To Receive Form Detail
@@ -280,8 +292,8 @@ namespace ProSoft.Core.Repositories.Stocks
 
             _mapper.Map(transDtlDTO, transDtl);
             _mapper.Map(transMaster, transDtl);
-
-            if(transDtl.TransType == 2)
+            transDtl.ItemMaster = transDtlDTO.ShowItemMaster != null ? transDtlDTO.ShowItemMaster : transDtlDTO.ItemMaster;
+            if (transDtl.TransType == 2)
             {
                 List<ItemBatch> batchList = await _Context.ItemBatches.Where(obj =>
                     obj.StockCode == transMaster.StockCode && obj.TransN == transMaster.DocNo &&
@@ -336,6 +348,7 @@ namespace ProSoft.Core.Repositories.Stocks
 
             var transDtlDTO = new TransDtlDTO();
             _mapper.Map(transMaster, transDtlDTO);
+
             transDtlDTO.PermissionName = (await _Context.GeneralCodes.FirstOrDefaultAsync(obj =>
                 obj.UniqueType == transMaster.TransType)).GDesc;
 
@@ -365,8 +378,18 @@ namespace ProSoft.Core.Repositories.Stocks
             TransDtl transDtl = await GetByIdAsync(transDtlID);
             var transDtlDTO = _mapper.Map<TransDtlDTO>(transDtl);
 
+            transDtlDTO.PermissionName = (await _Context.GeneralCodes.FirstOrDefaultAsync(obj =>
+                obj.UniqueType == transDtl.TransType)).GDesc;
+            transDtlDTO.ShowItemMaster = transDtlDTO.ItemMaster;
+
             List<SubItem> subItems = await _Context.SubItems.ToListAsync();
-            transDtlDTO.SubItems = _mapper.Map<List<SubItemViewDTO>>(subItems);
+            transDtlDTO.SubItems = subItems.Select(obj => new SubItemViewDTO
+            {
+                SubId = obj.SubId,
+                SubName = obj.SubName,
+                ItemCode = obj.ItemCode,
+                CodeAndName = $"{obj.SubName} / {obj.ItemCode}",
+            }).ToList();
 
             List<UnitCode> unitCodes = await _Context.UnitCodes.ToListAsync();
             transDtlDTO.UnitCodes = _mapper.Map<List<UnitCodeDTO>>(unitCodes);
@@ -392,6 +415,7 @@ namespace ProSoft.Core.Repositories.Stocks
             transDtl.ItemVal2 = 0;
             transDtl.Flag1 = transDtl.Flag1 != null ? transDtl.Flag1 : 1;
             transDtl.ItemMaster2 = 0;
+            transDtl.ItemMaster = transDtlDTO.ShowItemMaster != null ? transDtlDTO.ShowItemMaster : transDtlDTO.ItemMaster;
             _mapper.Map(transMaster, transDtl);
             /////////////////////////////////////////////////
             // Add To Receive Form
@@ -412,6 +436,7 @@ namespace ProSoft.Core.Repositories.Stocks
 
             _mapper.Map(transDtlDTO, transDtl);
             _mapper.Map(transMaster, transDtl);
+            transDtl.ItemMaster = transDtlDTO.ShowItemMaster != null ? transDtlDTO.ShowItemMaster : transDtlDTO.ItemMaster;
             /////////////////////////////////////////////////
             // Update Receive Form Detail
             if (transDtl.TransType == 13)

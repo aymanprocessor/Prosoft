@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.Extensions.Localization;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.IRepositories.Stocks;
 using ProSoft.EF.Models.Stocks;
@@ -11,9 +14,11 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
     public class PermissionFormDetailsController : Controller
     {
         private readonly ITransDtlRepo _transDtlRepo;
-        public PermissionFormDetailsController(ITransDtlRepo transDtlRepo)
+        private readonly IMapper _mapper;
+        public PermissionFormDetailsController(ITransDtlRepo transDtlRepo, IMapper mapper)
         {
             _transDtlRepo = transDtlRepo;
+            _mapper = mapper;
         }
 
         public async Task<IActionResult> GetPermissionDetails(int id)
@@ -53,15 +58,20 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add_TransDetailWithPrice(int id, TransDtlWithPriceDTO transDtlDTO)
         {
-            if (ModelState.IsValid)
+            if (transDtlDTO.ItemMaster == null && transDtlDTO.ShowItemMaster == null)
+            {
+                ModelState.AddModelError("", "The Item is required");
+                TransDtlWithPriceDTO newTransDtlDTO = await _transDtlRepo.GetNewTransDtlWithPriceAsync(id);
+                _mapper.Map(newTransDtlDTO, transDtlDTO);
+            }
+            else if (ModelState.IsValid)
             {
                 transDtlDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
                 transDtlDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
                 transDtlDTO.TransMasterID = id;
 
-                TransDtl transDtl = await _transDtlRepo.AddTransDtlWithPriceAsync(transDtlDTO);
-                //return RedirectToAction("Index", "PermissionForm", new { id });
-                return View(nameof(Add_TransDetailWithPrice));
+                await _transDtlRepo.AddTransDtlWithPriceAsync(transDtlDTO);
+                return RedirectToAction(nameof(Add_TransDetailWithPrice), new { id });
             }
             return View(transDtlDTO);
         }
@@ -78,7 +88,13 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit_TransDetailWithPrice(int id, TransDtlWithPriceDTO transDtlDTO)
         {
-            if (ModelState.IsValid)
+            if (transDtlDTO.ItemMaster == null && transDtlDTO.ShowItemMaster == null)
+            {
+                ModelState.AddModelError("", "The Item is required");
+                TransDtlWithPriceDTO newTransDtlDTO = await _transDtlRepo.GetTransDtlWithPriceByIdAsync(id);
+                _mapper.Map(newTransDtlDTO, transDtlDTO);
+            }
+            else if (ModelState.IsValid)
             {
                 transDtlDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
                 transDtlDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
@@ -104,17 +120,22 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add_TransDetail(int id, TransDtlDTO transDtlDTO)
         {
-            if (ModelState.IsValid)
+            if(transDtlDTO.ItemMaster == null && transDtlDTO.ShowItemMaster == null)
+            {
+                ModelState.AddModelError("", "The Item is required");
+                TransDtlDTO newTransDtlDTO = await _transDtlRepo.GetNewTransDtlAsync(id);
+                _mapper.Map(newTransDtlDTO, transDtlDTO);
+            }
+            else if (ModelState.IsValid)
             {
                 transDtlDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
                 transDtlDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
                 transDtlDTO.TransMasterID = id;
 
                 await _transDtlRepo.AddTransDtlAsync(transDtlDTO);
-                //return RedirectToAction("Index", "PermissionForm");
-
                 return RedirectToAction(nameof(Add_TransDetail), new { id });
             }
+
             return View(transDtlDTO);
         }
 
@@ -130,7 +151,13 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit_TransDetail(int id, TransDtlDTO transDtlDTO)
         {
-            if (ModelState.IsValid)
+            if (transDtlDTO.ItemMaster == null && transDtlDTO.ShowItemMaster == null)
+            {
+                ModelState.AddModelError("", "The Item is required");
+                TransDtlDTO newTransDtlDTO = await _transDtlRepo.GetTransDtlByIdAsync(id);
+                _mapper.Map(newTransDtlDTO, transDtlDTO);
+            }
+            else if (ModelState.IsValid)
             {
                 transDtlDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
                 transDtlDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
