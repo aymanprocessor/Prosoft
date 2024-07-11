@@ -15,20 +15,16 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
     [Area(nameof(Stocks))]
     public class PermissionFormController : Controller
     {
-        //private readonly IUserTransRepo _userTransRepo;
         private readonly ITransMasterRepo _transMasterRepo;
         private readonly IUserRepo _userRepo;
         private readonly ITransDtlRepo _transDtlRepo;
-        //private readonly IMapper _mapper;
 
-        public PermissionFormController(/*IUserTransRepo userTransRepo,*/
-            ITransMasterRepo transMasterRepo, IUserRepo userRepo, ITransDtlRepo transDtlRepo/*, IMapper mapper*/)
+        public PermissionFormController(ITransMasterRepo transMasterRepo,
+            IUserRepo userRepo, ITransDtlRepo transDtlRepo)
         {
-            //_userTransRepo = userTransRepo;
             _transMasterRepo = transMasterRepo;
             _userRepo = userRepo;
             _transDtlRepo = transDtlRepo;
-            //_mapper = mapper;
         }
 
         public async Task<IActionResult> Index(int? id/*, int? transDtlId*/)

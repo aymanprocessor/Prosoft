@@ -555,10 +555,10 @@
   "Profit and Loss": "Profit and Loss",
   "Main Balance": "Main Balance",
   "Sub Balance": "Sub Balance",
-  "Add": "Add",
   "Add To Accounts": "Add To Accounts",
   "Edit To Accounts": "Edit To Accounts",
   "Add To": "Add To",
+  "Sub Accounts": "Sub Accounts",
 
 
 
@@ -804,13 +804,6 @@
   "You Can't Delete it because of Posting To Accounts": "You Can't Delete it because of Posting To Accounts",
   "This Permission is approved": "This Permission is approved",
   "Shipped from / to": "Shipped from / to",
-<<<<<<< HEAD
   "Add Item To": "Add Item To",
   "Edit Item In": "Edit Item In"
-||||||| b76b3fe
-  "Add Item To": "Add Item To"
-=======
-  "Add Item To": "Add Item To",
-  "Edit Item In": "Edit Item In",
->>>>>>> a82b9141a780220bd968f054315946ba813d7dd5
 }

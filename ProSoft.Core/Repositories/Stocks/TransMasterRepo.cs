@@ -133,6 +133,83 @@ namespace ProSoft.Core.Repositories.Stocks
         public async Task ApprovePermissionAsync(int transMAsterID)
         {
             TransMaster transMaster = await GetByIdAsync(transMAsterID);
+
+            if(transMaster.TransType == 2 && transMaster.StockCode2 > 0)
+            {
+                // لم يتم الترحيل للحسابات
+                // return
+            }
+
+            var ls_flag3 = transMaster.Flag3;
+            var sys_value = (await _Context.SystemTables.FirstOrDefaultAsync(obj =>
+                obj.SysId == 5)).SysValue;
+            
+            if(sys_value == 1 || ls_flag3 == "1")
+            {
+                // لم يتم الترحيل للحسابات
+                // return
+            }
+            else
+            {
+                var ll_doc_no = transMaster.DocNo;
+                // ترحيل تاريخ فاتورة المورد في قيد الاضافة
+                var sys_value2 = (await _Context.SystemTables.FirstOrDefaultAsync(obj =>
+                    obj.SysId == 22)).SysValue;
+                if(sys_value2 == 1 && transMaster.TransType == 2)
+                {
+                    if(transMaster.SupInvDate != null)
+                    {
+
+                    }
+                    else
+                    {
+                        transMaster.Flag3 = "1";
+                        await SaveChangesAsync();
+                        // من فضلك ادخل تاريخ فاتورة المورد
+                        // return
+                    }
+                }
+                var ll_year = transMaster.FYear;
+                var ll_month = transMaster.FMonth;
+                var ll_branch = transMaster.BranchId;
+                var ll_trans_type = transMaster.TransType;
+                var ls_des = ll_trans_type == 2 ? "اذن اضافة رقم" :
+                    ll_trans_type == 13 ? "اذن تحويل رقم" :
+                    ll_trans_type == 12 ? "فاتورة العميل رقم" :
+                    ll_trans_type == 23 ? "اذن استلام رقم" : "";
+                var tot_trans_val = transMaster.TotTransVal; // اجمالي الاجمالي الخاص بال details
+                if(tot_trans_val is (null or 0))
+                {
+                    // تاكد من قيمة الاذن واعد المحاولة
+                    // return
+                }
+                var ll_stock = 0;
+                var ll_stock_emp = 0;
+                var ll_to_stock = 0;
+                if(ll_trans_type == 13)
+                {
+                    ll_stock = (int)transMaster.StockCode2;
+                    ll_stock_emp = ll_stock;
+                }
+                else if(ll_trans_type == 23)
+                {
+                    ll_stock = (int)transMaster.StockCode;
+                    ll_to_stock = (int)transMaster.StockCode2;
+                    ll_stock_emp = ll_to_stock;
+                }
+                else
+                {
+                    ll_stock = (int)transMaster.StockCode;
+                    ll_stock_emp = ll_stock;
+                }
+                var ls_stock_name = (await _Context.Stocks.FirstOrDefaultAsync(obj =>
+                    obj.Stkcod == ll_stock && obj.BranchId == ll_branch)).Stknam;
+                var ls_comment = ls_des + ll_doc_no + ls_stock_name;
+                // ==>>
+            }
+            //AccTransMaster
+            //AccTransDetail
+
             transMaster.Flag3 = "2";
             await SaveChangesAsync();
         }
