@@ -23,17 +23,101 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
 
         public async Task<IActionResult> Index()
         {
+            ViewBag.MainLevel_2 = await _accMainCodeRepo.GetMainsByLevelAsync(2);
             ViewBag.MainLevel_3 = await _accMainCodeRepo.GetMainsByLevelAsync(3);
             ViewBag.MainLevel_4 = await _accMainCodeRepo.GetMainsByLevelAsync(4);
             ViewBag.MainLevel_5 = await _accMainCodeRepo.GetMainsByLevelAsync(5);
             return View();
         }
-        public async Task<IActionResult> MainLevel_3()
+        public async Task<IActionResult> MainLevel_2()
         {
-            List<AccMainCodeDTO> mainLevel_3 = await _accMainCodeRepo.GetMainsByLevelAsync(3);
+            List<AccMainCodeDTO> mainLevel_2 = await _accMainCodeRepo.GetMainsByLevelAsync(2);
 
             #region sidebar
+            ViewBag.MainLevel_2 = await _accMainCodeRepo.GetMainsByLevelAsync(2);
             ViewBag.MainLevel_3 = await _accMainCodeRepo.GetMainsByLevelAsync(3);
+            ViewBag.MainLevel_4 = await _accMainCodeRepo.GetMainsByLevelAsync(4);
+            ViewBag.MainLevel_5 = await _accMainCodeRepo.GetMainsByLevelAsync(5);
+            #endregion
+
+            return View(mainLevel_2);
+        }
+
+        //Get Add
+        public async Task<IActionResult> AddMainLevel_2()
+        {
+            string newMainCode = await _accMainCodeRepo.GetNewMain_2_Async();
+
+            #region sidebar
+            ViewBag.MainLevel_2 = await _accMainCodeRepo.GetMainsByLevelAsync(2);
+            ViewBag.MainLevel_3 = await _accMainCodeRepo.GetMainsByLevelAsync(3);
+            ViewBag.MainLevel_4 = await _accMainCodeRepo.GetMainsByLevelAsync(4);
+            ViewBag.MainLevel_5 = await _accMainCodeRepo.GetMainsByLevelAsync(5);
+            #endregion
+
+            ViewBag.maincode = newMainCode;
+            return View();
+        }
+
+        //Post Add
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddMainLevel_2(AccMainCodeEditAddDTO mainDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                await _accMainCodeRepo.AddMainLevel_2_Async(mainDTO);
+                return RedirectToAction(nameof(MainLevel_2));
+            }
+            return View(mainDTO);
+        }
+        //Get Edit
+        public async Task<IActionResult> EditMainLevel_2(string id)
+        {
+            AccMainCodeDTO existingMainCode = await _accMainCodeRepo.GetMainByIdAsync(id);
+            AccMainCodeEditAddDTO mappedMainDTO = _mapper.Map<AccMainCodeEditAddDTO>(existingMainCode);
+
+            #region sidebar
+            ViewBag.MainLevel_2 = await _accMainCodeRepo.GetMainsByLevelAsync(2);
+            ViewBag.MainLevel_3 = await _accMainCodeRepo.GetMainsByLevelAsync(3);
+            ViewBag.MainLevel_4 = await _accMainCodeRepo.GetMainsByLevelAsync(4);
+            ViewBag.MainLevel_5 = await _accMainCodeRepo.GetMainsByLevelAsync(5);
+            #endregion
+
+            return View(mappedMainDTO);
+        }
+
+        //Post Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditMainLevel_2(string id, AccMainCodeEditAddDTO mainDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                await _accMainCodeRepo.EditMainLevelAsync(id, mainDTO);
+                return RedirectToAction(nameof(MainLevel_2));
+            }
+            return View(mainDTO);
+        }
+
+        //Delete
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteMainLevel_2(string id)
+        {
+            await _accMainCodeRepo.DeleteMainLevelAsync(id);
+            return RedirectToAction(nameof(MainLevel_2));
+        }
+
+        //////////////////////////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////////////////////////
+        public async Task<IActionResult> MainLevel_3(string? id ="")
+        {
+            List<AccMainCodeDTO> mainLevel_3 = await _accMainCodeRepo.GetMainsByLevelAsync(3,id);
+
+            #region sidebar
+            ViewBag.MainLevel_2 = await _accMainCodeRepo.GetMainsByLevelAsync(2);
+            ViewBag.MainLevel_3 = await _accMainCodeRepo.GetMainsByLevelAsync(3, id);
             ViewBag.MainLevel_4 = await _accMainCodeRepo.GetMainsByLevelAsync(4);
             ViewBag.MainLevel_5 = await _accMainCodeRepo.GetMainsByLevelAsync(5);
             #endregion
@@ -47,6 +131,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             string newMainCode = await _accMainCodeRepo.GetNewMain_3_Async();
 
             #region sidebar
+            ViewBag.MainLevel_2 = await _accMainCodeRepo.GetMainsByLevelAsync(2);
             ViewBag.MainLevel_3 = await _accMainCodeRepo.GetMainsByLevelAsync(3);
             ViewBag.MainLevel_4 = await _accMainCodeRepo.GetMainsByLevelAsync(4);
             ViewBag.MainLevel_5 = await _accMainCodeRepo.GetMainsByLevelAsync(5);
@@ -75,6 +160,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             AccMainCodeEditAddDTO mappedMainDTO = _mapper.Map<AccMainCodeEditAddDTO>(existingMainCode);
 
             #region sidebar
+            ViewBag.MainLevel_2 = await _accMainCodeRepo.GetMainsByLevelAsync(2);
             ViewBag.MainLevel_3 = await _accMainCodeRepo.GetMainsByLevelAsync(3);
             ViewBag.MainLevel_4 = await _accMainCodeRepo.GetMainsByLevelAsync(4);
             ViewBag.MainLevel_5 = await _accMainCodeRepo.GetMainsByLevelAsync(5);
@@ -113,6 +199,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             List<AccMainCodeDTO> mainLevel_4 = await _accMainCodeRepo.GetMainsByLevelAsync(4);
 
             #region sidebar
+            ViewBag.MainLevel_2 = await _accMainCodeRepo.GetMainsByLevelAsync(2);
             ViewBag.MainLevel_3 = await _accMainCodeRepo.GetMainsByLevelAsync(3);
             ViewBag.MainLevel_4 = await _accMainCodeRepo.GetMainsByLevelAsync(4);
             ViewBag.MainLevel_5 = await _accMainCodeRepo.GetMainsByLevelAsync(5);
@@ -132,6 +219,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             string newMainCode = await _accMainCodeRepo.GetNewMain_4_Async(id);
 
             #region sidebar 
+            ViewBag.MainLevel_2 = await _accMainCodeRepo.GetMainsByLevelAsync(2);
             ViewBag.MainLevel_3 = await _accMainCodeRepo.GetMainsByLevelAsync(3);
             ViewBag.MainLevel_4 = await _accMainCodeRepo.GetMainsByLevelAsync(4);
             ViewBag.MainLevel_5 = await _accMainCodeRepo.GetMainsByLevelAsync(5);
@@ -164,6 +252,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             AccMainCodeEditAddDTO mappedMainDTO = _mapper.Map<AccMainCodeEditAddDTO>(existingMainCode);
 
             #region sidebar 
+            ViewBag.MainLevel_2 = await _accMainCodeRepo.GetMainsByLevelAsync(2);
             ViewBag.MainLevel_3 = await _accMainCodeRepo.GetMainsByLevelAsync(3);
             ViewBag.MainLevel_4 = await _accMainCodeRepo.GetMainsByLevelAsync(4);
             ViewBag.MainLevel_5 = await _accMainCodeRepo.GetMainsByLevelAsync(5);
@@ -205,6 +294,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             List<AccMainCodeDTO> mainLevel_5 = await _accMainCodeRepo.GetMainsByLevelAsync(5);
 
             #region sidebar
+            ViewBag.MainLevel_2 = await _accMainCodeRepo.GetMainsByLevelAsync(2);
             ViewBag.MainLevel_3 = await _accMainCodeRepo.GetMainsByLevelAsync(3);
             ViewBag.MainLevel_4 = await _accMainCodeRepo.GetMainsByLevelAsync(4);
             ViewBag.MainLevel_5 = await _accMainCodeRepo.GetMainsByLevelAsync(5);
@@ -223,6 +313,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             string newMainCode = await _accMainCodeRepo.GetNewMain_5_Async(id);
 
             #region sidebar 
+            ViewBag.MainLevel_2 = await _accMainCodeRepo.GetMainsByLevelAsync(2);
             ViewBag.MainLevel_3 = await _accMainCodeRepo.GetMainsByLevelAsync(3);
             ViewBag.MainLevel_4 = await _accMainCodeRepo.GetMainsByLevelAsync(4);
             ViewBag.MainLevel_5 = await _accMainCodeRepo.GetMainsByLevelAsync(5);
@@ -253,6 +344,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             AccMainCodeEditAddDTO mappedMainDTO = _mapper.Map<AccMainCodeEditAddDTO>(existingMainCode);
 
             #region sidebar 
+            ViewBag.MainLevel_2 = await _accMainCodeRepo.GetMainsByLevelAsync(2);
             ViewBag.MainLevel_3 = await _accMainCodeRepo.GetMainsByLevelAsync(3);
             ViewBag.MainLevel_4 = await _accMainCodeRepo.GetMainsByLevelAsync(4);
             ViewBag.MainLevel_5 = await _accMainCodeRepo.GetMainsByLevelAsync(5);
@@ -294,6 +386,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             List<AccMainCodeDTO> mainLevel_6 = await _accMainCodeRepo.GetMainsByLevelAsync(4);
 
             #region sidebar
+            ViewBag.MainLevel_2 = await _accMainCodeRepo.GetMainsByLevelAsync(2);
             ViewBag.MainLevel_3 = await _accMainCodeRepo.GetMainsByLevelAsync(3);
             ViewBag.MainLevel_4 = await _accMainCodeRepo.GetMainsByLevelAsync(4);
             ViewBag.MainLevel_5 = await _accMainCodeRepo.GetMainsByLevelAsync(5);
@@ -312,6 +405,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             string newMainCode = await _accMainCodeRepo.GetNewMain_6_Async(id);
 
             #region sidebar 
+            ViewBag.MainLevel_2 = await _accMainCodeRepo.GetMainsByLevelAsync(2);
             ViewBag.MainLevel_3 = await _accMainCodeRepo.GetMainsByLevelAsync(3);
             ViewBag.MainLevel_4 = await _accMainCodeRepo.GetMainsByLevelAsync(4);
             ViewBag.MainLevel_5 = await _accMainCodeRepo.GetMainsByLevelAsync(5);
@@ -343,6 +437,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             AccMainCodeEditAddDTO mappedMainDTO = _mapper.Map<AccMainCodeEditAddDTO>(existingMainCode);
 
             #region sidebar 
+            ViewBag.MainLevel_2 = await _accMainCodeRepo.GetMainsByLevelAsync(2);
             ViewBag.MainLevel_3 = await _accMainCodeRepo.GetMainsByLevelAsync(3);
             ViewBag.MainLevel_4 = await _accMainCodeRepo.GetMainsByLevelAsync(4);
             ViewBag.MainLevel_5 = await _accMainCodeRepo.GetMainsByLevelAsync(5);

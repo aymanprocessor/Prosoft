@@ -42,40 +42,50 @@
                 <a asp-area="Accounts" asp-controller="AccMainCode" asp-action="Index" class="nav-link d-flex my-2 justify-content-center text-white text-decoration-none">
                     <span class="fs-4 d-sm-inline">@localizer["Accounts guide"]</span>
                 </a>
-                <a asp-area="Accounts" asp-controller="AccMainCode" asp-action="MainLevel_3" class="d-flex my-2 justify-content-start ps-2 text-white text-decoration-none">
+                <a asp-area="Accounts" asp-controller="AccMainCode" asp-action="MainLevel_2" class="d-flex my-2 justify-content-start ps-2 text-white text-decoration-none">
                     <span class="fs-5 d-sm-inline">@localizer["Accounts"]</span>
                 </a>
                 <ul class="nav nav-pills flex-column p-0">
-                    @foreach (var item in ViewBag?.MainLevel_3)
+                    @foreach (var main in ViewBag?.MainLevel_2)
                     {
                         <li class="nav-item has-submenu">
-                            <a asp-area="Accounts" asp-controller="AccMainCode" asp-action="MainLevel_4" asp-route-id="@item.MainCode" class="nav-link hover-link">
-                                <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i> @item.MainName
+                            <a asp-area="Accounts" asp-controller="AccMainCode" asp-action="MainLevel_3" asp-route-id="@main.MainCode" class="nav-link nav-link3 hover-link">
+                                <i class="fa-solid @(isRTL ? "fa-caret-left mx-1" : "fa-caret-right me-1")"></i> @main.MainName
                             </a>
-
                             <ul class="submenu collapse p-0">
-                                @foreach (var sub in GetMainLevel_4(item.MainCode))
+                                @foreach (var item in ViewBag?.MainLevel_3)
                                 {
                                     <li class="nav-item has-submenu">
-                                        <a asp-area="Accounts" asp-controller="AccMainCode" asp-action="MainLevel_5" asp-route-id="@sub.MainCode" class="nav-link hover-link ps-4">
-                                            <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i> @sub.MainName
+                                        <a asp-area="Accounts" asp-controller="AccMainCode" asp-action="MainLevel_4" asp-route-id="@item.MainCode" class="nav-link hover-link">
+                                            <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i> @item.MainName
                                         </a>
 
                                         <ul class="submenu collapse p-0">
-                                            @foreach (var subitem in GetMainLevel_5(sub.MainCode))
+                                            @foreach (var sub in GetMainLevel_4(item.MainCode))
                                             {
-                                                <li class="nav-item">
-                                                    <a asp-area="Accounts" asp-controller="AccMainCode" asp-action="MainLevel_6" asp-route-id="@subitem.MainCode" class="nav-link hover-link ms-4 ps-4">
-                                                        @subitem.MainName
+                                                <li class="nav-item has-submenu">
+                                                    <a asp-area="Accounts" asp-controller="AccMainCode" asp-action="MainLevel_5" asp-route-id="@sub.MainCode" class="nav-link hover-link ps-4">
+                                                        <i class="fa-solid @(isRTL ? "fa-caret-left mx-3" : "fa-caret-right me-3")"></i> @sub.MainName
                                                     </a>
+
+                                                    <ul class="submenu collapse p-0">
+                                                        @foreach (var subitem in GetMainLevel_5(sub.MainCode))
+                                                        {
+                                                            <li class="nav-item">
+                                                                <a asp-area="Accounts" asp-controller="AccMainCode" asp-action="MainLevel_6" asp-route-id="@subitem.MainCode" class="nav-link hover-link ms-4 ps-4 @(isRTL ? "fa-caret-left mx-4" : "fa-caret-right me-4")">
+                                                                    @subitem.MainName
+                                                                </a>
+                                                            </li>
+                                                        }
+                                                    </ul>
                                                 </li>
                                             }
+
                                         </ul>
+
                                     </li>
                                 }
-
                             </ul>
-
                         </li>
                     }
                 </ul>
@@ -117,6 +127,37 @@
         }
 
         // console.log(document.querySelectorAll("#mySidebar .nav-link"));
+        /////////for level 3/////////////////////
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll("#mySidebar .nav-link3").forEach(function (element) {
+                element.addEventListener("click", function (e) {
+                    let nextEl = element.nextElementSibling;
+                    let parentEl = element.parentElement;
+
+                    if (nextEl) {
+                        // Store the state in local storage
+                        let href = element.getAttribute("href");
+                        localStorage.setItem("showElement", href);
+
+                        // Navigate to href
+                        window.location.href = href;
+                    }
+                });
+            });
+
+            // Check if there's an element to show from local storage
+            let showElement = localStorage.getItem("showElement");
+            if (showElement) {
+                let elementToShow = document.querySelector(`.nav-link[href="${showElement}"]`).nextElementSibling;
+                if (elementToShow) {
+                    elementToShow.classList.add("show");
+                }
+                // Clear the local storage item
+                localStorage.removeItem("showElement");
+            }
+        });
+
+        /////////////////////////////////////////
         document.addEventListener("DOMContentLoaded", function () {
             document.querySelectorAll("#mySidebar .nav-link").forEach(function (element) {
                 element.addEventListener("click", function (e) {

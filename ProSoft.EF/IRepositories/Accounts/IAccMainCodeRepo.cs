@@ -11,14 +11,16 @@ namespace ProSoft.EF.IRepositories.Accounts
 {
     public interface IAccMainCodeRepo
     {
-        Task<List<AccMainCodeDTO>> GetMainsByLevelAsync(double level);
+        Task<List<AccMainCodeDTO>> GetMainsByLevelAsync(double level,string? mainCode = "");
         Task<AccMainCodeDTO> GetMainByIdAsync(string id);
         Task<string> GetParentCodeAsync(string code);
+        Task<string> GetNewMain_2_Async();
         Task<string> GetNewMain_3_Async();
         Task<string> GetNewMain_4_Async(string id);
         Task<string> GetNewMain_5_Async(string id);
         Task<string> GetNewMain_6_Async(string id);
         /// Add
+        Task AddMainLevel_2_Async(AccMainCodeEditAddDTO mainDTO);
         Task AddMainLevel_3_Async(AccMainCodeEditAddDTO mainDTO);
         Task AddMainLevel_4_Async(string Level_3_Code, AccMainCodeEditAddDTO mainDTO);
         Task AddMainLevel_5_Async(string Level_4_Code, AccMainCodeEditAddDTO mainDTO);

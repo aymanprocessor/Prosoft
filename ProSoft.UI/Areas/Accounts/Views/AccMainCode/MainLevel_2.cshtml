@@ -10,7 +10,7 @@
     <div class="d-flex justify-content-between align-items-center mt-4 ">
         <h1 class="header">@localizer["Accounts"]</h1>
 
-        <a asp-controller="AccMainCode" asp-action="AddMainLevel_3" class="btn btn-sm btn-primary fs-6" style="width:150px">
+        <a asp-controller="AccMainCode" asp-action="AddMainLevel_2" class="btn btn-sm btn-primary fs-6" style="width:150px">
             @localizer["Add Main Account"]
         </a>
 
@@ -48,10 +48,10 @@
             @foreach (var analysis in Model)
             {
                 <tr class="align-middle" onclick="GetSubAccount(event, @analysis.MainCode,@analysis.LastLevel)" style="cursor:pointer;">
-                    <td class="item-name">
+                    <td>
                         @analysis.MainCode
                     </td>
-                    <td>
+                    <td class="item-name">
                         @analysis.MainName
                     </td>
                     <td>
@@ -112,10 +112,10 @@
                     </td>
 
                     <td width="30%" class="text-center">
-                        <a asp-controller="AccMainCode" asp-action="EditMainLevel_3" asp-route-ID="@analysis.MainCode" class="btn btn-sm btn-success mb-1 fs-6" style="width:150px;">
+                        <a asp-controller="AccMainCode" asp-action="EditMainLevel_2" asp-route-ID="@analysis.MainCode" class="btn btn-sm btn-success mb-1 fs-6" style="width:150px;">
                             <i class="bi bi-pencil"></i> @localizer["Edit"]
                         </a>
-                        <form asp-action="DeleteMainLevel_3" method="post" class="d-inline">
+                        <form asp-action="DeleteMainLevel_2" method="post" class="d-inline">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@analysis.MainCode" />
                             <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width:150px;">@localizer["Delete"]</button>
@@ -143,12 +143,11 @@
         </tbody>
     </table>
     </div>
-
     @* Table for subAnalysis *@
 
     <div class="subAnalysis-table-head d-flex justify-content-between align-items-center mt-4">
         <h2 class="header sub-item">
-            @localizer["Sub Account"]
+            @localizer["Sub Accounts"]
         </h2>
 
         <a class="btn btn-sm btn-primary fs-6">
@@ -218,6 +217,7 @@
         }
         subItemAddButton.classList.remove("btn-secondary");
         subItemAddButton.style = "pointer-events:all;";
+
         $.ajax({
             url: `/Accounts/AccSubCode/GetSubsByMain/${id}`,
             success: function (result) {
@@ -230,7 +230,7 @@
                         `   <td>${item.subCode}</td>
                                     <td class="item-name">${item.subName}</td>
                                     <td width="30%" class="text-center">
-                                     <a href="/Accounts/AccSubCode/EditSubAnalysis/${item.subCode}?maincode=${item.mainCode}" class="btn btn-sm btn-success mb-1  fs-6" style="width:150px">
+                                            <a href="/Accounts/AccSubCode/EditSubAnalysis/${item.subCode}?maincode=${item.mainCode}" class="btn btn-sm btn-success mb-1  fs-6" style="width:150px">
                                                 <i class="bi bi-pencil"></i> @localizer["Edit"]
                                         </a>
                                         <form action="/Accounts/AccSubCode/DeleteSubAnalysis" method="post" class="d-inline">

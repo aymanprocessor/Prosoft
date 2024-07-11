@@ -24,10 +24,20 @@ namespace ProSoft.Core.Repositories.Accounts
             _Context = Context;
             _mapper = mapper;
         }
-        public async Task<List<AccMainCodeDTO>> GetMainsByLevelAsync(double level)
+        public async Task<List<AccMainCodeDTO>> GetMainsByLevelAsync(double level,string? mainCode)
         {
-            List<AccMainCode> accMainCodes = await _Context.AccMainCodes
-                .Where(obj => obj.CurrentLevel == level).ToListAsync();
+            List<AccMainCode> accMainCodes = new List<AccMainCode>();
+            if (level == 3 && mainCode !="")
+            {
+                var firstDigit = mainCode.Substring(0, 1);
+                accMainCodes = await _Context.AccMainCodes
+                    .Where(obj => obj.CurrentLevel == level && obj.MainCode.StartsWith(firstDigit)).ToListAsync();
+            }
+            else
+            {
+               accMainCodes = await _Context.AccMainCodes
+                    .Where(obj => obj.CurrentLevel == level).ToListAsync();
+            }
             List<AccMainCodeDTO> mainLevelsDTO = _mapper.Map<List<AccMainCodeDTO>>(accMainCodes);
             return mainLevelsDTO;
         }
@@ -48,7 +58,30 @@ namespace ProSoft.Core.Repositories.Accounts
             string parentCode = existingMain?.ParentCode;
             return parentCode;
         }
+        public async Task<string> GetNewMain_2_Async()
+        {
+            AccMainCode lastRecord = await _Context.AccMainCodes.OrderBy(obj => obj.MainCode)
+                   .LastOrDefaultAsync(obj => obj.CurrentLevel == 2);
 
+            var maincode = "";
+            if (lastRecord != null)
+            {
+                maincode = lastRecord.MainCode;
+                var firstsup = maincode.Substring(0, 1);
+                var secondsup = maincode.Substring(1, 2);
+                var thirdsup = maincode.Substring(3);
+
+                var value = int.Parse(firstsup) + 1;
+
+                 firstsup = $"{value}";
+
+                maincode = firstsup + secondsup + thirdsup;
+            }
+            else
+                maincode = "100000000";
+
+            return maincode;
+        }
         public async Task<string> GetNewMain_3_Async()
         {
             AccMainCode lastRecord = await _Context.AccMainCodes.OrderBy(obj => obj.MainCode)
@@ -169,6 +202,16 @@ namespace ProSoft.Core.Repositories.Accounts
 
         //////////////////////////////////////////////////
         // Add
+        public async Task AddMainLevel_2_Async(AccMainCodeEditAddDTO mainDTO)
+        {
+            AccMainCode newMain = _mapper.Map<AccMainCode>(mainDTO);
+            newMain.CoCode = 0;
+            newMain.ParentCode = "1";
+            newMain.CurrentLevel = 2;
+
+            await _Context.AddAsync(newMain);
+            await _Context.SaveChangesAsync();
+        }
         public async Task AddMainLevel_3_Async(AccMainCodeEditAddDTO mainDTO)
         {
             AccMainCode newMain = _mapper.Map<AccMainCode>(mainDTO);

@@ -19,7 +19,8 @@
         </a> *@
 
     </div>
-    <table id="myTable" class="table table-bordered table-hover" style="width:100%">
+    <div class="overflow-auto" style="max-height:400px">
+       <table id="myTable" class="table table-bordered table-hover" style="width:100%">
         <thead class="table-dark">
             <tr class="align-middle">
                 <th>
@@ -46,11 +47,11 @@
         <tbody>
             @foreach (var analysis in Model)
             {
-                <tr class="align-middle">
+                <tr class="align-middle" onclick="GetSubAccount(event, @analysis.MainCode,@analysis.LastLevel)" style="cursor:pointer;">
                     <td>
                         @analysis.MainCode
                     </td>
-                    <td>
+                    <td class="item-name">
                         @analysis.MainName
                     </td>
                     <td>
@@ -141,4 +142,114 @@
             }
         </tbody>
     </table>
+    </div>
+    @* Table for subAnalysis *@
+
+    <div class="subAnalysis-table-head d-flex justify-content-between align-items-center mt-4">
+        <h2 class="header sub-item">
+            @localizer["Sub Accounts"]
+        </h2>
+
+        <a class="btn btn-sm btn-primary fs-6">
+            @localizer["Add Sub Account"]
+        </a>
+        @* asp-controller="MedAnalysis" asp-action="Add_SubItemAnalysis" asp-route-ID="@ViewBag.item.MainCode" asp-route-itemAnalCode="" *@
+    </div>
+    <div class="overflow-auto" style="max-height:400px">
+      <table id="myTable" class="table table-bordered table-hover subAnalysis-table" style="width:100%">
+        <thead class="table-dark">
+            <tr>
+                <th>
+                    @localizer["Code"]
+                </th>
+                <th>
+                    @localizer["Account Name"]
+                </th>
+                <th>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    </div>
+
+    @* /////////////////////////////////////////////////////////////////// *@
 </div>
+<script>
+    function GetSubAccount(e, id, lastLevel) {
+        let subItems = document.querySelector(".subAnalysis-table tbody");
+        let ItemAnalysis = document.querySelector(".ItemAnalysis-table tbody");
+
+        // Handle active clic
+        let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");;
+
+        allItemRows.forEach(row => {
+            row.classList.remove("active-row");
+        });
+
+        let clickedTarget = e.target.parentElement
+        clickedTarget.classList.add("active-row");
+        ///////////////////////////////////////////////////////////////////
+
+        // Catch header for sub items name and reset it
+        let subItemsHead = document.querySelector(".subAnalysis-table-head");
+
+        let itemName = clickedTarget.querySelector(".item-name").innerText;
+
+        let subItemsHeader = subItemsHead.querySelector(".header.sub-item"); // Display Header for sub items
+        subItemsHeader.innerHTML = "@localizer["Sub Accounts"] @localizer["for"] " + itemName;
+
+        let subItemAddButton = subItemsHead.querySelector("a");
+        subItemAddButton.setAttribute("href", `/Accounts/AccSubCode/AddSubAnalysis/${id}`);
+        //console.log(subItemAddButton);
+        ///////////////////////////////////////////////////////////////////
+
+        // Handle ajax call
+        subItems.innerHTML = "";  // Empty the body
+        if (lastLevel == 0) {
+            subItemAddButton.classList.add("btn-secondary");
+            subItemAddButton.style = "pointer-events:none;";
+            clickedTarget.classList.add("active-row");
+            subItems.innerHTML = "";
+            return;
+        }
+        subItemAddButton.classList.remove("btn-secondary");
+        subItemAddButton.style = "pointer-events:all;";
+        $.ajax({
+            url: `/Accounts/AccSubCode/GetSubsByMain/${id}`,
+            success: function (result) {
+                //console.log(result);
+                // console.log(result.sort((a, b) => b.itemanalcode - a.itemanalcode));
+
+                for (let item of result) {
+                    const subItem = document.createElement("tr");
+                    subItem.innerHTML +=
+                        `   <td>${item.subCode}</td>
+                                    <td class="item-name">${item.subName}</td>
+                                    <td width="30%" class="text-center">
+                                        <a href="/Accounts/AccSubCode/EditSubAnalysis/${item.subCode}?maincode=${item.mainCode}" class="btn btn-sm btn-success mb-1  fs-6" style="width:150px">
+                                                <i class="bi bi-pencil"></i> @localizer["Edit"]
+                                        </a>
+                                          <form action="/Accounts/AccSubCode/DeleteSubAnalysis" method="post" class="d-inline">
+    @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="${item.subCode}" />
+                                            <input type="hidden" name="maincode" value="${item.mainCode}" />
+                                                <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">@localizer["Delete"]</button>
+                                        </form>
+                                    </td>
+                                        `;
+                    //for click to call ajax
+                    subItem.style.cursor = "pointer";
+                    subItem.onclick = function (event) {
+
+                        GetItemAnalysis(event, item.subCode, item.mainCode)
+                    }
+                    subItems.appendChild(subItem);
+                    //console.log(section);
+                }
+            }
+        });
+    }
+
+</script>
