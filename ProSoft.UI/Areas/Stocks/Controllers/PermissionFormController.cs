@@ -27,7 +27,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             _transDtlRepo = transDtlRepo;
         }
 
-        public async Task<IActionResult> Index(int? id/*, int? transDtlId*/)
+        public async Task<IActionResult> Index(int? id)
         {
             var userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
             List<StockViewDTO> stocksDTO = await _transMasterRepo.GetActiveStocksForUserAsync(userCode);

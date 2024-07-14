@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using ProSoft.EF.Models.Medical.HospitalPatData;
 
-namespace ProSoft.EF.Models.Medical.HospitalPatData;
+namespace ProSoft.EF.Models.Stocks;
 
 [Table("SUB_ITEM")]
 public partial class SubItem

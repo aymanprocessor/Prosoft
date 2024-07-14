@@ -4,7 +4,6 @@ using ProSoft.EF.DbContext;
 using ProSoft.EF.DTOs.Medical.HospitalPatData;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.IRepositories.Stocks;
-using ProSoft.EF.Models.Medical.HospitalPatData;
 using ProSoft.EF.Models.Stocks;
 using System;
 using System.Collections.Generic;

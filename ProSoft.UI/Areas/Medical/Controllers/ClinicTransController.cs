@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProSoft.Core.Repositories.Medical.HospitalPatData;
 using ProSoft.EF.DTOs.Medical.HospitalPatData;
+using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.IRepositories.Medical.HospitalPatData;
 using ProSoft.EF.Models.Medical.HospitalPatData;
 

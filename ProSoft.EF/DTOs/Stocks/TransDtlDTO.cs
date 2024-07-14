@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ProSoft.EF.DTOs.Medical.HospitalPatData;
 
 namespace ProSoft.EF.DTOs.Stocks
 {
