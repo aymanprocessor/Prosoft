@@ -22,9 +22,9 @@ namespace ProSoft.Core.Repositories.Treasury
             _mapper = mapper;
         }
 
-        public async Task<List<GTablelDTO>> GetAllCostCenterTreasuryAsync()
+        public async Task<List<GTablelDTO>> GetAllCostCenterTreasuryAsync(int flag)
         {
-            List<GTable> gTables = await _Context.gTables.Where(obj => obj.Flag == 30).ToListAsync();
+            List<GTable> gTables = await _Context.gTables.Where(obj => obj.Flag == flag).ToListAsync();
             List<GTablelDTO> gTablelDTOs = _mapper.Map<List<GTablelDTO>>(gTables);
             return gTablelDTOs;
         }

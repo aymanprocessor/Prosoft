@@ -29,7 +29,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             return Json(accSubCodeDTO);
         }
         //Get Add
-        public async Task<IActionResult> Add_AccSubCode(string id)
+        public async Task<IActionResult> AddAccSubCode(string id,string? actionName)
         {
             string newSubCode = await _accSubCodeRepo.GetNewSubAsync(id);
             ViewBag.maincode = id;
@@ -41,65 +41,76 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             ViewBag.MainLevel_5 = await _accMainCodeRepo.GetMainsByLevelAsync(5);
 
             #endregion
-
             ViewBag.subcode = newSubCode;
             ViewBag.CurrentName = (await _accMainCodeRepo.GetMainByIdAsync(id)).MainName;
+            ViewBag.ActionName = actionName;
+            ViewBag.Grand = await _accSubCodeRepo.GetParentCodeAsync(id);
             return View();
         }
 
-        ////Post Add
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> AddSubAnalysis(string id, SubEditAddDTO subDTO)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        string grandCode = await _accSubCodeRepo.GetParentCodeAsync(id);
-        //        await _accSubCodeRepo.AddSubAnalysisAsync(id, subDTO);
-        //        return RedirectToAction("MainLevel_6", "MainAnalysis", new { id = grandCode });
-        //    }
-        //    return View(subDTO);
-        //}
+        //Post Add
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddAccSubCode(string id, AccSubCodeDTO subDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                string grandCode = await _accSubCodeRepo.GetParentCodeAsync(id);
+                await _accSubCodeRepo.AddAccSubCodeAsync(id, subDTO);
+                if (subDTO.ActionName == "MainLevel_2")
+                {
+                 return RedirectToAction(subDTO.ActionName, "AccMainCode");   
+                }
+                return RedirectToAction(subDTO.ActionName, "AccMainCode", new { id = grandCode });
+            }
+            return View(subDTO);
+        }
 
-        ////Get Edit
-        //public async Task<IActionResult> EditSubAnalysis(string id, string maincode)
-        //{
-        //    SubViewDTO subAnalysis = await _accSubCodeRepo.GetSubByIDsAsync(id, maincode);
-        //    SubEditAddDTO subAnalysisDTO = _mapper.Map<SubEditAddDTO>(subAnalysis);
+        //Get Edit
+        public async Task<IActionResult> EditAccSubCode(string id, string maincode, string? actionName)
+        {
+            AccSubCodeDTO accSubCodeDTO = await _accSubCodeRepo.GetSubByIDsAsync(id, maincode);
+            #region sidebar
+            ViewBag.MainLevel_2 = await _accMainCodeRepo.GetMainsByLevelAsync(2);
+            ViewBag.MainLevel_3 = await _accMainCodeRepo.GetMainsByLevelAsync(3);
+            ViewBag.MainLevel_4 = await _accMainCodeRepo.GetMainsByLevelAsync(4);
+            ViewBag.MainLevel_5 = await _accMainCodeRepo.GetMainsByLevelAsync(5);
+            #endregion
+            ViewBag.ActionName = actionName;
+            ViewBag.Grand = await _accSubCodeRepo.GetParentCodeAsync(maincode);
+            return View(accSubCodeDTO);
+        }
 
-        //    #region sidebar
-        //    ViewBag.MainLevel_2 = await _accMainCodeRepo.GetMainsByLevelAsync(2);
-        //    ViewBag.MainLevel_3 = await _accMainCodeRepo.GetMainsByLevelAsync(3);
-        //    ViewBag.MainLevel_4 = await _accMainCodeRepo.GetMainsByLevelAsync(4);
-        //    ViewBag.MainLevel_5 = await _accMainCodeRepo.GetMainsByLevelAsync(5);
+        //Post Edit
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditAccSubCode(string id, AccSubCodeDTO subDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                string grandCode = await _accSubCodeRepo.GetParentCodeAsync(subDTO.MainCode);
+                 await _accSubCodeRepo.EditAccSubCodeAsync(id, subDTO);
+                if (subDTO.ActionName == "MainLevel_2")
+                {
+                    return RedirectToAction(subDTO.ActionName, "AccMainCode");
+                }
+                return RedirectToAction(subDTO.ActionName, "AccMainCode", new { id = grandCode });
+            }
+            return View(subDTO);
+        }
 
-        //    #endregion
-
-        //    return View(subAnalysisDTO);
-        //}
-
-        ////Post Edit
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> EditSubAnalysis(string id, SubEditAddDTO subDTO)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        string grandCode = await _accSubCodeRepo.GetParentCodeAsync(subDTO.MainCode);
-        //     // await _accSubCodeRepo.EditSubAnalysisAsync(id, subDTO);
-        //        return RedirectToAction("MainLevel_6", "MainAnalysis", new { id = grandCode });
-        //    }
-        //    return View(subDTO);
-        //}
-
-        //// Post Delete
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteSubAnalysis(string id, string maincode)
-        //{
-        //    string grandCode = await _accSubCodeRepo.GetParentCodeAsync(maincode);
-        //   // await _accSubCodeRepo.DeleteSubAnalysisAsync(id, maincode);
-        //    return RedirectToAction("MainLevel_6", "MainAnalysis", new { id = grandCode });
-        //}
+        // Post Delete
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteAccSubCode(string id, string maincode,string actionName)
+        {
+            string grandCode = await _accSubCodeRepo.GetParentCodeAsync(maincode);
+            await _accSubCodeRepo.DeleteAccSubCodeAsync(id, maincode);
+            if (actionName == "MainLevel_2")
+            {
+                return RedirectToAction(actionName, "AccMainCode");
+            }
+            return RedirectToAction(actionName, "AccMainCode", new { id = grandCode });
+        }
     }
 }

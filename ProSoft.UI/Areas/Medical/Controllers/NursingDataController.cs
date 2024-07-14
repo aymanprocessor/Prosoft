@@ -5,27 +5,27 @@ using ProSoft.EF.DTOs.Treasury;
 using ProSoft.EF.IRepositories.Treasury;
 using ProSoft.EF.Models.Treasury;
 
-namespace ProSoft.UI.Areas.Treasury.Controllers
+namespace ProSoft.UI.Areas.Medical.Controllers
 {
     [Authorize]
-    [Area(nameof(Treasury))]
-    public class CostCenterTreasuryController : Controller
+    [Area("Medical")]
+    public class NursingDataController : Controller
     {
         private readonly IGTableRepo _gTableRepo;
         private readonly IMapper _mapper;
 
-        public CostCenterTreasuryController(IGTableRepo gTableRepo, IMapper mapper)
+        public NursingDataController(IGTableRepo gTableRepo, IMapper mapper)
         {
             _gTableRepo = gTableRepo;
             _mapper = mapper;
         }
         public async Task<IActionResult> Index()
         {
-            List<GTablelDTO> gTablelDTOs = await _gTableRepo.GetAllCostCenterTreasuryAsync(30);
+            List<GTablelDTO> gTablelDTOs = await _gTableRepo.GetAllCostCenterTreasuryAsync(50);
             return View(gTablelDTOs);
         }
         // Get Add
-        public async Task<IActionResult> Add_CostCenterTreasury()
+        public async Task<IActionResult> Add_NursingData()
         {
             ViewBag.gtableID = await _gTableRepo.GetNewIdAsync();
             return View();
@@ -34,12 +34,12 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
         // Post Add
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add_CostCenterTreasury(GTablelDTO gTablelDTO)
+        public async Task<IActionResult> Add_NursingData(GTablelDTO gTablelDTO)
         {
             if (ModelState.IsValid)
             {
                 GTable gTable = _mapper.Map<GTable>(gTablelDTO);
-                gTable.Flag = 30;
+                gTable.Flag = 50;
                 await _gTableRepo.AddAsync(gTable);
                 await _gTableRepo.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -48,7 +48,7 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
         }
 
         // Get Edit
-        public async Task<IActionResult> Edit_CostCenterTreasury(int id)
+        public async Task<IActionResult> Edit_NursingData(int id)
         {
             GTable gTable = await _gTableRepo.GetByIdAsync(id);
             GTablelDTO gTablelDTO = _mapper.Map<GTablelDTO>(gTable);
@@ -58,7 +58,7 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
         // Post Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit_CostCenterTreasury(int id, GTablelDTO gTablelDTO)
+        public async Task<IActionResult> Edit_NursingData(int id, GTablelDTO gTablelDTO)
         {
             if (ModelState.IsValid)
             {
@@ -75,7 +75,7 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
         // Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete_CostCenterTreasury(int id)
+        public async Task<IActionResult> Delete_NursingData(int id)
         {
             GTable gTable = await _gTableRepo.GetByIdAsync(id);
 
@@ -85,3 +85,4 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
         }
     }
 }
+ 

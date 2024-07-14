@@ -10,7 +10,7 @@ namespace ProSoft.EF.IRepositories.Treasury
 {
     public interface IGTableRepo :IRepository<GTable,int>
     {
-        Task<List<GTablelDTO>> GetAllCostCenterTreasuryAsync();
+        Task<List<GTablelDTO>> GetAllCostCenterTreasuryAsync(int flag);
         Task<int> GetNewIdAsync();
 
     }

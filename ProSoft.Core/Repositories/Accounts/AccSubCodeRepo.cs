@@ -81,36 +81,36 @@ namespace ProSoft.Core.Repositories.Accounts
             return grandCode;
         }
 
-        //هعمل editaddDTO
-        public async Task AddSubAnalysisAsync(string id, SubEditAddDTO subDTO)
+        //Add 
+        public async Task AddAccSubCodeAsync(string id, AccSubCodeDTO accSubDTO)
         {
-            AccSubCode accSubCode = _mapper.Map<AccSubCode>(subDTO);
+            AccSubCode accSubCode = _mapper.Map<AccSubCode>(accSubDTO);
 
-            accSubCode.CoCode = 0;
+            accSubCode.CoCode = 1;
             accSubCode.MainCode = id;
 
             await _Context.AddAsync(accSubCode);
             await _Context.SaveChangesAsync();
         }
 
-        //public async Task EditSubAnalysisAsync(string subCode, SubEditAddDTO subDTO)
-        //{
-        //    MedicalAnalysisSub existingSub = await _Context.MedicalAnalysisSubs
-        //         .FirstOrDefaultAsync(obj => obj.SubCode == subCode && obj.MainCode == subDTO.MainCode);
+        public async Task EditAccSubCodeAsync(string subCode, AccSubCodeDTO subDTO)
+        {
+            AccSubCode existingSub = await _Context.AccSubCodes
+                 .FirstOrDefaultAsync(obj => obj.SubCode == subCode && obj.MainCode == subDTO.MainCode);
 
-        //    _mapper.Map(subDTO, existingSub);
+            _mapper.Map(subDTO, existingSub);
 
-        //    _Context.Update(existingSub);
-        //    await _Context.SaveChangesAsync();
-        //}
+            _Context.Update(existingSub);
+            await _Context.SaveChangesAsync();
+        }
 
-        //public async Task DeleteSubAnalysisAsync(string subCode, string mainCode)
-        //{
-        //    MedicalAnalysisSub existingSub = await _Context.MedicalAnalysisSubs
-        //         .FirstOrDefaultAsync(obj => obj.SubCode == subCode && obj.MainCode == mainCode);
+        public async Task DeleteAccSubCodeAsync(string subCode, string mainCode)
+        {
+            AccSubCode existingSub = await _Context.AccSubCodes
+                 .FirstOrDefaultAsync(obj => obj.SubCode == subCode && obj.MainCode == mainCode);
 
-        //    _Context.Remove(existingSub);
-        //    await _Context.SaveChangesAsync();
-        //}
+            _Context.Remove(existingSub);
+            await _Context.SaveChangesAsync();
+        }
     }
 }

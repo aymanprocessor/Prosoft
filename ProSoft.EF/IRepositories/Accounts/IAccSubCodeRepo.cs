@@ -16,12 +16,12 @@ namespace ProSoft.EF.IRepositories.Accounts
         Task<string> GetNewSubAsync(string mainCode);
 
         /// Add
-       // Task AddSubAnalysisAsync(string id, SubEditAddDTO subDTO);
+        Task AddAccSubCodeAsync(string id, AccSubCodeDTO subDTO);
 
         /// Edit
-        //Task EditSubAnalysisAsync(string subCode, SubEditAddDTO subDTO);
+        Task EditAccSubCodeAsync(string subCode, AccSubCodeDTO subDTO);
 
-        ///// Delete
-        //Task DeleteSubAnalysisAsync(string subCode, string mainCode);
+        /// Delete
+        Task DeleteAccSubCodeAsync(string subCode, string mainCode);
     }
 }
