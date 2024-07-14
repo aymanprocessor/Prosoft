@@ -559,6 +559,10 @@
   "Edit To Accounts": "Edit To Accounts",
   "Add To": "Add To",
   "Sub Accounts": "Sub Accounts",
+  "Nursing Data": "Nursing Data",
+  "Nurse name": "Nurse name",
+  "Add Nurse": "Add Nurse",
+  "Edit Nurse": "Edit Nurse data",
 
 
 
@@ -805,5 +809,12 @@
   "This Permission is approved": "This Permission is approved",
   "Shipped from / to": "Shipped from / to",
   "Add Item To": "Add Item To",
-  "Edit Item In": "Edit Item In"
+  "Edit Item In": "Edit Item In",
+  "Items Guide": "Items Guide",
+  "Group Code": "Group Code",
+  "Group Name": "Group Name",
+  "Item Counter": "Item Counter",
+  "Add Main Group": "Add Main Group",
+  "Price Policy": "Price Policy",
+  "Service Percentage": "Service Percentage"
 }

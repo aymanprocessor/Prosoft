@@ -1,0 +1,10 @@
+﻿@{
+    ViewData["Title"] = "Items Guide";
+    Layout = "_LayoutItemsGuide";
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+}
+@inject IViewLocalizer localizer
+
+<div class="mt-2 p-2">
+    <h2 class="mb-2">@localizer["The Items"] </h2>
+</div>

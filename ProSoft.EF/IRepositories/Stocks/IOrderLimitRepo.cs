@@ -1,5 +1,4 @@
 ﻿using ProSoft.EF.DTOs.Stocks;
-using ProSoft.EF.Models.Medical.HospitalPatData;
 using ProSoft.EF.Models.Stocks;
 using System;
 using System.Collections.Generic;

@@ -565,6 +565,10 @@
   "Edit To Accounts": "تعديل للحسابات",
   "Add To": "اضافة الي",
   "Sub Accounts": "الحسابات الفرعية",
+  "Nursing Data": "بيانات التمريض",
+  "Nurse name": "اسم الممرضة",
+  "Add Nurse": "اضافة ممرضة",
+  "Edit Nurse": "تعديل بيانات ممرضة",
 
 
 
@@ -811,5 +815,12 @@
   "This Permission is approved": "هذا الاذن معتمد",
   "Shipped from / to": "صرف من / الي",
   "Add Item To": "اضافة صنف الي",
-  "Edit Item In": "تعديل صنف في"
+  "Edit Item In": "تعديل صنف في",
+  "Items Guide": "دليل الاصناف",
+  "Group Code": "كود المجموعة",
+  "Group Name": "اسم المجموعة",
+  "Item Counter": "عداد للصنف",
+  "Add Main Group": "اضافة مجموعة رئيسية",
+  "Price Policy": "سياسة التسعير",
+  "Service Percentage": "نسبة الخدمة"
 }

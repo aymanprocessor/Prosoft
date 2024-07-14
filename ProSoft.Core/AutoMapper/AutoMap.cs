@@ -51,6 +51,7 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<PatAdmissionEditAddDTO, PatAdmission>().ReverseMap();
             CreateMap<MainClinicViewDTO, MainClinic>().ReverseMap();
             CreateMap<MainItemViewDTO, MainItem>().ReverseMap();
+            CreateMap<MainItemEditAddDTO, MainItem>().ReverseMap();
             CreateMap<DoctorViewDTO, Doctor>().ReverseMap();
             CreateMap<DoctorEditAddDTO, Doctor>().ReverseMap();
             ///////////////////////////////////////
