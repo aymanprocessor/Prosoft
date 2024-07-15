@@ -1,0 +1,242 @@
+﻿@model ReportAssistantProfessorDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Print From Voucher To Voucher";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+
+    SelectList branches = new SelectList(Model.branchs, "BranchId", "BranchDesc");
+    SelectList JournalTypes = new SelectList(Model.JournalTypes, "JournalCode", "JournalName");
+    SelectList mainAccCodes = new SelectList(Model.accMainCodes, "MainCode", "MainName");
+    SelectList costcenter = new SelectList(Model.costCenters, "CostCode", "CostDesc");
+
+}
+@inject IViewLocalizer localizer
+<style>
+    .hide {
+        display: none !important;
+    }
+    /*  .image {
+                top: 0px;
+                left: 0px;
+                width: 100%;
+                height: 100%;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-size: cover;
+                background-position: center;
+                opacity: 0.5;
+                z-index: -1;
+            } */
+</style>
+<div class="container pt-2 " style="min-height:100vh;">
+    @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
+
+    <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mt-4">
+        <h1 class="header">@localizer["Assistant Professor(Analytical/Overall)"]</h1>
+        <div class="d-flex gap-2">
+            <a class="btn btn-sm btn-primary fs-6" style="width:150px" onclick="Analytical(event)">
+                @localizer["Analytical"]
+            </a>
+            <a class="btn btn-sm btn-primary fs-6" style="width:150px" onclick="FromVoucherToVoucher(event)">
+                @localizer["Overall"]
+            </a>
+        </div>
+    </div>
+
+    <div class="overflow-auto filter-box">
+        <div class=" d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 px-1 my-2">
+            <div class="d-flex align-items-center flex-column flex-md-row w-100">
+                <label for="branches" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Branches"]</label>
+                <select id="branches" asp-items="branches" class="form-control text-center w-100">
+                    <option value="100">-- @localizer["All"] --</option>
+                </select>
+            </div>
+            <div class="d-flex align-items-center flex-column flex-md-row w-100">
+                <label for="journals" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Journal"]</label>
+                <select id="journals" asp-items="JournalTypes" class="form-control text-center w-100">
+                    <option value="100">-- @localizer["All"] --</option>
+                </select>
+            </div>
+            <div class="d-flex align-items-center w-100">
+                <label style="width:60% !important;">@localizer["From Period"]</label>
+                <input id="fromPeriod" type="date" class="form-control text-center" />
+            </div>
+            <div class="d-flex align-items-center w-100">
+                <label style="width:60% !important;">@localizer["To Period"]</label>
+                <input id="toPeriod" type="date" class="form-control text-center" />
+            </div>
+        </div>
+
+        <hr /><!---------------------------------------------------------->
+
+        <div class=" d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 px-1 my-2">
+            <div class="d-flex align-items-center w-100">
+                <label asp-for="MainCode" style="width:60% !important;"></label>
+                <select asp-for="MainCode" asp-items="mainAccCodes" class="form-control text-center" onchange="getSubCodes(event)">
+                    <option value="">-- Choose --</option>
+                </select>
+                <span asp-validation-for="MainCode" class="text-danger"></span>
+            </div>
+            <div class="d-flex align-items-center w-100">
+                <label asp-for="SubCode" style="width:60% !important;"></label>
+                <select asp-for="SubCode" class="form-control text-center">
+                    <option value="">-- Choose --</option>
+                </select>
+                <span asp-validation-for="SubCode" class="text-danger"></span>
+            </div>
+            <div class="d-flex align-items-center flex-column flex-md-row w-100">
+                <label for="costCode" style="width:60% !important;" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Cost Center"]</label>
+                <select id="costCode" asp-items="costcenter" class="form-control text-center w-100">
+                    <option value="100">-- @localizer["All"] --</option>
+                </select>
+            </div>
+        </div>
+
+        <!---------------------------------------------------------->
+    </div>
+
+    <div class="report">
+    </div>
+</div>
+<script>
+    ////for variables /////
+    var branche = document.getElementById("branches");
+    var journal = document.getElementById("journals");
+    var fromPeriod = document.getElementById("fromPeriod");
+    var toPeriod = document.getElementById("toPeriod");
+    var mainCode = document.getElementById("MainCode");
+    var subCode = document.getElementById("SubCode");
+    var costCode = document.getElementById("costCode");
+
+    //for report From Voucher To Voucher//
+    function Analytical(e) {
+        if (!fromPeriod.value) {
+            fromPeriod.focus();
+            return;
+        }
+        if (!toPeriod.value) {
+            toPeriod.focus();
+            return;
+        }
+        if (!mainCode.value) {
+            mainCode.focus();
+            return;
+        }
+        if (!subCode.value) {
+            subCode.focus();//Must Choose
+            return;
+        }
+        var headReport = document.querySelector(".report");
+
+        let title;
+        title = "@localizer["Analytical Assistant Professor From"] " + fromPeriod.value + " @localizer["To"] " + toPeriod.value;
+
+        headReport.innerHTML =
+            `
+                    <div class="report-head d-flex justify-content-center align-items-center mt-4">
+                         <h2 class="header">${title}</h2>
+                             <button onclick="printReport()" class="btn btn-success" style="margin-inline-start: auto;">Print</button>
+                    </div>
+
+                    <div class="print-table p-0 mb-2 overflow-auto">
+
+                        <table id="myTable" class="table table-bordered table-hover Voucher-table" style="width:100%">
+                            <thead class="table-dark">
+                                <tr>
+
+                                <th class="align-middle text-center" rowspan="2">
+                                        @localizer["Account Name"]
+                                </th>
+                                <th class="align-middle text-center" rowspan="2">
+                                        @localizer["Note"]
+                                </th>
+                                <th class="align-middle text-center" rowspan="2">
+                                        @localizer["Debit Value"]
+                                </th>
+                                <th class="align-middle text-center" rowspan="2">
+                                        @localizer["Credit Value"]
+                                </th>
+                                th class="align-middle text-center" rowspan="2">
+                                        @localizer["Voucher No"]
+                                </th>
+                                <th class="align-middle text-center" rowspan="2">
+                                        @localizer["Voucher Date"]
+                                </th>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+
+                `;
+        let url = `/Accounts/ReportAssistantProfessor/GetFromToVoucher/${branche.value}?journal=${journal.value}&mainCode=${mainCode.value}&subCode=${subCode.value}&costCode=${costCode.value}&fromPeriod=${fromPeriod.value}&toPeriod=${toPeriod.value}`;
+
+        var dataa = document.querySelector(".Voucher-table tbody");
+        dataa.innerHTML = "";  // Empty data
+        $.ajax({
+            url: url,
+            success: function (result) {
+                //  console.log(result);
+                var valDepSum = 0;
+                var valCreditSum = 0;
+                for (let item of result) {
+                    let transDate = new Date(item.transDate).toISOString().split('T')[0];
+                    const data = document.createElement("tr");
+                    data.innerHTML += `
+
+                            <td class="align-middle">${item.accountName}</td>
+                            <td class="align-middle">${item.lineDesc}</td>
+                            <td class="align-middle">${item.valDep}</td>
+                            <td class="align-middle">${item.valCredit}</td>
+                            <td class="align-middle">${item.transNo}</td>
+                            <td class="align-middle">${transDate}</td>
+                            `;
+                    valDepSum += item.valDep;
+                    valCreditSum += item.valCredit;
+                    dataa.appendChild(data);
+                }
+                const dataForSum = document.createElement("tr");
+                //    dataForSum.style.backgroundColor = "#e6dfdf";
+                dataForSum.innerHTML =
+                    `
+                            <td colspan="4"></td>
+                            <td style="background-color: #e6dfdf;">${valDepSum}</td>
+                            <td style="background-color: #e6dfdf;">${valCreditSum}</td>
+                        `;
+                dataa.appendChild(dataForSum);
+
+            }
+        });
+    }
+    function printReport() {
+        let head = document.querySelector(".report-head");
+        let tableReport = document.querySelector(".print-table");
+        let originalContent = document.body.innerHTML;//all body
+
+        head.querySelector("button").style.display = "none";
+        document.body.innerHTML = head.outerHTML + tableReport.outerHTML;
+        window.print();
+        document.body.innerHTML = originalContent;
+    }
+    function getSubCodes(e) {
+        let mainElement = e.target;
+        let subElement = document.getElementById("SubCode");
+
+        subElement.innerHTML = `<option value="">-- Choose --</option>`;
+
+        $.ajax({
+            url: `/Treasury/AccSafeCash/GetSubCodesFromAcc/${mainElement.value}`,
+            success: function (result) {
+                // console.log(result);
+                for (let item of result) {
+                    subElement.innerHTML +=
+                        `<option value="${item.subCode}">${item.subName}</option>`;
+                }
+            }
+        });
+    }
+</script>

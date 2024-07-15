@@ -29,7 +29,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             ViewBag.MainLevel_5 = await _accMainCodeRepo.GetMainsByLevelAsync(5);
             return View();
         }
-        public async Task<IActionResult> MainLevel_2()
+        public async Task<IActionResult> MainLevel_2(string? clickId = "")
         {
             List<AccMainCodeDTO> mainLevel_2 = await _accMainCodeRepo.GetMainsByLevelAsync(2);
 
@@ -39,7 +39,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             ViewBag.MainLevel_4 = await _accMainCodeRepo.GetMainsByLevelAsync(4);
             ViewBag.MainLevel_5 = await _accMainCodeRepo.GetMainsByLevelAsync(5);
             #endregion
-
+            ViewBag.clickId = clickId;
             return View(mainLevel_2);
         }
 
@@ -111,7 +111,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
 
         //////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////
-        public async Task<IActionResult> MainLevel_3(string? id ="")
+        public async Task<IActionResult> MainLevel_3(string? id ="", string? clickId = "")
         {
             List<AccMainCodeDTO> mainLevel_3 = await _accMainCodeRepo.GetMainsByLevelAsync(3,id);
 
@@ -121,14 +121,17 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             ViewBag.MainLevel_4 = await _accMainCodeRepo.GetMainsByLevelAsync(4);
             ViewBag.MainLevel_5 = await _accMainCodeRepo.GetMainsByLevelAsync(5);
             #endregion
+            ViewBag.main = await _accMainCodeRepo.GetMainByIdAsync(id);
+            ViewBag.parent = id;
+            ViewBag.clickId = clickId;
 
             return View(mainLevel_3);
         }
 
         //Get Add
-        public async Task<IActionResult> AddMainLevel_3()
+        public async Task<IActionResult> AddMainLevel_3(string parent)
         {
-            string newMainCode = await _accMainCodeRepo.GetNewMain_3_Async();
+            string newMainCode = await _accMainCodeRepo.GetNewMain_3_Async(parent);
 
             #region sidebar
             ViewBag.MainLevel_2 = await _accMainCodeRepo.GetMainsByLevelAsync(2);
@@ -138,6 +141,8 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             #endregion
 
             ViewBag.maincode = newMainCode;
+            ViewBag.CurrentName = (await _accMainCodeRepo.GetMainByIdAsync(parent)).MainName;//for name
+
             return View();
         }
 
@@ -149,7 +154,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             if (ModelState.IsValid)
             {
                 await _accMainCodeRepo.AddMainLevel_3_Async(mainDTO);
-                return RedirectToAction(nameof(MainLevel_3));
+                return RedirectToAction(nameof(MainLevel_3), new { id = mainDTO.MainCode});
             }
             return View(mainDTO);
         }
@@ -177,7 +182,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             if (ModelState.IsValid)
             {
                 await _accMainCodeRepo.EditMainLevelAsync(id, mainDTO);
-                return RedirectToAction(nameof(MainLevel_3));
+                return RedirectToAction(nameof(MainLevel_3), new { id = id });
             }
             return View(mainDTO);
         }
@@ -188,13 +193,13 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
         public async Task<IActionResult> DeleteMainLevel_3(string id)
         {
             await _accMainCodeRepo.DeleteMainLevelAsync(id);
-            return RedirectToAction(nameof(MainLevel_3));
+            return RedirectToAction(nameof(MainLevel_2));
         }
 
         //////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////
 
-        public async Task<IActionResult> MainLevel_4(string id)
+        public async Task<IActionResult> MainLevel_4(string id, string? clickId = "")
         {
             List<AccMainCodeDTO> mainLevel_4 = await _accMainCodeRepo.GetMainsByLevelAsync(4);
 
@@ -210,6 +215,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             string mainString = id.Substring(0, 3); //get main code and substring first 3 digit
             List<AccMainCodeDTO> mains = mainLevel_4
                 .Where(obj => obj.MainCode.Substring(0, 3) == mainString).ToList();
+            ViewBag.clickId = clickId;
             return View(mains);
         }
 
@@ -289,7 +295,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
         //////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////
 
-        public async Task<IActionResult> MainLevel_5(string id)
+        public async Task<IActionResult> MainLevel_5(string id,string? clickId = "")
         {
             List<AccMainCodeDTO> mainLevel_5 = await _accMainCodeRepo.GetMainsByLevelAsync(5);
 
@@ -305,6 +311,8 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             string mainString = id.Substring(0, 5); //get main code and substring first 3 digit
             List<AccMainCodeDTO> mains = mainLevel_5
                 .Where(obj => obj.MainCode.Substring(0, 5) == mainString).ToList();
+            ViewBag.clickId = clickId;
+
             return View(mains);
         }
         //get Add
@@ -381,9 +389,9 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
         //////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////
 
-        public async Task<IActionResult> MainLevel_6(string id)
+        public async Task<IActionResult> MainLevel_6(string id ,string? clickId = "")
         {
-            List<AccMainCodeDTO> mainLevel_6 = await _accMainCodeRepo.GetMainsByLevelAsync(4);
+            List<AccMainCodeDTO> mainLevel_6 = await _accMainCodeRepo.GetMainsByLevelAsync(6);
 
             #region sidebar
             ViewBag.MainLevel_2 = await _accMainCodeRepo.GetMainsByLevelAsync(2);
@@ -391,12 +399,13 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             ViewBag.MainLevel_4 = await _accMainCodeRepo.GetMainsByLevelAsync(4);
             ViewBag.MainLevel_5 = await _accMainCodeRepo.GetMainsByLevelAsync(5);
             #endregion
-
+            
             ViewBag.main = await _accMainCodeRepo.GetMainByIdAsync(id);
 
             string mainString = id.Substring(0, 7); //get main code and substring first 3 digit
             List<AccMainCodeDTO> mains = mainLevel_6
                 .Where(obj => obj.MainCode.Substring(0, 7) == mainString).ToList();
+            ViewBag.clickId = clickId;
             return View(mains);
         }
         //get Add

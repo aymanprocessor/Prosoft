@@ -12,7 +12,6 @@ namespace ProSoft.EF.DTOs.Accounts
     public class CostCenterViewDTO
     {
         public int CostCode { get; set; }
-
         public string CostDesc { get; set; }
         public int? CostVisible { get; set; }
 

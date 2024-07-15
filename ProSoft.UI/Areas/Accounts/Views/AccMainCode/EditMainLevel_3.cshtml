@@ -24,7 +24,7 @@
     @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
 
     <div class="d-flex justify-content-between align-items-center mt-3 ">
-        <h1>@localizer["Edit To Accounts"]</h1>
+        <h1>@localizer["Edit"] @Model.MainName</h1>
     </div>
 
     <form method="post" asp-action="EditMainLevel_3" id="myForm">
@@ -92,7 +92,7 @@
                 <button type="submit" class="btn btn-success" style="width:150px">
                     @localizer["Save Changes"]
                 </button>
-                <a asp-controller="AccMainCode" asp-action="MainLevel_3" class="btn btn-secondary" style="width:150px">
+                <a asp-controller="AccMainCode" asp-action="MainLevel_2" class="btn btn-secondary" style="width:150px">
                     @localizer["Cancel"]
                 </a>
             </div>

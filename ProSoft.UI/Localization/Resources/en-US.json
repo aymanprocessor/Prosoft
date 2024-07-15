@@ -563,6 +563,10 @@
   "Nurse name": "Nurse name",
   "Add Nurse": "Add Nurse",
   "Edit Nurse": "Edit Nurse data",
+  "Assistant Professor(Analytical/Overall)": "Assistant Professor(Analytical/Overall)",
+  "Analytical": "Analytical",
+  "Overall": "Overall",
+  "Analytical Assistant Professor From": "Analytical Assistant Professor From",
 
 
 
@@ -816,5 +820,8 @@
   "Item Counter": "Item Counter",
   "Add Main Group": "Add Main Group",
   "Price Policy": "Price Policy",
-  "Service Percentage": "Service Percentage"
+  "Service Percentage": "Service Percentage",
+  "Choose Stock Type": "Choose Stock Type",
+  "Edit Main Group": "Edit Main Group",
+  "Items Of Group": "Items Of Group"
 }

@@ -7,20 +7,18 @@
 @inject IViewLocalizer localizer
 
 <div class="container pt-2">
+    @* hidden *@
+    <input id="journaltype" type="hidden" value="@ViewBag.clickId" />
+
     <div class="d-flex justify-content-between align-items-center mt-4 ">
         <h1 class="header">@ViewBag.main.MainName </h1>
 
         <a asp-controller="AccMainCode" asp-action="AddMainLevel_5" asp-route-ID="@ViewBag.main.MainCode" class="btn btn-sm btn-primary fs-6" style="width:150px">
             @localizer["Add Main Account"]
         </a>
-
-        @*<a onclick="goTo('Add_LabReports')" class="btn btn-sm btn-primary" style="width:150px">
-        ADD
-        </a> *@
-
     </div>
     <div class="overflow-auto" style="max-height:400px">
-       <table id="myTable" class="table table-bordered table-hover" style="width:100%">
+       <table id="myTable1" class="table table-bordered table-hover" style="width:100%">
         <thead class="table-dark">
             <tr class="align-middle">
                 <th>
@@ -176,6 +174,7 @@
 
     @* /////////////////////////////////////////////////////////////////// *@
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     function GetSubAccount(e, id, lastLevel) {
         let subItems = document.querySelector(".subAnalysis-table tbody");
@@ -227,34 +226,35 @@
                     subItem.innerHTML +=
                         `   <td class="align-middle">${item.subCode}</td>
                                     <td class="item-name align-middle">${item.subName}</td>
-                                    <td width="30%" class="text-center align-middle">
-                                                    <a href="/Accounts/AccSubCode/EditAccSubCode/${item.subCode}?maincode=${item.mainCode}&actionName=${"MainLevel_5"}" class="btn btn-sm btn-success mb-1  fs-6" style="width:150px">
-                                                    <i class="bi bi-pencil"></i> @localizer["Edit"]
-                                                </a>
-                                                   <form action="/Accounts/AccSubCode/DeleteAccSubCode" method="post" class="d-inline ms-1">
+
+                                            <td width="30%" class="text-center">
+                                    <a href="/Accounts/AccSubCode/EditAccSubCode/${item.subCode}?maincode=${item.mainCode}&actionName=${"MainLevel_5"}" class="btn btn-sm btn-success mb-1 fs-6" style="width:150px;">
+                                    <i class="bi bi-pencil"></i> @localizer["Edit"]
+                                </a>
+                                    <form action="/Accounts/AccSubCode/DeleteAccSubCode"" method="post" class="d-inline">
     @Html.AntiForgeryToken()
-                                                    <input type="hidden" name="id" value="${item.subCode}" />
-                                                    <input type="hidden" name="maincode" value="${item.mainCode}" />
-                                                        <input type="hidden" name="actionName" value="${"MainLevel_5"}" />
-                                                   <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width: 150px;">@localizer["Delete"]</button>
-                                                     <div class="modal-container">
-                                                         <div class="modal 4" id="modal">
-                                                             <div class="modal-header fs-4">
-                                                                 <div class="title">@localizer["Confirm Delete"]</div>
-                                                                 <button type="button" onclick="closeModelListener(event)" data-close-button class="close-button">&times;</button>
-                                                             </div>
-                                                             <div class="modal-body fs-4">
+                                        <input type="hidden" name="id" value="${item.subCode}" />
+                                        <input type="hidden" name="maincode" value="${item.mainCode}" />
+                                        <input type="hidden" name="actionName" value="${"MainLevel_5"}" />
+                                    <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width:150px;">@localizer["Delete"]</button>
+                                    <div class="modal-container">
+                                        <div class="modal 4" id="modal">
+                                            <div class="modal-header fs-4">
+                                                <div class="title">@localizer["Confirm Delete"]</div>
+                                                <button type="button" onclick="closeModelListener(event)" data-close-button class="close-button">&times;</button>
+                                            </div>
+                                            <div class="modal-body fs-4">
     @localizer["Are you sure you want to delete this item ?"]
-                                                             </div>
-                                                             <div class="modal-footer fs-4">
-                                                                 <button type="button" onclick="closeModelListener(event)" data-close-button class="btn btn-secondary">@localizer["No"]</button>
-                                                                 <button class="btn btn-danger">@localizer["Yes"]</button>
-                                                             </div>
-                                                         </div>
-                                                         <div onclick="overlayListener(event)" id="overlay"></div>
-                                                     </div>
-                                                 </form>
-                                            </td>
+                                            </div>
+                                            <div class="modal-footer fs-4">
+                                                <button type="button" onclick="closeModelListener(event)" data-close-button class="btn btn-secondary">@localizer["No"]</button>
+                                                <button class="btn btn-danger">@localizer["Yes"]</button>
+                                            </div>
+                                        </div>
+                                        <div onclick="overlayListener(event)" id="overlay"></div>
+                                    </div>
+                                </form>
+                            </td>
                                                 `;
                     //for click to call ajax
                     subItem.style.cursor = "pointer";
@@ -268,5 +268,27 @@
             }
         });
     }
+    // Function to handle initial click based on journalCode
+    function clickForShow() {
+        var journalCode = document.getElementById("journaltype").value.toLowerCase();
+        let rows = document.querySelectorAll("#myTable1 tbody tr");
 
+        // Loop through all table rows
+        for (let i = 0, len1 = rows.length; i < len1; i++) {
+            let firstTd = rows[i].querySelector("td:first-child");  // Select the first td in the row
+            if (firstTd) {
+                let tdValue = firstTd.textContent || firstTd.innerText;
+                tdValue = tdValue.toLowerCase();
+                if (tdValue.indexOf(journalCode) > -1) {  // Compare with journalCode
+                    firstTd.click();
+                    break;
+                }
+            }
+        }
+    }
+    // Call the function to initiate the click based on journalCode
+    var journalCode = document.getElementById("journaltype").value;
+    if (journalCode != "") {
+        clickForShow();
+    }
 </script>

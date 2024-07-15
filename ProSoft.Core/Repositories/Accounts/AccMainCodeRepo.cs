@@ -30,12 +30,12 @@ namespace ProSoft.Core.Repositories.Accounts
             if (level == 3 && mainCode !="")
             {
                 var firstDigit = mainCode.Substring(0, 1);
-                accMainCodes = await _Context.AccMainCodes
+                accMainCodes = await _Context.AccMainCodes.OrderBy(obj=>obj.MainCode)
                     .Where(obj => obj.CurrentLevel == level && obj.MainCode.StartsWith(firstDigit)).ToListAsync();
             }
             else
             {
-               accMainCodes = await _Context.AccMainCodes
+               accMainCodes = await _Context.AccMainCodes.OrderBy(obj => obj.MainCode)
                     .Where(obj => obj.CurrentLevel == level).ToListAsync();
             }
             List<AccMainCodeDTO> mainLevelsDTO = _mapper.Map<List<AccMainCodeDTO>>(accMainCodes);
@@ -82,10 +82,11 @@ namespace ProSoft.Core.Repositories.Accounts
 
             return maincode;
         }
-        public async Task<string> GetNewMain_3_Async()
+        public async Task<string> GetNewMain_3_Async(string parent)
         {
+            var firstDigit = parent.Substring(0, 1);
             AccMainCode lastRecord = await _Context.AccMainCodes.OrderBy(obj => obj.MainCode)
-                   .LastOrDefaultAsync(obj => obj.CurrentLevel == 3);
+                   .LastOrDefaultAsync(obj => obj.CurrentLevel == 3 && obj.ParentCode.StartsWith(firstDigit));
 
             var maincode = "";
             if (lastRecord != null)

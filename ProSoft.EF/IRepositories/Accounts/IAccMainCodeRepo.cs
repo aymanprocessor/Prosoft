@@ -15,7 +15,7 @@ namespace ProSoft.EF.IRepositories.Accounts
         Task<AccMainCodeDTO> GetMainByIdAsync(string id);
         Task<string> GetParentCodeAsync(string code);
         Task<string> GetNewMain_2_Async();
-        Task<string> GetNewMain_3_Async();
+        Task<string> GetNewMain_3_Async(string parent);
         Task<string> GetNewMain_4_Async(string id);
         Task<string> GetNewMain_5_Async(string id);
         Task<string> GetNewMain_6_Async(string id);

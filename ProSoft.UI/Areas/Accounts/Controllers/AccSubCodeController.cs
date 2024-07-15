@@ -59,9 +59,9 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
                 await _accSubCodeRepo.AddAccSubCodeAsync(id, subDTO);
                 if (subDTO.ActionName == "MainLevel_2")
                 {
-                 return RedirectToAction(subDTO.ActionName, "AccMainCode");   
+                 return RedirectToAction(subDTO.ActionName, "AccMainCode", new { clickId = id });   
                 }
-                return RedirectToAction(subDTO.ActionName, "AccMainCode", new { id = grandCode });
+                return RedirectToAction(subDTO.ActionName, "AccMainCode", new { id = grandCode, clickId = id });
             }
             return View(subDTO);
         }
@@ -92,9 +92,9 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
                  await _accSubCodeRepo.EditAccSubCodeAsync(id, subDTO);
                 if (subDTO.ActionName == "MainLevel_2")
                 {
-                    return RedirectToAction(subDTO.ActionName, "AccMainCode");
+                    return RedirectToAction(subDTO.ActionName, "AccMainCode", new { clickId = subDTO.MainCode });
                 }
-                return RedirectToAction(subDTO.ActionName, "AccMainCode", new { id = grandCode });
+                return RedirectToAction(subDTO.ActionName, "AccMainCode", new { id = grandCode ,clickId = subDTO.MainCode });
             }
             return View(subDTO);
         }
@@ -108,9 +108,9 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             await _accSubCodeRepo.DeleteAccSubCodeAsync(id, maincode);
             if (actionName == "MainLevel_2")
             {
-                return RedirectToAction(actionName, "AccMainCode");
+                return RedirectToAction(actionName, "AccMainCode", new { clickId = maincode });
             }
-            return RedirectToAction(actionName, "AccMainCode", new { id = grandCode });
+            return RedirectToAction(actionName, "AccMainCode", new { id = grandCode, clickId = maincode });
         }
     }
 }
