@@ -569,7 +569,10 @@
   "Nurse name": "اسم الممرضة",
   "Add Nurse": "اضافة ممرضة",
   "Edit Nurse": "تعديل بيانات ممرضة",
-
+  "Assistant Professor(Analytical/Overall)": "أستاذ مساعد (تحليلي/اجمالي)",
+  "Analytical": "تحليلي",
+  "Overall": "اجمالي",
+  "Analytical Assistant Professor From": "حركة استاذ مساعد تحليلي من ",
 
 
 
@@ -822,5 +825,8 @@
   "Item Counter": "عداد للصنف",
   "Add Main Group": "اضافة مجموعة رئيسية",
   "Price Policy": "سياسة التسعير",
-  "Service Percentage": "نسبة الخدمة"
+  "Service Percentage": "نسبة الخدمة",
+  "Choose Stock Type": "اختر نوع المخزن",
+  "Edit Main Group": "تعديل مجموعة رئيسية",
+  "Items Of Group": "اصناف مجموعة"
 }

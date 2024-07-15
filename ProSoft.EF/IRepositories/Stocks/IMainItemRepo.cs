@@ -10,8 +10,16 @@ namespace ProSoft.EF.IRepositories.Stocks
 {
     public interface IMainItemRepo : IRepository<MainItem, int>
     {
-        Task<List<MainItemViewDTO>> GetMainItemsByLevelAsync(int level);
-        Task<MainItemEditAddDTO> GetNewMainLevel_2_Async();
+        Task<List<MainItemViewDTO>> GetMainItemsByLevelAsync(int level, int flag1);
+        Task<MainItemViewDTO> GetParentItemAsync(string mainCode, int flag1);
+        Task<MainItemEditAddDTO> GetMainLevel_2_ByIdAsync(int id);
+        ///////////////////////////////////////////////////////
+        // Main Level 2
+        Task<MainItemEditAddDTO> GetNewMainLevel_2_Async(int flag1);
         Task AddMainLevel_2_Async(MainItemEditAddDTO mainItemDTO);
+        Task EditMainLevel_2_Async(int id, MainItemEditAddDTO mainItemDTO);
+        ///////////////////////////////////////////////////////
+        // Main Level 3
+        Task<MainItemEditAddDTO> GetNewMainLevel_3_Async(int flag1);
     }
 }

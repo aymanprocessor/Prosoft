@@ -1,0 +1,27 @@
+﻿@model List<KindStoreDTO>
+@{
+    ViewData["Title"] = "Items Guide";
+    Layout = "_Layout";
+    var stockTypes = new SelectList(Model, "KId", "KName");
+}
+@inject IViewLocalizer localizer
+
+<div class="d-flex justify-content-center align-items-center gap-3 flex-column flex-md-row mt-2 p-2 w-50 mx-auto"
+     style="margin-top: 35vh !important">
+    <h2 class="text-center">@localizer["Choose Stock Type"] </h2>
+    <form method="get" asp-area="Stocks" asp-controller="MainItem" asp-action="MainLevel_2">
+        <select name="flag1" asp-items="stockTypes" class="form-control text-center" onchange="chooseStockType(event)"
+            style="width: 200px;">
+            <option value="">-- Choose --</option>
+        </select>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        function chooseStockType(e) {
+            localStorage.setItem("flag1", e.target.value);
+            e.target.parentElement.submit();
+        }
+    </script>
+}
