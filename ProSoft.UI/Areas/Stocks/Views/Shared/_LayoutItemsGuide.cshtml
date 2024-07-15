@@ -1,17 +1,17 @@
 ﻿@{
     List<MainItemViewDTO> GetMainLevel_3(string code) //function recieve maincode
     {
-        string subString = code.Substring(0, 3);
+        string subString = code.Substring(0, 1);
         List<MainItemViewDTO> mainLevel_3 = (List<MainItemViewDTO>)ViewBag?.MainLevel_3;
 
-        return mainLevel_3.Where(obj => obj.MainCode.Substring(0, 3) == subString).ToList();
+        return mainLevel_3.Where(obj => obj.MainCode.Substring(0, 1) == subString).ToList();
     }
     List<MainItemViewDTO> GetMainLevel_4(string code)
     {
-        string subString = code.Substring(0, 5);
+        string subString = code.Substring(0, 3);
         List<MainItemViewDTO> mainLevel_4 = (List<MainItemViewDTO>)ViewBag?.MainLevel_4;
 
-        return mainLevel_4.Where(obj => obj.MainCode.Substring(0, 5) == subString).ToList();
+        return mainLevel_4.Where(obj => obj.MainCode.Substring(0, 3) == subString).ToList();
     }
     
     string F_Year = User.Claims.FirstOrDefault(c => c.Type == "F_Year").Value;
@@ -41,8 +41,8 @@
                 <a asp-area="Stocks" asp-controller="MainItem" asp-action="index" class="d-flex my-2 justify-content-center text-white text-decoration-none">
                     <span class="fs-3 d-sm-inline">@localizer["Items Guide"]</span>
                 </a>
-                <a asp-area="Stocks" asp-controller="MainItem" asp-action="MainLevel_2" class="d-flex my-2 justify-content-start ps-2 text-white text-decoration-none">
-                    <span class="fs-5 d-sm-inline">@localizer["The Items"]</span>
+                <a asp-area="Stocks" asp-controller="MainItem" asp-action="MainLevel_2" onclick="openLevel(event)" class="d-flex my-2 justify-content-start ps-2 text-white text-decoration-none fs-4">
+                    @localizer["The Items"]
                 </a>
                 <ul class="nav nav-pills flex-column p-0">
                     @foreach (var item in ViewBag?.MainLevel_2)
@@ -104,6 +104,7 @@
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/popup.js" asp-append-version="true"></script>
     <script type="text/javascript">
         function toggleNav() {
             const navBar = document.getElementById("mySidebar");
@@ -111,6 +112,14 @@
 
             const overlay = document.querySelector(".overlay");
             overlay.classList.toggle("lay-active");
+        }
+
+        function openLevel(e) {
+            e.preventDefault();
+            let flag1 = localStorage.getItem("flag1");
+            let link = e.target;
+            let action = `${link.getAttribute("href")}?flag1=${flag1}`;
+            window.location.href = action;
         }
 
         // console.log(document.querySelectorAll("#mySidebar .nav-link"));
@@ -128,9 +137,9 @@
                             // mycollapse.hide();
 
                             nextEl.classList.remove("show");
-                            let href = element.getAttribute("href");
-                            // console.log(href);
-                            window.location.href = href;
+                            // let href = element.getAttribute("href");
+                            // window.location.href = href;
+                            openLevel(e);
                         }
                         else {
                             nextEl.classList.add("show");
