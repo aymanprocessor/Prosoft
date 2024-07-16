@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper.Configuration.Annotations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProSoft.EF.DTOs.Accounts;
 using ProSoft.EF.IRepositories.Accounts;
@@ -23,7 +24,8 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
         //Analytical
         public async Task<IActionResult> GetAnalytical(int id, int journal, string mainCode, string subCode, int costCode, DateTime? fromPeriod, DateTime? toPeriod)
         {
-            var reportData = await _reportAssistantProfessorRepo.GetAnalyticalAsync(id, journal, mainCode, subCode, costCode, fromPeriod, toPeriod);
+            var fYear = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "F_Year").Value);
+            var reportData = await _reportAssistantProfessorRepo.GetAnalyticalAsync(id, journal, mainCode, subCode, costCode, fromPeriod, toPeriod, fYear);
             return Json(reportData);
         }
 

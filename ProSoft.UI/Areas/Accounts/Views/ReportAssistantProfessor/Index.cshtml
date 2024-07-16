@@ -39,7 +39,7 @@
             <a class="btn btn-sm btn-primary fs-6" style="width:150px" onclick="Analytical(event)">
                 @localizer["Analytical"]
             </a>
-            <a class="btn btn-sm btn-primary fs-6" style="width:150px" onclick="FromVoucherToVoucher(event)">
+            <a class="btn btn-sm btn-primary fs-6" style="width:150px" onclick="OverAll(event)">
                 @localizer["Overall"]
             </a>
         </div>
@@ -110,7 +110,7 @@
     var subCode = document.getElementById("SubCode");
     var costCode = document.getElementById("costCode");
 
-    //for report From Voucher To Voucher//
+    //for report Analytical//
     function Analytical(e) {
         if (!fromPeriod.value) {
             fromPeriod.focus();
@@ -145,20 +145,26 @@
                         <table id="myTable" class="table table-bordered table-hover Voucher-table" style="width:100%">
                             <thead class="table-dark">
                                 <tr>
+                                <th class="align-middle text-center" rowspan="2">
+                                        @localizer["Serial"]
+                                </th>
+                                <th class="align-middle text-center" rowspan="2">
+                                        @localizer["Balance"]
+                                </th>
 
-                                <th class="align-middle text-center" rowspan="2">
-                                        @localizer["Account Name"]
-                                </th>
-                                <th class="align-middle text-center" rowspan="2">
-                                        @localizer["Note"]
-                                </th>
                                 <th class="align-middle text-center" rowspan="2">
                                         @localizer["Debit Value"]
                                 </th>
                                 <th class="align-middle text-center" rowspan="2">
                                         @localizer["Credit Value"]
                                 </th>
-                                th class="align-middle text-center" rowspan="2">
+                                <th class="align-middle text-center" rowspan="2">
+                                        @localizer["Note"]
+                                </th>
+                                <th class="align-middle text-center" rowspan="2">
+                                        @localizer["Cost Center"]
+                                </th>
+                                <th class="align-middle text-center" rowspan="2">
                                         @localizer["Voucher No"]
                                 </th>
                                 <th class="align-middle text-center" rowspan="2">
@@ -173,7 +179,7 @@
                     </div>
 
                 `;
-        let url = `/Accounts/ReportAssistantProfessor/GetFromToVoucher/${branche.value}?journal=${journal.value}&mainCode=${mainCode.value}&subCode=${subCode.value}&costCode=${costCode.value}&fromPeriod=${fromPeriod.value}&toPeriod=${toPeriod.value}`;
+        let url = `/Accounts/ReportAssistantProfessor/GetAnalytical/${branche.value}?journal=${journal.value}&mainCode=${mainCode.value}&subCode=${subCode.value}&costCode=${costCode.value}&fromPeriod=${fromPeriod.value}&toPeriod=${toPeriod.value}`;
 
         var dataa = document.querySelector(".Voucher-table tbody");
         dataa.innerHTML = "";  // Empty data
@@ -181,20 +187,28 @@
             url: url,
             success: function (result) {
                 //  console.log(result);
+                var index = 0;
                 var valDepSum = 0;
                 var valCreditSum = 0;
+                var balance = 0;
                 for (let item of result) {
-                    let transDate = new Date(item.transDate).toISOString().split('T')[0];
+                    let transDate = item.transDate == null ? "" : new Date(item.transDate).toISOString().split('T')[0];
+                    var transNo = item.transNo == 0 ? "" : item.transNo;
                     const data = document.createElement("tr");
-                    data.innerHTML += `
+                    balance += item.valDep;
+                    balance -= item.valCredit;
 
-                            <td class="align-middle">${item.accountName}</td>
-                            <td class="align-middle">${item.lineDesc}</td>
+                    data.innerHTML += `
+                            <td class="align-middle">${index}</td>
+                            <td class="align-middle">${balance}</td>
                             <td class="align-middle">${item.valDep}</td>
                             <td class="align-middle">${item.valCredit}</td>
-                            <td class="align-middle">${item.transNo}</td>
+                            <td class="align-middle">${item.transDesc}</td>
+                            <td class="align-middle">${item.costDesc}</td>
+                            <td class="align-middle">${transNo}</td>
                             <td class="align-middle">${transDate}</td>
                             `;
+                    index++;
                     valDepSum += item.valDep;
                     valCreditSum += item.valCredit;
                     dataa.appendChild(data);
@@ -203,15 +217,145 @@
                 //    dataForSum.style.backgroundColor = "#e6dfdf";
                 dataForSum.innerHTML =
                     `
-                            <td colspan="4"></td>
+                            <td colspan="2"></td>
                             <td style="background-color: #e6dfdf;">${valDepSum}</td>
                             <td style="background-color: #e6dfdf;">${valCreditSum}</td>
+                            <td colspan="4" class="align-middle">اجمالي الحركات من اول الفترة حتي نهاية الفترة</td>
                         `;
                 dataa.appendChild(dataForSum);
 
             }
         });
     }
+
+    function OverAll(e) {
+        if (!fromPeriod.value) {
+            fromPeriod.focus();
+            return;
+        }
+        if (!toPeriod.value) {
+            toPeriod.focus();
+            return;
+        }
+        if (!mainCode.value) {
+            mainCode.focus();
+            return;
+        }
+
+        var headReport = document.querySelector(".report");
+
+        let title;
+        title = "@localizer["OverAll Assistant Professor From"] " + fromPeriod.value + " @localizer["To"] " + toPeriod.value;
+
+        headReport.innerHTML =
+            `
+                        <div class="report-head d-flex justify-content-center align-items-center mt-4">
+                             <h2 class="header">${title}</h2>
+                                 <button onclick="printReport()" class="btn btn-success" style="margin-inline-start: auto;">Print</button>
+                        </div>
+
+                        <div class="print-table p-0 mb-2 overflow-auto">
+
+                            <table id="myTable" class="table table-bordered table-hover Voucher-table" style="width:100%">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th class="align-middle text-center" rowspan="2">
+                                                    @localizer["Serial"]
+                                        </th>
+                                        <th class="align-middle text-center" rowspan="2">
+                                                @localizer["Note"]
+                                        </th>
+                                        <th class="align-middle text-center" colspan="2">
+                                                @localizer["Previous Balance"]
+                                        </th>
+                                            <th class="align-middle text-center" colspan="2">
+                                                @localizer["OverAll Transaction"]
+                                        </th>
+                                            <th class="align-middle text-center" colspan="2">
+                                                 @localizer["Balance"]
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th class="align-middle text-center" >
+                                              @localizer["Debit"]
+                                        </th>
+                                        <th class="align-middle text-center" >
+                                              @localizer["Credit"]
+                                         </th>
+                                        <th class="align-middle text-center" >
+                                                @localizer["Debit"]
+                                        </th>
+                                        <th class="align-middle text-center" >
+                                                    @localizer["Credit"]
+                                         </th>
+                                        <th class="align-middle text-center" >
+                                                @localizer["Debit"]
+                                        </th>
+                                        <th class="align-middle text-center" >
+                                                @localizer["Credit"]
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    `;
+        let url = `/Accounts/ReportAssistantProfessor/GetOverAll/${branche.value}?journal=${journal.value}&mainCode=${mainCode.value}&costCode=${costCode.value}&fromPeriod=${fromPeriod.value}&toPeriod=${toPeriod.value}`;
+
+        var dataa = document.querySelector(".Voucher-table tbody");
+        dataa.innerHTML = "";  // Empty data
+        $.ajax({
+            url: url,
+            success: function (result) {
+                //  console.log(result);
+                var index = 1;
+                var valDepSum = 0;
+                var valCreditSum = 0;
+                var transValDepSum = 0;
+                var transValCreditSum = 0;
+                var balance = 0;
+                for (let item of result) {
+                    const data = document.createElement("tr");
+
+                    data.innerHTML += `
+                                <td class="align-middle">${index}</td>
+                                <td class="align-middle">${item.subCode}</td>
+                                <td class="align-middle">${item.valDep}</td>
+                                <td class="align-middle">${item.valCredit}</td>
+                                <td class="align-middle">${item.transValDep}</td>
+                                <td class="align-middle">${item.transValCredit}</td>
+                                    <td class="align-middle">${(item.valDep - item.transValCredit + item.transValDep).toFixed(2)}</td>
+                                <td class="align-middle">${item.valCredit}</td>
+
+                                `;
+                    index++;
+                    valDepSum += item.valDep;
+                    valCreditSum += item.valCredit;        
+                    transValDepSum += item.transValDep;
+                    transValCreditSum += item.transValCredit;
+                    dataa.appendChild(data);
+                }
+                const dataForSum = document.createElement("tr");
+                //    dataForSum.style.backgroundColor = "#e6dfdf";
+                dataForSum.innerHTML =
+                    `
+                            <td class="text-center" colspan="2">@localizer["The Total"]</td>
+                            <td style="background-color: #e6dfdf;">${valDepSum}</td>
+                            <td style="background-color: #e6dfdf;">${valCreditSum}</td>
+                            <td style="background-color: #e6dfdf;">${transValDepSum}</td>
+                            <td style="background-color: #e6dfdf;">${transValCreditSum}</td>
+                            <td style="background-color: #e6dfdf;">${(valDepSum - transValCreditSum + transValDepSum).toFixed(2)}</td>
+                            <td style="background-color: #e6dfdf;">${valCreditSum}</td>               
+                    `;
+                dataa.appendChild(dataForSum);
+
+            }
+        });
+    }
+
+
     function printReport() {
         let head = document.querySelector(".report-head");
         let tableReport = document.querySelector(".print-table");

@@ -8,10 +8,12 @@ namespace ProSoft.EF.DTOs.Accounts.Report
 {
     public class AssistantProfessorOverAllDTO
     {
-        public string? TransDesc { get; set; }
+        public string? SubCode { get; set; }
+        public string? AccName { get; set; }
         public decimal? ValDep { get; set; }
         public decimal? ValCredit { get; set; }
-        public int? TransNo { get; set; }
-        public DateTime? TransDate { get; set; }
+        public decimal? TransValDep { get; set; }
+        public decimal? TransValCredit { get; set; }
+
     }
 }

@@ -573,6 +573,10 @@
   "Analytical": "تحليلي",
   "Overall": "اجمالي",
   "Analytical Assistant Professor From": "حركة استاذ مساعد تحليلي من ",
+  "Balance": "الرصيد",
+  "OverAll Assistant Professor From": "حركة استاذ مساعد اجمالي من ",
+  "OverAll Transaction": "اجمالي الحركة",
+  "Previous Balance": "رصيد ماقبله",
 
 
 
@@ -828,5 +832,6 @@
   "Service Percentage": "نسبة الخدمة",
   "Choose Stock Type": "اختر نوع المخزن",
   "Edit Main Group": "تعديل مجموعة رئيسية",
-  "Items Of Group": "اصناف مجموعة"
+  "Items Of Group": "اصناف مجموعة",
+  "Add Main Group To": "اضافة مجموعة رئيسية ل"
 }
