@@ -46,6 +46,7 @@ namespace ProSoft.EF.DTOs.Stocks
         public int? UserCode { get; set; }
         public string? ParentCode { get; set; }
         public int? Flag1 { get; set; }
+        public string? ParentName { get; set; }
 
         public List<CostCenterViewDTO>? CostCenters { get; set; }
     }

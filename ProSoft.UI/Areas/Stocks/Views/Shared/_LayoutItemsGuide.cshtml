@@ -49,22 +49,23 @@
                     {
                     <li class="nav-item has-submenu">
                         <a asp-area="Stocks" asp-controller="MainItem" asp-action="MainLevel_3" asp-route-id="@item.MainCode" class="nav-link hover-link">
-                            <i class="fa-solid fa-caret-right me-2"></i> @item.MainName
+                            <i class="fa-solid fa-caret-@(isRTL ? "left ms-1" : "right me-1")"></i>
+                            @item.MainName
                         </a>
-
                         <ul class="submenu collapse p-0">
                             @foreach (var sub in GetMainLevel_3(item.MainCode))
                             {
                             <li class="nav-item has-submenu">
-                                <a asp-area="Stocks" asp-controller="MainItem" asp-action="MainLevel_4" asp-route-id="@sub.MainCode" class="nav-link hover-link ps-4">
-                                    <i class="fa-solid fa-caret-right mx-2"></i> @sub.MainName
+                                <a asp-area="Stocks" asp-controller="MainItem" asp-action="MainLevel_4" asp-route-id="@sub.MainCode" class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
+                                    <i class="fa-solid fa-caret-@(isRTL ? "left ms-1" : "right me-1")"></i>
+                                    @sub.MainName
                                 </a>
-
                                 <ul class="submenu collapse p-0">
                                     @foreach (var subitem in GetMainLevel_4(sub.MainCode))
                                     {
                                     <li class="nav-item">
-                                        <a asp-area="Stocks" asp-controller="MainItem" asp-action="MainLevel_5" asp-route-id="@subitem.MainCode" class="nav-link hover-link ms-4 ps-4">
+                                        <a asp-area="Stocks" asp-controller="MainItem" asp-action="MainLevel_5" asp-route-id="@subitem.MainCode" class="nav-link hover-link @(isRTL ? "me-4 pe-4" : "me-4 ps-4")">
+                                            <i class="fa-solid fa-caret-@(isRTL ? "left ms-1" : "right me-1")"></i>
                                             @subitem.MainName
                                         </a>
                                     </li>

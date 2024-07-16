@@ -8,7 +8,18 @@
 
 <div class="d-flex justify-content-between align-items-center mt-2 p-2">
     <h2>@localizer["Items Of Group"] : @ViewBag.mainName (@ViewBag.stockType)</h2>
-    <a asp-controller="MainItem" asp-action="Add_MainLevel_3" asp-route-id="@ViewBag.mainCode" onclick="openLevel(event)" class="btn btn-sm btn-primary fs-6" style="width: 200px">@localizer["Add Main Group"]</a>
+    @if (ViewBag.lastSub == 1)
+    {
+    <a asp-controller="MainItem" asp-action="Add_MainLevel_3" asp-route-id="@ViewBag.mainCode" onclick="openLevel(event)" class="btn btn-sm btn-secondary fs-6" style="width: 200px; pointer-events: none;">
+        @localizer["Add Main Group"]
+    </a>
+    }
+    else
+    {
+    <a asp-controller="MainItem" asp-action="Add_MainLevel_3" asp-route-id="@ViewBag.mainCode" onclick="openLevel(event)" class="btn btn-sm btn-primary fs-6" style="width: 200px">
+        @localizer["Add Main Group"]
+    </a>
+    }
 </div>
 
 <div class="container">
@@ -34,48 +45,46 @@
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr class="align-middle text-center" style="cursor: pointer;">
-                        <td>@item.MainCode</td>
-                        <td>@item.MainName</td>
-                        <td>
-                            @if (item.BatchCounter == 1)
-                                @localizer["Yes"]
-                            else if (item.BatchCounter == 0)
-                                @localizer["No"]
-
-                        </td>
-                        <td>
-                            @if (item.LastSub == 1)
-                                @localizer["Yes"]
-                            else if (item.LastSub == 0)
-                                @localizer["No"]
-
-                        </td>
-                        <td style="width: 325px;">
-                            <a asp-controller="MainItem" asp-action="Edit_MainLevel_2" asp-route-id="@item.MainId" asp-route-flag1="@ViewBag.flag1" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
-                            <form action="/Stocks/MainItem/Delete_MainLevel_2" method="post" class="d-inline">
-                                @Html.AntiForgeryToken()
-                                <input type="hidden" name="id" value="@item.MainId" />
-                                <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width: 150px">@localizer["Delete"]</button>
-                                <div class="modal-container">
-                                    <div class="modal 4" id="modal">
-                                        <div class="modal-header fs-4">
-                                            <div class="title">@localizer["Confirm Delete"]</div>
-                                            <button type="button" onclick="closeModelListener(event)" data-close-button class="close-button">&times;</button>
-                                        </div>
-                                        <div class="modal-body fs-4">
-                                            @localizer["Are you sure you want to delete this item ?"]
-                                        </div>
-                                        <div class="modal-footer fs-4">
-                                            <button type="button" onclick="closeModelListener(event)" data-close-button class="btn btn-secondary">@localizer["No"]</button>
-                                            <button class="btn btn-danger">@localizer["Yes"]</button>
-                                        </div>
+                <tr class="align-middle text-center" style="cursor: pointer;">
+                    <td>@item.MainCode</td>
+                    <td>@item.MainName</td>
+                    <td>
+                        @if (item.BatchCounter == 1)
+                            @localizer["Yes"]
+                        else if (item.BatchCounter == 0)
+                            @localizer["No"]
+                    </td>
+                    <td>
+                        @if (item.LastSub == 1)
+                            @localizer["Yes"]
+                        else if (item.LastSub == 0)
+                            @localizer["No"]
+                    </td>
+                    <td style="width: 325px;">
+                        <a asp-controller="MainItem" asp-action="Edit_MainLevel_3" asp-route-id="@item.MainId" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
+                        <form action="/Stocks/MainItem/Delete_MainLevel_3" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@item.MainId" />
+                            <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width: 150px">@localizer["Delete"]</button>
+                            <div class="modal-container">
+                                <div class="modal 4" id="modal">
+                                    <div class="modal-header fs-4">
+                                        <div class="title">@localizer["Confirm Delete"]</div>
+                                        <button type="button" onclick="closeModelListener(event)" data-close-button class="close-button">&times;</button>
                                     </div>
-                                    <div onclick="overlayListener(event)" id="overlay"></div>
+                                    <div class="modal-body fs-4">
+                                        @localizer["Are you sure you want to delete this item ?"]
+                                    </div>
+                                    <div class="modal-footer fs-4">
+                                        <button type="button" onclick="closeModelListener(event)" data-close-button class="btn btn-secondary">@localizer["No"]</button>
+                                        <button class="btn btn-danger">@localizer["Yes"]</button>
+                                    </div>
                                 </div>
-                            </form>
-                        </td>
-                    </tr>
+                                <div onclick="overlayListener(event)" id="overlay"></div>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>
