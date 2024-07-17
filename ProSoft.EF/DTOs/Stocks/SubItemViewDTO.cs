@@ -12,5 +12,8 @@ namespace ProSoft.EF.DTOs.Stocks
         public string SubName { get; set; }
         public string ItemCode { get; set; }
         public string CodeAndName { get; set; }
+        public int UserSort { get; set; }
+        public int BatchCounter { get; set; }
+        public decimal ItemPrice { get; set; }
     }
 }
