@@ -1,0 +1,225 @@
+﻿@model ReportAmericanDailyDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "American Daily";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+
+    SelectList branches = new SelectList(Model.branchs, "BranchId", "BranchDesc");
+    SelectList JournalTypes = new SelectList(Model.JournalTypes, "JournalCode", "JournalName");
+}
+@inject IViewLocalizer localizer
+<style>
+    .hide {
+        display: none !important;
+    }
+    /*  .image {
+                    top: 0px;
+                    left: 0px;
+                    width: 100%;
+                    height: 100%;
+                    background-repeat: no-repeat;
+                    background-attachment: fixed;
+                    background-size: cover;
+                    background-position: center;
+                    opacity: 0.5;
+                    z-index: -1;
+                } */
+</style>
+<div class="container pt-2 " style="min-height:100vh;">
+    @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
+
+    <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mt-4">
+        <h1 class="header">@localizer["American Daily"]</h1>
+        <div class="d-flex gap-2">
+            <a class="btn btn-sm btn-primary fs-6" style="width:150px" onclick="AmericanDaily(event)">
+                @localizer["American Daily"]
+            </a>
+        </div>
+    </div>
+
+    <div class="overflow-auto filter-box">
+        <div class=" d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 px-1 my-2">
+            <div class="d-flex align-items-center flex-column flex-md-row w-100">
+                <label for="branches" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Branches"]</label>
+                <select id="branches" asp-items="branches" class="form-control text-center w-100">
+                    <option value="100">-- @localizer["All"] --</option>
+                </select>
+            </div>
+            <div class="d-flex align-items-center flex-column flex-md-row w-100">
+                <label for="journals" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Journal"]</label>
+                <select id="journals" asp-items="JournalTypes" class="form-control text-center w-100">
+                    <option value="100">-- @localizer["All"] --</option>
+                </select>
+            </div>
+            <div class="d-flex align-items-center w-100">
+                <label style="width:60% !important;">@localizer["From Period"]</label>
+                <input id="fromPeriod" type="date" class="form-control text-center" />
+            </div>
+            <div class="d-flex align-items-center w-100">
+                <label style="width:60% !important;">@localizer["To Period"]</label>
+                <input id="toPeriod" type="date" class="form-control text-center" />
+            </div>
+        </div>
+    </div>
+
+    <div class="report">
+    </div>
+</div>
+<script>
+    ////for variables /////
+    var branche = document.getElementById("branches");
+    console.log(branche.value);
+    var journal = document.getElementById("journals");
+    var fromPeriod = document.getElementById("fromPeriod");
+    var toPeriod = document.getElementById("toPeriod");
+
+    //for report Analytical//
+    function AmericanDaily(e) {
+        if (!fromPeriod.value || !toPeriod.value) {
+            if (!fromPeriod.value) {
+                fromPeriod.focus();
+            } else {
+                toPeriod.focus();
+            }
+            return;
+        }
+
+        let title = `@localizer["American Daily From"] ${fromPeriod.value} @localizer["To"] ${toPeriod.value}`;
+
+        var headReport = document.querySelector(".report");
+        headReport.innerHTML = `
+            <div class="report-head d-flex justify-content-center align-items-center mt-4">
+                <h2 class="header">${title}</h2>
+                <button onclick="printReport()" class="btn btn-success" style="margin-inline-start: auto;">Print</button>
+            </div>
+            <div class="print-table p-0 mb-2 overflow-auto">
+                <table id="myTable" class="table table-bordered table-hover Voucher-table" style="width:100%">
+                    <thead class="table-dark">
+                        <tr id="headersRow1">
+                            <th class="align-middle text-center" rowspan="2">@localizer["Voucher No"]</th>
+                            <th class="align-middle text-center" rowspan="2">@localizer["Voucher Date"]</th>
+                            <th class="align-middle text-center" rowspan="2">@localizer["Note"]</th>
+                        </tr>
+                        <tr id="headersRow2">
+                            <!-- Dynamic sub-headers will be inserted here -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- The rows will be dynamically generated here -->
+                    </tbody>
+                </table>
+            </div>
+        `;
+
+        let urlMainNames = `/Accounts/AmericanDaily/GetMainName/${branche.value}?journal=${journal.value}&fromPeriod=${fromPeriod.value}&toPeriod=${toPeriod.value}`;
+
+        var headersRow1 = document.getElementById("headersRow1");
+        var headersRow2 = document.getElementById("headersRow2");
+        headersRow1.innerHTML = `
+            <th class="align-middle text-center" rowspan="2">@localizer["Voucher No"]</th>
+            <th class="align-middle text-center" rowspan="2">@localizer["Voucher Date"]</th>
+            <th class="align-middle text-center" rowspan="2">@localizer["Note"]</th>
+        `; // Reset headers row1 with static headers
+        headersRow2.innerHTML = ""; // Empty dynamic headers row2
+
+        $.ajax({
+            url: urlMainNames,
+            success: function(mainNames) {
+                mainNames.forEach(mainName => {
+                    var th1 = document.createElement("th");
+                    th1.className = "align-middle text-center";
+                    th1.innerText = mainName;
+                    headersRow1.appendChild(th1);
+
+                    var thDebit = document.createElement("th");
+                    thDebit.className = "align-middle text-center";
+                    thDebit.innerText = "@localizer["Debit"]";
+                    headersRow2.appendChild(thDebit);
+
+                    var thCredit = document.createElement("th");
+                    thCredit.className = "align-middle text-center";
+                    thCredit.innerText = "@localizer["Credit"]";
+                    headersRow2.appendChild(thCredit);
+                });
+
+                        // $.ajax({
+        //     url: url,
+        //     success: function (result) {
+        //         //  console.log(result);
+        //         var index = 0;
+        //         var valDepSum = 0;
+        //         var valCreditSum = 0;
+        //         var balance = 0;
+        //         for (let item of result) {
+        //             let transDate = item.transDate == null ? "" : new Date(item.transDate).toISOString().split('T')[0];
+        //             var transNo = item.transNo == 0 ? "" : item.transNo;
+        //             const data = document.createElement("tr");
+        //             balance += item.valDep;
+        //             balance -= item.valCredit;
+
+        //             data.innerHTML += `
+        //                         <td class="align-middle">${index}</td>
+        //                         <td class="align-middle">${balance}</td>
+        //                         <td class="align-middle">${item.valDep}</td>
+        //                         <td class="align-middle">${item.valCredit}</td>
+        //                         <td class="align-middle">${item.transDesc}</td>
+        //                         <td class="align-middle">${item.costDesc}</td>
+        //                         <td class="align-middle">${transNo}</td>
+        //                         <td class="align-middle">${transDate}</td>
+        //                         `;
+        //             index++;
+        //             valDepSum += item.valDep;
+        //             valCreditSum += item.valCredit;
+        //             dataa.appendChild(data);
+        //         }
+        //         const dataForSum = document.createElement("tr");
+        //         //    dataForSum.style.backgroundColor = "#e6dfdf";
+        //         dataForSum.innerHTML =
+        //             `
+        //                         <td colspan="2"></td>
+        //                         <td style="background-color: #e6dfdf;">${valDepSum}</td>
+        //                         <td style="background-color: #e6dfdf;">${valCreditSum}</td>
+        //                         <td colspan="4" class="align-middle">اجمالي الحركات من اول الفترة حتي نهاية الفترة</td>
+        //                     `;
+        //         dataa.appendChild(dataForSum);
+
+        //     }
+        // });
+            },
+            error: function(xhr, status, error) {
+                console.error("Error fetching main names:", error);
+            }
+        });
+    }
+
+
+    function printReport() {
+        let head = document.querySelector(".report-head");
+        let tableReport = document.querySelector(".print-table");
+        let originalContent = document.body.innerHTML;//all body
+
+        head.querySelector("button").style.display = "none";
+        document.body.innerHTML = head.outerHTML + tableReport.outerHTML;
+        window.print();
+        document.body.innerHTML = originalContent;
+    }
+    function getSubCodes(e) {
+        let mainElement = e.target;
+        let subElement = document.getElementById("SubCode");
+
+        subElement.innerHTML = `<option value="">-- Choose --</option>`;
+
+        $.ajax({
+            url: `/Treasury/AccSafeCash/GetSubCodesFromAcc/${mainElement.value}`,
+            success: function (result) {
+                // console.log(result);
+                for (let item of result) {
+                    subElement.innerHTML +=
+                        `<option value="${item.subCode}">${item.subName}</option>`;
+                }
+            }
+        });
+    }
+</script>

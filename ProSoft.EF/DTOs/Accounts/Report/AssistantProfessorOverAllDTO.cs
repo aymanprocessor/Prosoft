@@ -14,6 +14,8 @@ namespace ProSoft.EF.DTOs.Accounts.Report
         public decimal? ValCredit { get; set; }
         public decimal? TransValDep { get; set; }
         public decimal? TransValCredit { get; set; }
+        public decimal? LcGapValDep { get; set; }
+        public decimal? LcGapValCredit { get; set; }
 
     }
 }

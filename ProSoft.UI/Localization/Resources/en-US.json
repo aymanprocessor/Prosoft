@@ -571,6 +571,7 @@
   "OverAll Assistant Professor From": "OverAll Assistant Professor From",
   "OverAll Transaction": "OverAll Transaction",
   "Previous Balance": "Previous Balance",
+  "American Daily": "American Daily",
 
 
 
@@ -828,5 +829,8 @@
   "Choose Stock Type": "Choose Stock Type",
   "Edit Main Group": "Edit Main Group",
   "Items Of Group": "Items Of Group",
-  "Add Main Group To": "Add Main Group To"
+  "Add Main Group To": "Add Main Group To",
+  "User Sort": "User Sort",
+  "Item Sell Price": "Item Sell Price",
+  "Tax Percentage": "Tax Percentage"
 }

@@ -32,7 +32,8 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
         //Over All
         public async Task<IActionResult> GetOverAll(int id, int journal, string mainCode, int costCode, DateTime? fromPeriod, DateTime? toPeriod)
         {
-            var reportData = await _reportAssistantProfessorRepo.GetOverAllAsync(id, journal, mainCode, costCode, fromPeriod, toPeriod);
+            var fYear = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "F_Year").Value);
+            var reportData = await _reportAssistantProfessorRepo.GetOverAllAsync(id, journal, mainCode, costCode, fromPeriod, toPeriod, fYear);
             return Json(reportData);
         }
     }

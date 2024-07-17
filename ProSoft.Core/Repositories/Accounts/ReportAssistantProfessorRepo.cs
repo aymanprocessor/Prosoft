@@ -7,6 +7,7 @@ using ProSoft.EF.DTOs.Shared;
 using ProSoft.EF.IRepositories.Accounts;
 using ProSoft.EF.Models.Accounts;
 using ProSoft.EF.Models.Shared;
+using ProSoft.EF.Models.Stocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,7 +55,7 @@ namespace ProSoft.Core.Repositories.Accounts
                     }
                     else
                      lcBalFirstYear = (decimal)(accStartBal.FCreditOr - accStartBal.FDepOr);
-            
+            //balance before period
             AccTransDetail accTransDetailForFirstbalance = await _Context.AccTransDetails.FirstOrDefaultAsync(obj=>obj.FYear==fYear&& (branch == 100 || obj.CoCode == branch) &&
                       (journal == 100 || obj.TransType == journal.ToString()) && obj.MainCode == mainCode && obj.SubCode == subCode && obj.TransDate < fromPeriod);
               decimal lcBalBeforeDate;
@@ -63,9 +64,11 @@ namespace ProSoft.Core.Repositories.Accounts
                         lcBalBeforeDate = 0;
                     }
                     else
-                     lcBalBeforeDate = accTransDetailForFirstbalance.ValCredit - accTransDetailForFirstbalance.ValDep ?? 0;
+                     lcBalBeforeDate = (decimal)(accTransDetailForFirstbalance.ValCredit - accTransDetailForFirstbalance.ValDep);
           
               decimal lcBalFirstPeriod = lcBalFirstYear + lcBalBeforeDate;
+
+            //to add row in first data
               AssistantProfessorAnalyticalDTO specificDTO;
                     if (lcBalFirstPeriod<=0)
                     {
@@ -124,9 +127,29 @@ namespace ProSoft.Core.Repositories.Accounts
             return assistantProfessorAnalyticalDTOs;
         }
 
-        public async Task<List<AssistantProfessorOverAllDTO>> GetOverAllAsync(int branch, int journal, string mainCode, int costCode, DateTime? fromPeriod, DateTime? toPeriod)
+        public async Task<List<AssistantProfessorOverAllDTO>> GetOverAllAsync(int branch, int journal, string mainCode, int costCode, DateTime? fromPeriod, DateTime? toPeriod, int fYear)
         {
             List<AssistantProfessorOverAllDTO> assistantProfessorOverAllDTOs = new List<AssistantProfessorOverAllDTO>();
+
+            //get first balance
+            var accStartBals = await _Context.AccStartBals
+                   .Where(obj => obj.TransType == journal.ToString()
+                         && obj.MainCode == mainCode && obj.FYear == fYear &&
+                         (branch == 100 || obj.CoCode == branch))
+                     .ToListAsync();
+            decimal lcFCreditOr = accStartBals.Sum(obj => obj.FCreditOr) ?? 0;
+            decimal lcFDepOr = accStartBals.Sum(obj => obj.FDepOr) ?? 0;
+
+            var lsStartDate = new DateTime(fromPeriod.Value.Year, 1, 1);
+            //balance before period
+            var accTransDetailList = await _Context.AccTransDetails
+                     .Where(obj => obj.FYear == fYear && (branch == 100 || obj.CoCode == branch)
+                      && (journal == 100 || obj.TransType == journal.ToString()) && obj.MainCode == mainCode
+                      && (obj.TransDate >= lsStartDate && obj.TransDate < fromPeriod))
+                      .ToListAsync();
+
+            decimal lcGapValCredit = accTransDetailList.Sum(obj => obj.ValCredit) ?? 0;
+            decimal lcGapValDep = accTransDetailList.Sum(obj => obj.ValDep) ?? 0;
 
             List<AccSubCode> accSubCodes = await _Context.AccSubCodes.Where(obj => obj.MainCode == mainCode).ToListAsync();
             foreach (var sub in accSubCodes)
@@ -147,11 +170,11 @@ namespace ProSoft.Core.Repositories.Accounts
                     var existingDto = assistantProfessorOverAllDTOs.FirstOrDefault(dto => dto.SubCode == obj.SubCode);
                     if (existingDto != null)
                     {
-                        // Update the existing DTO
-                        existingDto.ValDep += obj.ValDep;
-                        existingDto.ValCredit += obj.ValCredit;
+                        // Update the existing DTO 
+                        existingDto.ValDep += lcFDepOr;
+                        existingDto.ValCredit += lcFCreditOr;
                         existingDto.TransValDep += obj.ValDep;
-                        existingDto.TransValCredit += obj.ValCredit;
+                        existingDto.TransValCredit += obj.ValCredit;   
                     }
                     else
                     {
@@ -160,25 +183,30 @@ namespace ProSoft.Core.Repositories.Accounts
                         {
                             SubCode = obj.SubCode,
                             AccName = accName,
-                            ValDep = obj.ValDep,
-                            ValCredit = obj.ValCredit,
+                            ValDep = lcFDepOr,
+                            ValCredit = lcFCreditOr,
                             TransValDep = obj.ValDep,
                             TransValCredit = obj.ValCredit,
+                            LcGapValDep = lcGapValDep,
+                            LcGapValCredit= lcGapValCredit
                         };
                         assistantProfessorOverAllDTOs.Add(dto);
+
                     }
                 }
             }
             return assistantProfessorOverAllDTOs;
-
-
         }
+
+        //Get Cost Center Name
         private async Task<string> GetCostCenterName(string costCenterCode)
         {
             var costCenter = await _Context.CostCenters
                                            .FirstOrDefaultAsync(cc => cc.CostCode.ToString() == costCenterCode);
             return costCenter?.CostDesc ?? ""; // Return "" if no matching cost center is found
         }
+
+        //Get Account name
         private async Task<string> GetAccountName(string mainCode, string subCode)
         {
             AccMainCode myMainCode = await _Context.AccMainCodes

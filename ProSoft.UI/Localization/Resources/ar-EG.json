@@ -577,6 +577,7 @@
   "OverAll Assistant Professor From": "حركة استاذ مساعد اجمالي من ",
   "OverAll Transaction": "اجمالي الحركة",
   "Previous Balance": "رصيد ماقبله",
+  "American Daily": "اليومية الاميريكية",
 
 
 
@@ -833,5 +834,8 @@
   "Choose Stock Type": "اختر نوع المخزن",
   "Edit Main Group": "تعديل مجموعة رئيسية",
   "Items Of Group": "اصناف مجموعة",
-  "Add Main Group To": "اضافة مجموعة رئيسية ل"
+  "Add Main Group To": "اضافة مجموعة رئيسية ل",
+  "User Sort": "ترتيب مستخدم",
+  "Item Sell Price": "سعر بيع الصنف",
+  "Tax Percentage": "نسبة الضريبة"
 }

@@ -316,25 +316,33 @@
                 var transValDepSum = 0;
                 var transValCreditSum = 0;
                 var balance = 0;
+                var positiveSum = 0;
+                var negativeSum = 0;
+                
                 for (let item of result) {
                     const data = document.createElement("tr");
+                     balance = (item.valDep - item.transValCredit + item.transValDep - item.valCredit - item.lcGapValCredit + item.lcGapValDep).toFixed(2);
 
-                    data.innerHTML += `
-                                <td class="align-middle">${index}</td>
-                                <td class="align-middle">${item.subCode}</td>
-                                <td class="align-middle">${item.valDep}</td>
-                                <td class="align-middle">${item.valCredit}</td>
-                                <td class="align-middle">${item.transValDep}</td>
-                                <td class="align-middle">${item.transValCredit}</td>
-                                    <td class="align-middle">${(item.valDep - item.transValCredit + item.transValDep).toFixed(2)}</td>
-                                <td class="align-middle">${item.valCredit}</td>
+                    // Determine what to display in the balance columns
+                    var positiveColumn = balance >= 0 ? balance : 0;
+                    var negativeColumn = balance < 0 ? Math.abs(balance) : 0; data.innerHTML += `
+                        <td class="align-middle">${index}</td>
+                        <td class="align-middle">${item.subCode}</td>
+                        <td class="align-middle">${item.valDep}</td>
+                        <td class="align-middle">${item.valCredit}</td>
+                        <td class="align-middle">${item.transValDep}</td>
+                        <td class="align-middle">${item.transValCredit}</td>
+                        <td class="align-middle">${positiveColumn}</td>
+                        <td class="align-middle">${negativeColumn}</td>
 
-                                `;
+                        `;
                     index++;
                     valDepSum += item.valDep;
                     valCreditSum += item.valCredit;        
                     transValDepSum += item.transValDep;
                     transValCreditSum += item.transValCredit;
+                    positiveSum += parseFloat(positiveColumn);
+                    negativeSum += parseFloat(negativeColumn);
                     dataa.appendChild(data);
                 }
                 const dataForSum = document.createElement("tr");
@@ -346,10 +354,19 @@
                             <td style="background-color: #e6dfdf;">${valCreditSum}</td>
                             <td style="background-color: #e6dfdf;">${transValDepSum}</td>
                             <td style="background-color: #e6dfdf;">${transValCreditSum}</td>
-                            <td style="background-color: #e6dfdf;">${(valDepSum - transValCreditSum + transValDepSum).toFixed(2)}</td>
-                            <td style="background-color: #e6dfdf;">${valCreditSum}</td>               
+                            <td style="background-color: #e6dfdf;">${positiveSum.toFixed(2)}</td>
+                            <td style="background-color: #e6dfdf;">${negativeSum.toFixed(2)}</td>
                     `;
                 dataa.appendChild(dataForSum);
+                const dataForSumSum = document.createElement("tr");
+                //    dataForSum.style.backgroundColor = "#e6dfdf";
+                dataForSumSum.innerHTML =
+                    `
+                                <td class="text-center" colspan="6"></td>
+                                <td style="background-color: #e6dfdf;">${positiveSum.toFixed(2)}</td>
+                                <td style="background-color: #e6dfdf;">${negativeSum.toFixed(2)}</td>
+                        `;
+                dataa.appendChild(dataForSumSum);
 
             }
         });
