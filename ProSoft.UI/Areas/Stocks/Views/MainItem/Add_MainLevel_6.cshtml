@@ -9,13 +9,13 @@
 
 <div class="container pt-2">
     <h1 class="mt-4">@localizer["Add Main Group To"] : @Model.ParentName (@ViewBag.stockType)</h1>
-    <form method="post" asp-action="Add_MainLevel_4">
+    <form method="post" asp-action="Add_MainLevel_6">
         <div class="border p-3 mt-4">
 
             @* Hidden Inputs *@
             <input asp-for="Flag1" type="hidden" />
             <input asp-for="ParentCode" type="hidden" />
-            <input asp-for="CurrentLevel" type="hidden" value="4" />
+            <input asp-for="CurrentLevel" type="hidden" value="6" />
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
@@ -68,10 +68,9 @@
 
             <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
                 <div class="mb-3">
-                    <label asp-for="LastSub"></label>
-                    <select asp-for="LastSub" class="form-control text-center">
+                    <label asp-for="LastSub" for=""></label>
+                    <select asp-for="LastSub" class="form-control text-center" style="pointer-events: none; background-color: #e9ecef">
                         <option value="1">@localizer["Yes"]</option>
-                        <option value="0">@localizer["No"]</option>
                     </select>
                     <span asp-validation-for="LastSub" class="text-danger"></span>
                 </div>
@@ -88,7 +87,7 @@
 
             <div class="parent d-flex justify-content-md-center gap-2">
                 <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add"]</button>
-                <a asp-controller="MainItem" asp-action="MainLevel_4" asp-route-id="@Model.ParentCode" asp-route-flag1="@Model.Flag1" class="btn btn-secondary" style="width:150px">
+                <a asp-controller="MainItem" asp-action="MainLevel_6" asp-route-id="@Model.ParentCode" asp-route-flag1="@Model.Flag1" class="btn btn-secondary" style="width:150px">
                     @localizer["Cancel"]
                 </a>
             </div>

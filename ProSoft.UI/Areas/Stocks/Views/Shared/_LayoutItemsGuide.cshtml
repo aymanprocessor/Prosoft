@@ -13,6 +13,20 @@
 
         return mainLevel_4.Where(obj => obj.MainCode.Substring(0, 3) == subString).ToList();
     }
+    List<MainItemViewDTO> GetMainLevel_5(string code)
+    {
+        string subString = code.Substring(0, 5);
+        List<MainItemViewDTO> mainLevel_5 = (List<MainItemViewDTO>)ViewBag?.MainLevel_5;
+
+        return mainLevel_5.Where(obj => obj.MainCode.Substring(0, 5) == subString).ToList();
+    }
+    List<MainItemViewDTO> GetMainLevel_6(string code)
+    {
+        string subString = code.Substring(0, 7);
+        List<MainItemViewDTO> mainLevel_6 = (List<MainItemViewDTO>)ViewBag?.MainLevel_6;
+
+        return mainLevel_6.Where(obj => obj.MainCode.Substring(0, 7) == subString).ToList();
+    }
     
     string F_Year = User.Claims.FirstOrDefault(c => c.Type == "F_Year").Value;
     var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
@@ -64,10 +78,32 @@
                                     @foreach (var subitem in GetMainLevel_4(sub.MainCode))
                                     {
                                     <li class="nav-item">
-                                        <a asp-area="Stocks" asp-controller="MainItem" asp-action="MainLevel_5" asp-route-id="@subitem.MainCode" class="nav-link hover-link @(isRTL ? "me-4 pe-4" : "me-4 ps-4")">
+                                        <a asp-area="Stocks" asp-controller="MainItem" asp-action="MainLevel_5" asp-route-id="@subitem.MainCode" class="nav-link hover-link @(isRTL ? "me-2 pe-4" : "ms-2 ps-4")">
                                             <i class="fa-solid fa-caret-@(isRTL ? "left ms-1" : "right me-1")"></i>
                                             @subitem.MainName
                                         </a>
+                                        <ul class="submenu collapse p-0">
+                                            @foreach (var subSubitem in GetMainLevel_5(subitem.MainCode))
+                                            {
+                                            <li class="nav-item">
+                                                <a asp-area="Stocks" asp-controller="MainItem" asp-action="MainLevel_6" asp-route-id="@subSubitem.MainCode" class="nav-link hover-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                                    <i class="fa-solid fa-caret-@(isRTL ? "left ms-1" : "right me-1")"></i>
+                                                    @subSubitem.MainName
+                                                </a>
+                                                <ul class="submenu collapse p-0">
+                                                    @foreach (var lastitem in GetMainLevel_6(subSubitem.MainCode))
+                                                    {
+                                                    <li class="nav-item">
+                                                        <a @* asp-area="Stocks" asp-controller="MainItem" asp-action="MainLevel_6" asp-route-id="@lastitem.MainCode" *@ class="nav-link hover-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                            @* <i class="fa-solid fa-caret-@(isRTL ? "left ms-1" : "right me-1")"></i> *@
+                                                            @lastitem.MainName
+                                                        </a>
+                                                    </li>
+                                                    }
+                                                </ul>
+                                            </li>
+                                            }
+                                        </ul>
                                     </li>
                                     }
                                 </ul>
