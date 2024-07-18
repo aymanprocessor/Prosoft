@@ -125,6 +125,7 @@ namespace ProSoft.EF.DbContext
         public DbSet<ItmReorder> ItmReorders { get; set; }
         public DbSet<MainItemStock> MainItemStocks { get; set; }
         public DbSet<ItemBatchHistory> ItemBatchHistories { get; set; }
+        public DbSet<StentDes> StentDess { get; set; }
 
         ////////////////////
         // Accounts //
