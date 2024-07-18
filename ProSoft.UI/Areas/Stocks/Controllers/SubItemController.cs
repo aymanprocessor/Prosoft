@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProSoft.Core.Repositories.Stocks;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.IRepositories.Stocks;
 
@@ -10,10 +11,12 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
     public class SubItemController : Controller
     {
         private readonly ISubItemRepo _subItemRepo;
+        private readonly IMainItemRepo _mainItemRepo;
         //private readonly IMapper _mapper;
-        public SubItemController(ISubItemRepo subItemRepo/*, IMapper mapper*/)
+        public SubItemController(ISubItemRepo subItemRepo, IMainItemRepo mainItemRepo/*, IMapper mapper*/)
         {
             _subItemRepo = subItemRepo;
+            _mainItemRepo = mainItemRepo;
             //_mapper = mapper;
         }
 
@@ -24,39 +27,45 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         }
 
         //Get Add
-        public async Task<IActionResult> Add_SubItem(int id)
+        public async Task<IActionResult> Add_SubItem(int id, int flag1)
         {
-            /*MainItemEditAddDTO*/var subItemDTO = await _subItemRepo.GetAllAsync();
+            SubItemEditAddDTO subItemDTO = await _subItemRepo.GetNewSubItemAsync(id);
+            #region sidebar
+            ViewBag.MainLevel_2 = await _mainItemRepo.GetMainItemsByLevelAsync(2, flag1);
+            ViewBag.MainLevel_3 = await _mainItemRepo.GetMainItemsByLevelAsync(3, flag1);
+            ViewBag.MainLevel_4 = await _mainItemRepo.GetMainItemsByLevelAsync(4, flag1);
+            ViewBag.MainLevel_5 = await _mainItemRepo.GetMainItemsByLevelAsync(5, flag1);
+            ViewBag.MainLevel_6 = await _mainItemRepo.GetMainItemsByLevelAsync(6, flag1);
+            #endregion
             return View(subItemDTO);
         }
 
         //Post Add
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Add_SubItem(MainItemEditAddDTO mainItemDTO)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        mainItemDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
-        //        mainItemDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Add_SubItem(SubItemEditAddDTO subItemDTO)
+        {
+            if (ModelState.IsValid)
+            {
+                subItemDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
 
-        //        await _mainItemRepo.AddMainLevelAsync(mainItemDTO);
-        //        return RedirectToAction(nameof(MainLevel_6), new { id = mainItemDTO.ParentCode, flag1 = mainItemDTO.Flag1 });
-        //    }
-        //    KindStore stockType = await _stockTypeRepo.GetByIdAsync((int)mainItemDTO.Flag1);
-        //    ViewBag.stockType = stockType.KName;
-        //    #region sidebar
-        //    ViewBag.MainLevel_2 = await _mainItemRepo.GetMainItemsByLevelAsync(2, (int)mainItemDTO.Flag1);
-        //    ViewBag.MainLevel_3 = await _mainItemRepo.GetMainItemsByLevelAsync(3, (int)mainItemDTO.Flag1);
-        //    ViewBag.MainLevel_4 = await _mainItemRepo.GetMainItemsByLevelAsync(4, (int)mainItemDTO.Flag1);
-        //    ViewBag.MainLevel_5 = await _mainItemRepo.GetMainItemsByLevelAsync(5, (int)mainItemDTO.Flag1);
-        //    ViewBag.MainLevel_6 = await _mainItemRepo.GetMainItemsByLevelAsync(6, (int)mainItemDTO.Flag1);
-        //    #endregion
-        //    MainItemEditAddDTO newMainLevel_6 = await _mainItemRepo
-        //        .GetNewMainLevel_6_Async(mainItemDTO.ParentCode, (int)mainItemDTO.Flag1);
-        //    _mapper.Map(newMainLevel_6, mainItemDTO);
-        //    return View(mainItemDTO);
-        //}
+                await _subItemRepo.AddSubItemAsync(subItemDTO);
+                return RedirectToAction(subItemDTO.MainLevel, "MainItem", new { id = subItemDTO.ParentCode, flag1 = subItemDTO.Flag1 });
+            }
+            //KindStore stockType = await _stockTypeRepo.GetByIdAsync((int)mainItemDTO.Flag1);
+            //ViewBag.stockType = stockType.KName;
+            #region sidebar
+            ViewBag.MainLevel_2 = await _mainItemRepo.GetMainItemsByLevelAsync(2, (int)subItemDTO.Flag1);
+            ViewBag.MainLevel_3 = await _mainItemRepo.GetMainItemsByLevelAsync(3, (int)subItemDTO.Flag1);
+            ViewBag.MainLevel_4 = await _mainItemRepo.GetMainItemsByLevelAsync(4, (int)subItemDTO.Flag1);
+            ViewBag.MainLevel_5 = await _mainItemRepo.GetMainItemsByLevelAsync(5, (int)subItemDTO.Flag1);
+            ViewBag.MainLevel_6 = await _mainItemRepo.GetMainItemsByLevelAsync(6, (int)subItemDTO.Flag1);
+            #endregion
+            //MainItemEditAddDTO newMainLevel_6 = await _mainItemRepo
+            //    .GetNewMainLevel_6_Async(mainItemDTO.ParentCode, (int)mainItemDTO.Flag1);
+            //_mapper.Map(newMainLevel_6, mainItemDTO);
+            return View(subItemDTO);
+        }
 
         //Get Edit
         //public async Task<IActionResult> Edit_MainLevel_6(int id)

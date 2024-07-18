@@ -13,5 +13,7 @@ namespace ProSoft.EF.DTOs.Stocks
         public string MainName { get; set; }
         public int BatchCounter { get; set; }
         public int LastSub { get; set; }
+        public int Flag1 { get; set; }
+        public string ParentCode { get; set; }
     }
 }

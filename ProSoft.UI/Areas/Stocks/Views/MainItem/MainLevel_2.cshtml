@@ -34,7 +34,7 @@
             <tbody>
                 @foreach(var item in Model)
                 {
-                <tr class="align-middle text-center" onclick="getSubItems(event, @item.MainId, @item.LastSub)" style="cursor: pointer;">
+                <tr class="align-middle text-center" onclick="getSubItems(event, @item.MainId, @item.LastSub, @item.Flag1, @item.ParentCode)" style="cursor: pointer;">
                     <td>@item.MainCode</td>
                     <td>@item.MainName</td>
                     <td>
@@ -126,7 +126,7 @@
 
 @section Scripts {
     <script>
-        function getSubItems(e, mainId, lastSub) {
+        function getSubItems(e, mainId, lastSub, flag1, parentCode) {
             var subItems = document.querySelector("#myTable_2 tbody");
 
             // Handle active clic
@@ -144,7 +144,7 @@
             subItemsHeader.innerHTML = "@localizer["The Items"]";
 
             let subItemsAddButton = subItemsHead.querySelector("a");
-            subItemsAddButton.setAttribute("href", `/Stocks/SubItem/Add_SubItem/${mainId}`);
+            subItemsAddButton.setAttribute("href", `/Stocks/SubItem/Add_SubItem/${mainId}?flag1=${flag1}`);
 
             ///////////////////////////////////////////////////////////////////
 

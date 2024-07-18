@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ProSoft.EF.DbContext;
+using ProSoft.EF.DTOs.Accounts;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.IRepositories.Stocks;
+using ProSoft.EF.Models.Accounts;
 using ProSoft.EF.Models.Stocks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,6 +28,123 @@ namespace ProSoft.Core.Repositories.Stocks
             List<SubItem> subItems = await _DbSet.Where(obj => obj.MainId == mainId).ToListAsync();
             var subItemsDTO = _mapper.Map<List<SubItemViewDTO>>(subItems);
             return subItemsDTO;
+        }
+
+        public async Task<SubItemEditAddDTO> GetNewSubItemAsync(int mainId)
+        {
+            var subItemDTO = new SubItemEditAddDTO();
+
+            MainItem mainItem = await _Context.MainItems.FindAsync(mainId);
+
+            if (mainItem != null)
+            {
+                subItemDTO.Flag1 = mainItem.Flag1;
+                subItemDTO.MainLevel = mainItem.ParentCode == "1" ? "MainLevel_2" : $"MainLevel_{mainItem.CurrentLevel}";
+                subItemDTO.ParentCode = mainItem.ParentCode;
+            }
+
+            ////////////////////////////////////
+            var ll_flag1 = mainItem.Flag1;
+            var batchCounter = mainItem.BatchCounter != null ? mainItem.BatchCounter : 0;
+            var ls_code = "";
+
+            // اضافة نوع المخزن للباركود
+            var sysObj = await _Context.SystemTables.FirstOrDefaultAsync(obj => obj.SysId == 27);
+            var sys_valu = sysObj.SysValue;
+            var ll_count_flag = 0;
+            if (sys_valu == 1)
+            {
+                ll_count_flag = ll_flag1.ToString().Length;
+            }
+            var is_main = mainItem.MainCode;
+            var main_name_all = mainItem.MainNameAll;
+            // عدد حروف الباركود
+            var sysObj2 = await _Context.SystemTables.FirstOrDefaultAsync(obj => obj.SysId == 20);
+            var bCode_len = sysObj2.SysValue;
+            // كود الصنف اتوماتيك
+            var sysObj3 = await _Context.SystemTables.FirstOrDefaultAsync(obj => obj.SysId == 26);
+            var sys_value = sysObj3.SysValue;
+            var li_sub = await _DbSet.Where(obj => obj.MainId == mainId).CountAsync() + 1;
+            var is_sub = $"000000000000{li_sub}";
+            is_sub = is_sub[^6..];
+            var ll_sub_count = is_sub.Length;
+            if (sys_value == 1)
+            {
+                var current_level = mainItem.CurrentLevel;
+                var ls_main = string.Empty;
+                switch (current_level)
+                {
+                    case 1:
+                        ls_main = is_main.Substring(0, 1);
+                        break;
+                    case 2:
+                        ls_main = is_main.Substring(0, 3);
+                        break;
+                    case 3:
+                        ls_main = is_main.Substring(0, 5);
+                        break;
+                    case 4:
+                        ls_main = is_main.Substring(0, 7);
+                        break;
+                    case 5:
+                        ls_main = is_main.Substring(0, 9);
+                        break;
+                }
+                var ll_main_count = ls_main.Length;
+                var ll_count_item = 0;
+                if (sys_valu == 1)
+                    ll_count_item = ll_count_flag + ll_main_count + 2;
+                else
+                    ll_count_item = ll_count_flag + ll_main_count + 1;
+
+                var sub_code_len = bCode_len - ll_count_item;
+                if(bCode_len > 0)
+                {
+                    if(ll_count_item > bCode_len)
+                    {
+                        // Print error 
+                        // خطأ كود الصنف اكبر من باركود النظام
+                        // return
+                    }
+                    else
+                    {
+                        var ls_sub = $"0000000000{li_sub}"[^(int)sub_code_len..];
+                        if (sys_valu == 1)
+                            ls_code = ll_flag1 + $"-{ls_main}-{li_sub}";
+                        else
+                            ls_code = $"{ls_main}-{li_sub}";
+                    }
+                }
+                else
+                {
+                    if (sys_valu == 1)
+                        ls_code = ll_flag1 + $"-{ls_main}-{li_sub}";
+                    else
+                        ls_code = $"{ls_main}-{li_sub}";
+                }
+            }
+            subItemDTO.ItemCode = ls_code;
+            ////////////////////////////////////
+
+            List<CostCenter> costCenters = await _Context.CostCenters.Where(obj =>
+                (obj.CostFlag == 1 || obj.CostFlag == 10) && obj.CostVisible == 1).ToListAsync();
+            subItemDTO.CostCenters = _mapper.Map<List<CostCenterViewDTO>>(costCenters);
+
+            List<SupCode> suppliers = await _Context.SupCodes.ToListAsync();
+            subItemDTO.Suppliers = _mapper.Map<List<SupCodeViewDTO>>(suppliers);
+
+            List<StentDes> stentDes = await _Context.StentDess.ToListAsync();
+            subItemDTO.StentDess = _mapper.Map<List<StentDesDTO>>(stentDes);
+
+            return subItemDTO;
+        }
+
+        public async Task AddSubItemAsync(SubItemEditAddDTO subItemDTO)
+        {
+            var subItem = _mapper.Map<SubItem>(subItemDTO);
+
+            await AddAsync(subItem);
+            await SaveChangesAsync();
         }
     }
 }
