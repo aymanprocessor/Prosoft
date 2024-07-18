@@ -69,13 +69,19 @@
 </div>
 <script>
     ////for variables /////
-    var branche = document.getElementById("branches");
-    console.log(branche.value);
+    var branch = document.getElementById("branches");
     var journal = document.getElementById("journals");
     var fromPeriod = document.getElementById("fromPeriod");
     var toPeriod = document.getElementById("toPeriod");
 
-    //for report Analytical//
+
+
+
+
+
+
+
+    //for report American Daily//
     function AmericanDaily(e) {
         if (!fromPeriod.value || !toPeriod.value) {
             if (!fromPeriod.value) {
@@ -86,7 +92,7 @@
             return;
         }
 
-        let title = `@localizer["American Daily From"] ${fromPeriod.value} @localizer["To"] ${toPeriod.value}`;
+        let title = `@localizer["American Daily"] @localizer["From"] ${fromPeriod.value} @localizer["To"] ${toPeriod.value}`;
 
         var headReport = document.querySelector(".report");
         headReport.innerHTML = `
@@ -95,42 +101,40 @@
                 <button onclick="printReport()" class="btn btn-success" style="margin-inline-start: auto;">Print</button>
             </div>
             <div class="print-table p-0 mb-2 overflow-auto">
-                <table id="myTable" class="table table-bordered table-hover Voucher-table" style="width:100%">
+                 <style>
+                    .fixed-width-date {
+                        width: 150px;
+                    }
+                </style>
+                <table id="myTable" class="table table-bordered border-dark table-hover Voucher-table" style="width:100%">
                     <thead class="table-dark">
                         <tr id="headersRow1">
                             <th class="align-middle text-center" rowspan="2">@localizer["Voucher No"]</th>
-                            <th class="align-middle text-center" rowspan="2">@localizer["Voucher Date"]</th>
+                            <th class="align-middle text-center" rowspan="2" >@localizer["Voucher Date"]</th>
                             <th class="align-middle text-center" rowspan="2">@localizer["Note"]</th>
+                            <!-- Dynamic main names headers -->
                         </tr>
                         <tr id="headersRow2">
-                            <!-- Dynamic sub-headers will be inserted here -->
+                            <!-- Dynamic Debit and Credit headers -->
                         </tr>
                     </thead>
-                    <tbody>
-                        <!-- The rows will be dynamically generated here -->
+                    <tbody id="voucherTableBody">
+                        <!-- Rows will be dynamically generated here -->
                     </tbody>
                 </table>
             </div>
         `;
 
-        let urlMainNames = `/Accounts/AmericanDaily/GetMainName/${branche.value}?journal=${journal.value}&fromPeriod=${fromPeriod.value}&toPeriod=${toPeriod.value}`;
-
-        var headersRow1 = document.getElementById("headersRow1");
-        var headersRow2 = document.getElementById("headersRow2");
-        headersRow1.innerHTML = `
-            <th class="align-middle text-center" rowspan="2">@localizer["Voucher No"]</th>
-            <th class="align-middle text-center" rowspan="2">@localizer["Voucher Date"]</th>
-            <th class="align-middle text-center" rowspan="2">@localizer["Note"]</th>
-        `; // Reset headers row1 with static headers
-        headersRow2.innerHTML = ""; // Empty dynamic headers row2
+        let urlMainNames = `/Accounts/AmericanDaily/GetMainName/${branch.value}?journal=${journal.value}&fromPeriod=${fromPeriod.value}&toPeriod=${toPeriod.value}`;
 
         $.ajax({
             url: urlMainNames,
-            success: function(mainNames) {
+            success: function (mainNames) {
                 mainNames.forEach(mainName => {
                     var th1 = document.createElement("th");
                     th1.className = "align-middle text-center";
                     th1.innerText = mainName;
+                    th1.colSpan = 2;
                     headersRow1.appendChild(th1);
 
                     var thDebit = document.createElement("th");
@@ -144,55 +148,83 @@
                     headersRow2.appendChild(thCredit);
                 });
 
-                        // $.ajax({
-        //     url: url,
-        //     success: function (result) {
-        //         //  console.log(result);
-        //         var index = 0;
-        //         var valDepSum = 0;
-        //         var valCreditSum = 0;
-        //         var balance = 0;
-        //         for (let item of result) {
-        //             let transDate = item.transDate == null ? "" : new Date(item.transDate).toISOString().split('T')[0];
-        //             var transNo = item.transNo == 0 ? "" : item.transNo;
-        //             const data = document.createElement("tr");
-        //             balance += item.valDep;
-        //             balance -= item.valCredit;
+                let urlTransMain = `/Accounts/AmericanDaily/GetAmericanDaily/${branch.value}?journal=${journal.value}&fromPeriod=${fromPeriod.value}&toPeriod=${toPeriod.value}`;
 
-        //             data.innerHTML += `
-        //                         <td class="align-middle">${index}</td>
-        //                         <td class="align-middle">${balance}</td>
-        //                         <td class="align-middle">${item.valDep}</td>
-        //                         <td class="align-middle">${item.valCredit}</td>
-        //                         <td class="align-middle">${item.transDesc}</td>
-        //                         <td class="align-middle">${item.costDesc}</td>
-        //                         <td class="align-middle">${transNo}</td>
-        //                         <td class="align-middle">${transDate}</td>
-        //                         `;
-        //             index++;
-        //             valDepSum += item.valDep;
-        //             valCreditSum += item.valCredit;
-        //             dataa.appendChild(data);
-        //         }
-        //         const dataForSum = document.createElement("tr");
-        //         //    dataForSum.style.backgroundColor = "#e6dfdf";
-        //         dataForSum.innerHTML =
-        //             `
-        //                         <td colspan="2"></td>
-        //                         <td style="background-color: #e6dfdf;">${valDepSum}</td>
-        //                         <td style="background-color: #e6dfdf;">${valCreditSum}</td>
-        //                         <td colspan="4" class="align-middle">اجمالي الحركات من اول الفترة حتي نهاية الفترة</td>
-        //                     `;
-        //         dataa.appendChild(dataForSum);
+                $.ajax({
+                    url: urlTransMain,
+                    success: function (result) {
+                        console.log(result);
+                        var voucherTableBody = document.getElementById("voucherTableBody");
+                        voucherTableBody.innerHTML = "";  // Clear existing data
 
-        //     }
-        // });
+                        var valDepSums = {};
+                        var valCreditSums = {};
+
+                        mainNames.forEach(mainName => {
+                            valDepSums[mainName] = 0;
+                            valCreditSums[mainName] = 0;
+                        });
+
+                        result.forEach(item => {
+                            let transDate = item.transDate ? new Date(item.transDate).toISOString().split('T')[0] : "";
+                            let transNo = item.transNo || "";
+
+                            const row = document.createElement("tr");
+                            row.innerHTML = `
+                                <td class="align-middle">${transNo}</td>
+                                <td class="align-middle">${transDate}</td>
+                                <td class="align-middle">${item.lineDesc}</td>
+                            `;
+
+                            mainNames.forEach(mainName => {
+                                var mainCodeValue = item.mainCodeValues.find(mc => mc.item1 === mainName);
+                                var debit = mainCodeValue && mainCodeValue.item3 !== null ? mainCodeValue.item2 : 0; // Assuming 'item2' is Debit
+                                var credit = mainCodeValue && mainCodeValue.item3 !== null ? mainCodeValue.item3 : 0; // Assuming 'item3' is Credit
+
+                                row.innerHTML += `
+                                    <td class="align-middle">${debit}</td>
+                                    <td class="align-middle">${credit}</td>
+                                `;
+
+                                valDepSums[mainName] += parseFloat(debit);
+                                valCreditSums[mainName] += parseFloat(credit);
+                            });
+
+                            voucherTableBody.appendChild(row);
+                        });
+
+                        const sumRow = document.createElement("tr");
+                        sumRow.innerHTML = `
+                            <td colspan="2"></td>
+                            <td class="text-center">@localizer["The Total"]</td>
+                        `;
+
+                        mainNames.forEach(mainName => {
+                            sumRow.innerHTML += `
+                                <td style="background-color: #e6dfdf;">${valDepSums[mainName]}</td>
+                                <td style="background-color: #e6dfdf;">${valCreditSums[mainName]}</td>
+                            `;
+                        });
+
+                        voucherTableBody.appendChild(sumRow);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error); // Log any errors
+                    }
+                });
             },
-            error: function(xhr, status, error) {
-                console.error("Error fetching main names:", error);
+            error: function (xhr, status, error) {
+                console.error(error); // Log any errors
             }
         });
     }
+
+
+
+
+
+
+
 
 
     function printReport() {

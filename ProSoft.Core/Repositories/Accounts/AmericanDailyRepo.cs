@@ -37,25 +37,75 @@ namespace ProSoft.Core.Repositories.Accounts
 
         public async Task<List<AmericanDailyDTO>> GetAmericanDailyAsync(int branch, int journal, DateTime? fromPeriod, DateTime? toPeriod)
         {
-            List<AmericanDailyDTO> americanDailyDTOs = new List<AmericanDailyDTO>();
-            var mainCodes = await _Context.AccTransDetails
-                    .Where(obj => (branch == 100 || obj.CoCode == branch) &&(journal == 100 || obj.TransType == journal.ToString()))
-                    .Select(obj => obj.MainCode)
-                    .Distinct()
-                    .ToListAsync();
-            // Use Task.WhenAll to parallelize fetching of MainNames
-            var mainNamesTasks = mainCodes.Select(item => GetMainName(item));
-            var mainNamesArray = await Task.WhenAll(mainNamesTasks);
-            //list th
-            var mainNames = mainNamesArray.ToList();
+            var accTransDetails = await _Context.AccTransDetails
+                .Where(obj => (branch == 100 || obj.CoCode == branch) &&
+                              (journal == 100 || obj.TransType == journal.ToString()) &&
+                              (obj.TransDate >= fromPeriod && obj.TransDate <= toPeriod))
+                .ToListAsync();
 
-            return americanDailyDTOs;
+            var mainNames = await GetMainNameAsync(branch, journal, fromPeriod, toPeriod);
+
+            var groupedTrans = new List<AmericanDailyDTO>();
+
+            foreach (var g in accTransDetails.GroupBy(t => t.TransNo))
+            {
+                var dto = new AmericanDailyDTO
+                {
+                    TransNo = g.Key,
+                    TransDate = g.First().TransDate,
+                    LineDesc = g.First().LineDesc,
+                    MainCodeValues = new List<Tuple<string, decimal?, decimal?>>()
+                };
+
+                foreach (var mainName in mainNames)
+                {
+                    var mainCode = await GetMainCode(mainName);
+                    var transaction = g.FirstOrDefault(t => t.MainCode == mainCode);
+
+                    dto.MainCodeValues.Add(new Tuple<string, decimal?, decimal?>(mainName,
+                                                                                 transaction?.ValDep,
+                                                                                 transaction?.ValCredit));
+                }
+
+                groupedTrans.Add(dto);
+            }
+
+            return groupedTrans;
+        }
+        public async Task<List<string>> GetMainCodeAsync(int branch, int journal, DateTime? fromPeriod, DateTime? toPeriod)
+        {
+            var mainCodes = await _Context.AccTransDetails
+                   .Where(obj => (branch == 100 || obj.CoCode == branch) && (journal == 100 || obj.TransType == journal.ToString()) &&
+                      (obj.TransDate >= fromPeriod && obj.TransDate <= toPeriod))
+                   .Select(obj => obj.MainCode)
+                   .Distinct()
+                   .ToListAsync();
+
+            var mainNames = new List<string>();
+
+            foreach (var item in mainCodes)
+            {
+                var mainName = await GetMainCode(item);
+                mainNames.Add(mainName);
+            }
+
+            return mainNames;
+        }
+
+
+        //Get main Name
+        private async Task<string> GetMainCode(string mainName)
+        {
+            var accMainCode = await _Context.AccMainCodes
+                                           .FirstOrDefaultAsync(cc => cc.MainName == mainName);
+            return accMainCode?.MainCode ?? ""; // Return "" if no matching cost center is found
         }
 
         public async Task<List<string>> GetMainNameAsync(int branch, int journal, DateTime? fromPeriod, DateTime? toPeriod)
         {
             var mainCodes = await _Context.AccTransDetails
-                   .Where(obj => (branch == 100 || obj.CoCode == branch) && (journal == 100 || obj.TransType == journal.ToString()))
+                   .Where(obj => (branch == 100 || obj.CoCode == branch) && (journal == 100 || obj.TransType == journal.ToString()) &&
+                      (obj.TransDate >= fromPeriod && obj.TransDate <= toPeriod))
                    .Select(obj => obj.MainCode)
                    .Distinct()
                    .ToListAsync();

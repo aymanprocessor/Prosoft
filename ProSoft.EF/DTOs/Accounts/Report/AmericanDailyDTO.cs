@@ -8,10 +8,15 @@ namespace ProSoft.EF.DTOs.Accounts.Report
 {
     public class AmericanDailyDTO
     {
-        public string? MainName { get; set; }
-        public decimal? ValDep { get; set; }
-        public decimal? ValCredit { get; set; }
         public int? TransNo { get; set; }
         public DateTime? TransDate { get; set; }
+        public string? LineDesc { get; set; }
+        public string? MainName { get; set; }
+        public List<Tuple<string, decimal?, decimal?>> MainCodeValues { get; set; }
+
+        public AmericanDailyDTO()
+        {
+            MainCodeValues = new List<Tuple<string, decimal?, decimal?>>();
+        }
     }
 }

@@ -11,8 +11,8 @@ namespace ProSoft.EF.IRepositories.Accounts
     public interface IAmericanDailyRepo
     {
         Task<ReportAmericanDailyDTO> GetAllDataAsync();
-        Task<List<string>> GetMainNameAsync(int branch, int journal, DateTime? fromPeriod, DateTime? toPeriod);
         Task<List<AmericanDailyDTO>> GetAmericanDailyAsync(int branch, int journal, DateTime? fromPeriod, DateTime? toPeriod);
+        Task<List<string>> GetMainNameAsync(int branch, int journal, DateTime? fromPeriod, DateTime? toPeriod);
 
     }
 }
