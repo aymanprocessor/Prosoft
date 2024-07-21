@@ -74,13 +74,6 @@
     var fromPeriod = document.getElementById("fromPeriod");
     var toPeriod = document.getElementById("toPeriod");
 
-
-
-
-
-
-
-
     //for report American Daily//
     function AmericanDaily(e) {
         if (!fromPeriod.value || !toPeriod.value) {
@@ -101,7 +94,7 @@
                 <button onclick="printReport()" class="btn btn-success" style="margin-inline-start: auto;">Print</button>
             </div>
             <div class="print-table p-0 mb-2 overflow-auto">
-                 <style>
+                <style>
                     .fixed-width-date {
                         width: 150px;
                     }
@@ -110,7 +103,7 @@
                     <thead class="table-dark">
                         <tr id="headersRow1">
                             <th class="align-middle text-center" rowspan="2">@localizer["Voucher No"]</th>
-                            <th class="align-middle text-center" rowspan="2" >@localizer["Voucher Date"]</th>
+                            <th class="align-middle text-center fixed-width-date" rowspan="2">@localizer["Voucher Date"]</th> <!-- Fixed width for the date column -->
                             <th class="align-middle text-center" rowspan="2">@localizer["Note"]</th>
                             <!-- Dynamic main names headers -->
                         </tr>
@@ -148,6 +141,25 @@
                     headersRow2.appendChild(thCredit);
                 });
 
+                // Adding the total columns after all dynamic columns
+                var thTotalDebit = document.createElement("th");
+                thTotalDebit.className = "align-middle text-center";
+                thTotalDebit.rowSpan = 2;
+                thTotalDebit.innerText = "@localizer["The Sum Debit"]";
+                headersRow1.appendChild(thTotalDebit);
+
+                var thTotalCredit = document.createElement("th");
+                thTotalCredit.className = "align-middle text-center";
+                thTotalCredit.rowSpan = 2;
+                thTotalCredit.innerText = "@localizer["The Sum Credit"]";
+                headersRow1.appendChild(thTotalCredit);
+
+                var thTotalCredit = document.createElement("th");
+                thTotalCredit.className = "align-middle text-center";
+                thTotalCredit.rowSpan = 2;
+                thTotalCredit.innerText = "@localizer["The Difference"]";
+                headersRow1.appendChild(thTotalCredit);
+
                 let urlTransMain = `/Accounts/AmericanDaily/GetAmericanDaily/${branch.value}?journal=${journal.value}&fromPeriod=${fromPeriod.value}&toPeriod=${toPeriod.value}`;
 
                 $.ajax({
@@ -159,6 +171,8 @@
 
                         var valDepSums = {};
                         var valCreditSums = {};
+                        var totalDebit = 0;
+                        var totalCredit = 0;
 
                         mainNames.forEach(mainName => {
                             valDepSums[mainName] = 0;
@@ -172,13 +186,16 @@
                             const row = document.createElement("tr");
                             row.innerHTML = `
                                 <td class="align-middle">${transNo}</td>
-                                <td class="align-middle">${transDate}</td>
+                                <td class="align-middle fixed-width-date">${transDate}</td> <!-- Fixed width for the date column -->
                                 <td class="align-middle">${item.lineDesc}</td>
                             `;
 
+                            let rowDebitSum = 0;
+                            let rowCreditSum = 0;
+
                             mainNames.forEach(mainName => {
                                 var mainCodeValue = item.mainCodeValues.find(mc => mc.item1 === mainName);
-                                var debit = mainCodeValue && mainCodeValue.item3 !== null ? mainCodeValue.item2 : 0; // Assuming 'item2' is Debit
+                                var debit = mainCodeValue && mainCodeValue.item2 !== null ? mainCodeValue.item2 : 0; // Assuming 'item2' is Debit
                                 var credit = mainCodeValue && mainCodeValue.item3 !== null ? mainCodeValue.item3 : 0; // Assuming 'item3' is Credit
 
                                 row.innerHTML += `
@@ -186,17 +203,27 @@
                                     <td class="align-middle">${credit}</td>
                                 `;
 
+                                rowDebitSum += parseFloat(debit);
+                                rowCreditSum += parseFloat(credit);
                                 valDepSums[mainName] += parseFloat(debit);
                                 valCreditSums[mainName] += parseFloat(credit);
                             });
+
+                            row.innerHTML += `
+                                <td class="align-middle" style="background-color: #e6dfdf;">${rowDebitSum}</td>
+                                <td class="align-middle" style="background-color: #e6dfdf;">${rowCreditSum}</td>
+                                <td class="align-middle" style="background-color: #e6dfdf;">${rowDebitSum - rowCreditSum}</td>
+                            `;
+
+                            totalDebit += rowDebitSum;
+                            totalCredit += rowCreditSum;
 
                             voucherTableBody.appendChild(row);
                         });
 
                         const sumRow = document.createElement("tr");
                         sumRow.innerHTML = `
-                            <td colspan="2"></td>
-                            <td class="text-center">@localizer["The Total"]</td>
+                            <td colspan="3" class="text-center">@localizer["The Total"]</td>
                         `;
 
                         mainNames.forEach(mainName => {
@@ -205,6 +232,12 @@
                                 <td style="background-color: #e6dfdf;">${valCreditSums[mainName]}</td>
                             `;
                         });
+
+                        sumRow.innerHTML += `
+                            <td style="background-color: #e6dfdf;">${totalDebit}</td>
+                            <td style="background-color: #e6dfdf;">${totalCredit}</td>
+                            <td style="background-color: #e6dfdf;">${totalDebit - totalCredit}</td>
+                        `;
 
                         voucherTableBody.appendChild(sumRow);
                     },
@@ -218,13 +251,6 @@
             }
         });
     }
-
-
-
-
-
-
-
 
 
     function printReport() {

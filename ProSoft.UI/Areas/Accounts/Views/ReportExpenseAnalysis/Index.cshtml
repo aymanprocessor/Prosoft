@@ -1,0 +1,260 @@
+﻿@model ReportExpenseAnalysisDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Print From Voucher To Voucher";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+
+    SelectList branches = new SelectList(Model.branchs, "BranchId", "BranchDesc");
+    SelectList JournalTypes = new SelectList(Model.JournalTypes, "JournalCode", "JournalName");
+    SelectList mainAccCodes = new SelectList(Model.accMainCodes, "MainCode", "MainName");
+
+}
+@inject IViewLocalizer localizer
+<style>
+    .hide {
+        display: none !important;
+    }
+    /*  .image {
+                    top: 0px;
+                    left: 0px;
+                    width: 100%;
+                    height: 100%;
+                    background-repeat: no-repeat;
+                    background-attachment: fixed;
+                    background-size: cover;
+                    background-position: center;
+                    opacity: 0.5;
+                    z-index: -1;
+                } */
+</style>
+<div class="container pt-2 " style="min-height:100vh;">
+    @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
+
+    <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mt-4">
+        <h1 class="header">@localizer["Expense Analysis"]</h1>
+        <div class="d-flex gap-2">
+            <a class="btn btn-sm btn-primary fs-6" style="width:150px" onclick="ExpenseAnalysis(event)">
+                @localizer["Expense Analysis"]
+            </a>
+        </div>
+    </div>
+
+    <div class="overflow-auto filter-box">
+        <div class=" d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 px-1 my-2">
+            <div class="d-flex align-items-center flex-column flex-md-row w-100">
+                <label for="branches" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Branches"]</label>
+                <select id="branches" asp-items="branches" class="form-control text-center w-100">
+                    <option value="100">-- @localizer["All"] --</option>
+                </select>
+            </div>
+            <div class="d-flex align-items-center flex-column flex-md-row w-100">
+                <label for="journals" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Journal"]</label>
+                <select id="journals" asp-items="JournalTypes" class="form-control text-center w-100">
+                    <option value="100">-- @localizer["All"] --</option>
+                </select>
+            </div>
+            <div class="d-flex align-items-center w-100">
+                <label asp-for="MainCode" style="width:60% !important;"></label>
+                <select asp-for="MainCode" asp-items="mainAccCodes" class="form-control text-center">
+                    <option value="">-- Choose --</option>
+                </select>
+                <span asp-validation-for="MainCode" class="text-danger"></span>
+            </div>
+            <div class="d-flex align-items-center w-75">
+                <label asp-for="Year" style="width:30% !important;"></label>
+                <input asp-for="Year" class="form-control text-center" value="2024"/>
+                <span asp-validation-for="Year" class="text-danger"></span>
+            </div>
+            <div class="d-flex align-items-center w-75">
+                <label style="width:30% !important;">@localizer["Choose"]</label>
+                <select id="FilterBy" class="form-control text-center">
+                    <option value="1">@localizer["Debtor"]</option>
+                    <option value="2">@localizer["Creditor"]</option>
+                    <option value="3">@localizer["Net"]</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="report">
+    </div>
+</div>
+<script>
+    var branch = document.getElementById("branches");
+    var journal = document.getElementById("journals");
+    var year = document.getElementById("Year");
+    var mainCode = document.getElementById("MainCode");
+    var filterBy = document.getElementById("FilterBy");
+
+
+    //for report From Voucher To Voucher//
+    function ExpenseAnalysis(e) {
+        if (!mainCode.value) {
+            mainCode.focus();
+            return;
+        }
+        if (!year.value) {
+            year.focus();
+            return;
+        }
+
+        var mainName = mainCode.options[mainCode.selectedIndex].textContent;
+        var headReport = document.querySelector(".report");
+
+        let title = "@localizer["Analysise"] " + mainName + " @localizer["Year"] " + year.value;
+
+        headReport.innerHTML =
+            `
+                    <div class="report-head d-flex justify-content-center align-items-center mt-4">
+                         <h2 class="header">${title}</h2>
+                             <button onclick="printReport()" class="btn btn-success" style="margin-inline-start: auto;">Print</button>
+                    </div>
+
+                    <div class="print-table p-0 mb-2 overflow-auto">
+
+                        <table id="myTable" class="table table-bordered table-hover Voucher-table" style="width:100%">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th class="align-middle text-center" rowspan="2">
+                                         @localizer["Serial"]
+                                    </th> 
+                                    <th class="align-middle text-center" rowspan="2">
+                                         @localizer["Note"]
+                                    </th> 
+                                    <th class="align-middle text-center" rowspan="2">
+                                         @localizer["January"]
+                                    </th> 
+                                    <th class="align-middle text-center" rowspan="2">
+                                         @localizer["February"]
+                                    </th> 
+                                    <th class="align-middle text-center" rowspan="2">
+                                         @localizer["March"]
+                                    </th> 
+                                    <th class="align-middle text-center" rowspan="2">
+                                         @localizer["April"]
+                                    </th> 
+                                    <th class="align-middle text-center" rowspan="2">
+                                         @localizer["May"]
+                                    </th>
+                                    <th class="align-middle text-center" rowspan="2">
+                                         @localizer["June"]
+                                    </th>
+                                    <th class="align-middle text-center" rowspan="2">
+                                         @localizer["July"]
+                                    </th>
+                                    <th class="align-middle text-center" rowspan="2">
+                                         @localizer["August"]
+                                    </th>
+                                    <th class="align-middle text-center" rowspan="2">
+                                         @localizer["September"]
+                                    </th>
+                                    <th class="align-middle text-center" rowspan="2">
+                                         @localizer["October"]
+                                    </th>
+                                    <th class="align-middle text-center" rowspan="2">
+                                         @localizer["November"]
+                                    </th>
+                                    <th class="align-middle text-center" rowspan="2">
+                                         @localizer["December"]
+                                    </th> 
+                                    <th class="align-middle text-center" rowspan="2">
+                                         @localizer["The Total"]
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+
+                `;
+        let url;
+        url = `/Accounts/ReportExpenseAnalysis/GetExpenseAnalysis/${branch.value}?journal=${journal.value}&mainCode=${mainCode.value}&year=${year.value}&filterBy=${filterBy.value}`;
+
+        var dataa = document.querySelector(".Voucher-table tbody");
+        dataa.innerHTML = "";  // Empty data
+        $.ajax({
+            url: url,
+            success: function (result) {
+                //  console.log(result);
+                var mon1Sum = 0, mon2Sum = 0, mon3Sum = 0, mon4Sum = 0, mon5Sum = 0, mon6Sum = 0, mon7Sum = 0, mon8Sum = 0, mon9Sum = 0, mon10Sum = 0, mon11Sum = 0, mon12Sum = 0, totalSum = 0;
+
+                var index =1;
+                for (let item of result) {
+                    const data = document.createElement("tr");
+                    let total = item.mon1 + item.mon2 + item.mon3 + item.mon4 + item.mon5 + item.mon6 + item.mon7 + item.mon8 + item.mon9 + item.mon10 + item.mon11 + item.mon12;
+
+                    data.innerHTML += `
+
+                            <td class="align-middle">${index}</td>
+                            <td class="align-middle">${item.subName}</td>
+                            <td class="align-middle">${item.mon1}</td>
+                            <td class="align-middle">${item.mon2}</td>
+                            <td class="align-middle">${item.mon3}</td>
+                            <td class="align-middle">${item.mon4}</td>
+                            <td class="align-middle">${item.mon5}</td>
+                            <td class="align-middle">${item.mon6}</td>
+                            <td class="align-middle">${item.mon7}</td>
+                            <td class="align-middle">${item.mon8}</td>
+                            <td class="align-middle">${item.mon9}</td>
+                            <td class="align-middle">${item.mon10}</td>
+                            <td class="align-middle">${item.mon11}</td>
+                            <td class="align-middle">${item.mon12}</td>
+                            <td class="align-middle" style="background-color: #e6dfdf;">${total}</td>
+                               
+                            `;
+                    mon1Sum += item.mon1;
+                    mon2Sum += item.mon2;
+                    mon3Sum += item.mon3;
+                    mon4Sum += item.mon4;
+                    mon5Sum += item.mon5;
+                    mon6Sum += item.mon6;
+                    mon7Sum += item.mon7;
+                    mon8Sum += item.mon8;
+                    mon9Sum += item.mon9;
+                    mon10Sum += item.mon10;
+                    mon11Sum += item.mon11;
+                    mon12Sum += item.mon12;
+                    totalSum += total;
+                    index++;
+                    dataa.appendChild(data);
+                }
+                const dataForSum = document.createElement("tr");
+                //    dataForSum.style.backgroundColor = "#e6dfdf";
+                dataForSum.innerHTML =
+                    `
+                            <td colspan="2">@localizer["The Total"]</td>
+                            <td class="align-middle" style="background-color: #e6dfdf;">${mon1Sum}</td>
+                            <td class="align-middle" style="background-color: #e6dfdf;">${mon2Sum}</td>
+                            <td class="align-middle" style="background-color: #e6dfdf;">${mon3Sum}</td>
+                            <td class="align-middle" style="background-color: #e6dfdf;">${mon4Sum}</td>
+                            <td class="align-middle" style="background-color: #e6dfdf;">${mon5Sum}</td>
+                            <td class="align-middle" style="background-color: #e6dfdf;">${mon6Sum}</td>
+                            <td class="align-middle" style="background-color: #e6dfdf;">${mon7Sum}</td>
+                            <td class="align-middle" style="background-color: #e6dfdf;">${mon8Sum}</td>
+                            <td class="align-middle" style="background-color: #e6dfdf;">${mon9Sum}</td>
+                            <td class="align-middle" style="background-color: #e6dfdf;">${mon10Sum}</td>
+                            <td class="align-middle" style="background-color: #e6dfdf;">${mon11Sum}</td>
+                            <td class="align-middle" style="background-color: #e6dfdf;">${mon12Sum}</td>
+                            <td class="align-middle" style="background-color: #e6dfdf;">${totalSum}</td>
+                        `;
+                dataa.appendChild(dataForSum);
+
+            }
+        });
+    }
+    function printReport() {
+        let head = document.querySelector(".report-head");
+        let tableReport = document.querySelector(".print-table");
+        let originalContent = document.body.innerHTML;//all body
+
+        head.querySelector("button").style.display = "none";
+        document.body.innerHTML = head.outerHTML + tableReport.outerHTML;
+        window.print();
+        document.body.innerHTML = originalContent;
+    }
+</script>

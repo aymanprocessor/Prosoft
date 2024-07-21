@@ -47,24 +47,25 @@ namespace ProSoft.Core.Repositories.Accounts
 
             var groupedTrans = new List<AmericanDailyDTO>();
 
-            foreach (var g in accTransDetails.GroupBy(t => t.TransNo))
+            foreach (var g in accTransDetails.GroupBy(t => t.TransNo)) // transno بجمع السطور بناء علي ال
             {
                 var dto = new AmericanDailyDTO
                 {
                     TransNo = g.Key,
-                    TransDate = g.First().TransDate,
-                    LineDesc = g.First().LineDesc,
-                    MainCodeValues = new List<Tuple<string, decimal?, decimal?>>()
+                    TransDate = g.First().TransDate, //في السطور transdate بجيب اول
+                    LineDesc = g.First().LineDesc, //في السطور LineDesc بجيب اول
+                    MainCodeValues = new List<Tuple<string, decimal?, decimal?>>() // وبعد كده اضيف foreach وهملي في ال new object بعمل
                 };
 
                 foreach (var mainName in mainNames)
                 {
                     var mainCode = await GetMainCode(mainName);
-                    var transaction = g.FirstOrDefault(t => t.MainCode == mainCode);
+                    var transactions = g.Where(t => t.MainCode == mainCode).ToList();
+                    //بجمع ال depit and Credit كل واحد لوحده
+                    decimal? valDepSum = transactions.Sum(t => t.ValDep);
+                    decimal? valCreditSum = transactions.Sum(t => t.ValCredit);
 
-                    dto.MainCodeValues.Add(new Tuple<string, decimal?, decimal?>(mainName,
-                                                                                 transaction?.ValDep,
-                                                                                 transaction?.ValCredit));
+                    dto.MainCodeValues.Add(new Tuple<string, decimal?, decimal?>(mainName, valDepSum, valCreditSum));
                 }
 
                 groupedTrans.Add(dto);
@@ -72,35 +73,8 @@ namespace ProSoft.Core.Repositories.Accounts
 
             return groupedTrans;
         }
-        public async Task<List<string>> GetMainCodeAsync(int branch, int journal, DateTime? fromPeriod, DateTime? toPeriod)
-        {
-            var mainCodes = await _Context.AccTransDetails
-                   .Where(obj => (branch == 100 || obj.CoCode == branch) && (journal == 100 || obj.TransType == journal.ToString()) &&
-                      (obj.TransDate >= fromPeriod && obj.TransDate <= toPeriod))
-                   .Select(obj => obj.MainCode)
-                   .Distinct()
-                   .ToListAsync();
 
-            var mainNames = new List<string>();
-
-            foreach (var item in mainCodes)
-            {
-                var mainName = await GetMainCode(item);
-                mainNames.Add(mainName);
-            }
-
-            return mainNames;
-        }
-
-
-        //Get main Name
-        private async Task<string> GetMainCode(string mainName)
-        {
-            var accMainCode = await _Context.AccMainCodes
-                                           .FirstOrDefaultAsync(cc => cc.MainName == mainName);
-            return accMainCode?.MainCode ?? ""; // Return "" if no matching cost center is found
-        }
-
+        //all main code
         public async Task<List<string>> GetMainNameAsync(int branch, int journal, DateTime? fromPeriod, DateTime? toPeriod)
         {
             var mainCodes = await _Context.AccTransDetails
@@ -121,7 +95,6 @@ namespace ProSoft.Core.Repositories.Accounts
             return mainNames;
         }
 
-
         //Get main Name
         private async Task<string> GetMainName(string mainCode)
         {
@@ -129,5 +102,14 @@ namespace ProSoft.Core.Repositories.Accounts
                                            .FirstOrDefaultAsync(cc => cc.MainCode == mainCode);
             return accMainCode?.MainName ?? ""; // Return "" if no matching cost center is found
         }
+       
+        //Get main Code
+        private async Task<string> GetMainCode(string mainName)
+        {
+            var accMainCode = await _Context.AccMainCodes
+                                           .FirstOrDefaultAsync(cc => cc.MainName == mainName);
+            return accMainCode?.MainCode ?? ""; // Return "" if no matching cost center is found
+        }
+
     }
 }

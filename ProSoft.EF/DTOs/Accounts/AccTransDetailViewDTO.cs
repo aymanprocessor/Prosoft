@@ -15,6 +15,7 @@ namespace ProSoft.EF.DTOs.Accounts
         public string? DocNo { get; set; }
         public DateTime? DocDate { get; set; }
         public string? LineDesc { get; set; }
+        public string? SubCode { get; set; }
 
     }
 }

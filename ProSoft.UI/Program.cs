@@ -123,6 +123,7 @@ builder.Services.AddScoped<IAccMainCodeRepo, AccMainCodeRepo>();
 builder.Services.AddScoped<IAccSubCodeRepo, AccSubCodeRepo>();
 builder.Services.AddScoped<IReportAssistantProfessorRepo, ReportAssistantProfessorRepo>();
 builder.Services.AddScoped<IAmericanDailyRepo, AmericanDailyRepo>();
+builder.Services.AddScoped<IReportExpenseAnalysisRepo, ReportExpenseAnalysisRepo>();
 ////////// PatRecord ////////////////////
 builder.Services.AddScoped<ICoronaryRepo, CoronaryRepo>();
 builder.Services.AddScoped<IPastHistoryRepo, PastHistoryRepo>();
