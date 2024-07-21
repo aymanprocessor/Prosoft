@@ -38,9 +38,10 @@ namespace ProSoft.Core.Repositories.Stocks
 
             if (mainItem != null)
             {
-                subItemDTO.Flag1 = mainItem.Flag1;
+                _mapper.Map(mainItem, subItemDTO);
                 subItemDTO.MainLevel = mainItem.ParentCode == "1" ? "MainLevel_2" : $"MainLevel_{mainItem.CurrentLevel}";
                 subItemDTO.ParentCode = mainItem.ParentCode;
+                subItemDTO.MainName = mainItem.MainName;
             }
 
             ////////////////////////////////////
@@ -139,11 +140,55 @@ namespace ProSoft.Core.Repositories.Stocks
             return subItemDTO;
         }
 
-        public async Task AddSubItemAsync(SubItemEditAddDTO subItemDTO)
+        public async Task<SubItemEditAddDTO> GetSubItemByIdAsync(int id)
         {
+            SubItem subItem = await GetByIdAsync(id);
+            MainItem mainItem = await _Context.MainItems.FindAsync(subItem.MainId);
+            var subItemDTO = _mapper.Map<SubItemEditAddDTO>(subItem);
+
+            if (mainItem != null)
+            {
+                subItemDTO.MainLevel = mainItem.ParentCode == "1" ? "MainLevel_2" : $"MainLevel_{mainItem.CurrentLevel}";
+                subItemDTO.ParentCode = mainItem.ParentCode;
+                subItemDTO.MainName = mainItem.MainName;
+            }
+            List<CostCenter> costCenters = await _Context.CostCenters.Where(obj =>
+                (obj.CostFlag == 1 || obj.CostFlag == 10) && obj.CostVisible == 1).ToListAsync();
+            subItemDTO.CostCenters = _mapper.Map<List<CostCenterViewDTO>>(costCenters);
+
+            List<SupCode> suppliers = await _Context.SupCodes.ToListAsync();
+            subItemDTO.Suppliers = _mapper.Map<List<SupCodeViewDTO>>(suppliers);
+
+            List<StentDes> stentDes = await _Context.StentDess.ToListAsync();
+            subItemDTO.StentDess = _mapper.Map<List<StentDesDTO>>(stentDes);
+
+            return subItemDTO;
+        }
+
+        public async Task AddSubItemAsync(int mainId, SubItemEditAddDTO subItemDTO)
+        {
+            MainItem mainItem = await _Context.MainItems.FindAsync(mainId);
             var subItem = _mapper.Map<SubItem>(subItemDTO);
 
+            _mapper.Map(mainItem, subItem);
+            _mapper.Map(subItemDTO, subItem);
+
+            List<SubItem> otherSubItems = await _DbSet.Where(obj => obj.MainId == mainId).ToListAsync();
+            subItem.SubCode = otherSubItems.Count == 0 ? 
+                "000001" :
+                $"00000{int.Parse(otherSubItems.Max(obj => obj.SubCode))}"[^6..];
+
             await AddAsync(subItem);
+            await SaveChangesAsync();
+        }
+
+        public async Task EditSubItemAsync(int id, SubItemEditAddDTO subItemDTO)
+        {
+            SubItem subItem = await GetByIdAsync(id);
+            _mapper.Map(subItemDTO, subItem);
+            subItem.SubId = id;
+
+            await UpdateAsync(subItem);
             await SaveChangesAsync();
         }
     }

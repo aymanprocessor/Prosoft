@@ -12,6 +12,8 @@ namespace ProSoft.EF.IRepositories.Stocks
     {
         Task<List<SubItemViewDTO>> GetSubItemsByMainIdAsync(int mainId);
         Task<SubItemEditAddDTO> GetNewSubItemAsync(int mainId);
-        Task AddSubItemAsync(SubItemEditAddDTO subItemDTO);
+        Task<SubItemEditAddDTO> GetSubItemByIdAsync(int id);
+        Task AddSubItemAsync(int mainId, SubItemEditAddDTO subItemDTO);
+        Task EditSubItemAsync(int id, SubItemEditAddDTO subItemDTO);
     }
 }

@@ -10,8 +10,8 @@
 @inject IViewLocalizer localizer
 
 <div class="container pt-2">
-    <h1 class="mt-4">@localizer["Add Sub Item For"] : @Model.MainName</h1>
-    <form method="post" asp-action="Add_SubItem">
+    <h1 class="mt-4">@localizer["Edit Sub Item"] : @Model.SubName</h1>
+    <form method="post" asp-action="Edit_SubItem">
         <div class="border p-3 mt-4">
 
             @* Hidden Inputs *@
@@ -110,7 +110,7 @@
             <!------------------------------------------------------------------------------->
 
             <div class="parent d-flex justify-content-md-center gap-2">
-                <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add"]</button>
+                <button type="submit" class="btn btn-success" style="width:150px">@localizer["Save Changes"]</button>
                 <a asp-controller="MainItem" asp-action="@Model.MainLevel" asp-route-id="@Model.ParentCode" asp-route-flag1="@Model.Flag1" class="btn btn-secondary" style="width:150px">
                     @localizer["Cancel"]
                 </a>
