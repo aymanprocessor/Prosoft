@@ -86,7 +86,7 @@
     <div class="details-table-head d-flex justify-content-between align-items-center mt-3 mb-1">
         <h2 class="header">@localizer["The Items"]</h2>
         <a class="btn btn-sm btn-primary fs-6" style="width:150px">
-            @localizer["Add Item"]
+            @localizer["Add Sub Item"]
         </a>
     </div>
 
@@ -172,13 +172,16 @@
 
                     for (let item of result) {
                         const subItem = document.createElement("tr");
+                        let batchCounter = !item.batchCounter ? "@localizer["No"]" :
+                            item.batchCounter == 1 ? "@localizer["Yes"]" : "";
+
                         serial++;
                         subItem.innerHTML +=
                         `
                         <td class="align-middle text-center">${serial}</td>
                         <td class="align-middle text-center">${item.userSort}</td>
                         <td class="align-middle text-center">${item.subName}</td>
-                        <td class="align-middle text-center">${item.batchCounter}</td>
+                        <td class="align-middle text-center">${batchCounter}</td>
                         <td class="align-middle text-center">${item.itemPrice}</td>
                         <td class="align-middle text-center">${item.itemCode}</td>
                         <td class="text-center align-middle" style="width: 325px;">

@@ -47,9 +47,13 @@ namespace ProSoft.EF.DTOs.Stocks
         [DisplayName("Tax Percentage")]
         [Required(ErrorMessage = "The field is required")]
         public decimal ItemTax { get; set; }
+
+        [DisplayName("Coding Type")]
+        public string? EInvType { get; set; }
         public string? MainLevel { get; set; }
         public int? Flag1 { get; set; }
         public string? ParentCode { get; set; }
+        public string? MainName { get; set; }
         public int? BranchId { get; set; }
 
         public List<CostCenterViewDTO>? CostCenters { get; set; }

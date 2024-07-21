@@ -578,6 +578,29 @@
   "OverAll Transaction": "اجمالي الحركة",
   "Previous Balance": "رصيد ماقبله",
   "American Daily": "اليومية الاميريكية",
+  "Expense Analysis": "تحليل المصاريف",
+  "Analysise": "تحليل",
+  "Debtor": "الطرف المدين",
+  "Creditor": "الطرف الدائن",
+  "Net": "الصافي",
+  "Year": "عام",
+  "Choosee": "اختر",
+  "January": "يناير",
+  "February": "فبراير",
+  "March": "مارس",
+  "April": "إبريل",
+  "May": "مايو",
+  "June": "يونيو",
+  "July": "يوليو",
+  "August": "أغسطس",
+  "September": "سبتمبر",
+  "October": "أكتوبر",
+  "November": "نوفمبر",
+  "December": "ديسمبر",
+
+
+
+
 
 
 
@@ -839,4 +862,8 @@
   "Item Sell Price": "سعر بيع الصنف",
   "Tax Percentage": "نسبة الضريبة",
   "Stent Or Catheter": "دعامة او قسطرة",
+  "Add Sub Item": "اضافة صنف فرعي",
+  "Add Sub Item For": "اضافة صنف فرعي ل",
+  "Coding Type": "نوع التكويد",
+  "Edit Sub Item": "تعديل صنف فرعي"
 }
