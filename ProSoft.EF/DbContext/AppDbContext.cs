@@ -126,6 +126,7 @@ namespace ProSoft.EF.DbContext
         public DbSet<MainItemStock> MainItemStocks { get; set; }
         public DbSet<ItemBatchHistory> ItemBatchHistories { get; set; }
         public DbSet<StentDes> StentDess { get; set; }
+        public DbSet<SubItemDtl> SubItemDtls { get; set; }
 
         ////////////////////
         // Accounts //
@@ -135,6 +136,7 @@ namespace ProSoft.EF.DbContext
         public DbSet<AccTransMaster> AccTransMasters { get; set; }
         public DbSet<AccTransDetail> AccTransDetails { get; set; }
         public DbSet<AccStartBal> AccStartBals { get; set; }
+        public DbSet<AccBalAll> AccBalAlls { get; set; }
         ////////////////////
         // System //
         public DbSet<EisPosting> EisPostings { get; set; }

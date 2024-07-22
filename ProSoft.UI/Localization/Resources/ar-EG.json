@@ -450,7 +450,7 @@
   "Bills Only": "فواتير فقط",
   "Recording Restrictions": "تسجيل القيود",
   "Journals": "اليوميات",
-  "Cancel Journal Entry": "الغاء قيد يومية",
+  "Cancel Journal Voucher": "الغاء قيد يومية",
   "User Journal Types": "يوميات المستخدم",
   "Recording Journal Entries": "تسجيل قيود اليوميات",
   "Total Voucher": "اجمالي القيد",
@@ -597,6 +597,13 @@
   "October": "أكتوبر",
   "November": "نوفمبر",
   "December": "ديسمبر",
+  "General Professor For Facility": "الاستاذ العام للمنشأة",
+  "Movement To Date": "الحركة حتي تاريخه",
+  "General Professor": "الاستاذ العام",
+  "Movement To": "الحركة حتي",
+  "Movement Mounth": "حركة شهر",
+  "Balance in": "الرصيد في",
+  "General Professor Balance": "ميزان الاستاذ العام",
 
 
 
@@ -865,5 +872,6 @@
   "Add Sub Item": "اضافة صنف فرعي",
   "Add Sub Item For": "اضافة صنف فرعي ل",
   "Coding Type": "نوع التكويد",
-  "Edit Sub Item": "تعديل صنف فرعي"
+  "Edit Sub Item": "تعديل صنف فرعي",
+  "Error: ItemCode is larger than system barcode": "خطأ : كود الصنف اكبر من باركود النظام"
 }

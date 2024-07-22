@@ -20,6 +20,7 @@ namespace ProSoft.EF.DTOs.Stocks
         [DisplayName("Group Name")]
         [Required(ErrorMessage = "The field is required")]
         public string MainName { get; set; }
+        public string? MainNameAll { get; set; }
         public int? CurrentLevel { get; set; }
 
         [DisplayName("Item Counter")]

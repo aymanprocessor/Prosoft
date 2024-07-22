@@ -450,7 +450,7 @@
   "Journals": "Journals",
   "Cancel Journal Entry": "Cancel Journal Entry",
   "User Journal Types": "User Journal Types",
-  "Recording Journal Entries": "Recording Journal Entries",
+  "Recording Journal Voucher": "Recording Journal Voucher",
   "Total Voucher": "Total Voucher",
   "Voucher Type": "Voucher Type",
   "Come From": "Come From",
@@ -591,6 +591,14 @@
   "October": "October",
   "November": "November",
   "December": "December",
+  "General Professor For Facility": "General Professor For Facility",
+  "Movement To Date": "Movement To Date",
+  "General Professor": "General Professor",
+  "Movement To": "Movement To",
+  "Movement Mounth": "Movement Mounth",
+  "Balance in": "Balance in",
+  "General Professor Balance": "General Professor Balance",
+
 
 
 
@@ -856,5 +864,6 @@
   "Add Sub Item": "Add Sub Item",
   "Add Sub Item For": "Add Sub Item For",
   "Coding Type": "Coding Type",
-  "Edit Sub Item": "Edit Sub Item"
+  "Edit Sub Item": "Edit Sub Item",
+  "Error: ItemCode is larger than system barcode": "Error: ItemCode is larger than system barcode"
 }

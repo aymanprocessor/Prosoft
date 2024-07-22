@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using ProSoft.Core.Repositories.Stocks;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.IRepositories.Stocks;
@@ -15,7 +16,8 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         private readonly ISubItemRepo _subItemRepo;
         private readonly IMainItemRepo _mainItemRepo;
         private readonly IMapper _mapper;
-        public SubItemController(ISubItemRepo subItemRepo, IMainItemRepo mainItemRepo, IMapper mapper)
+        public SubItemController(ISubItemRepo subItemRepo, IMainItemRepo mainItemRepo,
+            IMapper mapper)
         {
             _subItemRepo = subItemRepo;
             _mainItemRepo = mainItemRepo;
@@ -47,7 +49,11 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add_SubItem(int id, SubItemEditAddDTO subItemDTO)
         {
-            if (ModelState.IsValid)
+            if (await _subItemRepo.ValidateItemCode(subItemDTO.ItemCode) == 1)
+            {
+                ViewBag.errorMsg = "Error: ItemCode is larger than system barcode";
+            }
+            else if (ModelState.IsValid)
             {
                 subItemDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
 
