@@ -461,9 +461,9 @@
                                             @localizer["Journals"]
                                         </a>
                                     </li>
-                                    <li class="nav-item has-submenu">
+                                    <li asp-area="Accounts" asp-controller="CancelJournalVoucher" class="nav-item has-submenu">
                                         <a asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
-                                            @localizer["Cancel Journal Entry"]
+                                            @localizer["Cancel Journal Voucher"]
                                         </a>
                                     </li>
                                 </ul>
@@ -503,6 +503,11 @@
                                     <li class="nav-item has-submenu">
                                         <a asp-area="Accounts" asp-controller="ReportExpenseAnalysis" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
                                             @localizer["Expense Analysis"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Accounts" asp-controller="ReportGeneralProfessorFacility" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                            @localizer["General Professor For Facility"]
                                         </a>
                                     </li>
                                 </ul>

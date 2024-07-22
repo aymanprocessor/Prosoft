@@ -38,23 +38,33 @@ namespace ProSoft.Core.Repositories.Accounts
         }
         public async Task<List<ExpenseAnalysisDTO>> GetExpenseAnalysis(int branch, int journal, string mainCode, int year, int filterBy)
         {
-            var expenseAnalysis = new ExpenseAnalysisDTO();
+            var expenseAnalysisList = new List<ExpenseAnalysisDTO>();
 
             for (int month = 1; month <= 12; month++)
             {
                 var details = await GetDetailByMounth(branch, journal, mainCode, year, month);
 
-                if (details.Any())
-                {
-                    var subCode = details.First().SubCode;
-                    expenseAnalysis.SubName = await GetSubNameBySubCode(mainCode, subCode);
-                }
+                // Group details by SubCode
+                var groupedDetails = details.GroupBy(d => d.SubCode);
 
-                decimal monthlySum = CalculateMonthlySum(details, filterBy);
-                SetMonthlySum(expenseAnalysis, month, monthlySum);
+                foreach (var group in groupedDetails)
+                {
+                    var subCode = group.Key;
+                    var subName = await GetSubNameBySubCode(mainCode, subCode);
+
+                    var existingExpenseAnalysis = expenseAnalysisList.FirstOrDefault(e => e.SubName == subName);
+                    if (existingExpenseAnalysis == null)
+                    {
+                        existingExpenseAnalysis = new ExpenseAnalysisDTO { SubName = subName };
+                        expenseAnalysisList.Add(existingExpenseAnalysis);
+                    }
+
+                    decimal monthlySum = CalculateMonthlySum(group.ToList(), filterBy);
+                    SetMonthlySum(existingExpenseAnalysis, month, monthlySum);
+                }
             }
 
-            return new List<ExpenseAnalysisDTO> { expenseAnalysis };
+            return expenseAnalysisList;
         }
 
         private decimal CalculateMonthlySum(List<AccTransDetailViewDTO> details, int filterBy)
@@ -91,11 +101,11 @@ namespace ProSoft.Core.Repositories.Accounts
             }
         }
 
-        public async Task<List<AccTransDetailViewDTO>> GetDetailByMounth(int branch, int journal, string mainCode, int year,int mounth)
+        public async Task<List<AccTransDetailViewDTO>> GetDetailByMounth(int branch, int journal, string mainCode, int year, int month)
         {
             // حساب أول يوم وآخر يوم في الشهر المحدد
-            var startDate = new DateTime(year, mounth, 1); // أول يوم في الشهر
-            var endDate = new DateTime(year, mounth, DateTime.DaysInMonth(year, mounth)); // آخر يوم في الشهر
+            var startDate = new DateTime(year, month, 1); // أول يوم في الشهر
+            var endDate = new DateTime(year, month, DateTime.DaysInMonth(year, month)); // آخر يوم في الشهر
 
             var accTransDetails = await _Context.AccTransDetails
                 .Where(obj => (branch == 100 || obj.CoCode == branch) &&
@@ -106,12 +116,15 @@ namespace ProSoft.Core.Repositories.Accounts
             List<AccTransDetailViewDTO> accTransDetailViewDTOs = _mapper.Map<List<AccTransDetailViewDTO>>(accTransDetails);
             return accTransDetailViewDTOs;
         }
-        private async Task<string> GetSubNameBySubCode(string mainCode,string subCode)
+
+        private async Task<string> GetSubNameBySubCode(string mainCode, string subCode)
         {
-            var subName = await _Context.AccSubCodes.Where(obj=>obj.MainCode == mainCode && obj.SubCode == subCode)
-                                        .Select(sub => sub.SubName)
-                                        .FirstOrDefaultAsync();
+            var subName = await _Context.AccSubCodes
+                .Where(obj => obj.MainCode == mainCode && obj.SubCode == subCode)
+                .Select(sub => sub.SubName)
+                .FirstOrDefaultAsync();
             return subName;
         }
+
     }
 }

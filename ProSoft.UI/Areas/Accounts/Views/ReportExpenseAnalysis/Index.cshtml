@@ -2,7 +2,7 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Print From Voucher To Voucher";
+    ViewData["Title"] = "Expense Analysis";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
 
@@ -68,7 +68,7 @@
                 <span asp-validation-for="Year" class="text-danger"></span>
             </div>
             <div class="d-flex align-items-center w-75">
-                <label style="width:30% !important;">@localizer["Choose"]</label>
+                <label style="width:30% !important;">@localizer["Choosee"]</label>
                 <select id="FilterBy" class="form-control text-center">
                     <option value="1">@localizer["Debtor"]</option>
                     <option value="2">@localizer["Creditor"]</option>
@@ -186,24 +186,36 @@
                 var index =1;
                 for (let item of result) {
                     const data = document.createElement("tr");
+                    let mon1 = item.mon1 || 0;
+                    let mon2 = item.mon2 || 0;
+                    let mon3 = item.mon3 || 0;
+                    let mon4 = item.mon4 || 0;
+                    let mon5 = item.mon5 || 0;
+                    let mon6 = item.mon6 || 0;
+                    let mon7 = item.mon7 || 0;
+                    let mon8 = item.mon8 || 0;
+                    let mon9 = item.mon9 || 0;
+                    let mon10 = item.mon10 || 0;
+                    let mon11 = item.mon11 || 0;
+                    let mon12 = item.mon12 || 0;
                     let total = item.mon1 + item.mon2 + item.mon3 + item.mon4 + item.mon5 + item.mon6 + item.mon7 + item.mon8 + item.mon9 + item.mon10 + item.mon11 + item.mon12;
 
                     data.innerHTML += `
 
                             <td class="align-middle">${index}</td>
                             <td class="align-middle">${item.subName}</td>
-                            <td class="align-middle">${item.mon1}</td>
-                            <td class="align-middle">${item.mon2}</td>
-                            <td class="align-middle">${item.mon3}</td>
-                            <td class="align-middle">${item.mon4}</td>
-                            <td class="align-middle">${item.mon5}</td>
-                            <td class="align-middle">${item.mon6}</td>
-                            <td class="align-middle">${item.mon7}</td>
-                            <td class="align-middle">${item.mon8}</td>
-                            <td class="align-middle">${item.mon9}</td>
-                            <td class="align-middle">${item.mon10}</td>
-                            <td class="align-middle">${item.mon11}</td>
-                            <td class="align-middle">${item.mon12}</td>
+                            <td class="align-middle">${mon1}</td>
+                            <td class="align-middle">${mon2}</td>
+                            <td class="align-middle">${mon3}</td>
+                            <td class="align-middle">${mon4}</td>
+                            <td class="align-middle">${mon5}</td>
+                            <td class="align-middle">${mon6}</td>
+                            <td class="align-middle">${mon7}</td>
+                            <td class="align-middle">${mon8}</td>
+                            <td class="align-middle">${mon9}</td>
+                            <td class="align-middle">${mon10}</td>
+                            <td class="align-middle">${mon11}</td>
+                            <td class="align-middle">${mon12}</td>
                             <td class="align-middle" style="background-color: #e6dfdf;">${total}</td>
                                
                             `;
@@ -227,7 +239,7 @@
                 //    dataForSum.style.backgroundColor = "#e6dfdf";
                 dataForSum.innerHTML =
                     `
-                            <td colspan="2">@localizer["The Total"]</td>
+                            <td class="text-center" colspan="2">@localizer["The Total"]</td>
                             <td class="align-middle" style="background-color: #e6dfdf;">${mon1Sum}</td>
                             <td class="align-middle" style="background-color: #e6dfdf;">${mon2Sum}</td>
                             <td class="align-middle" style="background-color: #e6dfdf;">${mon3Sum}</td>

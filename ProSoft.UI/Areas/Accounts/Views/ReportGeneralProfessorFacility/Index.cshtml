@@ -1,0 +1,240 @@
+﻿@model ReportGeneralProfessorFacilityDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "General Professor For Facility";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+
+    SelectList branches = new SelectList(Model.branchs, "BranchId", "BranchDesc");
+
+}
+@inject IViewLocalizer localizer
+<style>
+    .hide {
+        display: none !important;
+    }
+    /*  .image {
+                    top: 0px;
+                    left: 0px;
+                    width: 100%;
+                    height: 100%;
+                    background-repeat: no-repeat;
+                    background-attachment: fixed;
+                    background-size: cover;
+                    background-position: center;
+                    opacity: 0.5;
+                    z-index: -1;
+                } */
+</style>
+<div class="container pt-2 " style="min-height:100vh;">
+    @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
+
+    <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mt-4">
+        <h1 class="header">@localizer["General Professor For Facility"]</h1>
+        <div class="d-flex gap-2">
+            <a class="btn btn-sm btn-primary fs-6" style="width:150px" onclick="GeneralProfessor(event)">
+                @localizer["General Professor"]
+            </a>
+        </div>
+    </div>
+
+    <div class="overflow-auto filter-box">
+        <div class=" d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 px-1 my-2">
+            <div class="d-flex align-items-center flex-column flex-md-row w-100">
+                <label for="branches" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Branches"]</label>
+                <select id="branches" asp-items="branches" class="form-control text-center w-100">
+                    <option value="100">-- @localizer["All"] --</option>
+                </select>
+            </div>
+
+            <div class="d-flex align-items-center w-100">
+                <label style="width:30% !important;">@localizer["To Period"]</label>
+                <input id="toPeriod" type="date" class="form-control text-center" />
+            </div>
+            <div class="d-flex align-items-center w-100">
+                <label style="width:60% !important;">@localizer["Movement To Date"]</label>
+                <select id="movementToDate" class="form-control text-center w-100">
+                    <option value="0">@localizer["No"]</option>
+                    <option value="1">@localizer["Yes"]</option>
+                </select>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="report">
+    </div>
+</div>
+<script>
+    var branche = document.getElementById("branches");
+    var toPeriod = document.getElementById("toPeriod");
+    var movementToDate = document.getElementById("movementToDate");
+
+    function OverAll(e) {
+       
+        if (!toPeriod.value) {
+            toPeriod.focus();
+            return;
+        }
+
+
+        var headReport = document.querySelector(".report");
+
+        let title;
+        title = "@localizer["OverAll Assistant Professor From"] " + fromPeriod.value + " @localizer["To"] " + toPeriod.value;
+
+        headReport.innerHTML =
+            `
+                            <div class="report-head d-flex justify-content-center align-items-center mt-4">
+                                 <h2 class="header">${title}</h2>
+                                     <button onclick="printReport()" class="btn btn-success" style="margin-inline-start: auto;">Print</button>
+                            </div>
+
+                            <div class="print-table p-0 mb-2 overflow-auto">
+
+                                <table id="myTable" class="table table-bordered table-hover Voucher-table" style="width:100%">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th class="align-middle text-center" rowspan="2">
+                                                     @localizer["Serial"]
+                                            </th>
+                                            <th class="align-middle text-center" colspan="2">
+                                                      @localizer["The Code"]
+                                            </th>
+                                            <th class="align-middle text-center" colspan="2">
+                                                      @localizer["Previous Balance"]
+                                            </th>
+                                            <th class="align-middle text-center" colspan="2">
+                                                      @localizer["Movement To"]
+                                            </th>
+                                            <th class="align-middle text-center" colspan="2">
+                                                      @localizer["Movement Mounth"]
+                                            </th>
+                                            <th class="align-middle text-center" colspan="2">
+                                                      @localizer["Balance in"]
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th class="align-middle text-center" >
+                                                 @localizer["Main"]
+                                            </th>
+                                            <th class="align-middle text-center" >
+                                                 @localizer["Sub"]
+                                             </th>
+                                             <th class="align-middle text-center" >
+                                             @localizer["Debit"]
+                                            </th>
+                                            <th class="align-middle text-center" >
+                                                @localizer["Credit"]
+                                             </th>
+                                            <th class="align-middle text-center" >
+                                                @localizer["Debit"]
+                                            </th>
+                                            <th class="align-middle text-center" >
+                                                @localizer["Credit"]
+                                             </th>
+                                            <th class="align-middle text-center" >
+                                                @localizer["Debit"]
+                                            </th>
+                                            <th class="align-middle text-center" >
+                                                @localizer["Credit"]
+                                            </th>    
+                                            <th class="align-middle text-center" >
+                                                @localizer["Debit"]
+                                            </th>
+                                            <th class="align-middle text-center" >
+                                                @localizer["Credit"]
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        `;
+        let url = `/Accounts/ReportAssistantProfessor/GetOverAll/${branche.value}?journal=${journal.value}&mainCode=${mainCode.value}&costCode=${costCode.value}&fromPeriod=${fromPeriod.value}&toPeriod=${toPeriod.value}`;
+
+        var dataa = document.querySelector(".Voucher-table tbody");
+        dataa.innerHTML = "";  // Empty data
+        $.ajax({
+            url: url,
+            success: function (result) {
+                //  console.log(result);
+                var index = 1;
+                var valDepSum = 0;
+                var valCreditSum = 0;
+                var transValDepSum = 0;
+                var transValCreditSum = 0;
+                var balance = 0;
+                var positiveSum = 0;
+                var negativeSum = 0;
+
+                for (let item of result) {
+                    const data = document.createElement("tr");
+                    balance = (item.valDep - item.transValCredit + item.transValDep - item.valCredit - item.lcGapValCredit + item.lcGapValDep).toFixed(2);
+
+                    // Determine what to display in the balance columns
+                    var positiveColumn = balance >= 0 ? balance : 0;
+                    var negativeColumn = balance < 0 ? Math.abs(balance) : 0; data.innerHTML += `
+                            <td class="align-middle">${index}</td>
+                            <td class="align-middle">${item.subCode}</td>
+                            <td class="align-middle">${item.valDep}</td>
+                            <td class="align-middle">${item.valCredit}</td>
+                            <td class="align-middle">${item.transValDep}</td>
+                            <td class="align-middle">${item.transValCredit}</td>
+                            <td class="align-middle">${positiveColumn}</td>
+                            <td class="align-middle">${negativeColumn}</td>
+
+                            `;
+                    index++;
+                    valDepSum += item.valDep;
+                    valCreditSum += item.valCredit;
+                    transValDepSum += item.transValDep;
+                    transValCreditSum += item.transValCredit;
+                    positiveSum += parseFloat(positiveColumn);
+                    negativeSum += parseFloat(negativeColumn);
+                    dataa.appendChild(data);
+                }
+                const dataForSum = document.createElement("tr");
+                //    dataForSum.style.backgroundColor = "#e6dfdf";
+                dataForSum.innerHTML =
+                    `
+                                <td class="text-center" colspan="2">@localizer["The Total"]</td>
+                                <td style="background-color: #e6dfdf;">${valDepSum}</td>
+                                <td style="background-color: #e6dfdf;">${valCreditSum}</td>
+                                <td style="background-color: #e6dfdf;">${transValDepSum}</td>
+                                <td style="background-color: #e6dfdf;">${transValCreditSum}</td>
+                                <td style="background-color: #e6dfdf;">${positiveSum.toFixed(2)}</td>
+                                <td style="background-color: #e6dfdf;">${negativeSum.toFixed(2)}</td>
+                        `;
+                dataa.appendChild(dataForSum);
+                const dataForSumSum = document.createElement("tr");
+                //    dataForSum.style.backgroundColor = "#e6dfdf";
+                dataForSumSum.innerHTML =
+                    `
+                                    <td class="text-center" colspan="6"></td>
+                                    <td style="background-color: #e6dfdf;">${positiveSum.toFixed(2)}</td>
+                                    <td style="background-color: #e6dfdf;">${negativeSum.toFixed(2)}</td>
+                            `;
+                dataa.appendChild(dataForSumSum);
+
+            }
+        });
+    }
+
+
+    function printReport() {
+        let head = document.querySelector(".report-head");
+        let tableReport = document.querySelector(".print-table");
+        let originalContent = document.body.innerHTML;//all body
+
+        head.querySelector("button").style.display = "none";
+        document.body.innerHTML = head.outerHTML + tableReport.outerHTML;
+        window.print();
+        document.body.innerHTML = originalContent;
+    }
+
+
+</script>

@@ -191,7 +191,6 @@ namespace ProSoft.Core.Repositories.Accounts
                             LcGapValCredit= lcGapValCredit
                         };
                         assistantProfessorOverAllDTOs.Add(dto);
-
                     }
                 }
             }

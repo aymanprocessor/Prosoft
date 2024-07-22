@@ -124,6 +124,8 @@ builder.Services.AddScoped<IAccSubCodeRepo, AccSubCodeRepo>();
 builder.Services.AddScoped<IReportAssistantProfessorRepo, ReportAssistantProfessorRepo>();
 builder.Services.AddScoped<IAmericanDailyRepo, AmericanDailyRepo>();
 builder.Services.AddScoped<IReportExpenseAnalysisRepo, ReportExpenseAnalysisRepo>();
+builder.Services.AddScoped<IReportGeneralProfessorFacilityRepo, ReportGeneralProfessorFacilityRepo>();
+builder.Services.AddScoped<ICancelJournalVoucherRepo, CancelJournalVoucherRepo>();
 ////////// PatRecord ////////////////////
 builder.Services.AddScoped<ICoronaryRepo, CoronaryRepo>();
 builder.Services.AddScoped<IPastHistoryRepo, PastHistoryRepo>();
