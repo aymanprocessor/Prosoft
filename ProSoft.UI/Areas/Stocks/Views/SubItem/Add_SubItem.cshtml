@@ -25,7 +25,10 @@
                 <div class="mb-3">
                     <label asp-for="ItemCode"></label>
                     <input asp-for="ItemCode" class="form-control" />
-                    <span asp-validation-for="ItemCode" class="text-danger"></span>
+                    <span asp-validation-for="ItemCode" class="text-danger">
+                        @if (ViewBag.errorMsg != null)
+                            @localizer[ViewBag.errorMsg]
+                    </span>
                 </div>
                 <div class="mb-3">
                     <label asp-for="SubName"></label>

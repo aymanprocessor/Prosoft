@@ -30,21 +30,20 @@ namespace ProSoft.Core.Repositories.Stocks
             return subItemsDTO;
         }
 
-        public async Task<SubItemEditAddDTO> GetNewSubItemAsync(int mainId)
+        public async Task<int> ValidateItemCode(string itemCode)
         {
-            var subItemDTO = new SubItemEditAddDTO();
+            // عدد حروف الباركود
+            var sysObj2 = await _Context.SystemTables.FirstOrDefaultAsync(obj => obj.SysId == 20);
+            var bCode_len = sysObj2.SysValue;
+            if(itemCode.Length > bCode_len)
+                // 1 => خطأ كود الصنف اكبر من باركود النظام
+                // 1 => Error: ItemCode is larger than system barcode
+                return 1;
+            return 0;
+        }
 
-            MainItem mainItem = await _Context.MainItems.FindAsync(mainId);
-
-            if (mainItem != null)
-            {
-                _mapper.Map(mainItem, subItemDTO);
-                subItemDTO.MainLevel = mainItem.ParentCode == "1" ? "MainLevel_2" : $"MainLevel_{mainItem.CurrentLevel}";
-                subItemDTO.ParentCode = mainItem.ParentCode;
-                subItemDTO.MainName = mainItem.MainName;
-            }
-
-            ////////////////////////////////////
+        private async Task<string> GenerateItemCode(MainItem mainItem)
+        {
             var ll_flag1 = mainItem.Flag1;
             var batchCounter = mainItem.BatchCounter != null ? mainItem.BatchCounter : 0;
             var ls_code = "";
@@ -65,7 +64,7 @@ namespace ProSoft.Core.Repositories.Stocks
             // كود الصنف اتوماتيك
             var sysObj3 = await _Context.SystemTables.FirstOrDefaultAsync(obj => obj.SysId == 26);
             var sys_value = sysObj3.SysValue;
-            var li_sub = await _DbSet.Where(obj => obj.MainId == mainId).CountAsync() + 1;
+            var li_sub = await _DbSet.Where(obj => obj.MainId == mainItem.MainId).CountAsync() + 1;
             var is_sub = $"000000000000{li_sub}";
             is_sub = is_sub[^6..];
             var ll_sub_count = is_sub.Length;
@@ -99,9 +98,9 @@ namespace ProSoft.Core.Repositories.Stocks
                     ll_count_item = ll_count_flag + ll_main_count + 1;
 
                 var sub_code_len = bCode_len - ll_count_item;
-                if(bCode_len > 0)
+                if (bCode_len > 0)
                 {
-                    if(ll_count_item > bCode_len)
+                    if (ll_count_item > bCode_len)
                     {
                         // Print error 
                         // خطأ كود الصنف اكبر من باركود النظام
@@ -111,9 +110,9 @@ namespace ProSoft.Core.Repositories.Stocks
                     {
                         var ls_sub = $"0000000000{li_sub}"[^(int)sub_code_len..];
                         if (sys_valu == 1)
-                            ls_code = ll_flag1 + $"-{ls_main}-{li_sub}";
+                            ls_code = ll_flag1 + $"-{ls_main}-{ls_sub}";
                         else
-                            ls_code = $"{ls_main}-{li_sub}";
+                            ls_code = $"{ls_main}-{ls_sub}";
                     }
                 }
                 else
@@ -124,8 +123,23 @@ namespace ProSoft.Core.Repositories.Stocks
                         ls_code = $"{ls_main}-{li_sub}";
                 }
             }
-            subItemDTO.ItemCode = ls_code;
-            ////////////////////////////////////
+            return ls_code;
+        }
+
+        public async Task<SubItemEditAddDTO> GetNewSubItemAsync(int mainId)
+        {
+            var subItemDTO = new SubItemEditAddDTO();
+
+            MainItem mainItem = await _Context.MainItems.FindAsync(mainId);
+
+            if (mainItem != null)
+            {
+                _mapper.Map(mainItem, subItemDTO);
+                subItemDTO.MainLevel = mainItem.ParentCode == "1" ? "MainLevel_2" : $"MainLevel_{mainItem.CurrentLevel}";
+                subItemDTO.ParentCode = mainItem.ParentCode;
+                subItemDTO.MainName = mainItem.MainName;
+                subItemDTO.ItemCode = await GenerateItemCode(mainItem);
+            }
 
             List<CostCenter> costCenters = await _Context.CostCenters.Where(obj =>
                 (obj.CostFlag == 1 || obj.CostFlag == 10) && obj.CostVisible == 1).ToListAsync();

@@ -206,7 +206,16 @@ namespace ProSoft.Core.Repositories.Stocks
             mainItemDTO.PolicyPrice = mainItemDTO.PolicyPrice is not (null or 0) ? mainItemDTO.PolicyPrice : 3;
 
             var mainItem = _mapper.Map<MainItem>(mainItemDTO);
-            mainItem.MainNameAll = mainItem.MainName;
+            if(mainItem.ParentCode.Length == 1)
+            {
+                mainItem.MainNameAll = mainItem.MainName;
+            }
+            else if(mainItem.ParentCode.Length > 1)
+            {
+                MainItem parentItem = await _DbSet.FirstOrDefaultAsync(obj => obj.MainCode == mainItem.ParentCode &&
+                    obj.Flag1 == mainItem.Flag1);
+                mainItem.MainNameAll = parentItem.MainNameAll + "/" + mainItem.MainName;
+            }
             mainItem.RowOnOff = 1;
             await AddAsync(mainItem);
             await SaveChangesAsync();

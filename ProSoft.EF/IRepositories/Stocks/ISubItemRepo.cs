@@ -11,6 +11,7 @@ namespace ProSoft.EF.IRepositories.Stocks
     public interface ISubItemRepo : IRepository<SubItem, int>
     {
         Task<List<SubItemViewDTO>> GetSubItemsByMainIdAsync(int mainId);
+        Task<int> ValidateItemCode(string itemCode);
         Task<SubItemEditAddDTO> GetNewSubItemAsync(int mainId);
         Task<SubItemEditAddDTO> GetSubItemByIdAsync(int id);
         Task AddSubItemAsync(int mainId, SubItemEditAddDTO subItemDTO);
