@@ -324,5 +324,69 @@ namespace ProSoft.Core.Repositories.Stocks
 
             return newMainLevel;
         }
+
+        ///////////////////////////////////////////////////////
+
+        public async Task<MainItemStockDTO> GetNewMainItemStockAsync(int mainId)
+        {
+            var mainItemStock = new MainItemStockDTO();
+            MainItem mainItem = await GetByIdAsync(mainId);
+
+            List<MainItemStock> mainItemStockList = await _Context.MainItemStocks.Where(obj => obj.MainCode ==
+                mainItem.MainCode && obj.Flag1 == mainItem.Flag1 && obj.BranchId == mainItem.BranchId)
+                .ToListAsync();
+            mainItemStock.AddedStocks = new List<StockViewDTO>();
+            foreach (var item in mainItemStockList)
+            {
+                Stock stock = await _Context.Stocks.FindAsync(item.Stkcod);
+                var stockDTO = _mapper.Map<StockViewDTO>(stock);
+                mainItemStock.AddedStocks.Add(stockDTO);
+            }
+
+            List<Stock> stocks = await _Context.Stocks.ToListAsync();
+            mainItemStock.Stocks = _mapper.Map<List<StockViewDTO>>(stocks);
+
+            mainItemStock.Flag1 = mainItem.Flag1;
+            mainItemStock.ParentCode = mainItem.ParentCode;
+            mainItemStock.MainName = mainItem.MainName;
+            mainItemStock.MainLevel = mainItem.ParentCode == "1" ? "MainLevel_2" : $"MainLevel_{mainItem.CurrentLevel}";
+
+            return mainItemStock;
+        }
+
+        public async Task<List<string>> CheckIfExistsAsync(int mainId, int[] stocksIDs)
+        {
+            MainItem mainItem = await GetByIdAsync(mainId);
+            List<string> messages = new List<string>();
+            foreach (var stockID in stocksIDs)
+            {
+                MainItemStock mainItemStock = await _Context.MainItemStocks.FirstOrDefaultAsync(obj => obj.MainCode ==
+                    mainItem.MainCode && obj.Flag1 == mainItem.Flag1 && obj.BranchId == mainItem.BranchId &&
+                    obj.Stkcod == stockID);
+                if(mainItemStock != null)
+                {
+                    Stock stock = await _Context.Stocks.FindAsync(stockID);
+                    messages.Add($"{stock.Stknam} is already added before.");
+                }
+            }
+            if (messages.Count == 0)
+                messages.Add("1");
+            return messages;
+        }
+
+        public async Task AddStocksToGroupAsync(int mainId, int[] stocksIDs)
+        {
+            MainItem mainItem = await GetByIdAsync(mainId);
+            foreach (var stockID in stocksIDs)
+            {
+                var newMainItemStock = new MainItemStock();
+                newMainItemStock.MainCode = mainItem.MainCode;
+                newMainItemStock.Flag1 = (int)mainItem.Flag1;
+                newMainItemStock.BranchId = (int)mainItem.BranchId;
+                newMainItemStock.Stkcod = stockID;
+                await _Context.AddAsync(newMainItemStock);
+            }
+            await SaveChangesAsync();
+        }
     }
 }

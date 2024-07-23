@@ -36,5 +36,9 @@ namespace ProSoft.EF.IRepositories.Stocks
         ///////////////////////////////////////////////////////
         // Main Level 6
         Task<MainItemEditAddDTO> GetNewMainLevel_6_Async(string parentCode, int flag1);
+        ///////////////////////////////////////////////////////
+        Task<MainItemStockDTO> GetNewMainItemStockAsync(int mainId);
+        Task<List<string>> CheckIfExistsAsync(int mainId, int[] stocksIDs);
+        Task AddStocksToGroupAsync(int mainId, int[] stocksIDs);
     }
 }

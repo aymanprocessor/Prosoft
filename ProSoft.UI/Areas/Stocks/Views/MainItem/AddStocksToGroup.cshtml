@@ -1,0 +1,53 @@
+﻿@model MainItemStockDTO
+@{
+    ViewData["Title"] = "Add Stockk To Main Group";
+    Layout = "_LayoutItemsGuide";
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+    <h1 class="mt-4">@localizer["Add Stockk To Main Group"] : @Model.MainName</h1>
+    <form method="post" asp-action="AddStocksToGroup">
+        <div class="border p-3 mt-4">
+
+            @* Hidden Inputs *@
+            <input asp-for="Flag1" type="hidden" />
+            <input asp-for="ParentCode" type="hidden" />
+            <input asp-for="MainLevel" type="hidden" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3 w-100">
+                    <label class="fs-4">@localizer["Stocks"]</label>
+                    <div class="d-flex flex-wrap gap-2 form-control">
+                        @foreach(var item in Model.Stocks)
+                        {
+                        <input type="checkbox" class="toggle-checkbox" name="stocks" value="@item.Stkcod" id="stock-@item.Stkcod" />
+                        <label for="stock-@item.Stkcod" class="role me-2 fs-5 px-2">
+                            @item.Stknam
+                        </label>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex justify-content-md-center gap-2">
+                <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add"]</button>
+                <a asp-controller="MainItem" asp-action="@Model.MainLevel" asp-route-id="@Model.ParentCode" asp-route-flag1="@Model.Flag1" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+    <div class="mt-2">
+        <h3 class="mb-2">@localizer["The Last Added Stocks"]</h3>
+        <div class=" d-flex gap-2 mb-3">
+            @foreach (var item in Model.AddedStocks)
+            {
+            <span class="btn btn-success" style="pointer-events: none">@item.Stknam</span>
+            }
+        </div>
+    </div>
+</div>

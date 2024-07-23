@@ -18,13 +18,15 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         private readonly ICostCenterRepo _costCenterRepo;
         private readonly IStockTypeRepo _stockTypeRepo;
         private readonly IMapper _mapper;
+        private readonly IStockRepo _stockRepo;
         public MainItemController(IMainItemRepo mainItemRepo, ICostCenterRepo costCenterRepo,
-            IStockTypeRepo stockTypeRepo, IMapper mapper)
+            IStockTypeRepo stockTypeRepo, IMapper mapper, IStockRepo stockRepo)
         {
             _mainItemRepo = mainItemRepo;
             _costCenterRepo = costCenterRepo;
             _stockTypeRepo = stockTypeRepo;
             _mapper = mapper;
+            _stockRepo = stockRepo;
         }
 
         public async Task<IActionResult> ChooseStockType()
@@ -32,6 +34,49 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             List<KindStore> stockTypes = await _stockTypeRepo.GetAllAsync();
             var stockTypesDTO = _mapper.Map<List<KindStoreDTO>>(stockTypes);
             return View(stockTypesDTO);
+        }
+
+        public async Task<IActionResult> AddStocksToGroup(int id, int flag1)
+        {
+            MainItemStockDTO mainItemStockDTO = await _mainItemRepo.GetNewMainItemStockAsync(id);
+            #region sidebar
+            ViewBag.MainLevel_2 = await _mainItemRepo.GetMainItemsByLevelAsync(2, flag1);
+            ViewBag.MainLevel_3 = await _mainItemRepo.GetMainItemsByLevelAsync(3, flag1);
+            ViewBag.MainLevel_4 = await _mainItemRepo.GetMainItemsByLevelAsync(4, flag1);
+            ViewBag.MainLevel_5 = await _mainItemRepo.GetMainItemsByLevelAsync(5, flag1);
+            ViewBag.MainLevel_6 = await _mainItemRepo.GetMainItemsByLevelAsync(6, flag1);
+            #endregion
+            return View(mainItemStockDTO);
+        }
+
+        //Post Add
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddStocksToGroup(int id, int[] stocks, MainItemStockDTO mainItemStockDTO)
+        {
+            List<string> messages = await _mainItemRepo.CheckIfExistsAsync(id, stocks);
+            if (messages.ElementAt(0) != "1")
+            {
+                foreach (var error in messages)
+                {
+                    ModelState.AddModelError("", error);
+                }
+            }
+            else if (ModelState.IsValid)
+            {
+                await _mainItemRepo.AddStocksToGroupAsync(id, stocks);
+                return RedirectToAction(mainItemStockDTO.MainLevel, new { id = mainItemStockDTO.ParentCode, flag1 = mainItemStockDTO.Flag1 });
+            }
+            #region sidebar
+            ViewBag.MainLevel_2 = await _mainItemRepo.GetMainItemsByLevelAsync(2, (int)mainItemStockDTO.Flag1);
+            ViewBag.MainLevel_3 = await _mainItemRepo.GetMainItemsByLevelAsync(3, (int)mainItemStockDTO.Flag1);
+            ViewBag.MainLevel_4 = await _mainItemRepo.GetMainItemsByLevelAsync(4, (int)mainItemStockDTO.Flag1);
+            ViewBag.MainLevel_5 = await _mainItemRepo.GetMainItemsByLevelAsync(5, (int)mainItemStockDTO.Flag1);
+            ViewBag.MainLevel_6 = await _mainItemRepo.GetMainItemsByLevelAsync(6, (int)mainItemStockDTO.Flag1);
+            #endregion
+            MainItemStockDTO newMainItemStockDTO = await _mainItemRepo.GetNewMainItemStockAsync(id);
+            _mapper.Map(newMainItemStockDTO, mainItemStockDTO);
+            return View(mainItemStockDTO);
         }
 
         ///////////////////////////////////////////////////////
