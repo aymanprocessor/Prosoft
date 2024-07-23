@@ -136,6 +136,7 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<ItemBatch, ItemBatchHistory>().ReverseMap();
             CreateMap<ItmReorder, ItmReorderDTO>().ReverseMap();
             CreateMap<StentDes, StentDesDTO>().ReverseMap();
+            CreateMap<MainItemStockDTO, MainItemStockDTO>().ReverseMap();
             ////////// System ////////////////////
             CreateMap<EisPosting, EisPostingViewDTO>().ReverseMap();
             CreateMap<EisPosting, EisPostingEditAddDTO>().ReverseMap();

@@ -61,11 +61,12 @@
                             @localizer["No"]
                     </td>
                     <td style="width: 325px;">
-                        <a asp-controller="MainItem" asp-action="Edit_MainLevel_5" asp-route-id="@item.MainId" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
+                        <a asp-controller="MainItem" asp-action="AddStocksToGroup" asp-route-id="@item.MainId" asp-route-flag1="@item.Flag1" class="btn btn-sm btn-primary mb-1 fs-6" style="width: 110px">@localizer["Add Stocks"]</a>
+                        <a asp-controller="MainItem" asp-action="Edit_MainLevel_5" asp-route-id="@item.MainId" class="btn btn-sm btn-success mb-1 fs-6" style="width: 60px">@localizer["Edit"]</a>
                         <form action="/Stocks/MainItem/Delete_MainLevel_5" method="post" class="d-inline">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@item.MainId" />
-                            <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width: 150px">@localizer["Delete"]</button>
+                            <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width: 60px">@localizer["Delete"]</button>
                             <div class="modal-container">
                                 <div class="modal 4" id="modal">
                                     <div class="modal-header fs-4">

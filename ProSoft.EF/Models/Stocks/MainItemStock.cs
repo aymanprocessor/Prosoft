@@ -9,22 +9,26 @@ using System.Threading.Tasks;
 
 namespace ProSoft.EF.Models.Stocks
 {
-    [Keyless]
+    [PrimaryKey("MainCode", "Flag1", "BranchId", "Stkcod")]
     [Table("MAIN_ITEM_STOCK")]
     public class MainItemStock
     {
+        [Key]
         [Column("MAIN_CODE")]
         [StringLength(10)]
         [Unicode(false)]
-        public string? MainCode { get; set; }
+        public string MainCode { get; set; }
 
+        [Key]
         [Column("FLAG1")]
-        public int? Flag1 { get; set; }
+        public int Flag1 { get; set; }
 
+        [Key]
         [Column("BRANCH_ID")]
-        public int? BranchId { get; set; }
+        public int BranchId { get; set; }
 
+        [Key]
         [Column("STKCOD")]
-        public int? Stkcod { get; set; }
+        public int Stkcod { get; set; }
     }
 }

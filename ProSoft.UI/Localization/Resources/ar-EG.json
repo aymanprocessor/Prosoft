@@ -604,6 +604,12 @@
   "Movement Mounth": "حركة شهر",
   "Balance in": "الرصيد في",
   "General Professor Balance": "ميزان الاستاذ العام",
+  "All Journals": "كل اليوميات",
+  "All Baranches": "كل الفروع",
+  "All Doctors": "كل الاطباء",
+  "Returned": "استرجاع",
+  "From Voucher No": "من القيد رقم",
+  "To Voucher No": "الي القيد رقم",
 
 
 
@@ -873,5 +879,8 @@
   "Add Sub Item For": "اضافة صنف فرعي ل",
   "Coding Type": "نوع التكويد",
   "Edit Sub Item": "تعديل صنف فرعي",
-  "Error: ItemCode is larger than system barcode": "خطأ : كود الصنف اكبر من باركود النظام"
+  "Error: ItemCode is larger than system barcode": "خطأ : كود الصنف اكبر من باركود النظام",
+  "Add Stocks": "اضافة مخازن",
+  "Add Stockk To Main Group": "اضافة مخزن الي المجموعة الرئيسية",
+  "The Last Added Stocks": "المخازن المضافة مؤخراً"
 }

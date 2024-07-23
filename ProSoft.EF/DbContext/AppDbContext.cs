@@ -32,6 +32,7 @@ namespace ProSoft.EF.DbContext
         // Shared //
         public DbSet<NationalityEi> NationalityEis { get; set; }
         public DbSet<EisUserObject> EisUserObjects { get; set; }
+        public DbSet<AccMonth> AccMonths { get; set; }
         /////
         // Analysis //
         public DbSet<Itemanalysis> Itemanalyses { get; set; }
@@ -127,6 +128,7 @@ namespace ProSoft.EF.DbContext
         public DbSet<ItemBatchHistory> ItemBatchHistories { get; set; }
         public DbSet<StentDes> StentDess { get; set; }
         public DbSet<SubItemDtl> SubItemDtls { get; set; }
+        public DbSet<Stkbalance> Stkbalances { get; set; }
 
         ////////////////////
         // Accounts //
