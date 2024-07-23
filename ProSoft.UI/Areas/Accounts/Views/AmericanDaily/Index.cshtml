@@ -44,13 +44,13 @@
             <div class="d-flex align-items-center flex-column flex-md-row w-100">
                 <label for="branches" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Branches"]</label>
                 <select id="branches" asp-items="branches" class="form-control text-center w-100">
-                    <option value="100">-- @localizer["All"] --</option>
+                    <option value="100">@localizer["All Baranches"]</option>
                 </select>
             </div>
             <div class="d-flex align-items-center flex-column flex-md-row w-100">
                 <label for="journals" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Journal"]</label>
                 <select id="journals" asp-items="JournalTypes" class="form-control text-center w-100">
-                    <option value="100">-- @localizer["All"] --</option>
+                    <option value="100">@localizer["All Journals"]</option>
                 </select>
             </div>
             <div class="d-flex align-items-center w-100">
@@ -84,8 +84,8 @@
             }
             return;
         }
-
-        let title = `@localizer["American Daily"] @localizer["From"] ${fromPeriod.value} @localizer["To"] ${toPeriod.value}`;
+        var journalName = journal.options[journal.selectedIndex].textContent;
+        let title = `@localizer["American Daily"] @localizer["From"] ${fromPeriod.value} @localizer["To"] ${toPeriod.value} - ${journalName}`;
 
         var headReport = document.querySelector(".report");
         headReport.innerHTML = `

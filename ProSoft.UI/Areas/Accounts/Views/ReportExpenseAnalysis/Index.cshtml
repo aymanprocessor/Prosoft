@@ -46,13 +46,13 @@
             <div class="d-flex align-items-center flex-column flex-md-row w-100">
                 <label for="branches" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Branches"]</label>
                 <select id="branches" asp-items="branches" class="form-control text-center w-100">
-                    <option value="100">-- @localizer["All"] --</option>
+                    <option value="100">@localizer["All Baranches"]</option>
                 </select>
             </div>
             <div class="d-flex align-items-center flex-column flex-md-row w-100">
                 <label for="journals" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Journal"]</label>
                 <select id="journals" asp-items="JournalTypes" class="form-control text-center w-100">
-                    <option value="100">-- @localizer["All"] --</option>
+                    <option value="100">@localizer["All Journals"]</option>
                 </select>
             </div>
             <div class="d-flex align-items-center w-100">
@@ -73,6 +73,7 @@
                     <option value="1">@localizer["Debtor"]</option>
                     <option value="2">@localizer["Creditor"]</option>
                     <option value="3">@localizer["Net"]</option>
+                    <option value="4">@localizer["Analytical"]</option>
                 </select>
             </div>
         </div>
@@ -99,165 +100,375 @@
             year.focus();
             return;
         }
+        if (filterBy.value != 4) 
+        { 
+            var mainName = mainCode.options[mainCode.selectedIndex].textContent;
+            var headReport = document.querySelector(".report");
 
-        var mainName = mainCode.options[mainCode.selectedIndex].textContent;
-        var headReport = document.querySelector(".report");
+            let title = "@localizer["Analysise"] " + mainName + " @localizer["Year"] " + year.value;
 
-        let title = "@localizer["Analysise"] " + mainName + " @localizer["Year"] " + year.value;
+            headReport.innerHTML =
+                `
+                        <div class="report-head d-flex justify-content-center align-items-center mt-4">
+                             <h2 class="header">${title}</h2>
+                                 <button onclick="printReport()" class="btn btn-success" style="margin-inline-start: auto;">Print</button>
+                        </div>
 
-        headReport.innerHTML =
-            `
-                    <div class="report-head d-flex justify-content-center align-items-center mt-4">
-                         <h2 class="header">${title}</h2>
-                             <button onclick="printReport()" class="btn btn-success" style="margin-inline-start: auto;">Print</button>
-                    </div>
+                        <div class="print-table p-0 mb-2 overflow-auto">
 
-                    <div class="print-table p-0 mb-2 overflow-auto">
+                        <table id="myTable" class="table table-bordered border-dark table-hover Voucher-table" style="width:100%">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th class="align-middle text-center" rowspan="2">
+    @localizer["Serial"]
+                                        </th>
+                                        <th class="align-middle text-center" rowspan="2">
+    @localizer["Note"]
+                                        </th>
+                                        <th class="align-middle text-center" rowspan="2">
+    @localizer["January"]
+                                        </th>
+                                        <th class="align-middle text-center" rowspan="2">
+    @localizer["February"]
+                                        </th>
+                                        <th class="align-middle text-center" rowspan="2">
+    @localizer["March"]
+                                        </th>
+                                        <th class="align-middle text-center" rowspan="2">
+    @localizer["April"]
+                                        </th>
+                                        <th class="align-middle text-center" rowspan="2">
+    @localizer["May"]
+                                        </th>
+                                        <th class="align-middle text-center" rowspan="2">
+    @localizer["June"]
+                                        </th>
+                                        <th class="align-middle text-center" rowspan="2">
+    @localizer["July"]
+                                        </th>
+                                        <th class="align-middle text-center" rowspan="2">
+    @localizer["August"]
+                                        </th>
+                                        <th class="align-middle text-center" rowspan="2">
+    @localizer["September"]
+                                        </th>
+                                        <th class="align-middle text-center" rowspan="2">
+    @localizer["October"]
+                                        </th>
+                                        <th class="align-middle text-center" rowspan="2">
+    @localizer["November"]
+                                        </th>
+                                        <th class="align-middle text-center" rowspan="2">
+    @localizer["December"]
+                                        </th>
+                                        <th class="align-middle text-center" rowspan="2">
+    @localizer["The Total"]
+                                        </th>
 
-                        <table id="myTable" class="table table-bordered table-hover Voucher-table" style="width:100%">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th class="align-middle text-center" rowspan="2">
-                                         @localizer["Serial"]
-                                    </th> 
-                                    <th class="align-middle text-center" rowspan="2">
-                                         @localizer["Note"]
-                                    </th> 
-                                    <th class="align-middle text-center" rowspan="2">
-                                         @localizer["January"]
-                                    </th> 
-                                    <th class="align-middle text-center" rowspan="2">
-                                         @localizer["February"]
-                                    </th> 
-                                    <th class="align-middle text-center" rowspan="2">
-                                         @localizer["March"]
-                                    </th> 
-                                    <th class="align-middle text-center" rowspan="2">
-                                         @localizer["April"]
-                                    </th> 
-                                    <th class="align-middle text-center" rowspan="2">
-                                         @localizer["May"]
-                                    </th>
-                                    <th class="align-middle text-center" rowspan="2">
-                                         @localizer["June"]
-                                    </th>
-                                    <th class="align-middle text-center" rowspan="2">
-                                         @localizer["July"]
-                                    </th>
-                                    <th class="align-middle text-center" rowspan="2">
-                                         @localizer["August"]
-                                    </th>
-                                    <th class="align-middle text-center" rowspan="2">
-                                         @localizer["September"]
-                                    </th>
-                                    <th class="align-middle text-center" rowspan="2">
-                                         @localizer["October"]
-                                    </th>
-                                    <th class="align-middle text-center" rowspan="2">
-                                         @localizer["November"]
-                                    </th>
-                                    <th class="align-middle text-center" rowspan="2">
-                                         @localizer["December"]
-                                    </th> 
-                                    <th class="align-middle text-center" rowspan="2">
-                                         @localizer["The Total"]
-                                    </th>
+                                    </tr>
 
-                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
 
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
+                    `;
+            let url;
+            url = `/Accounts/ReportExpenseAnalysis/GetExpenseAnalysis/${branch.value}?journal=${journal.value}&mainCode=${mainCode.value}&year=${year.value}&filterBy=${filterBy.value}`;
 
-                `;
-        let url;
-        url = `/Accounts/ReportExpenseAnalysis/GetExpenseAnalysis/${branch.value}?journal=${journal.value}&mainCode=${mainCode.value}&year=${year.value}&filterBy=${filterBy.value}`;
+            var dataa = document.querySelector(".Voucher-table tbody");
+            dataa.innerHTML = "";  // Empty data
+            $.ajax({
+                url: url,
+                success: function (result) {
+                    //  console.log(result);
+                    var mon1Sum = 0, mon2Sum = 0, mon3Sum = 0, mon4Sum = 0, mon5Sum = 0, mon6Sum = 0, mon7Sum = 0, mon8Sum = 0, mon9Sum = 0, mon10Sum = 0, mon11Sum = 0, mon12Sum = 0, totalSum = 0;
 
-        var dataa = document.querySelector(".Voucher-table tbody");
-        dataa.innerHTML = "";  // Empty data
-        $.ajax({
-            url: url,
-            success: function (result) {
-                //  console.log(result);
-                var mon1Sum = 0, mon2Sum = 0, mon3Sum = 0, mon4Sum = 0, mon5Sum = 0, mon6Sum = 0, mon7Sum = 0, mon8Sum = 0, mon9Sum = 0, mon10Sum = 0, mon11Sum = 0, mon12Sum = 0, totalSum = 0;
+                    var index = 1;
+                    for (let item of result) {
+                        const data = document.createElement("tr");
+                        let mon1 = item.mon1 || 0;
+                        let mon2 = item.mon2 || 0;
+                        let mon3 = item.mon3 || 0;
+                        let mon4 = item.mon4 || 0;
+                        let mon5 = item.mon5 || 0;
+                        let mon6 = item.mon6 || 0;
+                        let mon7 = item.mon7 || 0;
+                        let mon8 = item.mon8 || 0;
+                        let mon9 = item.mon9 || 0;
+                        let mon10 = item.mon10 || 0;
+                        let mon11 = item.mon11 || 0;
+                        let mon12 = item.mon12 || 0;
+                        let total = item.mon1 + item.mon2 + item.mon3 + item.mon4 + item.mon5 + item.mon6 + item.mon7 + item.mon8 + item.mon9 + item.mon10 + item.mon11 + item.mon12;
 
-                var index =1;
-                for (let item of result) {
-                    const data = document.createElement("tr");
-                    let mon1 = item.mon1 || 0;
-                    let mon2 = item.mon2 || 0;
-                    let mon3 = item.mon3 || 0;
-                    let mon4 = item.mon4 || 0;
-                    let mon5 = item.mon5 || 0;
-                    let mon6 = item.mon6 || 0;
-                    let mon7 = item.mon7 || 0;
-                    let mon8 = item.mon8 || 0;
-                    let mon9 = item.mon9 || 0;
-                    let mon10 = item.mon10 || 0;
-                    let mon11 = item.mon11 || 0;
-                    let mon12 = item.mon12 || 0;
-                    let total = item.mon1 + item.mon2 + item.mon3 + item.mon4 + item.mon5 + item.mon6 + item.mon7 + item.mon8 + item.mon9 + item.mon10 + item.mon11 + item.mon12;
+                        data.innerHTML += `
 
-                    data.innerHTML += `
+                                <td class="align-middle">${index}</td>
+                                <td class="align-middle">${item.subName}</td>
+                                <td class="align-middle">${mon1}</td>
+                                <td class="align-middle">${mon2}</td>
+                                <td class="align-middle">${mon3}</td>
+                                <td class="align-middle">${mon4}</td>
+                                <td class="align-middle">${mon5}</td>
+                                <td class="align-middle">${mon6}</td>
+                                <td class="align-middle">${mon7}</td>
+                                <td class="align-middle">${mon8}</td>
+                                <td class="align-middle">${mon9}</td>
+                                <td class="align-middle">${mon10}</td>
+                                <td class="align-middle">${mon11}</td>
+                                <td class="align-middle">${mon12}</td>
+                                <td class="align-middle" style="background-color: #e6dfdf;">${total}</td>
 
-                            <td class="align-middle">${index}</td>
-                            <td class="align-middle">${item.subName}</td>
-                            <td class="align-middle">${mon1}</td>
-                            <td class="align-middle">${mon2}</td>
-                            <td class="align-middle">${mon3}</td>
-                            <td class="align-middle">${mon4}</td>
-                            <td class="align-middle">${mon5}</td>
-                            <td class="align-middle">${mon6}</td>
-                            <td class="align-middle">${mon7}</td>
-                            <td class="align-middle">${mon8}</td>
-                            <td class="align-middle">${mon9}</td>
-                            <td class="align-middle">${mon10}</td>
-                            <td class="align-middle">${mon11}</td>
-                            <td class="align-middle">${mon12}</td>
-                            <td class="align-middle" style="background-color: #e6dfdf;">${total}</td>
-                               
+                                `;
+                        mon1Sum += item.mon1;
+                        mon2Sum += item.mon2;
+                        mon3Sum += item.mon3;
+                        mon4Sum += item.mon4;
+                        mon5Sum += item.mon5;
+                        mon6Sum += item.mon6;
+                        mon7Sum += item.mon7;
+                        mon8Sum += item.mon8;
+                        mon9Sum += item.mon9;
+                        mon10Sum += item.mon10;
+                        mon11Sum += item.mon11;
+                        mon12Sum += item.mon12;
+                        totalSum += total;
+                        index++;
+                        dataa.appendChild(data);
+                    }
+                    const dataForSum = document.createElement("tr");
+                    //    dataForSum.style.backgroundColor = "#e6dfdf";
+                    dataForSum.innerHTML =
+                        `
+                                <td class="text-center" colspan="2">@localizer["The Total"]</td>
+                                <td class="align-middle" style="background-color: #e6dfdf;">${mon1Sum}</td>
+                                <td class="align-middle" style="background-color: #e6dfdf;">${mon2Sum}</td>
+                                <td class="align-middle" style="background-color: #e6dfdf;">${mon3Sum}</td>
+                                <td class="align-middle" style="background-color: #e6dfdf;">${mon4Sum}</td>
+                                <td class="align-middle" style="background-color: #e6dfdf;">${mon5Sum}</td>
+                                <td class="align-middle" style="background-color: #e6dfdf;">${mon6Sum}</td>
+                                <td class="align-middle" style="background-color: #e6dfdf;">${mon7Sum}</td>
+                                <td class="align-middle" style="background-color: #e6dfdf;">${mon8Sum}</td>
+                                <td class="align-middle" style="background-color: #e6dfdf;">${mon9Sum}</td>
+                                <td class="align-middle" style="background-color: #e6dfdf;">${mon10Sum}</td>
+                                <td class="align-middle" style="background-color: #e6dfdf;">${mon11Sum}</td>
+                                <td class="align-middle" style="background-color: #e6dfdf;">${mon12Sum}</td>
+                                <td class="align-middle" style="background-color: #e6dfdf;">${totalSum}</td>
                             `;
-                    mon1Sum += item.mon1;
-                    mon2Sum += item.mon2;
-                    mon3Sum += item.mon3;
-                    mon4Sum += item.mon4;
-                    mon5Sum += item.mon5;
-                    mon6Sum += item.mon6;
-                    mon7Sum += item.mon7;
-                    mon8Sum += item.mon8;
-                    mon9Sum += item.mon9;
-                    mon10Sum += item.mon10;
-                    mon11Sum += item.mon11;
-                    mon12Sum += item.mon12;
-                    totalSum += total;
-                    index++;
-                    dataa.appendChild(data);
-                }
-                const dataForSum = document.createElement("tr");
-                //    dataForSum.style.backgroundColor = "#e6dfdf";
-                dataForSum.innerHTML =
-                    `
-                            <td class="text-center" colspan="2">@localizer["The Total"]</td>
-                            <td class="align-middle" style="background-color: #e6dfdf;">${mon1Sum}</td>
-                            <td class="align-middle" style="background-color: #e6dfdf;">${mon2Sum}</td>
-                            <td class="align-middle" style="background-color: #e6dfdf;">${mon3Sum}</td>
-                            <td class="align-middle" style="background-color: #e6dfdf;">${mon4Sum}</td>
-                            <td class="align-middle" style="background-color: #e6dfdf;">${mon5Sum}</td>
-                            <td class="align-middle" style="background-color: #e6dfdf;">${mon6Sum}</td>
-                            <td class="align-middle" style="background-color: #e6dfdf;">${mon7Sum}</td>
-                            <td class="align-middle" style="background-color: #e6dfdf;">${mon8Sum}</td>
-                            <td class="align-middle" style="background-color: #e6dfdf;">${mon9Sum}</td>
-                            <td class="align-middle" style="background-color: #e6dfdf;">${mon10Sum}</td>
-                            <td class="align-middle" style="background-color: #e6dfdf;">${mon11Sum}</td>
-                            <td class="align-middle" style="background-color: #e6dfdf;">${mon12Sum}</td>
-                            <td class="align-middle" style="background-color: #e6dfdf;">${totalSum}</td>
-                        `;
-                dataa.appendChild(dataForSum);
+                    dataa.appendChild(dataForSum);
 
-            }
-        });
+                }
+            });
+        }
+        
+        else if (filterBy.value == 4) { 
+            var mainName = mainCode.options[mainCode.selectedIndex].textContent;
+            var headReport = document.querySelector(".report");
+
+            let title = "@localizer["Analysise"] " + mainName + " @localizer["Year"] " + year.value;
+
+            headReport.innerHTML =
+                `
+                <div class="report-head d-flex justify-content-center align-items-center mt-4">
+                     <h2 class="header">${title}</h2>
+                         <button onclick="printReport()" class="btn btn-success" style="margin-inline-start: auto;">Print</button>
+                </div>
+
+                <div class="print-table p-0 mb-2 overflow-auto">
+
+                 <table id="myTable" class="table table-bordered border-dark table-hover Voucher-table" style="width:100%">
+                        <thead class="table-dark">
+                                    <tr>
+                                        <th class="align-middle text-center" rowspan="3">
+    @localizer["Serial"]
+                                        </th>
+                                        <th class="align-middle text-center" rowspan="3">
+    @localizer["Note"]
+                                        </th>
+                                        <th class="align-middle text-center" colspan="3">
+    @localizer["January"]
+                                        </th>
+                                        <th class="align-middle text-center" colspan="3">
+    @localizer["February"]
+                                        </th>
+                                        <th class="align-middle text-center" colspan="3">
+    @localizer["March"]
+                                        </th>
+                                        <th class="align-middle text-center" colspan="3">
+    @localizer["April"]
+                                        </th>
+                                        <th class="align-middle text-center" colspan="3">
+    @localizer["May"]
+                                        </th>
+                                        <th class="align-middle text-center" colspan="3">
+    @localizer["June"]
+                                        </th>
+                                        <th class="align-middle text-center" colspan="3">
+    @localizer["July"]
+                                        </th>
+                                        <th class="align-middle text-center" colspan="3">
+    @localizer["August"]
+                                        </th>
+                                        <th class="align-middle text-center" colspan="3">
+    @localizer["September"]
+                                        </th>
+                                        <th class="align-middle text-center" colspan="3">
+    @localizer["October"]
+                                        </th>
+                                        <th class="align-middle text-center" colspan="3">
+    @localizer["November"]
+                                        </th>
+                                        <th class="align-middle text-center" colspan="3">
+    @localizer["December"]
+                                        </th>
+                                        <th class="align-middle text-center" colspan="3">
+    @localizer["The Total"]
+                                        </th>
+
+                                    </tr>
+         <tr>
+                                <th class="align-middle text-center">@localizer["Debit"]</th>
+                                <th class="align-middle text-center">@localizer["Credit"]</th>
+                                <th class="align-middle text-center">@localizer["The Difference"]</th>
+                                <th class="align-middle text-center">@localizer["Debit"]</th>
+                                <th class="align-middle text-center">@localizer["Credit"]</th>
+                                <th class="align-middle text-center">@localizer["The Difference"]</th>
+                                <th class="align-middle text-center">@localizer["Debit"]</th>
+                                <th class="align-middle text-center">@localizer["Credit"]</th>
+                                <th class="align-middle text-center">@localizer["The Difference"]</th>
+                                <th class="align-middle text-center">@localizer["Debit"]</th>
+                                <th class="align-middle text-center">@localizer["Credit"]</th>
+                                <th class="align-middle text-center">@localizer["The Difference"]</th>
+                                <th class="align-middle text-center">@localizer["Debit"]</th>
+                                <th class="align-middle text-center">@localizer["Credit"]</th>
+                                <th class="align-middle text-center">@localizer["The Difference"]</th>
+                                <th class="align-middle text-center">@localizer["Debit"]</th>
+                                <th class="align-middle text-center">@localizer["Credit"]</th>
+                                <th class="align-middle text-center">@localizer["The Difference"]</th>
+                                <th class="align-middle text-center">@localizer["Debit"]</th>
+                                <th class="align-middle text-center">@localizer["Credit"]</th>
+                                <th class="align-middle text-center">@localizer["The Difference"]</th>
+                                <th class="align-middle text-center">@localizer["Debit"]</th>
+                                <th class="align-middle text-center">@localizer["Credit"]</th>
+                                <th class="align-middle text-center">@localizer["The Difference"]</th>
+                                <th class="align-middle text-center">@localizer["Debit"]</th>
+                                <th class="align-middle text-center">@localizer["Credit"]</th>
+                                <th class="align-middle text-center">@localizer["The Difference"]</th>
+                                <th class="align-middle text-center">@localizer["Debit"]</th>
+                                <th class="align-middle text-center">@localizer["Credit"]</th>
+                                <th class="align-middle text-center">@localizer["The Difference"]</th> 
+                                <th class="align-middle text-center">@localizer["Debit"]</th>
+                                <th class="align-middle text-center">@localizer["Credit"]</th>
+                                <th class="align-middle text-center">@localizer["The Difference"]</th> 
+                                <th class="align-middle text-center">@localizer["Debit"]</th>
+                                <th class="align-middle text-center">@localizer["Credit"]</th>
+                                <th class="align-middle text-center">@localizer["The Difference"]</th> 
+                                <th class="align-middle text-center">@localizer["Debit"]</th>
+                                <th class="align-middle text-center">@localizer["Credit"]</th>
+                                <th class="align-middle text-center">@localizer["The Difference"]</th> 
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+
+            `;
+            let url;
+            url = `/Accounts/ReportExpenseAnalysis/GetExpenseAnalysis/${branch.value}?journal=${journal.value}&mainCode=${mainCode.value}&year=${year.value}&filterBy=${filterBy.value}`;
+
+            var dataa = document.querySelector(".Voucher-table tbody");
+            dataa.innerHTML = "";  // Empty data
+            $.ajax({
+                url: url,
+                success: function (result) {
+                   //  console.log(result);
+                    var monDep1Sum = 0, monDep2Sum = 0, monDep3Sum = 0, monDep4Sum = 0, monDep5Sum = 0, monDep6Sum = 0, monDep7Sum = 0, monDep8Sum = 0, monDep9Sum = 0, monDep10Sum = 0, monDep11Sum = 0, monDep12Sum = 0;
+                    var monCret1Sum = 0, monCret2Sum = 0, monCret3Sum = 0, monCret4Sum = 0, monCret5Sum = 0, monCret6Sum = 0, monCret7Sum = 0, monCret8Sum = 0, monCret9Sum = 0, monCret10Sum = 0, monCret11Sum = 0, monCret12Sum = 0;
+                    var monDif1Sum = 0, monDif2Sum = 0, monDif3Sum = 0, monDif4Sum = 0, monDif5Sum = 0, monDif6Sum = 0, monDif7Sum = 0, monDif8Sum = 0, monDif9Sum = 0, monDif10Sum = 0, monDif11Sum = 0, monDif12Sum = 0;
+                    var totalSumDep = 0; var totalSumCret = 0; var totalSumDif = 0;
+                    var index = 1;
+                    for (let item of result) {
+                        const data = document.createElement("tr");
+                        let monDep1 = item.monDep1 || 0, monDep2 = item.monDep2 || 0, monDep3 = item.monDep3 || 0, monDep4 = item.monDep4 || 0, monDep5 = item.monDep5 || 0;
+                        let monDep6 = item.monDep6 || 0, monDep7 = item.monDep7 || 0, monDep8 = item.monDep8 || 0, monDep9 = item.monDep9 || 0, monDep10 = item.monDep10 || 0;
+                        let monDep11 = item.monDep11 || 0, monDep12 = item.monDep12 || 0;
+                      
+                        let monCret1 = item.monCret1 || 0, monCret2 = item.monCret2 || 0, monCret3 = item.monCret3 || 0, monCret4 = item.monCret4 || 0, monCret5 = item.monCret5 || 0;
+                        let monCret6 = item.monCret6 || 0, monCret7 = item.monCret7 || 0, monCret8 = item.monCret8 || 0, monCret9 = item.monCret9 || 0, monCret10 = item.monCret10 || 0;
+                        let monCret11 = item.monCret11 || 0, monCret12 = item.monCret12 || 0;
+
+                        let monDif1 = item.monDif1 || 0, monDif2 = item.monDif2 || 0, monDif3 = item.monDif3 || 0, monDif4 = item.monDif4 || 0, monDif5 = item.monDif5 || 0;
+                        let monDif6 = item.monDif6 || 0, monDif7 = item.monDif7 || 0, monDif8 = item.monDif8 || 0, monDif9 = item.monDif9 || 0, monDif10 = item.monDif10 || 0;
+                        let monDif11 = item.monDif11 || 0, monDif12 = item.monDif12 || 0;
+                        //total
+                        let totalDep = monDep1 + monDep2 + monDep3 + monDep4 + monDep5 + monDep6 + monDep7 + monDep8 + monDep9 + monDep10 + monDep11 + monDep12;
+                        let totalCret = monCret1 + monCret2 + monCret3 + monCret4 + monCret5 + monCret6 + monCret7 + monCret8 + monCret9 + monCret10 + monCret11 + monCret12;
+                        let totalDif = monDif1 + monDif2 + monDif3 + monDif4 + monDif5 + monDif6 + monDif7 + monDif8 + monDif9 + monDif10 + monDif11 + monDif12;
+                        // Update monthly sums
+                        monDep1Sum += monDep1; monDep2Sum += monDep2; monDep3Sum += monDep3; monDep4Sum += monDep4; monDep5Sum += monDep5;
+                        monDep6Sum += monDep6; monDep7Sum += monDep7; monDep8Sum += monDep8; monDep9Sum += monDep9; monDep10Sum += monDep10;
+                        monDep11Sum += monDep11; monDep12Sum += monDep12;
+
+                        monCret1Sum += monCret1; monCret2Sum += monCret2; monCret3Sum += monCret3; monCret4Sum += monCret4; monCret5Sum += monCret5;
+                        monCret6Sum += monCret6; monCret7Sum += monCret7; monCret8Sum += monCret8; monCret9Sum += monCret9; monCret10Sum += monCret10;
+                        monCret11Sum += monCret11; monCret12Sum += monCret12;
+
+                        monDif1Sum += monDif1; monDif2Sum += monDif2; monDif3Sum += monDif3; monDif4Sum += monDif4; monDif5Sum += monDif5;
+                        monDif6Sum += monDif6; monDif7Sum += monDif7; monDif8Sum += monDif8; monDif9Sum += monDif9; monDif10Sum += monDif10;
+                        monDif11Sum += monDif11; monDif12Sum += monDif12;
+
+                        totalSumDep += totalDep;
+                        totalSumCret += totalCret;
+                        totalSumDif += totalDif;
+                        data.innerHTML += `
+
+                        <td class="align-middle">${index}</td>
+                        <td class="align-middle">${item.subName}</td>
+                        <td class="align-middle">${monDep1}</td><td class="align-middle">${monCret1}</td><td class="align-middle">${monDif1}</td>
+                        <td class="align-middle">${monDep2}</td><td class="align-middle">${monCret2}</td><td class="align-middle">${monDif2}</td>
+                        <td class="align-middle">${monDep3}</td><td class="align-middle">${monCret3}</td><td class="align-middle">${monDif3}</td>
+                        <td class="align-middle">${monDep4}</td><td class="align-middle">${monCret4}</td><td class="align-middle">${monDif4}</td>
+                        <td class="align-middle">${monDep5}</td><td class="align-middle">${monCret5}</td><td class="align-middle">${monDif5}</td>
+                        <td class="align-middle">${monDep6}</td><td class="align-middle">${monCret6}</td><td class="align-middle">${monDif6}</td>
+                        <td class="align-middle">${monDep7}</td><td class="align-middle">${monCret7}</td><td class="align-middle">${monDif7}</td>
+                        <td class="align-middle">${monDep8}</td><td class="align-middle">${monCret8}</td><td class="align-middle">${monDif8}</td>
+                        <td class="align-middle">${monDep9}</td><td class="align-middle">${monCret9}</td><td class="align-middle">${monDif9}</td>
+                        <td class="align-middle">${monDep10}</td><td class="align-middle">${monCret10}</td><td class="align-middle">${monDif10}</td>
+                        <td class="align-middle">${monDep11}</td><td class="align-middle">${monCret11}</td><td class="align-middle">${monDif11}</td>
+                        <td class="align-middle">${monDep12}</td><td class="align-middle">${monCret12}</td><td class="align-middle">${monDif12}</td>
+                        <td class="align-middle" style="background-color: #e6dfdf;">${totalDep}</td><td class="align-middle" style="background-color: #e6dfdf;">${totalCret}</td><td class="align-middle" style="background-color: #e6dfdf;">${totalDif}</td>
+                        `;
+
+                        index++;
+                        dataa.appendChild(data);
+                    }
+                    const dataForSum = document.createElement("tr");
+                    //    dataForSum.style.backgroundColor = "#e6dfdf";
+                    dataForSum.innerHTML =
+                        `
+                        <td class="text-center" colspan="2">@localizer["The Total"]</td>
+                        <td class="align-middle" style="background-color: #e6dfdf;">${monDep1Sum}</td><td class="align-middle" style="background-color: #e6dfdf;">${monCret1Sum}</td><td class="align-middle" style="background-color: #e6dfdf;">${monDif1Sum}</td>
+                        <td class="align-middle" style="background-color: #e6dfdf;">${monDep2Sum}</td><td class="align-middle" style="background-color: #e6dfdf;">${monCret2Sum}</td><td class="align-middle" style="background-color: #e6dfdf;">${monDif2Sum}</td>
+                        <td class="align-middle" style="background-color: #e6dfdf;">${monDep3Sum}</td><td class="align-middle" style="background-color: #e6dfdf;">${monCret3Sum}</td><td class="align-middle" style="background-color: #e6dfdf;">${monDif3Sum}</td>
+                        <td class="align-middle" style="background-color: #e6dfdf;">${monDep4Sum}</td><td class="align-middle" style="background-color: #e6dfdf;">${monCret4Sum}</td><td class="align-middle" style="background-color: #e6dfdf;">${monDif4Sum}</td>
+                        <td class="align-middle" style="background-color: #e6dfdf;">${monDep5Sum}</td><td class="align-middle" style="background-color: #e6dfdf;">${monCret5Sum}</td><td class="align-middle" style="background-color: #e6dfdf;">${monDif5Sum}</td>
+                        <td class="align-middle" style="background-color: #e6dfdf;">${monDep6Sum}</td><td class="align-middle" style="background-color: #e6dfdf;">${monCret6Sum}</td><td class="align-middle" style="background-color: #e6dfdf;">${monDif6Sum}</td>
+                        <td class="align-middle" style="background-color: #e6dfdf;">${monDep7Sum}</td><td class="align-middle" style="background-color: #e6dfdf;">${monCret7Sum}</td><td class="align-middle" style="background-color: #e6dfdf;">${monDif7Sum}</td>
+                        <td class="align-middle" style="background-color: #e6dfdf;">${monDep8Sum}</td><td class="align-middle" style="background-color: #e6dfdf;">${monCret8Sum}</td><td class="align-middle" style="background-color: #e6dfdf;">${monDif8Sum}</td>
+                        <td class="align-middle" style="background-color: #e6dfdf;">${monDep9Sum}</td><td class="align-middle" style="background-color: #e6dfdf;">${monCret9Sum}</td><td class="align-middle" style="background-color: #e6dfdf;">${monDif9Sum}</td>
+                        <td class="align-middle" style="background-color: #e6dfdf;">${monDep10Sum}</td><td class="align-middle" style="background-color: #e6dfdf;">${monCret10Sum}</td><td class="align-middle" style="background-color: #e6dfdf;">${monDif10Sum}</td>
+                        <td class="align-middle" style="background-color: #e6dfdf;">${monDep11Sum}</td><td class="align-middle" style="background-color: #e6dfdf;">${monCret11Sum}</td><td class="align-middle" style="background-color: #e6dfdf;">${monDif11Sum}</td>
+                        <td class="align-middle" style="background-color: #e6dfdf;">${monDep12Sum}</td><td class="align-middle" style="background-color: #e6dfdf;">${monCret12Sum}</td><td class="align-middle" style="background-color: #e6dfdf;">${monDif12Sum}</td>
+                        <td class="align-middle" style="background-color: #e6dfdf;">${totalSumDep}</td><td class="align-middle" style="background-color: #e6dfdf;">${totalSumCret}</td><td class="align-middle" style="background-color: #e6dfdf;">${totalSumDif}</td>
+                        `;
+                    dataa.appendChild(dataForSum);
+
+                }
+            });
+        }
     }
     function printReport() {
         let head = document.querySelector(".report-head");

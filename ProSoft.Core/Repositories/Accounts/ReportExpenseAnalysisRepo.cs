@@ -59,29 +59,123 @@ namespace ProSoft.Core.Repositories.Accounts
                         expenseAnalysisList.Add(existingExpenseAnalysis);
                     }
 
-                    decimal monthlySum = CalculateMonthlySum(group.ToList(), filterBy);
-                    SetMonthlySum(existingExpenseAnalysis, month, monthlySum);
+                    ExpenseAnalysisDTO monthlySum = CalculateMonthlySum(group.ToList(), filterBy);
+                    if (filterBy ==1)
+                    {
+                         SetMonthlySum(existingExpenseAnalysis, month, monthlySum.TotalDep);  
+                    }
+                    else if (filterBy == 2)
+                    {
+                        SetMonthlySum(existingExpenseAnalysis, month, monthlySum.TotalCredit);
+                    }
+                    else if (filterBy == 3)
+                    {
+                        SetMonthlySum(existingExpenseAnalysis, month, monthlySum.Difference);
+                    }
+                    else
+                    {
+                        SetMonthlySumforFilter4(existingExpenseAnalysis, month, monthlySum.TotalDep, monthlySum.TotalCredit, monthlySum.Difference);
+                    }
                 }
             }
 
             return expenseAnalysisList;
         }
 
-        private decimal CalculateMonthlySum(List<AccTransDetailViewDTO> details, int filterBy)
+        private ExpenseAnalysisDTO CalculateMonthlySum(List<AccTransDetailViewDTO> details, int filterBy)
         {
+            var totalDep = details.Sum(d => d.ValDep ?? 0);
+            var totalCredit = details.Sum(d => d.ValCredit ?? 0);
+            var difference = Math.Abs(totalDep - totalCredit);
+
+            var result = new ExpenseAnalysisDTO
+            {
+                TotalDep = totalDep,
+                TotalCredit = totalCredit,
+                Difference = difference
+            };
+
             switch (filterBy)
             {
                 case 1:
-                    return details.Sum(d => d.ValDep ?? 0);
+                    return new ExpenseAnalysisDTO { TotalDep = result.TotalDep };
                 case 2:
-                    return details.Sum(d => d.ValCredit ?? 0);
+                    return new ExpenseAnalysisDTO { TotalCredit = result.TotalCredit };
                 case 3:
-                    return Math.Abs(details.Sum(d => d.ValDep ?? 0) - details.Sum(d => d.ValCredit ?? 0));
+                    return new ExpenseAnalysisDTO { Difference = result.Difference };
+                case 4:
+                    return result; // Return all values
                 default:
                     throw new ArgumentException("Invalid filterBy value");
             }
         }
 
+        private void SetMonthlySumforFilter4(ExpenseAnalysisDTO expenseAnalysis, int month, decimal monthlySumDep, decimal monthlySumcret, decimal monthlySumDif)
+        {
+            switch (month)
+            {
+                case 1:
+                    expenseAnalysis.MonDep1 = monthlySumDep;
+                    expenseAnalysis.MonCret1 = monthlySumcret;
+                    expenseAnalysis.MonDif1 = monthlySumDif;
+                    break;
+                case 2:
+                    expenseAnalysis.MonDep2 = monthlySumDep;
+                    expenseAnalysis.MonCret2 = monthlySumcret;
+                    expenseAnalysis.MonDif2 = monthlySumDif;
+                    break;
+                case 3:
+                    expenseAnalysis.MonDep3 = monthlySumDep;
+                    expenseAnalysis.MonCret3 = monthlySumcret;
+                    expenseAnalysis.MonDif3 = monthlySumDif;
+                    break;
+                case 4:
+                    expenseAnalysis.MonDep4 = monthlySumDep;
+                    expenseAnalysis.MonCret4 = monthlySumcret;
+                    expenseAnalysis.MonDif4 = monthlySumDif;
+                    break;
+                case 5:
+                    expenseAnalysis.MonDep5 = monthlySumDep;
+                    expenseAnalysis.MonCret5 = monthlySumcret;
+                    expenseAnalysis.MonDif5 = monthlySumDif;
+                    break;
+                case 6:
+                    expenseAnalysis.MonDep6 = monthlySumDep;
+                    expenseAnalysis.MonCret6 = monthlySumcret;
+                    expenseAnalysis.MonDif6 = monthlySumDif;
+                    break;
+                case 7:
+                    expenseAnalysis.MonDep7 = monthlySumDep;
+                    expenseAnalysis.MonCret7 = monthlySumcret;
+                    expenseAnalysis.MonDif7 = monthlySumDif;
+                    break;
+                case 8:
+                    expenseAnalysis.MonDep8 = monthlySumDep;
+                    expenseAnalysis.MonCret8 = monthlySumcret;
+                    expenseAnalysis.MonDif8 = monthlySumDif;
+                    break;
+                case 9:
+                    expenseAnalysis.MonDep9 = monthlySumDep;
+                    expenseAnalysis.MonCret9 = monthlySumcret;
+                    expenseAnalysis.MonDif9 = monthlySumDif;
+                    break;
+                case 10:
+                    expenseAnalysis.MonDep10 = monthlySumDep;
+                    expenseAnalysis.MonCret10 = monthlySumcret;
+                    expenseAnalysis.MonDif10 = monthlySumDif;
+                    break;
+                case 11:
+                    expenseAnalysis.MonDep11 = monthlySumDep;
+                    expenseAnalysis.MonCret11 = monthlySumcret;
+                    expenseAnalysis.MonDif11 = monthlySumDif;
+                    break;
+                case 12:
+                    expenseAnalysis.MonDep12 = monthlySumDep;
+                    expenseAnalysis.MonCret12 = monthlySumcret;
+                    expenseAnalysis.MonDif12 = monthlySumDif;
+                    break;
+            }
+        }
         private void SetMonthlySum(ExpenseAnalysisDTO expenseAnalysis, int month, decimal monthlySum)
         {
             switch (month)

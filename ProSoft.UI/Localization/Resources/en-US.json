@@ -598,6 +598,12 @@
   "Movement Mounth": "Movement Mounth",
   "Balance in": "Balance in",
   "General Professor Balance": "General Professor Balance",
+  "All Journals": "All Journals",
+  "All Baranches": "All Baranches",
+  "All Doctors": "All Doctors",
+  "Returned": "Returned",
+  "From Voucher No": "From Voucher No",
+  "To Voucher No": "To Voucher No",
 
 
 
@@ -865,5 +871,8 @@
   "Add Sub Item For": "Add Sub Item For",
   "Coding Type": "Coding Type",
   "Edit Sub Item": "Edit Sub Item",
-  "Error: ItemCode is larger than system barcode": "Error: ItemCode is larger than system barcode"
+  "Error: ItemCode is larger than system barcode": "Error: ItemCode is larger than system barcode",
+  "Add Stocks": "Add Stocks",
+  "Add Stockk To Main Group": "Add Stockk To Main Group",
+  "The Last Added Stocks": "The Last Added Stocks"
 }

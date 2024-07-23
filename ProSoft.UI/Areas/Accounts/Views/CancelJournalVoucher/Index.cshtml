@@ -1,0 +1,108 @@
+﻿@model CancelJournalVoucherDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Cancel Journal Voucher";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+
+    SelectList JournalTypes = new SelectList(Model.JournalTypes, "JournalCode", "JournalName");
+    SelectList accMounth = new SelectList(Model.AccMonths, "CurMonth", "DescMonth");
+
+}
+@inject IViewLocalizer localizer
+<style>
+    .hide {
+        display: none !important;
+    }
+    /*  .image {
+                        top: 0px;
+                        left: 0px;
+                        width: 100%;
+                        height: 100%;
+                        background-repeat: no-repeat;
+                        background-attachment: fixed;
+                        background-size: cover;
+                        background-position: center;
+                        opacity: 0.5;
+                        z-index: -1;
+                    } */
+</style>
+<div class="container pt-2 " style="min-height:100vh;">
+    @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
+
+    <div class="d-flex justify-content-center align-items-center flex-column flex-md-row mt-2">
+        <h1 class="header">@localizer["Cancel Journal Voucher"]</h1>
+    </div>
+
+    <div class="overflow-auto filter-box mt-2">
+        <div class=" d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 px-1 my-2">
+           
+            <div class="d-flex align-items-center flex-column flex-md-row w-100">
+                <label for="journals" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Journal"]</label>
+                <select id="journals" asp-items="JournalTypes" class="form-control text-center w-100">
+                    <option value="100">@localizer["All Journals"]</option>
+                </select>
+            </div>
+            <div class="d-flex align-items-center w-75">
+                <label asp-for="Year" style="width:25% !important;"></label>
+                <input asp-for="Year" class="form-control text-center" value="2024" />
+                <span asp-validation-for="Year" class="text-danger"></span>
+            </div>
+            <div class="d-flex align-items-center flex-column flex-md-row w-100">
+                <label for="mounths" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["The Month"]</label>
+                <select id="mounths" asp-items="accMounth" class="form-control text-center w-100">
+                    @*<option value="100">@localizer["All Baranches"]</option>*@
+                </select>
+            </div>
+        </div>
+        <div class="d-flex justify-content-center filter-box mt-3 mx-auto " style="width:fit-content;">
+            <div class="d-flex justify-content-center align-items-center flex-column flex-md-row gap-2">
+                <div class="d-flex align-items-center w-50">
+                    <label style="width:50% !important;">@localizer["From Voucher No"]</label>
+                    <input id="fromVoucher" type="number" class="form-control text-center" />
+                </div>
+                <div class="d-flex justify-content-end align-items-center w-50">
+                    <label style="width:50% !important;">@localizer["To Voucher No"]</label>
+                    <input id="toVoucher" type="number" class="form-control text-center" />
+                </div>
+            </div>
+        </div>
+        <div class="d-flex mt-3 gap-2">
+            <a class="btn btn-sm btn-primary fs-6" style="width:150px" onclick="Returned(event)">
+                @localizer["Returned"]
+            </a>
+            <a class="btn btn-sm btn-primary fs-6" style="width:150px" onclick="Cancel(event)">
+                @localizer["UT_Cancel"]
+            </a>
+        </div>
+    </div>
+
+    <div class="report">
+    </div>
+</div>
+<script>
+    var journal = document.getElementById("journals");
+    var year = document.getElementById("Year");
+    var fromVoucher = document.getElementById("fromVoucher");
+    var toVoucher = document.getElementById("toVoucher");
+
+    //for report From Voucher To Voucher//
+    function Returned(e) {
+        if (!fromVoucher.value) {
+            fromVoucher.focus();
+            return;
+        }
+        if (!toVoucher.value) {
+            toVoucher.focus();
+            return;
+        }
+        if (!year.value) {
+            year.focus();
+            return;
+        }
+
+        let url = `/Accounts/CancelJournalVoucher/Cancel/journal=${journal.value}&fromVoucher=${fromVoucher.value}&toVoucher=${toVoucher.value}&year=${year.value}`;
+
+    }
+</script>

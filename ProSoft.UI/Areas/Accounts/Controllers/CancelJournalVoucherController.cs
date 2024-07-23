@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProSoft.EF.DTOs.Accounts;
+using ProSoft.EF.IRepositories.Accounts;
 
 namespace ProSoft.UI.Areas.Accounts.Controllers
 {
@@ -7,9 +9,15 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
     [Area(nameof(Accounts))]
     public class CancelJournalVoucherController : Controller
     {
-        public IActionResult Index()
+        private readonly ICancelJournalVoucherRepo _cancelJournalVoucherRepo;
+        public CancelJournalVoucherController(ICancelJournalVoucherRepo cancelJournalVoucherRepo)
         {
-            return View();
+            _cancelJournalVoucherRepo = cancelJournalVoucherRepo;
+        }
+        public async Task<IActionResult> Index()
+        {
+            CancelJournalVoucherDTO reportExpenseAnalysisDTO = await _cancelJournalVoucherRepo.GetAllDataAsync();
+            return View(reportExpenseAnalysisDTO);
         }
     }
 }
