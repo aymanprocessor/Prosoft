@@ -1,0 +1,121 @@
+﻿@model SubItemDtlDTO
+@{
+    ViewData["Title"] = "Add Sub Item Dtl";
+    Layout = "_LayoutItemsGuide";
+    var unitCodes = new SelectList(Model.UnitCodes, "Code", "Names");
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+    <h1 class="mt-4">@localizer["Add Detail For Item"] : @Model.SubItemName</h1>
+    <form method="post" asp-action="Add_SubItemDtl">
+        <div class="border p-3 mt-4">
+
+            @* Hidden Inputs *@
+            <input asp-for="Flag1" type="hidden" />
+            <input asp-for="ParentCode" type="hidden" />
+            <input asp-for="MainLevel" type="hidden" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="UnitCode"></label>
+                    <select asp-for="UnitCode" asp-items="unitCodes" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <span asp-validation-for="UnitCode" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="PieceCount"></label>
+                    <input asp-for="PieceCount" class="form-control" />
+                    <span asp-validation-for="PieceCount" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+            <div class="d-flex justify-content-center fw-bold fs-4"><p>@localizer["Sales"]</p></div>
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="SalePrice"></label>
+                    <input asp-for="SalePrice" type="number" class="form-control" />
+                    <span asp-validation-for="SalePrice" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DiscoutS1"></label>
+                    <input asp-for="DiscoutS1" type="number" class="form-control" />
+                    <span asp-validation-for="DiscoutS1" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="DiscValS1"></label>
+                    <input asp-for="DiscValS1" type="number" class="form-control" />
+                    <span asp-validation-for="DiscValS1" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+            <div class="d-flex justify-content-center fw-bold fs-4"><p>@localizer["Purchases"]</p></div>
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="PurchPrice"></label>
+                    <input asp-for="PurchPrice" type="number" class="form-control" />
+                    <span asp-validation-for="PurchPrice" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="PurchAverage"></label>
+                    <input asp-for="PurchAverage" type="number" class="form-control" />
+                    <span asp-validation-for="PurchAverage" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="DiscoutP1"></label>
+                    <input asp-for="DiscoutP1" type="number" class="form-control" />
+                    <span asp-validation-for="DiscoutP1" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="DiscValP1"></label>
+                    <input asp-for="DiscValP1" type="number" class="form-control" />
+                    <span asp-validation-for="DiscValP1" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+            <hr />
+            <!------------------------------------------------------------------------------->
+            
+            <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="ItemName"></label>
+                    <select asp-for="ItemName" class="form-control text-center">
+                        <option value="">-- Choose --</option>
+                        <option value="1">@localizer["High"]</option>
+                        <option value="2">@localizer["Low"]</option>
+                        <option value="0">@localizer["Canceled"]</option>
+                    </select>
+                    <span asp-validation-for="ItemName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex justify-content-md-center gap-2">
+                <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add"]</button>
+                <a asp-controller="MainItem" asp-action="@Model.MainLevel" asp-route-id="@Model.ParentCode" asp-route-flag1="@Model.Flag1" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>

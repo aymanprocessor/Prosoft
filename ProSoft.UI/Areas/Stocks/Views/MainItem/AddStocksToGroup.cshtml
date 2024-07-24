@@ -23,7 +23,7 @@
                         @foreach(var item in Model.Stocks)
                         {
                         <input type="checkbox" class="toggle-checkbox" name="stocks" value="@item.Stkcod" id="stock-@item.Stkcod" />
-                        <label for="stock-@item.Stkcod" class="role me-2 fs-5 px-2">
+                        <label for="stock-@item.Stkcod" class="mainItem-stock me-2 fs-5 px-2">
                             @item.Stknam
                         </label>
                         }
