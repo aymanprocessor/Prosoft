@@ -99,6 +99,7 @@ builder.Services.AddScoped<ITransDtlRepo, TransDtlRepo>();
 builder.Services.AddScoped<IOrderLimitRepo, OrderLimitRepo>();
 builder.Services.AddScoped<IMainItemRepo, MainItemRepo>();
 builder.Services.AddScoped<ISubItemRepo, SubItemRepo>();
+builder.Services.AddScoped<ISubItemDtlRepo, SubItemDtlRepo>();
 ///////////////// System /////////////
 builder.Services.AddScoped<IEisPostingRepo, EisPostingRepo>();
 ///////////////// Treasury /////////////
@@ -126,6 +127,7 @@ builder.Services.AddScoped<IAmericanDailyRepo, AmericanDailyRepo>();
 builder.Services.AddScoped<IReportExpenseAnalysisRepo, ReportExpenseAnalysisRepo>();
 builder.Services.AddScoped<IReportGeneralProfessorFacilityRepo, ReportGeneralProfessorFacilityRepo>();
 builder.Services.AddScoped<ICancelJournalVoucherRepo, CancelJournalVoucherRepo>();
+builder.Services.AddScoped<IMonthlyClosingRepo, MonthlyClosingRepo>();
 ////////// PatRecord ////////////////////
 builder.Services.AddScoped<ICoronaryRepo, CoronaryRepo>();
 builder.Services.AddScoped<IPastHistoryRepo, PastHistoryRepo>();

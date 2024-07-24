@@ -36,6 +36,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             return View(stockTypesDTO);
         }
 
+        //Get AddStock
         public async Task<IActionResult> AddStocksToGroup(int id, int flag1)
         {
             MainItemStockDTO mainItemStockDTO = await _mainItemRepo.GetNewMainItemStockAsync(id);
@@ -49,7 +50,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             return View(mainItemStockDTO);
         }
 
-        //Post Add
+        //Post AddStock
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddStocksToGroup(int id, int[] stocks, MainItemStockDTO mainItemStockDTO)

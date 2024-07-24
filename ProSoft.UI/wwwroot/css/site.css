@@ -149,7 +149,7 @@ html {
     display: none;
 }
 
-.role, .trans {
+.role, .trans, .mainItem-stock {
     background-color: #bbb;
     min-width: 82px;
     text-align: center;
