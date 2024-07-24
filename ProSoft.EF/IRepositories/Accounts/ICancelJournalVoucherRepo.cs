@@ -10,6 +10,8 @@ namespace ProSoft.EF.IRepositories.Accounts
     public interface ICancelJournalVoucherRepo
     {
         Task<CancelJournalVoucherDTO> GetAllDataAsync();
+        Task<string> CancelAsync(int journal, int fromVoucher, int toVoucher, int year, int mounth,int branch);
+        Task<string> RetrievedAsync(int journal, int fromVoucher, int toVoucher, int year, int mounth,int branch);
 
     }
 }

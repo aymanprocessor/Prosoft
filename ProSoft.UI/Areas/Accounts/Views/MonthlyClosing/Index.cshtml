@@ -1,0 +1,207 @@
+﻿@model MonthlyClosingDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Monthly Closing";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+
+    SelectList branches = new SelectList(Model.branchs, "BranchId", "BranchDesc");
+    SelectList JournalTypes = new SelectList(Model.JournalTypes, "JournalCode", "JournalName");
+
+}
+@inject IViewLocalizer localizer
+<style>
+    .hide {
+        display: none !important;
+    }
+    /*  .image {
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.5;
+            z-index: -1;
+        } */
+</style>
+<div class="container pt-2 " style="min-height:100vh;">
+    @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
+
+    <div class="d-flex justify-content-center align-items-center flex-column flex-md-row mt-2">
+        <h1 class="header">@localizer["Monthly Closing"]</h1>
+    </div>
+
+    <div class="overflow-auto filter-box mt-2" style="width:80%;margin:auto;">
+       
+        <div class=" d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 px-1 my-2">
+            <div class="d-flex align-items-center flex-column flex-md-row w-100">
+                <label for="branches" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Branches"]</label>
+                <select id="branches" asp-items="branches" class="form-control text-center w-100">
+                    <option value="100">@localizer["All Baranches"]</option>
+                </select>
+            </div>
+            <div class="d-flex align-items-center flex-column flex-md-row w-100">
+                <label for="journals" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Journal"]</label>
+                <select id="journals" asp-items="JournalTypes" class="form-control text-center w-100">
+                    <option value="100">@localizer["All Journals"]</option>
+                </select>
+            </div>
+        </div>
+        <div class="d-flex align-items-center flex-column flex-md-row gap-3 my-3">
+                <div class="d-flex align-items-center flex-column flex-md-row w-100" style="width:40% !important;">
+                    <label for="filter" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0" style="width:60% !important;">@localizer["Filter By"]</label>
+                    <select id="filter" class="form-control text-center" onchange="filtering(event)">
+                        <option value="1">@localizer["Period"]</option>
+                    <option value="2">@localizer["Voucher"]</option>
+                    </select>
+                </div>
+
+                <div class="d-flex justify-content-end align-items-center flex-column flex-md-row gap-2 receipt-hide hide" style="width:70% !important;">
+                    <div class="d-flex align-items-center w-100">
+                        <label style="width:60% !important;">@localizer["From Voucher No"]</label>
+                        <input id="fromVoucher" type="number" class="form-control text-center" />
+                    </div>
+                    <div class="d-flex align-items-center w-100">
+                        <label style="width:60% !important;">@localizer["To Voucher No"]</label>
+                        <input id="toVoucher" type="number" class="form-control text-center" />
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end align-items-center flex-column flex-md-row gap-2 period" style="width:70% !important;">
+                    <div class="d-flex align-items-center w-100">
+                        <label style="width:60% !important;">@localizer["From Period"]</label>
+                        <input id="fromPeriod" type="date" class="form-control text-center" />
+                    </div>
+                    <div class="d-flex align-items-center w-100">
+                        <label style="width:60% !important;">@localizer["To Period"]</label>
+                        <input id="toPeriod" type="date" class="form-control text-center" />
+                    </div>
+                </div>
+        </div>
+
+        <div class="d-flex justify-content-center mt-3 gap-2">
+            <a class="btn btn-sm btn-primary fs-6" style="width:150px" onclick="monthlyClose(event)">
+                @localizer["Monthly Close"]
+            </a>
+            <a class="btn btn-sm btn-primary fs-6" style="width:150px" onclick="monthlyCloseCancel(event)">
+                @localizer["Monthly Close Cancel"]
+            </a>
+        </div>
+    </div>
+    <div id="alertDiv" class="d-flex justify-content-center mt-2" style="display: none !important;">
+        <div class="alert alert-danger  text-center" role="alert" style="width:50%;">
+            <p id="alertMes" class="mb-0"></p>
+        </div>
+    </div>
+</div>
+<script>
+    var branche = document.getElementById("branches");
+    var journal = document.getElementById("journals");
+    var fromPeriod = document.getElementById("fromPeriod");
+    var toPeriod = document.getElementById("toPeriod");
+    var fromReceipt = document.getElementById("fromVoucher");
+    var toVoucher = document.getElementById("toVoucher");
+    var alertMes = document.getElementById("alertMes");
+
+    //for Monthly Close//
+    function monthlyClose(e) {
+        if (filter.value == 1) {
+            if (!fromPeriod.value) {
+                fromPeriod.focus();
+                return;
+            }
+            if (!toPeriod.value) {
+                toPeriod.focus();
+                return;
+            }
+        }
+        else if (filter.value == 2) {
+            if (!fromVoucher.value) {
+                fromVoucher.focus();
+                return;
+            }
+            if (!toVoucher.value) {
+                toVoucher.focus();
+                return;
+            }
+        }
+        let url;
+        if (filter.value == 1) {
+            url = `/Accounts/MonthlyClosing/MonthlyCloseOrCancel/${journal.value}?branch=${branche.value}&fromPeriod=${fromPeriod.value}&toPeriod=${toPeriod.value}&closOrCanc=1`;
+        } else if (filter.value == 2) {
+            url = `/Accounts/MonthlyClosing/MonthlyCloseOrCancel/${journal.value}?branch=${branche.value}&fromVoucher=${fromVoucher.value}&toVoucher=${toVoucher.value}&closOrCanc=1`;
+        }
+        alertMes.innerHTML = "";
+        $.ajax({
+            url: url,
+            success: function (result) {
+                alertMes.innerHTML = "@localizer["Monthly Closing Done"]";
+                alertDiv.style.display = "flex";
+            }
+        });
+    }
+
+    //for Monthly Close Cancel//
+    function monthlyCloseCancel(e) {
+        if (filter.value == 1) {
+            if (!fromPeriod.value) {
+                fromPeriod.focus();
+                return;
+            }
+            if (!toPeriod.value) {
+                toPeriod.focus();
+                return;
+            }
+        }
+        else if (filter.value == 2) {
+            if (!fromVoucher.value) {
+                fromVoucher.focus();
+                return;
+            }
+            if (!toVoucher.value) {
+                toVoucher.focus();
+                return;
+            }
+        }
+
+        let url;
+        if (filter.value == 1) {
+            url = `/Accounts/MonthlyClosing/MonthlyCloseOrCancel/${journal.value}?branch=${branche.value}&fromPeriod=${fromPeriod.value}&toPeriod=${toPeriod.value}&closOrCanc=2`;
+        } else if (filter.value == 2) {
+            url = `/Accounts/MonthlyClosing/MonthlyCloseOrCancel/${journal.value}?branch=${branche.value}&fromVoucher=${fromVoucher.value}&toVoucher=${toVoucher.value}&closOrCanc=2`;
+        }
+        alertMes.innerHTML = "";
+        $.ajax({
+            url: url,
+            success: function (result) {
+                alertMes.innerHTML = "@localizer["Monthly Closing Cancel"]";
+                alertDiv.style.display = "flex";
+            }
+        });
+    }
+
+    //Filter
+    function filtering(e) {
+        var filterBy = e.target.value;
+        // console.log(filterBy);
+        var periodElements = document.querySelectorAll(".period");
+        var receiptElement = document.querySelector(".receipt-hide");
+
+        if (filterBy == 2) {
+            receiptElement.classList.remove("hide");
+            periodElements.forEach(e => {
+                e.classList.add("hide");
+            });
+        }
+        else if (filterBy == 1) {
+            receiptElement.classList.add("hide");
+            periodElements.forEach(e => {
+                e.classList.remove("hide");
+            });
+        }
+    }
+</script>

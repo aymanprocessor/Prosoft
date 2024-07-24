@@ -604,6 +604,14 @@
   "Returned": "Returned",
   "From Voucher No": "From Voucher No",
   "To Voucher No": "To Voucher No",
+  "Closing Procedures": "Closing Procedures",
+  "Monthly Closing": "Monthly Closing",
+  "Monthly Close": "Monthly Close",
+  "Monthly Close Cancel": "Monthly Close Cancel",
+  "Journal Voucher have been cancelled": "Journal Voucher have been cancelled",
+  "Journal Voucher have been retrieved": "Journal Voucher have been retrieved",
+  "Monthly Closing Done": "Monthly Closing Done",
+  "Monthly Closing Cancel": "Monthly Closing Cancel",
 
 
 
@@ -874,5 +882,17 @@
   "Error: ItemCode is larger than system barcode": "Error: ItemCode is larger than system barcode",
   "Add Stocks": "Add Stocks",
   "Add Stockk To Main Group": "Add Stockk To Main Group",
-  "The Last Added Stocks": "The Last Added Stocks"
+  "The Last Added Stocks": "The Last Added Stocks",
+  "Details Of Item": "Details Of Item",
+  "Add Detail": "Add Detail",
+  "Unit Type": "Unit Type",
+  "Sales": "Sales",
+  "Purchases": "Purchases",
+  "Unit Size": "Unit Size",
+  "Last Price": "Last Price",
+  "Price Average": "Price Average",
+  "Add Detail For Item": "Add Detail For Item",
+  "High": "High",
+  "Low": "Low",
+  "Canceled": "Canceled"
 }

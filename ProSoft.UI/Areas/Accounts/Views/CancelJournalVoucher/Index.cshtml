@@ -35,7 +35,7 @@
         <h1 class="header">@localizer["Cancel Journal Voucher"]</h1>
     </div>
 
-    <div class="overflow-auto filter-box mt-2">
+    <div class="overflow-auto filter-box mt-2" style="width:80%;margin:auto;">
         <div class=" d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 px-1 my-2">
            
             <div class="d-flex align-items-center flex-column flex-md-row w-100">
@@ -68,7 +68,7 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex mt-3 gap-2">
+        <div class="d-flex justify-content-center mt-3 gap-2">
             <a class="btn btn-sm btn-primary fs-6" style="width:150px" onclick="Returned(event)">
                 @localizer["Returned"]
             </a>
@@ -78,16 +78,46 @@
         </div>
     </div>
 
-    <div class="report">
+    <div id="alertDiv" class="d-flex justify-content-center mt-2" style="display: none !important;">
+         <div class="alert alert-danger  text-center" role="alert" style="width:50%;">
+             <p id="alertMes" class="mb-0"></p>
+         </div>
     </div>
 </div>
 <script>
     var journal = document.getElementById("journals");
     var year = document.getElementById("Year");
+    var mounth = document.getElementById("mounths");
     var fromVoucher = document.getElementById("fromVoucher");
     var toVoucher = document.getElementById("toVoucher");
+    var alertMes = document.getElementById("alertMes");
 
-    //for report From Voucher To Voucher//
+    //for Cancel//
+    function Cancel(e) {
+        if (!fromVoucher.value) {
+            fromVoucher.focus();
+            return;
+        }
+        if (!toVoucher.value) {
+            toVoucher.focus();
+            return;
+        }
+        if (!year.value) {
+            year.focus();
+            return;
+        }
+
+    let url = `/Accounts/CancelJournalVoucher/CancelOrRetrieved/${journal.value}?fromVoucher=${fromVoucher.value}&toVoucher=${toVoucher.value}&year=${year.value}&mounth=${mounth.value}&canOrRet=1`;
+    alertMes.innerHTML = "";
+        $.ajax({
+            url: url,
+            success: function (result) {
+                alertMes.innerHTML = "@localizer["Journal Voucher have been cancelled"]"; 
+                alertDiv.style.display = "flex"; 
+            }
+        });
+    }
+    //for Returned//
     function Returned(e) {
         if (!fromVoucher.value) {
             fromVoucher.focus();
@@ -102,7 +132,14 @@
             return;
         }
 
-        let url = `/Accounts/CancelJournalVoucher/Cancel/journal=${journal.value}&fromVoucher=${fromVoucher.value}&toVoucher=${toVoucher.value}&year=${year.value}`;
-
+     let url = `/Accounts/CancelJournalVoucher/CancelOrRetrieved/${journal.value}?fromVoucher=${fromVoucher.value}&toVoucher=${toVoucher.value}&year=${year.value}&mounth=${mounth.value}&canOrRet=2`;
+        alertMes.innerHTML = "";
+        $.ajax({
+            url: url,
+            success: function (result) {
+                alertMes.innerHTML = "@localizer["Journal Voucher have been retrieved"]";
+                alertDiv.style.display = "flex";
+            }
+        });
     }
 </script>

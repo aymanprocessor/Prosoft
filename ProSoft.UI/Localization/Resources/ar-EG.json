@@ -610,6 +610,14 @@
   "Returned": "استرجاع",
   "From Voucher No": "من القيد رقم",
   "To Voucher No": "الي القيد رقم",
+  "Closing Procedures": "اجراءات الاقفال",
+  "Monthly Closing": "الاقفال الشهري",
+  "Monthly Close": "اقفال شهري",
+  "Monthly Close Cancel": "الغاء اقفال شهري",
+  "Journal Voucher have been cancelled": "تم الغاء قيود اليومية",
+  "Journal Voucher have been retrieved": "تم استرجاع  قيود اليومية",
+  "Monthly Closing Done": "تم الاقفال الشهري",
+  "Monthly Closing Cancel": "تم الغاء الاقفال الشهري",
 
 
 
@@ -882,5 +890,17 @@
   "Error: ItemCode is larger than system barcode": "خطأ : كود الصنف اكبر من باركود النظام",
   "Add Stocks": "اضافة مخازن",
   "Add Stockk To Main Group": "اضافة مخزن الي المجموعة الرئيسية",
-  "The Last Added Stocks": "المخازن المضافة مؤخراً"
+  "The Last Added Stocks": "المخازن المضافة مؤخراً",
+  "Details Of Item": "تفاصيل الصنف",
+  "Add Detail": "اضافة تفاصيل",
+  "Unit Type": "نوع الوحدة",
+  "Sales": "مبيعات",
+  "Purchases": "مشتريات",
+  "Unit Size": "حجم الوحدة",
+  "Last Price": "اخر سعر",
+  "Price Average": "متوسط سعر",
+  "Add Detail For Item": "اضافة تفاصيل للصنف",
+  "High": "كبري",
+  "Low": "صغري",
+  "Canceled": "ملغي"
 }
