@@ -20,7 +20,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             ReportGeneralProfessorFacilityDTO reportGeneralProfessorFacilityDTO = await _reportGeneralProfessorFacilityRepo.GetAllDataAsync();
             return View(reportGeneralProfessorFacilityDTO);
         }
-        public async Task<IActionResult> GetGeneralProfessor(int id,DateTime? toPeriod, int movementToDate)
+        public async Task<IActionResult> GetGeneralProfessor(int id,DateTime toPeriod, int? movementToDate)
         {
            // var fYear = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "F_Year").Value);
             var reportData = await _reportGeneralProfessorFacilityRepo.GetGeneralProfessorAsync(id, toPeriod, movementToDate);

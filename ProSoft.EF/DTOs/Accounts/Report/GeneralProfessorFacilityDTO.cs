@@ -8,13 +8,13 @@ namespace ProSoft.EF.DTOs.Accounts.Report
 {
     public class GeneralProfessorFacilityDTO
     {
-        public string? SubCode { get; set; }
-        public string? AccName { get; set; }
+        public string MainCode { get; set; }
+        public string SubCode { get; set; }
+        public string SubName { get; set; }
+        public decimal? FDepCur { get; set; }
+        public decimal? FCreditOr { get; set; }
         public decimal? ValDep { get; set; }
         public decimal? ValCredit { get; set; }
-        public decimal? TransValDep { get; set; }
-        public decimal? TransValCredit { get; set; }
-        public decimal? LcGapValDep { get; set; }
-        public decimal? LcGapValCredit { get; set; }
+        public string MainName { get; set; }
     }
 }

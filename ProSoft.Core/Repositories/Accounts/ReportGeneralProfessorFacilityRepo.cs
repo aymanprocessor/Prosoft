@@ -31,54 +31,99 @@ namespace ProSoft.Core.Repositories.Accounts
 
             return reportGeneralProfessorFacilityDTO;
         }
-
-        public async Task<List<GeneralProfessorFacilityDTO>> GetGeneralProfessorAsync(int branch, DateTime? toPeriod, int movementToDate)
+        public async Task<List<GeneralProfessorFacilityDTO>> GetGeneralProfessorAsync(int branch, DateTime toPeriod, int? movementToDate)
         {
-            List<GeneralProfessorFacilityDTO> eneralProfessorFacilityDTO = new List<GeneralProfessorFacilityDTO>();
-            var lsAccType = "BAL";
-            var llMounth = toPeriod?.Month;
-            var liYear = toPeriod?.Year;
-            var llDay = toPeriod?.Day;
-            var ldDatePrevious = toPeriod.Value.AddDays(-llDay.Value);
-            var ldtDatePrevious = ldDatePrevious;
-            var dsMeazn =await _Context.AccBalAlls.Where(obj=>obj.DocType == lsAccType).ToListAsync();
-            foreach (var item in dsMeazn)
-            {
-                var checkValue = 0;
-                if (item.LineType == "tot")
-                {
-                  //  var lcTotalBalDep = lcTotalBalDep +item.
-                }
-                else if (item.LineType == "mn")
-                {
-                    var lsMainCode = item.MainCode;
-                    var llPos = item.MainCode.IndexOf("00");
-                    switch (llPos) 
-                    {
-                      //  case 2:
-                    }
-                }
-               
-            }
+            int year = toPeriod.Year;
+            DateTime startDate = new DateTime(year, 1, 31); // Start date for the filter
 
-            //get first balance
-            var accStartBals = await _Context.AccStartBals
-                   .Where(obj => (branch == 100 || obj.CoCode == branch))
-                     .ToListAsync();
-            decimal lcFCreditOr = accStartBals.Sum(obj => obj.FCreditOr) ?? 0;
-            decimal lcFDepOr = accStartBals.Sum(obj => obj.FDepOr) ?? 0;
+            var query = from sub in _Context.AccSubCodes
+                        join startBal in _Context.AccStartBals
+                            on new { sub.MainCode, sub.SubCode } equals new { startBal.MainCode, startBal.SubCode } into startBalGroup
+                        from startBal in startBalGroup.DefaultIfEmpty()
+                        join transDetail in _Context.AccTransDetails
+                            on new { sub.MainCode, sub.SubCode, FYear = startBal != null ? startBal.FYear : (int?)null }
+                            equals new { transDetail.MainCode, transDetail.SubCode, transDetail.FYear } into transDetailGroup
+                        from transDetail in transDetailGroup.DefaultIfEmpty()
+                        join main in _Context.AccMainCodes
+                            on new { sub.MainCode, sub.CoCode } equals new { main.MainCode, main.CoCode }
+                        where (startBal == null || startBal.FYear == year) // Handle the case where startBal is null
+                              && (transDetail == null || (transDetail.TransDate >= startDate && transDetail.TransDate <= toPeriod)) // Handle the case where transDetail is null
+                              && (transDetail == null || transDetail.FYear == year)
+                        group new { startBal, transDetail, sub, main } by new
+                        {
+                            sub.MainCode,
+                            sub.SubCode,
+                            sub.SubName,
+                            main.MainName
+                        } into g
+                        select new GeneralProfessorFacilityDTO
+                        {
+                            MainCode = g.Key.MainCode,
+                            SubCode = g.Key.SubCode,
+                            SubName = g.Key.SubName,
+                            FDepCur = g.Sum(x => x.startBal != null ? x.startBal.FDepCur : 0),
+                            FCreditOr = g.Sum(x => x.startBal != null ? x.startBal.FCreditOr : 0),
+                            ValDep = g.Sum(x => x.transDetail != null ? x.transDetail.ValDep : 0),
+                            ValCredit = g.Sum(x => x.transDetail != null ? x.transDetail.ValCredit : 0),
+                            MainName = g.Key.MainName
+                        };
 
-            //var lsStartDate = new DateTime(fromPeriod.Value.Year, 1, 1);
-            //balance before period
-            //var accTransDetailList = await _Context.AccTransDetails
-            //         .Where(obj => obj.FYear == fYear && (branch == 100 || obj.CoCode == branch)
-            //          && (obj.TransDate >= lsStartDate && obj.TransDate < fromPeriod))
-            //          .ToListAsync();
-
-            //decimal lcGapValCredit = accTransDetailList.Sum(obj => obj.ValCredit) ?? 0;
-            //decimal lcGapValDep = accTransDetailList.Sum(obj => obj.ValDep) ?? 0;
-
-            return eneralProfessorFacilityDTO;
+            return await query.OrderBy(x => x.MainCode)
+                              .ThenBy(x => x.SubCode)
+                              .ToListAsync();
         }
+
+        //public async Task<List<GeneralProfessorFacilityDTO>> GetGeneralProfessorAsync(int branch, DateTime toPeriod, int? movementToDate)
+        //{
+        //    int year = toPeriod.Year;
+        //    DateTime startDate = new DateTime(year, 1, 1); // Start date for the filter
+
+        //    // Get relevant start balances
+        //    var startBalances = _Context.AccStartBals
+        //        .Where(sb => sb.FYear == year)
+        //        .ToList();
+
+        //    // Get relevant transaction details
+        //    var transDetails = _Context.AccTransDetails
+        //        .Where(td => td.FYear == year && (td.TransDate >= startDate && td.TransDate <= toPeriod))
+        //        .ToList();
+
+        //    // Get all relevant sub codes and their related main codes
+        //    var subCodes = _Context.AccSubCodes.ToList();
+
+        //    var mainCodes = _Context.AccMainCodes.ToList();
+
+        //    var query = from sub in subCodes
+        //                join startBal in startBalances
+        //                    on new { sub.MainCode, sub.SubCode } equals new { startBal.MainCode, startBal.SubCode } into startBalGroup
+        //                from startBal in startBalGroup.DefaultIfEmpty()
+        //                join transDetail in transDetails
+        //                    on new { sub.MainCode, sub.SubCode, FYear = startBal?.FYear } equals new { transDetail.MainCode, transDetail.SubCode, transDetail.FYear } into transDetailGroup
+        //                from transDetail in transDetailGroup.DefaultIfEmpty()
+        //                join main in mainCodes
+        //                    on new { sub.MainCode, sub.CoCode } equals new { main.MainCode, main.CoCode }
+        //                group new { startBal, transDetail, sub, main } by new
+        //                {
+        //                    sub.MainCode,
+        //                    sub.SubCode,
+        //                    sub.SubName,
+        //                    main.MainName
+        //                } into g
+        //                select new GeneralProfessorFacilityDTO
+        //                {
+        //                    MainCode = g.Key.MainCode,
+        //                    SubCode = g.Key.SubCode,
+        //                    SubName = g.Key.SubName,
+        //                    FDepCur = g.Sum(x => x.startBal != null ? x.startBal.FDepCur : 0),
+        //                    FCreditOr = g.Sum(x => x.startBal != null ? x.startBal.FCreditOr : 0),
+        //                    ValDep = g.Sum(x => x.transDetail != null ? x.transDetail.ValDep : 0),
+        //                    ValCredit = g.Sum(x => x.transDetail != null ? x.transDetail.ValCredit : 0),
+        //                    MainName = g.Key.MainName
+        //                };
+
+        //    return  query.OrderBy(x => x.MainCode)
+        //                      .ThenBy(x => x.SubCode)
+        //                      .ToList();
+        //}
     }
 }

@@ -46,7 +46,8 @@ namespace ProSoft.Core.Repositories.Treasury
                         PersonName = obj.PersonName,
                         ValuePay = obj.ValuePay,
                         Commentt = obj.Commentt,
-                        AccTransNo =obj.AccTransNo
+                        AccTransNo =obj.AccTransNo,
+                        AprovedFlag =obj.AprovedFlag
                     }).ToListAsync();
             }
             else if (flagType == "oneANDtwoAndthree")

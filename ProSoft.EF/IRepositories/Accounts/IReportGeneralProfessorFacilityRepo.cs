@@ -11,7 +11,7 @@ namespace ProSoft.EF.IRepositories.Accounts
     public interface IReportGeneralProfessorFacilityRepo
     {
         Task<ReportGeneralProfessorFacilityDTO> GetAllDataAsync();
-        Task<List<GeneralProfessorFacilityDTO>> GetGeneralProfessorAsync(int branch, DateTime? toPeriod, int movementToDate);
+        Task<List<GeneralProfessorFacilityDTO>> GetGeneralProfessorAsync(int branch, DateTime toPeriod, int? movementToDate);
 
     }
 }

@@ -62,7 +62,7 @@
 
                 @foreach (var jou in Model)
                 {
-                    <tr onclick="GetAccTransDtl(event,@jou.TransId,@ViewBag.journalCode,@jou.MCode)" style="cursor:pointer;" class="align-middle">
+                    <tr onclick="GetAccTransDtl(event,@jou.TransId,@ViewBag.journalCode,@jou.MCode,@jou.OkPost)" style="cursor:pointer;" class="align-middle">
                         <td>
                             @jou.TransNo
                         </td>
@@ -100,7 +100,7 @@
                                 @localizer["Treasury System"]
                             }
                         </td>
-                        @if(@jou.MCode !=1)
+                        @if (@jou.MCode != 1 || @jou.OkPost =="1")
                         {
                             <td width="30%" class="text-center">
                                 <a asp-controller="AccTransMaster" asp-action="Edit_AccTransMaster" asp-route-ID="@jou.TransId" class="btn btn-sm btn-secondary mb-1 fs-6" style="width:150px;pointer-events:none;">
@@ -279,7 +279,7 @@
         }
     }
     @* Ajax for AccTransDtl *@
-        function GetAccTransDtl(e, id, journalCode, MCode) {
+        function GetAccTransDtl(e, id, journalCode, MCode, OkPost) {
             var acctransDtls = document.querySelector(".accTransDtl-table tbody");
             // Handle active clic
             let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");;
@@ -298,7 +298,7 @@
             acctransDtlHeader.innerHTML = "@localizer["Terms of Voucher"]";
 
             let acctransDtlAddButton = acctransDtlHead.querySelector("a");
-            if (MCode != 1) {
+            if (MCode != 1 || OkPost == "1") {
                 acctransDtlAddButton.style.pointerEvents = "none";
                 acctransDtlAddButton.classList.add("btn-secondary");
                 acctransDtlAddButton.classList.remove("btn-primary");
@@ -326,7 +326,7 @@
                     var style;
                     var editStyle;
                     var deleteStyle;
-                    if (MCode != 1) {
+                    if (MCode != 1 || OkPost == "1") {
                         editStyle = "btn-secondary";
                         deleteStyle = "btn-secondary";
                         style = "pointer-events:none;";
