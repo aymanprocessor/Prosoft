@@ -93,7 +93,7 @@
 
     @* /////////////////////////////////////////////////////////////////// *@
 
-    @* Table for Permission Details *@
+    @* Table for Sub-Items *@
 
     <div class="details-table-head d-flex justify-content-between align-items-center mt-3 mb-1">
         <h2 class="header">@localizer["The Items"]</h2>
@@ -134,6 +134,73 @@
             <div class="spinner"></div>
         </div>
     </div>
+
+    @* /////////////////////////////////////////////////////////////////// *@
+
+    @* Table for Sub-Item Details *@
+
+    <div class="subItem-details-table-head d-flex justify-content-between align-items-center mt-3 mb-1">
+        <h2 class="header">@localizer["Details Of Item"]</h2>
+        <a class="btn btn-sm btn-primary fs-6" style="width:150px">
+            @localizer["Add Detail"]
+        </a>
+    </div>
+
+    <div class="p-0 mb-2 border-opacity-75 overflow-auto" style="max-height: 300px;">
+
+        <table id="myTable_3" class="table table-bordered table-hover" style="width:100%">
+            <thead class="table-dark">
+                <tr class="align-middle text-center">
+                    <th rowspan="2">
+                        @localizer["Serial"]
+                    </th>
+                    <th rowspan="2">
+                        @localizer["Unit Type"]
+                    </th>
+                    <th rowspan="2">
+                        @localizer["Number of Particles"]
+                    </th>
+                    <th colspan="3">
+                        @localizer["Sales"]
+                    </th>
+                    <th colspan="4">
+                        @localizer["Purchases"]
+                    </th>
+                    <th rowspan="2">
+                        @localizer["Unit Size"]
+                    </th>
+                    <td rowspan="2"></td>
+                </tr>
+                <tr class="align-middle text-center">
+                    <th>
+                        @localizer["Last Price"]
+                    </th>
+                    <th>
+                        @localizer["Discount Percentage"]
+                    </th>
+                    <th>
+                        @localizer["Discount Value"]
+                    </th>
+                    <th>
+                        @localizer["Last Price"]
+                    </th>
+                    <th>
+                        @localizer["Price Average"]
+                    </th>
+                    <th>
+                        @localizer["Discount Percentage"]
+                    </th>
+                    <th>
+                        @localizer["Discount Value"]
+                    </th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div class="spinner-container d-flex justify-content-center align-items-center d-none" style="height: 100px;">
+            <div class="spinner"></div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
@@ -163,6 +230,11 @@
             // Handle ajax call
             subItems.innerHTML = "";  // Empty the body
 
+            let detailsHeader = document.querySelector(".subItem-details-table-head .header");
+            detailsHeader.innerHTML = "@localizer["Details Of Item"] : ";
+            let details = document.querySelector("#myTable_3 tbody");
+            details.innerHTML = "";
+
             if (lastSub == 0) {
                 subItemsAddButton.classList.add("btn-secondary");
                 subItemsAddButton.style = "pointer-events:none;";
@@ -189,39 +261,127 @@
 
                         serial++;
                         subItem.innerHTML +=
-                            `
-                                <td class="align-middle text-center">${serial}</td>
-                                <td class="align-middle text-center">${item.userSort}</td>
-                                <td class="align-middle text-center">${item.subName}</td>
-                                <td class="align-middle text-center">${batchCounter}</td>
-                                <td class="align-middle text-center">${item.itemPrice}</td>
-                                <td class="align-middle text-center">${item.itemCode}</td>
-                                <td class="text-center align-middle" style="width: 325px;">
-                                    <a href="/Stocks/SubItem/Edit_SubItem/${item.subId}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
-                                    <form action="/Stocks/SubItem/Delete_SubItem" method="post" class="d-inline">
-                                            @Html.AntiForgeryToken()
-                                        <input type="hidden" name="id" value="${item.subId}" />
-                                        <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width: 150px">@localizer["Delete"]</button>
-                                        <div class="modal-container">
-                                            <div class="modal 4" id="modal">
-                                                <div class="modal-header fs-4">
-                                                    <div class="title">@localizer["Confirm Delete"]</div>
-                                                    <button type="button" onclick="closeModelListener(event)" data-close-button class="close-button">&times;</button>
-                                                </div>
-                                                <div class="modal-body fs-4">
-                                                    @localizer["Are you sure you want to delete this item ?"]
-                                                </div>
-                                                <div class="modal-footer fs-4">
-                                                    <button type="button" onclick="closeModelListener(event)" data-close-button class="btn btn-secondary">@localizer["No"]</button>
-                                                    <button class="btn btn-danger">@localizer["Yes"]</button>
-                                                </div>
-                                            </div>
-                                            <div onclick="overlayListener(event)" id="overlay"></div>
+                        `
+                        <td class="align-middle text-center">${serial}</td>
+                        <td class="align-middle text-center">${item.userSort}</td>
+                        <td class="align-middle text-center">${item.subName}</td>
+                        <td class="align-middle text-center">${batchCounter}</td>
+                        <td class="align-middle text-center">${item.itemPrice}</td>
+                        <td class="align-middle text-center">${item.itemCode}</td>
+                        <td class="text-center align-middle" style="width: 325px;">
+                            <a href="/Stocks/SubItem/Edit_SubItem/${item.subId}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
+                            <form action="/Stocks/SubItem/Delete_SubItem" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="${item.subId}" />
+                                <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width: 150px">@localizer["Delete"]</button>
+                                <div class="modal-container">
+                                    <div class="modal 4" id="modal">
+                                        <div class="modal-header fs-4">
+                                            <div class="title">@localizer["Confirm Delete"]</div>
+                                            <button type="button" onclick="closeModelListener(event)" data-close-button class="close-button">&times;</button>
                                         </div>
-                                    </form>
-                                </td>
-                                `;
+                                        <div class="modal-body fs-4">
+                                            @localizer["Are you sure you want to delete this item ?"]
+                                        </div>
+                                        <div class="modal-footer fs-4">
+                                            <button type="button" onclick="closeModelListener(event)" data-close-button class="btn btn-secondary">@localizer["No"]</button>
+                                            <button class="btn btn-danger">@localizer["Yes"]</button>
+                                        </div>
+                                    </div>
+                                    <div onclick="overlayListener(event)" id="overlay"></div>
+                                </div>
+                            </form>
+                        </td>
+                        `;
+                        subItem.onclick = function () {
+                            getSubItemDetails(event, item.subId, flag1);
+                        };
+                        subItem.style.cursor = "pointer";
                         subItems.appendChild(subItem);
+                    }
+                }
+            });
+        }
+
+        function getSubItemDetails(e, subItemId, flag1) {
+            var details = document.querySelector("#myTable_3 tbody");
+
+            // Handle active clic
+            let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");;
+
+            allItemRows.forEach(row => {
+                row.classList.remove("active-row");
+            });
+
+            let clickedTarget = e.target.parentElement
+            clickedTarget.classList.add("active-row");
+            ///////////////////////////////////////////////////////////////////
+            // Catch header for details
+            let detailsHead = document.querySelector(".subItem-details-table-head");
+            let detailsHeader = detailsHead.querySelector(".header"); // Display Header for details
+            let subName = clickedTarget.querySelector(".item-name").innerHTML
+            detailsHeader.innerHTML = "@localizer["Details Of Item"] : " + subName;
+
+            let detailsAddButton = detailsHead.querySelector("a");
+            detailsAddButton.setAttribute("href", `/Stocks/SubItemDtl/Add_SubItemDtl/${subItemId}?flag1=${flag1}`);
+
+            ///////////////////////////////////////////////////////////////////
+
+            // Handle ajax call
+            details.innerHTML = "";  // Empty the body
+
+            let spinner = details.parentElement.parentElement.querySelector(".spinner-container");
+            spinner.classList.remove("d-none");
+
+            $.ajax({
+                url: `/Stocks/SubItemDtl/GetSubItemDetails/${subItemId}`,
+                success: function (result) {
+                    spinner.classList.add("d-none");
+
+                    for (let item of result) {
+                        const subDetail = document.createElement("tr");
+                        let itemSizeName = item.itemName == "1" ? "@localizer["High"]" :
+                            item.itemName == "2" ? "@localizer["Low"]" : "@localizer["Canceled"]";
+
+                        subDetail.innerHTML +=
+                        `
+                        <td class="align-middle text-center">${item.itemId}</td>
+                        <td class="align-middle text-center">${item.unitType}</td>
+                        <td class="align-middle text-center">${item.pieceCount}</td>
+                        <td class="align-middle text-center">${item.salePrice}</td>
+                        <td class="align-middle text-center">${item.discoutS1}</td>
+                        <td class="align-middle text-center">${item.discValS1}</td>
+                        <td class="align-middle text-center">${item.purchPrice}</td>
+                        <td class="align-middle text-center">${item.purchAverage}</td>
+                        <td class="align-middle text-center">${item.discoutP1}</td>
+                        <td class="align-middle text-center">${item.discValP1}</td>
+                        <td class="align-middle text-center">${itemSizeName}</td>
+                        <td class="text-center align-middle" style="width: 325px;">
+                                <a href="/Stocks/SubItemDtl/Edit_SubItemDtl/${item.subItemDtlId}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
+                                <form action="/Stocks/SubItemDtl/Delete_SubItemDtl" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="${item.subItemDtlId}" />
+                                <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width: 150px">@localizer["Delete"]</button>
+                                <div class="modal-container">
+                                    <div class="modal 4" id="modal">
+                                        <div class="modal-header fs-4">
+                                            <div class="title">@localizer["Confirm Delete"]</div>
+                                            <button type="button" onclick="closeModelListener(event)" data-close-button class="close-button">&times;</button>
+                                        </div>
+                                        <div class="modal-body fs-4">
+                                            @localizer["Are you sure you want to delete this item ?"]
+                                        </div>
+                                        <div class="modal-footer fs-4">
+                                            <button type="button" onclick="closeModelListener(event)" data-close-button class="btn btn-secondary">@localizer["No"]</button>
+                                            <button class="btn btn-danger">@localizer["Yes"]</button>
+                                        </div>
+                                    </div>
+                                    <div onclick="overlayListener(event)" id="overlay"></div>
+                                </div>
+                            </form>
+                        </td>
+                        `;
+                        details.appendChild(subDetail);
                     }
                 }
             });

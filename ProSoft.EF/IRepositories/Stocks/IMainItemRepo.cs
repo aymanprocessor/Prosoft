@@ -18,15 +18,9 @@ namespace ProSoft.EF.IRepositories.Stocks
         ///////////////////////////////////////////////////////
         // Main Level 2
         Task<MainItemEditAddDTO> GetNewMainLevel_2_Async(int flag1);
-        //Task<MainItemEditAddDTO> GetMainLevel_2_ByIdAsync(int id);
-        //Task AddMainLevel_2_Async(MainItemEditAddDTO mainItemDTO);
-        //Task EditMainLevel_2_Async(int id, MainItemEditAddDTO mainItemDTO);
         ///////////////////////////////////////////////////////
         // Main Level 3
         Task<MainItemEditAddDTO> GetNewMainLevel_3_Async(string parentCode, int flag1);
-        //Task<MainItemEditAddDTO> GetMainLevel_3_ByIdAsync(int id);
-        //Task AddMainLevel_3_Async(MainItemEditAddDTO mainItemDTO);
-        //Task EditMainLevel_3_Async(int id, MainItemEditAddDTO mainItemDTO);
         ///////////////////////////////////////////////////////
         // Main Level 4
         Task<MainItemEditAddDTO> GetNewMainLevel_4_Async(string parentCode, int flag1);
@@ -39,6 +33,6 @@ namespace ProSoft.EF.IRepositories.Stocks
         ///////////////////////////////////////////////////////
         Task<MainItemStockDTO> GetNewMainItemStockAsync(int mainId);
         Task<List<string>> CheckIfExistsAsync(int mainId, int[] stocksIDs);
-        Task AddStocksToGroupAsync(int mainId, int[] stocksIDs);
+        Task UpdateStocksForGroupAsync(int mainId, int[] stocksIDs);
     }
 }

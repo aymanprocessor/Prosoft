@@ -15,6 +15,6 @@ namespace ProSoft.EF.DTOs.Stocks
         public int? Flag1 { get; set; }
 
         public List<StockViewDTO> Stocks {  get; set; }
-        public List<StockViewDTO>? AddedStocks {  get; set; }
+        public List<StockViewDTO>? AllStocks {  get; set; }
     }
 }

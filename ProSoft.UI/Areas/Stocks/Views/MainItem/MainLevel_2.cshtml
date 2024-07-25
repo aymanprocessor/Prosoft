@@ -194,6 +194,48 @@
 
 @section Scripts {
     <script>
+        function deleteTransMaster(e, subItemID) {
+            e.preventDefault();
+            let button = e.target;
+
+            $.ajax({
+                url: `/Stocks/SubItem/IfPossibleToDelete/${subItemID}`,
+                success: function (result) {
+                    if (result == 1 || result == 2) {
+                        // let message_1 = @localizer["You Can't Delete it because of Posting To Accounts"];
+                        // let message_2 = @localizer["This Permission is not approved"];
+                        let message = result == 1 ?
+                            "You Can't Delete it because of Posting To Accounts" :
+                            "This Permission is approved";
+
+                        let myAlert = document.createElement("div");
+                        myAlert.innerHTML =
+                            `
+                            <div class="modal-container">
+                                <div class="modal 4" id="modal">
+                                    <div class="modal-header fs-4">
+                                        <div class="title">@localizer["Warning"] !</div>
+                                        <button type="button" onclick="closeAlert(event)" data-close-button class="close-button">&times;</button>
+                                    </div>
+                                    <div class="modal-body fs-4">
+                                        ${message}
+                                    </div>
+                                    <div class="modal-footer fs-4">
+                                        <button type="button" onclick="closeAlert(event)" data-close-button class="btn btn-primary">@localizer["Ok"]</button>
+                                    </div>
+                                </div>
+                                <div onclick="closeOverlay(event)" id="overlay"></div>
+                            </div>
+                            `;
+                        button.insertAdjacentHTML("afterend", myAlert.innerHTML);
+                        openAlert(e);
+                    }
+                    else if (result == 3)
+                        openModalListener(e);
+                }
+            });
+        }
+
         function getSubItems(e, mainId, lastSub, flag1, parentCode) {
             var subItems = document.querySelector("#myTable_2 tbody");
 
@@ -218,6 +260,11 @@
 
             // Handle ajax call
             subItems.innerHTML = "";  // Empty the body
+
+            let detailsHeader = document.querySelector(".subItem-details-table-head .header");
+            detailsHeader.innerHTML = "@localizer["Details Of Item"] : ";
+            let details = document.querySelector("#myTable_3 tbody");
+            details.innerHTML = "";
 
             if (lastSub == 0) {
                 subItemsAddButton.classList.add("btn-secondary");

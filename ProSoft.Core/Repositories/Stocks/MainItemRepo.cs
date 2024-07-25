@@ -335,16 +335,16 @@ namespace ProSoft.Core.Repositories.Stocks
             List<MainItemStock> mainItemStockList = await _Context.MainItemStocks.Where(obj => obj.MainCode ==
                 mainItem.MainCode && obj.Flag1 == mainItem.Flag1 && obj.BranchId == mainItem.BranchId)
                 .ToListAsync();
-            mainItemStock.AddedStocks = new List<StockViewDTO>();
+            mainItemStock.Stocks = new List<StockViewDTO>();
             foreach (var item in mainItemStockList)
             {
                 Stock stock = await _Context.Stocks.FindAsync(item.Stkcod);
                 var stockDTO = _mapper.Map<StockViewDTO>(stock);
-                mainItemStock.AddedStocks.Add(stockDTO);
+                mainItemStock.Stocks.Add(stockDTO);
             }
 
             List<Stock> stocks = await _Context.Stocks.ToListAsync();
-            mainItemStock.Stocks = _mapper.Map<List<StockViewDTO>>(stocks);
+            mainItemStock.AllStocks = _mapper.Map<List<StockViewDTO>>(stocks);
 
             mainItemStock.Flag1 = mainItem.Flag1;
             mainItemStock.ParentCode = mainItem.ParentCode;
@@ -374,17 +374,44 @@ namespace ProSoft.Core.Repositories.Stocks
             return messages;
         }
 
-        public async Task AddStocksToGroupAsync(int mainId, int[] stocksIDs)
+        private async Task<bool> CheckIfStockAddedAsync(MainItem mainItem, int stocksID)
+        {
+            List<MainItemStock> mainItemStockList = await _Context.MainItemStocks.Where(obj =>
+                obj.MainCode == mainItem.MainCode && obj.Flag1 == mainItem.Flag1 && obj.BranchId == mainItem.BranchId)
+                .ToListAsync();
+            foreach (var item in mainItemStockList)
+            {
+                if (item.Stkcod == stocksID)
+                    return true;
+            }
+            return false;
+        }
+
+        private async Task AddStockToGroupAsync(MainItem mainItem, int stockID)
+        {
+            var newMainItemStock = new MainItemStock();
+            newMainItemStock.MainCode = mainItem.MainCode;
+            newMainItemStock.Flag1 = (int)mainItem.Flag1;
+            newMainItemStock.BranchId = (int)mainItem.BranchId;
+            newMainItemStock.Stkcod = stockID;
+            await _Context.AddAsync(newMainItemStock);
+        }
+
+        public async Task UpdateStocksForGroupAsync(int mainId, int[] stocksIDs)
         {
             MainItem mainItem = await GetByIdAsync(mainId);
+            List<MainItemStock> mainItemStockList = await _Context.MainItemStocks.Where(obj =>
+                obj.MainCode == mainItem.MainCode && obj.Flag1 == mainItem.Flag1 && obj.BranchId == mainItem.BranchId)
+                .ToListAsync();
+            foreach (var item in mainItemStockList)
+            {
+                if (!stocksIDs.Contains(item.Stkcod))
+                    _Context.Remove(item);
+            }
             foreach (var stockID in stocksIDs)
             {
-                var newMainItemStock = new MainItemStock();
-                newMainItemStock.MainCode = mainItem.MainCode;
-                newMainItemStock.Flag1 = (int)mainItem.Flag1;
-                newMainItemStock.BranchId = (int)mainItem.BranchId;
-                newMainItemStock.Stkcod = stockID;
-                await _Context.AddAsync(newMainItemStock);
+                if(!(await CheckIfStockAddedAsync(mainItem, stockID)))
+                    await AddStockToGroupAsync(mainItem, stockID);
             }
             await SaveChangesAsync();
         }

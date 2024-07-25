@@ -56,8 +56,9 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             else if (ModelState.IsValid)
             {
                 subItemDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
+                int fYear = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "F_Year").Value);
 
-                await _subItemRepo.AddSubItemAsync(id, subItemDTO);
+                await _subItemRepo.AddSubItemAsync(id, subItemDTO, fYear);
                 return RedirectToAction(subItemDTO.MainLevel, "MainItem", new { id = subItemDTO.ParentCode, flag1 = subItemDTO.Flag1 });
             }
             #region sidebar
@@ -122,5 +123,10 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             await _subItemRepo.SaveChangesAsync();
             return RedirectToAction(subItemDTO.MainLevel, "MainItem", new { id = subItemDTO.ParentCode, flag1 = subItemDTO.Flag1 });
         }
+        
+        //public async Task<IActionResult> IfPossibleToDelete(int id)
+        //{
+
+        //}
     }
 }

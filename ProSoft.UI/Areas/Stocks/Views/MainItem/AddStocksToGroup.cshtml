@@ -2,6 +2,8 @@
 @{
     ViewData["Title"] = "Add Stockk To Main Group";
     Layout = "_LayoutItemsGuide";
+
+    var allStocks = Model.AllStocks;
 }
 @inject IViewLocalizer localizer
 
@@ -20,12 +22,29 @@
                 <div class="mb-3 w-100">
                     <label class="fs-4">@localizer["Stocks"]</label>
                     <div class="d-flex flex-wrap gap-2 form-control">
-                        @foreach(var item in Model.Stocks)
+@*                         @foreach(var item in Model.Stocks)
                         {
                         <input type="checkbox" class="toggle-checkbox" name="stocks" value="@item.Stkcod" id="stock-@item.Stkcod" />
                         <label for="stock-@item.Stkcod" class="mainItem-stock me-2 fs-5 px-2">
                             @item.Stknam
                         </label>
+                        } *@
+                        @for (int i = 0, len = Model.AllStocks.Count; i < len; i++)
+                        {
+                            if (Model.Stocks.Contains(allStocks[i], new StockViewDTOComparer()))
+                            {
+                            <input type="checkbox" class="toggle-checkbox" name="stocks" value="@allStocks[i].Stkcod" id="stock-@i" checked />
+                            <label for="stock-@i" class="mainItem-stock me-2 fs-5 px-2">
+                                @allStocks[i].Stknam
+                            </label>
+                            }
+                            else
+                            {
+                            <input type="checkbox" class="toggle-checkbox" name="stocks" value="@allStocks[i].Stkcod" id="stock-@i" />
+                            <label for="stock-@i" class="mainItem-stock me-2 fs-5 px-2">
+                                @allStocks[i].Stknam
+                            </label>
+                            }
                         }
                     </div>
                 </div>
@@ -44,10 +63,10 @@
     <div class="mt-2">
         <h3 class="mb-2">@localizer["The Last Added Stocks"]</h3>
         <div class=" d-flex gap-2 mb-3">
-            @foreach (var item in Model.AddedStocks)
+@*             @foreach (var item in Model.AddedStocks)
             {
             <span class="btn btn-success" style="pointer-events: none">@item.Stknam</span>
-            }
+            } *@
         </div>
     </div>
 </div>
