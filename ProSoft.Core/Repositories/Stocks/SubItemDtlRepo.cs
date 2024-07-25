@@ -23,13 +23,16 @@ namespace ProSoft.Core.Repositories.Stocks
 
         public async Task<List<SubItemDtlDTO>> GetSubItemDetailsAsync(int subItemID)
         {
-            List<SubItemDtl> subItemDtls = await GetAllAsync();
+            SubItem subItem = await _Context.SubItems.FindAsync(subItemID);
+            List<SubItemDtl> subItemDtls = await _DbSet.Where(obj => obj.ItemCode == subItem.ItemCode &&
+                obj.MainCode == subItem.MainCode && obj.Flag1 == subItem.Flag1 && obj.BranchId == subItem.BranchId)
+                .ToListAsync();
             var subItemDtlsDTO = _mapper.Map<List<SubItemDtlDTO>>(subItemDtls);
             foreach(var item in subItemDtlsDTO)
-            {
                 item.UnitType = (await _Context.UnitCodes.FindAsync(item.UnitCode)).Names;
+            //{
                 //item.ItemSizeName = item.ItemName == "1" ? "High" : item.ItemName == "2" ? "Low" : "Canceled";
-            }
+            //}
             return subItemDtlsDTO;
         }
 
@@ -38,6 +41,7 @@ namespace ProSoft.Core.Repositories.Stocks
             var subItemDtlDTO = new SubItemDtlDTO();
             SubItem subItem = await _Context.SubItems.FindAsync(subItemID);
             subItemDtlDTO.SubItemName = subItem.SubName;
+            subItemDtlDTO.ItemCode = subItem.ItemCode;
 
             MainItem mainItem = await _Context.MainItems.FindAsync(subItem.MainId);
             _mapper.Map(mainItem, subItemDtlDTO);

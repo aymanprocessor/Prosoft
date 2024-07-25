@@ -45,7 +45,7 @@ namespace ProSoft.EF.DTOs.Stocks
         [DisplayName("Unit Size")]
         [Required(ErrorMessage = "The field is required")]
         public string ItemName { get; set; }
-        //public string? ItemCode { get; set; }
+        public string? ItemCode { get; set; }
         public string? MainCode { get; set; }
         public int? Flag1 { get; set; }
         public int? BranchId { get; set; }

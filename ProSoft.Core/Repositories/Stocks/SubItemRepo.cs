@@ -179,19 +179,52 @@ namespace ProSoft.Core.Repositories.Stocks
             return subItemDTO;
         }
 
-        public async Task AddSubItemAsync(int mainId, SubItemEditAddDTO subItemDTO)
+        private async Task<bool> IfExistsInStockBalanceAsync(SubItem subItem)
+        {
+            Stkbalance stockNalance = await _Context.Stkbalances.FirstOrDefaultAsync(obj => obj.ItemCode == subItem.ItemCode
+                && obj.Flag1 == subItem.Flag1);
+            return stockNalance != null ? true : false;
+        }
+
+        private async Task AddStockBalanceAsync(SubItem subItem, int fYear)
+        {
+            List<MainItemStock> mainItemStockList = await _Context.MainItemStocks.Where(obj => obj.MainCode == subItem.MainCode
+                && obj.Flag1 == subItem.Flag1 && obj.BranchId == subItem.BranchId)
+                .ToListAsync();
+            foreach (var item in mainItemStockList)
+            {
+                var stockNalance = new Stkbalance();
+                stockNalance.Stkcod = (short)item.Stkcod;
+                stockNalance.ItemCode = subItem.ItemCode;
+                stockNalance.ItemPrice = subItem.ItemPrice;
+                stockNalance.FYear = fYear;
+                stockNalance.MainCode = item.MainCode;
+                stockNalance.Flag1 = item.Flag1;
+                stockNalance.BranchId = item.BranchId;
+                stockNalance.ItemId = 0;
+                stockNalance.BarCode = subItem.ItemCode;
+                stockNalance.Ser = int.Parse(subItem.SubCode);
+
+                await _Context.AddAsync(stockNalance);
+            }
+        }
+
+        public async Task AddSubItemAsync(int mainId, SubItemEditAddDTO subItemDTO, int fYear)
         {
             MainItem mainItem = await _Context.MainItems.FindAsync(mainId);
             var subItem = _mapper.Map<SubItem>(subItemDTO);
-
             _mapper.Map(mainItem, subItem);
             _mapper.Map(subItemDTO, subItem);
 
-            List<SubItem> otherSubItems = await _DbSet.Where(obj => obj.MainId == mainId).ToListAsync();
-            subItem.SubCode = otherSubItems.Count == 0 ? 
-                "000001" :
-                $"00000{int.Parse(otherSubItems.Max(obj => obj.SubCode))}"[^6..];
+            if (!(await IfExistsInStockBalanceAsync(subItem)))
+            {
+                List<SubItem> otherSubItems = await _DbSet.Where(obj => obj.MainId == mainId).ToListAsync();
+                subItem.SubCode = otherSubItems.Count == 0 ? 
+                    "000001" :
+                    $"00000{int.Parse(otherSubItems.Max(obj => obj.SubCode)) + 1}"[^6..];
 
+                await AddStockBalanceAsync(subItem, fYear);
+            }
             await AddAsync(subItem);
             await SaveChangesAsync();
         }

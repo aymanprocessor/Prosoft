@@ -55,17 +55,9 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddStocksToGroup(int id, int[] stocks, MainItemStockDTO mainItemStockDTO)
         {
-            List<string> messages = await _mainItemRepo.CheckIfExistsAsync(id, stocks);
-            if (messages.ElementAt(0) != "1")
+            if (ModelState.IsValid)
             {
-                foreach (var error in messages)
-                {
-                    ModelState.AddModelError("", error);
-                }
-            }
-            else if (ModelState.IsValid)
-            {
-                await _mainItemRepo.AddStocksToGroupAsync(id, stocks);
+                await _mainItemRepo.UpdateStocksForGroupAsync(id, stocks);
                 return RedirectToAction(mainItemStockDTO.MainLevel, new { id = mainItemStockDTO.ParentCode, flag1 = mainItemStockDTO.Flag1 });
             }
             #region sidebar
