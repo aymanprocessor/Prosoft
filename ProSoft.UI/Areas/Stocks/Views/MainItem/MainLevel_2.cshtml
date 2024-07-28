@@ -194,7 +194,7 @@
 
 @section Scripts {
     <script>
-        function deleteTransMaster(e, subItemID) {
+        function deleteSubItem(e, subItemID) {
             e.preventDefault();
             let button = e.target;
 
@@ -202,11 +202,9 @@
                 url: `/Stocks/SubItem/IfPossibleToDelete/${subItemID}`,
                 success: function (result) {
                     if (result == 1 || result == 2) {
-                        // let message_1 = @localizer["You Can't Delete it because of Posting To Accounts"];
-                        // let message_2 = @localizer["This Permission is not approved"];
                         let message = result == 1 ?
-                            "You Can't Delete it because of Posting To Accounts" :
-                            "This Permission is approved";
+                            "@localizer["You can not Delete it because it exists in opening balances"]" :
+                            "@localizer["You can not Delete it because it exists in a previous transaction"]";
 
                         let myAlert = document.createElement("div");
                         myAlert.innerHTML =
@@ -304,7 +302,7 @@
                             <form action="/Stocks/SubItem/Delete_SubItem" method="post" class="d-inline">
                                     @Html.AntiForgeryToken()
                                 <input type="hidden" name="id" value="${item.subId}" />
-                                <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width: 150px">@localizer["Delete"]</button>
+                                <button type="button" onclick="deleteSubItem(event, ${item.subId})" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width: 150px">@localizer["Delete"]</button>
                                 <div class="modal-container">
                                     <div class="modal 4" id="modal">
                                         <div class="modal-header fs-4">

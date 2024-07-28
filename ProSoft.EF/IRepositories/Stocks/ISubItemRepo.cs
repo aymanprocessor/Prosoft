@@ -16,5 +16,6 @@ namespace ProSoft.EF.IRepositories.Stocks
         Task<SubItemEditAddDTO> GetSubItemByIdAsync(int id);
         Task AddSubItemAsync(int mainId, SubItemEditAddDTO subItemDTO, int fYear);
         Task EditSubItemAsync(int id, SubItemEditAddDTO subItemDTO);
+        Task<int> IfPossibleToDeleteAsync(int subItemID);
     }
 }

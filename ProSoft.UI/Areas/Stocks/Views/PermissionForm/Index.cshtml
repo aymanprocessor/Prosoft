@@ -309,11 +309,9 @@
                 url: `/Stocks/PermissionForm/IfPossibleToDelete/${transMAsterID}`,
                 success: function (result) {
                     if (result == 1 || result == 2) {
-                        // let message_1 = @localizer["You Can't Delete it because of Posting To Accounts"];
-                        // let message_2 = @localizer["This Permission is not approved"];
                         let message = result == 1 ?
-                            "You Can't Delete it because of Posting To Accounts" :
-                            "This Permission is approved";
+                            "@localizer["You can not delete it because of posting to accounts"]" :
+                            "@localizer["This permission is approved"]";
 
                         let myAlert = document.createElement("div");
                         myAlert.innerHTML =
