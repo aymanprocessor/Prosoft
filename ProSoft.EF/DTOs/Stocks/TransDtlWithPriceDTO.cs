@@ -55,6 +55,7 @@ namespace ProSoft.EF.DTOs.Stocks
         public int? BranchId { get; set; }
         public int? ShowTransPrice { get; set; }
         public string? PermissionName { get; set; }
+        public int? Flag1 { get; set; }
 
         public List<SubItemViewDTO>? SubItems { get; set; }
         public List<UnitCodeDTO>? UnitCodes { get; set; }
@@ -126,7 +127,6 @@ namespace ProSoft.EF.DTOs.Stocks
         //public string? RefDocNo { get; set; }
 
         //[Column("FLAG1")]
-        //public int? Flag1 { get; set; }
 
         //[Column("ITEM_MASTER_ORE")]
         //[StringLength(3)]

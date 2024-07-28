@@ -114,7 +114,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         public async Task<IActionResult> IfPossibleToDelete(int id)
         {
             // flag == 1 => لا يجوز الحذف بسبب الترحيل للحسابات
-            // flag == 2 => لا يجوز الحذف بسبب عدم الاعتماد
+            // flag == 2 => لا يجوز الحذف بسبب الاعتماد
             // flag == 3 => يتم الحذف
             int flag = await _transMasterRepo.IfPossibleToDeleteAsync(id);
             return Json(flag);

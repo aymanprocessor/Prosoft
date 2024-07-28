@@ -260,14 +260,16 @@ namespace ProSoft.Core.Repositories.Stocks
             transDtl.ItemUnitQty = 0;
             transDtl.Price2 = 0;
             transDtl.ItemVal2 = 0;
-            transDtl.Flag1 = 1;
             transDtl.UnitQty = transDtl.UnitQty != null ? transDtl.UnitQty : 1;
             transDtl.ItemMaster2 = 0;
             transDtl.UnitCode = transDtl.UnitCode != null ? transDtl.UnitCode : 1;
             _mapper.Map(transMaster, transDtl);
 
-            transDtl.PostPos = 1;
             transDtl.ItemMaster = transDtlDTO.ShowItemMaster != null ? transDtlDTO.ShowItemMaster : transDtlDTO.ItemMaster;
+            SubItem subItem = await _Context.SubItems.FirstOrDefaultAsync(obj => obj.ItemCode == transDtl.ItemMaster);
+            transDtl.Flag1 = subItem.Flag1 != null ? subItem.Flag1 : 1;
+
+            transDtl.PostPos = 1;
             /////////////////////////////////////////////////
             // Add to ItemBatch
             if (transDtl.TransType == 2)
@@ -416,6 +418,9 @@ namespace ProSoft.Core.Repositories.Stocks
             transDtl.ItemMaster2 = 0;
             transDtl.ItemMaster = transDtlDTO.ShowItemMaster != null ? transDtlDTO.ShowItemMaster : transDtlDTO.ItemMaster;
             _mapper.Map(transMaster, transDtl);
+
+            SubItem subItem = await _Context.SubItems.FirstOrDefaultAsync(obj => obj.ItemCode == transDtl.ItemMaster);
+            transDtl.Flag1 = subItem.Flag1 != null ? subItem.Flag1 : 1;
             /////////////////////////////////////////////////
             // Add To Receive Form
             if (transDtl.TransType == 13)

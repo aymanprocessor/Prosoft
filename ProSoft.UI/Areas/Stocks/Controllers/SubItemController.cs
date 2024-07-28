@@ -111,6 +111,15 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             return View(subItemDTO);
         }
 
+        public async Task<IActionResult> IfPossibleToDelete(int id)
+        {
+            // flag == 1 => غير مسموح بالحذف لوجود الصنف في الارصدة الافتتاحية
+            // flag == 2 => غير مسموح بالحذف لوجود حركة سابقة للصنف
+            // flag == 3 => مسموح بالحذف
+            int flag = await _subItemRepo.IfPossibleToDeleteAsync(id);
+            return Json(flag);
+        }
+
         //Delete
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -123,10 +132,5 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             await _subItemRepo.SaveChangesAsync();
             return RedirectToAction(subItemDTO.MainLevel, "MainItem", new { id = subItemDTO.ParentCode, flag1 = subItemDTO.Flag1 });
         }
-        
-        //public async Task<IActionResult> IfPossibleToDelete(int id)
-        //{
-
-        //}
     }
 }

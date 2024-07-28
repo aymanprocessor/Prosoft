@@ -216,15 +216,13 @@ namespace ProSoft.Core.Repositories.Stocks
             _mapper.Map(mainItem, subItem);
             _mapper.Map(subItemDTO, subItem);
 
-            if (!(await IfExistsInStockBalanceAsync(subItem)))
-            {
-                List<SubItem> otherSubItems = await _DbSet.Where(obj => obj.MainId == mainId).ToListAsync();
-                subItem.SubCode = otherSubItems.Count == 0 ? 
-                    "000001" :
-                    $"00000{int.Parse(otherSubItems.Max(obj => obj.SubCode)) + 1}"[^6..];
+            List<SubItem> otherSubItems = await _DbSet.Where(obj => obj.MainId == mainId).ToListAsync();
+            subItem.SubCode = otherSubItems.Count == 0 ? 
+                "000001" :
+                $"00000{int.Parse(otherSubItems.Max(obj => obj.SubCode)) + 1}"[^6..];
 
-                await AddStockBalanceAsync(subItem, fYear);
-            }
+            //if (!(await IfExistsInStockBalanceAsync(subItem)))
+            //    await AddStockBalanceAsync(subItem, fYear);
             await AddAsync(subItem);
             await SaveChangesAsync();
         }
@@ -237,6 +235,16 @@ namespace ProSoft.Core.Repositories.Stocks
 
             await UpdateAsync(subItem);
             await SaveChangesAsync();
+        }
+
+        public async Task<int> IfPossibleToDeleteAsync(int subItemID)
+        {
+            SubItem subItem = await GetByIdAsync(subItemID);
+            bool ifStkBalanceExists = (await _Context.Stkbalances.ToListAsync()).Exists(obj => obj.ItemCode == 
+                subItem.ItemCode && obj.Flag1 == subItem.Flag1);
+            bool ifTransDtlExists = (await _Context.TransDtls.ToListAsync()).Exists(obj => obj.ItemMaster ==
+                subItem.ItemCode && obj.Flag1 == subItem.Flag1);
+            return ifStkBalanceExists ? 1 : ifTransDtlExists ? 2 : 3;
         }
     }
 }
