@@ -618,7 +618,10 @@
   "Journal Voucher have been retrieved": "تم استرجاع  قيود اليومية",
   "Monthly Closing Done": "تم الاقفال الشهري",
   "Monthly Closing Cancel": "تم الغاء الاقفال الشهري",
-  "To Date": "حتي تاريخ",
+  "Daily assistance for Voucher level": "اليومية المساعدة لمستوي القيد",
+  "Assistance Journals": "اليوميات المساعدة",
+  "Assistance Journal Review": "مراجعة يومية مساعدة",
+  "File Type": "نوغ المستند",
 
 
 
@@ -864,8 +867,8 @@
   "Max Quantity": "اقصي كمية",
   "Min Quantity": "اقل كمية",
   "Search": "بحث",
-  "You Can't Delete it because of Posting To Accounts": "لا يجوز الحذف بسبب الترحيل الي الحسابات",
-  "This Permission is approved": "هذا الاذن معتمد",
+  "You can not delete it because of posting to accounts": "لا يجوز الحذف بسبب الترحيل الي الحسابات",
+  "This permission is approved": "هذا الاذن معتمد",
   "Shipped from / to": "صرف من / الي",
   "Add Item To": "اضافة صنف الي",
   "Edit Item In": "تعديل صنف في",
@@ -903,5 +906,7 @@
   "Add Detail For Item": "اضافة تفاصيل للصنف",
   "High": "كبري",
   "Low": "صغري",
-  "Canceled": "ملغي"
+  "Canceled": "ملغي",
+  "You can not Delete it because it exists in opening balances": "غير مسموح بالحذف لوجود الصنف في الارصدة الافتتاحية",
+  "You can not Delete it because it exists in a previous transaction": "غير مسموح بالحذف لوجود حركة سابقة للصنف"
 }

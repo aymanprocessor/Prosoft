@@ -172,6 +172,13 @@
                     // Determine what to display in the balance columns
                     var positiveColumn = balance >= 0 ? balance : 0;
                     var negativeColumn = balance < 0 ? Math.abs(balance) : 0; 
+                    var balanceDep = item.fDepCur + item.valDep;
+                    var balanceCred = item.fCreditOr + item.valCredit;
+                    if (balanceDep > balanceCred) {// الاكبر 
+                        balanceCred = 0;
+                    } else if (balanceCred > balanceDep) {
+                        balanceDep = 0;
+                    }
                     data.innerHTML += `
                             <td class="align-middle">${index}</td>
                             <td class="align-middle">${item.mainCode}</td>
@@ -181,8 +188,8 @@
                             <td class="align-middle">${item.fCreditOr}</td>
                             <td class="align-middle">${item.valDep}</td>
                             <td class="align-middle">${item.valCredit}</td>
-                            <td class="align-middle">${item.fDepCur + item.valDep}</td>
-                            <td class="align-middle">${item.fCreditOr + item.valCredit}</td>
+                            <td class="align-middle">${balanceDep}</td>
+                            <td class="align-middle">${balanceCred}</td>
                             `;
                     index++;
                     fDepCurSum += item.fDepCur;

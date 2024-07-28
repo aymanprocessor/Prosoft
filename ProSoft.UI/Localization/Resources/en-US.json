@@ -612,16 +612,13 @@
   "Journal Voucher have been retrieved": "Journal Voucher have been retrieved",
   "Monthly Closing Done": "Monthly Closing Done",
   "Monthly Closing Cancel": "Monthly Closing Cancel",
-<<<<<<< HEAD
-  "To Date": "To Date",
-||||||| e99dd49
-
-=======
-  "To Date": "To Date",
+  "Daily assistance for Voucher level": "Daily assistance for Voucher level",
+  "Assistance Journals": "Assistance Journals",
+  "Assistance Journal Review": "Assistance Journal Review",
+  "File Type": "File Type",
 
 
 
->>>>>>> c2bc4d9b9f5abb61ec498a5ffb9909496ee88ad2
 
 
 
@@ -864,8 +861,8 @@
   "Max Quantity": "Max Quantity",
   "Min Quantity": "Min Quantity",
   "Search": "Search",
-  "You Can't Delete it because of Posting To Accounts": "You Can't Delete it because of Posting To Accounts",
-  "This Permission is approved": "This Permission is approved",
+  "You can not delete it because of posting to accounts": "You can not delete it because of posting to accounts",
+  "This permission is approved": "This permission is approved",
   "Shipped from / to": "Shipped from / to",
   "Add Item To": "Add Item To",
   "Edit Item In": "Edit Item In",
@@ -903,5 +900,7 @@
   "Add Detail For Item": "Add Detail For Item",
   "High": "High",
   "Low": "Low",
-  "Canceled": "Canceled"
+  "Canceled": "Canceled",
+  "You can not Delete it because it exists in opening balances": "You can not Delete it because it exists in opening balances",
+  "You can not Delete it because it exists in a previous transaction": "You can not Delete it because it exists in a previous transaction"
 }
