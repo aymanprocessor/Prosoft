@@ -622,6 +622,10 @@
   "Assistance Journals": "اليوميات المساعدة",
   "Assistance Journal Review": "مراجعة يومية مساعدة",
   "File Type": "نوغ المستند",
+  "Transaction account for journal Level": "حركة حساب مستوي يومية",
+  "Transaction Account": "حركة حساب",
+  "Total Main Account": "اجمالي الحساب الرئيسي",
+  "Total Journal": "اجمالي اليومية",
 
 
 
@@ -908,5 +912,8 @@
   "Low": "صغري",
   "Canceled": "ملغي",
   "You can not Delete it because it exists in opening balances": "غير مسموح بالحذف لوجود الصنف في الارصدة الافتتاحية",
-  "You can not Delete it because it exists in a previous transaction": "غير مسموح بالحذف لوجود حركة سابقة للصنف"
+  "You can not Delete it because it exists in a previous transaction": "غير مسموح بالحذف لوجود حركة سابقة للصنف",
+  "Edit Order Limit For Item": "تعديل حد الطلب للصنف",
+  "Write the item code": "اكتب كود الصنف",
+  "Search by code": "ابحث بالكود"
 }

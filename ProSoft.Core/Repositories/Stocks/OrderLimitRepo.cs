@@ -38,7 +38,7 @@ namespace ProSoft.Core.Repositories.Stocks
             return itemReorder;
         }
 
-        public async Task<List<ItmReorderDTO>> GetItemsLimitsAsync(/*int item1, int item2,*/DateTime fromDate, DateTime toDate,
+        public async Task<List<ItmReorderViewDTO>> GetItemsLimitsAsync(/*int item1, int item2,*/DateTime fromDate, DateTime toDate,
             int stockID, int branchID)
         {
             List<ItmReorder> orderLimits = await _DbSet
@@ -51,7 +51,7 @@ namespace ProSoft.Core.Repositories.Stocks
                 /*&& int.Parse(obj.ItemCode) >= item1 && int.Parse(obj.ItemCode) <= item2*/)
                 .ToListAsync();
 
-            var itemReorderDTOs = new List<ItmReorderDTO>();
+            var itemReorderDTOs = new List<ItmReorderViewDTO>();
             if(orderLimits.Count == 0)
             {
                 //if(subItems.Count != 0)
@@ -67,7 +67,7 @@ namespace ProSoft.Core.Repositories.Stocks
                     ItmReorder itemReorder = GetNewItemReorderAsnyc(item, fromDate, toDate, stockID, branchID);
                     await AddAsync(itemReorder);
 
-                    var itemReorderDTO = _mapper.Map<ItmReorderDTO>(itemReorder);
+                    var itemReorderDTO = _mapper.Map<ItmReorderViewDTO>(itemReorder);
                     itemReorderDTO.ItemName = item.SubName;
                     itemReorderDTOs.Add(itemReorderDTO);
                 }
@@ -78,19 +78,20 @@ namespace ProSoft.Core.Repositories.Stocks
                 foreach (var item in subItems)
                 {
                     ItmReorder itemReorder = await _DbSet.FirstOrDefaultAsync(obj => obj.ItemCd == item.ItemCode &&
-                        obj.FDate == fromDate && obj.TDate == toDate);
+                        obj.StoreId == stockID);
+                        //obj.FDate == fromDate && obj.TDate == toDate);
                     if(itemReorder == null)
                     {
                         ItmReorder newItemReorder = GetNewItemReorderAsnyc(item, fromDate, toDate, stockID, branchID);
                         await AddAsync(newItemReorder);
 
-                        var itemReorderDTO = _mapper.Map<ItmReorderDTO>(newItemReorder);
+                        var itemReorderDTO = _mapper.Map<ItmReorderViewDTO>(newItemReorder);
                         itemReorderDTO.ItemName = item.SubName;
                         itemReorderDTOs.Add(itemReorderDTO);
                     }
                     else
                     {
-                        var itemReorderDTO = _mapper.Map<ItmReorderDTO>(itemReorder);
+                        var itemReorderDTO = _mapper.Map<ItmReorderViewDTO>(itemReorder);
                         itemReorderDTO.ItemName = item.SubName;
                         itemReorderDTOs.Add(itemReorderDTO);
                     }
@@ -100,8 +101,24 @@ namespace ProSoft.Core.Repositories.Stocks
             return itemReorderDTOs;
         }
 
-        //public async Task<List<ItmReorderDTO>> GetItemsLimitsAsync(DateTime date1, DateTime date2, int stockID, int branchID)
-        //{
-        //}
+        public async Task<ItmReorderEditDTO> GetItemReorderByIdAsync(int itemReorderId, int branchId)
+        {
+            ItmReorder itmReorder = await GetByIdAsync(itemReorderId);
+            var itmReorderDTO = _mapper.Map<ItmReorderEditDTO>(itmReorder);
+
+            SubItem subItem = await _Context.SubItems.FirstOrDefaultAsync(obj => 
+                obj.ItemCode == itmReorder.ItemCd && obj.BranchId == branchId);
+            itmReorderDTO.ItemName = subItem?.SubName;
+
+            return itmReorderDTO;
+        }
+
+        public async Task EditItemReorderAsync(int itemReorderId, ItmReorderEditDTO orderLimitDTO)
+        {
+            ItmReorder itmReorder = await GetByIdAsync(itemReorderId);
+            _mapper.Map(orderLimitDTO, itmReorder);
+            await UpdateAsync(itmReorder);
+            await SaveChangesAsync();
+        }
     }
 }

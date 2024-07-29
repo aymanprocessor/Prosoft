@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ProSoft.EF.DTOs.Stocks
 {
-    public class ItmReorderDTO
+    public class ItmReorderViewDTO
     {
         public int ItemReorderID { get; set; }
 

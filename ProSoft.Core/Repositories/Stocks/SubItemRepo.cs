@@ -221,8 +221,8 @@ namespace ProSoft.Core.Repositories.Stocks
                 "000001" :
                 $"00000{int.Parse(otherSubItems.Max(obj => obj.SubCode)) + 1}"[^6..];
 
-            //if (!(await IfExistsInStockBalanceAsync(subItem)))
-            //    await AddStockBalanceAsync(subItem, fYear);
+            if (!(await IfExistsInStockBalanceAsync(subItem)))
+                await AddStockBalanceAsync(subItem, fYear);
             await AddAsync(subItem);
             await SaveChangesAsync();
         }
