@@ -8,20 +8,26 @@
 }
 @inject IViewLocalizer localizer
 
+<style>
+    .hide {
+        display: none !important;
+    }
+</style>
+
 <div class="text-center">
     <h2 class="mb-2">@localizer["Order Limit"] </h2>
 </div>
 
 <div class="container pt-2">
-    <div class="page-head d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 my-2">
+    <div class="page-head d-flex justify-content-center align-items-center flex-column flex-md-row gap-3 my-2">
         <div class="d-flex align-items-center flex-column flex-md-row w-50">
-            <label for="stocks" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0" style="width: 100px">@localizer["Stock"]</label>
+            <label for="stocks" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0 text-center" style="width: 100px">@localizer["Stock"]</label>
             <select id="stocks" asp-items="stocks" class="form-control text-center w-100" onchange="getOrderLimits()">
                 <option value="">-- Choose --</option>
             </select>
         </div>
     </div>
-    <div class="page-head d-flex justify-content-between align-items-center flex-column flex-md-row gap-2 my-2">
+@*     <div class="page-head d-flex justify-content-between align-items-center flex-column flex-md-row gap-2 my-2">
         <div class="d-flex align-items-center flex-column flex-md-row w-50">
             <label for="fromItem" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0" style="width: 100px">@localizer["From Item"]</label>
             <input id="fromItem" class="form-control text-center w-100" />
@@ -52,25 +58,75 @@
             <input id="toDate" type="text" class="form-control text-center w-100" />
             <button class="btn btn-primary" style="width: 150px">@localizer["Name Search"]</button>
         </div>
+    </div> *@
+    <div class="filter-box d-flex align-items-center flex-column flex-md-row gap-3 my-2">
+        <div class="d-flex align-items-center flex-column flex-md-row w-100" style="width:40% !important;">
+            <label for="filter" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0" style="width:60% !important;">@localizer["Filter By"]</label>
+            <select id="filter" class="form-control text-center" onchange="filtering(event)">
+                <option value="1">@localizer["Period"]</option>
+                <option value="2">@localizer["The Items"]</option>
+                <option value="3">@localizer["Item Code"]</option>
+                <option value="4">@localizer["Item Name"]</option>
+            </select>
+        </div>
+        <div class="d-flex justify-content-end align-items-center flex-column flex-md-row gap-2 items hide" style="width:70% !important;">
+            <div class="d-flex align-items-center w-100">
+                <label for="fromItem" style="width:60% !important;">@localizer["From Item"]</label>
+                <input id="fromItem" type="text" class="form-control text-center" placeholder="@localizer["Write the item code"]" />
+            </div>
+            <div class="d-flex align-items-center w-100">
+                <label for="toItem" style="width:60% !important;">@localizer["To Item"]</label>
+                <input id="toItem" type="text" class="form-control text-center" placeholder="@localizer["Write the item code"]" />
+            </div>
+            <button class="btn btn-primary" style="width: 150px">@localizer["Search"]</button>
+        </div>
+        <div class="d-flex justify-content-end align-items-center flex-column flex-md-row gap-2 periods" style="width:70% !important;">
+            <div class="d-flex align-items-center w-100">
+                <label for="fromDate" style="width:60% !important;">@localizer["From Date"]</label>
+                <input id="fromDate" type="date" class="form-control text-center" />
+            </div>
+            <div class="d-flex align-items-center w-100">
+                <label for="toDate" style="width:60% !important;">@localizer["To Date"]</label>
+                <input id="toDate" type="date" class="form-control text-center" />
+            </div>
+            <button onclick="getOrderLimits()" class="btn btn-primary" style="width: 150px">@localizer["Search"]</button>
+        </div>
+        <div class="d-flex justify-content-end align-items-center flex-column flex-md-row gap-2 item-code hide" style="width:70% !important;">
+            <div class="d-flex align-items-center w-100">
+                <label for="itemCode" style="width:60% !important;">@localizer["Search by code"]</label>
+                <input id="itemCode" type="date" class="form-control text-center"placeholder="@localizer["Write the item code"]" />
+            </div>
+            <button class="btn btn-primary" style="width: 150px">@localizer["Search"]</button>
+        </div>
+@*         <div class="d-flex justify-content-end align-items-center flex-column flex-md-row gap-2 periods" style="width:70% !important;">
+            <div class="d-flex align-items-center w-100">
+                <label style="width:60% !important;">@localizer["From Period"]</label>
+                <input id="fromPeriod" type="date" class="form-control text-center" />
+            </div>
+            <div class="d-flex align-items-center w-100">
+                <label style="width:60% !important;">@localizer["To Period"]</label>
+                <input id="toPeriod" type="date" class="form-control text-center" />
+            </div>
+        </div> *@
     </div>
 
     <div class="overflow-auto" style="height: 225px;">
         <table id="myTable" class="table table-bordered table-hover" style="width:100%;">
             <thead class="table-dark">
-                <tr class="align-middle">
-                    <th class="text-center" style="min-width: 100px;">
+                <tr class="align-middle text-center">
+                    <th style="min-width: 100px;">
                         @localizer["Item Code"]
                     </th>
                     <th style="min-width: 100px;">
                         @localizer["Item Name"]
                     </th>
-                    <th class="text-center" style="min-width: 100px;">
+                    <th style="min-width: 100px;">
                         @localizer["Order Limit"]
                     </th>
-                    <th class="text-center" style="min-width: 100px;">
+                    <th style="min-width: 100px;">
                         @localizer["Max Quantity"]
                     </th>
-                    <th class="text-center" style="min-width: 100px;">
+                    <th style="min-width: 100px;">
                         @localizer["Min Quantity"]
                     </th>
                     <th></th>
@@ -91,7 +147,6 @@
             let stock = document.getElementById("stocks");
             let dateFrom = document.getElementById("fromDate");
             let dateTo = document.getElementById("toDate");
-            console.log(dateFrom.value == "");
 
             if (!stock.value) {
                 stock.focus();
@@ -116,8 +171,6 @@
                 url: `/Stocks/OrderLimit/GetOrderLimits?date1=${dateFrom.value}&date2=${dateTo.value}&stockID=${stock.value}`,
                 success: function (result) {
                     spinner.classList.add("d-none");
-                    console.log(result);
-                    // let totalValue = 0, totalQuantity = 0, totalTax = 0;
                     for (let item of result) {
                         const orderLmt = document.createElement("tr");
                         orderLmt.innerHTML +=
@@ -128,34 +181,83 @@
                             <td class="align-middle text-center">${item.maxQty}</td>
                             <td class="align-middle text-center">${item.minQty}</td>
                             <td class="text-center align-middle" style="width: 325px;">
-                                <a href="/Stocks/PermissionFormDetails//${item.itemReorderID}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
-                                <form action="/Stocks/PermissionFormDetails/Delete_TransDetail" method="post" class="d-inline">
-                                        @Html.AntiForgeryToken()
-                                    <input type="hidden" name="id" value="${item.itemReorderID}" />
-                                    <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width: 150px">@localizer["Delete"]</button>
-                                    <div class="modal-container">
-                                        <div class="modal 4" id="modal">
-                                            <div class="modal-header fs-4">
-                                                <div class="title">@localizer["Confirm Delete"]</div>
-                                                <button type="button" onclick="closeModelListener(event)" data-close-button class="close-button">&times;</button>
-                                            </div>
-                                            <div class="modal-body fs-4">
-                                                @localizer["Are you sure you want to delete this item ?"]
-                                            </div>
-                                            <div class="modal-footer fs-4">
-                                                <button type="button" onclick="closeModelListener(event)" data-close-button class="btn btn-secondary">@localizer["No"]</button>
-                                                <button class="btn btn-danger">@localizer["Yes"]</button>
-                                            </div>
-                                        </div>
-                                        <div onclick="overlayListener(event)" id="overlay"></div>
-                                    </div>
-                                </form>
+                                <a href="/Stocks/OrderLimit/Edit_OrderLimit/${item.itemReorderID}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
                             </td>
                             `;
                         orderLimits.appendChild(orderLmt);
                     }
                 }
             });
+                                // <form action="/Stocks/PermissionFormDetails/Delete_TransDetail" method="post" class="d-inline">
+                                //         @Html.AntiForgeryToken()
+                                //     <input type="hidden" name="id" value="${item.itemReorderID}" />
+                                //     <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width: 150px">@localizer["Delete"]</button>
+                                //     <div class="modal-container">
+                                //         <div class="modal 4" id="modal">
+                                //             <div class="modal-header fs-4">
+                                //                 <div class="title">@localizer["Confirm Delete"]</div>
+                                //                 <button type="button" onclick="closeModelListener(event)" data-close-button class="close-button">&times;</button>
+                                //             </div>
+                                //             <div class="modal-body fs-4">
+                                //                 @localizer["Are you sure you want to delete this item ?"]
+                                //             </div>
+                                //             <div class="modal-footer fs-4">
+                                //                 <button type="button" onclick="closeModelListener(event)" data-close-button class="btn btn-secondary">@localizer["No"]</button>
+                                //                 <button class="btn btn-danger">@localizer["Yes"]</button>
+                                //             </div>
+                                //         </div>
+                                //         <div onclick="overlayListener(event)" id="overlay"></div>
+                                //     </div>
+                                // </form>
+        }
+
+        //Filter
+        function filtering(e) {
+            let filter = e.target.value;
+            var periodsElement = document.querySelector(".periods");
+            var itemsElement = document.querySelector(".items");
+
+            if (filter == 2) {
+                itemsElement.classList.remove("hide");
+                periodsElement.classList.add("hide");
+            }
+            else if (filter == 1) {
+                itemsElement.classList.add("hide");
+                periodsElement.classList.remove("hide");
+            }
         }
     </script>
 }
+
+@* <div class="filter-box d-flex align-items-center flex-column flex-md-row gap-3 my-2">
+    <div class="d-flex align-items-center flex-column flex-md-row w-100" style="width:40% !important;">
+        <label for="filter" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0" style="width:60% !important;">@localizer["Filter By"]</label>
+        <select id="filter" class="form-control text-center" onchange="filtering(event)">
+            <option value="1">@localizer["Period"]</option>
+            <option value="2">@localizer["Voucher"]</option>
+        </select>
+    </div>
+
+    <div class="d-flex justify-content-end align-items-center flex-column flex-md-row gap-2 receipt-hide hide" style="width:70% !important;">
+        <div class="d-flex align-items-center w-100">
+            <label style="width:60% !important;">@localizer["From Voucher"]</label>
+            <input id="fromReceipt" type="number" class="form-control text-center" />
+        </div>
+        <div class="d-flex align-items-center w-100">
+            <label style="width:60% !important;">@localizer["To Voucher"]</label>
+            <input id="toReceipt" type="number" class="form-control text-center" />
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-end align-items-center flex-column flex-md-row gap-2 period" style="width:70% !important;">
+        <div class="d-flex align-items-center w-100">
+            <label style="width:60% !important;">@localizer["From Period"]</label>
+            <input id="fromPeriod" type="date" class="form-control text-center" />
+        </div>
+        <div class="d-flex align-items-center w-100">
+            <label style="width:60% !important;">@localizer["To Period"]</label>
+            <input id="toPeriod" type="date" class="form-control text-center" />
+        </div>
+    </div>
+
+</div> *@

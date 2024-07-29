@@ -134,7 +134,8 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<TransDtlDTO, TransMaster>().ReverseMap();
             CreateMap<TransDtl, TransMaster>().ReverseMap();
             CreateMap<ItemBatch, ItemBatchHistory>().ReverseMap();
-            CreateMap<ItmReorder, ItmReorderDTO>().ReverseMap();
+            CreateMap<ItmReorder, ItmReorderViewDTO>().ReverseMap();
+            CreateMap<ItmReorder, ItmReorderEditDTO>().ReverseMap();
             CreateMap<StentDes, StentDesDTO>().ReverseMap();
             CreateMap<MainItemStockDTO, MainItemStockDTO>().ReverseMap();
             CreateMap<SubItemDtl, SubItemDtlDTO>().ReverseMap();

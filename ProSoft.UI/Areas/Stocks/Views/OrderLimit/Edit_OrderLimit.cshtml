@@ -1,0 +1,42 @@
+﻿@model ItmReorderEditDTO
+@{
+    ViewData["Title"] = "Edit Order Limit";
+    Layout = "_Layout";
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+    <h1 class="mt-4">@localizer["Edit Order Limit For Item"] : @Model.ItemName</h1>
+    <form method="post" asp-action="Edit_OrderLimit">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="ReordQty"></label>
+                    <input asp-for="ReordQty" type="number" class="form-control" />
+                    <span asp-validation-for="ReordQty" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="MaxQty"></label>
+                    <input asp-for="MaxQty" type="number" class="form-control" />
+                    <span asp-validation-for="MaxQty" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="MinQty"></label>
+                    <input asp-for="MinQty" type="number" class="form-control" />
+                    <span asp-validation-for="MinQty" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex justify-content-md-center gap-2">
+                <button type="submit" class="btn btn-success" style="width:150px">@localizer["Save Changes"]</button>
+                <a asp-controller="OrderLimit" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
