@@ -616,6 +616,10 @@
   "Assistance Journals": "Assistance Journals",
   "Assistance Journal Review": "Assistance Journal Review",
   "File Type": "File Type",
+  "Transaction account for journal Level": "Transaction account for journal Level",
+  "Transaction Account": "Transaction Account",
+  "Total Main Account": "Total Main Account",
+  "Total Journal": "Total Journal",
 
 
 
@@ -902,5 +906,8 @@
   "Low": "Low",
   "Canceled": "Canceled",
   "You can not Delete it because it exists in opening balances": "You can not Delete it because it exists in opening balances",
-  "You can not Delete it because it exists in a previous transaction": "You can not Delete it because it exists in a previous transaction"
+  "You can not Delete it because it exists in a previous transaction": "You can not Delete it because it exists in a previous transaction",
+  "Edit Order Limit For Item": "Edit Order Limit For Item",
+  "Write the item code": "Write the item code",
+  "Search by code": "Search by code"
 }

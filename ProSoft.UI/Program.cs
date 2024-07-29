@@ -129,6 +129,7 @@ builder.Services.AddScoped<IReportGeneralProfessorFacilityRepo, ReportGeneralPro
 builder.Services.AddScoped<ICancelJournalVoucherRepo, CancelJournalVoucherRepo>();
 builder.Services.AddScoped<IMonthlyClosingRepo, MonthlyClosingRepo>();
 builder.Services.AddScoped<IReportDailyAssistanceRepo, ReportDailyAssistanceRepo>();
+builder.Services.AddScoped<IReportTransactionAccountJournalRepo, ReportTransactionAccountJournalRepo>();
 ////////// PatRecord ////////////////////
 builder.Services.AddScoped<ICoronaryRepo, CoronaryRepo>();
 builder.Services.AddScoped<IPastHistoryRepo, PastHistoryRepo>();
