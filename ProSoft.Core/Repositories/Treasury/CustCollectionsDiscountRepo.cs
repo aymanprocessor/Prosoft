@@ -77,32 +77,32 @@ namespace ProSoft.Core.Repositories.Treasury
         public async Task AddcustCollectionsDiscountAsync(int id,CustCollectionsDiscountEditAddDTO custCollectionsDiscountDTO)
         {
             var custCollectionsDiscount = _mapper.Map<CustCollectionsDiscount>(custCollectionsDiscountDTO);
-            if (custCollectionsDiscount.DocType == "SFSIN") 
+            if (custCollectionsDiscount.DocType == "SFCIN") 
             {
-                var accsafeCheck = await _Context.AccSafeChecks.FirstOrDefaultAsync(obj => obj.SafeCeckId == id && obj.TranType == custCollectionsDiscountDTO.DocType);
-                custCollectionsDiscount.ReceiptNo = accsafeCheck.DocNo;
-                custCollectionsDiscount.ReceiptDate = accsafeCheck.DocDate;
-                custCollectionsDiscount.FYear = accsafeCheck.FYear;
-                custCollectionsDiscount.DocType = accsafeCheck.TranType;
-                custCollectionsDiscount.SafeCode = accsafeCheck.SafeCode;
+                var accsafeCashe = await _Context.AccSafeCashes.FirstOrDefaultAsync(obj => obj.SafeCashId == id && obj.DocType == custCollectionsDiscountDTO.DocType);
+                custCollectionsDiscount.ReceiptNo = accsafeCashe.DocNo;
+                custCollectionsDiscount.ReceiptDate = accsafeCashe.DocDate;
+                custCollectionsDiscount.FYear = accsafeCashe.FYear;
+                custCollectionsDiscount.DocType = accsafeCashe.DocType;
+                custCollectionsDiscount.SafeCode = accsafeCashe.SafeCode;
             }
-            else if (custCollectionsDiscount.DocType == "SFOUT")
+            else if (custCollectionsDiscount.DocType == "SFCOT")
             {
-                var accsafeCheck = await _Context.AccSafeChecks.FirstOrDefaultAsync(obj => obj.SafeCeckId == id && obj.TranType == custCollectionsDiscountDTO.DocType);
-                custCollectionsDiscount.ReceiptNo = accsafeCheck.DocNo;
-                custCollectionsDiscount.ReceiptDate = accsafeCheck.DocDate;
-                custCollectionsDiscount.FYear = accsafeCheck.FYear;
-                custCollectionsDiscount.DocType = accsafeCheck.TranType;
-                custCollectionsDiscount.SafeCode = accsafeCheck.SafeCode;
+                var accsafeCashe = await _Context.AccSafeCashes.FirstOrDefaultAsync(obj => obj.SafeCashId == id && obj.DocType == custCollectionsDiscountDTO.DocType);
+                custCollectionsDiscount.ReceiptNo = accsafeCashe.DocNo;
+                custCollectionsDiscount.ReceiptDate = accsafeCashe.DocDate;
+                custCollectionsDiscount.FYear = accsafeCashe.FYear;
+                custCollectionsDiscount.DocType = accsafeCashe.DocType;
+                custCollectionsDiscount.SafeCode = accsafeCashe.SafeCode;
             }
             else if (custCollectionsDiscount.DocType == "SFTIN")
             {
-                var accsafeCheck = await _Context.AccSafeChecks.FirstOrDefaultAsync(obj => obj.SafeCeckId == id && obj.TranType == custCollectionsDiscountDTO.DocType);
-                custCollectionsDiscount.ReceiptNo = accsafeCheck.DocNo;
-                custCollectionsDiscount.ReceiptDate = accsafeCheck.DocDate;
-                custCollectionsDiscount.FYear = accsafeCheck.FYear;
-                custCollectionsDiscount.DocType = accsafeCheck.TranType;
-                custCollectionsDiscount.SafeCode = accsafeCheck.SafeCode;
+                var accsafeCashe = await _Context.AccSafeCashes.FirstOrDefaultAsync(obj => obj.SafeCashId == id && obj.DocType == custCollectionsDiscountDTO.DocType);
+                custCollectionsDiscount.ReceiptNo = accsafeCashe.DocNo;
+                custCollectionsDiscount.ReceiptDate = accsafeCashe.DocDate;
+                custCollectionsDiscount.FYear = accsafeCashe.FYear;
+                custCollectionsDiscount.DocType = accsafeCashe.DocType;
+                custCollectionsDiscount.SafeCode = accsafeCashe.SafeCode;
             }
             else if (custCollectionsDiscount.DocType == "SFTOT")
             {
@@ -123,7 +123,7 @@ namespace ProSoft.Core.Repositories.Treasury
                 await _Context.AddAsync(custCollectionsDiscountForRecieve);
                 await _Context.SaveChangesAsync();
             }
-            if (custCollectionsDiscount.DocType == "SFTOT" || custCollectionsDiscount.DocType == "SFOUT")
+            if (custCollectionsDiscount.DocType == "SFCIN" || custCollectionsDiscount.DocType == "SFCOT" || custCollectionsDiscount.DocType == "SFTIN")
             {
                 await _Context.AddAsync(custCollectionsDiscount);
                 await _Context.SaveChangesAsync();    

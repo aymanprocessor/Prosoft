@@ -12,6 +12,7 @@ namespace ProSoft.EF.DTOs.Accounts.Report
         public DateTime? TransDate { get; set; }
         public string? CurenncyName { get; set; }
         public decimal? TotalTrans { get; set; }
+        public string? transType { get; set; }
         public List<DetailsDailyAssistanceDTO> DetailsDailyAssistanceDTOs { get; set; }
 
     }

@@ -39,17 +39,14 @@
         </div>
     </div>
     <div class="overflow-auto">
-        <div class=" d-flex justify-content-center align-items-center flex-column flex-md-row gap-3 px-1 my-2">
+
+        <div class="filter-box d-flex align-items-center flex-column flex-md-row gap-3 my-2">
             <div class="d-flex align-items-center flex-column flex-md-row w-50">
                 <label for="journals" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Journal"]</label>
                 <select id="journals" asp-items="JournalTypes" class="form-control text-center w-100">
                     <option value="100">@localizer["All Journals"]</option>
                 </select>
             </div>
-        </div>
-        <!---------------------------------------------------------->
-
-        <div class="filter-box d-flex align-items-center flex-column flex-md-row gap-3 my-2">
             <div class="d-flex align-items-center flex-column flex-md-row w-100" style="width:40% !important;">
                 <label for="filter" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0" style="width:60% !important;">@localizer["Filter By"]</label>
                 <select id="filter" class="form-control text-center" onchange="filtering(event)">
@@ -119,54 +116,56 @@
                 return;
             }
         }
+        var journalName = journal.options[journal.selectedIndex].textContent;
+
         var headReport = document.querySelector(".report");
 
         let title;
         if (filter.value == 1) {
-            title = "@localizer["Analytical Journal During Period from"] " + fromPeriod.value + " @localizer["To"] " + toPeriod.value;
+            title = "@localizer["Analytical Journal During Period from"] " + fromPeriod.value + " @localizer["To"] " + toPeriod.value + " @localizer["Journal Name"] : " + journalName;
         } else if (filter.value == 2) {
-            title = "@localizer["Analytical Journal For Voucher from"] " + fromReceipt.value + " @localizer["To"] " + toReceipt.value;
+            title = "@localizer["Analytical Journal For Voucher from"] " + fromReceipt.value + " @localizer["To"] " + toReceipt.value + " @localizer["Journal Name"] : " + journalName;
         }
         headReport.innerHTML =
             `
-                <div class="report-head d-flex justify-content-center align-items-center mt-4">
-                     <h2 class="header">${title}</h2>
-                         <button onclick="printReport()" class="btn btn-success" style="margin-inline-start: auto;">Print</button>
-                </div>
+                    <div class="report-head d-flex justify-content-center align-items-center mt-4">
+                         <h2 class="header">${title}</h2>
+                             <button onclick="printReport()" class="btn btn-success" style="margin-inline-start: auto;">Print</button>
+                    </div>
 
-                <div class="print-table p-0 mb-2 overflow-auto">
+                    <div class="print-table p-0 mb-2 overflow-auto">
 
-                    <table id="myTable" class="table table-bordered table-hover Voucher-table" style="width:100%">
-                        <thead class="table-dark">
-                            <tr>
-                                <th class="align-middle text-center" rowspan="2">
-                                   @localizer["Voucher No"]
-                                </th>
-                                <th class="align-middle text-center" rowspan="2">
-                                   @localizer["Voucher Date"]
-                                </th>
-                                <th class="align-middle text-center" rowspan="2">
-                                   @localizer["Account Name"]
-                                </th>
-                                <th class="align-middle text-center" rowspan="2">
-                                   @localizer["Note"]
-                                </th>
-                                <th class="align-middle text-center" rowspan="2">
-                                   @localizer["Debit Value"]
-                                </th>
-                                <th class="align-middle text-center" rowspan="2">
-                                   @localizer["Credit Value"]
-                                </th>
+                        <table id="myTable" class="table table-bordered table-hover Voucher-table" style="width:100%">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th class="align-middle text-center" rowspan="2">
+    @localizer["Voucher No"]
+                                    </th>
+                                    <th class="align-middle text-center" rowspan="2">
+    @localizer["Voucher Date"]
+                                    </th>
+                                    <th class="align-middle text-center" rowspan="2">
+    @localizer["Account Name"]
+                                    </th>
+                                    <th class="align-middle text-center" rowspan="2">
+    @localizer["Note"]
+                                    </th>
+                                    <th class="align-middle text-center" rowspan="2">
+    @localizer["Debit Value"]
+                                    </th>
+                                    <th class="align-middle text-center" rowspan="2">
+    @localizer["Credit Value"]
+                                    </th>
 
-                            </tr>
+                                </tr>
 
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
 
-            `;
+                `;
         let url;
         if (filter.value == 1) {
             url = `/Accounts/ReportFromVoucherToVoucher/GetFromToVoucher/${journal.value}?fromPeriod=${fromPeriod.value}&toPeriod=${toPeriod.value}`;
@@ -178,38 +177,75 @@
         $.ajax({
             url: url,
             success: function (result) {
-                //  console.log(result);
                 var valDepSum = 0;
                 var valCreditSum = 0;
+                var currentTransNo = null;
+                var currentValDepSum = 0;
+                var currentValCreditSum = 0;
+
                 for (let item of result) {
+                    if (currentTransNo !== null && currentTransNo !== item.transNo) {
+                        // Add summary row for the previous transNo
+                        const summaryRow = document.createElement("tr");
+                        summaryRow.innerHTML =
+                            `
+                                    <td colspan="4" class="text-end"><strong>@localizer["Total for Voucher No"] ${currentTransNo}</strong></td>
+                                    <td class="align-middle" style="background-color: #e6dfdf;">${currentValDepSum.toFixed(2)}</td>
+                                    <td class="align-middle" style="background-color: #e6dfdf;">${currentValCreditSum.toFixed(2)}</td>
+                                `;
+                        dataa.appendChild(summaryRow);
+
+                        // Reset current sums
+                        currentValDepSum = 0;
+                        currentValCreditSum = 0;
+                    }
+
+                    currentTransNo = item.transNo;
+                    currentValDepSum += item.valDep;
+                    currentValCreditSum += item.valCredit;
+
                     let transDate = new Date(item.transDate).toISOString().split('T')[0];
                     const data = document.createElement("tr");
-                    data.innerHTML += `
+                    data.innerHTML +=
+                        `
+                                <td class="align-middle">${item.transNo}</td>
+                                <td class="align-middle">${transDate}</td>
+                                <td class="align-middle">${item.accountName}</td>
+                                <td class="align-middle">${item.lineDesc}</td>
+                                <td class="align-middle">${item.valDep}</td>
+                                <td class="align-middle">${item.valCredit}</td>
+                            `;
+                    dataa.appendChild(data);
 
-                            <td class="align-middle">${item.transNo}</td>
-                            <td class="align-middle">${transDate}</td>
-                            <td class="align-middle">${item.accountName}</td>
-                            <td class="align-middle">${item.lineDesc}</td>
-                            <td class="align-middle">${item.valDep}</td>
-                            <td class="align-middle">${item.valCredit}</td>
-                        `;
                     valDepSum += item.valDep;
                     valCreditSum += item.valCredit;
-                    dataa.appendChild(data);
                 }
-                const dataForSum = document.createElement("tr");
-                //    dataForSum.style.backgroundColor = "#e6dfdf";
-                dataForSum.innerHTML =
-                    `
-                        <td colspan="4"></td>
-                        <td style="background-color: #e6dfdf;">${valDepSum}</td>
-                        <td style="background-color: #e6dfdf;">${valCreditSum}</td>
-                    `;
-                dataa.appendChild(dataForSum);
 
+                // Add the last summary row for the last transNo
+                if (currentTransNo !== null) {
+                    const summaryRow = document.createElement("tr");
+                    summaryRow.innerHTML =
+                        `
+                                <td colspan="4" class="text-end"><strong>@localizer["Total for Voucher No"] ${currentTransNo}</strong></td>
+                                <td class="align-middle" style="background-color: #e6dfdf;">${currentValDepSum.toFixed(2)}</td>
+                                <td class="align-middle" style="background-color: #e6dfdf;">${currentValCreditSum.toFixed(2)}</td>
+                            `;
+                    dataa.appendChild(summaryRow);
+                }
+
+                // Add final totals row
+                const finalTotalsRow = document.createElement("tr");
+                finalTotalsRow.innerHTML =
+                    `
+                            <td colspan="4" class="text-end"><strong>@localizer["Total Vouchers"]</strong></td>
+                            <td class="align-middle" style="background-color: #e6dfdf;">${valDepSum.toFixed(2)}</td>
+                            <td class="align-middle" style="background-color: #e6dfdf;">${valCreditSum.toFixed(2)}</td>
+                        `;
+                dataa.appendChild(finalTotalsRow);
             }
         });
     }
+   
     function printReport() {
         let head = document.querySelector(".report-head");
         let tableReport = document.querySelector(".print-table");

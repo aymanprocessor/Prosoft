@@ -137,6 +137,7 @@
 
                     var thCredit = document.createElement("th");
                     thCredit.className = "align-middle text-center";
+                    thCredit.style.borderLeft = "4px solid gray";
                     thCredit.innerText = "@localizer["Credit"]";
                     headersRow2.appendChild(thCredit);
                 });
@@ -200,7 +201,7 @@
 
                                 row.innerHTML += `
                                     <td class="align-middle">${debit}</td>
-                                    <td class="align-middle">${credit}</td>
+                                    <td class="align-middle" style="border-left: 4px solid grey;">${credit}</td>
                                 `;
 
                                 rowDebitSum += parseFloat(debit);
@@ -229,7 +230,7 @@
                         mainNames.forEach(mainName => {
                             sumRow.innerHTML += `
                                 <td style="background-color: #e6dfdf;">${valDepSums[mainName]}</td>
-                                <td style="background-color: #e6dfdf;">${valCreditSums[mainName]}</td>
+                                        <td style="background-color: #e6dfdf;border-left: 4px solid grey;">${valCreditSums[mainName]}</td>
                             `;
                         });
 

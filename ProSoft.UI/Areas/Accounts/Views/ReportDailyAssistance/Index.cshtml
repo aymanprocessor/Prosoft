@@ -117,18 +117,27 @@
                                 <th class="align-middle text-center" rowspan="2">@localizer["Voucher Date"]</th>
                                 <th class="align-middle text-center" rowspan="2">@localizer["Currency"]</th>
                                 <th class="align-middle text-center" rowspan="2">@localizer["Total Voucher"]</th>
+                                <th class="align-middle text-center" rowspan="2">@localizer["Journal Name"]</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
                     `;
                     let masterTableBody = masterTable.querySelector("tbody");
                     let transDate = new Date(item.transDate).toISOString().split('T')[0];
+                    let transName = "";
+                    if (item.transType == "9") {
+                        transName = "يومية عامة";
+                    }
+                    else { 
+                        transName = "يومية حسابات عامة";
+                    }
                     const dataM = document.createElement("tr");
                     dataM.innerHTML = `
                         <td class="align-middle">${item.transNo}</td>
                         <td class="align-middle">${transDate}</td>
                         <td class="align-middle">${item.curenncyName}</td>
                         <td class="align-middle">${item.totalTrans}</td>
+                        <td class="align-middle">${transName}</td>
                     `;
                     masterTableBody.appendChild(dataM);
                     reportTablesContainer.appendChild(masterTable);

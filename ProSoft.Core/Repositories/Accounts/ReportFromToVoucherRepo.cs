@@ -36,11 +36,12 @@ namespace ProSoft.Core.Repositories.Accounts
         {
             List<FromToVoucherDataDTO> fromToVoucherDataDTOs = new List<FromToVoucherDataDTO>();
 
-            if (fromReceipt != null && toReceipt != null)
-            {
                 var accTransDetails = await _Context.AccTransDetails.Where(obj => obj.FYear == fYear &&
                       (journal == 100 || obj.TransType == journal.ToString()) &&
-                      (obj.TransNo >= fromReceipt && obj.TransNo <= toReceipt))
+                      (fromReceipt == null || fromReceipt == 0 || obj.TransNo >= fromReceipt) &&
+                      (toReceipt == null || toReceipt == 0 || obj.TransNo <= toReceipt) &&
+                      (fromPeriod == null || obj.TransDate >= fromPeriod) &&
+                      (toPeriod == null || obj.TransDate <= toPeriod)).OrderBy(obj => obj.TransNo)
                     .ToListAsync();
 
                 foreach (var obj in accTransDetails)
@@ -56,28 +57,6 @@ namespace ProSoft.Core.Repositories.Accounts
                     };
                     fromToVoucherDataDTOs.Add(dto);
                 }
-            }
-            else if (fromPeriod != null && toPeriod != null)
-            {
-                var accTransDetails = await _Context.AccTransDetails.Where(obj => obj.FYear == fYear &&
-                      (journal == 100 || obj.TransType == journal.ToString()) &&
-                      (obj.TransDate >= fromPeriod && obj.TransDate <= toPeriod))
-                    .ToListAsync();
-
-                foreach (var obj in accTransDetails)
-                {
-                    var dto = new FromToVoucherDataDTO
-                    {
-                        TransNo = obj.TransNo,
-                        TransDate = obj.TransDate,
-                        AccountName = await GetAccountName(obj.MainCode, obj.SubCode),
-                        LineDesc = obj.LineDesc,
-                        ValDep = obj.ValDep,
-                        ValCredit = obj.ValCredit
-                    };
-                    fromToVoucherDataDTOs.Add(dto);
-                }
-            }
 
             return fromToVoucherDataDTOs;
         }

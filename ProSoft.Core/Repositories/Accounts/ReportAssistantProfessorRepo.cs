@@ -56,15 +56,15 @@ namespace ProSoft.Core.Repositories.Accounts
                     else
                      lcBalFirstYear = (decimal)(accStartBal.FCreditOr - accStartBal.FDepOr);
             //balance before period
-            AccTransDetail accTransDetailForFirstbalance = await _Context.AccTransDetails.FirstOrDefaultAsync(obj=>obj.FYear==fYear&& (branch == 100 || obj.CoCode == branch) &&
-                      (journal == 100 || obj.TransType == journal.ToString()) && obj.MainCode == mainCode && obj.SubCode == subCode && obj.TransDate < fromPeriod);
+            List<AccTransDetail> accTransDetailForFirstbalances = await _Context.AccTransDetails.Where(obj=>obj.FYear==fYear&& (branch == 100 || obj.CoCode == branch) &&
+                      (journal == 100 || obj.TransType == journal.ToString()) && obj.MainCode == mainCode && obj.SubCode == subCode && obj.TransDate < fromPeriod).ToListAsync();
               decimal lcBalBeforeDate;
-                    if (accTransDetailForFirstbalance == null)
+                    if (accTransDetailForFirstbalances == null)
                     {
                         lcBalBeforeDate = 0;
                     }
                     else
-                     lcBalBeforeDate = (decimal)(accTransDetailForFirstbalance.ValCredit - accTransDetailForFirstbalance.ValDep);
+                     lcBalBeforeDate = (decimal)(accTransDetailForFirstbalances.Sum(obj=>obj.ValCredit) - accTransDetailForFirstbalances.Sum(obj => obj.ValDep));
           
               decimal lcBalFirstPeriod = lcBalFirstYear + lcBalBeforeDate;
 
@@ -75,9 +75,9 @@ namespace ProSoft.Core.Repositories.Accounts
                         // Define specific data for the first row
                          specificDTO = new AssistantProfessorAnalyticalDTO
                         {
-                            ValDep = lcBalFirstPeriod,
-                            ValCredit = 0,
-                            TransDesc = "رصيد اول الفترة",
+                            ValDep = 0,
+                            ValCredit = lcBalFirstPeriod * -1,
+                            TransDesc = "رصيد ماقبله الفترة",
                             CostDesc = "",
                             TransNo = 0,
                             // TransDate = 
@@ -88,9 +88,9 @@ namespace ProSoft.Core.Repositories.Accounts
                         // Define specific data for the first row
                          specificDTO = new AssistantProfessorAnalyticalDTO
                         {
-                            ValDep = 0,
-                            ValCredit = lcBalFirstPeriod,
-                            TransDesc = "رصيد اول الفترة",
+                            ValDep = lcBalFirstPeriod,
+                            ValCredit = 0,
+                            TransDesc = "رصيد ماقبله الفترة",
                             CostDesc = "",
                             TransNo = 0,
                             // TransDate = 

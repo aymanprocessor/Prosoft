@@ -110,15 +110,14 @@
                 toPeriod.focus();
                 return;
             }
-            if (!mainCode.value) {
-                mainCode.focus();
-                return;
-            }
+
         var headReport = document.querySelector(".report");
 
         var journalName = journal.options[journal.selectedIndex].textContent;
         var mainName = mainCode.options[mainCode.selectedIndex].textContent;
         var subName = subCode.options[subCode.selectedIndex].textContent;
+        if (mainName == "-- Choose --")
+            mainName = "";
         if (subName == "-- Choose --")
             subName = "";
 
@@ -167,43 +166,72 @@
         $.ajax({
             url: url,
             success: function (result) {
-                //  console.log(result);
                 var valDepSum = 0;
                 var valCreditSum = 0;
+                var currentTransNo = null;
+                var currentValDepSum = 0;
+                var currentValCreditSum = 0;
+                var dataa = document.querySelector(".Voucher-table tbody");
+                dataa.innerHTML = "";  // Empty data
+
                 for (let item of result) {
+                    if (currentTransNo !== null && currentTransNo !== item.transNo) {
+                        // Add summary row for the previous transNo
+                        const summaryRow = document.createElement("tr");
+                        summaryRow.innerHTML =
+                            `
+                            <td colspan="3" class="text-end"><strong>@localizer["Total for Voucher No"] ${currentTransNo}</strong></td>
+                            <td class="align-middle" style="background-color: #e6dfdf;">${currentValDepSum.toFixed(2)}</td>
+                            <td class="align-middle" style="background-color: #e6dfdf;">${currentValCreditSum.toFixed(2)}</td>
+                        `;
+                        dataa.appendChild(summaryRow);
+
+                        // Reset current sums
+                        currentValDepSum = 0;
+                        currentValCreditSum = 0;
+                    }
+
+                    currentTransNo = item.transNo;
+                    currentValDepSum += item.valDep;
+                    currentValCreditSum += item.valCredit;
+
                     let transDate = new Date(item.transDate).toISOString().split('T')[0];
                     const data = document.createElement("tr");
-                    data.innerHTML += `
+                    data.innerHTML +=
+                        `
+                        <td class="align-middle">${item.transNo}</td>
+                        <td class="align-middle">${transDate}</td>
+                        <td class="align-middle">${item.lineDesc}</td>
+                        <td class="align-middle">${item.valDep}</td>
+                        <td class="align-middle">${item.valCredit}</td>
+                    `;
+                    dataa.appendChild(data);
 
-                                <td class="align-middle">${item.transNo}</td>
-                                <td class="align-middle">${transDate}</td>
-                                <td class="align-middle">${item.lineDesc}</td>
-                                <td class="align-middle">${item.valDep}</td>
-                                <td class="align-middle">${item.valCredit}</td>
-                            `;
                     valDepSum += item.valDep;
                     valCreditSum += item.valCredit;
-                    dataa.appendChild(data);
                 }
-                const dataForSum = document.createElement("tr");
-                //    dataForSum.style.backgroundColor = "#e6dfdf";
-                dataForSum.innerHTML =
-                    `
-                            <td colspan="3">@localizer["Total Main Account"]</td>
-                            <td style="background-color: #e6dfdf;">${valDepSum}</td>
-                            <td style="background-color: #e6dfdf;">${valCreditSum}</td>
-                        `;
-                dataa.appendChild(dataForSum);
-                const dataForSumJournal = document.createElement("tr");
-                //    dataForSum.style.backgroundColor = "#e6dfdf";
-                dataForSumJournal.innerHTML =
-                    `
-                                <td colspan="3">@localizer["Total Journal"]</td>
-                                <td style="background-color: #e6dfdf;">${valDepSum}</td>
-                                <td style="background-color: #e6dfdf;">${valCreditSum}</td>
-                            `;
-                dataa.appendChild(dataForSumJournal);
 
+                // Add the last summary row for the last transNo
+                if (currentTransNo !== null) {
+                    const summaryRow = document.createElement("tr");
+                    summaryRow.innerHTML =
+                        `
+                        <td colspan="3" class="text-end"><strong>@localizer["Total for Voucher No"] ${currentTransNo}</strong></td>
+                        <td class="align-middle" style="background-color: #e6dfdf;">${currentValDepSum.toFixed(2)}</td>
+                        <td class="align-middle" style="background-color: #e6dfdf;">${currentValCreditSum.toFixed(2)}</td>
+                    `;
+                    dataa.appendChild(summaryRow);
+                }
+
+                // Add final totals row
+                const finalTotalsRow = document.createElement("tr");
+                finalTotalsRow.innerHTML =
+                    `
+                    <td colspan="3" class="text-end"><strong>@localizer["Total Vouchers"]</strong></td>
+                    <td class="align-middle" style="background-color: #e6dfdf;">${valDepSum.toFixed(2)}</td>
+                    <td class="align-middle" style="background-color: #e6dfdf;">${valCreditSum.toFixed(2)}</td>
+                `;
+                dataa.appendChild(finalTotalsRow);
             }
         });
     }

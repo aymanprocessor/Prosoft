@@ -52,6 +52,7 @@ namespace ProSoft.Core.Repositories.Accounts
                 dailyAssistanceDTO.TransDate = master.TransDate;
                 dailyAssistanceDTO.CurenncyName = "جنية مصري";
                 dailyAssistanceDTO.TotalTrans = transactionList.Sum(obj=>obj.ValDep);
+                dailyAssistanceDTO.transType = master.TransType;
 
                 dailyAssistanceDTO.DetailsDailyAssistanceDTOs = new List<DetailsDailyAssistanceDTO>();
 

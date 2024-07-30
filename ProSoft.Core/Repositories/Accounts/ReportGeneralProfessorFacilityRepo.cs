@@ -31,7 +31,7 @@ namespace ProSoft.Core.Repositories.Accounts
 
             return reportGeneralProfessorFacilityDTO;
         }
-        public async Task<List<GeneralProfessorFacilityDTO>> GetGeneralProfessorAsync(int branch, DateTime toPeriod, int? movementToDate)
+        public async Task<List<GeneralProfessorFacilityDTO>> GetGeneralProfessorAsync(int branch, DateTime toPeriod)
         {
             int year = toPeriod.Year;
             DateTime startDate = new DateTime(year, 1, 31); // Start date for the filter
@@ -47,7 +47,7 @@ namespace ProSoft.Core.Repositories.Accounts
                         join main in _Context.AccMainCodes
                             on new { sub.MainCode, sub.CoCode } equals new { main.MainCode, main.CoCode }
                         where (startBal == null || startBal.FYear == year) // Handle the case where startBal is null
-                              && (transDetail == null || (transDetail.TransDate >= startDate))// && transDetail.TransDate <= toPeriod // Handle the case where transDetail is null
+                              && (transDetail == null || (transDetail.TransDate >= startDate && transDetail.TransDate <= toPeriod))// && transDetail.TransDate <= toPeriod // Handle the case where transDetail is null
                               && (transDetail == null || transDetail.FYear == year)
                         group new { startBal, transDetail, sub, main } by new
                         {

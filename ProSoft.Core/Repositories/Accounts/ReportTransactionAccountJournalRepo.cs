@@ -41,7 +41,7 @@ namespace ProSoft.Core.Repositories.Accounts
         public async Task<List<TransactionAccountJournalDTO>> GetTransactionAccountJournal(int journal, DateTime? fromPeriod, DateTime? toPeriod, string mainCode, string subCode, int branche)
         {
             List<TransactionAccountJournalDTO> transactionAccountJournalDTOs = new List<TransactionAccountJournalDTO>()
-;            var accTransDetails = await _Context.AccTransDetails.Where(obj => (branche == 100 || obj.CoCode == branche) && obj.MainCode == mainCode &&(subCode == null || obj.SubCode == subCode) &&
+;            var accTransDetails = await _Context.AccTransDetails.Where(obj => (branche == 100 || obj.CoCode == branche) && (mainCode == null || obj.MainCode == mainCode) && (subCode == null || obj.SubCode == subCode) &&
                   (journal == 100 || obj.TransType == journal.ToString()) && (obj.TransDate >= fromPeriod && obj.TransDate <= toPeriod))
                 .ToListAsync();
 

@@ -23,7 +23,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
         public async Task<IActionResult> GetGeneralProfessor(int id,DateTime toPeriod, int? movementToDate)
         {
            // var fYear = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "F_Year").Value);
-            var reportData = await _reportGeneralProfessorFacilityRepo.GetGeneralProfessorAsync(id, toPeriod, movementToDate);
+            var reportData = await _reportGeneralProfessorFacilityRepo.GetGeneralProfessorAsync(id, toPeriod);
             return Json(reportData);
         }
     }

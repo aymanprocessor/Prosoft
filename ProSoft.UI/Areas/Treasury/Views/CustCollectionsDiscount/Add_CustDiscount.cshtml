@@ -95,6 +95,22 @@
        //  console.log(cashValuePay)
         document.getElementById('discountValue').value = (discountPrcc * cashValuePay) / 100;
     });
+    document.getElementById('discountValue').addEventListener('input', function () {
+        // Get the value entered in the Discount value input
+        var discountValue = parseFloat(this.value) || 0;
+        var cashValuePay = parseInt(document.getElementById('ValuePay').value) || 1; // Default to 1 to avoid division by zero
+
+        if (cashValuePay > 0) {
+            // Calculate the discount percentage
+            var discountPercentage = (discountValue / cashValuePay) * 100;
+
+            // Update the Discount percentage input field
+            document.getElementById('discountPrc').value = discountPercentage.toFixed(2);
+        } else {
+            // Handle the case where cashValuePay is zero or invalid
+            document.getElementById('discountPrc').value = '0';
+        }
+    });
 
 
     function getSubCodes(mainId, subId) {
