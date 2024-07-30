@@ -23,8 +23,8 @@ namespace ProSoft.Core.Repositories.Stocks
             _mapper = mapper;
         }
 
-        public ItmReorder GetNewItemReorderAsnyc(SubItem subItem, DateTime fromDate, DateTime toDate,
-            int stockID, int branchID)
+        private ItmReorder GetNewItemReorderAsnyc(SubItem subItem, DateTime fromDate, DateTime toDate,
+            int stockID/*, int branchID*/)
         {
             var itemReorder = new ItmReorder();
             itemReorder.ItemCd = subItem.ItemCode;
@@ -32,72 +32,48 @@ namespace ProSoft.Core.Repositories.Stocks
             itemReorder.ReordQty = 0;
             itemReorder.MaxQty = 0;
             itemReorder.MinQty = 0;
-            itemReorder.BranchId = branchID;
+            itemReorder.BranchId = subItem.BranchId;
             itemReorder.FDate = fromDate;
             itemReorder.TDate = toDate;
             return itemReorder;
         }
 
-        public async Task<List<ItmReorderViewDTO>> GetItemsLimitsAsync(/*int item1, int item2,*/DateTime fromDate, DateTime toDate,
+        public async Task<List<ItmReorderViewDTO>> GetItemsLimitsByDatesAsync(DateTime fromDate, DateTime toDate,
             int stockID, int branchID)
         {
-            List<ItmReorder> orderLimits = await _DbSet
-                //.Where(obj => int.Parse(obj.ItemCd) >= item1 &&
-                //int.Parse(obj.ItemCd) <= item2)
-                .Where(obj => obj.StoreId == stockID && obj.BranchId == branchID &&
-                obj.FDate >= fromDate && obj.TDate <= toDate)
-                .ToListAsync();
-            List<SubItem> subItems = await _Context.SubItems.Where(obj => obj.BranchId == branchID/* && obj.SubId > 3031*/
-                /*&& int.Parse(obj.ItemCode) >= item1 && int.Parse(obj.ItemCode) <= item2*/)
-                .ToListAsync();
+            List<ItmReorder> itemReorders = await GetAllAsync();
+            List<SubItem> subItemsInBranch = await _Context.SubItems.Where(obj => obj.BranchId == branchID).ToListAsync();
+            List<Stock> stocks = await _Context.Stocks.Where(obj => obj.BranchId == branchID).ToListAsync();
+            List<MainItemStock> mainItemStocks = await _Context.MainItemStocks.Where(obj =>
+                obj.Stkcod == stockID &&
+                obj.BranchId == branchID).Distinct().ToListAsync();
+            mainItemStocks = mainItemStocks.Where(obj => stocks.Exists(s => s.Stkcod == obj.Stkcod && s.Flag1 == obj.Flag1)).ToList();
 
             var itemReorderDTOs = new List<ItmReorderViewDTO>();
-            if(orderLimits.Count == 0)
+            foreach (var item in subItemsInBranch)
             {
-                //if(subItems.Count != 0)
-                //{
-                //}
-                foreach (var item in subItems)
-                {
-                    //MainItemStock mainItemStock = await _Context.MainItemStocks.FirstOrDefaultAsync(obj =>
-                    //    obj.MainCode == item.MainCode && obj.BranchId == branchID && obj.Stkcod == stockID &&
-                    //    obj.Flag1 == item.Flag1);
-                    //Stock stock = await _Context.Stocks.FindAsync(stockID);
-
-                    ItmReorder itemReorder = GetNewItemReorderAsnyc(item, fromDate, toDate, stockID, branchID);
-                    await AddAsync(itemReorder);
-
-                    var itemReorderDTO = _mapper.Map<ItmReorderViewDTO>(itemReorder);
-                    itemReorderDTO.ItemName = item.SubName;
-                    itemReorderDTOs.Add(itemReorderDTO);
-                }
-                await SaveChangesAsync();
-            }
-            else
-            {
-                foreach (var item in subItems)
+                if (mainItemStocks.Exists(obj => obj.MainCode == item.MainCode && obj.Flag1 == item.Flag1))
                 {
                     ItmReorder itemReorder = await _DbSet.FirstOrDefaultAsync(obj => obj.ItemCd == item.ItemCode &&
                         obj.StoreId == stockID);
-                        //obj.FDate == fromDate && obj.TDate == toDate);
-                    if(itemReorder == null)
+                    if (itemReorder != null)
                     {
-                        ItmReorder newItemReorder = GetNewItemReorderAsnyc(item, fromDate, toDate, stockID, branchID);
+                        var itemReorderDTO = _mapper.Map<ItmReorderViewDTO>(itemReorder);
+                        itemReorderDTO.ItemName = item.SubName;
+                        itemReorderDTOs.Add(itemReorderDTO);
+                    }
+                    else
+                    {
+                        ItmReorder newItemReorder = GetNewItemReorderAsnyc(item, fromDate, toDate, stockID/*, branchID*/);
                         await AddAsync(newItemReorder);
 
                         var itemReorderDTO = _mapper.Map<ItmReorderViewDTO>(newItemReorder);
                         itemReorderDTO.ItemName = item.SubName;
                         itemReorderDTOs.Add(itemReorderDTO);
                     }
-                    else
-                    {
-                        var itemReorderDTO = _mapper.Map<ItmReorderViewDTO>(itemReorder);
-                        itemReorderDTO.ItemName = item.SubName;
-                        itemReorderDTOs.Add(itemReorderDTO);
-                    }
                 }
-                await SaveChangesAsync();
             }
+            await SaveChangesAsync();
             return itemReorderDTOs;
         }
 
