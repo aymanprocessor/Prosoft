@@ -78,7 +78,7 @@
                 <label for="toItem" style="width:60% !important;">@localizer["To Item"]</label>
                 <input id="toItem" type="text" class="form-control text-center" placeholder="@localizer["Write the item code"]" />
             </div>
-            <button class="btn btn-primary" style="width: 150px">@localizer["Search"]</button>
+            <button onclick="getOrderLimits()" class="btn btn-primary" style="width: 150px">@localizer["Search"]</button>
         </div>
         <div class="d-flex justify-content-end align-items-center flex-column flex-md-row gap-2 periods" style="width:70% !important;">
             <div class="d-flex align-items-center w-100">
@@ -94,20 +94,17 @@
         <div class="d-flex justify-content-end align-items-center flex-column flex-md-row gap-2 item-code hide" style="width:70% !important;">
             <div class="d-flex align-items-center w-100">
                 <label for="itemCode" style="width:60% !important;">@localizer["Search by code"]</label>
-                <input id="itemCode" type="date" class="form-control text-center"placeholder="@localizer["Write the item code"]" />
+                <input id="itemCode" type="text" class="form-control text-center" placeholder="@localizer["Write the item code"]" />
             </div>
-            <button class="btn btn-primary" style="width: 150px">@localizer["Search"]</button>
+            <button onclick="getOrderLimits()" class="btn btn-primary" style="width: 150px">@localizer["Search"]</button>
         </div>
-@*         <div class="d-flex justify-content-end align-items-center flex-column flex-md-row gap-2 periods" style="width:70% !important;">
+        <div class="d-flex justify-content-end align-items-center flex-column flex-md-row gap-2 item-name hide" style="width:70% !important;">
             <div class="d-flex align-items-center w-100">
-                <label style="width:60% !important;">@localizer["From Period"]</label>
-                <input id="fromPeriod" type="date" class="form-control text-center" />
+                <label for="itemName" style="width:60% !important;">@localizer["Search by code"]</label>
+                <input id="itemName" type="text" class="form-control text-center" placeholder="@localizer["Write the item code"]" />
             </div>
-            <div class="d-flex align-items-center w-100">
-                <label style="width:60% !important;">@localizer["To Period"]</label>
-                <input id="toPeriod" type="date" class="form-control text-center" />
-            </div>
-        </div> *@
+            <button onclick="getOrderLimits()" class="btn btn-primary" style="width: 150px">@localizer["Search"]</button>
+        </div>
     </div>
 
     <div class="overflow-auto" style="height: 225px;">
@@ -144,20 +141,124 @@
 @section Scripts {
     <script>
         function getOrderLimits() {
+            let filter = document.getElementById("filter").value;
             let stock = document.getElementById("stocks");
             let dateFrom = document.getElementById("fromDate");
             let dateTo = document.getElementById("toDate");
+            let fromItem = document.getElementById("fromItem");
+            let toItem = document.getElementById("toItem");
+            let itemCode = document.getElementById("itemCode");
+            let itemName = document.getElementById("itemName");
+            let myURL = "";
 
-            if (!stock.value) {
-                stock.focus();
+            let table = document.getElementById('myTable');
+            let rows = table.getElementsByTagName('tr');
+
+            if (filter == 1) {
+                if (!stock.value) {
+                    stock.focus();
+                    return;
+                }
+                if (!dateFrom.value) {
+                    dateFrom.focus();
+                    return;
+                }
+                if (!dateTo.value) {
+                    dateTo.focus();
+                    return;
+                }
+                myURL = `/Stocks/OrderLimit/GetOrderLimitsByDates?date1=${dateFrom.value}&date2=${dateTo.value}&stockID=${stock.value}`;
+            }
+            else if (filter == 2) {
+                if (!fromItem.value) {
+                    fromItem.focus();
+                    return;
+                }
+                if (!toItem.value) {
+                    toItem.focus();
+                    return;
+                }
+
+                for (var i = 1; i < rows.length; i++) {
+                    var cells = rows[i].getElementsByTagName('td');
+                    var found = false;
+
+                    var cell = cells[0];
+                    if (cell) {
+                        var textValue = cell.textContent || cell.innerText;
+                        if (textValue >= fromItem.value && textValue <= toItem.value) {
+                            rows[i].style.display = "";
+                        }
+                        else {
+                            rows[i].style.display = "none";
+                        }
+                    }
+                    // for (var j = 0; j < cells.length; j++) {
+                    //     var cell = cells[j];
+                    //     if (cell) {
+                    //         var textValue = cell.textContent || cell.innerText;
+                    //         if (textValue >= fromItem.value && textValue <= toItem) {
+                    //             console.log("Yes");
+                    //             found = true;
+                    //             break;
+                    //         }
+                    //             console.log("No");
+                    //     }
+                    // }
+
+                    // if (found) {
+                    //     rows[i].style.display = "";
+                    // } else {
+                    //     rows[i].style.display = "none";
+                    // }
+                }
                 return;
             }
-            if (!dateFrom.value) {
-                dateFrom.focus();
+            else if (filter == 3) {
+                if (!itemCode.value) {
+                    itemCode.focus();
+                    return;
+                }
+
+                for (var i = 1; i < rows.length; i++) {
+                    var cells = rows[i].getElementsByTagName('td');
+                    var found = false;
+
+                    var cell = cells[0];
+                    if (cell) {
+                        var textValue = cell.textContent || cell.innerText;
+                        if (textValue == itemCode.value) {
+                            rows[i].style.display = "";
+                        }
+                        else {
+                            rows[i].style.display = "none";
+                        }
+                    }
+                }
                 return;
             }
-            if (!dateTo.value) {
-                dateTo.focus();
+            else if (filter == 4) {
+                if (!itemName.value) {
+                    itemName.focus();
+                    return;
+                }
+
+                for (var i = 1; i < rows.length; i++) {
+                    var cells = rows[i].getElementsByTagName('td');
+                    var found = false;
+
+                    var cell = cells[1];
+                    if (cell) {
+                        var textValue = cell.textContent || cell.innerText;
+                        textValue = textValue.toLowerCase();
+                        if (textValue.indexOf(itemName.value) > -1) {
+                            rows[i].style.display = "";
+                        }
+                        else {
+                            rows[i].style.display = "none";
+                        }
+                    }
+                }
                 return;
             }
 
@@ -168,7 +269,7 @@
             orderLimits.innerHTML = "";
 
             $.ajax({
-                url: `/Stocks/OrderLimit/GetOrderLimits?date1=${dateFrom.value}&date2=${dateTo.value}&stockID=${stock.value}`,
+                url: myURL,
                 success: function (result) {
                     spinner.classList.add("d-none");
                     for (let item of result) {
@@ -214,16 +315,34 @@
         //Filter
         function filtering(e) {
             let filter = e.target.value;
-            var periodsElement = document.querySelector(".periods");
-            var itemsElement = document.querySelector(".items");
+            let periodsElement = document.querySelector(".periods");
+            let itemsElement = document.querySelector(".items");
+            let itemCodeElement = document.querySelector(".item-code");
+            let itemNameElement = document.querySelector(".item-name");
 
             if (filter == 2) {
                 itemsElement.classList.remove("hide");
                 periodsElement.classList.add("hide");
+                itemCodeElement.classList.add("hide");
+                itemNameElement.classList.add("hide");
             }
             else if (filter == 1) {
                 itemsElement.classList.add("hide");
                 periodsElement.classList.remove("hide");
+                itemCodeElement.classList.add("hide");
+                itemNameElement.classList.add("hide");
+            }
+            else if (filter == 3) {
+                itemsElement.classList.add("hide");
+                periodsElement.classList.add("hide");
+                itemCodeElement.classList.remove("hide");
+                itemNameElement.classList.add("hide");
+            }
+            else if (filter == 4) {
+                itemsElement.classList.add("hide");
+                periodsElement.classList.add("hide");
+                itemCodeElement.classList.add("hide");
+                itemNameElement.classList.remove("hide");
             }
         }
     </script>

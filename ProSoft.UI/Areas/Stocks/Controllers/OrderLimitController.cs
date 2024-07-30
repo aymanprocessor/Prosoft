@@ -24,11 +24,11 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             return View();
         }
 
-        public async Task<IActionResult> GetOrderLimits(DateTime date1, DateTime date2,
-            int stockID)
+        public async Task<IActionResult> GetOrderLimitsByDates(DateTime date1, DateTime date2, int stockID)
         {
             var branchID = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
-            List<ItmReorderViewDTO> orderLimitDTOs = await _orderLimitRepo.GetItemsLimitsAsync(date1, date2, stockID, branchID);
+            List<ItmReorderViewDTO> orderLimitDTOs = await _orderLimitRepo.GetItemsLimitsByDatesAsync(date1,
+                date2, stockID, branchID);
             return Json(orderLimitDTOs);
         }
 

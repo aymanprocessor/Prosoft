@@ -56,9 +56,10 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
 
         public async Task<IActionResult> ApprovePermission(int id)
         {
+            var userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value;
             bool ifHasDetails = await _transMasterRepo.CheckForDetailsAsync(id);
             if (ifHasDetails)
-                await _transMasterRepo.ApprovePermissionAsync(id);
+                await _transMasterRepo.ApprovePermissionAsync(id, userCode);
 
             return Json(ifHasDetails);
         }
