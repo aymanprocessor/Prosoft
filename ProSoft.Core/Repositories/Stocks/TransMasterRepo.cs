@@ -130,24 +130,46 @@ namespace ProSoft.Core.Repositories.Stocks
             return accTransMaster != null ? 1 : transMaster.Flag3 == "2" ? 2 : 3;
         }
 
-        public async Task ApprovePermissionAsync(int transMAsterID, int userCode)
+        private async Task<string> GetAccountName(string mainCode, string subCode)
+        {
+            AccMainCode myMainCode = await _Context.AccMainCodes
+                .FirstOrDefaultAsync(obj => obj.MainCode == mainCode);
+            string mainName = myMainCode.MainName;
+
+            AccSubCode mySubCode = await _Context.AccSubCodes
+                .FirstOrDefaultAsync(obj => obj.SubCode == subCode && obj.MainCode == mainCode);
+            string subName = mySubCode! != null ? mySubCode.SubName : string.Empty;
+
+            return subName != "" ? $"{mainName} - {subName}" : mainName;
+        }
+
+        public async Task<int> ApprovePermissionAsync(int transMAsterID, int userCode)
         {
             TransMaster transMaster = await GetByIdAsync(transMAsterID);
 
-            if(transMaster.TransType == 2 && transMaster.StockCode2 > 0)
+            if (transMaster.TransType == 2 && transMaster.StockCode2 > 0)
             {
                 // لم يتم الترحيل للحسابات
-                // return
+                return 1;
             }
 
             var ls_flag3 = transMaster.Flag3;
             var sys_value = (await _Context.SystemTables.FirstOrDefaultAsync(obj =>
                 obj.SysId == 5)).SysValue;
-            
-            if(sys_value == 1 || ls_flag3 == "1")
+
+            var ll_stock_emp = 0;
+            var ll_trans_type = transMaster.TransType;
+            var ls_jornal = (await _Context.UserJournalTypes.FirstOrDefaultAsync(obj => obj.UserCode == userCode))?
+                .JournalCode.ToString();
+            var ll_acc_trans_no = transMaster.AccTransNo;
+            var ls_year_trans_no = $"{transMaster.FYear}_{ll_acc_trans_no}";
+            var tot_trans_val = transMaster.TotTransVal; // اجمالي الاجمالي الخاص بال details
+            var ls_comment = "";
+
+            if (sys_value == 1 || ls_flag3 == "1")
             {
                 // لم يتم الترحيل للحسابات
-                // return
+                return 1;
             }
             else
             {
@@ -155,9 +177,9 @@ namespace ProSoft.Core.Repositories.Stocks
                 // ترحيل تاريخ فاتورة المورد في قيد الاضافة
                 var sys_value2 = (await _Context.SystemTables.FirstOrDefaultAsync(obj =>
                     obj.SysId == 22)).SysValue;
-                if(sys_value2 == 1 && transMaster.TransType == 2)
+                if (sys_value2 == 1 && transMaster.TransType == 2)
                 {
-                    if(transMaster.SupInvDate != null)
+                    if (transMaster.SupInvDate != null)
                     {
 
                     }
@@ -166,32 +188,32 @@ namespace ProSoft.Core.Repositories.Stocks
                         transMaster.Flag3 = "1";
                         await SaveChangesAsync();
                         // من فضلك ادخل تاريخ فاتورة المورد
-                        // return
+                        return 2;
                     }
                 }
                 var ll_year = transMaster.FYear;
                 var ll_month = transMaster.FMonth;
                 var ll_branch = transMaster.BranchId;
-                var ll_trans_type = transMaster.TransType;
+                //var ll_trans_type = transMaster.TransType;
                 var ls_des = ll_trans_type == 2 ? "اذن اضافة رقم" :
                     ll_trans_type == 13 ? "اذن تحويل رقم" :
                     ll_trans_type == 12 ? "فاتورة العميل رقم" :
                     ll_trans_type == 23 ? "اذن استلام رقم" : "";
-                var tot_trans_val = transMaster.TotTransVal; // اجمالي الاجمالي الخاص بال details
-                if(tot_trans_val is (null or 0))
+                //var tot_trans_val = transMaster.TotTransVal; // اجمالي الاجمالي الخاص بال details
+                if (tot_trans_val is (null or 0))
                 {
                     // تاكد من قيمة الاذن واعد المحاولة
-                    // return
+                    return 3;
                 }
                 var ll_stock = 0;
-                var ll_stock_emp = 0;
+                //var ll_stock_emp = 0;
                 var ll_to_stock = 0;
-                if(ll_trans_type == 13)
+                if (ll_trans_type == 13)
                 {
                     ll_stock = (int)transMaster.StockCode2;
                     ll_stock_emp = ll_stock;
                 }
-                else if(ll_trans_type == 23)
+                else if (ll_trans_type == 23)
                 {
                     ll_stock = (int)transMaster.StockCode;
                     ll_to_stock = (int)transMaster.StockCode2;
@@ -204,14 +226,14 @@ namespace ProSoft.Core.Repositories.Stocks
                 }
                 var ls_stock_name = (await _Context.Stocks.FirstOrDefaultAsync(obj =>
                     obj.Stkcod == ll_stock && obj.BranchId == ll_branch)).Stknam;
-                var ls_comment = ls_des + ll_doc_no + ls_stock_name;
+                ls_comment = ls_des + ll_doc_no + ls_stock_name;
                 var ll_sup_no = transMaster.SupNo;
-                if((ll_sup_no == null || ll_sup_no == "0") && ll_trans_type == 2)
+                if ((ll_sup_no == null || ll_sup_no == "0") && ll_trans_type == 2)
                 {
                     transMaster.Flag3 = "1";
                     // خطأ لم يتم الترحيل للحسابات
                     // قم باختيار المورد وأعد المحاولة
-                    // return
+                    return 4;
                 }
                 var ll_cust_no = transMaster.CustNo;
                 if ((ll_cust_no == null || ll_cust_no == "0") && ll_trans_type == 12)
@@ -219,17 +241,17 @@ namespace ProSoft.Core.Repositories.Stocks
                     transMaster.Flag3 = "1";
                     // خطأ لم يتم الترحيل للحسابات
                     // قم باختيار العميل وأعد المحاولة
-                    // return
+                    return 5;
                 }
-                var ls_jornal = (await _Context.UserJournalTypes.FirstOrDefaultAsync(obj => obj.UserCode == userCode))?
-                    .JournalCode.ToString();
+                //var ls_jornal = (await _Context.UserJournalTypes.FirstOrDefaultAsync(obj => obj.UserCode == userCode))?
+                //    .JournalCode.ToString();
                 if (ll_cust_no is (null or ""))
                 {
                     // لم يتم الترحيل للحسابات لعدم وجود يومية للمستخدم 
-                    // return
+                    return 6;
                 }
-                var ll_acc_trans_no = transMaster.AccTransNo;
-                if(ll_acc_trans_no == null)
+                //var ll_acc_trans_no = transMaster.AccTransNo;
+                if (ll_acc_trans_no == null)
                 {
                     ll_acc_trans_no = 0;
                 }
@@ -240,10 +262,10 @@ namespace ProSoft.Core.Repositories.Stocks
                         obj.CoCode == transMaster.BranchId && obj.FYear == transMaster.FYear && obj.TransType == ls_jornal &&
                         obj.TransNo == ll_acc_trans_no);
                     var ls_post = accTransMaster.OkPost;
-                    if(ls_post == "1") // مغلق
+                    if (ls_post == "1") // مغلق
                     {
                         //messagebox('تنبيه', 'غير مسموح بالترحيل لاقفال القيد بالحسابات')
-                        return;
+                        return 7;
                     }
                     else
                     {
@@ -255,17 +277,186 @@ namespace ProSoft.Core.Repositories.Stocks
                         await _Context.SaveChangesAsync();
                     }
                 }
-                else if(ll_acc_trans_no == 0) // سجل جديد
+                else if (ll_acc_trans_no == 0) // سجل جديد
                 {
                     var ll_sys_table = (await _Context.SystemTables.FirstOrDefaultAsync(obj => obj.SysId == 2)).SysValue;
-                    // ==>>
+                    if (ll_sys_table == 1)
+                    {
+                        var max = await _Context.AccTransMasters
+                            .Where(obj => obj.CoCode == transMaster.BranchId && obj.TransType == ls_jornal && obj.FYear == transMaster.FYear
+                            && obj.FMonth == ll_month)
+                            .MaxAsync(obj => obj.TransNo);
+                        ll_sys_table = max + 1;
+                    }
+                    else if (ll_sys_table is (2 or 3))
+                    {
+                        var max = await _Context.AccTransMasters
+                            .Where(obj => obj.CoCode == transMaster.BranchId && obj.TransType == ls_jornal && obj.FYear == transMaster.FYear)
+                            .MaxAsync(obj => obj.TransNo);
+                        ll_sys_table = max + 1;
+                    }
+                    else
+                    {
+                        //messagebox("تنبيـه", "برجاء تحديد مسلسل الحركة شهرى أم سنوى أولا ثم أعد المحاولة")
+                        return 8;
+                    }
+                }
+                //var ls_year_trans_no = $"{transMaster.FYear}_{ll_acc_trans_no}";
+                StockEmp stockEmp = await _Context.StockEmps.FirstOrDefaultAsync(obj => obj.Stkcod == ll_stock_emp
+                    && obj.UserId == userCode && obj.TransType == ll_trans_type);
+                var main_code_stk = stockEmp.MainCodeStk;
+                if (main_code_stk.Length <= 0 || main_code_stk.Length == null)
+                {
+                    transMaster.AccTransNo = null;
+                    transMaster.AccTransType = null;
+                    ////		messagebox('تنبيه','برجاء ادخال الحساب الرئيسى المدين  فى شاشة ريط المستخدم بالمخازن والحسابات')
+                    return 0;
+                }
+                if (ll_trans_type == 30) // اذن ارتجاع لمورد
+                {
+                    SupCode supCode = await _Context.SupCodes.FirstOrDefaultAsync(obj =>
+                        obj.Sup.ToString() == ll_sup_no && obj.BranchId == transMaster.BranchId);
+                    var sub_code_stk = supCode.SubCode;
+                }
+                else if (ll_trans_type == 12) // فاتورة عميل
+                {
+                    CustCode custCode = await _Context.CustCodes.FirstOrDefaultAsync(obj =>
+                        obj.Cust.ToString() == ll_cust_no && obj.BranchId == transMaster.BranchId);
+                    var sub_code_stk = custCode.SubCode;
+                }
+                else
+                {
+                    if (stockEmp.SubCodeAcc == null)
+                    {
+                        SupCode supCode = await _Context.SupCodes.FirstOrDefaultAsync(obj =>
+                            obj.Sup.ToString() == ll_sup_no && obj.BranchId == transMaster.BranchId);
+                        var sub_code_acc = supCode.SubCode;
+                        if (int.Parse(ll_sup_no) > 0)
+                        {
+                            if (sub_code_acc == null && ll_trans_type == 2)
+                            {
+                                transMaster.Flag3 = "1";
+                                // messagebox('خطأ فى الترحيل للحسابات','هذا المورد غير مرتبط بالحسابات')
+                                return 9;
+                            }
+                        }
+                        /////////////////////////////////////
+                        if (int.Parse(ll_cust_no) > 0)
+                        {
+                            CustCode custCode = await _Context.CustCodes.FirstOrDefaultAsync(obj =>
+                                obj.Cust.ToString() == ll_cust_no && obj.BranchId == transMaster.BranchId);
+                            var sub_code_stk = custCode.SubCode;
+                            if (sub_code_acc == null && ll_trans_type == 12)
+                            {
+                                transMaster.Flag3 = "1";
+                                // messagebox('خطأ فى الترحيل للحسابات','هذا العميل غير مرتبط بالحسابات')
+                                return 10;
+                            }
+                        }
+                    }
                 }
             }
-            //AccTransMaster
-            //AccTransDetail
+            ///////////////////////////////////////
+            // Insert
+            StockEmp stockEmp2 = await _Context.StockEmps.FirstOrDefaultAsync(obj => obj.Stkcod == ll_stock_emp
+                && obj.UserId == userCode && obj.TransType == ll_trans_type);
+            var main_name_stk = stockEmp2.MainCodeStk;
+            var sub_name_stk = stockEmp2.SubCodeStk;
+            var main_name_acc = stockEmp2.MainCodeAcc;
+            var sub_name_acc = stockEmp2.SubCodeAcc;
+            var ls_acc_name_depit = await GetAccountName(stockEmp2.MainCodeStk, stockEmp2.SubCodeStk); //$"{main_code_stk} - {sub_code_stk}";	//  الطرف المدين
+            var ls_acc_name_credit = await GetAccountName(stockEmp2.MainCodeAcc, stockEmp2.SubCodeAcc); // $"{main_code_acc} - {sub_code_acc}";	//  الطرف الدائن
 
+            var li_m_code_dtl = ll_trans_type; // نوع اذن المخازن
+
+            // من حساب
+            var newAccTransDetail_1 = new AccTransDetail {
+                CoCode = transMaster.BranchId,
+                FYear = transMaster.FYear,
+                FMonth = transMaster.FMonth,
+                TransType = ls_jornal,
+                TransNo = (int)ll_acc_trans_no,
+                YearTransNo = ls_year_trans_no,
+                TransDate = transMaster.DocDate,
+                TransSerial = 1,
+                MainCode = stockEmp2.MainCodeStk,
+                SubCode = stockEmp2.SubCodeStk,
+                ValDep = tot_trans_val,
+                ValCredit = 0,
+                ValDepCur = 0,
+                ValCreditCur = 0,
+                DocNo = ll_acc_trans_no.ToString(),
+                DocStatus = null,
+                DocDate = transMaster.DocDate,
+                CostCenterCode = null,
+                AccName = ls_acc_name_depit,
+                LineDesc = ls_comment,
+                OkPost = "0",
+                CurCode = "1",
+                DocCode = null,
+                MCodeDtl = li_m_code_dtl
+            };
+
+            // الي حساب
+            var newAccTransDetail_2 = new AccTransDetail
+            {
+                CoCode = transMaster.BranchId,
+                FYear = transMaster.FYear,
+                FMonth = transMaster.FMonth,
+                TransType = ls_jornal,
+                TransNo = (int)ll_acc_trans_no,
+                YearTransNo = ls_year_trans_no,
+                TransDate = transMaster.DocDate,
+                TransSerial = 2,
+                MainCode = stockEmp2.MainCodeAcc,
+                SubCode = stockEmp2.SubCodeAcc,
+                ValDep = 0,
+                ValCredit = tot_trans_val,
+                ValDepCur = 0,
+                ValCreditCur = 0,
+                DocNo = ll_acc_trans_no.ToString(),
+                DocStatus = null,
+                DocDate = transMaster.DocDate,
+                CostCenterCode = null,
+                AccName = ls_acc_name_credit,
+                LineDesc = ls_comment,
+                OkPost = "0",
+                CurCode = "1",
+                DocCode = null,
+                MCodeDtl = li_m_code_dtl
+            };
+            await _Context.AddAsync(newAccTransDetail_1);
+            await _Context.AddAsync(newAccTransDetail_2);
+            ///////////////////
+            //AccTransMaster
+            var module_id = 2; // f_ret_module_code('المخازن ومراقبة المخزون')	// m_code
+
+            var newAccTransMaster = new AccTransMaster
+            {
+                CoCode = transMaster.BranchId,
+                FYear = transMaster.FYear,
+                YearTransNo = ls_year_trans_no,
+                FMonth = transMaster.FMonth,
+                TransType = ls_jornal,
+                TransNo = (int)ll_acc_trans_no,
+                TransDate = transMaster.DocDate,
+                TransDesc = ls_comment,
+                TotalTrans = tot_trans_val,
+                OkPost = "0",
+                CurCode = "1",
+                MCode = module_id,
+                MCodeDtl = li_m_code_dtl,
+            };
+            await _Context.AddAsync(newAccTransMaster);
+
+            transMaster.AccTransNo = ll_acc_trans_no;
+            transMaster.AccTransType = ls_jornal;
             transMaster.Flag3 = "2";
+
             await SaveChangesAsync();
+
+            // تم الترحيل للحسابات
+            return 11;
         }
 
         public async Task DeletePermissionFormAsync(int transMAsterID)

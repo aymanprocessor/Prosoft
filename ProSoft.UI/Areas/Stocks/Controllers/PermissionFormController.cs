@@ -58,8 +58,25 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         {
             var userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
             bool ifHasDetails = await _transMasterRepo.CheckForDetailsAsync(id);
+
+            int result;
             if (ifHasDetails)
-                await _transMasterRepo.ApprovePermissionAsync(id, userCode);
+            {
+                // result
+                // 1 => لم يتم الترحيل للحسابات
+                // 2 => من فضلك ادخل تاريخ فاتورة المورد
+                // 3 => تاكد من قيمة الاذن واعد المحاولة
+                // 4 => خطأ لم يتم الترحيل للحسابات , قم باختيار المورد وأعد المحاولة
+                // 5 => خطأ لم يتم الترحيل للحسابات , قم باختيار العميل وأعد المحاولة
+                // 6 => لم يتم الترحيل للحسابات لعدم وجود يومية للمستخدم
+                // 7 => غير مسموح بالترحيل لاقفال القيد بالحسابات
+                // 8 => برجاء تحديد مسلسل الحركة شهرى أم سنوى أولا ثم أعد المحاولة
+                // 9 => خطأ فى الترحيل للحسابات , هذا المورد غير مرتبط بالحسابات
+                // 10 => خطأ فى الترحيل للحسابات , هذا العميل غير مرتبط بالحسابات
+                // 11 => تم الترحيل للحسابات
+                result = await _transMasterRepo.ApprovePermissionAsync(id, userCode);
+                return Json(result);
+            }
 
             return Json(ifHasDetails);
         }
