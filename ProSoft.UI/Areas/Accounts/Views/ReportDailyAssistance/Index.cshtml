@@ -31,10 +31,10 @@
 <div class="container pt-2 " style="min-height:100vh;">
     @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
 
-    <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mt-4">
-        <h1 class="header">@localizer["Daily assistance for Voucher level"]</h1>
+    <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mt-1">
+        <h3 class="header" style="color: #084298;">@localizer["Daily assistance for Voucher level"]</h3>
         <div class="d-flex gap-2">
-            <a class="btn btn-sm btn-primary fs-6" style="width:150px" onclick="AssistanceJournals(event)">
+            <a class="btn btn-sm btn-primary fs-6" style="width:150px;background-color: #084298;color: yellow;border-radius: 8px" onclick="AssistanceJournals(event)">
                 @localizer["Assistance Journals"]
             </a>
         </div>
@@ -43,24 +43,24 @@
     <div class="overflow-auto filter-box">
         <div class=" d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 px-1 my-2">
             <div class="d-flex align-items-center flex-column flex-md-row w-100">
-                <label for="branches" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Branches"]</label>
-                <select id="branches" asp-items="branches" class="form-control text-center w-100">
+                <label for="branches" style="color: #0000d7;" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Branches"]</label>
+                <select id="branches" asp-items="branches" class="form-control text-center w-100 p-0">
                     <option value="100">@localizer["All Baranches"]</option>
                 </select>
             </div>
             <div class="d-flex align-items-center flex-column flex-md-row w-100">
-                <label for="journals" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Journal"]</label>
-                <select id="journals" asp-items="JournalTypes" class="form-control text-center w-100">
+                <label for="journals" style="color: #0000d7;" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Journal"]</label>
+                <select id="journals" asp-items="JournalTypes" class="form-control text-center w-100 p-0">
                     <option value="100">@localizer["All Journals"]</option>
                 </select>
             </div>
                 <div class="d-flex align-items-center w-100">
-                    <label style="width:60% !important;">@localizer["From Period"]</label>
-                    <input id="fromPeriod" type="date" class="form-control text-center" />
+                <label style="width:60% !important;color: #0000d7;">@localizer["From Period"]</label>
+                <input id="fromPeriod" type="date" class="form-control text-center p-0" />
                 </div>
                 <div class="d-flex align-items-center w-100">
-                    <label style="width:60% !important;">@localizer["To Period"]</label>
-                    <input id="toPeriod" type="date" class="form-control text-center" />
+                <label style="width:60% !important;color: #0000d7;">@localizer["To Period"]</label>
+                <input id="toPeriod" type="date" class="form-control text-center p-0" />
                 </div>
         </div>
     </div>
@@ -92,7 +92,7 @@
         headReport.innerHTML =
             `
                 <div class="report-head d-flex justify-content-center align-items-center mt-4">
-                     <h2 class="header">${title}</h2>
+                     <h3 class="header">${title}</h3>
                      <button onclick="printReport()" class="btn btn-success" style="margin-inline-start: auto;">Print</button>
                 </div>
             `;
@@ -108,10 +108,10 @@
                 for (let item of result) {
                     // Create new table for Master
                     let masterTable = document.createElement("table");
-                    masterTable.className = "table table-bordered table-hover Master-table";
+                    masterTable.className = "table table-bordered border-dark table-hover Master-table";
                     masterTable.style.width = "100%";
                     masterTable.innerHTML = `
-                        <thead class="table-dark">
+                         <thead class="table-primary border-dark">
                             <tr>
                                 <th class="align-middle text-center" rowspan="2">@localizer["Voucher No"]</th>
                                 <th class="align-middle text-center" rowspan="2">@localizer["Voucher Date"]</th>
@@ -144,10 +144,10 @@
 
                     // Create new table for Detail
                     let detailTable = document.createElement("table");
-                    detailTable.className = "table table-bordered table-hover Detail-table";
+                    detailTable.className = "table table-bordered border-dark table-hover Detail-table";
                     detailTable.style.width = "100%";
                     detailTable.innerHTML = `
-                       <thead class="table-active">
+                       <thead class="table-active border-dark">
                             <tr>
                                 <th class="align-middle text-center" rowspan="2">@localizer["Account (Main)"]</th>
                                 <th class="align-middle text-center" rowspan="2">@localizer["Account (Sub)"]</th>
@@ -214,6 +214,7 @@
         let originalContent = document.body.innerHTML;//all body
 
         head.querySelector("button").style.display = "none";
+        document.body.style.padding = "30px 30px";
         document.body.innerHTML = head.outerHTML + tableReport.outerHTML;
         window.print();
         document.body.innerHTML = originalContent;

@@ -1,0 +1,205 @@
+﻿@model ReportReviewJournalVouchersDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Review Journal Vouchers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+
+    SelectList branches = new SelectList(Model.branchs, "BranchId", "BranchDesc");
+    SelectList JournalTypes = new SelectList(Model.JournalTypes, "JournalCode", "JournalName");
+}
+@inject IViewLocalizer localizer
+<style>
+    .hide {
+        display: none !important;
+    }
+    /*  .image {
+                            top: 0px;
+                            left: 0px;
+                            width: 100%;
+                            height: 100%;
+                            background-repeat: no-repeat;
+                            background-attachment: fixed;
+                            background-size: cover;
+                            background-position: center;
+                            opacity: 0.5;
+                            z-index: -1;
+                        } */
+</style>
+<div class="container pt-2 " style="min-height:100vh;">
+    @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
+
+    <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mt-1">
+        <h3 class="header" style="color: #084298;">@localizer["Review Journal Vouchers"]</h3>
+        <div class="d-flex gap-2">
+            <a class="btn btn-sm btn-primary fs-6" style="width:150px;background-color: #084298;color: yellow;border-radius: 8px" onclick="ReviewDisplay(event)">
+                @localizer["Display"]
+            </a>
+        </div>
+    </div>
+
+    <div class="overflow-auto filter-box">
+        <div class=" d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 px-1 my-2">
+            <div class="d-flex align-items-center flex-column flex-md-row w-100">
+                <label for="branches" style="color: #0000d7;" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Branches"]</label>
+                <select id="branches" asp-items="branches" class="form-control text-center w-100 p-0">
+                    <option value="100">@localizer["All Baranches"]</option>
+                </select>
+            </div>
+            <div class="d-flex align-items-center flex-column flex-md-row w-100">
+                <label for="journals" style="color: #0000d7;" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Journal"]</label>
+                <select id="journals" asp-items="JournalTypes" class="form-control text-center w-100 p-0">
+                    <option value="100">@localizer["All Journals"]</option>
+                </select>
+            </div>
+            <div class="d-flex align-items-center w-100">
+                <label style="width:60% !important;color: #0000d7;">@localizer["From Period"]</label>
+                <input id="fromPeriod" type="date" class="form-control text-center p-0" />
+            </div>
+            <div class="d-flex align-items-center w-100">
+                <label style="width:60% !important;color: #0000d7;">@localizer["To Period"]</label>
+                <input id="toPeriod" type="date" class="form-control text-center p-0" />
+            </div>
+            <div class="d-flex align-items-center flex-column flex-md-row w-100">
+                <label for="filter" style="width:50% !important;color: #0000d7;" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Display Type"]</label>
+                <select id="filter" class="form-control text-center p-0">
+                    <option value="1">@localizer["All Vouchers"]</option>
+                    <option value="2">@localizer["Value Error Vouchers"]</option>
+                    <option value="3">@localizer["account Name Error Vouchers"]</option>
+                </select>
+            </div>
+        </div>
+        <!---------------------------------------------------------->
+    </div>
+
+    <div class="report">
+    </div>
+</div>
+<script>
+    var branche = document.getElementById("branches");
+    var filter = document.getElementById("filter")
+    var journal = document.getElementById("journals");
+    var fromPeriod = document.getElementById("fromPeriod");
+    var toPeriod = document.getElementById("toPeriod");
+
+    //for report From Voucher To Voucher//
+    function ReviewDisplay(e) {
+            if (!fromPeriod.value) {
+                fromPeriod.focus();
+                return;
+            }
+            if (!toPeriod.value) {
+                toPeriod.focus();
+                return;
+            }
+
+        var journalName = journal.options[journal.selectedIndex].textContent;
+
+        var headReport = document.querySelector(".report");
+
+        let title;
+        if (filter.value == 2) {
+            title = "@localizer["Input Errors Journal Vouchers"] " + fromPeriod.value + " @localizer["To"] " + toPeriod.value + " @localizer["Journal Name"] : " + journalName;
+        }
+         title = "@localizer["Journal Vouchers"] " + fromPeriod.value + " @localizer["To"] " + toPeriod.value + " @localizer["Journal Name"] : " + journalName;
+
+        headReport.innerHTML =
+            `
+                        <div class="report-head d-flex justify-content-center align-items-center mt-4">
+                             <h4 class="header">${title}</h4>
+                                 <button onclick="printReport()" class="btn btn-success" style="margin-inline-start: auto;">Print</button>
+                        </div>
+
+                        <div class="print-table p-0 mb-2 overflow-auto">
+
+                                <table id="myTable" class="table table-bordered  border-dark table-hover Voucher-table" style="width:100%">
+                                 <thead class="table-primary  border-dark">
+                                    <tr>
+                                    <th class="align-middle text-center" rowspan="2">
+                                        @localizer["Serial"]
+                                    </th>
+                                    <th class="align-middle text-center" rowspan="2">
+                                            @localizer["Voucher Date"]
+                                    </th>
+                                    <th class="align-middle text-center" rowspan="2">
+                                            @localizer["Voucher No"]
+                                    </th>
+                                    <th class="align-middle text-center" rowspan="2">
+                                            @localizer["Debit Value"]
+                                    </th>
+                                    <th class="align-middle text-center" rowspan="2">
+                                            @localizer["Credit Value"]
+                                    </th>
+                                    <th class="align-middle text-center" rowspan="2">
+                                            @localizer["The Difference"]
+                                    </th>
+
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    `;
+
+        let url = `/Accounts/ReportReviewJournalVouchers/GetReviewDisplay/${journal.value}?branche=${branche.value}&fromPeriod=${fromPeriod.value}&toPeriod=${toPeriod.value}&displayType=${filter.value}`;
+
+        var dataa = document.querySelector(".Voucher-table tbody");
+        dataa.innerHTML = "";  // Empty data
+        $.ajax({
+            url: url,
+            success: function (result) {
+                var index = 1;
+                var valDepSum = 0;
+                var valCreditSum = 0;
+                var balance = 0;
+
+                for (let item of result) {
+
+                    let transDate = new Date(item.transDate).toISOString().split('T')[0];
+                    const data = document.createElement("tr");
+                    data.innerHTML +=
+                        `
+                            <td class="align-middle text-center">${index}</td>
+                            <td class="align-middle text-center">${transDate}</td>
+                            <td class="align-middle text-center">${item.transNo}</td>
+                            <td class="align-middle">${item.valDep.toFixed(2)}</td>
+                            <td class="align-middle">${item.valCredit.toFixed(2)}</td>
+                            <td class="align-middle">${item.valDep-item.valCredit}</td>
+                        `;
+                    dataa.appendChild(data);
+                    index++;
+                    valDepSum += item.valDep;
+                    valCreditSum += item.valCredit;
+                    balance += item.valDep - item.valCredit;
+                }
+
+                // Add final totals row
+                const finalTotalsRow = document.createElement("tr");
+                finalTotalsRow.innerHTML =
+                    `
+                                <td colspan="3" class="text-end"><strong>@localizer["Total Vouchers"]</strong></td>
+                                <td class="align-middle" style="background-color: #e6dfdf;">${valDepSum.toFixed(2)}</td>
+                                <td class="align-middle" style="background-color: #e6dfdf;">${valCreditSum.toFixed(2)}</td>
+                                <td class="align-middle" style="background-color: #e6dfdf;">${balance.toFixed(2)}</td>
+                            `;
+                dataa.appendChild(finalTotalsRow);
+            }
+        });
+    }
+
+    function printReport() {
+        let head = document.querySelector(".report-head");
+        let tableReport = document.querySelector(".print-table");
+        let originalContent = document.body.innerHTML;//all body
+
+        head.querySelector("button").style.display = "none";
+        document.body.style.padding = "30px 30px";
+        document.body.innerHTML = head.outerHTML + tableReport.outerHTML;
+        window.print();
+        document.body.innerHTML = originalContent;
+    }
+</script>

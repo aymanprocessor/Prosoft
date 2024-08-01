@@ -47,7 +47,7 @@ namespace ProSoft.Core.Repositories.Accounts
             List<AssistantProfessorAnalyticalDTO> assistantProfessorAnalyticalDTOs = new List<AssistantProfessorAnalyticalDTO>();
 
             //get first balance
-            AccStartBal accStartBal = await _Context.AccStartBals.FirstOrDefaultAsync(obj=> obj.TransType == journal.ToString() && obj.MainCode == mainCode && obj.SubCode == subCode && obj.FYear == fYear && (branch == 100 || obj.CoCode == branch));
+            AccStartBal accStartBal = await _Context.AccStartBals.FirstOrDefaultAsync(obj=> (journal == 100 || obj.TransType == journal.ToString()) && obj.MainCode == mainCode && obj.SubCode == subCode && obj.FYear == fYear && (branch == 100 || obj.CoCode == branch));
                 decimal lcBalFirstYear = 0;
                     if (accStartBal==null)
                     {
@@ -75,8 +75,8 @@ namespace ProSoft.Core.Repositories.Accounts
                         // Define specific data for the first row
                          specificDTO = new AssistantProfessorAnalyticalDTO
                         {
-                            ValDep = 0,
-                            ValCredit = lcBalFirstPeriod * -1,
+                            ValDep = lcBalFirstPeriod * -1,
+                            ValCredit = 0,
                             TransDesc = "رصيد ماقبله الفترة",
                             CostDesc = "",
                             TransNo = 0,
@@ -88,8 +88,8 @@ namespace ProSoft.Core.Repositories.Accounts
                         // Define specific data for the first row
                          specificDTO = new AssistantProfessorAnalyticalDTO
                         {
-                            ValDep = lcBalFirstPeriod,
-                            ValCredit = 0,
+                            ValDep = 0,
+                            ValCredit = lcBalFirstPeriod,
                             TransDesc = "رصيد ماقبله الفترة",
                             CostDesc = "",
                             TransNo = 0,
@@ -131,29 +131,34 @@ namespace ProSoft.Core.Repositories.Accounts
         {
             List<AssistantProfessorOverAllDTO> assistantProfessorOverAllDTOs = new List<AssistantProfessorOverAllDTO>();
 
-            //get first balance
-            var accStartBals = await _Context.AccStartBals
-                   .Where(obj => obj.TransType == journal.ToString()
-                         && obj.MainCode == mainCode && obj.FYear == fYear &&
-                         (branch == 100 || obj.CoCode == branch))
-                     .ToListAsync();
-            decimal lcFCreditOr = accStartBals.Sum(obj => obj.FCreditOr) ?? 0;
-            decimal lcFDepOr = accStartBals.Sum(obj => obj.FDepOr) ?? 0;
-
             var lsStartDate = new DateTime(fromPeriod.Value.Year, 1, 1);
-            //balance before period
-            var accTransDetailList = await _Context.AccTransDetails
-                     .Where(obj => obj.FYear == fYear && (branch == 100 || obj.CoCode == branch)
-                      && (journal == 100 || obj.TransType == journal.ToString()) && obj.MainCode == mainCode
-                      && (obj.TransDate >= lsStartDate && obj.TransDate < fromPeriod))
-                      .ToListAsync();
-
-            decimal lcGapValCredit = accTransDetailList.Sum(obj => obj.ValCredit) ?? 0;
-            decimal lcGapValDep = accTransDetailList.Sum(obj => obj.ValDep) ?? 0;
 
             List<AccSubCode> accSubCodes = await _Context.AccSubCodes.Where(obj => obj.MainCode == mainCode).ToListAsync();
             foreach (var sub in accSubCodes)
             {
+                //get first balance
+                var accStartBals = await _Context.AccStartBals
+                       .Where(obj => (journal == 100 || obj.TransType == journal.ToString())
+                             && obj.MainCode == mainCode && obj.SubCode == sub.SubCode && obj.FYear == fYear &&
+                             (branch == 100 || obj.CoCode == branch))
+                         .ToListAsync();
+                decimal lcFCreditOr = accStartBals.Sum(obj => obj.FCreditOr) ?? 0;
+                decimal lcFDepOr = accStartBals.Sum(obj => obj.FDepOr) ?? 0;
+                
+                //balance before period
+                var accTransDetailList = await _Context.AccTransDetails
+                         .Where(obj => obj.FYear == fYear && (branch == 100 || obj.CoCode == branch)
+                          && (journal == 100 || obj.TransType == journal.ToString()) && obj.MainCode == mainCode && obj.SubCode == sub.SubCode
+                          && (obj.TransDate >= lsStartDate && obj.TransDate < fromPeriod))
+                          .ToListAsync();
+
+                decimal lcGapValCredit = accTransDetailList.Sum(obj => obj.ValCredit) ?? 0;
+                decimal lcGapValDep = accTransDetailList.Sum(obj => obj.ValDep) ?? 0;
+
+                //رصيد ماقبله
+                decimal sumBalanceBeforeCredit = lcFCreditOr + lcGapValCredit;
+                decimal sumBalanceBeforeDepit = lcFDepOr + lcGapValDep;
+
                 var accTransDetails = await _Context.AccTransDetails.OrderBy(obj => obj.TransNo).Where(obj =>
                       (branch == 100 || obj.CoCode == branch) &&
                       (journal == 100 || obj.TransType == journal.ToString()) &&
@@ -171,8 +176,8 @@ namespace ProSoft.Core.Repositories.Accounts
                     if (existingDto != null)
                     {
                         // Update the existing DTO 
-                        existingDto.ValDep += lcFDepOr;
-                        existingDto.ValCredit += lcFCreditOr;
+                        existingDto.ValDep = sumBalanceBeforeDepit;
+                        existingDto.ValCredit = sumBalanceBeforeCredit;
                         existingDto.TransValDep += obj.ValDep;
                         existingDto.TransValCredit += obj.ValCredit;   
                     }
@@ -183,8 +188,8 @@ namespace ProSoft.Core.Repositories.Accounts
                         {
                             SubCode = obj.SubCode,
                             AccName = accName,
-                            ValDep = lcFDepOr,
-                            ValCredit = lcFCreditOr,
+                            ValDep = sumBalanceBeforeDepit,
+                            ValCredit = sumBalanceBeforeCredit,
                             TransValDep = obj.ValDep,
                             TransValCredit = obj.ValCredit,
                             LcGapValDep = lcGapValDep,

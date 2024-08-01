@@ -21,17 +21,18 @@ html {
 
 /* Start Style for Sidebar Our_Modules */
 #mySidebar {
-    width: 250px;
+    width: 220px;
     /*max-height: 100%;*/
     overflow: auto;
+    background-color: #0d2d5c;
 }
 
 #mySidebar ul {
-    font-size: 1rem;
+    font-size: 14px;
 }
 
 #mySidebar ul li:hover {
-    background-color: #656565 !important;
+    background-color: #2f2fa8 !important;
 }
 
 /* for togelling submenu*/
@@ -60,6 +61,7 @@ html {
 #mySidebar .nav-link {
     font-weight: 500;
     color: white;
+    padding-right: 6px !important;
 }
 
 #mySidebar .nav-link i {

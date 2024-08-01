@@ -30,30 +30,30 @@
 <div class="container pt-2 " style="min-height:100vh;">
     @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
 
-    <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mt-4">
-        <h1 class="header">@localizer["Print Doctor's Fees"]</h1>
+    <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mt-1">
+        <h3 class="header" style="color: #084298;">@localizer["Print Doctor's Fees"]</h3>
         <div class="d-flex gap-2">
-            <a class="btn btn-sm btn-primary fs-6" style="width:150px" onclick="DoctorFees(event)">
+            <a class="btn btn-sm btn-primary fs-6" style="width:150px;background-color: #084298;color: yellow;border-radius: 8px" onclick="DoctorFees(event)">
                 @localizer["Doctor's fees"]
             </a>
         </div>
     </div>
     <div class="overflow-auto">
 
-        <div class="filter-box d-flex align-items-center flex-column flex-md-row gap-3 my-2">
+        <div class="filter-box d-flex align-items-center flex-column flex-md-row gap-3 my-1">
             <div class="d-flex align-items-center flex-column flex-md-row w-100" style="width:40% !important;">
-                <label for="doctors" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Doctors"]</label>
+                <label for="doctors" style="color: #0000d7;" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Doctors"]</label>
                 <select id="doctors" asp-items="Doctors" class="form-control text-center w-100">
                     <option value="100">@localizer["All Doctors"]</option>
                 </select>
             </div>
             <div class="d-flex justify-content-end align-items-center flex-column flex-md-row gap-2 period" style="width:70% !important;">
                 <div class="d-flex align-items-center w-100">
-                    <label style="width:60% !important;">@localizer["From Period"]</label>
+                    <label style="width:60% !important;color: #0000d7;">@localizer["From Period"]</label>
                     <input id="fromPeriod" type="date" class="form-control text-center" />
                 </div>
                 <div class="d-flex align-items-center w-100">
-                    <label style="width:60% !important;">@localizer["To Period"]</label>
+                    <label style="width:60% !important;color: #0000d7;">@localizer["To Period"]</label>
                     <input id="toPeriod" type="date" class="form-control text-center" />
                 </div>
             </div>
@@ -93,15 +93,15 @@
         headReport.textContent = title;
         headReport.innerHTML =
             `
-                    <div class="report-head d-flex justify-content-center align-items-center mt-4">
-                         <h2 class="header">${title}</h2>
+                    <div class="report-head d-flex justify-content-center align-items-center mt-3">
+                         <h4 class="header">${title}</h4>
                              <button onclick="printReport()" class="btn btn-success" style="margin-inline-start: auto;">Print</button>
                     </div>
 
                     <div class="print-table p-0 mb-2 overflow-auto">
 
-                        <table id="myTable" class="table table-bordered table-hover Voucher-table" style="width:100%">
-                            <thead class="table-dark">
+                    <table id="myTable" class="table table-bordered border-dark table-hover Voucher-table" style="width:100%">
+                            <thead class="table-primary border-dark">
                                 <tr>
                                     <th class="align-middle text-center" rowspan="2">
                                            @localizer["Section"]
@@ -219,6 +219,7 @@
         let originalContent = document.body.innerHTML;//all body
 
         head.querySelector("button").style.display = "none";
+        document.body.style.padding = "30px 30px";
         document.body.innerHTML = head.outerHTML + tableReport.outerHTML;
         window.print();
         document.body.innerHTML = originalContent;

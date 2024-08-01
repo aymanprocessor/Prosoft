@@ -30,26 +30,26 @@
 <div class="container pt-2 " style="min-height:100vh;">
     @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
 
-    <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mt-4">
-        <h1 class="header">@localizer["Print From Voucher To Voucher"]</h1>
+    <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mt-1">
+        <h3 class="header" style="color: #084298;">@localizer["Journal Voucher From Voucher To Voucher"]</h3>
         <div class="d-flex gap-2">
-            <a class="btn btn-sm btn-primary fs-6" style="width:150px" onclick="FromVoucherToVoucher(event)">
+            <a class="btn btn-sm btn-primary fs-6" style="width:150px;background-color: #084298;color: yellow;border-radius: 8px" onclick="FromVoucherToVoucher(event)">
                 @localizer["Vouchers in Accounts"]
             </a>
         </div>
     </div>
     <div class="overflow-auto">
 
-        <div class="filter-box d-flex align-items-center flex-column flex-md-row gap-3 my-2">
+        <div class="filter-box d-flex align-items-center flex-column flex-md-row gap-3 my-1">
             <div class="d-flex align-items-center flex-column flex-md-row w-50">
-                <label for="journals" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Journal"]</label>
-                <select id="journals" asp-items="JournalTypes" class="form-control text-center w-100">
+                <label for="journals" style="color: #0000d7;" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Journal"]</label>
+                <select id="journals" asp-items="JournalTypes" class="form-control text-center w-100 p-0">
                     <option value="100">@localizer["All Journals"]</option>
                 </select>
             </div>
             <div class="d-flex align-items-center flex-column flex-md-row w-100" style="width:40% !important;">
-                <label for="filter" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0" style="width:60% !important;">@localizer["Filter By"]</label>
-                <select id="filter" class="form-control text-center" onchange="filtering(event)">
+                <label for="filter" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0" style="width:60% !important;color: #0000d7;">@localizer["Filter By"]</label>
+                <select id="filter" class="form-control text-center p-0" onchange="filtering(event)">
                     <option value="1">@localizer["Period"]</option>
                     <option value="2">@localizer["Voucher"]</option>
                 </select>
@@ -57,23 +57,23 @@
 
             <div class="d-flex justify-content-end align-items-center flex-column flex-md-row gap-2 receipt-hide hide" style="width:70% !important;">
                 <div class="d-flex align-items-center w-100">
-                    <label style="width:60% !important;">@localizer["From Voucher"]</label>
-                    <input id="fromReceipt" type="number" class="form-control text-center" />
+                    <label style="width:60% !important; color: #0000d7;">@localizer["From Voucher"]</label>
+                    <input id="fromReceipt" type="number" class="form-control text-center p-0" />
                 </div>
                 <div class="d-flex align-items-center w-100">
-                    <label style="width:60% !important;">@localizer["To Voucher"]</label>
-                    <input id="toReceipt" type="number" class="form-control text-center" />
+                    <label style="width:60% !important; color: #0000d7;">@localizer["To Voucher"]</label>
+                    <input id="toReceipt" type="number" class="form-control text-center p-0" />
                 </div>
             </div>
 
             <div class="d-flex justify-content-end align-items-center flex-column flex-md-row gap-2 period" style="width:70% !important;">
                 <div class="d-flex align-items-center w-100">
-                    <label style="width:60% !important;">@localizer["From Period"]</label>
-                    <input id="fromPeriod" type="date" class="form-control text-center" />
+                    <label style="width:60% !important; color: #0000d7;">@localizer["From Period"]</label>
+                    <input id="fromPeriod" type="date" class="form-control text-center p-0" />
                 </div>
                 <div class="d-flex align-items-center w-100">
-                    <label style="width:60% !important;">@localizer["To Period"]</label>
-                    <input id="toPeriod" type="date" class="form-control text-center" />
+                    <label style="width:60% !important; color: #0000d7;">@localizer["To Period"]</label>
+                    <input id="toPeriod" type="date" class="form-control text-center p-0" />
                 </div>
             </div>
 
@@ -129,14 +129,14 @@
         headReport.innerHTML =
             `
                     <div class="report-head d-flex justify-content-center align-items-center mt-4">
-                         <h2 class="header">${title}</h2>
+                         <h4 class="header">${title}</h4>
                              <button onclick="printReport()" class="btn btn-success" style="margin-inline-start: auto;">Print</button>
                     </div>
 
                     <div class="print-table p-0 mb-2 overflow-auto">
 
-                        <table id="myTable" class="table table-bordered table-hover Voucher-table" style="width:100%">
-                            <thead class="table-dark">
+                            <table id="myTable" class="table table-bordered  border-dark table-hover Voucher-table" style="width:100%">
+                             <thead class="table-primary  border-dark">
                                 <tr>
                                     <th class="align-middle text-center" rowspan="2">
     @localizer["Voucher No"]
@@ -252,6 +252,7 @@
         let originalContent = document.body.innerHTML;//all body
 
         head.querySelector("button").style.display = "none";
+        document.body.style.padding = "30px 30px";
         document.body.innerHTML = head.outerHTML + tableReport.outerHTML;
         window.print();
         document.body.innerHTML = originalContent;

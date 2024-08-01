@@ -48,7 +48,6 @@ namespace ProSoft.EF.DTOs.Accounts
         public string? LineDesc { get; set; }
 
         [DisplayName("Cost Center")]
-        [Required(ErrorMessage = "The field is required")]
         public string? CostCenterCode { get; set; }
 
         public DateTime? EntryDate { get; set; }
