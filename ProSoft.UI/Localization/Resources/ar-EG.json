@@ -482,6 +482,7 @@
   "Finish Posting done": "تم انتهاء الترحيل",
   "Choose User": "اختر مستخدم",
   "Print From Voucher To Voucher": "طباعة من  قيد لقيد",
+  "Journal Voucher From Voucher To Voucher": "قيود اليومية من  قيد لقيد",
   "Vouchers in Accounts": "القيود في الحسابات",
   "From Voucher": "من قيد",
   "To Voucher": "الي قيد",
@@ -628,6 +629,14 @@
   "Total Journal": "اجمالي اليومية",
   "Total for Voucher No": "الاجمالي للقيد رقم",
   "Total Vouchers": "الاجمالي للقيود",
+  "Review Journal Vouchers": "مراجعة قيود اليومية",
+  "Display": "عرض",
+  "All Vouchers": "كل القيود",
+  "Value Error Vouchers": "قيود خطأ بالقيمة",
+  "account Name Error Vouchers": "قيود خطأ اسم الحساب",
+  "Display Type": "نوع العرض",
+  "Journal Vouchers": "قيود يومية",
+  "Input Errors Journal Vouchers": "اخطاء الادخال في قيود يومية",
 
 
 
@@ -917,5 +926,18 @@
   "You can not Delete it because it exists in a previous transaction": "غير مسموح بالحذف لوجود حركة سابقة للصنف",
   "Edit Order Limit For Item": "تعديل حد الطلب للصنف",
   "Write the item code": "اكتب كود الصنف",
-  "Search by code": "ابحث بالكود"
+  "Search by code": "ابحث بالكود",
+  "Error": "خطأ",
+  "Success": "نجاح",
+  "Accounts have not been posted": "لم يتم الترحيل للحسابات",
+  "Please enter the supplier invoice date": "من فضلك ادخل تاريخ فاتورة المورد",
+  "Verify the permission value and try again": "تاكد من قيمة الاذن واعد المحاولة",
+  "Error: The accounts have not been posted. Choose the supplier and try again": "خطأ: لم يتم الترحيل للحسابات , قم باختيار المورد وأعد المحاولة",
+  "Error: The accounts have not been posted. Choose the customer and try again": "خطأ: لم يتم الترحيل للحسابات , قم باختيار العميل وأعد المحاولة",
+  "The accounts were not posted because there was no user journal": "لم يتم الترحيل للحسابات لعدم وجود يومية للمستخدم",
+  "Posting is not allowed to close the accounts": "غير مسموح بالترحيل لاقفال القيد بالحسابات",
+  "Please select the monthly or annual movement series first and then try again": "برجاء تحديد مسلسل الحركة شهرى أم سنوى أولا ثم أعد المحاولة",
+  "Error in posting to accounts. This supplier is not linked to accounts": "خطأ فى الترحيل للحسابات. هذا المورد غير مرتبط بالحسابات",
+  "Error in posting to accounts. This customer is not linked to accounts": "خطأ فى الترحيل للحسابات. هذا العميل غير مرتبط بالحسابات",
+  "Accounts have been posted": "تم الترحيل للحسابات"
 }

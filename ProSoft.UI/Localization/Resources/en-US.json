@@ -480,6 +480,7 @@
   "Finish Posting done": "Finish Posting done",
   "Choose User": "Choose User",
   "Print From Voucher To Voucher": "Print From Voucher To Voucher",
+  "Journal Voucher From Voucher To Voucher": "Journal Voucher From Voucher To Voucher",
   "Vouchers in Accounts": "Vouchers in Accounts",
   "From Voucher": "From Voucher",
   "To Voucher": "To Voucher",
@@ -622,6 +623,15 @@
   "Total Journal": "Total Journal",
   "Total for Voucher No": "Total for Voucher No",
   "Total Vouchers": "Total Vouchers",
+  "Review Journal Vouchers": "Review Journal Vouchers",
+  "Display": "Display",
+  "All Vouchers": "All Vouchers",
+  "Value Error Vouchers": "Value Error Vouchers",
+  "account Name Error Vouchers": "account Name Error Vouchers",
+  "Display Type": "Display Type",
+  "Journal Vouchers": "Journal Vouchers",
+  "Input Errors Journal Vouchers": "Input Errors Journal Vouchers",
+
 
 
 
@@ -911,5 +921,18 @@
   "You can not Delete it because it exists in a previous transaction": "You can not Delete it because it exists in a previous transaction",
   "Edit Order Limit For Item": "Edit Order Limit For Item",
   "Write the item code": "Write the item code",
-  "Search by code": "Search by code"
+  "Search by code": "Search by code",
+  "Error": "Error",
+  "Success": "Success",
+  "Accounts have not been posted": "Accounts have not been posted",
+  "Please enter the supplier invoice date": "Please enter the supplier invoice date",
+  "Verify the permission value and try again": "Verify the permission value and try again",
+  "Error: The accounts have not been posted. Choose the supplier and try again": "Error: The accounts have not been posted. Choose the supplier and try again",
+  "Error: The accounts have not been posted. Choose the customer and try again": "Error: The accounts have not been posted. Choose the customer and try again",
+  "The accounts were not posted because there was no user journal": "The accounts were not posted because there was no user journal",
+  "Posting is not allowed to close the accounts": "Posting is not allowed to close the accounts",
+  "Please select the monthly or annual movement series first and then try again": "Please select the monthly or annual movement series first and then try again",
+  "Error in posting to accounts. This supplier is not linked to accounts": "Error in posting to accounts. This supplier is not linked to accounts",
+  "Error in posting to accounts. This customer is not linked to accounts": "Error in posting to accounts. This customer is not linked to accounts",
+  "Accounts have been posted": "Accounts have been posted"
 }

@@ -253,19 +253,37 @@
             });
         }
 
+        function closeAndRefresh(e, segment, result) {
+            if (segment == "button") {
+                closeAlert(e);
+            }
+            else if (segment == "overlay") {
+                closeOverlay(e);
+            }
+            if (result === 11) {
+                setTimeout(() => {
+                    getPermissionsInStock();
+                    let transDetails = document.querySelector("#myTable_2 tbody");
+                    transDetails.innerHTML = "";  // Empty the table
+                }, 200);
+            }
+        }
+
         function approvePermission(e, transMAsterID) {
             $.ajax({
                 url: `/Stocks/PermissionForm/ApprovePermission/${transMAsterID}`,
                 success: function (result) {
-                    if (result == false) {
-                        let button = e.target;
-                        let myAlert = document.createElement("div");
+                    let note, message;
+                    let button = e.target;
+                    let myAlert = document.createElement("div");
+                    
+                    if (result === false) {
                         myAlert.innerHTML =
-                            `
+                        `
                         <div class="modal-container">
                             <div class="modal 4" id="modal">
                                 <div class="modal-header fs-4">
-                                    <div class="title">@localizer["Warning"] !</div>
+                                    <div class="title">@localizer["Error"] !</div>
                                     <button type="button" onclick="closeAlert(event)" data-close-button class="close-button">&times;</button>
                                 </div>
                                 <div class="modal-body fs-4">
@@ -281,10 +299,103 @@
                         button.insertAdjacentHTML("afterend", myAlert.innerHTML);
                         openAlert(e);
                     }
-                    else if (result == true) {
-                        getPermissionsInStock();
-                        var transDetails = document.querySelector("#myTable_2 tbody");
-                        transDetails.innerHTML = "";  // Empty the table
+                    else if (result) {
+                        if (result === 1 || result === 2 || result === 3)
+                            note = "@localizer["Warning"]";
+                        else if (result === 11)
+                            note = "@localizer["Success"]";
+                        else
+                            note = "@localizer["Error"]";
+                        ///////////////////////////////////////
+                        switch (result) {
+                            // case 0:
+                            //     return;
+                            //     break;
+                            case 1:
+                                message = "@localizer["Accounts have not been posted"]";
+                                break;
+                            case 2:
+                                message = "@localizer["Please enter the supplier invoice date"]";
+                                break;
+                            case 3:
+                                message = "@localizer["Verify the permission value and try again"]";
+                                break;
+                            case 4:
+                                message = "@localizer["Error: The accounts have not been posted. Choose the supplier and try again"]";
+                                break;
+                            case 5:
+                                message = "@localizer["Error: The accounts have not been posted. Choose the customer and try again"]";
+                                break;
+                            case 6:
+                                message = "@localizer["The accounts were not posted because there was no user journal"]";
+                                break;
+                            case 7:
+                                message = "@localizer["Posting is not allowed to close the accounts"]";
+                                break;
+                            case 8:
+                                message = "@localizer["Please select the monthly or annual movement series first and then try again"]";
+                                break;
+                            case 9:
+                                message = "@localizer["Error in posting to accounts. This supplier is not linked to accounts"]";
+                                break;
+                            case 10:
+                                message = "@localizer["Error in posting to accounts. This customer is not linked to accounts"]";
+                                break;
+                            case 11:
+                                message = "@localizer["Accounts have been posted"]";
+                                break;
+                        }
+                        // if (result === 1)
+                        //     message = "@localizer["Accounts have not been posted"]";
+                        // else if (result === 2)
+                        //     message = "@localizer["Please enter the supplier invoice date"]";
+                        // else if (result === 3)
+                        //     message = "@localizer["Verify the permission value and try again"]";
+                        // else if (result === 4)
+                        //     message = "@localizer["Error: The accounts have not been posted. Choose the supplier and try again"]";
+                        // else if (result === 5)
+                        //     message = "@localizer["Error: The accounts have not been posted. Choose the customer and try again"]";
+                        // else if (result === 6)
+                        //     message = "@localizer["The accounts were not posted because there was no user journal"]";
+                        // else if (result === 7)
+                        //     message = "@localizer["Posting is not allowed to close the accounts"]";
+                        // else if (result === 8)
+                        //     message = "@localizer["Please select the monthly or annual movement series first and then try again"]";
+                        // else if (result === 9)
+                        //     message = "@localizer["Error in posting to accounts. This supplier is not linked to accounts"]";
+                        // else if (result === 10)
+                        //     message = "@localizer["Error in posting to accounts. This customer is not linked to accounts"]";
+                        // else if (result === 11)
+                        //     message = "@localizer["Accounts have been posted"]";
+                        myAlert.innerHTML =
+                            `
+                                <div class="modal-container">
+                                    <div class="modal 4" id="modal">
+                                        <div class="modal-header fs-4">
+                                            <div class="title">${note} !</div>
+                                            <button type="button" onclick="closeAlert(event)" data-close-button class="close-button">&times;</button>
+                                        </div>
+                                        <div class="modal-body fs-4">
+                                            ${message}
+                                        </div>
+                                        <div class="modal-footer fs-4">
+                                            <button type="button" onclick="closeAlert(event)" data-close-button class="btn btn-primary">@localizer["Ok"]</button>
+                                        </div>
+                                    </div>
+                                    <div onclick="closeOverlay(event)" id="overlay"></div>
+                                </div>
+                                `;
+                        button.insertAdjacentHTML("afterend", myAlert.innerHTML);
+                        openAlert(e);
+                        myAlert.querySelectorAll("[data-close-button]").forEach(ele => {
+                            ele.onclick = closeAndRefresh(event, "button", result);
+                        });
+                        myAlert.querySelector("#overlay").onclick = closeAndRefresh(event, "overlay", result);
+                        // if (result === 11) {
+                        //     getPermissionsInStock();
+                        //     let transDetails = document.querySelector("#myTable_2 tbody");
+                        //     transDetails.innerHTML = "";  // Empty the table
+                        // }
                     }
                 }
             });
