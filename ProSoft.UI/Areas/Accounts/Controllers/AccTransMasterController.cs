@@ -15,20 +15,21 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
     public class AccTransMasterController : Controller
     {
         private readonly IAccTransMasterRepo _accTransMasterRepo;
-        public AccTransMasterController(IAccTransMasterRepo accTransMasterRepo, IMapper mapper)
+        public AccTransMasterController(IAccTransMasterRepo accTransMasterRepo)
         {
             _accTransMasterRepo = accTransMasterRepo;
         }
 
-        public async Task<IActionResult> Index(int journalCode)
+        public async Task<IActionResult> Index(int journalCode, int? redirect)
         {
-            List<AccTransMasterViewDTO> accTransMasterViewDTOs = await _accTransMasterRepo.GetAccTransMasterAsync(journalCode);
             var fYear = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "F_Year").Value);
             var branchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
+            List<AccTransMasterViewDTO> accTransMasterViewDTOs = await _accTransMasterRepo.GetAccTransMasterAsync(journalCode, fYear);
 
             ViewBag.journalCode = journalCode;
             ViewBag.fYear = fYear;
             ViewBag.branchId = branchId;
+            ViewBag.redirect = redirect;
             return View(accTransMasterViewDTOs);
         }
 

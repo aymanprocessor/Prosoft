@@ -26,12 +26,14 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             _journalTypeRepo = journalTypeRepo;
             _mapper = mapper;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? redirect)
         {
             List<AppUser> users = await _userRepo.GetAllUsersAsync();
             List<UserDTO> usersDTO = _mapper.Map<List<UserDTO>>(users);
             List<JournalType> journalTypes =await _journalTypeRepo.GetAllAsync();
             ViewBag.journalCount = journalTypes.Count;
+            ViewBag.redirect = redirect;
+
             return View(usersDTO);
         }
         public async Task<IActionResult> JournalTypeForUser()
@@ -57,7 +59,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
         //Post add
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add_UserJournalType(UserJournalTypeDTO userJournalTypeDTO)
+        public async Task<IActionResult> Add_UserJournalType(int id,UserJournalTypeDTO userJournalTypeDTO)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +67,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
                 userJournalType.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
                 await _userJournalTypeRepo.AddAsync(userJournalType);
                 await _userJournalTypeRepo.SaveChangesAsync();
-                return RedirectToAction("Index", "UserJournalType");
+                return RedirectToAction(nameof(Index), new { redirect = id });
             }
             return View();
         }
@@ -88,7 +90,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             {
                 userJournalTypeDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
                 await _userJournalTypeRepo.EditUserJournalTypeAsync(id, userJournalTypeDTO);
-                return RedirectToAction("Index", "UserJournalType");
+                return RedirectToAction(nameof(Index), new { redirect = userJournalTypeDTO.UserCode });
             }
             return View(userJournalTypeDTO);
         }
@@ -102,7 +104,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
 
             await _userJournalTypeRepo.DeleteAsync(userJournalType);
             await _userJournalTypeRepo.SaveChangesAsync();
-            return RedirectToAction("Index", "UserJournalType");
+            return RedirectToAction(nameof(Index), new { redirect = userJournalType.UserCode });
         }
     }
 }

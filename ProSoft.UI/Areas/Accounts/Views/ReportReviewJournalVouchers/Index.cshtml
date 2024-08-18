@@ -85,65 +85,50 @@
 
     //for report From Voucher To Voucher//
     function ReviewDisplay(e) {
-            if (!fromPeriod.value) {
-                fromPeriod.focus();
-                return;
-            }
-            if (!toPeriod.value) {
-                toPeriod.focus();
-                return;
-            }
+        if (!fromPeriod.value) {
+            fromPeriod.focus();
+            return;
+        }
+        if (!toPeriod.value) {
+            toPeriod.focus();
+            return;
+        }
 
         var journalName = journal.options[journal.selectedIndex].textContent;
-
         var headReport = document.querySelector(".report");
 
         let title;
         if (filter.value == 2) {
             title = "@localizer["Input Errors Journal Vouchers"] " + fromPeriod.value + " @localizer["To"] " + toPeriod.value + " @localizer["Journal Name"] : " + journalName;
+        } else {
+            title = "@localizer["Journal Vouchers"] " + fromPeriod.value + " @localizer["To"] " + toPeriod.value + " @localizer["Journal Name"] : " + journalName;
         }
-         title = "@localizer["Journal Vouchers"] " + fromPeriod.value + " @localizer["To"] " + toPeriod.value + " @localizer["Journal Name"] : " + journalName;
 
         headReport.innerHTML =
             `
-                        <div class="report-head d-flex justify-content-center align-items-center mt-4">
-                             <h4 class="header">${title}</h4>
-                                 <button onclick="printReport()" class="btn btn-success" style="margin-inline-start: auto;">Print</button>
-                        </div>
+                <div class="report-head d-flex justify-content-center align-items-center mt-4">
+                    <h4 class="header">${title}</h4>
+                    <button onclick="printReport()" class="btn btn-success" style="margin-inline-start: auto;">Print</button>
+                </div>
 
-                        <div class="print-table p-0 mb-2 overflow-auto">
-
-                                <table id="myTable" class="table table-bordered  border-dark table-hover Voucher-table" style="width:100%">
-                                 <thead class="table-primary  border-dark">
-                                    <tr>
-                                    <th class="align-middle text-center" rowspan="2">
-                                        @localizer["Serial"]
-                                    </th>
-                                    <th class="align-middle text-center" rowspan="2">
-                                            @localizer["Voucher Date"]
-                                    </th>
-                                    <th class="align-middle text-center" rowspan="2">
-                                            @localizer["Voucher No"]
-                                    </th>
-                                    <th class="align-middle text-center" rowspan="2">
-                                            @localizer["Debit Value"]
-                                    </th>
-                                    <th class="align-middle text-center" rowspan="2">
-                                            @localizer["Credit Value"]
-                                    </th>
-                                    <th class="align-middle text-center" rowspan="2">
-                                            @localizer["The Difference"]
-                                    </th>
-
-                                    </tr>
-
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                        </div>
-
-                    `;
+                <div class="print-table p-0 mb-2 overflow-auto">
+                    <table id="myTable" class="table table-bordered border-dark table-hover Voucher-table" style="width:100%">
+                        <thead class="table-primary border-dark">
+                            <tr>
+                                <th class="align-middle text-center" rowspan="2">@localizer["Serial"]</th>
+                                <th class="align-middle text-center" rowspan="2">@localizer["Voucher Date"]</th>
+                                <th class="align-middle text-center" rowspan="2">@localizer["Voucher No"]</th>
+                                ${filter.value == 3 ? `<th class="align-middle text-center" rowspan="2">@localizer["Main Code"]</th><th class="align-middle text-center" rowspan="2">@localizer["Sub Code"]</th>` : ''}
+                                <th class="align-middle text-center" rowspan="2">@localizer["Debit Value"]</th>
+                                <th class="align-middle text-center" rowspan="2">@localizer["Credit Value"]</th>
+                                ${filter.value == 3 ? `<th class="align-middle text-center" rowspan="2">@localizer["Note"]</th>` : `<th class="align-middle text-center" rowspan="2">@localizer["The Difference"]</th>`}
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            `;
 
         let url = `/Accounts/ReportReviewJournalVouchers/GetReviewDisplay/${journal.value}?branche=${branche.value}&fromPeriod=${fromPeriod.value}&toPeriod=${toPeriod.value}&displayType=${filter.value}`;
 
@@ -158,7 +143,6 @@
                 var balance = 0;
 
                 for (let item of result) {
-
                     let transDate = new Date(item.transDate).toISOString().split('T')[0];
                     const data = document.createElement("tr");
                     data.innerHTML +=
@@ -166,9 +150,10 @@
                             <td class="align-middle text-center">${index}</td>
                             <td class="align-middle text-center">${transDate}</td>
                             <td class="align-middle text-center">${item.transNo}</td>
+                            ${filter.value == 3 ? `<td class="align-middle text-center">${item.mainCode}</td><td class="align-middle text-center">${item.subCode}</td>` : ''}
                             <td class="align-middle">${item.valDep.toFixed(2)}</td>
                             <td class="align-middle">${item.valCredit.toFixed(2)}</td>
-                            <td class="align-middle">${item.valDep-item.valCredit}</td>
+                            ${filter.value == 3 ? `<td class="align-middle">${item.lineDesc}</td>` : `<td class="align-middle">${item.valDep - item.valCredit}</td>`}
                         `;
                     dataa.appendChild(data);
                     index++;
@@ -181,11 +166,11 @@
                 const finalTotalsRow = document.createElement("tr");
                 finalTotalsRow.innerHTML =
                     `
-                                <td colspan="3" class="text-end"><strong>@localizer["Total Vouchers"]</strong></td>
-                                <td class="align-middle" style="background-color: #e6dfdf;">${valDepSum.toFixed(2)}</td>
-                                <td class="align-middle" style="background-color: #e6dfdf;">${valCreditSum.toFixed(2)}</td>
-                                <td class="align-middle" style="background-color: #e6dfdf;">${balance.toFixed(2)}</td>
-                            `;
+                        <td colspan="${filter.value == 3 ? 5 : 3}" class="text-end"><strong>@localizer["Total Vouchers"]</strong></td>
+                        <td class="align-middle" style="background-color: #e6dfdf;">${valDepSum.toFixed(2)}</td>
+                        <td class="align-middle" style="background-color: #e6dfdf;">${valCreditSum.toFixed(2)}</td>
+                            ${filter.value != 3 ? `<td class="align-middle" style="background-color: #e6dfdf;">${balance.toFixed(2)}</td>` : `<td class="align-middle"></td>`}
+                    `;
                 dataa.appendChild(finalTotalsRow);
             }
         });

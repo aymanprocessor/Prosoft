@@ -129,14 +129,14 @@
                 </div>
                 <div class="d-flex justify-content-between" style="width: 35%;">
                     <div class="mb-3 w-50 d-flex justify-content-between align-items-center">
-                        <label asp-for="TaxPrc" style="width: 80px;">@localizer["Sales Tax"]</label>
-                        <input asp-for="TaxPrc" type="number" class="form-control" style="width: 76px;" />
-                        <span asp-validation-for="TaxPrc" class="text-danger d-none"></span>
+                        <label asp-for="TaxValue" style="width: 80px;">@localizer["Sales Tax"]</label>
+                        <input asp-for="TaxValue" type="number" class="form-control" style="width: 100px;" />
+                        <span asp-validation-for="TaxValue" class="text-danger d-none"></span>
                     </div>
                     <div class="mb-3 w-50 d-flex justify-content-between align-items-center">
-                        <label asp-for="TaxValue" class="@(isRTL ? "me-4" : "ms-4")" style="width: 90px;">@localizer["percent"] %</label>
-                        <input asp-for="TaxValue" type="number" class="form-control" style="width: 80px;" />
-                        <span asp-validation-for="TaxValue" class="text-danger d-none"></span>
+                        <label asp-for="TaxPrc" class="@(isRTL ? "me-4" : "ms-4")" style="width: 90px;">@localizer["percent"] %</label>
+                        <input asp-for="TaxPrc" type="number" class="form-control" style="width: 80px;" />
+                        <span asp-validation-for="TaxPrc" class="text-danger d-none"></span>
                     </div>
                 </div>
             </div>
@@ -174,7 +174,7 @@
 
             <div class="parent d-flex justify-content-md-center gap-2">
                 <button type="submit" class="btn btn-success" style="width:150px">@localizer["Save Changes"]</button>
-                <a asp-controller="PermissionForm" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                <a asp-controller="PermissionForm" asp-action="Index" asp-route-id="@ViewBag.transMasterID" class="btn btn-secondary" style="width:150px">
                     @localizer["Cancel"]
                 </a>
             </div>

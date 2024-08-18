@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ProSoft.EF.DTOs.Shared;
+using ProSoft.EF.DTOs.Stocks;
 
 namespace ProSoft.EF.DTOs.Medical.HospitalPatData
 {

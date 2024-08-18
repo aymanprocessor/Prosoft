@@ -35,10 +35,44 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
 
             TransMaster permissionForm = await _transMasterRepo.GetByIdAsync(Convert.ToInt32(id));
             TransMasterViewDTO permissionsFormDTO = await _transMasterRepo.GetForViewAsync(permissionForm);
+            if(permissionForm != null)
+            {
+                ViewBag.trans_Type = permissionForm.TransType;
+                ViewBag.stockCode = permissionForm.StockCode;
+            }
             ViewBag.docNo = permissionsFormDTO?.DocNo;
             return View(permissionsFormDTO);
         }
-
+        //  كل الاذون معتمد وغير معتمد ولالغاء الاعتماد
+        ////////////////////////////////////////////////////////////////////////////////////////////
+        public async Task<IActionResult> AllRermissionForm(int? id)
+        {
+            var userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
+            List<StockViewDTO> stocksDTO = await _transMasterRepo.GetActiveStocksForUserAsync(userCode);
+            ViewBag.Stocks = stocksDTO;
+            ViewBag.SupCodes = await _transMasterRepo.GetAllSuPCodesAsync();
+            TransMaster permissionForm = await _transMasterRepo.GetByIdAsync(Convert.ToInt32(id));
+            TransMasterViewDTO permissionsFormDTO = await _transMasterRepo.GetForViewAsync(permissionForm);
+            if (permissionForm != null)
+            {
+                ViewBag.trans_Type = permissionForm.TransType;
+                ViewBag.stockCode = permissionForm.StockCode;
+            }
+            ViewBag.docNo = permissionsFormDTO?.DocNo;
+            return View(permissionsFormDTO);
+        }
+        public async Task<IActionResult> GetAllPermissionsForms(int id, int transType, int? fromReceipt, int? toReceipt, DateTime? fromPeriod, DateTime? toPeriod, string supCode)
+        {
+            List<TransMasterViewDTO> permissionsFormsDTO = await _transMasterRepo
+                .GetAllPermissionsFormsAsync(id, transType, fromReceipt, toReceipt, fromPeriod, toPeriod, supCode);
+            return Json(permissionsFormsDTO);
+        }
+        public async Task<IActionResult> CancelApprovePermission(int id)
+        {
+            int result = await _transMasterRepo.CancelApprovePermissionAsync(id);
+            return Json(result);
+        }
+        ////////////////////////////////////////////////////////////////////////////////////////////
         public async Task<IActionResult> GetUserPermissionsForStock(int id)
         {
             var userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
@@ -47,42 +81,43 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             return Json(permissionsDTO);
         }
 
-        public async Task<IActionResult> GetPermissionsForms(int id, int transType)
-        {
-            List<TransMasterViewDTO> permissionsFormsDTO = await _transMasterRepo
-                .GetPermissionsFormsAsync(id, transType);
-            return Json(permissionsFormsDTO);
-        }
+        
 
         public async Task<IActionResult> ApprovePermission(int id)
         {
             var userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
             bool ifHasDetails = await _transMasterRepo.CheckForDetailsAsync(id);
-
             int result;
-            if (ifHasDetails)
+            try
             {
-                // result
-                // 1 => لم يتم الترحيل للحسابات
-                // 2 => من فضلك ادخل تاريخ فاتورة المورد
-                // 3 => تاكد من قيمة الاذن واعد المحاولة
-                // 4 => خطأ لم يتم الترحيل للحسابات , قم باختيار المورد وأعد المحاولة
-                // 5 => خطأ لم يتم الترحيل للحسابات , قم باختيار العميل وأعد المحاولة
-                // 6 => لم يتم الترحيل للحسابات لعدم وجود يومية للمستخدم
-                // 7 => غير مسموح بالترحيل لاقفال القيد بالحسابات
-                // 8 => برجاء تحديد مسلسل الحركة شهرى أم سنوى أولا ثم أعد المحاولة
-                // 9 => خطأ فى الترحيل للحسابات , هذا المورد غير مرتبط بالحسابات
-                // 10 => خطأ فى الترحيل للحسابات , هذا العميل غير مرتبط بالحسابات
-                // 11 => تم الترحيل للحسابات
-                result = await _transMasterRepo.ApprovePermissionAsync(id, userCode);
-                return Json(result);
+                if (ifHasDetails)
+                {
+                    // result
+                    // 1 => لم يتم الترحيل للحسابات
+                    // 2 => من فضلك ادخل تاريخ فاتورة المورد
+                    // 3 => تاكد من قيمة الاذن واعد المحاولة
+                    // 4 => خطأ لم يتم الترحيل للحسابات , قم باختيار المورد وأعد المحاولة
+                    // 5 => خطأ لم يتم الترحيل للحسابات , قم باختيار العميل وأعد المحاولة
+                    // 6 => لم يتم الترحيل للحسابات لعدم وجود يومية للمستخدم
+                    // 7 => غير مسموح بالترحيل لاقفال القيد بالحسابات
+                    // 8 => برجاء تحديد مسلسل الحركة شهرى أم سنوى أولا ثم أعد المحاولة
+                    // 9 => خطأ فى الترحيل للحسابات , هذا المورد غير مرتبط بالحسابات
+                    // 10 => خطأ فى الترحيل للحسابات , هذا العميل غير مرتبط بالحسابات
+                    // 11 => تم الترحيل للحسابات
+                    result = await _transMasterRepo.ApprovePermissionAsync(id, userCode);
+                    return Json(result);
+                }
+            }
+            catch (Exception err)
+            {
+                return Json(err.Message);
             }
 
             return Json(ifHasDetails);
         }
 
         //////////////////////////////////////////////////
-        // Permission Form
+        // Permission Form => اذن اضافة
         // Get Add
         public async Task<IActionResult> Add_PermissionForm(int id, int transType)
         {
@@ -113,6 +148,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         public async Task<IActionResult> Edit_PermissionForm(int id)
         {
             TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetPermissionFormByIdAsync(id);
+            ViewBag.transMasterID = id;
             return View(permissionFormDTO);
         }
 
@@ -124,7 +160,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             if (ModelState.IsValid)
             {
                 await _transMasterRepo.UpdateTransMasterAsync(id, permissionFormDTO);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { id });
             }
             return View(permissionFormDTO);
         }
@@ -143,8 +179,10 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete_PermissionForm(int id)
         {
+            var deleted = await _transMasterRepo.GetByIdAsync(id);
+            var lastRecord = await _transMasterRepo.GetTransMasterByAsync((int)deleted.TransType, (int)deleted.StockCode,id);
             await _transMasterRepo.DeletePermissionFormAsync(id);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { id = lastRecord.TransMAsterID });
         }
 
         //////////////////////////////////////////////////
@@ -179,6 +217,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         public async Task<IActionResult> Edit_DisburseOrConvertForm(int id)
         {
             TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetDisburseOrConvertFormByIdAsync(id);
+            ViewBag.transMasterID = id;
             return View(permissionFormDTO);
         }
 
@@ -192,7 +231,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
                 permissionFormDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
                 permissionFormDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
                 await _transMasterRepo.UpdateDisburseOrConvertFormAsync(id, permissionFormDTO);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { id });
             }
             return View(permissionFormDTO);
         }
@@ -280,6 +319,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         public async Task<IActionResult> Edit_SalesInvoice(int id)
         {
             TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetSalesInvoiceByIdAsync(id);
+            ViewBag.transMasterID = id;
             return View(permissionFormDTO);
         }
 
@@ -293,7 +333,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
                 permissionFormDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
                 permissionFormDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
                 await _transMasterRepo.UpdateSalesInvoiceAsync(id, permissionFormDTO);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { id });
             }
             return View(permissionFormDTO);
         }
@@ -331,6 +371,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         public async Task<IActionResult> Edit_Settlement(int id)
         {
             TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetSettlementByIdAsync(id);
+            ViewBag.transMasterID = id;
             return View(permissionFormDTO);
         }
 
@@ -344,7 +385,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
                 permissionFormDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
                 permissionFormDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
                 await _transMasterRepo.UpdateSettlementAsync(id, permissionFormDTO);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { id });
             }
             return View(permissionFormDTO);
         }
@@ -382,6 +423,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         public async Task<IActionResult> Edit_ReqDisburse(int id)
         {
             TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetReqDisburseByIdAsync(id);
+            ViewBag.transMasterID = id;
             return View(permissionFormDTO);
         }
 
@@ -395,7 +437,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
                 permissionFormDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
                 permissionFormDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
                 await _transMasterRepo.UpdateReqDisburseAsync(id, permissionFormDTO);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { id });
             }
             return View(permissionFormDTO);
         }
@@ -433,6 +475,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         public async Task<IActionResult> Edit_ReturnPermission(int id)
         {
             TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetReturnPermissionByIdAsync(id);
+            ViewBag.transMasterID = id;
             return View(permissionFormDTO);
         }
 
@@ -446,7 +489,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
                 permissionFormDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
                 permissionFormDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
                 await _transMasterRepo.UpdateReturnPermissionAsync(id, permissionFormDTO);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { id });
             }
             return View(permissionFormDTO);
         }

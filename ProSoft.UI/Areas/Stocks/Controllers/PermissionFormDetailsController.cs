@@ -80,6 +80,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         public async Task<IActionResult> Edit_TransDetailWithPrice(int id)
         {
             TransDtlWithPriceDTO transDtlDTO = await _transDtlRepo.GetTransDtlWithPriceByIdAsync(id);
+            ViewBag.transMasterID = transDtlDTO.TransMasterID;
             return View(transDtlDTO);
         }
 
@@ -88,10 +89,10 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit_TransDetailWithPrice(int id, TransDtlWithPriceDTO transDtlDTO)
         {
+            TransDtlWithPriceDTO newTransDtlDTO = await _transDtlRepo.GetTransDtlWithPriceByIdAsync(id);
             if (transDtlDTO.ItemMaster == null && transDtlDTO.ShowItemMaster == null)
             {
                 ModelState.AddModelError("", "The Item is required");
-                TransDtlWithPriceDTO newTransDtlDTO = await _transDtlRepo.GetTransDtlWithPriceByIdAsync(id);
                 _mapper.Map(newTransDtlDTO, transDtlDTO);
             }
             else if (ModelState.IsValid)
@@ -100,7 +101,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
                 transDtlDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
 
                 await _transDtlRepo.UpdateTransDtlWithPriceAsync(id, transDtlDTO);
-                return RedirectToAction("Index", "PermissionForm");
+                return RedirectToAction("Index", "PermissionForm", new { id = newTransDtlDTO.TransMasterID });
             }
             return View(transDtlDTO);
         }
@@ -151,10 +152,10 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit_TransDetail(int id, TransDtlDTO transDtlDTO)
         {
+            TransDtlDTO newTransDtlDTO = await _transDtlRepo.GetTransDtlByIdAsync(id);
             if (transDtlDTO.ItemMaster == null && transDtlDTO.ShowItemMaster == null)
             {
                 ModelState.AddModelError("", "The Item is required");
-                TransDtlDTO newTransDtlDTO = await _transDtlRepo.GetTransDtlByIdAsync(id);
                 _mapper.Map(newTransDtlDTO, transDtlDTO);
             }
             else if (ModelState.IsValid)
@@ -163,7 +164,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
                 transDtlDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
                 
                 await _transDtlRepo.UpdateTransDtlAsync(id, transDtlDTO);
-                return RedirectToAction("Index", "PermissionForm");
+                return RedirectToAction("Index", "PermissionForm", new { id = newTransDtlDTO.TransMasterID });
             }
             return View(transDtlDTO);
         }

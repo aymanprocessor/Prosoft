@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProSoft.EF.DbContext;
 using ProSoft.EF.DTOs.Medical.HospitalPatData;
-using ProSoft.EF.DTOs.Shared;
+using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.IRepositories.Medical.HospitalPatData;
 using ProSoft.EF.Models.Medical.HospitalPatData;
 using System;

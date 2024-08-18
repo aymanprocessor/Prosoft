@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProSoft.EF.IRepositories.Shared
+namespace ProSoft.EF.IRepositories.Stocks
 {
     public interface IClassificationCustRepo : IRepository<ClassificationCust, int>
     {

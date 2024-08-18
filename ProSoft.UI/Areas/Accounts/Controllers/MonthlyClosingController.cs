@@ -21,7 +21,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             MonthlyClosingDTO monthlyClosingDTO = await _monthlyClosingRepo.GetAllDataAsync();
             return View(monthlyClosingDTO);
         }
-
+        
         public async Task<IActionResult> MonthlyCloseOrCancel(int id,int branch, int? fromVoucher, int? toVoucher, DateTime? fromPeriod, DateTime? toPeriod,int closOrCanc)
         {
             var changeData = "";

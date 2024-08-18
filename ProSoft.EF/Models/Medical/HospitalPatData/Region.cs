@@ -49,6 +49,9 @@ public partial class Region
     [Column("ON_OFF")]
     public int? OnOff { get; set; }
 
+    [Column("SECTION_CODE")]
+    public int SectionCode { get; set; }
+
     [ForeignKey("ClassificationCust")]
     [InverseProperty("Regions")]
     public virtual ClassificationCust? ClassificationCustNavigation { get; set; }

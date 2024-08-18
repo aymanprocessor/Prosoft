@@ -11,7 +11,7 @@ namespace ProSoft.EF.IRepositories.Accounts
 {
     public interface IAccTransMasterRepo :IRepository<AccTransMaster,int>
     {
-        Task<List<AccTransMasterViewDTO>> GetAccTransMasterAsync(int journalCode);
+        Task<List<AccTransMasterViewDTO>> GetAccTransMasterAsync(int journalCode,int fYear);
 
         Task<AccTransMasterEditAddDTO> GetEmptyAccTransMasterAsync(int journalCode);
         Task<int> GetNewtranNoAsync(int journalCode, int fYear, int branchId);

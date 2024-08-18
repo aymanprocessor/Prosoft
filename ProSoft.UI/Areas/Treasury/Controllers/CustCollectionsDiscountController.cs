@@ -46,19 +46,19 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
                 await _custCollectionsDiscountRepo.AddcustCollectionsDiscountAsync(id,custCollectionsDiscountDTO);
                 if (custCollectionsDiscountDTO.DocType == "SFCIN")
                 {
-                  return RedirectToAction("Index", "AccSafeCash", new {docType = custCollectionsDiscountDTO.DocType, flagType = "oneANDtwo" }); 
+                  return RedirectToAction("Index", "AccSafeCash", new {docType = custCollectionsDiscountDTO.DocType, flagType = "oneANDtwo", redirect = id }); 
                 }
                 else if (custCollectionsDiscountDTO.DocType == "SFCOT")
                 {
-                    return RedirectToAction("Index", "DisbursementPermission", new { docType = custCollectionsDiscountDTO.DocType, flagType = "oneANDtwo" });
+                    return RedirectToAction("Index", "DisbursementPermission", new { docType = custCollectionsDiscountDTO.DocType, flagType = "oneANDtwo", redirect = id });
 
                 }
                 else if (custCollectionsDiscountDTO.DocType == "SFTIN")
                 {
-                    return RedirectToAction("Index", "ReceivePermission", new { docType = custCollectionsDiscountDTO.DocType, flagType = "oneANDtwoAndthree" });
+                    return RedirectToAction("Index", "ReceivePermission", new { docType = custCollectionsDiscountDTO.DocType, flagType = "oneANDtwoAndthree", redirect = id });
 
                 }
-                return RedirectToAction("Index", "TransferPermission", new { docType = custCollectionsDiscountDTO.DocType, flagType = "oneANDtwoAndthree" });
+                return RedirectToAction("Index", "TransferPermission", new { docType = custCollectionsDiscountDTO.DocType, flagType = "oneANDtwoAndthree", redirect = id });
 
             }
             return View(custCollectionsDiscountDTO);

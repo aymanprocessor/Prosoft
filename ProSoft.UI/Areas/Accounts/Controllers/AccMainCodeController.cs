@@ -29,7 +29,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             ViewBag.MainLevel_5 = await _accMainCodeRepo.GetMainsByLevelAsync(5);
             return View();
         }
-        public async Task<IActionResult> MainLevel_2(string? clickId = "")
+        public async Task<IActionResult> MainLevel_2(string? clickId = "",string? subDeleted= "")
         {
             List<AccMainCodeDTO> mainLevel_2 = await _accMainCodeRepo.GetMainsByLevelAsync(2);
 
@@ -40,6 +40,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             ViewBag.MainLevel_5 = await _accMainCodeRepo.GetMainsByLevelAsync(5);
             #endregion
             ViewBag.clickId = clickId;
+            ViewBag.subDeleted = subDeleted;
             return View(mainLevel_2);
         }
 
@@ -111,7 +112,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
 
         //////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////
-        public async Task<IActionResult> MainLevel_3(string? id ="", string? clickId = "")
+        public async Task<IActionResult> MainLevel_3(string? id ="", string? clickId = "", string? subDeleted = "")
         {
             List<AccMainCodeDTO> mainLevel_3 = await _accMainCodeRepo.GetMainsByLevelAsync(3,id);
 
@@ -124,7 +125,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             ViewBag.main = await _accMainCodeRepo.GetMainByIdAsync(id);
             ViewBag.parent = id;
             ViewBag.clickId = clickId;
-
+            ViewBag.subDeleted = subDeleted;
             return View(mainLevel_3);
         }
 
@@ -199,7 +200,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
         //////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////
 
-        public async Task<IActionResult> MainLevel_4(string id, string? clickId = "")
+        public async Task<IActionResult> MainLevel_4(string id, string? clickId = "", string? subDeleted = "")
         {
             List<AccMainCodeDTO> mainLevel_4 = await _accMainCodeRepo.GetMainsByLevelAsync(4);
 
@@ -216,6 +217,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             List<AccMainCodeDTO> mains = mainLevel_4
                 .Where(obj => obj.MainCode.Substring(0, 3) == mainString).ToList();
             ViewBag.clickId = clickId;
+            ViewBag.subDeleted = subDeleted;
             return View(mains);
         }
 
@@ -295,7 +297,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
         //////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////
 
-        public async Task<IActionResult> MainLevel_5(string id,string? clickId = "")
+        public async Task<IActionResult> MainLevel_5(string id,string? clickId = "", string? subDeleted = "")
         {
             List<AccMainCodeDTO> mainLevel_5 = await _accMainCodeRepo.GetMainsByLevelAsync(5);
 
@@ -312,7 +314,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             List<AccMainCodeDTO> mains = mainLevel_5
                 .Where(obj => obj.MainCode.Substring(0, 5) == mainString).ToList();
             ViewBag.clickId = clickId;
-
+            ViewBag.subDeleted = subDeleted;
             return View(mains);
         }
         //get Add
@@ -389,7 +391,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
         //////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////
 
-        public async Task<IActionResult> MainLevel_6(string id ,string? clickId = "")
+        public async Task<IActionResult> MainLevel_6(string id ,string? clickId = "", string? subDeleted = "")
         {
             List<AccMainCodeDTO> mainLevel_6 = await _accMainCodeRepo.GetMainsByLevelAsync(6);
 
@@ -406,6 +408,7 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
             List<AccMainCodeDTO> mains = mainLevel_6
                 .Where(obj => obj.MainCode.Substring(0, 7) == mainString).ToList();
             ViewBag.clickId = clickId;
+            ViewBag.subDeleted = subDeleted;
             return View(mains);
         }
         //get Add

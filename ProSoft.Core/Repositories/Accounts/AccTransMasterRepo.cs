@@ -26,9 +26,9 @@ namespace ProSoft.Core.Repositories.Accounts
             _mapper = mapper;
         }
 
-        public async Task<List<AccTransMasterViewDTO>> GetAccTransMasterAsync(int journalCode)
+        public async Task<List<AccTransMasterViewDTO>> GetAccTransMasterAsync(int journalCode, int fYear)
         {
-            List<AccTransMaster> accTransMasters = await _Context.AccTransMasters.Where(obj => obj.TransType == journalCode.ToString())
+            List<AccTransMaster> accTransMasters = await _Context.AccTransMasters.Where(obj => obj.TransType == journalCode.ToString() &&obj.FYear==fYear)
                 .OrderByDescending(obj=>obj.TransId).ToListAsync();
             List<AccTransMasterViewDTO> accTransMasterDTOs = _mapper.Map<List<AccTransMasterViewDTO>>(accTransMasters);
             return accTransMasterDTOs;

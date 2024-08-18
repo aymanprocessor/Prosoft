@@ -1,0 +1,85 @@
+﻿@model RegionsEditAddDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Add Departments With Sections";
+    Layout = "_Layout";
+
+    // Casting type to get all Stocks as a list
+    SelectList stocks = new SelectList(Model.Stocks, "Stkcod", "Stknam");
+
+    // Casting type to get all MainAccCodes as a list
+    SelectList sections = new SelectList(Model.Sections, "SecCd", "SecDesc");
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+    <h1 class="mt-4">@localizer["Add Section"] @localizer["To"] : @ViewBag.userName</h1>
+    <form method="post" asp-action="Add_DepartmentsWithSections">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="parent d-flex align-items-md-end justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3">
+                    <label asp-for="SectionCode"></label>
+                    <select id="regionSelect" asp-for="SectionCode" asp-items="sections" class="form-control text-center" onchange="updateRegionName()">
+                        <option value="">-- Choose --</option>
+                    </select>
+                    <input type="hidden" asp-for="RegionDesc" id="regionName" />
+                    <span asp-validation-for="SectionCode" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="StockCode"></label>
+                    <select asp-for="StockCode" asp-items="stocks" class="form-control text-center">
+                        <option value="100">المخزن الرئيسي</option>
+                    </select>
+                    <span asp-validation-for="StockCode" class="text-danger"></span>
+                </div>
+               
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex align-items-md-start justify-content-center gap-md-3 my-mobile ">
+                <div class="mb-3 d-flex justify-content-center gap-2">
+                    <div style="width: 50%;">
+                        <label asp-for="OnOff"></label>
+                        <select asp-for="OnOff" class="form-control text-center">
+                            <option value="1">@localizer["Yes"]</option>
+                            <option value="0">@localizer["No"]</option>
+                        </select>
+                        <span asp-validation-for="OnOff" class="text-danger"></span>
+                    </div>
+                    <div style="width: 50%;">
+                        <label asp-for="RegYear"></label>
+                        <select asp-for="RegYear" class="form-control text-center">
+                            <option value="2">@localizer["Yes"]</option>
+                            <option value="1">@localizer["No"]</option>
+                        </select>
+                        <span asp-validation-for="RegYear" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex justify-content-md-center gap-2">
+                <button type="submit" class="btn btn-primary" style="width:150px">@localizer["Add"]</button>
+                <a asp-controller="DepartmentsWithSections" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    function updateRegionName() {
+        // Get the select element by ID
+        var selectElement = document.getElementById("regionSelect");
+        // Get the text of the selected option
+        var selectedText = selectElement.options[selectElement.selectedIndex].text;
+
+        // Set the value of the hidden input to the selected text
+        document.getElementById("regionName").value = selectedText;
+    }
+</script>

@@ -25,7 +25,7 @@
     @if (ViewBag.message != "")
     {
         <div class="d-flex justify-content-center">
-            <div class="alert alert-danger  text-center" role="alert" style="width:50%;">
+            <div class="alert alert-danger  text-center box-error" role="alert" style="width:50%;">
                 <p class="mb-0">@localizer[ViewBag.message]</p>
 @*                 <a asp-controller="DepositVisit" asp-action="Index" asp-route-id="@ViewBag.VisitID" class="position-absolute text-decoration-none text-black fs-4"
                    style="right: 5px !important; top: -7px !important;">&times;</a>
@@ -34,7 +34,7 @@
     }
     @if (ViewBag.error != null)
     {
-        <div class="alert alert-danger mx-auto mb-0 w-50 text-center position-relative" style="margin-bottom: -35px !important;">
+        <div class="alert alert-danger mx-auto mb-0 w-50 text-center position-relative box-error" style="margin-bottom: -35px !important;">
             @ViewBag.error
             <a asp-controller="AccSafeCash" asp-action="Index" asp-route-docType="SFCIN" asp-route-flagType="oneANDtwo" class="position-absolute text-decoration-none text-black fs-4"
             style="right: 5px !important; top: -7px !important;">&times;</a>
@@ -45,9 +45,12 @@
         <a asp-controller="AccSafeCash" asp-action="Add_PaymentReceipt" asp-route-docType="@ViewBag.docType" asp-route-safeCode="@ViewBag.safeCode" asp-route-fYear="@ViewBag.fYear" class="btn btn-sm btn-primary fs-6" style="width:150px">
             @localizer["Add Receipt"]
         </a>
+        @* FOR REDIRCTION *@
+        <input id="redirect" type="hidden" value="@ViewBag.redirect" />
+
     </div>
     <div class="overflow-auto" style="max-height:400px">
-        <table id="myTable" class="table table-bordered table-hover" style="width:100%">
+        <table id="myTable1" class="table table-bordered table-hover" style="width:100%">
             <thead class="table-dark">
                 <tr>
                     <th>
@@ -188,11 +191,12 @@
     </div>
     @* /////////////////////////////////////////////////////////////////// *@
 </div>
-
+@section Scripts {
 <script>
     @* Ajax for AccTransDtl *@
     function GetAccTransDtl(e, id) {
         var acctransDtls = document.querySelector(".accTransDtl-table tbody");
+        setTimeout(hideBoxError, 3000);//for message
         // Handle active clic
         let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");;
         allItemRows.forEach(row => {
@@ -269,4 +273,38 @@
             }
         });
     }
+
+    (function autoClick() {
+        let redirectNum = document.getElementById("redirect").value;
+        let rows = document.querySelectorAll("#myTable1 tbody tr");
+
+        if (redirectNum === null || redirectNum == 0) {
+            // If redirectNum is null or 0, click the first row
+            if (rows.length > 0) {
+                rows[0].querySelector("td:first-child").click();
+            }
+        } else {
+            // Loop through all table rows to find and click the one that matches redirectNum
+            for (let i = 0, len1 = rows.length; i < len1; i++) {
+                let firstTd = rows[i].querySelector("td:first-child");  // Select the first td in the row
+                if (firstTd) {
+                    let tdValue = firstTd.textContent || firstTd.innerText;
+                    tdValue = tdValue.toLowerCase();
+                    if (tdValue.indexOf(redirectNum) > -1) {  // Compare with redirectNum
+                        firstTd.click();
+                        break;
+                    }
+                }
+            }
+        }
+    })();
+    function hideBoxError() {
+        let boxError = document.querySelector(".box-error");
+        // console.log(boxError);
+        if (boxError) {
+            // Hide the element
+            boxError.classList.add("d-none");
+        }
+    }
 </script>
+}

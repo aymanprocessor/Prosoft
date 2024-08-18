@@ -631,17 +631,48 @@
   "Display Type": "Display Type",
   "Journal Vouchers": "Journal Vouchers",
   "Input Errors Journal Vouchers": "Input Errors Journal Vouchers",
-
-
-
-
-
-
-
-
-
-
-
+  "Deletion is not allowed because the account is in the opening balances": "Deletion is not allowed because the account is in the opening balances",
+  "Deletion is not allowed because the account is in previous transactions": "Deletion is not allowed because the account is in previous transactions",
+  "Deletion is not allowed because the account is Main Child": "Deletion is not allowed because the account is Main Child To",
+  "Deleted successfully": "Deleted successfully",
+  "Main Child": "Main Child",
+  "Add Main Child": "Add Main Child",
+  "American Daily Transaction": "American Daily Transaction",
+  "Modification of account codes": "Modification of account codes",
+  "Financial code": "Financial code",
+  "Joining Departments With Sections": "Joining Departments With Sections",
+  "Types of Examinations": "Types of Examinations",
+  "Add Check": "Add Check",
+  "Examination Name": "Examination Name",
+  "Edit Check": "Edit Check",
+  "Administrative Departments and Stocks": "Administrative Departments and Stocks",
+  "Search department by department code or name ...": "Search department by department code or name ...",
+  "Department Namee": "Department Namee",
+  "Sections For Department": "Sections For Department",
+  "Send Order": "Send Order",
+  "Edit Section": "Edit Section",
+  "Approved OR NO": "Approved OR No",
+  "Approve": "Approve",
+  "Cancel Approve": "Cancel Approve",
+  "The permission now is not approved": "The permission now is not approved",
+  "This permission is still Approved": "This permission is still Approved",
+  "Display Permissions Forms": "Display Permissions Forms",
+  "Opening and closing stock Transactions": "Opening and closing stock Transactions",
+  "Opening and closing Transactions": "Opening and closing Transactions",
+  "Open Transactions": "Open Transactions",
+  "Close Transactions": "Close Transactions",
+  "Transactions Opening Done": "Transactions Opening Done",
+  "Transactions Closing Done": "Transactions Closing Done",
+  "From Permission No": "From Permission No",
+  "To Permission No": "To Permission No",
+  "Incorrect Year": "Incorrect Year",
+  "Quantity class card only": "Quantity class card only",
+  "Class Card - Complete Production": "Class Card - Complete Production",
+  "class card": "class card",
+  "Transaction Date": "Transaction Date",
+  "Transaction No": "Transaction No",
+  "Supplier / Customer": "Supplier/Customer",
+  "Transaction": "Transaction",
 
 
 

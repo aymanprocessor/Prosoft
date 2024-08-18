@@ -1,0 +1,131 @@
+﻿@model DisplayAccSubCodeEditDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Modification of account codes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+
+    SelectList branches = new SelectList(Model.branchs, "BranchId", "BranchDesc");
+    SelectList mainAccCodes = new SelectList(Model.accMainCodes, "MainCode", "MainName");
+
+}
+@inject IViewLocalizer localizer
+<style>
+    .hide {
+        display: none !important;
+    }
+    /*  .image {
+                        top: 0px;
+                        left: 0px;
+                        width: 100%;
+                        height: 100%;
+                        background-repeat: no-repeat;
+                        background-attachment: fixed;
+                        background-size: cover;
+                        background-position: center;
+                        opacity: 0.5;
+                        z-index: -1;
+                    } */
+</style>
+<div class="container pt-2 " style="min-height:100vh;">
+    @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
+
+    <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mt-1">
+        <h3 class="header" style="color: #084298;">@localizer["Modification of account codes"]</h3>
+    </div>
+
+    <div class="overflow-auto filter-box">
+        <div class=" d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 px-1 my-2">
+            <div class="d-flex align-items-center w-100">
+                <label asp-for="MainCode" style="width:65% !important;color: #0000d7;"></label>
+                <select asp-for="MainCode" asp-items="mainAccCodes" class="form-control text-center p-0">
+                    <option value="">-- Choose --</option>
+                </select>
+                <span asp-validation-for="MainCode" class="text-danger"></span>
+            </div>
+            <div class="d-flex align-items-center flex-column flex-md-row w-100">
+                <label for="branches" style="color: #0000d7;" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Branches"]</label>
+                <select id="branches" asp-items="branches" class="form-control text-center w-100 p-0">
+                    <option value="100">@localizer["All Baranches"]</option>
+                </select>
+            </div>
+           
+            <div class="d-flex align-items-center d-flex justify-content-end  w-50">
+                <a class="btn btn-sm btn-primary fs-6" style="width:150px;background-color: #084298;color: yellow;border-radius: 8px" onclick="GetAccSubCodeEdit(event)">
+                    @localizer["Display"]
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class=" p-0 mb-2 border-opacity-75 overflow-auto mt-3">
+
+        <table id="myTable" class="table table-bordered table-hover accStartBal-table" style="width:100%">
+            <thead class="table-dark">
+                <tr class="align-middle">
+                    <th class="align-middle text-center" colspan="2">
+                        @localizer["Financial code"]
+                    </th>
+                    <th class="align-middle text-center" rowspan="2">
+                        @localizer["Account Name"]
+                    </th>
+                    <th rowspan="2">
+                    </th>
+                </tr>
+                <tr class="align-middle">
+                    <th class ="align-middle text-center">@localizer["From"]</th>
+                    <th class="align-middle text-center">@localizer["To"]</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+    </div>
+    @* /////////////////////////////////////////////////////////////////// *@
+</div>
+
+<script>
+    var mainCode = document.getElementById("MainCode");
+    var branch = document.getElementById("branches");
+
+    // Function to handle click event on row
+    function GetAccSubCodeEdit(e) {
+        if (!mainCode.value) {
+            mainCode.focus();
+            return;
+        }
+        var accStartBals = document.querySelector(".accStartBal-table tbody");
+
+        // Handle active click
+        // let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");
+        // allItemRows.forEach(row => {
+        //     row.classList.remove("active-row");
+        // });
+        // e.target.parentElement.classList.add("active-row");
+
+        // Handle ajax call
+        accStartBals.innerHTML = "";  // Empty the body
+
+        $.ajax({
+            url: `/Accounts/AccSubCodeEdit/GetAccSubCodeEdit/${mainCode.value}`,
+            success: function (result) {
+                for (let item of result) {
+                    const accStartBal = document.createElement("tr");
+                    accStartBal.innerHTML += `
+                        <td class="item-id align-middle">${item.subCodeFr}</td>
+                        <td class="item-id align-middle">${item.subCodeTo}</td>
+                        <td class="item-id align-middle">${item.subName}</td>
+                        <td class="text-center" width="15%">
+                                <a href="/Accounts/AccSubCodeEdit/Edit_AccSubCodeEdit/${mainCode.value}?subFr=${item.subCodeFr}&subTo=${item.subCodeTo}" class="btn btn-sm btn-success mb-1 fs-6" style="width:150px;">
+                                <i class="bi bi-pencil"></i> @localizer["Edit"]
+                            </a>
+                        </td>
+                    `;
+                    accStartBals.appendChild(accStartBal);
+                }
+            }
+        });
+    }
+
+</script>

@@ -16,10 +16,14 @@ namespace ProSoft.EF.IRepositories.Stocks
         Task<List<StockViewDTO>> GetActiveStocksForUserAsync(int userCode);
         Task<List<PermissionDefViewDTO>> GetUserPermissionsForStockAsync(int userCode, int stockID);
         Task<List<TransMasterViewDTO>> GetPermissionsFormsAsync(int stockID, int transType);
+        Task<List<TransMasterViewDTO>> GetAllPermissionsFormsAsync(int stockID, int transType, int? fromReceipt, int? toReceipt, DateTime? fromPeriod, DateTime? toPeriod, string supCode);
+        Task<List<SupCodeViewDTO>> GetAllSuPCodesAsync();
         Task<bool> CheckForDetailsAsync(int transMAsterID);
         Task<int> IfPossibleToDeleteAsync(int transMAsterID);
         Task<int> ApprovePermissionAsync(int transMAsterID, int userCode);
+        Task<int> CancelApprovePermissionAsync(int transMAsterID);
         Task DeletePermissionFormAsync(int transMAsterID);
+        Task<TransMasterViewDTO> GetTransMasterByAsync(int transType, int stockCode, int deletedId);
         Task<TransMasterViewDTO> GetForViewAsync(TransMaster permissionForm);
         // Add Permission Form
         Task<TransMasterEditAddDTO> GetNewTransMasterAsync(int stockID, int userCode, int uniqueType);

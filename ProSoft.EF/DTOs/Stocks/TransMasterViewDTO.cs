@@ -27,6 +27,10 @@ namespace ProSoft.EF.DTOs.Stocks
         public string UserName { get; set; }
         public int UserCode { get; set; }
         public int ShowTransPrice { get; set; }
+        public string? Flag3 { get; set; }
+
         public TransDtlWithPriceDTO? TransDtlDTO { get; set; }
+        public List<SupCodeViewDTO>? Suppliers { get; set; }
+
     }
 }

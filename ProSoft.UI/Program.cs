@@ -80,6 +80,7 @@ builder.Services.AddScoped<IkinshipRepo, kinshipRepo>();
 builder.Services.AddScoped<IDrTimeSheetRepo, DrTimeSheetRepo>();
 builder.Services.AddScoped<IUsersSectionRepo, UsersSectionRepo>();
 builder.Services.AddScoped<IReportDoctorFeesRepo, ReportDoctorFeesRepo>();
+builder.Services.AddScoped<ICheckupClinicRepo, CheckupClinicRepo>();
 ///////////////// Stock /////////////
 builder.Services.AddScoped<IStockTypeRepo, StockTypeRepo>();
 builder.Services.AddScoped<IBranchRepo, BranchRepo>();
@@ -100,6 +101,9 @@ builder.Services.AddScoped<IOrderLimitRepo, OrderLimitRepo>();
 builder.Services.AddScoped<IMainItemRepo, MainItemRepo>();
 builder.Services.AddScoped<ISubItemRepo, SubItemRepo>();
 builder.Services.AddScoped<ISubItemDtlRepo, SubItemDtlRepo>();
+builder.Services.AddScoped<IDepartmentsWithSectionsRepo, DepartmentsWithSectionsRepo>();
+builder.Services.AddScoped<IOpenColseTransactionRepo, OpenColseTransactionRepo>();
+builder.Services.AddScoped<IReportQuantityClassCardRepo, ReportQuantityClassCardRepo>();
 ///////////////// System /////////////
 builder.Services.AddScoped<IEisPostingRepo, EisPostingRepo>();
 ///////////////// Treasury /////////////
@@ -122,6 +126,8 @@ builder.Services.AddScoped<IReportFromToVoucherRepo, ReportFromToVoucherRepo>();
 builder.Services.AddScoped<IAccStartBalRepo, AccStartBalRepo>();
 builder.Services.AddScoped<IAccMainCodeRepo, AccMainCodeRepo>();
 builder.Services.AddScoped<IAccSubCodeRepo, AccSubCodeRepo>();
+builder.Services.AddScoped<IAccMainCodeDtlRepo, AccMainCodeDtlRepo>();
+builder.Services.AddScoped<IAccSubCodeEditRepo, AccSubCodeEditRepo>();
 builder.Services.AddScoped<IReportAssistantProfessorRepo, ReportAssistantProfessorRepo>();
 builder.Services.AddScoped<IAmericanDailyRepo, AmericanDailyRepo>();
 builder.Services.AddScoped<IReportExpenseAnalysisRepo, ReportExpenseAnalysisRepo>();

@@ -14,10 +14,12 @@
 </div>
 
 <div class="container pt-2">
+    <input id="stocksNum" type="hidden" value="@ViewBag.stockCode" />
+    <input id="permissionsNum" type="hidden" value="@ViewBag.trans_Type" />
     <div class="page-head d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 my-2">
         <div class="d-flex align-items-center flex-column flex-md-row w-50">
             <label for="stocks" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Stocks"]</label>
-            <select id="stocks" asp-items="stocks" class="form-control text-center w-100" onchange="getUserPermissionsForStock(event)">
+            <select id="stocks" asp-items="stocks" class="form-control text-center w-100" onchange="getUserPermissionsForStock()">
                 <option value="">-- Choose --</option>
             </select>
         </div>
@@ -237,8 +239,9 @@
             }
         }
 
-        function getUserPermissionsForStock(e) {
-            let stock = e.target;
+        function getUserPermissionsForStock() {
+            // let stock = e.target;
+            let stock = document.getElementById("stocks");
             let permissions = document.getElementById("permissions");
             permissions.innerHTML = `<option value="">-- Choose --</option>`;
 
@@ -248,6 +251,10 @@
                     for (let item of result) {
                         permissions.innerHTML +=
                             `<option value="${item.uniqueType}">${item.gDesc}</option>`;
+                    }
+                    if (document.getElementById("permissionsNum").value) {
+                        permissions.value = document.getElementById("permissionsNum").value;
+                        getPermissionsInStock();
                     }
                 }
             });
@@ -263,8 +270,6 @@
             if (result === 11) {
                 setTimeout(() => {
                     getPermissionsInStock();
-                    let transDetails = document.querySelector("#myTable_2 tbody");
-                    transDetails.innerHTML = "";  // Empty the table
                 }, 200);
             }
         }
@@ -276,26 +281,26 @@
                     let note, message;
                     let button = e.target;
                     let myAlert = document.createElement("div");
-                    
+
                     if (result === false) {
                         myAlert.innerHTML =
-                        `
-                        <div class="modal-container">
-                            <div class="modal 4" id="modal">
-                                <div class="modal-header fs-4">
-                                    <div class="title">@localizer["Error"] !</div>
-                                    <button type="button" onclick="closeAlert(event)" data-close-button class="close-button">&times;</button>
+                            `
+                                <div class="modal-container">
+                                    <div class="modal 4" id="modal">
+                                        <div class="modal-header fs-4">
+                                            <div class="title">@localizer["Error"] !</div>
+                                            <button type="button" onclick="closeAlert(event)" data-close-button class="close-button">&times;</button>
+                                        </div>
+                                        <div class="modal-body fs-4">
+        @localizer["You can not approve this permission with no items."]
+                                        </div>
+                                        <div class="modal-footer fs-4">
+                                            <button type="button" onclick="closeAlert(event)" data-close-button class="btn btn-primary">@localizer["Ok"]</button>
+                                        </div>
+                                    </div>
+                                    <div onclick="closeOverlay(event)" id="overlay"></div>
                                 </div>
-                                <div class="modal-body fs-4">
-                                    @localizer["You can not approve this permission with no items."]
-                                </div>
-                                <div class="modal-footer fs-4">
-                                    <button type="button" onclick="closeAlert(event)" data-close-button class="btn btn-primary">@localizer["Ok"]</button>
-                                </div>
-                            </div>
-                            <div onclick="closeOverlay(event)" id="overlay"></div>
-                        </div>
-                        `;
+                                `;
                         button.insertAdjacentHTML("afterend", myAlert.innerHTML);
                         openAlert(e);
                     }
@@ -308,9 +313,6 @@
                             note = "@localizer["Error"]";
                         ///////////////////////////////////////
                         switch (result) {
-                            // case 0:
-                            //     return;
-                            //     break;
                             case 1:
                                 message = "@localizer["Accounts have not been posted"]";
                                 break;
@@ -345,61 +347,31 @@
                                 message = "@localizer["Accounts have been posted"]";
                                 break;
                         }
-                        // if (result === 1)
-                        //     message = "@localizer["Accounts have not been posted"]";
-                        // else if (result === 2)
-                        //     message = "@localizer["Please enter the supplier invoice date"]";
-                        // else if (result === 3)
-                        //     message = "@localizer["Verify the permission value and try again"]";
-                        // else if (result === 4)
-                        //     message = "@localizer["Error: The accounts have not been posted. Choose the supplier and try again"]";
-                        // else if (result === 5)
-                        //     message = "@localizer["Error: The accounts have not been posted. Choose the customer and try again"]";
-                        // else if (result === 6)
-                        //     message = "@localizer["The accounts were not posted because there was no user journal"]";
-                        // else if (result === 7)
-                        //     message = "@localizer["Posting is not allowed to close the accounts"]";
-                        // else if (result === 8)
-                        //     message = "@localizer["Please select the monthly or annual movement series first and then try again"]";
-                        // else if (result === 9)
-                        //     message = "@localizer["Error in posting to accounts. This supplier is not linked to accounts"]";
-                        // else if (result === 10)
-                        //     message = "@localizer["Error in posting to accounts. This customer is not linked to accounts"]";
-                        // else if (result === 11)
-                        //     message = "@localizer["Accounts have been posted"]";
                         myAlert.innerHTML =
                             `
-                                <div class="modal-container">
-                                    <div class="modal 4" id="modal">
-                                        <div class="modal-header fs-4">
-                                            <div class="title">${note} !</div>
-                                            <button type="button" onclick="closeAlert(event)" data-close-button class="close-button">&times;</button>
+                                    <div class="modal-container">
+                                        <div class="modal 4" id="modal">
+                                            <div class="modal-header fs-4">
+                                                <div class="title">${note} !</div>
+                                                <button type="button" onclick="closeAndRefresh(event, 'button', ${result})" data-close-button class="close-button">&times;</button>
+                                            </div>
+                                            <div class="modal-body fs-4">
+                                                ${message}
+                                            </div>
+                                            <div class="modal-footer fs-4">
+                                                <button type="button" onclick="closeAndRefresh(event, 'button', ${result})" data-close-button class="btn btn-primary">@localizer["Ok"]</button>
+                                            </div>
                                         </div>
-                                        <div class="modal-body fs-4">
-                                            ${message}
-                                        </div>
-                                        <div class="modal-footer fs-4">
-                                            <button type="button" onclick="closeAlert(event)" data-close-button class="btn btn-primary">@localizer["Ok"]</button>
-                                        </div>
+                                        <div onclick="closeAndRefresh(event, 'overlay', ${result})" id="overlay"></div>
                                     </div>
-                                    <div onclick="closeOverlay(event)" id="overlay"></div>
-                                </div>
-                                `;
+                                    `;
                         button.insertAdjacentHTML("afterend", myAlert.innerHTML);
                         openAlert(e);
-                        myAlert.querySelectorAll("[data-close-button]").forEach(ele => {
-                            ele.onclick = closeAndRefresh(event, "button", result);
-                        });
-                        myAlert.querySelector("#overlay").onclick = closeAndRefresh(event, "overlay", result);
-                        // if (result === 11) {
-                        //     getPermissionsInStock();
-                        //     let transDetails = document.querySelector("#myTable_2 tbody");
-                        //     transDetails.innerHTML = "";  // Empty the table
-                        // }
                     }
                 }
             });
         }
+
 
         function formatDate(date) {
             let myDate = new Date(date);
@@ -560,6 +532,7 @@
                         }
                         userPermissions.appendChild(userPerm);
                     }
+                    autoClick();
                 }
             });
         }
@@ -601,7 +574,7 @@
                 url: `/Stocks/PermissionFormDetails/GetPermissionDetails/${transMAsterID}`,
                 success: function (result) {
                     spinner.classList.add("d-none");
-                    if (result[0].transType == 23)
+                    if (result[0] && result[0].transType == 23)
                         transDetailsAddButton.removeAttribute("href");
 
                     let totalValue = 0, totalQuantity = 0, totalTax = 0;
@@ -682,8 +655,7 @@
             });
         }
 
-        // Function to handle initial click based on DocNo on first table
-        (function () {
+        function autoClick() {
             let permissionNum = document.getElementById("docNo").value;
             let rows = document.querySelectorAll("#myTable tbody tr");
 
@@ -701,6 +673,23 @@
                     }
                 }
             }
+        }
+
+        // Function to handle initial click based on DocNo on first table
+        // (
+        //     autoClick();
+        // )();
+
+        (function () {
+            let permissionNum = document.getElementById("permissions");
+            let stocksNum = document.getElementById("stocks");
+            if (document.getElementById("stocksNum").value){
+                stocksNum.value = document.getElementById("stocksNum").value;
+                getUserPermissionsForStock();
+            }
+            // console.log(document.getElementById("permissionsNum").value);
+            // permissionNum.value = document.getElementById("permissionsNum").value;
+            // getPermissionsInStock();
         })();
     </script>
 }

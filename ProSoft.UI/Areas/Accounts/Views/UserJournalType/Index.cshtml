@@ -12,6 +12,8 @@
 </div>
  
 <input id="journalCount" type="hidden" value="@ViewBag.journalCount" />
+<input id="redirect" type="hidden" value="@ViewBag.redirect" />
+
 
 <div class="container pt-2" style="min-height:100vh;">
     <div class="d-flex justify-content-between align-items-center flex-column flex-md-row my-2">
@@ -183,5 +185,30 @@
                 }
             });
         }
+        (function autoClick() {
+            let redirectNum = document.getElementById("redirect").value;
+            let rows = document.querySelectorAll("#myTable tbody tr");
+
+            if (redirectNum === null || redirectNum == 0) {
+                // If redirectNum is null or 0, click the first row
+                if (rows.length > 0) {
+                    rows[0].querySelector("td:first-child").click();
+                }
+            } else {
+                // Loop through all table rows to find and click the one that matches redirectNum
+                for (let i = 0, len1 = rows.length; i < len1; i++) {
+                    let firstTd = rows[i].querySelector("td:first-child");  // Select the first td in the row
+                    if (firstTd) {
+                        let tdValue = firstTd.textContent || firstTd.innerText;
+                        tdValue = tdValue.toLowerCase();
+                        if (tdValue.indexOf(redirectNum) > -1) {  // Compare with redirectNum
+                            firstTd.click();
+                            break;
+                        }
+                    }
+                }
+            }
+        })();
+                                                    
     </script>
 }

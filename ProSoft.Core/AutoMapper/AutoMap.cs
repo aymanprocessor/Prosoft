@@ -99,6 +99,7 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<DepositEditAddDTO, Deposit>().ReverseMap();
             CreateMap<DrTimeSheetDTO, Drtimsheet>().ReverseMap();
             CreateMap<UsersSectionDTO, UsersSection>().ReverseMap();
+            CreateMap<CheckupClinicDTO, CheckupClinic>().ReverseMap();
             ////////// Stocks ////////////////////
             CreateMap<KindStore, KindStoreDTO>().ReverseMap();
             CreateMap<Branch, BranchDTO>().ReverseMap();
@@ -142,6 +143,8 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<SubItemDtlDTO, SubItemDtlDTO>().ReverseMap();
             CreateMap<MainItem, SubItemDtlDTO>().ReverseMap();
             CreateMap<SubItem, SubItemDtlDTO>().ReverseMap();
+            CreateMap<RegionsViewDTO, Region>().ReverseMap();
+            CreateMap<RegionsEditAddDTO, Region>().ReverseMap();
             ////////// System ////////////////////
             CreateMap<EisPosting, EisPostingViewDTO>().ReverseMap();
             CreateMap<EisPosting, EisPostingEditAddDTO>().ReverseMap();
@@ -150,6 +153,8 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<AccMainCode, AccMainCodeEditAddDTO>().ReverseMap();
             CreateMap<AccMainCodeEditAddDTO, AccMainCodeDTO>().ReverseMap();
             CreateMap<AccSubCode, AccSubCodeDTO>().ReverseMap();
+            CreateMap<AccMainCodeDtl, AccMainCodeDtlDTO>().ReverseMap();
+            CreateMap<AccSubCodeEdit, AccSubCodeEditDTO>().ReverseMap();
             CreateMap<JournalTypeDTO, JournalType>().ReverseMap();
             CreateMap<UserJournalTypeDTO, UserJournalType>().ReverseMap();
             CreateMap<AccTransMasterViewDTO, AccTransMaster>().ReverseMap();

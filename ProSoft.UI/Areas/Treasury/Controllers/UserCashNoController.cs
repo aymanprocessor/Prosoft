@@ -9,6 +9,7 @@ using ProSoft.EF.DTOs.Treasury;
 using ProSoft.EF.IRepositories;
 using ProSoft.EF.IRepositories.Treasury;
 using ProSoft.EF.Models;
+using ProSoft.EF.Models.Accounts;
 using ProSoft.EF.Models.Stocks;
 using ProSoft.EF.Models.Treasury;
 
@@ -27,10 +28,11 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
             _userRepo = userRepo;
             _mapper = mapper;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? redirect)
         {
             List<AppUser> users = await _userRepo.GetAllUsersAsync();
             List<UserDTO> usersDTO = _mapper.Map<List<UserDTO>>(users);
+            ViewBag.redirect = redirect;
             return View(usersDTO);
         }
 
@@ -61,7 +63,7 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
                 userCashNoDTO.UserCode = id;
 
                 await _userCashNoRepo.AddSafeTransAsync(userCashNoDTO);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { redirect = id });
             }
             return View(userCashNoDTO);
         }
@@ -87,7 +89,7 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
                 userCashNoDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
 
                 await _userCashNoRepo.EditSafeTransAsync(id, userCashNoDTO);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { redirect = userCashNoDTO.UserCode });
             }
             return View(userCashNoDTO);
         }
@@ -101,7 +103,7 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
 
             await _userCashNoRepo.DeleteAsync(userCashNo);
             await _userCashNoRepo.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { redirect = userCashNo.UserCode });
         }
     }
 }

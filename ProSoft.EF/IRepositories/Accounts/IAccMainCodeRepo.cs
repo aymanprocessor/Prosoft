@@ -11,6 +11,7 @@ namespace ProSoft.EF.IRepositories.Accounts
 {
     public interface IAccMainCodeRepo
     {
+        Task<List<AccMainCodeDTO>> GetAllMainsAsync();
         Task<List<AccMainCodeDTO>> GetMainsByLevelAsync(double level,string? mainCode = "");
         Task<AccMainCodeDTO> GetMainByIdAsync(string id);
         Task<string> GetParentCodeAsync(string code);

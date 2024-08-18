@@ -104,13 +104,14 @@ namespace ProSoft.UI.Areas.Accounts.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteAccSubCode(string id, string maincode,string actionName)
         {
+            int fYear = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "F_Year").Value);
             string grandCode = await _accSubCodeRepo.GetParentCodeAsync(maincode);
-            await _accSubCodeRepo.DeleteAccSubCodeAsync(id, maincode);
+            string subDeleted = await _accSubCodeRepo.DeleteAccSubCodeAsync(id, maincode ,fYear);
             if (actionName == "MainLevel_2")
             {
-                return RedirectToAction(actionName, "AccMainCode", new { clickId = maincode });
+                return RedirectToAction(actionName, "AccMainCode", new { clickId = maincode, subDeleted=subDeleted });
             }
-            return RedirectToAction(actionName, "AccMainCode", new { id = grandCode, clickId = maincode });
+            return RedirectToAction(actionName, "AccMainCode", new { id = grandCode, clickId = maincode, subDeleted = subDeleted });
         }
     }
 }

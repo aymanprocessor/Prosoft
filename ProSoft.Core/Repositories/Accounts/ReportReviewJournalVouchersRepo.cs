@@ -39,12 +39,17 @@ namespace ProSoft.Core.Repositories.Accounts
         {
             var subCodes = await _Context.AccSubCodes.ToListAsync();
 
-            List<ReviewJournalVouchersDTO> reviewJournalVouchersDTOs = await _Context.AccTransDetails
+            var query = _Context.AccTransDetails
                 .Where(obj =>
                     (journal == 100 || obj.TransType == journal.ToString()) &&
                     (branche == 100 || obj.CoCode == branche) &&
-                    (obj.TransDate >= fromPeriod && obj.TransDate <= toPeriod))
+                    (obj.TransDate >= fromPeriod && obj.TransDate <= toPeriod));
+
+            var groupedQuery = await query
                 .GroupBy(obj => obj.TransNo)
+                .ToListAsync();
+
+            List<ReviewJournalVouchersDTO> reviewJournalVouchersDTOs = groupedQuery
                 .Where(group =>
                     displayType == 1 ||
                     (displayType == 3 && (
@@ -52,15 +57,23 @@ namespace ProSoft.Core.Repositories.Accounts
                         group.Any(obj => !subCodes.Any(sub => sub.MainCode == obj.MainCode && sub.SubCode == obj.SubCode))
                     )) ||
                     (displayType == 2 && group.Sum(obj => obj.ValDep) - group.Sum(obj => obj.ValCredit) != 0))
-                .Select(group => new ReviewJournalVouchersDTO
+                .Select(group =>
                 {
-                    TransNo = group.Key,
-                    TransDate = group.First().TransDate,
-                    ValDep = group.Sum(obj => obj.ValDep),
-                    ValCredit = group.Sum(obj => obj.ValCredit)
-                })
-                .ToListAsync();
+                    var mainCodeWithIssue = group.FirstOrDefault(obj => obj.SubCode == null) ??
+                                             group.FirstOrDefault(obj => !subCodes.Any(sub => sub.MainCode == obj.MainCode && sub.SubCode == obj.SubCode));
 
+                    return new ReviewJournalVouchersDTO
+                    {
+                        TransNo = group.Key,
+                        TransDate = group.First().TransDate,
+                        ValDep = group.Sum(obj => obj.ValDep),
+                        ValCredit = group.Sum(obj => obj.ValCredit),
+                        MainCode = mainCodeWithIssue?.MainCode, // إرجاع MainCode الذي لديه مشكلة
+                        SubCode = mainCodeWithIssue?.SubCode,   // إرجاع SubCode الذي لديه مشكلة
+                        LineDesc = mainCodeWithIssue?.LineDesc  // إرجاع LineDesc من أول عنصر في المجموعة
+                    };
+                })
+                .ToList();
             return reviewJournalVouchersDTOs;
         }
 

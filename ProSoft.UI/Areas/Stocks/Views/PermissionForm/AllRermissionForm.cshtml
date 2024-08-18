@@ -1,0 +1,592 @@
+﻿@model TransMasterViewDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Display Permissions Forms";
+    Layout = "_Layout";
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+
+    SelectList stocks = new(ViewBag.Stocks, "Stkcod", "Stknam");
+    SelectList supCodes = new(ViewBag.SupCodes, "SupCode1", "SupName");
+    
+}
+@inject IViewLocalizer localizer
+<style>
+    .hide {
+        display: none !important;
+    }
+</style>
+<div class="text-center">
+    <h2 class="mb-2">@localizer["Display Permissions Forms"] </h2>
+</div>
+
+<div class="container pt-2">
+    <input id="stocksNum" type="hidden" value="@ViewBag.stockCode" />
+    <input id="permissionsNum" type="hidden" value="@ViewBag.trans_Type" />
+    <div class="page-head d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 my-2">
+        <div class="d-flex align-items-center flex-column flex-md-row w-50">
+            <label for="stocks" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Stocks"]</label>
+            <select id="stocks" asp-items="stocks" class="form-control text-center w-100" onchange="getUserPermissionsForStock()">
+                <option value="">-- Choose --</option>
+            </select>
+        </div>
+        <div class="d-flex align-items-center flex-column flex-md-row w-50">
+            <label for="permissions" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Permissions"]</label>
+            <select id="permissions" class="form-control text-center w-100" onchange="getPermissionsInStock()">
+                <option value="">-- Choose --</option>
+            </select>
+        </div>
+        <div class="d-flex align-items-center flex-column flex-md-row w-50">
+            <label class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["The Supplier"]</label>
+            <select id="SupNo" asp-items="supCodes" class="form-control text-center">
+                <option value="">-- Choose --</option>
+            </select>
+        </div>
+        <a class="btn btn-sm btn-primary fs-6" style="width:150px;background-color: #084298;color: yellow;border-radius: 8px" onclick="getPermissionsInStock()">
+                @localizer["Display"]
+        </a>
+        <input id="docNo" type="hidden" value="@ViewBag.docNo" />
+    </div>
+    <div class="filter-box d-flex align-items-center flex-column flex-md-row gap-3 my-1">
+        <div class="d-flex align-items-center flex-column flex-md-row w-100" style="width:40% !important;">
+            <label for="filter" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0" style="width:60% !important;color: #0000d7;">@localizer["Filter By"]</label>
+            <select id="filter" class="form-control text-center p-0" onchange="filtering(event)">
+                <option value="1">@localizer["Period"]</option>
+                <option value="2">@localizer["Voucher"]</option>
+            </select>
+        </div>
+
+        <div class="d-flex justify-content-end align-items-center flex-column flex-md-row gap-2 receipt-hide hide" style="width:70% !important;">
+            <div class="d-flex align-items-center w-100">
+                <label style="width:60% !important;">@localizer["From Voucher"]</label>
+                <input id="fromReceipt" type="number" class="form-control text-center p-0" />
+            </div>
+            <div class="d-flex align-items-center w-100">
+                <label style="width:60% !important;">@localizer["To Voucher"]</label>
+                <input id="toReceipt" type="number" class="form-control text-center p-0" />
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end align-items-center flex-column flex-md-row gap-2 period" style="width:70% !important;">
+            <div class="d-flex align-items-center w-100">
+                <label style="width:60% !important;">@localizer["From Period"]</label>
+                <input id="fromPeriod" type="date" class="form-control text-center p-0" />
+            </div>
+            <div class="d-flex align-items-center w-100">
+                <label style="width:60% !important;">@localizer["To Period"]</label>
+                <input id="toPeriod" type="date" class="form-control text-center p-0" />
+            </div>
+        </div>
+    </div>
+
+    <div class="overflow-auto" style="height: 225px;">
+        <table id="myTable" class="table table-bordered table-hover" style="width:100%;">
+            <thead class="table-dark">
+                <tr>
+                    <th class="align-middle" style="min-width: 100px;">
+                        @localizer["Doc No"]
+                    </th>
+                    <th class="align-middle" style="min-width: 100px;">
+                        @localizer["Permission Date"]
+                    </th>
+                    <th class="align-middle text-center" style="min-width: 100px;">
+                        @localizer["Stock Name"]
+                    </th>
+                    <th class="align-middle text-center" style="min-width: 100px;">
+                        @localizer["The Supplier"]
+                    </th>
+                    <th class="align-middle text-center" style="min-width: 100px;">
+                        @localizer["Voucher No"]
+                    </th>
+                    <th class="align-middle text-center" style="min-width: 100px;">
+                        @localizer["Supplier Invoice No"]
+                    </th>
+                    <th class="align-middle text-center" style="min-width: 100px;">
+                        @localizer["From Permission"]
+                    </th>
+                    <th class="align-middle text-center" style="min-width: 100px;">
+                        @localizer["Shipped from / to"]
+                    </th>
+                    <th class="align-middle text-center" style="min-width: 100px;">
+                        @localizer["Supplier Invoice Date"]
+                    </th>
+                    <th class="align-middle text-center" style="min-width: 100px;">
+                        @localizer["Approved OR NO"]
+                    </th> 
+                    <th class="align-middle text-center" style="min-width: 100px;">
+                        @localizer["Approve"]
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    <tr onclick="GetPermissionDetails(event, @Model.TransMAsterID, @Model.ShowTransPrice);" class="align-middle text-center" style="cursor: pointer;">
+                        <td>@Model.DocNo</td>
+                        <td>@Model.DocDate</td>
+                        <td>@Model.StockName</td>
+                        <td>@Model.SupplierName</td>
+                        <td>@Model.AccTransNo</td>
+                        <td>@Model.SupInvNo</td>
+                        <td>@Model.DocNoFr</td>
+                        <td>@Model.StockName2</td>
+                        <td>@Model.SupInvDate</td>
+                        @if(Model.Flag3 =="2")
+                        {
+                            <td><i class="fa-solid fa-check"></i></td>
+                            <td>
+                                <a onclick="CancelApprovePermission(event, @Model.TransMAsterID)" class="btn btn-sm btn-primary mb-1 fs-6" style="width: 120px">@localizer["Cancel Approve"]</a>
+                            </td>
+                        }
+                        else
+                        {
+                            <td></td>
+                            <td></td>
+                        }
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="spinner-container d-flex justify-content-center align-items-center d-none" style="height: 100px;">
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+    @* /////////////////////////////////////////////////////////////////// *@
+
+    @* Table for Permission Details *@
+
+    <div class="details-table-head d-flex justify-content-between align-items-center mt-3 mb-1">
+        <h2 class="header">@localizer["The Items"]</h2>
+       @*  <a class="btn btn-sm btn-primary fs-6" style="width:150px">
+            @localizer["Add Item"]
+        </a> *@
+    </div>
+
+    <div class="p-0 mb-2 border-opacity-75 overflow-auto" style="max-height: 300px;">
+
+        <table id="myTable_2" class="table table-bordered table-hover" style="width:100%">
+            <thead class="table-dark">
+                <tr class="align-middle">
+                    <th>
+                        @localizer["Serial_M"]
+                    </th>
+                    <th>
+                        @localizer["Item Name"]
+                    </th>
+                    <th>
+                        @localizer["The Barcode"]
+                    </th>
+                    <th class="text-center">
+                        @localizer["The Quantity"]
+                    </th>
+                    <th class="text-center">
+                        @localizer["The Unit"]
+                    </th>
+                    <th>
+                        @localizer["Unit Price"]
+                    </th>
+                    <th>
+                        @localizer["Under Tax"]
+                    </th>
+                    <th>
+                        @localizer["Tax"]
+                    </th>
+                    <th>
+                        @localizer["The Total"]
+                    </th>
+                    <th>
+                        @localizer["Expire Date"]
+                    </th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div class="spinner-container d-flex justify-content-center align-items-center d-none" style="height: 100px;">
+            <div class="spinner"></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var filter = document.getElementById("filter")
+        var fromPeriod = document.getElementById("fromPeriod");
+        var toPeriod = document.getElementById("toPeriod");
+        var fromReceipt = document.getElementById("fromReceipt");
+        var toReceipt = document.getElementById("toReceipt");
+        var supNo = document.getElementById("SupNo");
+
+        function goToAddPermissionForm(e, permissionID, stockID) {
+            let linkButton = e.target;
+            let permission = document.getElementById(permissionID);
+            let stock = document.getElementById(stockID);
+
+            if (!stock.value) {
+                stock.focus();
+                return;
+            }
+            if (!permission.value) {
+                permission.focus();
+                return;
+            }
+
+        }
+
+        function getUserPermissionsForStock() {
+            // let stock = e.target;
+            let stock = document.getElementById("stocks");
+            let permissions = document.getElementById("permissions");
+            permissions.innerHTML = `<option value="">-- Choose --</option>`;
+
+            $.ajax({
+                url: `/Stocks/PermissionForm/GetUserPermissionsForStock/${stock.value}`,
+                success: function (result) {
+                    for (let item of result) {
+                        permissions.innerHTML +=
+                            `<option value="${item.uniqueType}">${item.gDesc}</option>`;
+                    }
+                    if (document.getElementById("permissionsNum").value) {
+                        permissions.value = document.getElementById("permissionsNum").value;
+                        getPermissionsInStock();
+                    }
+                }
+            });
+        }
+
+        function closeAndRefresh(e, segment) {
+            if (segment == "button") {
+                closeAlert(e);
+            }
+            else if (segment == "overlay") {
+                closeOverlay(e);
+            }
+            setTimeout(() => {
+                getPermissionsInStock();
+            }, 200);
+        }
+
+        function CancelApprovePermission(e, transMAsterID) {
+            $.ajax({
+                url: `/Stocks/PermissionForm/CancelApprovePermission/${transMAsterID}`,
+                success: function (result) {
+                    let message;
+                    let button = e.target;
+                    let myAlert = document.createElement("div");
+                    let status = result == 1 ?
+                        "@localizer["Success"]" :
+                        "@localizer["Warning"]";
+                    message = result == 1 ?
+                        "@localizer["The permission now is not approved"]" :
+                        "@localizer["This permission is still Approved"]";
+                        myAlert.innerHTML =
+                            `
+                                        <div class="modal-container">
+                                            <div class="modal 4" id="modal">
+                                                <div class="modal-header fs-4">
+                                                    <div class="title">${status} !</div>
+                                                    <button type="button" onclick="closeAndRefresh(event, 'button')" data-close-button class="close-button">&times;</button>
+                                                </div>
+                                                <div class="modal-body fs-4">
+                                                                 ${message}
+                                                </div>
+                                                <div class="modal-footer fs-4">
+                                                    <button type="button" onclick="closeAndRefresh(event, 'button')" data-close-button class="btn btn-primary">@localizer["Ok"]</button>
+                                                </div>
+                                            </div>
+                                            <div onclick="closeAndRefresh(event, 'overlay')" id="overlay"></div>
+                                        </div>
+                                        `;
+                        button.insertAdjacentHTML("afterend", myAlert.innerHTML);
+                        openAlert(e);
+                }
+            });
+        }
+
+
+        function formatDate(date) {
+            let myDate = new Date(date);
+            let mm = myDate.getMonth() + 1; // getMonth() is zero-based
+            let dd = myDate.getDate();
+
+            return [myDate.getFullYear(),
+            (mm > 9 ? '' : '0') + mm,
+            (dd > 9 ? '' : '0') + dd
+            ].join('-');
+        };
+
+        function deleteTransMaster(e, transMAsterID) {
+            e.preventDefault();
+            let button = e.target;
+
+            $.ajax({
+                url: `/Stocks/PermissionForm/IfPossibleToDelete/${transMAsterID}`,
+                success: function (result) {
+                    if (result == 1 || result == 2) {
+                        let message = result == 1 ?
+                            "@localizer["You can not delete it because of posting to accounts"]" :
+                            "@localizer["This permission is approved"]";
+
+                        let myAlert = document.createElement("div");
+                        myAlert.innerHTML =
+                            `
+                                    <div class="modal-container">
+                                        <div class="modal 4" id="modal">
+                                            <div class="modal-header fs-4">
+                                                <div class="title">@localizer["Warning"] !</div>
+                                                <button type="button" onclick="closeAlert(event)" data-close-button class="close-button">&times;</button>
+                                            </div>
+                                            <div class="modal-body fs-4">
+                                                ${message}
+                                            </div>
+                                            <div class="modal-footer fs-4">
+                                                <button type="button" onclick="closeAlert(event)" data-close-button class="btn btn-primary">@localizer["Ok"]</button>
+                                            </div>
+                                        </div>
+                                        <div onclick="closeOverlay(event)" id="overlay"></div>
+                                    </div>
+                                    `;
+                        button.insertAdjacentHTML("afterend", myAlert.innerHTML);
+                        openAlert(e);
+                    }
+                    else if (result == 3)
+                        openModalListener(e);
+                }
+            });
+        }
+
+        function getPermissionsInStock() {
+            // let permission = e.target;
+            let permission = document.getElementById("permissions");
+            let stock = document.getElementById("stocks");
+            if (!stock.value) {
+                stock.focus();
+                return;
+            }
+            if (!permissions.value) {
+                permissions.focus();
+                return;
+            }
+            // if (filter.value == 1) {
+            //     if (!fromPeriod.value) {
+            //         fromPeriod.focus();
+            //         return;
+            //     }
+            //     if (!toPeriod.value) {
+            //         toPeriod.focus();
+            //         return;
+            //     }
+            // }
+            // else if (filter.value == 2) {
+            //     if (!fromReceipt.value) {
+            //         fromReceipt.focus();
+            //         return;
+            //     }
+            //     if (!toReceipt.value) {
+            //         toReceipt.focus();
+            //         return;
+            //     }
+            // }
+            if (!permission.value)
+                return;
+
+
+            let userPermissions = document.querySelector("#myTable tbody");
+            userPermissions.innerHTML = "";  // Empty the table
+
+            var transDetails = document.querySelector("#myTable_2 tbody");
+            transDetails.innerHTML = "";  // Empty the table
+
+            let spinner = userPermissions.parentElement.parentElement.querySelector(".spinner-container");
+            spinner.classList.remove("d-none");
+            let url;
+            if (filter.value == 1) {
+                url = `/Stocks/PermissionForm/GetAllPermissionsForms/${stock.value}?transType=${permission.value}&fromPeriod=${fromPeriod.value}&toPeriod=${toPeriod.value}&supCode=${supNo.value}`;
+            } else if (filter.value == 2) {
+                url = `/Stocks/PermissionForm/GetAllPermissionsForms/${stock.value}?transType=${permission.value}&fromReceipt=${fromReceipt.value}&toReceipt=${toReceipt.value}&supCode=${supNo.value}`;
+            }
+
+            $.ajax({
+                url: url,
+                success: function (result) {
+                    spinner.classList.add("d-none");
+                    for (let item of result) {
+                        let userPerm = document.createElement("tr");
+
+                        let docDate = formatDate(item.docDate);
+                        let supInvDate = formatDate(item.supInvDate);
+                        let approvedOrNot = item.flag3 == "2" ?
+                            `<td><i class="fa-solid fa-check"></i></td>
+                            <td>
+                                        <a onclick="CancelApprovePermission(event, ${item.transMAsterID})" class="btn btn-sm btn-primary mb-1 fs-6" style="width: 120px;">@localizer["Cancel Approve"]</a>
+                            </td>`  :
+                            ` <td></td>
+                            <td></td>
+                            `;
+
+                        userPerm.innerHTML =
+                            `
+                                    <td class="align-middle text-center">${item.docNo}</td>
+                                    <td class="align-middle text-center">${docDate}</td>
+                                    <td class="align-middle text-center">${item.stockName}</td>
+                                    <td class="align-middle text-center">${item.supplierName}</td>
+                                    <td class="align-middle text-center">${item.accTransNo}</td>
+                                    <td class="align-middle text-center">${item.supInvNo}</td>
+                                    <td class="align-middle text-center">${item.docNoFr}</td>
+                                    <td class="align-middle text-center">${item.stockName2}</td>
+                                    <td class="align-middle text-center">${supInvDate}</td>
+                                    ${approvedOrNot}
+                                    `;
+                        userPerm.style.cursor = "pointer";
+                        userPerm.onclick = function (event) {
+                            GetPermissionDetails(event, item.transMAsterID, item.showTransPrice);
+                        }
+                        userPermissions.appendChild(userPerm);
+                    }
+                    autoClick();
+                }
+            });
+        }
+
+        // Displaying Permission Details
+        function GetPermissionDetails(e, transMAsterID, showTransPrice) {
+            var transDetails = document.querySelector("#myTable_2 tbody");
+
+            // Handle active clic
+            let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");;
+
+            allItemRows.forEach(row => {
+                row.classList.remove("active-row");
+            });
+
+            let clickedTarget = e.target.parentElement
+            clickedTarget.classList.add("active-row");
+            ///////////////////////////////////////////////////////////////////
+
+            // Catch header for transDetails
+            let transDetailsHead = document.querySelector(".details-table-head");
+            let transDetailsHeader = transDetailsHead.querySelector(".header"); // Display Header for details
+            transDetailsHeader.innerHTML = "@localizer["The Items"]";
+
+            ///////////////////////////////////////////////////////////////////
+
+            // Handle ajax call
+            transDetails.innerHTML = "";  // Empty the body
+
+            let spinner = transDetails.parentElement.parentElement.querySelector(".spinner-container");
+            spinner.classList.remove("d-none");
+
+            $.ajax({
+                url: `/Stocks/PermissionFormDetails/GetPermissionDetails/${transMAsterID}`,
+                success: function (result) {
+                    spinner.classList.add("d-none");
+                    if (result[0] && result[0].transType == 23)
+                        transDetailsAddButton.removeAttribute("href");
+
+                    let totalValue = 0, totalQuantity = 0, totalTax = 0;
+                    for (let item of result) {
+                        const transDtl = document.createElement("tr");
+
+                        let itmBarcode = item.itmBarcode ? item.itmBarcode : "";
+                        let itmHaveTax = item.itmHaveTax == 1 ? `<i class="fa-solid fa-check"></i>` : "";
+                        let expireDate = item.expireDate ? formatDate(item.expireDate) : "";
+                     
+
+                        transDtl.innerHTML +=
+                            `
+                                    <td class="align-middle text-center">${item.serial}</td>
+                                    <td class="align-middle text-center">${item.itemMasterName}</td>
+                                    <td class="align-middle text-center">${itmBarcode}</td>
+                                    <td class="align-middle text-center">${item.unitQty}</td>
+                                    <td class="align-middle text-center">${item.unitCodeName}</td>
+                                    <td class="align-middle text-center">${item.price}</td>
+                                    <td class="align-middle text-center">${itmHaveTax}</td>
+                                    <td class="align-middle text-center">${item.taxVal}</td>
+                                    <td class="align-middle text-center">${item.itemVal}</td>
+                                    <td class="align-middle text-center">${expireDate}</td>
+                                
+                                    `;
+                        totalQuantity += item.unitQty;
+                        totalTax += item.taxVal;
+                        totalValue += item.itemVal;
+                        transDetails.appendChild(transDtl);
+                    }
+                    if (result.length) {
+                        const totalRow = document.createElement("tr");
+                        totalRow.className = "text-center align-middle fw-bold fs-5";
+                        totalRow.innerHTML =
+                            `
+                                    <td colspan="3">@localizer["The Total"]</td>
+                                    <td style="background-color: #e6dfdf;">${totalQuantity}</td>
+                                    <td colspan="3"></td>
+                                    <td style="background-color: #e6dfdf;">${totalTax}</td>
+                                    <td style="background-color: #e6dfdf;">${totalValue}</td>
+                                    <td></td>
+                                    `;
+                        transDetails.appendChild(totalRow);
+                    }
+                }
+            });
+        }
+
+        function autoClick() {
+            let permissionNum = document.getElementById("docNo").value;
+            let rows = document.querySelectorAll("#myTable tbody tr");
+
+            if (permissionNum != null || permissionNum != 0) {
+                // Loop through all table rows
+                for (let i = 0, len1 = rows.length; i < len1; i++) {
+                    let firstTd = rows[i].querySelector("td:first-child");  // Select the first td in the row
+                    if (firstTd) {
+                        let tdValue = firstTd.textContent || firstTd.innerText;
+                        tdValue = tdValue.toLowerCase();
+                        if (tdValue.indexOf(permissionNum) > -1) {  // Compare with journalCode
+                            firstTd.click();
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Function to handle initial click based on DocNo on first table
+        // (
+        //     autoClick();
+        // )();
+
+        (function () {
+            let permissionNum = document.getElementById("permissions");
+            let stocksNum = document.getElementById("stocks");
+            if (document.getElementById("stocksNum").value) {
+                stocksNum.value = document.getElementById("stocksNum").value;
+                getUserPermissionsForStock();
+            }
+            // console.log(document.getElementById("permissionsNum").value);
+            // permissionNum.value = document.getElementById("permissionsNum").value;
+            // getPermissionsInStock();
+        })();
+
+        //Filter
+        function filtering(e) {
+            var filterBy = e.target.value;
+            // console.log(filterBy);
+            var periodElements = document.querySelectorAll(".period");
+            var receiptElement = document.querySelector(".receipt-hide");
+
+            if (filterBy == 2) {
+                receiptElement.classList.remove("hide");
+                periodElements.forEach(e => {
+                    e.classList.add("hide");
+                });
+            }
+            else if (filterBy == 1) {
+                receiptElement.classList.add("hide");
+                periodElements.forEach(e => {
+                    e.classList.remove("hide");
+                });
+            }
+
+        }
+
+    </script>
+}

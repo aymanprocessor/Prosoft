@@ -104,13 +104,33 @@ namespace ProSoft.Core.Repositories.Accounts
             await _Context.SaveChangesAsync();
         }
 
-        public async Task DeleteAccSubCodeAsync(string subCode, string mainCode)
+        public async Task<string> DeleteAccSubCodeAsync(string subCode, string mainCode, int fYear)
         {
             AccSubCode existingSub = await _Context.AccSubCodes
                  .FirstOrDefaultAsync(obj => obj.SubCode == subCode && obj.MainCode == mainCode);
+            AccStartBal accStartBal = await _Context.AccStartBals.FirstOrDefaultAsync(obj => obj.CoCode == existingSub.CoCode && obj.FYear == fYear && obj.MainCode == mainCode && obj.SubCode == subCode);
+            AccTransDetail accTransDetail = await _Context.AccTransDetails.FirstOrDefaultAsync(obj => obj.CoCode == existingSub.CoCode && obj.FYear == fYear && obj.MainCode == mainCode && obj.SubCode == subCode);
+            AccMainCodeDtl accMainCodeDtl = await _Context.AccMainCodeDtls.FirstOrDefaultAsync(obj => obj.CoCode == existingSub.CoCode && obj.SecCode == mainCode);
 
-            _Context.Remove(existingSub);
-            await _Context.SaveChangesAsync();
+            if (accStartBal != null)
+            {
+                return "Deletion is not allowed because the account is in the opening balances";
+            }
+            else if (accTransDetail != null)
+            {
+                return "Deletion is not allowed because the account is in previous transactions";
+            }
+            else if (accMainCodeDtl != null)
+            {
+                var mainName = (await _Context.AccMainCodes.FirstOrDefaultAsync(obj => obj.MainCode == accMainCodeDtl.MainCode)).MainName;
+                return "Deletion is not allowed because the account is Main Child";
+            }
+            else
+            {
+                _Context.Remove(existingSub);
+                await _Context.SaveChangesAsync();
+                return "Deleted successfully";
+            }
         }
     }
 }

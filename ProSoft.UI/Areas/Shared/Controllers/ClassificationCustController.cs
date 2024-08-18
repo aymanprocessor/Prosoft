@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ProSoft.EF.DTOs.Shared;
+using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.IRepositories.Medical.HospitalPatData;
-using ProSoft.EF.IRepositories.Shared;
+using ProSoft.EF.IRepositories.Stocks;
 using ProSoft.EF.Models.Medical.HospitalPatData;
 
 namespace ProSoft.UI.Areas.Shared.Controllers

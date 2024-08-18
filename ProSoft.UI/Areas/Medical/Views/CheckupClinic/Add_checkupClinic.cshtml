@@ -1,0 +1,48 @@
+﻿@model CheckupClinicDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_Layout";
+}
+@inject IViewLocalizer localizer
+<div class="container pt-2" style="min-height:100vh;">
+
+    <h1 class="mt-4">@localizer["Add Check"]</h1>
+    <form method="post" asp-action="Add_checkupClinic" id="myForm">
+        <div class="border p-3 mt-4">
+            <input asp-for="CheckupId" class="form-control" hidden value="@ViewBag._max" />
+            <div asp-validation-summary="ModelOnly"></div>
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+
+                <div class="mb-3 ">
+                    <label asp-for=CheckupId></label>
+                    <input asp-for="CheckupId" class="form-control" disabled value="@ViewBag._max" />
+                    <span asp-validation-for="CheckupId" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for=CheckupDesc></label>
+                    <input asp-for="CheckupDesc" class="form-control" />
+                    <span asp-validation-for="CheckupDesc" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for=CheckupDesc2></label>
+                    <input asp-for="CheckupDesc2" class="form-control" />
+                    <span asp-validation-for="CheckupDesc" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex justify-content-md-center gap-2 ">
+                <button type="submit" class="btn btn-primary" style="width:150px">
+                    @localizer["Add"]
+                </button>
+                <a asp-controller="CheckupClinic" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+

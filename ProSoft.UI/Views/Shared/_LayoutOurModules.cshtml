@@ -86,6 +86,11 @@
                                                 </a>
                                             </li>
                                             <li class="nav-item has-submenu">
+                                                <a asp-area="Medical" asp-controller="CheckupClinic" asp-action="Index" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                                    @localizer["Types of Examinations"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
                                                 <a asp-area="Medical" asp-controller="MainClinic" asp-action="Index" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
                                                     @localizer["Department services"]
                                                 </a>
@@ -207,6 +212,11 @@
                                                     @localizer["The Sections"]
                                                 </a>
                                             </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Stocks" asp-controller="DepartmentsWithSections" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["Joining Departments With Sections"]
+                                                </a>
+                                            </li>
                                             @if (User.IsInRole("Admin"))
                                             {
                                                 <li class="nav-item has-submenu">
@@ -270,12 +280,29 @@
                             </li>
                             <li class="nav-item has-submenu">
                                 <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
+                                    <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Closing Procedures"]
+                                </a>
+                                <ul class="submenu collapse p-0 ">
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Stocks" asp-controller="OpenCloseTransaction" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                            @localizer["Opening and closing Transactions"]
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item has-submenu">
+                                <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
                                     <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Reports"]
                                 </a>
                                 <ul class="submenu collapse p-0 ">
                                     <li class="nav-item has-submenu">
-                                        <a class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
-                                            @localizer["Analysis Results"]
+                                        <a asp-area="Stocks" asp-controller="PermissionForm" asp-action="AllRermissionForm" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Display Permissions Forms"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Stocks" asp-controller="QuantityClassCard" asp-action="Index" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Quantity class card only"]
                                         </a>
                                     </li>
                                 </ul>
@@ -438,6 +465,11 @@
                                                 </a>
                                             </li>
                                             <li class="nav-item has-submenu">
+                                                <a asp-area="Accounts" asp-controller="AccSubCodeEdit" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["Modification of account codes"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
                                                 <a asp-area="Accounts" asp-controller="AccStartBal" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
                                                     @localizer["Opening Balances"]
                                                 </a>
@@ -485,7 +517,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li class="nav-item has-submenu">
+                          @*   <li class="nav-item has-submenu">
                                 <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
                                     <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Transactions"]
                                 </a>
@@ -496,7 +528,7 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </li>
+                            </li> *@
                             <li class="nav-item has-submenu">
                                 <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
                                     <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Reports"]

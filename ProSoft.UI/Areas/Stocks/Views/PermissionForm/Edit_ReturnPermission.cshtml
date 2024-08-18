@@ -104,7 +104,7 @@
 
             <div class="parent d-flex justify-content-md-center gap-2">
                 <button type="submit" class="btn btn-success" style="width:150px">@localizer["Save Changes"]</button>
-                <a asp-controller="PermissionForm" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                <a asp-controller="PermissionForm" asp-action="Index" asp-route-id="@ViewBag.transMasterID" class="btn btn-secondary" style="width:150px">
                     @localizer["Cancel"]
                 </a>
             </div>

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProSoft.EF.DbContext;
-using ProSoft.EF.IRepositories.Shared;
+using ProSoft.EF.IRepositories.Stocks;
 using ProSoft.EF.Models.Medical.HospitalPatData;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProSoft.Core.Repositories.Shared
+namespace ProSoft.Core.Repositories.Stocks
 {
     public class ClassificationCustRepo : Repository<ClassificationCust, int>, IClassificationCustRepo
     {

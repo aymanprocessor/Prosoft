@@ -33,6 +33,7 @@ namespace ProSoft.EF.DbContext
         public DbSet<NationalityEi> NationalityEis { get; set; }
         public DbSet<EisUserObject> EisUserObjects { get; set; }
         public DbSet<AccMonth> AccMonths { get; set; }
+        public DbSet<CompanyProfile> CompanyProfiles { get; set; }
         /////
         // Analysis //
         public DbSet<Itemanalysis> Itemanalyses { get; set; }
@@ -79,7 +80,7 @@ namespace ProSoft.EF.DbContext
         public DbSet<PriceList> PriceLists { get; set; }
         public DbSet<Drtimsheet> Drtimsheets { get; set; }
         public DbSet<PriceListDetail> PriceListDetails { get; set; }
-
+        public DbSet<CheckupClinic> CheckupClinics { get; set; }
         ////////////////////
         // Medical Records //
         public DbSet<CoronaryAngiographyReport> CoronaryAngiographyReports { get; set; }
@@ -134,6 +135,8 @@ namespace ProSoft.EF.DbContext
         // Accounts //
         public DbSet<AccMainCode> AccMainCodes { get; set; }
         public DbSet<AccSubCode> AccSubCodes { get; set; }
+        public DbSet<AccMainCodeDtl> AccMainCodeDtls { get; set; }
+        public DbSet<AccSubCodeEdit> AccSubCodeEdits { get; set; }
         public DbSet<UserJournalType> UserJournalTypes { get; set; }
         public DbSet<AccTransMaster> AccTransMasters { get; set; }
         public DbSet<AccTransDetail> AccTransDetails { get; set; }

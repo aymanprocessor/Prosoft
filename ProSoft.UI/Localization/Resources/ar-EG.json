@@ -637,19 +637,47 @@
   "Display Type": "نوع العرض",
   "Journal Vouchers": "قيود يومية",
   "Input Errors Journal Vouchers": "اخطاء الادخال في قيود يومية",
-
-
-
-
-
-
-
-
-
-
-
-
-
+  "Deletion is not allowed because the account is in the opening balances": "غير مسموح بالحذف لوجود الحساب في الارصدة الافتتاحية",
+  "Deletion is not allowed because the account is in previous transactions": "غير مسموح بالحذف لوجود الحساب في حركات سابقة الحساب",
+  "Deletion is not allowed because the account is Main Child": "غير مسموح بالحذف لوجود الحساب كتابع رئيسي",
+  "Deleted successfully": "تم الحذف بنجاح",
+  "Main Child": "تابع رئيسي",
+  "Add Main Child": "اضافة تابع رئيسي",
+  "American Daily Transaction": "حركة اليومية الاميريكية",
+  "Modification of account codes": "التعديل في اكواد الحسابات",
+  "Financial code": "الكود المالي",
+  "Joining Departments With Sections": "ربط الادارات بالاقسام",
+  "Types of Examinations": "انواع الفحوصات",
+  "Add Check": "اضافة فحص",
+  "Examination Name": "اسم الفحص",
+  "Edit Check": "تعديل فحص",
+  "Administrative Departments and Stocks": "الاقسام الاداريةومخازنها",
+  "Search department by department code or name ...": "ابحث عن القسم بواسطة الكود او الاسم ...",
+  "Department Namee": "اسم الادارة",
+  "Sections For Department": "اقسام الادارة",
+  "Send Order": "ارسال امر",
+  "Edit Section": "تعديل قسم",
+  "Approved OR NO": "معتمد ام لا",
+  "Cancel Approve": "الغاء الاعتماد",
+  "This permission is still Approved": "الاذن مازال معتمج",
+  "The permission now is not approved": "تم الغاء الاعتماد",
+  "Display Permissions Forms": "عرض نموذج الاذون",
+  "Opening and closing stock Transactions": "فتح واغلاق الحركات المخزنية",
+  "Opening and closing Transactions": "فتح واغلاق الحركات",
+  "Open Transactions": "فتح الحركات",
+  "Close Transactions": "اقفال الحركات",
+  "Transactions Opening Done": "تم فتح الحركات",
+  "Transactions Closing Done": "تم اقفال الحركات",
+  "From Permission No": "من الاذن رقم",
+  "To Permission No": "الي الاذن رقم",
+  "Incorrect Year": "السنة غير صحيحة",
+  "Quantity class card only": "كارت صنف كمية فقط",
+  "Class Card - Complete Production": "كارت صنف - انتاح تام",
+  "class card": "كارت صنف",
+  "Transaction Date": "تاريخ الحركة",
+  "Transaction No": "رقم الحركة",
+  "Supplier / Customer": "مورد/عميل",
+  "Transaction": "الحركة",
 
 
 

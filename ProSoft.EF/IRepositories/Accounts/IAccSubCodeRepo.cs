@@ -22,6 +22,6 @@ namespace ProSoft.EF.IRepositories.Accounts
         Task EditAccSubCodeAsync(string subCode, AccSubCodeDTO subDTO);
 
         /// Delete
-        Task DeleteAccSubCodeAsync(string subCode, string mainCode);
+        Task<string> DeleteAccSubCodeAsync(string subCode, string mainCode,int fYear);
     }
 }

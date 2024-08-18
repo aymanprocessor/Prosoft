@@ -1,0 +1,78 @@
+﻿@model AccSubCodeEditDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Edit Account Codes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+@inject IViewLocalizer localizer
+@* <style>
+    .image {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.5;
+        z-index: -1;
+    }
+</style> *@
+<div class="container pt-2" style="min-height:100vh;">
+    @* <img class="image" src="/background.jpg" style="position:absolute;" /> *@
+
+    <h1 class="mt-4">@localizer["Modification of account codes"]</h1>
+    <form method="post" asp-action="Edit_AccSubCodeEdit" id="myForm">
+        <div class="border p-3 mt-4">
+            @* hidden *@
+            <input asp-for="MainCode" type="hidden"/>
+
+            <div asp-validation-summary="ModelOnly"></div>
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3 ">
+                    <label asp-for="SubCodeFr"></label>
+                    <input asp-for="SubCodeFr" type="number" class="form-control text-center" id="SubCodeFr" />
+                    <span asp-validation-for="SubCodeFr" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label asp-for="SubCodeTo"></label>
+                    <input asp-for="SubCodeTo" type="number" class="form-control text-center" id="SubCodeTo" />
+                    <span asp-validation-for="SubCodeTo" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!------------------------------------------------------------------------------->
+
+            <div class="parent d-flex justify-content-md-center gap-2 ">
+                <button type="submit" class="btn btn-success" style="width:150px">
+                    @localizer["Save Changes"]
+                </button>
+                <a asp-controller="AccSubCodeEdit" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const subCodeFrInput = document.getElementById('SubCodeFr');
+        const subCodeToInput = document.getElementById('SubCodeTo');
+
+        function enforceMaxDigits(event) {
+            if (this.value.length >= 6 && event.inputType !== 'deleteContentBackward') {
+                this.value = this.value.slice(0, 6);
+                event.preventDefault();
+            }
+        }
+
+        subCodeFrInput.addEventListener('input', enforceMaxDigits);
+        subCodeToInput.addEventListener('input', enforceMaxDigits);
+    });
+</script>

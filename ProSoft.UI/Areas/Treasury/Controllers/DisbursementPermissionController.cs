@@ -20,7 +20,7 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
             _accSafeCashRepo = accSafeCashRepo;
             _userCashNoRepo = userCashNoRepo;
         }
-        public async Task<IActionResult> Index(string docType, string? flagType, string? errorMessage, string? message = "")
+        public async Task<IActionResult> Index(string docType, string? flagType, string? errorMessage, string? message = "", int? redirect =null )
         {
             var userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
             var userCashNoDTO = await _userCashNoRepo.GetSafeTransByIdAsync(userCode);
@@ -45,6 +45,7 @@ namespace ProSoft.UI.Areas.Treasury.Controllers
             ViewBag.fYear = fYear;
             ViewBag.error = errorMessage;
             ViewBag.message = message;
+            ViewBag.redirect = redirect;
             return View(accSafeCashs);
         }
 

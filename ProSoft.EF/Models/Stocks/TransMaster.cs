@@ -181,6 +181,9 @@ namespace ProSoft.EF.Models.Stocks
 
         [Column("ACC_TRANS_NO")]
         public long? AccTransNo { get; set; }
+        
+        [Column("ACC_TRANS_NO2")]
+        public long? AccTransNo2 { get; set; }
 
         [Column("ACC_TRANS_TYPE")]
         [StringLength(5)]

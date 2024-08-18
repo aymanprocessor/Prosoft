@@ -37,11 +37,11 @@
                     <label style="width: 125px;">@localizer["Permission Date"]</label>
                     @if (Model.EnableModify)
                     {
-                    <input asp-for="DocDate" type="date" class="form-control" style="width: 210px;"/>
+                        <input asp-for="DocDate" type="date" class="form-control" style="width: 210px;" />
                     }
                     else
                     {
-                    <input asp-for="DocDate" type="date" class="form-control" style="width: 210px; pointer-events: none; background-color: #e9ecef" />
+                        <input asp-for="DocDate" type="date" class="form-control" style="width: 210px; pointer-events: none; background-color: #e9ecef" />
                     }
                     <span asp-validation-for="DocDate" class="text-danger"></span>
                 </div>
@@ -49,13 +49,13 @@
                     <label style="width: 32%;">@localizer["Stock"]</label>
                     <input asp-for="StockName" class="form-control" style="width: 78%;" disabled />
                 </div>
-@*                 <div class="mb-3" style="width: 35%;">
-                    <label asp-for="Flag3" for="" style="width: 32%;"></label>
-                    <select asp-for="Flag3" class="form-control text-center" style="width: 78%; pointer-events: none; background-color: #e9ecef">
-                        <option value="1">@localizer["No"]</option>
-                        <option value="2">@localizer["Yes"]</option>
-                    </select>
-                    <span asp-validation-for="Flag3" class="text-danger"></span>
+                @*                 <div class="mb-3" style="width: 35%;">
+                <label asp-for="Flag3" for="" style="width: 32%;"></label>
+                <select asp-for="Flag3" class="form-control text-center" style="width: 78%; pointer-events: none; background-color: #e9ecef">
+                <option value="1">@localizer["No"]</option>
+                <option value="2">@localizer["Yes"]</option>
+                </select>
+                <span asp-validation-for="Flag3" class="text-danger"></span>
                 </div> *@
             </div>
 
@@ -106,7 +106,7 @@
                 </div>
                 <div class="mb-3" style="width: 35%;">
                     <label asp-for="TotTransVal" style="width: 32%;"></label>
-                    <input asp-for="TotTransVal" type="number" class="form-control" style="width: 78%;" />
+                    <input asp-for="TotTransVal" type="number" class="form-control" style="width: 78%;" disabled />
                     <span asp-validation-for="TotTransVal" class="text-danger"></span>
                 </div>
             </div>
@@ -133,14 +133,14 @@
                 </div>
                 <div class="d-flex justify-content-between" style="width: 35%;">
                     <div class="mb-3 w-50 d-flex justify-content-between align-items-center">
-                        <label asp-for="TaxPrc" style="width: 80px;">@localizer["Sales Tax"]</label>
-                        <input asp-for="TaxPrc" type="number" class="form-control" style="width: 76px;" />
-                        <span asp-validation-for="TaxPrc" class="text-danger d-none"></span>
+                        <label asp-for="TaxValue" style="width: 80px;">@localizer["Sales Tax"]</label>
+                        <input asp-for="TaxValue" type="number" class="form-control" style="width: 76px;" />
+                        <span asp-validation-for="TaxValue" class="text-danger d-none"></span>
                     </div>
                     <div class="mb-3 w-50 d-flex justify-content-between align-items-center">
-                        <label asp-for="TaxValue" class="@(isRTL ? "me-4" : "ms-4")" style="width: 90px;">@localizer["percent"] %</label>
-                        <input asp-for="TaxValue" type="number" class="form-control" style="width: 80px;" />
-                        <span asp-validation-for="TaxValue" class="text-danger d-none"></span>
+                        <label asp-for="TaxPrc" class="@(isRTL ? "me-4" : "ms-4")" style="width: 90px;">@localizer["percent"] %</label>
+                        <input asp-for="TaxPrc" type="number" class="form-control" style="width: 80px;" value="14" />
+                        <span asp-validation-for="TaxPrc" class="text-danger d-none"></span>
                     </div>
                 </div>
             </div>
@@ -162,7 +162,7 @@
                 </div>
                 <div class="mb-3" style="width: 35%;">
                     <label asp-for="DueValue" style="width: 121px;"></label>
-                    <input asp-for="DueValue" type="number" class="form-control" style="width: 78%;" />
+                    <input asp-for="DueValue" type="number" class="form-control" style="width: 78%;" disabled />
                     <span asp-validation-for="DueValue" class="text-danger"></span>
                 </div>
             </div>

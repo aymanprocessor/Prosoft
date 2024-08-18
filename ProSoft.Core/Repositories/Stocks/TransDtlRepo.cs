@@ -279,17 +279,39 @@ namespace ProSoft.Core.Repositories.Stocks
             else if (transDtl.TransType == 13)
                 await AddToReceiveFormAsync(transDtl);
 
+            /////////////////////////////////////////////////
+            // Update TotTransVal, TaxValue, DueValue in transMaster
+            //transMaster.TotTransVal = transMaster.TotTransVal != null ?
+            //    transMaster.TotTransVal + (transDtl.UnitQty * transDtl.Price) :
+            //    transDtl.UnitQty * transDtl.Price;
+            transMaster.TotTransVal = transMaster.TotTransVal != null ?
+                transMaster.TotTransVal + transDtl.ItemVal : transDtl.ItemVal;
+            transMaster.TaxValue = transMaster.TaxValue != null ?
+                transMaster.TaxValue + transDtl.TaxVal : transDtl.TaxVal;
+            transMaster.DueValue = transMaster.DueValue != null ?
+                transMaster.DueValue + (transDtl.UnitQty * transDtl.Price) :
+                transDtl.UnitQty * transDtl.Price;
+
             await AddAsync(transDtl);
             await SaveChangesAsync();
             return transDtl;
         }
-
         public async Task UpdateTransDtlWithPriceAsync(int id, TransDtlWithPriceDTO transDtlDTO)
         {
             TransDtl transDtl = await GetByIdAsync(id);
 
             TransMaster transMaster = await _Context.TransMasters
                 .FirstOrDefaultAsync(obj => obj.TransMAsterID == transDtlDTO.TransMasterID);
+
+            /////////////////////////////////////////////////
+            // Update TotTransVal, TaxValue, DueValue in transMaster
+            transMaster.TotTransVal -= transDtl.ItemVal;
+            transMaster.TaxValue -= transDtl.TaxVal;
+            transMaster.DueValue -= transDtl.UnitQty * transDtl.Price;
+            /////////////////////////////////////////////////
+            transMaster.TotTransVal += transDtlDTO.ItemVal;
+            transMaster.TaxValue += transDtlDTO.TaxVal;
+            transMaster.DueValue += transDtlDTO.UnitQty * transDtlDTO.Price;
 
             _mapper.Map(transDtlDTO, transDtl);
             _mapper.Map(transMaster, transDtl);
@@ -305,7 +327,7 @@ namespace ProSoft.Core.Repositories.Stocks
                 if (batchList.Count == 0)
                 {
                 }
-                else if(sumUnitQty == transDtl.UnitQty && sumPrice == transDtl.Price)
+                else if (sumUnitQty == transDtl.UnitQty && sumPrice == transDtl.Price)
                 {
                     transDtl.ItmBarcode = batchList.Max(obj => obj.ItmBatch);
                 }
@@ -340,7 +362,6 @@ namespace ProSoft.Core.Repositories.Stocks
             await UpdateAsync(transDtl);
             await SaveChangesAsync();
         }
-
         ////////////////////////////////////////////////////////////////////////////
         // For Not Showing Trans Price
         public async Task<TransDtlDTO> GetNewTransDtlAsync(int transMAsterID)

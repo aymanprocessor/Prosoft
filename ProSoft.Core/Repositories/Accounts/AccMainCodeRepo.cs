@@ -24,6 +24,13 @@ namespace ProSoft.Core.Repositories.Accounts
             _Context = Context;
             _mapper = mapper;
         }
+
+        public async Task<List<AccMainCodeDTO>> GetAllMainsAsync()
+        {
+            List<AccMainCode> accMainCodes = await _Context.AccMainCodes.ToListAsync();
+            List<AccMainCodeDTO> accMainCodeDTOs = _mapper.Map<List<AccMainCodeDTO>>(accMainCodes);
+            return accMainCodeDTOs;
+        }
         public async Task<List<AccMainCodeDTO>> GetMainsByLevelAsync(double level,string? mainCode)
         {
             List<AccMainCode> accMainCodes = new List<AccMainCode>();
