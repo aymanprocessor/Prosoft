@@ -15,7 +15,6 @@
     .hide {
         display: none !important;
     }
-
     #myTable tr {
         height: 50px;
     }
@@ -89,7 +88,7 @@
         var itemMaster = document.getElementById("ItemMaster");
         var fromPeriod = document.getElementById("fromPeriod");
         var toPeriod = document.getElementById("toPeriod");
-
+        console.log(itemMaster.value);
         //for report Analytical//
         function CartSubItem(e) {          
             if (!stocks.value) {
@@ -116,7 +115,7 @@
 
             // Check if the year of 'From Period' and 'To Period' match the financial year
             if (fromYear != fYear || toYear != fYear) {
-                alert("The year of Period must match beside your name!");
+                alert("The year of Period must match year beside your name!");
                 fromPeriod.focus(); // Focus on the 'From Period' field after alert dismissal
                 return; // Exit the function to prevent further code execution
             }

@@ -11,6 +11,6 @@ namespace ProSoft.EF.IRepositories.Stocks
     public interface IReportQuantityClassCardRepo
     {
         Task<ReportQuantityClassCardDTO> GetAllDataAsync(int userCode);
-        Task<QuantityCardOnlyDTO> GetQuantityCardOnly(int id, int subItem, DateTime? fromPeriod, DateTime? toPeriod,int branch);
+        Task<List<QuantityCardOnlyDTO>> GetQuantityCardOnly(int id, int subItem, DateTime? fromPeriod, DateTime? toPeriod,int branch);
     }
 }

@@ -14,9 +14,9 @@ namespace ProSoft.EF.DTOs.Stocks.Report
         public string? CustName { get; set; }
         public int? DesItem { get; set; }
         public int? RefNo { get; set; }
-        public int? TranPrice { get; set; }
-        public int? TranCount { get; set; }
-        public int? RasidCount { get; set; }
+        public decimal? TranPrice { get; set; }
+        public decimal? TranCount { get; set; }
+        public decimal? RasidCount { get; set; }
         public decimal? BalanceCount { get; set; }
     }
 }

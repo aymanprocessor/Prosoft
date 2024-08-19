@@ -6,6 +6,7 @@ using ProSoft.EF.DbContext;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.DTOs.Stocks.Report;
 using ProSoft.EF.IRepositories.Stocks;
+using ProSoft.EF.Models.Shared;
 using ProSoft.EF.Models.Stocks;
 using System;
 using System.Collections.Generic;
@@ -70,9 +71,9 @@ namespace ProSoft.Core.Repositories.Stocks
             return stocksDTO;
         }
        
-        public async Task<QuantityCardOnlyDTO> GetQuantityCardOnly(int id, int subItem, DateTime? fromPeriod, DateTime? toPeriod, int branch)
+        public async Task<List<QuantityCardOnlyDTO>> GetQuantityCardOnly(int id, int subItem, DateTime? fromPeriod, DateTime? toPeriod, int branch)
         {
-            QuantityCardOnlyDTO quantityCardOnlyDTO = new QuantityCardOnlyDTO();
+            List<QuantityCardOnlyDTO> quantityCardOnlyDTOs = new List<QuantityCardOnlyDTO>();
            // UnitCode unitCode = await _Context.UnitCodes.FirstOrDefaultAsync(obj=>obj.Code == 0 && obj.Flag1 ==1 );
             
             DateTime fromDate;
@@ -94,14 +95,46 @@ namespace ProSoft.Core.Repositories.Stocks
             var subItemID = new SqlParameter("@fr_itm", subItem);
             // Call the stored procedure and get the result
             decimal result = await _Context.Database.ExecuteSqlRawAsync(
-                "EXEC [YourStoredProcedureName] @br, @stk, @fr_date, @fr_itm",
+                "EXEC [item_balance2] @br, @stk, @fr_date, @fr_itm",
                 branchID, stockID, fromPeriodParam, subItemID);
             decimal ll_Count = Math.Round(result, 2);
+
             var ld_Rasid_c = ll_Count;
-            
+           CompanyProfile companyProfile =await _Context.CompanyProfiles.FirstOrDefaultAsync(obj=>obj.CoCode ==1);
 
-
-            return quantityCardOnlyDTO;
+            List<TransDtl> transDtls = await _Context.TransDtls.Where(obj=>obj.StockCode ==id && obj.ItemMaster == subItem.ToString() && (obj.DocDate >= fromPeriod && obj.DocDate <= toPeriod)).ToListAsync();
+            foreach (var item in transDtls)
+            {
+                QuantityCardOnlyDTO quantityCardOnlyDTO = new QuantityCardOnlyDTO();
+                GeneralCode generalCode = await _Context.GeneralCodes.FirstOrDefaultAsync(obj=>(obj.GType == "4" || obj.GType == "4") &&obj.UniqueType ==item.TransType);
+                TransMaster transMaster = await _Context.TransMasters.FirstOrDefaultAsync(obj=>obj.TransMAsterID ==item.TransMAsterID);
+                if (item.UnitQty >0 && generalCode.AddSub >0)
+                {
+                    decimal ld_Count_Rasid =0;
+                    var ls_Cust_SubName = "";
+                    if (generalCode.AddSub == 1)
+                    {
+                         ld_Count_Rasid =(decimal)ld_Rasid_c + (decimal)item.UnitQty;
+                         ls_Cust_SubName = (await _Context.SupCodes.FirstOrDefaultAsync(obj => obj.SupCode1 == transMaster.SupNo.ToString() && obj.BranchId ==branch)).SupName;
+                    }
+                    else if (generalCode.AddSub == 2)
+                    {
+                         ld_Count_Rasid = (decimal)ld_Rasid_c - (decimal)item.UnitQty;
+                         ls_Cust_SubName = (await _Context.CustCodes.FirstOrDefaultAsync(obj => obj.CustCode1 == transMaster.CustNo && obj.BranchId == branch)).CustName;
+                    }
+                        quantityCardOnlyDTO.TranPrice = item.Price;
+                        quantityCardOnlyDTO.TransDate = item.DocDate;
+                        quantityCardOnlyDTO.RefNo = int.Parse(transMaster.SupInvNo);
+                        quantityCardOnlyDTO.TransNo = (int)item.SerSys;
+                        quantityCardOnlyDTO.TransType = item.TransType.ToString();
+                        quantityCardOnlyDTO.TranCount = item.UnitQty;
+                        quantityCardOnlyDTO.RasidCount = 400;//ld_Count_Rasid;
+                        quantityCardOnlyDTO.DesItem = item.Flag1;
+                        quantityCardOnlyDTO.CustName = ls_Cust_SubName;
+                     quantityCardOnlyDTOs.Add(quantityCardOnlyDTO);
+                }
+            }
+            return quantityCardOnlyDTOs;
         }
     }
 }

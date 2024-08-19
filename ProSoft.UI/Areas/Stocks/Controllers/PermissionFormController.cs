@@ -80,8 +80,12 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
                 .GetUserPermissionsForStockAsync(userCode, id);
             return Json(permissionsDTO);
         }
-
-        
+        public async Task<IActionResult> GetPermissionsForms(int id, int transType)
+        {
+            List<TransMasterViewDTO> permissionsFormsDTO = await _transMasterRepo
+                .GetPermissionsFormsAsync(id, transType);
+            return Json(permissionsFormsDTO);
+        }
 
         public async Task<IActionResult> ApprovePermission(int id)
         {
