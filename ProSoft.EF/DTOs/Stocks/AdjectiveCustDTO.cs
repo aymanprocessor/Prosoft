@@ -9,6 +9,6 @@ namespace ProSoft.EF.DTOs.Stocks
     public class AdjectiveCustDTO
     {
         public int AdjectiveCode { get; set; }
-        public string AdjectiveDesc { get; set; }
+        public string? AdjectiveDesc { get; set; }
     }
 }

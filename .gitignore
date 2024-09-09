@@ -86,3 +86,4 @@ project.fragment.lock.json
 artifacts/
 bin/
 obj/
+.aider*

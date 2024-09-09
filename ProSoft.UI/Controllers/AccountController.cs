@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -134,6 +136,16 @@ namespace ProSoft.UI.Controllers
                         new ("U_Branch_Id", branch.BranchId.ToString()),
                         new ("User_Code", user.UserCode.ToString()),
                     };
+                    //var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                    //var authProperties = new AuthenticationProperties
+                    //{
+                    //    IsPersistent = userDTO.rememberMe,
+                    //    ExpiresUtc = DateTimeOffset.UtcNow.AddYears(100)
+                    //};
+
+                   // await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
+
                     await _signInManager.SignInWithClaimsAsync(user, userDTO.rememberMe, claims);
 
                     ////Check Cookie
@@ -155,7 +167,9 @@ namespace ProSoft.UI.Controllers
         }
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
+            //await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            //await _signInManager.SignOutAsync();
             return RedirectToAction("Login");
         }
 
@@ -244,7 +258,7 @@ namespace ProSoft.UI.Controllers
                     }
                 }
                 else
-                    ModelState.AddModelError("", $"Please, enter a year betwween 2020 : {currentYear}");
+                    ModelState.AddModelError("", $"Please, enter a year between 2020 : {currentYear}");
             }
             else
                 ModelState.AddModelError("", "Please, enter the financial year");

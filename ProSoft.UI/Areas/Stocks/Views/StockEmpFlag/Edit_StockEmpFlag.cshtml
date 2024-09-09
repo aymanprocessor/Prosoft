@@ -1,0 +1,96 @@
+﻿@*
+    Created By Ayman Saad
+    Date : 3/9/2024
+*@
+
+@model StockEmpFlagEditAddDTO
+@{
+    ViewData["Title"] = "Edit Stock Emp Flag";
+    Layout = "_Layout";
+}
+@inject IViewLocalizer localizer
+<div class="container pt-5 pb-5">
+    <h2>@localizer["Edit Stock Type For User"] - @ViewBag.userName</h2>
+ 
+
+    <form asp-controller="StockEmpFlag" asp-action="Edit_StockEmpFlag" method="post">
+
+        <div class="row">
+
+            <input type="hidden" asp-for="UserCode" value="@ViewBag.userId" />
+            <input type="hidden" asp-for="BranchId" />
+            <input type="hidden" asp-for="orgStkcod" />
+            <input type="hidden" asp-for="orgKID" />
+
+            <div class="form-group mb-3 col-md-3">
+                <label asp-for="Stkcod" class="form-label mt-4"></label>
+                <select class="form-select" asp-for="Stkcod" asp-items="Model.Stocks">
+                    <option class="text-center">@localizer["Choosee"]</option>
+                </select>
+                <span asp-validation-for="Stkcod" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3 col-md-3">
+                <label asp-for="BranchId" class="form-label mt-4"></label>
+                <select class="form-select " asp-for="BranchId" asp-items="Model.Branchs" disabled>
+                    <option class="text-center">@localizer["Choosee"]</option>
+                </select>
+                <span asp-validation-for="BranchId" class="text-danger"></span>
+
+            </div>
+
+            <div class="form-group mb-3 col-md-3">
+                <label asp-for="KID" class="form-label mt-4"></label>
+                <select class="form-select" asp-for="KID" asp-items="Model.StockTypes">
+                    <option class="text-center">@localizer["Choosee"]</option>
+                </select>
+                <span asp-validation-for="KID" class="text-danger"></span>
+
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary ">@localizer["Edit"]</button>
+
+        <a asp-action="Index" class="btn btn-secondary">
+            @localizer["Cancel"]
+        </a>
+
+
+    </form>
+</div>
+
+
+
+
+@section Scripts {
+    <script>
+
+        var errorMessage = "@TempData["ErrorMessage"]";
+        if (errorMessage) {
+            // Swal.fire({
+            //     icon: "error",
+            //     text: errorMessage,
+            //     color:
+            // });
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: "error",
+                title: errorMessage
+            });
+        }
+
+    </script>
+
+}
+
+
+

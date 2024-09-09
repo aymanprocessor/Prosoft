@@ -101,6 +101,7 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<UsersSectionDTO, UsersSection>().ReverseMap();
             CreateMap<CheckupClinicDTO, CheckupClinic>().ReverseMap();
             ////////// Stocks ////////////////////
+            CreateMap<AdjectiveCust, AdjectiveCustDTO>().ReverseMap();
             CreateMap<KindStore, KindStoreDTO>().ReverseMap();
             CreateMap<Branch, BranchDTO>().ReverseMap();
             CreateMap<Stock, StockEditAddDTO>().ReverseMap();
@@ -123,6 +124,7 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<CustCode, CustCodeEditAddDTO>().ReverseMap();
             CreateMap<StockEmp, StockEmpViewDTO>().ReverseMap();
             CreateMap<StockEmp, StockEmpEditAddDTO>().ReverseMap();
+            CreateMap<StockEmpFlag, StockEmpFlagViewDTO>().ReverseMap();
             CreateMap<TransMaster, TransMasterViewDTO>().ReverseMap();
             CreateMap<TransMaster, TransMasterEditAddDTO>().ReverseMap();
             CreateMap<TransMaster, TransMaster>().ReverseMap();
@@ -145,6 +147,8 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<SubItem, SubItemDtlDTO>().ReverseMap();
             CreateMap<RegionsViewDTO, Region>().ReverseMap();
             CreateMap<RegionsEditAddDTO, Region>().ReverseMap();
+            CreateMap<UserSideViewDTO, UserSide>().ReverseMap();
+            CreateMap<UserSideEditAddDTO, UserSide>().ReverseMap();
             ////////// System ////////////////////
             CreateMap<EisPosting, EisPostingViewDTO>().ReverseMap();
             CreateMap<EisPosting, EisPostingEditAddDTO>().ReverseMap();

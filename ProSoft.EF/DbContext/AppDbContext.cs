@@ -8,14 +8,15 @@ using ProSoft.EF.Models.MedicalRecords;
 using ProSoft.EF.Models.Shared;
 using ProSoft.EF.Models.Stocks;
 using ProSoft.EF.Models.Treasury;
+using System.Reflection.Emit;
 
 namespace ProSoft.EF.DbContext
 {
-    public class AppDbContext :IdentityDbContext<AppUser>
+    public class AppDbContext : IdentityDbContext<AppUser>
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-            
+
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -25,9 +26,89 @@ namespace ProSoft.EF.DbContext
             {
                 option.ToTable(name: "USERS");
             });
+
             builder.Entity<AppUser>()
                .Property(u => u.UserName)
                .HasColumnName("USER_NAME");
+
+
+            builder.Entity<UserSide>()
+                .Property(u => u.UserId)
+                .HasColumnName("USER_CODE");
+
+            builder.Entity<UserSide>()
+                .Property(u => u.UserGroupId)
+                .HasColumnName("USER_G_ID");
+
+            builder.Entity<UserSide>()
+          .HasOne(us => us.Branchs)
+          .WithMany() // Specify navigation property if exists
+          .HasForeignKey(us => us.BranchId)
+          .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<UserSide>()
+                .HasOne(us => us.EisSectionTypes)
+                .WithMany() // Specify navigation property if exists
+                .HasForeignKey(us => us.EisSectionTypeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<UserSide>()
+                .HasOne(us => us.Regions)
+                .WithMany() // Specify navigation property if exists
+                .HasForeignKey(us => us.RegionId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<UserSide>()
+                .HasOne(us => us.Sides)
+                .WithMany() // Specify navigation property if exists
+                .HasForeignKey(us => us.SideId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<UserSide>()
+                .HasOne(us => us.Users)
+                .WithMany() // Specify navigation property if exists
+                .HasForeignKey(us => us.UserId)
+                .HasPrincipalKey(u => u.UserCode)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<UserSide>()
+                .HasOne(us => us.UserGroups)
+                .WithMany() // Specify navigation property if exists
+                .HasForeignKey(us => us.UserGroupId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<UserSide>()
+           .HasIndex(us => us.BranchId)
+           .HasDatabaseName("IX_UserSides_BranchId");
+
+            builder.Entity<UserSide>()
+                .HasIndex(us => us.EisSectionTypeId)
+                .HasDatabaseName("IX_UserSides_EisSectionTypeId");
+
+            builder.Entity<UserSide>()
+                .HasIndex(us => us.RegionId)
+                .HasDatabaseName("IX_UserSides_RegionId");
+
+            builder.Entity<UserSide>()
+                .HasIndex(us => us.SideId)
+                .HasDatabaseName("IX_UserSides_SideId");
+
+            builder.Entity<UserSide>()
+                .HasIndex(us => us.UserGroupId)
+                .HasDatabaseName("IX_UserSides_UserGroupId");
+
+            builder.Entity<UserSide>()
+                .HasIndex(us => us.UserId)
+                .HasDatabaseName("IX_UserSides_UserId");
+
+            builder.Entity<UserSide>()
+                //.Ignore(us => us.UserGroups)
+                //.Ignore(us => us.Users)
+                //.Ignore(us => us.Sides)
+                //.Ignore(us => us.Branchs)
+                //.Ignore(us => us.EisSectionTypes)
+                .HasKey(us => new { us.UserId, us.SideId, us.RegionId, us.BranchId });
+
         }
         // Shared //
         public DbSet<NationalityEi> NationalityEis { get; set; }
@@ -119,6 +200,7 @@ namespace ProSoft.EF.DbContext
         public DbSet<CustCode> CustCodes { get; set; }
         public DbSet<AdjectiveCust> AdjectiveCusts { get; set; }
         public DbSet<StockEmp> StockEmps { get; set; }
+        public DbSet<StockEmpFlag> StockEmpFlags { get; set; }
         public DbSet<TransMaster> TransMasters { get; set; }
         public DbSet<SalesmenDatum> SalesmenData { get; set; }
         public DbSet<TransDtl> TransDtls { get; set; }
@@ -130,7 +212,8 @@ namespace ProSoft.EF.DbContext
         public DbSet<StentDes> StentDess { get; set; }
         public DbSet<SubItemDtl> SubItemDtls { get; set; }
         public DbSet<Stkbalance> Stkbalances { get; set; }
-
+        public DbSet<UsersGroup> UsersGroups { get; set; }
+       public DbSet<UserSide> UserSides { get; set; }
         ////////////////////
         // Accounts //
         public DbSet<AccMainCode> AccMainCodes { get; set; }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using ProSoft.EF.DbContext;
 using ProSoft.EF.IRepositories.Stocks;
 using ProSoft.EF.Models.Stocks;
@@ -10,11 +11,24 @@ using System.Threading.Tasks;
 
 namespace ProSoft.Core.Repositories.Stocks
 {
-    public class StockTypeRepo : Repository<KindStore,int>, IStockTypeRepo
+    public class StockTypeRepo : Repository<KindStore, int>, IStockTypeRepo
     {
-        public StockTypeRepo(AppDbContext Context) :base(Context) 
+        private readonly AppDbContext _context;
+
+        public StockTypeRepo(AppDbContext Context) : base(Context)
         {
+            _context = Context;
         }
+
+
+        // ------------------- Coded By Ayman Saad ------------------- //
+
+        public IEnumerable<SelectListItem> GetAllStockTypeAsEnumerable()
+        {
+            return _context.KindStores.Select(k => new SelectListItem { Value = k.KId.ToString(), Text = k.KName })
+                .ToList();
+        }
+        // ------------------- Coded By Ayman Saad ------------------- //
         public async Task<int> GetNewIdAsync()
         {
             int newID;

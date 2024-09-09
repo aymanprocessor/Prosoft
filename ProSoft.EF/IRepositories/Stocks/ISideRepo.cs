@@ -10,5 +10,6 @@ namespace ProSoft.EF.IRepositories.Stocks
     public interface ISideRepo: IRepository<Side, int>
     {
         Task<int> GetNewIdAsync();
+       
     }
 }

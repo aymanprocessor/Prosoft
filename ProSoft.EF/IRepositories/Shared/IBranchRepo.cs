@@ -1,4 +1,5 @@
-﻿using ProSoft.EF.Models.Shared;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using ProSoft.EF.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace ProSoft.EF.IRepositories.Shared
 {
     public interface IBranchRepo: IRepository<Branch, int>
     {
+        public IEnumerable<SelectListItem> GetAllBranchesAsEnumerable();
     }
 }

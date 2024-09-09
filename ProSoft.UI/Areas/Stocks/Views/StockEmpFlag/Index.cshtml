@@ -1,0 +1,148 @@
+﻿@using System.Web.Helpers
+@model StockEmpFlagViewDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@inject IViewLocalizer localizer
+
+@{
+    ViewData["Title"] = "Stocks Emp Flag";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="container pt-5 pb-5">
+    <h3 class="mb-5">@localizer["Joining Users With Stock Type"] </h3>
+
+
+    <div class="d-flex flex-row align-items-end justify-content-between">
+        <div class="form-group w-25">
+            <label asp-for="UserCode" class="mb-3">@localizer["User Name"]</label>
+            <select id="userdropdown" asp-for="UserCode" asp-items="Model.Users" class="form-control form-select">
+                <option value="" class="text-center">@localizer["Choosee"]</option>
+            </select>
+            <span asp-validation-for="UserCode" class="text-danger"></span>
+        </div>
+        <div>
+
+            <a id="addbutton" class="btn btn-primary disabled">@localizer["Add Stock Type For User"]</a>
+        </div>
+
+
+    </div>
+
+    <div class="border p-3 mt-3">
+        <table class="table table-hover table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">@localizer["Code"]</th>
+                    <th scope="col">@localizer["The Description"]</th>
+                    <th scope="col">@localizer["Branch"]</th>
+                    <th scope="col">@localizer["Stock Type"]</th>
+                    <th scope="col"></th>
+
+                </tr>
+
+            </thead>
+            <tbody>
+
+                @* @foreach (var item in Model.StockEmpFlags)
+                {
+                <tr>
+                <th scope="row">@item.Stkcod</th>
+                <th scope="row">@item.Stock.Stknam</th>
+                <th scope="row">@item.Branch.BranchDesc</th>
+                <th scope="row">@item.KindStore.KName</th>
+                <th scope="row">
+                <button class="btn btn-warning">@localizer["Edit"]</button>
+
+                <form asp-action="Delete" method="post" class="d-inline">
+                <input id="usercode" type="hidden" name="userId" value="" />
+                <input type="hidden" name="stkcod" value="@item.Stkcod" />
+                <input type="hidden" name="branchId" value="@item.BranchId" />
+                <input type="hidden" name="kId" value="@item.KID" />
+                <input type="submit" value="@localizer["Delete"]" class="btn btn-danger" />
+                </form>
+                </th>
+
+                </tr>
+                }*@
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+
+
+    document.getElementById('userdropdown').addEventListener('change', function () {
+
+        var buttonElement = document.getElementById("addbutton");
+        //var usercodeInput = document.getElementById('usercode');
+
+
+        var selectedValue = this.value;
+
+        // document.getElementById('usercode').value = selectedValue;
+        if (selectedValue) {
+            updateTable(selectedValue);
+            buttonElement.classList.remove('disabled');
+
+        }
+        else {
+            buttonElement.classList.add('disabled');
+            document.querySelector('tbody').innerHTML = '';
+        }
+    });
+
+
+
+    document.getElementById('addbutton').addEventListener('click', function () {
+        var selectedValue = document.getElementById("userdropdown")
+        if (selectedValue.value) {
+            window.location.href = '/Stocks/StockEmpFlag/Add_StockEmpFlag/' + selectedValue.value
+        }
+    });
+
+    function updateTable(userId) {
+        $.ajax({
+            url: '/Stocks/StockEmpFlag/GetStockEmpFlags',
+            type: 'GET',
+            data: { userId: userId },
+            success: function (data) {
+                console.log('success');
+                var tbody = $('tbody');
+                tbody.empty();
+
+                $.each(data, function (index, item) {
+                    var row = `
+                                <tr>
+                                    <th scope="row">${item.stkcod}</th>
+                                    <th scope="row">${item.stock.stknam}</th>
+                                    <th scope="row">${item.branch.branchDesc}</th>
+                                    <th scope="row">${item.kindStore.kName}</th>
+                                    <th scope="row">
+                                            <a href="/Stocks/StockEmpFlag/Edit_StockEmpFlag?userId=${userId}&orgStkcod=${item.stkcod}&branchId=${item.branchId}&orgKID=${item.kid}" class="btn btn-warning" >
+                                            <i class="bi bi-pencil-fill"></i>
+                                        </a>
+                                        <form action="/Stocks/StockEmpFlag/Delete" method="post" class="d-inline">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="userId" value="${userId}" />
+                                            <input type="hidden" name="stkcod" value="${item.stkcod}" />
+                                            <input type="hidden" name="branchId" value="${item.branchId}" />
+                                            <input type="hidden" name="kId" value="${item.kid}" />
+                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this one?')" ><i class="bi bi-trash3-fill"></i></button>
+                                        </form>
+                                    </th>
+                                </tr>`;
+                    tbody.append(row);
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('AJAX Error:', status, error);
+            }
+        });
+    }
+
+</script>

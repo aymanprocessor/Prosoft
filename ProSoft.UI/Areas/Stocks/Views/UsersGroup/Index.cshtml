@@ -1,0 +1,66 @@
+﻿@using System.Web.Helpers
+@using ProSoft.EF.Models.Stocks
+@model IEnumerable<UsersGroup>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@inject IViewLocalizer localizer
+
+@{
+    ViewData["Title"] = "Users Group";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="container pt-5 pb-5">
+    <h3 class="mb-5">@localizer["Users Group"] </h3>
+
+    </div>
+
+    <div class="border p-3 mt-3">
+        <table class="table table-hover table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">@localizer["Code"]</th>
+                    <th scope="col">@localizer["The User"]</th>
+                <th scope="col">@localizer["Is Active"]</th>
+                 
+                    <th scope="col"></th>
+
+                </tr>
+
+            </thead>
+            <tbody>
+
+                 @foreach (var item in Model)
+                {
+                <tr>
+                <th scope="row">@item.G_ID</th>
+                    <th scope="row">@item.G_NAME</th>
+                <th scope="row">@item.</th>
+             
+                <th scope="row">
+                <button class="btn btn-warning">@localizer["Edit"]</button>
+
+            
+               
+           
+                <input  value="@localizer["Delete"]" class="btn btn-danger" />
+               
+                </th>
+
+                </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<script>
+
+
+
+  
+
+</script>

@@ -233,6 +233,7 @@
                     result.sort((a, b) => a.plDetailCode - b.plDetailCode);
                     //console.log(result);
 
+
                     for (let item of result) {
                         const priceListDtl = document.createElement("tr");
                         priceListDtl.innerHTML +=
@@ -243,7 +244,7 @@
                                     <td class="align-middle">${item.sClinicDesc}</td>
                                     <td class="align-middle">${item.servId}</td>
                                     <td class="align-middle">${item.servDesc}</td>
-                                    <td class="align-middle">${item.servBefDesc}</td>
+                                            <td class="align-middle"> <input class="form-control" value="${item.servBefDesc}" type="number" step="0.01" /></td>
                                     <td class="align-middle">${item.discoutComp}</td>
                                     <td class="align-middle">${item.plValue}</td>
                                     <td class="align-middle">${item.compCovPercentage}</td>

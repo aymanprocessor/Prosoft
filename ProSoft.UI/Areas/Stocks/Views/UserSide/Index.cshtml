@@ -1,0 +1,120 @@
+﻿@model UserSideViewDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Joining Users With Side";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+@inject IViewLocalizer localizer
+
+<div class="container py-5">
+    <h3 class="mb-5">@localizer["Joining Users With Side"]</h3>
+    <div class="d-flex align-items-end flex-row mb-3 mt-5">
+        <div class="w-25">
+            <label class="form-label" asp-for="SideId"></label>
+            <select class="form-select" id="sideDropDown" asp-for="SideId" asp-items="Model.Sides">
+                <option value="" class="text-center">@localizer["Choosee"]</option>
+            </select>
+        </div>
+        <div class="mx-2">
+            <button id="addbutton" class="btn btn-primary disabled">@localizer["Add User"]</button>
+        </div>
+
+    </div>
+
+    <div class="border p-3 mt-3">
+        <table class="table table-hover table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>@localizer["The User"]</th>
+                    <th>@localizer["User Group"]</th>
+                    <th>@localizer["Organization Sections"]</th>
+                    <th>@localizer["System Sections"]</th>
+                    <th>@localizer["User Page"]</th>
+                    <th></th>
+
+                </tr>
+            </thead>
+            <tbody id="userSideTable">
+
+                <!-- Populate this with AJAX based on selected SIDE_ID -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+
+
+
+    document.getElementById('sideDropDown').addEventListener('change', function () {
+
+        var buttonElement = document.getElementById("addbutton");
+        //var usercodeInput = document.getElementById('usercode');
+
+
+        var selectedValue = this.value;
+
+        // document.getElementById('usercode').value = selectedValue;
+        if (selectedValue) {
+            updateTable(selectedValue);
+            buttonElement.classList.remove('disabled');
+
+        }
+        else {
+            buttonElement.classList.add('disabled');
+            document.querySelector('tbody').innerHTML = '';
+        }
+    });
+
+
+     document.getElementById('addbutton').addEventListener('click', function () {
+        var selectedValue = document.getElementById("sideDropDown")
+        if (selectedValue.value) {
+            window.location.href = '/Stocks/UserSide/Add_UserSide/' + selectedValue.value
+        }
+    });
+
+    function updateTable(sideId) {
+        $.ajax({
+            url: '/Stocks/UserSide/GetUserSides',
+            type: 'GET',
+            data: { sideId: sideId },
+            success: function (data) {
+                console.log('sideId = ' + sideId);
+                var tbody = $('tbody');
+                tbody.empty();
+
+                $.each(data, function (index, item) {
+                    var row = `
+                                    <tr>
+                                        <th scope="row">${item.users.userName}</th>
+                                        <th scope="row">${item.userGroups.g_NAME}</th>
+                                        <th scope="row">${item.regions.regionDesc}</th>
+                                        <th scope="row">${item.eisSectionTypes.secName}</th>
+                                        <th scope="row">${item.flag}</th>
+                                        <th scope="row">
+                                                <a href="/Stocks/UserSide/Edit_UserSide?orgUserId=${item.userId}&sideId=${item.sideId}&orgRegionId=${item.regionId}&branchId=${item.branchId}" class="btn btn-warning" >
+                                                <i class="bi bi-pencil-fill"></i>
+                                            </a>
+                                            <form action="/Stocks/UserSide/Delete_UserSide" method="post" class="d-inline">
+                                                @Html.AntiForgeryToken()
+                                                    <input type="hidden" name="userId" value="${item.userId}" />
+                                                            <input type="hidden" name="sideId" value="${item.sideId}" />
+                                                            <input type="hidden" name="regionId" value="${item.regionId}" />
+                                                            <input type="hidden" name="branchId" value="${item.branchId}" />
+                                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this one?')" ><i class="bi bi-trash3-fill"></i></button>
+                                            </form>
+                                        </th>
+                                    </tr>`;
+                    tbody.append(row);
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('AJAX Error:', status, error);
+            }
+        });
+    }
+
+</script>

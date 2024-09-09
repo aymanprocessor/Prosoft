@@ -13,6 +13,7 @@ namespace ProSoft.EF.Models
 {
     public class AppUser : IdentityUser
     {
+        [Key]
         [Column("USER_CODE")]
         public int UserCode { get; set; }
 

@@ -1,0 +1,116 @@
+﻿@*
+    Created By Ayman Saad
+    Date : 3/9/2024
+*@
+
+@model UserSideEditAddDTO
+@{
+    ViewData["Title"] = "Edit User Side";
+    Layout = "_Layout";
+}
+@inject IViewLocalizer localizer
+<div class="container pt-5 pb-5">
+    <h2>@localizer["Edit User For Side"] - @ViewBag.userName</h2>
+
+
+    <form asp-controller="UserSide" asp-action="Edit_UserSide" method="post">
+
+        <div class="row">
+
+            <input type="hidden" asp-for="OrgUserId" />
+            <input type="hidden" asp-for="BranchId" />
+            <input type="hidden" asp-for="SideId" />
+            <input type="hidden" asp-for="OrgRegionId" />
+
+            <div class="form-group mb-3 col-md-3">
+                <label asp-for="UserId" class="form-label mt-4"></label>
+                <select class="form-select" asp-for="UserId" asp-items="Model.Users">
+                    <option class="text-center">@localizer["Choosee"]</option>
+                </select>
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3 col-md-3">
+                <label asp-for="UserGroupId" class="form-label mt-4"></label>
+                <select class="form-select " asp-for="UserGroupId" asp-items="Model.UserGroups">
+                    <option class="text-center">@localizer["Choosee"]</option>
+                </select>
+                <span asp-validation-for="UserGroupId" class="text-danger"></span>
+
+            </div>
+
+            <div class="form-group mb-3 col-md-3">
+                <label asp-for="RegionId" class="form-label mt-4"></label>
+                <select class="form-select" asp-for="RegionId" asp-items="Model.Regions">
+                    <option class="text-center">@localizer["Choosee"]</option>
+                </select>
+                <span asp-validation-for="RegionId" class="text-danger"></span>
+
+            </div>
+
+            <div class="form-group mb-3 col-md-3">
+                <label asp-for="EisSectionTypeId" class="form-label mt-4"></label>
+                <select class="form-select" asp-for="EisSectionTypeId" asp-items="Model.EisSectionTypes">
+                    <option class="text-center">@localizer["Choosee"]</option>
+                </select>
+                <span asp-validation-for="EisSectionTypeId" class="text-danger"></span>
+
+            </div>
+
+            <div class="form-group mb-3 col-md-3">
+                <label asp-for="Flag" class="form-label mt-4"></label>
+                <select class="form-select" asp-for="Flag">
+                    <option value="" class="text-center">@localizer["Choosee"]</option>
+                    <option value="1">استقبال القسطرة</option>
+                    <option value="2">استقبال المستشفى</option>
+                </select>
+                <span asp-validation-for="Flag" class="text-danger"></span>
+
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary ">@localizer["Edit"]</button>
+
+        <a asp-action="Index" class="btn btn-secondary">
+            @localizer["Cancel"]
+        </a>
+
+
+    </form>
+</div>
+
+
+
+
+@section Scripts {
+    <script>
+
+        var errorMessage = "@TempData["ErrorMessage"]";
+        if (errorMessage) {
+            // Swal.fire({
+            //     icon: "error",
+            //     text: errorMessage,
+            //     color:
+            // });
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: "error",
+                title: errorMessage
+            });
+        }
+
+    </script>
+
+}
+
+
+

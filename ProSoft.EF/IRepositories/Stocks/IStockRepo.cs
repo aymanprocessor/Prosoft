@@ -1,4 +1,5 @@
-﻿using ProSoft.EF.DTOs.Stocks;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.Models.Stocks;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,12 @@ namespace ProSoft.EF.IRepositories.Stocks
 {
     public interface IStockRepo: IRepository<Stock, int>
     {
+        // -------------------- Coded By Ayman Saad -------------------- //
+
+        public IEnumerable<SelectListItem> GetAllStockAsEnumerable();
+
+        // -------------------- Coded By Ayman Saad -------------------- //
+
         Task<List<StockViewDTO>> GetAllStocksAsync();
         Task<int> GetNewIdAsync();
         Task<StockEditAddDTO> GetEmptyStockAsync();

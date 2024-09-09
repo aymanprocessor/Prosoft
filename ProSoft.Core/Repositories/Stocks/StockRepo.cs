@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProSoft.EF.DbContext;
 using ProSoft.EF.DTOs.Accounts;
@@ -19,11 +20,26 @@ namespace ProSoft.Core.Repositories.Stocks
 {
     public class StockRepo : Repository<Stock, int>, IStockRepo
     {
+        private readonly AppDbContext _context;
         private readonly IMapper _mapper;
         public StockRepo(AppDbContext Context, IMapper mapper) : base(Context)
         {
+            _context = Context;
             _mapper = mapper;
         }
+
+
+        // ------------------- Coded By Ayman Saad ------------------- //
+
+
+        public IEnumerable<SelectListItem> GetAllStockAsEnumerable()
+        {
+            return _context.Stocks.Select(s => new SelectListItem { Value = s.Stkcod.ToString(), Text = s.Stknam })
+                .ToList();
+        }
+
+        // ------------------- Coded By Ayman Saad ------------------- //
+
 
         public async Task<List<StockViewDTO>> GetAllStocksAsync()
         {
@@ -84,5 +100,7 @@ namespace ProSoft.Core.Repositories.Stocks
 
             return stockDTO;
         }
+
+        
     }
 }

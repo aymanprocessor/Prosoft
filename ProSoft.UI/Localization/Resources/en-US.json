@@ -965,5 +965,19 @@
   "Please select the monthly or annual movement series first and then try again": "Please select the monthly or annual movement series first and then try again",
   "Error in posting to accounts. This supplier is not linked to accounts": "Error in posting to accounts. This supplier is not linked to accounts",
   "Error in posting to accounts. This customer is not linked to accounts": "Error in posting to accounts. This customer is not linked to accounts",
-  "Accounts have been posted": "Accounts have been posted"
+  "Accounts have been posted": "Accounts have been posted",
+  "Stock Emp Flag": "Stock Emp Flag",
+  "Joining Users With Stock Type": "Joining Users With Stock Type",
+  "Add Stock Type For User": "Add Stock Type For User",
+  "Edit Stock Type For User": "Edit Stock Type For User",
+  "Duplicate primary key detected": "The Record Already Exists",
+  "Users Group": "Users Group",
+  "Joining Users With Side": "Joining Users With Side",
+  "User Group": "User Group",
+  "System Sections": "System Sections",
+  "Organization Sections": "Organization Sections",
+  "User Page": "User Page",
+  "Add User": "Add User",
+  "Add User For Side": "Add User For Side",
+  "Edit User For Side": "Edit User For Side"
 }

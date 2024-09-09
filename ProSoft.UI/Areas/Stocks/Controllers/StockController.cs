@@ -29,6 +29,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         // Get Add
         public async Task<IActionResult> Add_Stock()
         {
+            
             StockEditAddDTO stockDTO = await _stockRepo.GetEmptyStockAsync();
             ViewBag.stockId = await _stockRepo.GetNewIdAsync();
             return View(stockDTO);

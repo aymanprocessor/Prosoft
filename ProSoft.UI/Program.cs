@@ -26,6 +26,7 @@ using ProSoft.EF.IRepositories.Accounts;
 using ProSoft.Core.Repositories.Accounts;
 using ProSoft.EF.IRepositories.MedicalRecords;
 using ProSoft.Core.Repositories.MedicalRecords;
+using ProSoft.EF.Models.Stocks;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -49,10 +50,32 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie();
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Account/Login"; // Path to your login page
+    options.AccessDeniedPath = "/Account/AccessDenied"; // Path to the access denied page
+
+    // Set an infinite expiration time
+    options.ExpireTimeSpan = TimeSpan.FromDays(365 * 100); // 100 years
+
+    // Disable sliding expiration
+    options.SlidingExpiration = false;
+
+    // Ensure the cookie is persistent
+    options.Cookie.IsEssential = true;
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Secure the cookie in production
+});
+
+// General Response Register
+
+builder.Services.AddScoped<IGeneralResponse<StockEmpFlag>, GeneralResponse<StockEmpFlag>>();
+
 //Register for Interfaces
 builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Services.AddScoped<IRoleRepo, RoleRepo>();
 builder.Services.AddScoped<IMainRepo, MainRepo>();
+
 /////////////////
 builder.Services.AddScoped<ILabUnitRepo, LabUnitRepo>();
 builder.Services.AddScoped<ISubRepo, SubRepo>();
@@ -81,8 +104,11 @@ builder.Services.AddScoped<IDrTimeSheetRepo, DrTimeSheetRepo>();
 builder.Services.AddScoped<IUsersSectionRepo, UsersSectionRepo>();
 builder.Services.AddScoped<IReportDoctorFeesRepo, ReportDoctorFeesRepo>();
 builder.Services.AddScoped<ICheckupClinicRepo, CheckupClinicRepo>();
+builder.Services.AddScoped<IEisSectionTypeRepo, EisSectionTypeRepo>();
+builder.Services.AddScoped<IRegionRepo, RegionRepo>();
 ///////////////// Stock /////////////
 builder.Services.AddScoped<IStockTypeRepo, StockTypeRepo>();
+builder.Services.AddScoped<IStockEmpFlagRepo, StockEmpFlagRepo>();
 builder.Services.AddScoped<IBranchRepo, BranchRepo>();
 builder.Services.AddScoped<IStockRepo, StockRepo>();
 builder.Services.AddScoped<ISideRepo, SideRepo>();
@@ -104,7 +130,9 @@ builder.Services.AddScoped<ISubItemDtlRepo, SubItemDtlRepo>();
 builder.Services.AddScoped<IDepartmentsWithSectionsRepo, DepartmentsWithSectionsRepo>();
 builder.Services.AddScoped<IOpenColseTransactionRepo, OpenColseTransactionRepo>();
 builder.Services.AddScoped<IReportQuantityClassCardRepo, ReportQuantityClassCardRepo>();
-///////////////// System /////////////
+builder.Services.AddScoped<IUserSideRepo, UserSideRepo>();
+builder.Services.AddScoped<IUsersGroupRepo, UsersGroupRepo>();
+///////////////// System ///////////////
 builder.Services.AddScoped<IEisPostingRepo, EisPostingRepo>();
 ///////////////// Treasury /////////////
 builder.Services.AddScoped<ITreasuryNameRepo, TreasuryNameRepo>();

@@ -27,39 +27,40 @@
             </select>
         </div>
     </div>
-@*     <div class="page-head d-flex justify-content-between align-items-center flex-column flex-md-row gap-2 my-2">
-        <div class="d-flex align-items-center flex-column flex-md-row w-50">
-            <label for="fromItem" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0" style="width: 100px">@localizer["From Item"]</label>
-            <input id="fromItem" class="form-control text-center w-100" />
-        </div>
-        <div class="d-flex align-items-center flex-column flex-md-row w-50">
-            <label for="toItem" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0" style="width: 100px">@localizer["To Item"]</label>
-            <input id="toItem" class="form-control text-center w-100" />
-        </div>
-        <button class="btn btn-primary" style="width: 150px">@localizer["Search"]</button>
+    @*     <div class="page-head d-flex justify-content-between align-items-center flex-column flex-md-row gap-2 my-2">
+    <div class="d-flex align-items-center flex-column flex-md-row w-50">
+    <label for="fromItem" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0" style="width: 100px">@localizer["From Item"]</label>
+    <input id="fromItem" class="form-control text-center w-100" />
+    </div>
+    <div class="d-flex align-items-center flex-column flex-md-row w-50">
+    <label for="toItem" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0" style="width: 100px">@localizer["To Item"]</label>
+    <input id="toItem" class="form-control text-center w-100" />
+    </div>
+    <button class="btn btn-primary" style="width: 150px">@localizer["Search"]</button>
     </div>
     <div class="page-head d-flex justify-content-between align-items-center flex-column flex-md-row gap-2 my-2">
-        <div class="d-flex align-items-center flex-column flex-md-row w-50">
-            <label for="fromDate" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0" style="width: 100px">@localizer["From Date"]</label>
-            <input id="fromDate" type="date" class="form-control text-center w-100" />
-        </div>
-        <div class="d-flex align-items-center flex-column flex-md-row w-50">
-            <label for="toDate" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0" style="width: 100px">@localizer["To Date"]</label>
-            <input id="toDate" type="date" class="form-control text-center w-100" />
-        </div>
-        <button onclick="getOrderLimits()" class="btn btn-primary" style="width: 150px">@localizer["Search"]</button>
+    <div class="d-flex align-items-center flex-column flex-md-row w-50">
+    <label for="fromDate" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0" style="width: 100px">@localizer["From Date"]</label>
+    <input id="fromDate" type="date" class="form-control text-center w-100" />
+    </div>
+    <div class="d-flex align-items-center flex-column flex-md-row w-50">
+    <label for="toDate" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0" style="width: 100px">@localizer["To Date"]</label>
+    <input id="toDate" type="date" class="form-control text-center w-100" />
+    </div>
+    <button onclick="getOrderLimits()" class="btn btn-primary" style="width: 150px">@localizer["Search"]</button>
     </div>
     <div class="page-head d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 my-2">
-        <div class="d-flex align-items-center flex-column flex-md-row w-50 gap-2">
-            <input id="fromDate" type="text" class="form-control text-center w-100" />
-            <button class="btn btn-primary" style="width: 150px">@localizer["Code Search"]</button>
-        </div>
-        <div class="d-flex align-items-center flex-column flex-md-row w-50 gap-2">
-            <input id="toDate" type="text" class="form-control text-center w-100" />
-            <button class="btn btn-primary" style="width: 150px">@localizer["Name Search"]</button>
-        </div>
+    <div class="d-flex align-items-center flex-column flex-md-row w-50 gap-2">
+    <input id="fromDate" type="text" class="form-control text-center w-100" />
+    <button class="btn btn-primary" style="width: 150px">@localizer["Code Search"]</button>
+    </div>
+    <div class="d-flex align-items-center flex-column flex-md-row w-50 gap-2">
+    <input id="toDate" type="text" class="form-control text-center w-100" />
+    <button class="btn btn-primary" style="width: 150px">@localizer["Name Search"]</button>
+    </div>
     </div> *@
     <div class="filter-box d-flex align-items-center flex-column flex-md-row gap-3 my-2">
+      
         <div class="d-flex align-items-center flex-column flex-md-row w-100" style="width:40% !important;">
             <label for="filter" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0" style="width:60% !important;">@localizer["Filter By"]</label>
             <select id="filter" class="form-control text-center" onchange="filtering(event)">
@@ -69,6 +70,8 @@
                 <option value="4">@localizer["Item Name"]</option>
             </select>
         </div>
+
+        @* //---------------------Search By Item ---------------------// *@
         <div class="d-flex justify-content-end align-items-center flex-column flex-md-row gap-2 items hide" style="width:70% !important;">
             <div class="d-flex align-items-center w-100">
                 <label for="fromItem" style="width:60% !important;">@localizer["From Item"]</label>
@@ -80,6 +83,9 @@
             </div>
             <button onclick="getOrderLimits()" class="btn btn-primary" style="width: 150px">@localizer["Search"]</button>
         </div>
+        
+        @* //---------------------Search By Date ---------------------// *@
+
         <div class="d-flex justify-content-end align-items-center flex-column flex-md-row gap-2 periods" style="width:70% !important;">
             <div class="d-flex align-items-center w-100">
                 <label for="fromDate" style="width:60% !important;">@localizer["From Date"]</label>
@@ -91,6 +97,9 @@
             </div>
             <button onclick="getOrderLimits()" class="btn btn-primary" style="width: 150px">@localizer["Search"]</button>
         </div>
+
+        @* //---------------------Search By Code ---------------------// *@
+
         <div class="d-flex justify-content-end align-items-center flex-column flex-md-row gap-2 item-code hide" style="width:70% !important;">
             <div class="d-flex align-items-center w-100">
                 <label for="itemCode" style="width:60% !important;">@localizer["Search by code"]</label>
@@ -98,16 +107,20 @@
             </div>
             <button onclick="getOrderLimits()" class="btn btn-primary" style="width: 150px">@localizer["Search"]</button>
         </div>
+
+        @* //---------------------Search By Name ---------------------// *@
+
         <div class="d-flex justify-content-end align-items-center flex-column flex-md-row gap-2 item-name hide" style="width:70% !important;">
             <div class="d-flex align-items-center w-100">
-                <label for="itemName" style="width:60% !important;">@localizer["Search by code"]</label>
-                <input id="itemName" type="text" class="form-control text-center" placeholder="@localizer["Write the item code"]" />
+                <label for="itemName" style="width:60% !important;">@localizer["Search by name"]</label>
+                <input id="itemName" type="text" class="form-control text-center" placeholder="@localizer["Write the item name"]" />
             </div>
             <button onclick="getOrderLimits()" class="btn btn-primary" style="width: 150px">@localizer["Search"]</button>
         </div>
+
     </div>
 
-    <div class="overflow-auto" style="height: 225px;">
+     <div class="overflow-auto" style="height: 100vh;">
         <table id="myTable" class="table table-bordered table-hover" style="width:100%;">
             <thead class="table-dark">
                 <tr class="align-middle text-center">
@@ -143,11 +156,15 @@
         function getOrderLimits() {
             let filter = document.getElementById("filter").value;
             let stock = document.getElementById("stocks");
+
             let dateFrom = document.getElementById("fromDate");
             let dateTo = document.getElementById("toDate");
+
             let fromItem = document.getElementById("fromItem");
             let toItem = document.getElementById("toItem");
+
             let itemCode = document.getElementById("itemCode");
+
             let itemName = document.getElementById("itemName");
             let myURL = "";
 
@@ -276,40 +293,40 @@
                         const orderLmt = document.createElement("tr");
                         orderLmt.innerHTML +=
                             `
-                            <td class="align-middle text-center">${item.itemCd}</td>
-                            <td class="align-middle text-center">${item.itemName}</td>
-                            <td class="align-middle text-center">${item.reordQty}</td>
-                            <td class="align-middle text-center">${item.maxQty}</td>
-                            <td class="align-middle text-center">${item.minQty}</td>
-                            <td class="text-center align-middle" style="width: 325px;">
-                                <a href="/Stocks/OrderLimit/Edit_OrderLimit/${item.itemReorderID}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
-                            </td>
-                            `;
+                                    <td class="align-middle text-center">${item.itemCd}</td>
+                                    <td class="align-middle text-center">${item.itemName}</td>
+                                    <td class="align-middle text-center">${item.reordQty}</td>
+                                    <td class="align-middle text-center">${item.maxQty}</td>
+                                    <td class="align-middle text-center">${item.minQty}</td>
+                                    <td class="text-center align-middle" style="width: 325px;">
+                                        <a href="/Stocks/OrderLimit/Edit_OrderLimit/${item.itemReorderID}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
+                                    </td>
+                                    `;
                         orderLimits.appendChild(orderLmt);
                     }
                 }
             });
-                                // <form action="/Stocks/PermissionFormDetails/Delete_TransDetail" method="post" class="d-inline">
-                                //         @Html.AntiForgeryToken()
-                                //     <input type="hidden" name="id" value="${item.itemReorderID}" />
-                                //     <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width: 150px">@localizer["Delete"]</button>
-                                //     <div class="modal-container">
-                                //         <div class="modal 4" id="modal">
-                                //             <div class="modal-header fs-4">
-                                //                 <div class="title">@localizer["Confirm Delete"]</div>
-                                //                 <button type="button" onclick="closeModelListener(event)" data-close-button class="close-button">&times;</button>
-                                //             </div>
-                                //             <div class="modal-body fs-4">
-                                //                 @localizer["Are you sure you want to delete this item ?"]
-                                //             </div>
-                                //             <div class="modal-footer fs-4">
-                                //                 <button type="button" onclick="closeModelListener(event)" data-close-button class="btn btn-secondary">@localizer["No"]</button>
-                                //                 <button class="btn btn-danger">@localizer["Yes"]</button>
-                                //             </div>
-                                //         </div>
-                                //         <div onclick="overlayListener(event)" id="overlay"></div>
-                                //     </div>
-                                // </form>
+            // <form action="/Stocks/PermissionFormDetails/Delete_TransDetail" method="post" class="d-inline">
+            //         @Html.AntiForgeryToken()
+            //     <input type="hidden" name="id" value="${item.itemReorderID}" />
+            //     <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width: 150px">@localizer["Delete"]</button>
+            //     <div class="modal-container">
+            //         <div class="modal 4" id="modal">
+            //             <div class="modal-header fs-4">
+            //                 <div class="title">@localizer["Confirm Delete"]</div>
+            //                 <button type="button" onclick="closeModelListener(event)" data-close-button class="close-button">&times;</button>
+            //             </div>
+            //             <div class="modal-body fs-4">
+            //                 @localizer["Are you sure you want to delete this item ?"]
+            //             </div>
+            //             <div class="modal-footer fs-4">
+            //                 <button type="button" onclick="closeModelListener(event)" data-close-button class="btn btn-secondary">@localizer["No"]</button>
+            //                 <button class="btn btn-danger">@localizer["Yes"]</button>
+            //             </div>
+            //         </div>
+            //         <div onclick="overlayListener(event)" id="overlay"></div>
+            //     </div>
+            // </form>
         }
 
         //Filter
