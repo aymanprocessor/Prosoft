@@ -19,17 +19,10 @@
         </div>
 
 
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Price</th>
-
-                </tr>
-            </thead>
-            <tbody id="TableBody"></tbody> <!-- The framework will populate this -->
-        </table>
+        <div id="EISTable">
+            
+          
+        </div>
 
         @*        <table id="userTable"
         class="table table-hover table-striped"
@@ -67,16 +60,16 @@
 
 
         var fieldMapping = [
-            { name: 'Id', type: 'number', editable: false },
-            { name: 'Name', type: 'text', editable: true },
-            { name: 'Pricee', type: 'number', editable: true }
+            {title:"Id", name: 'Id', type: 'number', editable: false, width: '120px' },
+            { title: "Name", name: 'Name', type: 'text', editable: true },
+            { title: "Price", name: 'Pricee', type: 'float', editable: true }
         ];
 
         InlineEditor.renderTable({
             data: prices,
             fieldMapping: fieldMapping,
             actionButtonsHtml: '<button class="btn btn-success save-btn" data-row-id="{{rowId}}">Save</button>',
-            updateUrl: '@Url.Action("UpdatePrice")'
+            updateUrl: '@Url.Action("UpdateRecords")'
         });
 
 

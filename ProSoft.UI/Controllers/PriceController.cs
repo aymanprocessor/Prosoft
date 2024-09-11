@@ -50,7 +50,34 @@ namespace ProSoft.UI.Controllers
             return BadRequest(new { success = false, message = "User not found" });
         }
 
-       
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> UpdateRecords([FromBody] List<PriceDTO> records)
+        {
+            try
+            {
+               
+                    foreach (var record in records)
+                    {
+                        var product = await _priceRepo.GetByIdAsync(record.Id);
+                        if (product != null)
+                        {
+                            product.Name = record.Name;
+                            product.Pricee = record.Pricee;
+                            // Update other fields as needed
+                        }
+                    }
+
+               await _priceRepo.SaveChangesAsync();
+                
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
     }
 }

@@ -3,7 +3,7 @@
 
     // Constants for selectors and other reusable values
     const SELECTORS = {
-        tableBodySelector: '#TableBody',
+        tableSelector: '#EISTable',
         saveButtonSelector: '.save-btn',
         filterInputSelector: '#productFilter',
         tableRowSelector: '.dynamic-row',
@@ -23,9 +23,9 @@
         $.ajax({
             url: url,
             type: 'POST',
+            contentType: 'application/json', // Set content type to JSON
+            dataType: 'json', // Expected response data type
             data: data,
-            contentType: false,    // Required for FormData
-            processData: false,    // Required for FormData
             headers: {
                 'RequestVerificationToken': token
             },
@@ -145,26 +145,7 @@
                 var totalCols = tr.find('td').length - 1; // Exclude action buttons column
 
                 switch (event.key) {
-                    //case 'ArrowUp':
-                    //    if (currentRowIndex > 0) {
-                    //        navigateToCell(currentRowIndex - 1, currentColIndex);
-                    //    }
-                    //    break;
-                    //case 'ArrowDown':
-                    //    if (currentRowIndex < totalRows - 1) {
-                    //        navigateToCell(currentRowIndex + 1, currentColIndex);
-                    //    }
-                    //    break;
-                    //case 'ArrowRight':
-                    //    if (currentColIndex > 0) {
-                    //        navigateToCell(currentRowIndex, currentColIndex - 1);
-                    //    }
-                    //    break;
-                    //case 'ArrowLeft':
-                    //    if (currentColIndex < totalCols - 1) {
-                    //        navigateToCell(currentRowIndex, currentColIndex + 1);
-                    //    }
-                    //    break;
+                  
                     case 'Enter':
                         event.preventDefault(); // Prevent default tab behavior (moving out of the table)
                         if (currentRowIndex < totalRows - 1) {
@@ -223,29 +204,36 @@
     // Private function to generate input fields dynamically based on column type
     function generateInputField(rowId, field, value, isBatchMode) {
         let inputField;
+
+
         if (isBatchMode === false) {
             return `<span data-row-id="${rowId}">${value}</span>`;
         }
         const disabledClass = field.editable === false ? 'disabled' : '';
+        const titleCenter = field.titleCenter === true ? 'text-center' : '';
+
         switch (field.type) {
             case 'text':
-                inputField = `<input type="text" value="${value}" class="form-control" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()" ${disabledClass}/>`;
+                inputField = `<input type="text" value="${value}" class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()"  ${disabledClass}/>`;
                 break;
             case 'number':
-                inputField = `<input type="number" value="${value}" class="form-control " id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()" ${disabledClass}/>`;
+                inputField = `<input type="text" value="${value}" class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()" pattern="\\d*" oninput="this.value = this.value.replace(/[^0-9]/g, '');"  ${disabledClass}/>`;
+                break;
+            case 'float':
+                inputField = `<input type="text" value="${value}" class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()" pattern="\\d+(\\.\\d+)?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');" ${disabledClass}/>`;
                 break;
             case 'date':
-                inputField = `<input type="date" value="${value}" class="form-control " id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()" ${disabledClass}/>`;
+                inputField = `<input type="date" value="${value}" class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()"  ${disabledClass}/>`;
                 break;
             case 'select':
                 let options = '';
                 field.options.forEach(function (option) {
                     options += `<option value="${option.value}" ${(option.value === value ? 'selected' : '')}>${option.label}</option>`;
                 });
-                inputField = `<select class="form-control" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()" ${disabledClass}>${options}</select>`;
+                inputField = `<select class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()"  ${disabledClass}>${options}</select>`;
                 break;
             default:
-                inputField = `<input type="text" value="${value}" class="form-control }" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()" ${disabledClass}/>`;
+                inputField = `<input type="text" value="${value}" class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()"  ${disabledClass}/>`;
                 break;
         }
 
@@ -254,51 +242,202 @@
 
         return inputField;
     }
-
+    const changedRows = new Set()
     // Private function to handle the value change event for a cell
     function handleCellValueChange(inputElement, updateUrl) {
         const rowId = inputElement.data('row-id');
 
         // Gather all field values from the row
         const row = inputElement.closest('tr');
-        const formData = new FormData();
+        const isChanged = row.hasClass('changed');
 
-        // Collect values from all input/select elements in the row
-        row.find(SELECTORS.editableInputSelector).each(function () {
-            const fieldName = $(this).data('field-name');
-            let fieldValue = $(this).val();
+        if (!isChanged) {
+            changedRows.add(rowId);
+            row.addClass('changed');
+            row.css('background-color', '#FFFFE0'); // Highlight changed row
+        }
 
-            // Perform type conversion based on field name or input type
-            if ($(this).attr('type') === 'number') {
-                fieldValue = parseFloat(fieldValue);  // Convert to a float for number fields
-            } else if ($(this).attr('type') === 'date') {
-                fieldValue = new Date(fieldValue).toISOString();  // Convert to ISO date format
-            }
+        //const formData = new FormData();
 
-            // Append the value to the FormData object
-            formData.append(fieldName, fieldValue);
-        });
+        //// Collect values from all input/select elements in the row
+        //row.find(SELECTORS.editableInputSelector).each(function () {
+        //    const fieldName = $(this).data('field-name');
+        //    let fieldValue = $(this).val();
 
-        // Add rowId to the FormData
-        formData.append('Id', rowId);
+        //    // Perform type conversion based on field name or input type
+        //    if ($(this).attr('type') === 'number') {
+        //        fieldValue = parseFloat(fieldValue);  // Convert to a float for number fields
+        //    } else if ($(this).attr('type') === 'date') {
+        //        fieldValue = new Date(fieldValue).toISOString();  // Convert to ISO date format
+        //    }
 
-        console.log([...formData]); // Log FormData content for debugging
+        //    // Append the value to the FormData object
+        //    formData.append(fieldName, fieldValue);
+        //});
+
+        //// Add rowId to the FormData
+        //formData.append('Id', rowId);
+
+        //console.log([...formData]); // Log FormData content for debugging
 
         // Send AJAX request to update the row in the database
-        sendAjaxRequest(updateUrl, formData, function (response) {
+        //sendAjaxRequest(updateUrl, formData, function (response) {
 
+        //    console.log("Updated Successfully");
+
+        //}, function (errorMessage) {
            
-        }, function (errorMessage) {
-            alert(MESSAGES.errorMessage + ": " + errorMessage); // Error callback
-        });
+        //    console.error(MESSAGES.errorMessage + ": " + errorMessage);
+        //});
     }
 
 
+    // Save only changed rows
+    function batchSaveRecords(updateUrl) {
+        const data = [];
+
+        // Collect data for changed rows
+        changedRows.forEach(rowId => {
+            const row = $(`${SELECTORS.tableRowSelector} input[data-row-id="${rowId}"]`).closest('tr');
+
+            const formData = { Id: rowId };
+            row.find(SELECTORS.editableInputSelector).each(function () {
+                const fieldName = $(this).data('field-name');
+                let fieldValue = $(this).val();
+                const fieldType = $(this).attr('type');
+              
+                // Convert field value based on its type
+                //if (fieldType === 'number') {
+                //    fieldValue = parseFloat(fieldValue);
+                //} else if (fieldType === 'checkbox') {
+                //    fieldValue = $(this).is(':checked');
+                //} else if (fieldType === 'date') {
+                //    fieldValue = new Date(fieldValue).toISOString();
+                //}
+
+                formData[fieldName] = fieldValue;
+            });
+            console.log("formdata :", formData);
+            data.push(formData);
+            console.log("data :", data);
+
+        });
+
+        if (data.length > 0) {
+            // Send AJAX request with the data of changed rows
+            sendAjaxRequest(updateUrl, JSON.stringify( data ), function (response) {
+                console.log(MESSAGES.successMessage);
+                changedRows.clear(); // Clear the changed rows
+                $(SELECTORS.tableRowSelector).removeClass('changed').css('background-color', ''); // Reset row color
+            }, function (errorMessage) {
+                console.log(errorMessage);
+            });
+        } else {
+            console.log('No changes to save.');
+        }
+    }
+
+    function attachChangeEventsToInputs() {
+        $(SELECTORS.editableInputSelector).off('input change blur').on('input change blur', function () {
+            handleCellValueChange($(this));
+        });
+    }
+
+    // Generate a new empty row based on the fieldMapping and add it below the last row
+    function addNewRow() {
+        const tableBody = $('#EISTable tbody');
+
+        // Generate a new row ID (you can use a better logic for generating unique IDs)
+        const newId = tableBody.find('tr').length + 1
+        const newRowId = 'new_' + newId;
+
+        let newRowHtml = `<tr data-row-id="${newRowId}" class="row-modified">`;
+
+        // Iterate over fieldMapping to generate editable input fields for the new row
+        fieldMapping.forEach(field => {
+            newRowHtml += `<td>${generateInputField(newRowId, field, field.name === "Id" ? newId :'', true)}</td>`;
+        });
+
+        newRowHtml += `</tr>`;
+
+        // Append the new row to the table body
+        tableBody.append(newRowHtml);
+
+        // Attach change detection for the new row inputs
+       // attachChangeEventsToInputs();
+    }
+
+    function handleDeleteRow() {
+        $(document).on('click', '.delete-row', function () {
+            var rowId = $(this).data('row-id');
+            $$('tr.dynamic-row').filter(function () {
+                return $(this).find('[data-row-id="' + rowId + '"]').length > 0;
+            }).addClass('deleted').css('background-color', 'E0EEFF');
+
+        });
+    }
+
+    // Add "Save" button below the table
+    function addSaveRowsButton(config) {
+        //var ButtonHtml = '<div class="col">';
+        var ButtonHtml = '<button id="save-row-btn" class="btn btn-warning mb-3" ><i class="bi bi-floppy"></i> حفظ </button>';
+        //ButtonHtml += '</div>';
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('save-row-btn').addEventListener('click', function () { batchSaveRecords(config.updateUrl) });
+        });
+        return ButtonHtml;
+    }
+    // Add "Insert New Row" button below the table
+    function addInsertRowButton() {
+
+        //var ButtonHtml = '<div class="col">';
+       var ButtonHtml = '<button id="insert-new-row-btn" class="btn btn-success mb-3" ><i class="bi bi-plus-circle"></i></button>';
+        //ButtonHtml += '</div>';
+
+   
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('insert-new-row-btn').addEventListener('click', addNewRow);
+        });
+
+        return ButtonHtml;
+    }
+
+    function generateToolbar(config) {
+        var tableBody
+        var toolbarHtml = '';
+        toolbarHtml += '<div class="d-flex gap-2">';
+
+        toolbarHtml += addInsertRowButton(config);
+        toolbarHtml += addSaveRowsButton(config);
+
+        toolbarHtml += '</div>';
+
+        $(SELECTORS.tableSelector).prepend(toolbarHtml);
+       
+    }
 
     // Private function to generate table rows dynamically with different column types
     function generateTableBody(data, fieldMapping, actionButtonsHtml, isBatchMode) {
         var tableBodyHtml = '';
 
+        tableBodyHtml += '<thead><tr>';
+        // Table Header
+        fieldMapping.forEach(function (field) {
+
+
+            var value = field.title;
+            //var widthStyle = field.width ? `style="width: ${field.width};"` : ''; // Apply width if defined
+
+            tableBodyHtml += `<th>` + value + '</th>';
+        });
+        tableBodyHtml += '<th></th>';
+
+        tableBodyHtml += '</tr></thead>';
+
+
+        tableBodyHtml += ' <tbody>';
+        //  Table Data
         data.forEach(function (row) {
 
             tableBodyHtml += '<tr class="dynamic-row">';
@@ -306,13 +445,19 @@
 
 
                 var value = row[field.name];
-                tableBodyHtml += '<td>' + generateInputField(row.Id, field, value, isBatchMode) + '</td>';
+                var widthStyle = field.width ? `style="width: ${field.width};"` : ''; // Apply width if defined
+
+                tableBodyHtml += `<td ${widthStyle}>` + generateInputField(row.Id, field, value, isBatchMode) + '</td>';
             });
+            tableBodyHtml += `<td ><button class="btn btn-danger class="my-auto" btn-sm delete-row" data-row-id="${row.Id}"><i class="bi bi-trash"></i></button></td>`;
+
             //tableBodyHtml += '<td>' + actionButtonsHtml.replace(/{{rowId}}/g, row.id) + '</td>';
             tableBodyHtml += '</tr>';
         });
+        tableBodyHtml += '</tbody >';
 
-        return tableBodyHtml;
+
+        return `<table class="table table-hover">${tableBodyHtml}</table>`;
     }
 
     // Public API
@@ -324,7 +469,7 @@
                 var formData = gatherFormData(rowId, config.fieldMapping);
 
                 sendAjaxRequest(config.updateUrl, formData, function (response) {
-                   
+
                 }, function (errorMessage) {
                     alert(MESSAGES.errorMessage + ": " + errorMessage);
                 });
@@ -341,7 +486,7 @@
             // Render the table body
 
             var tableBodyHtml = generateTableBody(config.data, config.fieldMapping, config.actionButtonsHtml, isBatchMode);
-            $(SELECTORS.tableBodySelector).html(tableBodyHtml);
+            $(SELECTORS.tableSelector).html(tableBodyHtml);
 
             $(document).on('change', SELECTORS.editableInputSelector, function () {
                 handleCellValueChange($(this), config.updateUrl); // Trigger the AJAX call on value change
@@ -357,7 +502,9 @@
 
             // Initialize keyboard navigation for table
             handleKeyboardNavigation();
+            generateToolbar(config);
 
+            handleDeleteRow();
         }
 
     }
