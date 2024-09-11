@@ -110,6 +110,9 @@ namespace ProSoft.EF.DbContext
                 .HasKey(us => new { us.UserId, us.SideId, us.RegionId, us.BranchId });
 
         }
+
+        public DbSet<Price> Prices { get; set; }
+
         // Shared //
         public DbSet<NationalityEi> NationalityEis { get; set; }
         public DbSet<EisUserObject> EisUserObjects { get; set; }

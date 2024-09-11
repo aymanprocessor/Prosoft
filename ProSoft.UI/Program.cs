@@ -74,7 +74,8 @@ builder.Services.AddScoped<IGeneralResponse<StockEmpFlag>, GeneralResponse<Stock
 //Register for Interfaces
 builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Services.AddScoped<IRoleRepo, RoleRepo>();
-builder.Services.AddScoped<IMainRepo, MainRepo>();
+builder.Services.AddScoped<IUserRepo, UserRepo>();
+builder.Services.AddScoped<IPriceRepo, PriceRepo>();
 
 /////////////////
 builder.Services.AddScoped<ILabUnitRepo, LabUnitRepo>();

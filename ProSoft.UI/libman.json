@@ -20,6 +20,23 @@
         "sweetalert2.min.js",
         "sweetalert2.min.css"
       ]
+    },
+    {
+      "library": "x-editable@1.5.1",
+      "destination": "wwwroot/lib/x-editable/",
+      "files": [
+        "bootstrap-editable/js/bootstrap-editable.min.js",
+        "bootstrap-editable/css/bootstrap-editable.css"
+      ]
+    },
+    {
+      "library": "bootstrap-table@1.23.2",
+      "destination": "wwwroot/lib/bootstrap-table/",
+      "files": [
+        "extensions/editable/bootstrap-table-editable.min.js",
+        "bootstrap-table.min.js",
+        "bootstrap-table.min.css"
+      ]
     }
   ]
 }

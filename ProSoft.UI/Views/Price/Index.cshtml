@@ -1,0 +1,84 @@
+﻿@model PriceDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@inject IViewLocalizer localizer
+@using Newtonsoft.Json
+@using ProSoft.EF.DTOs
+@{
+    ViewData["Title"] = "Price List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //SelectList drList = new SelectList(ViewBag.doctors, "DrId", "DrDesc");
+
+}
+@Html.AntiForgeryToken()
+<div class="container">
+    <div class="border mt-5 p-3">
+        <div class="d-flex mb-3">
+           @*  <div>
+                <button id="batchModeBtn" class="btn btn-warning">Batch Edit</button>
+            </div> *@
+        </div>
+
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Price</th>
+
+                </tr>
+            </thead>
+            <tbody id="TableBody"></tbody> <!-- The framework will populate this -->
+        </table>
+
+        @*        <table id="userTable"
+        class="table table-hover table-striped"
+
+        >
+        <thead>
+        <tr>
+        <th  >ID</th>
+        <th  >Item Name</th>
+        <th  >Item Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var price in Model.Prices)
+        {
+        <tr>
+        <td>@price.Id</td>
+        <td>@price.Name</td>
+        <td>@price.Pricee</td>
+        </tr>
+        }
+        </tbody>
+        </table> *@
+
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+
+        var prices = @Html.Raw(JsonConvert.SerializeObject(Model.Prices));
+
+
+
+
+        var fieldMapping = [
+            { name: 'Id', type: 'number', editable: false },
+            { name: 'Name', type: 'text', editable: true },
+            { name: 'Pricee', type: 'number', editable: true }
+        ];
+
+        InlineEditor.renderTable({
+            data: prices,
+            fieldMapping: fieldMapping,
+            actionButtonsHtml: '<button class="btn btn-success save-btn" data-row-id="{{rowId}}">Save</button>',
+            updateUrl: '@Url.Action("UpdatePrice")'
+        });
+
+
+    </script>
+}
