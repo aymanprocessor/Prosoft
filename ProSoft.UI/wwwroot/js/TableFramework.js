@@ -392,7 +392,7 @@
     function addInsertRowButton() {
 
         //var ButtonHtml = '<div class="col">';
-       var ButtonHtml = '<button id="insert-new-row-btn" class="btn btn-success mb-3" ><i class="bi bi-plus-circle"></i></button>';
+       var ButtonHtml = '<button id="insert-new-row-btn" class="btn btn-success mb-3" ><i class="bi bi-plus-circle"></i> اضافة </button>';
         //ButtonHtml += '</div>';
 
    
