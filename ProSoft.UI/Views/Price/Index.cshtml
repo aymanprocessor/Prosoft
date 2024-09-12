@@ -13,15 +13,13 @@
 <div class="container">
     <div class="border mt-5 p-3">
         <div class="d-flex mb-3">
-           @*  <div>
-                <button id="batchModeBtn" class="btn btn-warning">Batch Edit</button>
+            @*  <div>
+            <button id="batchModeBtn" class="btn btn-warning">Batch Edit</button>
             </div> *@
         </div>
 
 
         <div id="EISTable">
-            
-          
         </div>
 
         @*        <table id="userTable"
@@ -61,28 +59,35 @@
 
         var fieldMapping = [
 
-            {title:"Id",
-            name: 'Id',
-            type: 'number',
-            editable: false,
-            width: '120px' },
+            {
+                title: "Id",
+                name: 'Id',
+                type: 'number',
+                editable: false,
+                width: '120px'
+            },
 
-            { title: "Name",
-            name: 'Name',
-            type: 'text',
-            editable: true },
+            {
+                title: "Name",
+                name: 'Name',
+                type: 'text',
+                editable: true
+            },
 
-            { title: "Price",
-            name: 'Pricee',
-            type: 'float',
-            editable: true }
+            {
+                title: "Price",
+                name: 'Pricee',
+                type: 'float',
+                editable: true
+            }
         ];
 
         InlineEditor.renderTable({
             data: prices,
             fieldMapping: fieldMapping,
-            actionButtonsHtml: '<button class="btn btn-success save-btn" data-row-id="{{rowId}}">Save</button>',
-            updateUrl: '@Url.Action("UpdateRecords")'
+            updateUrl: '@Url.Action("UpdateRecords")',
+            deleteUrl: '@Url.Action("Delete")',
+            saveUrl: '@Url.Action("SaveRecords")',
         });
 
 

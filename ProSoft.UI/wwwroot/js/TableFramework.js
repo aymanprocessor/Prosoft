@@ -19,7 +19,7 @@
     // Private function to send AJAX request
     function sendAjaxRequest(url, data, successCallback, errorCallback) {
         const token = $('input[name="__RequestVerificationToken"]').attr('value');
-
+        console.log("Data :",data)
         $.ajax({
             url: url,
             type: 'POST',
@@ -176,31 +176,7 @@
         }
     }
 
-    // Private function to generate input fields dynamically based on column type
-    //function generateInputField(rowId, field, value, isBatchMode) {
-
-    //    if (isBatchMode === false) {
-    //        return value;
-    //    }
-
-    //    switch (field.type) {
-    //        case 'text':
-    //            return '<input type="text" value="' + value + '" class="form-control" id="' + field.name + '_' + rowId + '">';
-    //        case 'number':
-    //            return '<input type="number" value="' + value + '" class="form-control" id="' + field.name + '_' + rowId + '">';
-    //        case 'date':
-    //            return '<input type="date" value="' + value + '" class="form-control" id="' + field.name + '_' + rowId + '">';
-    //        case 'select':
-    //            var options = '';
-    //            field.options.forEach(function (option) {
-    //                options += '<option value="' + option.value + '" ' + (option.value === value ? 'selected' : '') + '>' + option.label + '</option>';
-    //            });
-    //            return '<select class="form-control" id="' + field.name + '_' + rowId + '">' + options + '</select>';
-    //        default:
-    //            return '<input type="text" value="' + value + '" class="form-control" id="' + field.name + '_' + rowId + '">';
-    //    }
-    //}
-
+   
     // Private function to generate input fields dynamically based on column type
     function generateInputField(rowId, field, value, isBatchMode) {
         let inputField;
@@ -242,7 +218,9 @@
 
         return inputField;
     }
+
     const changedRows = new Set()
+    const deletedRows = new Set()
     // Private function to handle the value change event for a cell
     function handleCellValueChange(inputElement, updateUrl) {
         const rowId = inputElement.data('row-id');
@@ -250,92 +228,139 @@
         // Gather all field values from the row
         const row = inputElement.closest('tr');
         const isChanged = row.hasClass('changed');
+        const isDeleted = row.hasClass('deleted');
+        const isCreated = row.hasClass('created');
 
-        if (!isChanged) {
+        if (!isChanged && !isDeleted && !isCreated) {
             changedRows.add(rowId);
             row.addClass('changed');
             row.css('background-color', '#FFFFE0'); // Highlight changed row
         }
 
-        //const formData = new FormData();
+       
+    }
 
-        //// Collect values from all input/select elements in the row
-        //row.find(SELECTORS.editableInputSelector).each(function () {
-        //    const fieldName = $(this).data('field-name');
-        //    let fieldValue = $(this).val();
+    function handleDeleteRow(config) {
+        $(document).on('click', '.delete-row', function (event) {
+            var rowId = $(this).data('row-id');
+            var row = $(this).closest('tr'); // Get the closest table row
 
-        //    // Perform type conversion based on field name or input type
-        //    if ($(this).attr('type') === 'number') {
-        //        fieldValue = parseFloat(fieldValue);  // Convert to a float for number fields
-        //    } else if ($(this).attr('type') === 'date') {
-        //        fieldValue = new Date(fieldValue).toISOString();  // Convert to ISO date format
-        //    }
+            // Show confirmation alert before proceeding
+            if (confirm("Are you sure you want to delete this item?")) {
+                const formData = { Id: rowId };
 
-        //    // Append the value to the FormData object
-        //    formData.append(fieldName, fieldValue);
-        //});
+                console.log("formData", formData);
 
-        //// Add rowId to the FormData
-        //formData.append('Id', rowId);
-
-        //console.log([...formData]); // Log FormData content for debugging
-
-        // Send AJAX request to update the row in the database
-        //sendAjaxRequest(updateUrl, formData, function (response) {
-
-        //    console.log("Updated Successfully");
-
-        //}, function (errorMessage) {
-           
-        //    console.error(MESSAGES.errorMessage + ": " + errorMessage);
-        //});
+                sendAjaxRequest(config.deleteUrl,
+                    JSON.stringify(formData),
+                    function (response) {
+                        if (response.success) {
+                            console.log("Deleted successfully");
+                            row.remove(); // Remove the row from the DOM
+                        } else {
+                            console.log("Delete failed:", response.message);
+                        }
+                    },
+                    function (error) {
+                        console.log("Error:", error);
+                    });
+            } else {
+                // If the user clicks 'Cancel', do nothing
+                console.log("Delete canceled");
+            }
+        });
     }
 
 
     // Save only changed rows
-    function batchSaveRecords(updateUrl) {
-        const data = [];
+    function batchSaveRecords(saveUrl) {
+        const dataToInsert = [];
+        const dataToUpdate = [];
 
-        // Collect data for changed rows
-        changedRows.forEach(rowId => {
-            const row = $(`${SELECTORS.tableRowSelector} input[data-row-id="${rowId}"]`).closest('tr');
+        // Collect data for newly created rows (rows marked with 'created' class)
+        $('.dynamic-row.created').each(function () {
+            const rowId = $(this).data('row-id');
+            const row = $(this);
 
-            const formData = { Id: rowId };
+            // Initialize a formData object for each new row
+           // const formData = { Id: rowId };
+
+            // Iterate over the input fields within the row to collect field data
+            const formData = {}
             row.find(SELECTORS.editableInputSelector).each(function () {
                 const fieldName = $(this).data('field-name');
                 let fieldValue = $(this).val();
                 const fieldType = $(this).attr('type');
-              
-                // Convert field value based on its type
-                //if (fieldType === 'number') {
-                //    fieldValue = parseFloat(fieldValue);
-                //} else if (fieldType === 'checkbox') {
-                //    fieldValue = $(this).is(':checked');
-                //} else if (fieldType === 'date') {
-                //    fieldValue = new Date(fieldValue).toISOString();
-                //}
+
+                // Type conversions (if necessary)
+                if (fieldType === 'number') {
+                    fieldValue = parseFloat(fieldValue);
+                } else if (fieldType === 'checkbox') {
+                    fieldValue = $(this).is(':checked');
+                } else if (fieldType === 'date') {
+                    fieldValue = new Date(fieldValue).toISOString();
+                }
 
                 formData[fieldName] = fieldValue;
             });
-            console.log("formdata :", formData);
-            data.push(formData);
-            console.log("data :", data);
 
+            dataToInsert.push(formData);
         });
 
-        if (data.length > 0) {
-            // Send AJAX request with the data of changed rows
-            sendAjaxRequest(updateUrl, JSON.stringify( data ), function (response) {
+        // Collect data for rows that have been modified (marked in 'changedRows')
+        changedRows.forEach(rowId => {
+            const row = $(`${SELECTORS.tableRowSelector} input[data-row-id="${rowId}"]`).closest('tr');
+
+            const formData = { Id: rowId };
+
+            // Collect the changed field values
+            row.find(SELECTORS.editableInputSelector).each(function () {
+                const fieldName = $(this).data('field-name');
+                let fieldValue = $(this).val();
+                const fieldType = $(this).attr('type');
+
+                // Type conversions (if necessary)
+                if (fieldType === 'number') {
+                    fieldValue = parseFloat(fieldValue);
+                } else if (fieldType === 'checkbox') {
+                    fieldValue = $(this).is(':checked');
+                } else if (fieldType === 'date') {
+                    fieldValue = new Date(fieldValue).toISOString();
+                }
+
+                formData[fieldName] = fieldValue;
+            });
+
+            dataToUpdate.push(formData);
+        });
+
+        // Check if we have new records or modified records to save
+        if (dataToInsert.length > 0 || dataToUpdate.length > 0) {
+            const payload = {
+                updateData: dataToUpdate,
+                insertData: dataToInsert
+            };
+
+            // Send AJAX request with both insert and update data
+            sendAjaxRequest(saveUrl, JSON.stringify(payload), function (response) {
                 console.log(MESSAGES.successMessage);
-                changedRows.clear(); // Clear the changed rows
-                $(SELECTORS.tableRowSelector).removeClass('changed').css('background-color', ''); // Reset row color
+
+                // Reset state of inserted rows
+                $('.dynamic-row.created').removeClass('created').css('background-color', '');
+
+                // Clear the list of changed rows
+                changedRows.clear();
+                $(SELECTORS.tableRowSelector).removeClass('changed').css('background-color', '');
+
             }, function (errorMessage) {
                 console.log(errorMessage);
+                
             });
         } else {
             console.log('No changes to save.');
         }
     }
+
 
     function attachChangeEventsToInputs() {
         $(SELECTORS.editableInputSelector).off('input change blur').on('input change blur', function () {
@@ -351,7 +376,7 @@
         const newId = tableBody.find('tr').length + 1
         const newRowId = 'new_' + newId;
 
-        let newRowHtml = `<tr data-row-id="${newRowId}" class="row-modified">`;
+        let newRowHtml = `<tr  class="dynamic-row created" data-row-id="${newRowId}" style="background-color:#c8fad5">`;
 
         // Iterate over fieldMapping to generate editable input fields for the new row
         fieldMapping.forEach(field => {
@@ -367,15 +392,7 @@
        // attachChangeEventsToInputs();
     }
 
-    function handleDeleteRow() {
-        $(document).on('click', '.delete-row', function () {
-            var rowId = $(this).data('row-id');
-            $$('tr.dynamic-row').filter(function () {
-                return $(this).find('[data-row-id="' + rowId + '"]').length > 0;
-            }).addClass('deleted').css('background-color', 'E0EEFF');
-
-        });
-    }
+  
 
     // Add "Save" button below the table
     function addSaveRowsButton(config) {
@@ -384,7 +401,7 @@
         //ButtonHtml += '</div>';
 
         document.addEventListener('DOMContentLoaded', function () {
-            document.getElementById('save-row-btn').addEventListener('click', function () { batchSaveRecords(config.updateUrl) });
+            document.getElementById('save-row-btn').addEventListener('click', function () { batchSaveRecords(config.saveUrl) });
         });
         return ButtonHtml;
     }
@@ -449,7 +466,7 @@
 
                 tableBodyHtml += `<td ${widthStyle}>` + generateInputField(row.Id, field, value, isBatchMode) + '</td>';
             });
-            tableBodyHtml += `<td ><button class="btn btn-danger class="my-auto" btn-sm delete-row" data-row-id="${row.Id}"><i class="bi bi-trash"></i></button></td>`;
+            tableBodyHtml += `<td ><button class="btn btn-danger my-auto delete-row" data-row-id="${row.Id}"><i class="bi bi-trash"></i></button></td>`;
 
             //tableBodyHtml += '<td>' + actionButtonsHtml.replace(/{{rowId}}/g, row.id) + '</td>';
             tableBodyHtml += '</tr>';
@@ -495,6 +512,8 @@
             // Initialize inline edit and filter features after rendering
             this.initInlineEdit({
                 updateUrl: config.updateUrl,
+                deleteUrl: config.deleteUrl,
+                saveUrl: config.deleteUrl,
                 fieldMapping: config.fieldMapping
             });
 
@@ -504,7 +523,7 @@
             handleKeyboardNavigation();
             generateToolbar(config);
 
-            handleDeleteRow();
+            handleDeleteRow(config);
         }
 
     }
