@@ -3,7 +3,6 @@
 
     // Constants for selectors and other reusable values
     const SELECTORS = {
-        tableSelector: '#EISTable',
         saveButtonSelector: '.save-btn',
         filterInputSelector: '#productFilter',
         tableRowSelector: '.dynamic-row',
@@ -204,9 +203,9 @@
             case 'select':
                 let options = '';
                 field.options.forEach(function (option) {
-                    options += `<option value="${option.value}" ${(option.value === value ? 'selected' : '')}>${option.label}</option>`;
+                    options += `<option value="${option.Value}" ${(option.Value == value ? 'selected' : '')}>${option.Text}</option>`;
                 });
-                inputField = `<select class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()"  ${disabledClass}>${options}</select>`;
+                inputField = `<select class="form-control form-select ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()"  ${disabledClass}>${options}</select>`;
                 break;
             default:
                 inputField = `<input type="text" value="${value}" class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()"  ${disabledClass}/>`;
@@ -369,8 +368,9 @@
     }
 
     // Generate a new empty row based on the fieldMapping and add it below the last row
-    function addNewRow() {
-        const tableBody = $('#EISTable tbody');
+    function addNewRow(config) {
+        console.log(config.tableId);
+        const tableBody = $(`${config.tableId} tbody`);
 
         // Generate a new row ID (you can use a better logic for generating unique IDs)
         const newId = tableBody.find('tr').length + 1
@@ -379,7 +379,7 @@
         let newRowHtml = `<tr  class="dynamic-row created" data-row-id="${newRowId}" style="background-color:#c8fad5">`;
 
         // Iterate over fieldMapping to generate editable input fields for the new row
-        fieldMapping.forEach(field => {
+        config.fieldMapping.forEach(field => {
             newRowHtml += `<td>${generateInputField(newRowId, field, field.name === "Id" ? newId :'', true)}</td>`;
         });
 
@@ -406,15 +406,15 @@
         return ButtonHtml;
     }
     // Add "Insert New Row" button below the table
-    function addInsertRowButton() {
+    function addInsertRowButton(config) {
 
         //var ButtonHtml = '<div class="col">';
-       var ButtonHtml = '<button id="insert-new-row-btn" class="btn btn-success mb-3" ><i class="bi bi-plus-circle"></i> اضافة </button>';
+        var ButtonHtml = `<button id="${config.tableId}insert-new-row-btn" class="btn btn-success mb-3" ><i class="bi bi-plus-circle"></i> اضافة </button>`;
         //ButtonHtml += '</div>';
-
+        
    
         document.addEventListener('DOMContentLoaded', function () {
-            document.getElementById('insert-new-row-btn').addEventListener('click', addNewRow);
+            document.getElementById(`${config.tableId}insert-new-row-btn`).addEventListener('click', function () { addNewRow(config) });
         });
 
         return ButtonHtml;
@@ -430,12 +430,12 @@
 
         toolbarHtml += '</div>';
 
-        $(SELECTORS.tableSelector).prepend(toolbarHtml);
+        $(config.tableId).prepend(toolbarHtml);
        
     }
 
     // Private function to generate table rows dynamically with different column types
-    function generateTableBody(data, fieldMapping, actionButtonsHtml, isBatchMode) {
+    function generateTableBody(viewButtonEnable,data, fieldMapping, actionButtonsHtml, isBatchMode) {
         var tableBodyHtml = '';
 
         tableBodyHtml += '<thead><tr>';
@@ -466,8 +466,15 @@
 
                 tableBodyHtml += `<td ${widthStyle}>` + generateInputField(row.Id, field, value, isBatchMode) + '</td>';
             });
-            tableBodyHtml += `<td ><button class="btn btn-danger my-auto delete-row" data-row-id="${row.Id}"><i class="bi bi-trash"></i></button></td>`;
+            tableBodyHtml += `<td >`;
+            if (viewButtonEnable) {
 
+            tableBodyHtml += `<button class="btn btn-primary view mx-1" data-row-id="${row.Id}">عرض</button>`;
+            }
+            tableBodyHtml += `<button class="btn btn-danger delete-row mx-1" data-row-id="${row.Id}"><i class="bi bi-trash"></i></button>`;
+            tableBodyHtml += `</td >`;
+
+            
             //tableBodyHtml += '<td>' + actionButtonsHtml.replace(/{{rowId}}/g, row.id) + '</td>';
             tableBodyHtml += '</tr>';
         });
@@ -502,8 +509,8 @@
         renderTable: function (config) {
             // Render the table body
 
-            var tableBodyHtml = generateTableBody(config.data, config.fieldMapping, config.actionButtonsHtml, isBatchMode);
-            $(SELECTORS.tableSelector).html(tableBodyHtml);
+            var tableBodyHtml = generateTableBody(config.viewButtonEnable,config.data, config.fieldMapping, config.actionButtonsHtml, isBatchMode);
+            $(config.tableId).html(tableBodyHtml);
 
             $(document).on('change', SELECTORS.editableInputSelector, function () {
                 handleCellValueChange($(this), config.updateUrl); // Trigger the AJAX call on value change
@@ -511,10 +518,12 @@
 
             // Initialize inline edit and filter features after rendering
             this.initInlineEdit({
+                tableId: config.tableId,
                 updateUrl: config.updateUrl,
                 deleteUrl: config.deleteUrl,
                 saveUrl: config.deleteUrl,
-                fieldMapping: config.fieldMapping
+                fieldMapping: config.fieldMapping,
+                viewButtonEnable: config.viewButtonEnable
             });
 
             this.initFilter();

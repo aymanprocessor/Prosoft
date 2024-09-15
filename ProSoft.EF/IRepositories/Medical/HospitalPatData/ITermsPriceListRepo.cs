@@ -10,6 +10,8 @@ namespace ProSoft.EF.IRepositories.Medical.HospitalPatData
 {
     public interface ITermsPriceListRepo :IRepository<PriceListDetail,int>
     {
+        public Task<List<PriceListDetail>> GetAllPriceListDetails(int id);
+
         Task<List<TermsPriceListViewDTO>> GetAllTermsPriceList(int id);
         Task<int> GetNewIdSortAsync();
         Task<TermsPriceListEditAddDTO> GetEmptyTermsPriceListAsync();

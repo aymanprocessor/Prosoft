@@ -140,6 +140,7 @@
 <script>
     @* Ajax for DocDTL *@
         function GetTermOfPriceLists(e, id) {
+
             var termOfPriceLists = document.querySelector(".priceListDtl-table tbody");
             // Handle active clic
             let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");;
@@ -188,7 +189,7 @@
                                     <td class="align-middle">${item.sClinicDesc}</td>
                                     <td class="align-middle">${item.servId}</td>
                                     <td class="align-middle">${item.servDesc}</td>
-                                    <td class="align-middle"> <input class="form-control" value="${item.servBefDesc}" type="number" step="0.01" /></td>
+                                    <td class="align-middle">{item.servBefDesc}</td>
                                     <td class="align-middle">${item.discoutComp}</td>
                                     <td class="align-middle">${item.plValue}</td>
                                     <td class="align-middle">${item.compCovPercentage}</td>
@@ -217,10 +218,9 @@
         }
 
    
-</script>
 
     @* script for fillteing and Searching *@
-<script>
+
     @* for filter *@
         function SelectOption(event) {
             var selectedOption = event.target.value; // Get the selected option value

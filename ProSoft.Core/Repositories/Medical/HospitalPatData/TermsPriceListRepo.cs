@@ -20,6 +20,21 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
         {
             _mapper = mapper;
         }
+        /* Ayman Saad  15-9-2024 */
+        public async Task<List<PriceListDetail>> GetAllPriceListDetails(int id)
+        {
+              return await _Context.PriceListDetails
+                .Where(obj => obj.PLId == id)
+                .Include(p => p.Branch)
+                .Include(p => p.Clinic)
+                .Include(p => p.SClinic)
+                .Include(p => p.Serv)
+                .ToListAsync();
+             
+        }
+
+        /* Ayman Saad  15-9-2024 */
+
 
         public async Task<List<TermsPriceListViewDTO>> GetAllTermsPriceList(int id)
         {

@@ -1,0 +1,202 @@
+﻿@using Newtonsoft.Json
+@model PriceListDTO
+@{
+    ViewData["Title"] = "Price List New";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@inject IViewLocalizer localizer
+
+@Html.AntiForgeryToken()
+<div class="container">
+    <div class="border mt-5 p-3">
+
+        <div id="EISTable"></div>
+
+    </div>
+
+    
+</div>
+
+<div class="border mt-5 mx-2  p-3 ">
+
+    <div id="EISTable2"></div>
+
+</div>
+@section Scripts {
+    <script>
+
+        var priceLists = @Html.Raw(JsonConvert.SerializeObject(Model.PriceList));
+
+
+
+        var fieldMapping = [
+
+            {
+                title: "Id",
+                name: 'PLId',
+                type: 'text',
+                editable: false,
+                width: '120px'
+            },
+
+            {
+                title: "Name",
+                name: 'PlDesc',
+                type: 'text',
+                editable: true
+            },
+            {
+                title: "Type",
+                name: 'Flag1',
+                type: 'select',
+                options: [
+                    { Value: 1, Text: 'خاص' },
+                    { Value: 2, Text: 'تعاقد' },
+                ],
+                editable: true
+            },
+
+            {
+                title: "Date",
+                name: 'PLDate',
+                type: 'text',
+                editable: true
+            },
+            {
+                title: "Year",
+                name: 'Year',
+                type: 'text',
+                editable: true
+            }
+        ];
+
+        InlineEditor.renderTable({
+            tableId: "#EISTable",
+            viewButtonEnable:true,
+            data: priceLists,
+            fieldMapping: fieldMapping,
+            updateUrl: '@Url.Action("UpdateRecords")',
+            deleteUrl: '@Url.Action("Delete")',
+            saveUrl: '@Url.Action("SaveRecords")',
+        });
+
+
+        var priceListDetails = @Html.Raw(JsonConvert.SerializeObject(Model.PriceListDetail));
+        var MainClinic = @Html.Raw(JsonConvert.SerializeObject(Model.MainClinic));
+        var SubClinic = @Html.Raw(JsonConvert.SerializeObject(Model.SubClinic));
+        var Service = @Html.Raw(JsonConvert.SerializeObject(Model.Services));
+
+        console.log(MainClinic);
+
+        var fieldMapping1 = [
+
+            {
+                title: "Id",
+                name: 'PLId',
+                type: 'text',
+                editable: false,
+                width: '70px'
+            },
+            {
+                title: "Clinic Id",
+                name: 'ClinicId',
+                type: 'select',
+                options: MainClinic,
+                editable: true,
+                width: '200px'
+
+            },
+            {
+                title: "Sub Clinic Id",
+                name: 'SClinicId',
+                type: 'select',
+                options: SubClinic,
+                editable: true,
+                width: '200px'
+
+            },
+            {
+                title: "Service Id",
+                name: 'ServId',
+                type: 'select',
+                options: Service,
+                editable: true,
+                width: '200px'
+
+            },
+            {
+                title: "الخدمة فبل الخصم",
+                name: 'ServBefDesc',
+                type: 'text',
+                editable: true
+            },
+            {
+                title: "نسبة خصم الخدمة",
+                name: 'DiscoutComp',
+                type: 'text',
+                editable: true
+            },
+            {
+                title: "الخدمة بعد الخصم",
+                name: 'PlValue',
+                type: 'text',
+                editable: false
+            },
+              {
+                title: "نسبة الشركة",
+                name: 'CompCovPercentage',
+                type: 'text',
+                editable: true
+            },
+              {
+                title: "قيمة تحمل الشركة",
+                name: 'CompValue',
+                type: 'text',
+                editable: true
+            },
+            {
+                title: "تحمل العضو",
+                name: 'PlValue2',
+                type: 'text',
+                editable: true
+            },
+             {
+                title: "تحمل القريب",
+                name: 'PlValue3',
+                type: 'text',
+                editable: true
+            },
+             {
+                title: "تحمل مستلزمات علي المريض",
+                name: 'ExtraVal',
+                type: 'text',
+                editable: true
+            },
+            {
+                title: "تحمل صيانة علي المريض",
+                name: 'ExtraVal2',
+                type: 'text',
+                editable: true
+            },
+            {
+                title: "تغطي الخدمة",
+                name: 'Covered',
+                type: 'text',
+                editable: true
+            },
+           
+        ];
+
+        InlineEditor.renderTable({
+            tableId: "#EISTable2",
+            data: priceListDetails,
+            fieldMapping: fieldMapping1,
+            updateUrl: '@Url.Action("UpdateRecords")',
+            deleteUrl: '@Url.Action("Delete")',
+            saveUrl: '@Url.Action("SaveRecords")',
+        });
+
+
+    </script>
+}

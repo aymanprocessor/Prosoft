@@ -27,7 +27,8 @@ using ProSoft.Core.Repositories.Accounts;
 using ProSoft.EF.IRepositories.MedicalRecords;
 using ProSoft.Core.Repositories.MedicalRecords;
 using ProSoft.EF.Models.Stocks;
-
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,6 +39,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Register for AutoMapper service
 builder.Services.AddAutoMapper(typeof(AutoMap)); //builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+{
+
+    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+};
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
