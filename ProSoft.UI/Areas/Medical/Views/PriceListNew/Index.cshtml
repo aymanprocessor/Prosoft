@@ -11,30 +11,27 @@
 <div class="container">
     <div class="border mt-5 p-3">
 
-        <div id="EISTable"></div>
+        <div id="PriceList"></div>
 
     </div>
 
-    
+
 </div>
 
 <div class="border mt-5 mx-2  p-3 ">
 
-    <div id="EISTable2"></div>
+    <div id="PriceListDetail"></div>
 
 </div>
 @section Scripts {
     <script>
 
         var priceLists = @Html.Raw(JsonConvert.SerializeObject(Model.PriceList));
-
-
-
         var fieldMapping = [
-
             {
                 title: "Id",
                 name: 'PLId',
+                isID: true,
                 type: 'text',
                 editable: false,
                 width: '120px'
@@ -68,16 +65,32 @@
                 name: 'Year',
                 type: 'text',
                 editable: true
-            }
+            },
+            {
+                title: "",
+                name: "action",
+                type: "action",
+                list: [{
+                    name: 'View Button',
+                    options: { idName: "PLId", viewUrl: "@Url.Action("Index")" }
+                },
+                {
+                    name: 'Delete Button',
+                    options: { idName: "PLId" }
+                }
+                ]
+            },
+
         ];
 
         InlineEditor.renderTable({
-            tableId: "#EISTable",
-            viewButtonEnable:true,
+            tableId: "PriceList",
+            viewButtonEnable: true,
+
             data: priceLists,
             fieldMapping: fieldMapping,
             updateUrl: '@Url.Action("UpdateRecords")',
-            deleteUrl: '@Url.Action("Delete")',
+            deleteUrl: '@Url.Action("DeletePriceList")',
             saveUrl: '@Url.Action("SaveRecords")',
         });
 
@@ -93,7 +106,7 @@
 
             {
                 title: "Id",
-                name: 'PLId',
+                name: 'PLDtlId',
                 type: 'text',
                 editable: false,
                 width: '70px'
@@ -143,13 +156,13 @@
                 type: 'text',
                 editable: false
             },
-              {
+            {
                 title: "نسبة الشركة",
                 name: 'CompCovPercentage',
                 type: 'text',
                 editable: true
             },
-              {
+            {
                 title: "قيمة تحمل الشركة",
                 name: 'CompValue',
                 type: 'text',
@@ -161,13 +174,13 @@
                 type: 'text',
                 editable: true
             },
-             {
+            {
                 title: "تحمل القريب",
                 name: 'PlValue3',
                 type: 'text',
                 editable: true
             },
-             {
+            {
                 title: "تحمل مستلزمات علي المريض",
                 name: 'ExtraVal',
                 type: 'text',
@@ -185,16 +198,28 @@
                 type: 'text',
                 editable: true
             },
-           
+
+            {
+                title: "",
+                name: "action",
+                type: "action",
+                list: [
+                    {
+                        name: 'Delete Button',
+                        options: { idName: "PLDtlId" }
+                    }
+                ]
+            }
+
         ];
 
         InlineEditor.renderTable({
-            tableId: "#EISTable2",
+            tableId: "PriceListDetail",
             data: priceListDetails,
             fieldMapping: fieldMapping1,
-            updateUrl: '@Url.Action("UpdateRecords")',
-            deleteUrl: '@Url.Action("Delete")',
-            saveUrl: '@Url.Action("SaveRecords")',
+            updateUrl: '@Url.Action("UpdateRecordss")',
+            deleteUrl: '@Url.Action("DeletePriceListDetail")',
+            saveUrl: '@Url.Action("SaveRecordss")',
         });
 
 

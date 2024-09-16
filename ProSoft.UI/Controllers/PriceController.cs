@@ -117,7 +117,6 @@ namespace ProSoft.UI.Controllers
 
             try
             {
-                Console.WriteLine(payload.InsertData[0].Name);
 
                 // Insert new records
                 if (payload.InsertData != null && payload.InsertData.Any())
