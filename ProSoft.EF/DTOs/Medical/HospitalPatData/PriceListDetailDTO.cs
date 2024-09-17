@@ -11,7 +11,11 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
         public int PLId { get; set; }
         public int PLDtlId { get; set; }
         public int? PLDetailCode { get; set; }
+        public int? ClinicId { get; set; }
+
         public string ClinicDesc { get; set; }
+        public int? SClinicId { get; set; }
+
         public string SClinicDesc { get; set; }
         public int ServId { get; set; }
         public string ServDesc { get; set; }

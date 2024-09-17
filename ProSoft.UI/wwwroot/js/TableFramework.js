@@ -15,6 +15,28 @@
         errorMessage: 'Failed to update product.'
     };
 
+    function refreshTable(config) {
+        $.ajax({
+            url: config.dataUrl,
+            type: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    console.table(response.data);
+                    config.data = response.data;
+                    InlineEditor.renderTable(config);
+                    console.log('Table refreshed successfully');
+                } else {
+                    console.error('Failed to refresh table:', response.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error refreshing table:', error);
+            }
+        });
+    }
+
+
     // Private function to send AJAX request
     function sendAjaxRequest(url, data, successCallback, errorCallback) {
         const token = $('input[name="__RequestVerificationToken"]').attr('value');
@@ -177,7 +199,7 @@
 
 
     // Private function to generate input fields dynamically based on column type
-    function generateInputField(rowId, field, value, isBatchMode) {
+    function generateInputField(rowId, field, value, isBatchMode,row) {
         let inputField;
 
 
@@ -187,7 +209,12 @@
         const disabledClass = field.editable === false ? 'disabled' : '';
         const titleCenter = field.titleCenter === true ? 'text-center' : '';
 
+        //var value = field.valueGetter ? field.valueGetter({ data: row }) : valuet;
+
         switch (field.type) {
+            case 'hidden':
+                inputField = `<input type="hidden" value="${value}" class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}"/>`;
+                break;
             case 'text':
                 inputField = `<input type="text" value="${value}" class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()"  ${disabledClass}/>`;
                 break;
@@ -294,15 +321,15 @@
 
         // Collect data for newly created rows (rows marked with 'created' class)
         $('.dynamic-row.created').each(function () {
-            const rowId = $(this).data('row-id');
-            const row = $(this);
+            //const rowId = $(this).data('row-id');
+          
 
             // Initialize a formData object for each new row
-            // const formData = { Id: rowId };
+             const formData = {  };
 
             // Iterate over the input fields within the row to collect field data
-            const formData = {}
-            row.find(SELECTORS.editableInputSelector).each(function () {
+           // const formData = {}
+            $(this).find(SELECTORS.editableInputSelector).each(function () {
                 const fieldName = $(this).data('field-name');
                 let fieldValue = $(this).val();
                 const fieldType = $(this).attr('type');
@@ -316,15 +343,17 @@
                 //    fieldValue = new Date(fieldValue).toISOString();
                 //}
 
-                formData[fieldName] = fieldValue;
+                formData[fieldName] = fieldValue === "" || fieldValue === "null" ? null : fieldValue;
             });
-
+            formData["PLId"] = 4;
+            formData["BranchId"] = 1;
+            formData["PLDtlId"] = 1;
             dataToInsert.push(formData);
         });
      
         // Collect data for rows that have been modified (marked in 'changedRows')
         changedRows.forEach(rowId => {
-            const row = $(`${SELECTORS.tableRowSelector} input[data-row-id="${rowId}"]`).closest('tr');
+            const row = $(`${SELECTORS.tableRowSelector}.changed input[data-row-id="${rowId}"]`).closest('tr');
 
             const formData = { Id: rowId };
 
@@ -343,7 +372,7 @@
                 //    fieldValue = new Date(fieldValue).toISOString();
                 //}
 
-                formData[fieldName] = fieldValue;
+                formData[fieldName] = fieldValue === "" || fieldValue === "null" ? null : fieldValue;
             });
 
             dataToUpdate.push(formData);
@@ -437,7 +466,15 @@
 
         return ButtonHtml;
     }
+     function addRefreshButton(config) {
+        var ButtonHtml = `<button id="${config.tableId}-refresh-btn" class="btn btn-info mb-3"><i class="bi bi-arrow-clockwise"></i> تحديث</button>`;
 
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById(`${config.tableId}-refresh-btn`).addEventListener('click', function () { refreshTable(config) });
+        });
+
+        return ButtonHtml;
+    }
     function generateToolbar(config) {
         var tableBody
         var toolbarHtml = '';
@@ -445,6 +482,7 @@
 
         toolbarHtml += addInsertRowButton(config);
         toolbarHtml += addSaveRowsButton(config);
+       // toolbarHtml += addRefreshButton(config);  
 
         toolbarHtml += '</div>';
 
@@ -473,6 +511,7 @@
 
         tableBodyHtml += ' <tbody>';
         //  Table Data
+        console.log("DATA",data)
         data.forEach(function (row) {
             console.log("ROW",row);
             tableBodyHtml += '<tr class="dynamic-row">';
@@ -494,7 +533,7 @@
 
                             case "Delete Button":
                                 tableBodyHtml += `<button id='${config.tableId}-delete-btn' class="btn btn-danger delete-row mx-1" data-row-${action.options.idName}="${row[action.options.idName]}"><i class="bi bi-trash"></i></button>`;
-
+                                break;
                         }
                         
                     });
@@ -502,7 +541,7 @@
 
                     
                 } else{
-                    tableBodyHtml += `<td ${widthStyle}>` + generateInputField(row.Id, field, value, isBatchMode) + '</td>';
+                    tableBodyHtml += `<td ${widthStyle}>` + generateInputField(row[config.idName], field, value, isBatchMode,row) + '</td>';
 
                 }
              

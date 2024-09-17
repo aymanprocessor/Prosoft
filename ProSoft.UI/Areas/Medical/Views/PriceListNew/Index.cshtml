@@ -29,7 +29,7 @@
         var priceLists = @Html.Raw(JsonConvert.SerializeObject(Model.PriceList));
         var fieldMapping = [
             {
-                title: "Id",
+                title: "كود",
                 name: 'PLId',
                 isID: true,
                 type: 'text',
@@ -38,13 +38,13 @@
             },
 
             {
-                title: "Name",
+                title: "اسم القائمة",
                 name: 'PlDesc',
                 type: 'text',
                 editable: true
             },
             {
-                title: "Type",
+                title: "نوع القائمة",
                 name: 'Flag1',
                 type: 'select',
                 options: [
@@ -55,13 +55,13 @@
             },
 
             {
-                title: "Date",
+                title: "تاريخ القائمة",
                 name: 'PLDate',
                 type: 'text',
                 editable: true
             },
             {
-                title: "Year",
+                title: "السنة المالية",
                 name: 'Year',
                 type: 'text',
                 editable: true
@@ -86,12 +86,12 @@
         InlineEditor.renderTable({
             tableId: "PriceList",
             viewButtonEnable: true,
-
+            idName: "PLId",
             data: priceLists,
             fieldMapping: fieldMapping,
-            updateUrl: '@Url.Action("UpdateRecords")',
+            dataUrl: '@Url.Action("GetPriceList")',
             deleteUrl: '@Url.Action("DeletePriceList")',
-            saveUrl: '@Url.Action("SaveRecords")',
+            saveUrl: '@Url.Action("SaveRecordPriceList")',
         });
 
 
@@ -105,14 +105,20 @@
         var fieldMapping1 = [
 
             {
-                title: "Id",
+                title: "",
+                name: 'PLId',
+                type: 'hidden',
+               
+            },
+            {
+                title: "كود",
                 name: 'PLDtlId',
                 type: 'text',
                 editable: false,
                 width: '70px'
             },
             {
-                title: "Clinic Id",
+                title: "مستوى 1",
                 name: 'ClinicId',
                 type: 'select',
                 options: MainClinic,
@@ -121,7 +127,7 @@
 
             },
             {
-                title: "Sub Clinic Id",
+                title: "مستوى 2",
                 name: 'SClinicId',
                 type: 'select',
                 options: SubClinic,
@@ -130,7 +136,7 @@
 
             },
             {
-                title: "Service Id",
+                title: "مستوى 3",
                 name: 'ServId',
                 type: 'select',
                 options: Service,
@@ -154,6 +160,7 @@
                 title: "الخدمة بعد الخصم",
                 name: 'PlValue',
                 type: 'text',
+                valueGetter: params => params.data.ServBefDesc - ((params.data.DiscoutComp / 100) * params.data.ServBefDesc),
                 editable: false
             },
             {
@@ -216,12 +223,61 @@
         InlineEditor.renderTable({
             tableId: "PriceListDetail",
             data: priceListDetails,
+            idName: "PLDtlId",
+
             fieldMapping: fieldMapping1,
-            updateUrl: '@Url.Action("UpdateRecordss")',
             deleteUrl: '@Url.Action("DeletePriceListDetail")',
-            saveUrl: '@Url.Action("SaveRecordss")',
+            saveUrl: '@Url.Action("SaveRecordPriceListDetail")',
         });
 
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            $(document).on('click', '#PriceListDetail-insert-new-row-btn',function () {
+                console.log("button started")
+                init();
+            });
+
+
+            const init = function () {
+                const ServBefDescInputs = document.querySelectorAll('[data-field-name="ServBefDesc"]');
+                ServBefDescInputs.forEach(input => {
+                    input.addEventListener('input', function () {
+                        const row = this.dataset.row;
+                        updateResult(this.dataset.rowId)
+                        console.log("ROWWww", this.dataset.rowId)
+                    });
+                });
+
+                const DiscoutCompInputs = document.querySelectorAll('[data-field-name="DiscoutComp"]');
+                DiscoutCompInputs.forEach(input => {
+                    input.addEventListener('input', function () {
+                        const row = this.dataset.row;
+                        updateResult(this.dataset.rowId)
+                        console.log("ROWWww", this.dataset.rowId)
+                    });
+                });
+
+
+            };
+
+            function updateResult(row) {
+                const ServBefDescInput = document.querySelector(`input[data-row-id="${row}"][data-field-name="ServBefDesc"]`);
+                const DiscoutCompInput = document.querySelector(`input[data-row-id="${row}"][data-field-name="DiscoutComp"]`);
+                const resultInput = document.querySelector(`input[data-row-id="${row}"][data-field-name="PlValue"]`);
+
+                if (ServBefDescInput && DiscoutCompInput && resultInput) {
+                    const ServBefDescValue = parseFloat(ServBefDescInput.value) || 0;
+                    const DiscoutCompValue = parseFloat(DiscoutCompInput.value) || 0;
+
+                    // Example calculation: sum of Column 2 and Column 3
+                    const result = ServBefDescValue - (ServBefDescValue * DiscoutCompValue / 100);
+
+                    resultInput.value = result;
+                }
+            }
+
+        });
 
     </script>
 }
