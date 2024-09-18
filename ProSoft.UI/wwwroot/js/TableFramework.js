@@ -209,34 +209,35 @@
         }
         const disabledClass = field.editable === false ? 'disabled' : '';
         const titleCenter = field.titleCenter === true ? 'text-center' : '';
+        const widthStyle = field.width ? `style="width: ${field.width};"` : `style="width: 100px;"`; // Apply width if defined
 
         //var value = field.valueGetter ? field.valueGetter({ data: row }) : valuet;
-
         switch (field.type) {
             case 'hidden':
-                inputField = `<input type="hidden" value="${value}" class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}"/>`;
+                inputField = `<input type="hidden" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}"/>`;
                 break;
             case 'text':
-                inputField = `<input type="text" value="${value}" class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()"  ${disabledClass}/>`;
+                inputField = `<input type="text" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()"  ${disabledClass}/>`;
                 break;
             case 'number':
-                inputField = `<input type="text" value="${value}" class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()" pattern="\\d*" oninput="this.value = this.value.replace(/[^0-9]/g, '');"  ${disabledClass}/>`;
+                inputField = `<input type="text" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()" pattern="\\d*" oninput="this.value = this.value.replace(/[^0-9]/g, '');"  ${disabledClass}/>`;
                 break;
             case 'float':
-                inputField = `<input type="text" value="${value}" class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()" pattern="\\d+(\\.\\d+)?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');" ${disabledClass}/>`;
+                inputField = `<input type="text" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()" pattern="\\d+(\\.\\d+)?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');" ${disabledClass}/>`;
                 break;
             case 'date':
-                inputField = `<input type="date" value="${value}" class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()"  ${disabledClass}/>`;
+                inputField = `<input type="date" value="${parseDate(value,"YYYY-MM-DD")}" class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()"  ${disabledClass}/>`;
+
                 break;
             case 'select':
                 let options = '';
                 field.options.forEach(function (option) {
                     options += `<option value="${option.Value}" ${(option.Value == value ? 'selected' : '')}>${option.Text}</option>`;
                 });
-                inputField = `<select class="form-control form-select ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()"  ${disabledClass}>${options}</select>`;
+                inputField = `<select class="form-control form-select ${titleCenter}" ${widthStyle} id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()"  ${disabledClass}>${options}</select>`;
                 break;
             default:
-                inputField = `<input type="text" value="${value}" class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()"  ${disabledClass}/>`;
+                inputField = `<input type="text" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()"  ${disabledClass}/>`;
                 break;
         }
 
@@ -359,18 +360,22 @@
 
             // Collect the changed field values
             row.find(SELECTORS.editableInputSelector).each(function () {
+                console.log(this);
+
                 const fieldName = $(this).data('field-name');
                 let fieldValue = $(this).val();
                 const fieldType = $(this).attr('type');
 
                 // Type conversions (if necessary)
-                //if (fieldType === 'number') {
-                //    fieldValue = parseFloat(fieldValue);
-                //} else if (fieldType === 'checkbox') {
-                //    fieldValue = $(this).is(':checked');
-                //} else if (fieldType === 'date') {
-                //    fieldValue = new Date(fieldValue).toISOString();
-                //}
+                if (fieldType === 'number') {
+                    fieldValue = parseFloat(fieldValue);
+                } else if (fieldType === 'checkbox') {
+                    fieldValue = $(this).is(':checked');
+                } else if (fieldType == 'date') {
+
+                    fieldValue = new Date(fieldValue).toISOString();
+
+                }
 
                 formData[fieldName] = fieldValue === "" || fieldValue === "null" ? null : fieldValue;
             });
@@ -405,10 +410,29 @@
         }
     }
 
+    function parseDate(isoDateString, outputFormat) {
+        // Parse the ISO date string
+        var parsedDate = dayjs(isoDateString);
 
-    function attachChangeEventsToInputs() {
+        // Format the parsed date using the output format
+        return parsedDate.format(outputFormat);
+    }
+
+    function attachChangeEventsToInputs(config) {
         $(SELECTORS.editableInputSelector).off('input change blur').on('input change blur', function () {
             handleCellValueChange($(this));
+        });
+
+        $(".datepicker").datepicker({
+            format: 'dd/mm/yyyy'
+        });
+
+        
+       
+        console.log("DATEPICKER");
+
+        $(document).on('change', SELECTORS.editableInputSelector, function () {
+            handleCellValueChange($(this), config.updateUrl); // Trigger the AJAX call on value change
         });
     }
 
@@ -427,7 +451,9 @@
         config.fieldMapping.forEach(field => {
             console.log("New ROW", field);
             if (field.type === "action") return;
-            newRowHtml += `<td>${generateInputField(newRowId, field, field.name === "Id" ? newId : '', true)}</td>`;
+            
+
+            newRowHtml += `<td>${generateInputField(newRowId, field, field.defualtValue ?? "", true)}</td>`;
         });
 
         newRowHtml += `</tr>`;
@@ -436,7 +462,7 @@
         tableBody.append(newRowHtml);
 
         // Attach change detection for the new row inputs
-        // attachChangeEventsToInputs();
+        attachChangeEventsToInputs(config);
     }
 
 
@@ -519,7 +545,6 @@
 
          
                 var value = row[field.name];
-                var widthStyle = field.width ? `style="width: ${field.width};"` : ''; // Apply width if defined
 
 
                 if (field.type === "action") {
@@ -541,7 +566,7 @@
 
                     
                 } else{
-                    tableBodyHtml += `<td ${widthStyle}>${generateInputField(row[config.idName], field, value, isBatchMode,row)}</td>`;
+                    tableBodyHtml += `<td >${generateInputField(row[config.idName], field, value, isBatchMode,row)}</td>`;
 
                 }
              
@@ -587,9 +612,9 @@
             var tableBodyHtml = generateTableBody(config,config.viewButtonEnable, config.viewUrl, config.data, config.fieldMapping, config.actionButtonsHtml, isBatchMode);
             $("#" + config.tableId).html(tableBodyHtml);
 
-            $(document).on('change', SELECTORS.editableInputSelector, function () {
-                handleCellValueChange($(this), config.updateUrl); // Trigger the AJAX call on value change
-            });
+            attachChangeEventsToInputs(config);
+
+           
 
             // Initialize inline edit and filter features after rendering
             this.initInlineEdit({

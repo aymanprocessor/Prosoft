@@ -11,7 +11,10 @@
 <div class="container">
     <div class="border mt-5 p-3">
 
-        <div id="PriceList"></div>
+       
+        <div class="table-responsive">
+            <div id="PriceList"></div>
+        </div>
 
     </div>
 
@@ -20,9 +23,11 @@
 
 <div class="border mt-5 mx-2  p-3 ">
 
-    <div id="PriceListDetail"></div>
+   
+        <div id="PriceListDetail" class="table-responsive"></div>
+  
 
-</div>
+ </div>
 @section Scripts {
     <script>
 
@@ -34,34 +39,40 @@
                 isID: true,
                 type: 'text',
                 editable: false,
-                width: '120px'
+                width: '100px'
             },
 
             {
                 title: "اسم القائمة",
                 name: 'PlDesc',
                 type: 'text',
+                width: '100%',
+
                 editable: true
             },
             {
                 title: "نوع القائمة",
                 name: 'Flag1',
                 type: 'select',
+                width: '100px',
                 options: [
                     { Value: 1, Text: 'خاص' },
                     { Value: 2, Text: 'تعاقد' },
                 ],
                 editable: true
             },
-
             {
                 title: "تاريخ القائمة",
+                width:"120px",
                 name: 'PLDate',
-                type: 'text',
+                type: 'date',
+                titleCenter: true,
                 editable: true
             },
             {
                 title: "السنة المالية",
+                width: "100px",
+                titleCenter: true,
                 name: 'Year',
                 type: 'text',
                 editable: true
@@ -148,55 +159,63 @@
                 title: "الخدمة فبل الخصم",
                 name: 'ServBefDesc',
                 type: 'text',
+                defualtValue: 0,
                 editable: true
             },
             {
                 title: "نسبة خصم الخدمة",
                 name: 'DiscoutComp',
                 type: 'text',
+                defualtValue: 0,
                 editable: true
             },
             {
                 title: "الخدمة بعد الخصم",
                 name: 'PlValue',
                 type: 'text',
-                valueGetter: params => params.data.ServBefDesc - ((params.data.DiscoutComp / 100) * params.data.ServBefDesc),
+                defualtValue: 0,
                 editable: false
             },
             {
                 title: "نسبة الشركة",
                 name: 'CompCovPercentage',
                 type: 'text',
+                defualtValue:100,
                 editable: true
             },
             {
                 title: "قيمة تحمل الشركة",
                 name: 'CompValue',
                 type: 'text',
+                defualtValue: 0,
                 editable: true
             },
             {
                 title: "تحمل العضو",
                 name: 'PlValue2',
                 type: 'text',
+                defualtValue: 0,
                 editable: true
             },
             {
                 title: "تحمل القريب",
                 name: 'PlValue3',
                 type: 'text',
+                defualtValue: 0,
                 editable: true
             },
             {
                 title: "تحمل مستلزمات علي المريض",
                 name: 'ExtraVal',
                 type: 'text',
+                defualtValue: 0,
                 editable: true
             },
             {
                 title: "تحمل صيانة علي المريض",
                 name: 'ExtraVal2',
                 type: 'text',
+                defualtValue: 0,
                 editable: true
             },
             {
@@ -204,6 +223,8 @@
                 name: 'Covered',
                 type: 'select',
                 options: [{ Value: 1, Text: "نعم" }, {Value:2 , Text:"لا"}],
+                defualtValue: 2,
+                width:"100px",
                 editable: true
             },
 
