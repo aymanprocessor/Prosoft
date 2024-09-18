@@ -198,6 +198,7 @@
     }
 
 
+
     // Private function to generate input fields dynamically based on column type
     function generateInputField(rowId, field, value, isBatchMode,row) {
         let inputField;
@@ -333,7 +334,8 @@
                 const fieldName = $(this).data('field-name');
                 let fieldValue = $(this).val();
                 const fieldType = $(this).attr('type');
-
+                console.log("FIELD NAME", fieldName);
+                console.log("FIELD VALUE", fieldValue);
                 // Type conversions (if necessary)
                 //if (fieldType === 'number') {
                 //    fieldValue = parseFloat(fieldValue);
@@ -345,9 +347,7 @@
 
                 formData[fieldName] = fieldValue === "" || fieldValue === "null" ? null : fieldValue;
             });
-            formData["PLId"] = 4;
-            formData["BranchId"] = 1;
-            formData["PLDtlId"] = 1;
+            formData["PLDtlId"] = 0;
             dataToInsert.push(formData);
         });
      
@@ -541,7 +541,7 @@
 
                     
                 } else{
-                    tableBodyHtml += `<td ${widthStyle}>` + generateInputField(row[config.idName], field, value, isBatchMode,row) + '</td>';
+                    tableBodyHtml += `<td ${widthStyle}>${generateInputField(row[config.idName], field, value, isBatchMode,row)}</td>`;
 
                 }
              
