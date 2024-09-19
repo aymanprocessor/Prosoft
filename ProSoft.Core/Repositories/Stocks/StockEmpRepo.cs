@@ -17,14 +17,27 @@ using System.Threading.Tasks;
 
 namespace ProSoft.Core.Repositories.Stocks
 {
-    public class StockEmpRepo: Repository<StockEmp, int>, IStockEmpRepo
+    public class StockEmpRepo : Repository<StockEmp, int>, IStockEmpRepo
     {
         private readonly IMapper _mapper;
-        public StockEmpRepo(AppDbContext Context, IMapper mapper): base(Context)
+        private readonly ICurrentUserService _currentUserService;
+        public StockEmpRepo(AppDbContext Context, IMapper mapper, ICurrentUserService currentUserService) : base(Context)
         {
             _mapper = mapper;
+            _currentUserService = currentUserService;
         }
 
+        public async Task<List<StockEmp>> GetStockForUserAsync(int userCode)
+        {
+            var branchId = int.Parse(_currentUserService.BranchId);
+            
+            List<StockEmp> stock = await _DbSet
+              .Where(x => x.UserId == userCode)
+              .Where(x => x.BranchId == branchId)
+              .ToListAsync();
+
+            return stock;
+        }
         public async Task<List<StockEmpViewDTO>> GetStockTransForUserAsync(int userCode)
         {
             List<StockEmp> stockTrans = await _DbSet
@@ -37,8 +50,10 @@ namespace ProSoft.Core.Repositories.Stocks
                 var myStockTransDTO = _mapper.Map<StockEmpViewDTO>(item);
                 myStockTransDTO.PermissionName = (await _Context.GeneralCodes
                     .FirstOrDefaultAsync(obj => obj.UniqueType == item.TransType)).GDesc;
+
                 myStockTransDTO.StockName = (await _Context.Stocks
                     .FirstOrDefaultAsync(obj => obj.Stkcod == item.Stkcod)).Stknam;
+
                 myStockTransDTO.AccountStk = await GetAccountName(item.MainCodeStk, item.SubCodeStk);
                 myStockTransDTO.AccountAcc = await GetAccountName(item.MainCodeAcc, item.SubCodeAcc);
                 myStockTransDTO.JornalName = (await _Context.JournalTypes.FindAsync(int.Parse(item.JornalCode))).JournalName;
@@ -87,6 +102,7 @@ namespace ProSoft.Core.Repositories.Stocks
         {
             List<StockEmp> stockTransList = await _DbSet.Where(obj =>
                 obj.Stkcod == stockCode && obj.UserId == userCode).ToListAsync();
+
             List<UserTranss> userTransList = await _Context.UserTransactions
                 .Where(obj => obj.UsrId == userCode && obj.TransFlag == 1).ToListAsync();
 

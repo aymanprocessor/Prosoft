@@ -12,6 +12,12 @@ namespace ProSoft.EF.IRepositories.Stocks
 {
     public interface IStockEmpRepo: IRepository<StockEmp, int>
     {
+        /* Ayman Saad 19-9-2024 */
+        Task<List<StockEmp>> GetStockForUserAsync(int userCode);
+
+
+        /* Ayman Saad 19-9-2024 */
+
         Task<List<StockEmpViewDTO>> GetStockTransForUserAsync(int userCode);
         Task<StockEmpEditAddDTO> GetEmptyStockTransAsync(int userCode);
         Task<List<AccSubCodeDTO>> GetSubCodesFromAccAsync(string mainAccCode);

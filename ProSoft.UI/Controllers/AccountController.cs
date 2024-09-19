@@ -169,7 +169,7 @@ namespace ProSoft.UI.Controllers
         {
             //await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            //await _signInManager.SignOutAsync();
+            await _signInManager.SignOutAsync();
             return RedirectToAction("Login");
         }
 

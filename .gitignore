@@ -56,7 +56,7 @@ bld/
 *.dbmdl
 *.dbproj.schemaview
 *.pfx
-*.bak
+
 *.Cache
 *.dbmdl
 *.jfm

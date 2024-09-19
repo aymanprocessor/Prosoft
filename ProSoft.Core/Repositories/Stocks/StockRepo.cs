@@ -38,6 +38,14 @@ namespace ProSoft.Core.Repositories.Stocks
                 .ToList();
         }
 
+
+        public List<Stock> GetAllStockByUserId()
+        {
+            return _context.Stocks.Include(x => x.)
+               .ToList();
+        }
+
+
         // ------------------- Coded By Ayman Saad ------------------- //
 
 
@@ -101,6 +109,6 @@ namespace ProSoft.Core.Repositories.Stocks
             return stockDTO;
         }
 
-        
+       
     }
 }

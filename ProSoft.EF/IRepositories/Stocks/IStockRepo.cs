@@ -14,6 +14,7 @@ namespace ProSoft.EF.IRepositories.Stocks
         // -------------------- Coded By Ayman Saad -------------------- //
 
         public IEnumerable<SelectListItem> GetAllStockAsEnumerable();
+        public List<Stock> GetAllStockByUserId();
 
         // -------------------- Coded By Ayman Saad -------------------- //
 

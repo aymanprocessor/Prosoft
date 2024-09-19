@@ -83,6 +83,7 @@ builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Services.AddScoped<IRoleRepo, RoleRepo>();
 builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Services.AddScoped<IPriceRepo, PriceRepo>();
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
 /////////////////
 builder.Services.AddScoped<ILabUnitRepo, LabUnitRepo>();
