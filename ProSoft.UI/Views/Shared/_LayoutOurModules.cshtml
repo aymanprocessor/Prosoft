@@ -262,6 +262,21 @@
                                             }
                                         </ul>
                                     </li>
+
+                                     <li class="nav-item has-submenu">
+                                        <a class="nav-link hover-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i> @localizer["The Balances"]
+                                        </a>
+                                        <ul class="submenu collapse p-0 ">
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Stocks" asp-controller="StockBalance" asp-action="ChooseStockType" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["The Stock Balances"]
+                                                </a>
+                                            </li>
+                                            
+                                        </ul>
+                                    </li>
+
                                     <li class="nav-item has-submenu">
                                         <a class="nav-link hover-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
                                             <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i> @localizer["The Codes"]

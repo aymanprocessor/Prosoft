@@ -16,8 +16,9 @@ public partial class StockEmp
     public int? UserId { get; set; }
 
     [Column("STKCOD")]
+    [ForeignKey("Stock")]
     public int? Stkcod { get; set; }
-
+    
     [Column("TRANS_TYPE")]
     public int? TransType { get; set; }
 
@@ -54,4 +55,6 @@ public partial class StockEmp
     [StringLength(5)]
     [Unicode(false)]
     public string? JornalCode { get; set; }
+
+    public Stock Stock { get; set; }
 }

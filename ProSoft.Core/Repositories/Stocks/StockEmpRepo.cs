@@ -27,13 +27,15 @@ namespace ProSoft.Core.Repositories.Stocks
             _currentUserService = currentUserService;
         }
 
-        public async Task<List<StockEmp>> GetStockForUserAsync(int userCode)
+        public async Task<List<StockEmp>> GetStockEmpForUserAsync(int userCode)
         {
-            var branchId = int.Parse(_currentUserService.BranchId);
-            
+
+
             List<StockEmp> stock = await _DbSet
               .Where(x => x.UserId == userCode)
-              .Where(x => x.BranchId == branchId)
+              .Where(x => x.BranchId == _currentUserService.BranchId)
+              .Include(x => x.Stock)
+              .AsNoTracking()
               .ToListAsync();
 
             return stock;

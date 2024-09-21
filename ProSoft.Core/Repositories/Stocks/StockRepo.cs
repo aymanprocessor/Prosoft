@@ -39,11 +39,7 @@ namespace ProSoft.Core.Repositories.Stocks
         }
 
 
-        public List<Stock> GetAllStockByUserId()
-        {
-            return _context.Stocks.Include(x => x.)
-               .ToList();
-        }
+    
 
 
         // ------------------- Coded By Ayman Saad ------------------- //

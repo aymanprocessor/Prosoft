@@ -1,7 +1,7 @@
 public interface ICurrentUserService
 {
-    string UserId { get; }
+    int UserId { get; }
     string UserName { get; }
     string BranchName { get; }
-    string BranchId { get; }
+    int BranchId { get; }
 }

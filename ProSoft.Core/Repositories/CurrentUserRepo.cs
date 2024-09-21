@@ -17,9 +17,9 @@ namespace ProSoft.Core.Repositories
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public string UserId => _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+        public int UserId => int.Parse( _httpContextAccessor.HttpContext?.User?.FindFirstValue("User_Code"));
         public string UserName => _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Name);
         public string BranchName => _httpContextAccessor.HttpContext?.User?.FindFirstValue("U_Branch_Name");
-        public string BranchId => _httpContextAccessor.HttpContext?.User?.FindFirstValue("U_Branch_Id");
+        public int BranchId =>int.Parse( _httpContextAccessor.HttpContext?.User?.FindFirstValue("U_Branch_Id"));
     }
 }
