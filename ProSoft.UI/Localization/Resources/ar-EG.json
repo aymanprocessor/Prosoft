@@ -27,7 +27,7 @@
   "Edit": "تعديل",
   "Delete": "حذف",
   "Code": "كود",
-  "Action": "تغييرات",
+  "Action": "اجراءات",
   "Serial": "كود",
   "Add New Role": "اضافة صلاحية",
   "New Role": "صلاحية جديدة",
@@ -678,11 +678,6 @@
   "Transaction No": "رقم الحركة",
   "Supplier / Customer": "مورد/عميل",
   "Transaction": "الحركة",
-
-
-
-
-
   "Cost Name": "اسم التكلفة",
   "Stocks System": "نظام المخازن",
   "Stocks Types": "انواع المخازن",
@@ -985,6 +980,12 @@
   "Edit User For Side": "تعديل المستخدم للجهة",
   "The Stock Balances": "ارصدة الاصناف",
   "The Balances": "الارصدة",
-  "Choose Stock Name": "اسم المخزن"
+  "Choose Stock Name": "اسم المخزن",
+  "The Group": "المجموعة",
+  "Entry Date 1": "تاريخ الادخال",
+  "Year 1": "سنة",
+  "Month": "شهر",
+  "Amount Of Opening Balance": "كمية الرصيد الافتتاحي",
+  "The value of the beginning balance": "قيمة رصيد اول المدة"
 
 }

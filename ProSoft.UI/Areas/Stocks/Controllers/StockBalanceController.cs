@@ -11,10 +11,10 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
     [Area("Stocks")]
     public class StockBalanceController : Controller
     {
-        private readonly IMapper  _mapper;
+        private readonly IMapper _mapper;
         private readonly IStockRepo _stockRepo;
         private readonly IStockEmpRepo _stockEmpRepo;
-        private readonly ICurrentUserService  _currentUserService;
+        private readonly ICurrentUserService _currentUserService;
 
         public StockBalanceController(IStockRepo stockRepo, IStockEmpRepo stockEmpRepo, ICurrentUserService currentUserService, IMapper mapper)
         {
@@ -35,9 +35,9 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         {
             int userId = _currentUserService.UserId;
             List<StockEmp> stockEmpTypes = await _stockEmpRepo.GetStockEmpForUserAsync(userId);
-            //var stockTypesDTO = _mapper.Map<List<StockEmpViewDTO>>(stockEmpTypes);
+            List<Stock> stocks = stockEmpTypes.Select(x => x.Stock).ToList();
 
-            return View(stockEmpTypes);
+            return View(stocks);
         }
     }
 }

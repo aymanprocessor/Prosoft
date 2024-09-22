@@ -11,7 +11,6 @@ public partial class StockEmp
 {
     [Key]
     public int StockEmpID { get; set; }
-
     [Column("USER_ID")]
     public int? UserId { get; set; }
 

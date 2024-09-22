@@ -93,6 +93,7 @@ namespace ProSoft.EF.Models.Stocks
         public string? BrReplc { get; set; }
 
         [Column("UNIT_CODE")]
+        [ForeignKey("UnitCodee")]
         public int? UnitCode { get; set; }
 
         [Column("EXP_DATE", TypeName = "datetime")]
@@ -121,5 +122,14 @@ namespace ProSoft.EF.Models.Stocks
 
         [Column("S_ID")]
         public int? SId { get; set; }
+
+        [Column("MAIN_ID")]
+        [ForeignKey("MainItem")]
+
+        public int MainId { get; set; }
+
+        public MainItem MainItem { get; set; }  
+
+        public UnitCode UnitCodee { get; set; }
     }
 }

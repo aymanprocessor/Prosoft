@@ -339,6 +339,9 @@ class TableManager {
     }
 
     generateTableRows() {
+        if (!this.config.data || !this.config.data.length) {
+            return '<tbody></tbody>';
+        }
         return `<tbody>${this.config.data.map(row => this.generateTableRow(row)).join('')}</tbody>`;
     }
 

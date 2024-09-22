@@ -1,9 +1,83 @@
-﻿@{
+﻿@using Newtonsoft.Json
+@model List<StockBalanceViewDTO>
+@{
     ViewData["title"] = "Stock Balance";
+    Layout = "_Layout";
 }
+@inject IViewLocalizer localizer
+<div class="container my-5">
+    <div class="d-flex justify-content-between">
 
-<div class="container">
+        <h2 id="stockName"></h2> @*  TODO : Add Stock Name Variable*@
+        <h2>الارصدة الافتتاحية لعام 2024</h2> @*TODO : Add Year Variable*@
 
-    <h2>Stock Balance</h2>
+    </div>
+    <div class="d-flex border  rounded my-3 p-3">
+        <input class="form-control" type="text" placeholder="بحث ..." id="Search" style="width:200px" />
 
+        <div class="d-flex mx-3 gap-2">
+            <label class="form-label">عرض</label>
+            <select class="form-control form-select" style="width:200px">
+                <option value="كل الاصناف">كل الاصناف</option>
+                <option value="اصناف لها كمية">اصناف لها كمية</option>
+                <option value="اصناف غير مسعرة">اصناف غير مسعرة</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="p-3 border">
+        <div id="stock_balance">
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        const fieldMapping = [
+            { name: 'StkbalanceId', title: '@localizer["Code"]', type: 'hidden', editable: false },
+            { name: 'Name', title: '@localizer["The Group"]', type: 'text', editable: true },
+            { name: 'Description', title: '@localizer["Item Code"]', type: 'text', editable: true },
+            { name: 'Price', title: '@localizer["Item Name"]', type: 'float', editable: true },
+            { name: 'Price', title: '@localizer["UnitCode Id"]', type: 'float', editable: true },
+            { name: 'Price', title: '@localizer["Entry Date 1"]', type: 'float', editable: true },
+            { name: 'Price', title: '@localizer["UnitCode Name"]', type: 'float', editable: true },
+
+            { name: 'Month', title: '@localizer["Month"]', type: 'float', editable: true },
+            { name: 'Year', title: '@localizer["Year 1"]', type: 'float', editable: true },
+            ,
+            { name: 'Price', title: '@localizer["Amount Of Opening Balance"]', type: 'float', editable: true },
+            { name: 'Price', title: '@localizer["Unit Price"]', type: 'float', editable: true },
+            { name: 'Price', title: '@localizer["The value of the beginning balance"]', type: 'float', editable: true },
+            {
+                name: 'action', title: '@localizer["Action"]', type: 'action', list: [
+                    { name: 'View Button', options: { viewUrl: '/product/view', idName: 'id' } },
+                    { name: 'Delete Button', options: { idName: 'id' } }
+                ]
+            }
+        ];
+        var data = @Html.Raw(JsonConvert.SerializeObject(Model));
+
+        const config = {
+            tableId: 'stock_balance',
+            updateUrl: '/api/products/update',
+            deleteUrl: '/api/products/delete',
+            saveUrl: '/api/products/save',
+            fieldMapping: fieldMapping,
+            data: data,
+            idName: 'id'
+        };
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+        var stockName = localStorage.getItem('stockName');
+
+    $("#stockName").text(stockName);
+
+
+
+            const tableManager = new TableManager(config);
+            tableManager.renderTable();
+
+        });
+    </script>
+}

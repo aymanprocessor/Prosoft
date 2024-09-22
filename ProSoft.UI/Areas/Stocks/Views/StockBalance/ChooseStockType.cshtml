@@ -1,16 +1,16 @@
 ﻿@using ProSoft.EF.Models.Stocks
-@model List<StockEmp>
+@model List<Stock>
 @{
     ViewData["title"] = "Search for Stock";
     Layout = "_Layout";
-    var stocks = new SelectList(Model, "Stkcod", "Stock.Stkname");
+    var stocks = new SelectList(Model, "Stkcod", "Stknam");
 }
 @inject IViewLocalizer localizer
 
 <div class="d-flex justify-content-center align-items-center gap-3 flex-column flex-md-row mt-2 p-2 w-50 mx-auto"
      style="margin-top: 35vh !important">
     <h2 class="text-center">@localizer["Choose Stock Name"] </h2>
-    <form method="get" asp-area="Stocks" asp-controller="StockBalance" >
+    <form method="get" asp-area="Stocks" asp-controller="StockBalance" asp-action="Index">
         <select name="" asp-items="stocks" class="form-control text-center" onchange="chooseStockType(event)"
                 style="width: 200px;">
             <option value="">-- Choose --</option>
@@ -21,7 +21,8 @@
 @section Scripts {
     <script>
         function chooseStockType(e) {
-            localStorage.setItem("flag1", e.target.value);
+            localStorage.setItem("stockId", e.target.value);
+            localStorage.setItem("stockName", $('select option:selected').text());
             e.target.parentElement.submit();
         }
     </script>

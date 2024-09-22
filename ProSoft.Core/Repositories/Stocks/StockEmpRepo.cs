@@ -30,13 +30,14 @@ namespace ProSoft.Core.Repositories.Stocks
         public async Task<List<StockEmp>> GetStockEmpForUserAsync(int userCode)
         {
 
-
             List<StockEmp> stock = await _DbSet
-              .Where(x => x.UserId == userCode)
-              .Where(x => x.BranchId == _currentUserService.BranchId)
-              .Include(x => x.Stock)
-              .AsNoTracking()
-              .ToListAsync();
+               .Include(x => x.Stock)
+               .Where(x => x.UserId == userCode)
+               .Where(x => x.BranchId == _currentUserService.BranchId)
+               .AsNoTracking()
+               .GroupBy(x => x.Stock.Stkcod) // Group by Stock code
+               .Select(g => g.First())       // Select the first item in each group
+               .ToListAsync();
 
             return stock;
         }
