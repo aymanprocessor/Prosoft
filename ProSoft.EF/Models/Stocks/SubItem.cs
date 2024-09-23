@@ -152,4 +152,6 @@ public partial class SubItem
     [ForeignKey("MainId")]
     [InverseProperty("SubItems")]
     public virtual MainItem? Main { get; set; }
+
+
 }

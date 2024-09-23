@@ -141,6 +141,7 @@ builder.Services.AddScoped<IOpenColseTransactionRepo, OpenColseTransactionRepo>(
 builder.Services.AddScoped<IReportQuantityClassCardRepo, ReportQuantityClassCardRepo>();
 builder.Services.AddScoped<IUserSideRepo, UserSideRepo>();
 builder.Services.AddScoped<IUsersGroupRepo, UsersGroupRepo>();
+builder.Services.AddScoped<IStockBalanceRepo, StockBalanceRepo>();
 ///////////////// System ///////////////
 builder.Services.AddScoped<IEisPostingRepo, EisPostingRepo>();
 ///////////////// Treasury /////////////

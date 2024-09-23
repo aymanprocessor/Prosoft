@@ -23,6 +23,16 @@ namespace ProSoft.Core.Repositories.Stocks
             _mapper = mapper;
         }
 
+        public IEnumerable<SubItem> GetAllSubItemByStockId(int stkcod)
+        {
+            var result = from si in _Context.SubItems
+                         join mis in _Context.MainItemStocks
+                         on new { si.MainCode, x1 = (int)si.Flag1, x2 = (int)si.BranchId }
+                            equals new { mis.MainCode, x1 = mis.Flag1, x2 = mis.BranchId }
+                         where mis.Stkcod == stkcod
+                         select si;
+            return result;
+        }
         public async Task<List<SubItemViewDTO>> GetSubItemsByMainIdAsync(int mainId)
         {
             List<SubItem> subItems = await _DbSet.Where(obj => obj.MainId == mainId).ToListAsync();

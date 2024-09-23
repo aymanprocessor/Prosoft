@@ -21,5 +21,6 @@ namespace ProSoft.Core.Repositories
         public string UserName => _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Name);
         public string BranchName => _httpContextAccessor.HttpContext?.User?.FindFirstValue("U_Branch_Name");
         public int BranchId =>int.Parse( _httpContextAccessor.HttpContext?.User?.FindFirstValue("U_Branch_Id"));
+        public int Year =>int.Parse( _httpContextAccessor.HttpContext?.User?.FindFirstValue("F_Year"));
     }
 }

@@ -4,4 +4,5 @@ public interface ICurrentUserService
     string UserName { get; }
     string BranchName { get; }
     int BranchId { get; }
+    int Year { get; }
 }

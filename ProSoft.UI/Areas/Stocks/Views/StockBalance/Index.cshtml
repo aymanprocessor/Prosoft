@@ -1,5 +1,6 @@
 ﻿@using Newtonsoft.Json
-@model List<StockBalanceViewDTO>
+@using ProSoft.EF.Models.Stocks
+@model List<Stkbalance>
 @{
     ViewData["title"] = "Stock Balance";
     Layout = "_Layout";
@@ -36,18 +37,18 @@
         const fieldMapping = [
             { name: 'StkbalanceId', title: '@localizer["Code"]', type: 'hidden', editable: false },
             { name: 'Name', title: '@localizer["The Group"]', type: 'text', editable: true },
-            { name: 'Description', title: '@localizer["Item Code"]', type: 'text', editable: true },
-            { name: 'Price', title: '@localizer["Item Name"]', type: 'float', editable: true },
-            { name: 'Price', title: '@localizer["UnitCode Id"]', type: 'float', editable: true },
-            { name: 'Price', title: '@localizer["Entry Date 1"]', type: 'float', editable: true },
-            { name: 'Price', title: '@localizer["UnitCode Name"]', type: 'float', editable: true },
+            { name: 'ItemCode', title: '@localizer["Item Code"]', type: 'text', editable: true },
+            { name: 'UnitCode', title: '@localizer["Item Name"]', type: 'text', editable: true },
+            { name: 'UnitCode', title: '@localizer["UnitCode Id"]', type: 'text', editable: true },
+            { name: 'UnitCode', title: '@localizer["Entry Date 1"]', type: 'text', editable: true },
+            { name: 'UnitCode', title: '@localizer["UnitCode Name"]', type: 'text', editable: true },
 
-            { name: 'Month', title: '@localizer["Month"]', type: 'float', editable: true },
-            { name: 'Year', title: '@localizer["Year 1"]', type: 'float', editable: true },
+            { name: 'ExpM', title: '@localizer["Month"]', type: 'text', editable: true },
+            { name: 'ExpYr', title: '@localizer["Year 1"]', type: 'text', editable: true },
             ,
-            { name: 'Price', title: '@localizer["Amount Of Opening Balance"]', type: 'float', editable: true },
-            { name: 'Price', title: '@localizer["Unit Price"]', type: 'float', editable: true },
-            { name: 'Price', title: '@localizer["The value of the beginning balance"]', type: 'float', editable: true },
+            { name: 'QtyStartDt', title: '@localizer["Amount Of Opening Balance"]', type: 'text', editable: true },
+            { name: 'ItemPrice', title: '@localizer["Unit Price"]', type: 'text', editable: true },
+            { name: 'ItemPrice2', title: '@localizer["The value of the beginning balance"]', type: 'text', editable: true },
             {
                 name: 'action', title: '@localizer["Action"]', type: 'action', list: [
                     { name: 'View Button', options: { viewUrl: '/product/view', idName: 'id' } },
@@ -56,7 +57,7 @@
             }
         ];
         var data = @Html.Raw(JsonConvert.SerializeObject(Model));
-
+        console.log(data);
         const config = {
             tableId: 'stock_balance',
             updateUrl: '/api/products/update',

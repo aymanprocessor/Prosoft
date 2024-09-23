@@ -10,6 +10,13 @@ namespace ProSoft.EF.IRepositories.Stocks
 {
     public interface ISubItemRepo : IRepository<SubItem, int>
     {
+        
+        // Code By Ayman Saad - 22-9-2024
+       
+        IEnumerable<SubItem> GetAllSubItemByStockId(int stkcod);
+        
+        // Code By Ayman Saad - 22-9-2024
+
         Task<List<SubItemViewDTO>> GetSubItemsByMainIdAsync(int mainId);
         Task<int> ValidateItemCode(string itemCode);
         Task<SubItemEditAddDTO> GetNewSubItemAsync(int mainId);

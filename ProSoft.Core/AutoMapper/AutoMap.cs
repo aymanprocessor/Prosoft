@@ -149,6 +149,7 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<RegionsEditAddDTO, Region>().ReverseMap();
             CreateMap<UserSideViewDTO, UserSide>().ReverseMap();
             CreateMap<UserSideEditAddDTO, UserSide>().ReverseMap();
+            CreateMap<StockBalanceViewDTO, Stkbalance>().ReverseMap();
             ////////// System ////////////////////
             CreateMap<EisPosting, EisPostingViewDTO>().ReverseMap();
             CreateMap<EisPosting, EisPostingEditAddDTO>().ReverseMap();

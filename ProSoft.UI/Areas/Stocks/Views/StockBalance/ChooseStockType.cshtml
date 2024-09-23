@@ -10,7 +10,7 @@
 <div class="d-flex justify-content-center align-items-center gap-3 flex-column flex-md-row mt-2 p-2 w-50 mx-auto"
      style="margin-top: 35vh !important">
     <h2 class="text-center">@localizer["Choose Stock Name"] </h2>
-    <form method="get" asp-area="Stocks" asp-controller="StockBalance" asp-action="Index">
+    <form id="StockForm" method="get" asp-area="Stocks" asp-controller="StockBalance" asp-action="Index" asp-route-id="1">
         <select name="" asp-items="stocks" class="form-control text-center" onchange="chooseStockType(event)"
                 style="width: 200px;">
             <option value="">-- Choose --</option>
