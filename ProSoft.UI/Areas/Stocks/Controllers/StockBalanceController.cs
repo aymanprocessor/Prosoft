@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using ProSoft.Core.Repositories.Stocks;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.IRepositories.Stocks;
 using ProSoft.EF.Models.Stocks;
@@ -14,19 +16,23 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IStockRepo _stockRepo;
-        private readonly IStockEmpRepo _stockEmpRepo;
         private readonly IStockBalanceRepo _stockBalanceRepo;
+        private readonly IMainItemRepo _mainItemRepo;
         private readonly ISubItemRepo _subItemRepo;
         private readonly ICurrentUserService _currentUserService;
+        private readonly IUnitCodeRepo _unitCodeRepo;
+        private readonly IStockEmpRepo _stockEmpRepo;
 
-        public StockBalanceController(IStockRepo stockRepo, IStockEmpRepo stockEmpRepo, ICurrentUserService currentUserService, IMapper mapper, IStockBalanceRepo stockBalanceRepo, ISubItemRepo subItemRepo)
+        public StockBalanceController(IStockRepo stockRepo, IStockEmpRepo stockEmpRepo, ICurrentUserService currentUserService, IMapper mapper, IStockBalanceRepo stockBalanceRepo, ISubItemRepo subItemRepo, IMainItemRepo mainItemRepo, IUnitCodeRepo unitCodeRepo)
         {
             _mapper = mapper;
             _stockRepo = stockRepo;
-            _stockEmpRepo = stockEmpRepo;
             _currentUserService = currentUserService;
             _stockBalanceRepo = stockBalanceRepo;
             _subItemRepo = subItemRepo;
+            _mainItemRepo = mainItemRepo;
+            _unitCodeRepo = unitCodeRepo;
+            _stockEmpRepo = stockEmpRepo;
         }
 
         [HttpGet]
@@ -37,11 +43,13 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
                 return NotFound("Stock Id Is Require");
             }
 
+            var stock = await _stockRepo.GetByIdAsync(id);
+        
             var stkkkkk = await _stockBalanceRepo.GetAllAsync();
             stkkkkk = stkkkkk.Where(x => x.Stkcod == id).Where(x => x.FYear == _currentUserService.Year).ToList();
-            var stock = await _stockRepo.GetByIdAsync(id);
+           
             var subItems = _subItemRepo.GetAllSubItemByStockId(id);
-
+           
             var res = from si in subItems
                       join sbb in stkkkkk
                       on new { si.ItemCode,si.Flag1 } equals new { sbb.ItemCode,sbb.Flag1 } into tableJoin
@@ -49,11 +57,17 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
                       where tj == null
                       select si;
 
+
+            var mainItems = (await _mainItemRepo.GetAllAsync()).Where(x => res.Select(r => r.MainCode ).Contains( x.MainCode)).ToList();
+          
+
             List<Stkbalance> stkbalances = [];
             foreach(var item in res)
             {
+                var mainItem = mainItems.FirstOrDefault(x => x.MainCode == item.MainCode);
                 stkbalances.Add(new Stkbalance()
                 {
+
                     Stkcod = (short)stock.Stkcod,
                     ItemCode = item.ItemCode,
                     MainCode = item.MainCode,
@@ -65,8 +79,11 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
                     ItemId = 0,
                     BarCode = item.ItemCode,
                     ItemCounter = item.ItemCounter,
-                    QtyStartDt = new DateTime(_currentUserService.Year, 1, 1)
-
+                    QtyStartDt = new DateTime(_currentUserService.Year, 1, 1),
+                  MainItem = mainItem,
+                  SubItem = item,
+                    
+                   
                 });
             }
             if(stkbalances.Count > 0)
@@ -76,9 +93,12 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             }
 
             List<Stkbalance> StockBalances1 = await _stockBalanceRepo.GetAllAsync();
-            List<StockBalanceViewDTO> stockBalanceViewDTOs = _mapper.Map< List<StockBalanceViewDTO>>(StockBalances1);
-            
-            return View(StockBalances1);
+            StockBalanceViewDTO stockBalanceViewDTOs = new StockBalanceViewDTO()
+            {
+                StockBalances = StockBalances1,
+                UnitCodesList = (await _unitCodeRepo.GetAllAsync()).Select(u => new SelectListItem { Value = u.Code.ToString(), Text = u.Names }).ToList()
+            };
+            return View(stockBalanceViewDTOs);
         }
 
         [HttpGet]

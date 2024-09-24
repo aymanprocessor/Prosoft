@@ -208,18 +208,30 @@ class TableManager {
     handleAfterCellEdit(event) {
 
         const row = $(event.currentTarget);
-        var formField = {};
-        row.closest("tr").find("td").each(function () {
-            const td = $(this);
-            const fieldName = $(this).data("field");
-            let fieldValue;
-            if (td.find('input').length > 0) {
-                fieldValue = td.find('input').val();
-            } else {
-                fieldValue = td.html();
-            }
-            formField[fieldName] = fieldValue;
-        })
+        var formField = [];
+        $(`${TableManager.SELECTORS.TABLE_ROW}.changed`).each(function () {
+            var rowField = {}
+
+            $(this).find("td").each(function () {
+                const td = $(this);
+                const fieldName = $(this).data("field");
+                let fieldValue;
+                if (td.find('input').length > 0) {
+                    fieldValue = td.find('input').val();
+                } else {
+                    fieldValue = td.html();
+                }
+                rowField[fieldName] = fieldValue;
+            })
+            const input = $(event.target);
+            const cell = input.closest('td');
+            const value = input.val();
+            cell.html(value);
+
+            formField.push(rowField);
+
+        });
+       
 
         const input = $(event.target);
         const cell = input.closest('td');
@@ -297,25 +309,30 @@ class TableManager {
         const disabledClass = '';
         const titleCenter = field.titleCenter ? 'text-center' : '';
         const widthStyle = field.width ? `style="width: ${field.width};"` : `style="width: 100px;"`;
-
+        const fieldId = `${field.name.replace('.', '_')}_${rowId}`;
         switch (field.type) {
             case 'hidden':
-                return `<input type="hidden" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}"/>`;
+                return `<input type="hidden" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${fieldId}" data-row-id="${rowId}" data-field-name="${field.name}"/>`;
             case 'text':
-                return `<input type="text" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" ${disabledClass}/>`;
+                return `<input type="text" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${fieldId}" data-row-id="${rowId}" data-field-name="${field.name}" ${disabledClass}/>`;
             case 'number':
-                return `<input type="text" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" pattern="\\d*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" ${disabledClass}/>`;
+                return `<input type="text" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${fieldId}" data-row-id="${rowId}" data-field-name="${field.name}" pattern="\\d*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" ${disabledClass}/>`;
             case 'float':
-                return `<input type="text" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" pattern="\\d+(\\.\\d+)?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');" ${disabledClass}/>`;
+                return `<input type="text" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${fieldId}" data-row-id="${rowId}" data-field-name="${field.name}" pattern="\\d+(\\.\\d+)?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');" ${disabledClass}/>`;
             case 'date':
-                return `<input type="date" value="${this.parseDate(value, "YYYY-MM-DD")}" class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" ${disabledClass}/>`;
+                return `<input type="date" value="${this.parseDate(value, "YYYY-MM-DD")}" class="form-control ${titleCenter}" id="${fieldId}" data-row-id="${rowId}" data-field-name="${field.name}" ${disabledClass}/>`;
             case 'select':
                 const options = field.options.map(option => `<option value="${option.Value}" ${option.Value == value ? 'selected' : ''}>${option.Text}</option>`).join('');
                 return `<select class="form-control form-select ${titleCenter}" ${widthStyle} id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" ${disabledClass}>${options}</select>`;
             default:
-                return `<input type="text" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" ${disabledClass}/>`;
+                return `<input type="text" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${fieldId}" data-row-id="${rowId}" data-field-name="${field.name}" ${disabledClass}/>`;
         }
     }
+
+    getNestedValue(obj, path) {
+        return path.split('.').reduce((current, key) => (current && current[key] !== undefined) ? current[key] : undefined, obj);
+    }
+
 
     parseDate(isoDateString, outputFormat) {
         return dayjs(isoDateString).format(outputFormat);
@@ -334,7 +351,10 @@ class TableManager {
     }
 
     generateTableHeader() {
-        const headerCells = this.config.fieldMapping.map(field => `<th>${field.title}</th>`).join('');
+        const headerCells = this.config.fieldMapping
+            .filter(field => field.type !== 'hidden')
+            .map(field => `<th>${field.title}</th>`)
+            .join('');
         return `<thead><tr>${headerCells}<th></th></tr></thead>`;
     }
 
@@ -346,17 +366,26 @@ class TableManager {
     }
 
     generateTableRow(row) {
-        const cells = this.config.fieldMapping.map(field => this.generateTableCell(field, row)).join('');
+        const cells = this.config.fieldMapping
+            .map(field => this.generateTableCell(field, row))
+            .join('');
         return `<tr class="dynamic-row" data-row-id="${row[this.config.idName]}">${cells}</tr>`;
     }
 
     generateTableCell(field, row) {
+        const value = this.getNestedValue(row, field.name) ?? (field.defaultValue ?? '');
+        const widthStyle = field.width ?? "100px";
+
         if (field.type === "action") {
             return this.generateActionCell(field, row);
         }
-        const value = row[field.name];
-        const editableClass = field.editable ? 'editable-cell' : '';
-        return `<td class="${editableClass}" data-field="${field.name}">${value}</td>`;
+
+        if (field.type === 'hidden') {
+            return this.generateInputField(row[this.config.idName], field, value);
+        }
+
+        const editableClass = field.editable ? 'editable-cell' : 'cell-disabled';
+        return `<td class="${editableClass}" data-field="${field.name}" style="width:${widthStyle};">${value}</td>`;
     }
 
     generateActionCell(field, row) {

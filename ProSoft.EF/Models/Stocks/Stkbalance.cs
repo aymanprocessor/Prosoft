@@ -21,6 +21,8 @@ namespace ProSoft.EF.Models.Stocks
         [Column("ITEM_CODE")]
         [StringLength(30)]
         [Unicode(false)]
+        [ForeignKey(nameof(SubItem))]
+
         public string? ItemCode { get; set; }
 
         [Column("QTY_START", TypeName = "decimal(12, 3)")]
@@ -54,6 +56,7 @@ namespace ProSoft.EF.Models.Stocks
         [Column("MAIN_CODE")]
         [StringLength(10)]
         [Unicode(false)]
+            [ForeignKey(nameof(MainItem))]
         public string? MainCode { get; set; }
 
         [Column("SER")]
@@ -123,12 +126,10 @@ namespace ProSoft.EF.Models.Stocks
         [Column("S_ID")]
         public int? SId { get; set; }
 
-        [Column("MAIN_ID")]
-        [ForeignKey("MainItem")]
+      
 
-        public int MainId { get; set; }
-
-        public MainItem MainItem { get; set; }  
+        public MainItem MainItem { get; set; } 
+        public SubItem SubItem { get; set; }
 
         public UnitCode UnitCodee { get; set; }
     }

@@ -426,3 +426,7 @@ html {
     }
 }
 /* For Spinner */
+
+.dynamic-row td.cell-disabled {
+    background-color: #e3e3e3;
+}

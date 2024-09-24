@@ -1,6 +1,6 @@
 ﻿@using Newtonsoft.Json
 @using ProSoft.EF.Models.Stocks
-@model List<Stkbalance>
+@model StockBalanceViewDTO
 @{
     ViewData["title"] = "Stock Balance";
     Layout = "_Layout";
@@ -34,29 +34,30 @@
 
 @section Scripts {
     <script>
-        const fieldMapping = [
-            { name: 'StkbalanceId', title: '@localizer["Code"]', type: 'hidden', editable: false },
-            { name: 'Name', title: '@localizer["The Group"]', type: 'text', editable: true },
-            { name: 'ItemCode', title: '@localizer["Item Code"]', type: 'text', editable: true },
-            { name: 'UnitCode', title: '@localizer["Item Name"]', type: 'text', editable: true },
-            { name: 'UnitCode', title: '@localizer["UnitCode Id"]', type: 'text', editable: true },
-            { name: 'UnitCode', title: '@localizer["Entry Date 1"]', type: 'text', editable: true },
-            { name: 'UnitCode', title: '@localizer["UnitCode Name"]', type: 'text', editable: true },
+        var data = @Html.Raw(JsonConvert.SerializeObject(Model.StockBalances));
+        var UnitCodeList = @Html.Raw(JsonConvert.SerializeObject(Model.UnitCodesList));
 
-            { name: 'ExpM', title: '@localizer["Month"]', type: 'text', editable: true },
-            { name: 'ExpYr', title: '@localizer["Year 1"]', type: 'text', editable: true },
-            ,
-            { name: 'QtyStartDt', title: '@localizer["Amount Of Opening Balance"]', type: 'text', editable: true },
-            { name: 'ItemPrice', title: '@localizer["Unit Price"]', type: 'text', editable: true },
-            { name: 'ItemPrice2', title: '@localizer["The value of the beginning balance"]', type: 'text', editable: true },
+        const fieldMapping = [
+            { name: 'StkbalanceId', title: '@localizer["Code"]', type: 'text', editable: false },
+            { name: 'MainItem.MainName', title: '@localizer["The Group"]', type: 'text', editable: false },
+            { name: 'ItemCode', title: '@localizer["Item Code"]', type: 'text', editable: false },
+            { name: 'SubItem.SubName', title: '@localizer["Item Name"]', type: 'text', editable: false },
+            { name: 'UnitCode', title: '@localizer["UnitCode Id"]', type: 'hidden', editable: false },
+            { name: 'QtyStartDt', title: '@localizer["Entry Date 1"]', type: 'text', editable: false },
+            { name: 'UnitCode', title: '@localizer["UnitCode Name"]', type: 'select', editable: true ,
+                options: UnitCodeList,
+            },
+            { name: 'ExpM', title: '@localizer["Month"]', width: "100px", type: 'text', editable: true },
+            { name: 'ExpYr', title: '@localizer["Year 1"]', width: "100px", type: 'text', editable: true },
+            { name: 'QtyStart', title: '@localizer["Amount Of Opening Balance"]', type: 'text', defaultValue: 0, editable: true },
+            { name: 'ItemPrice', title: '@localizer["Unit Price"]', type: 'text', defaultValue: 0.00, editable: true },
+            { name: 'ItemPrice2', title: '@localizer["The value of the beginning balance"]', width: "100px", type: 'text', defaultValue: 0.00, editable: false },
             {
                 name: 'action', title: '@localizer["Action"]', type: 'action', list: [
-                    { name: 'View Button', options: { viewUrl: '/product/view', idName: 'id' } },
                     { name: 'Delete Button', options: { idName: 'id' } }
                 ]
             }
         ];
-        var data = @Html.Raw(JsonConvert.SerializeObject(Model));
         console.log(data);
         const config = {
             tableId: 'stock_balance',
@@ -70,15 +71,25 @@
 
 
         document.addEventListener('DOMContentLoaded', function () {
-        var stockName = localStorage.getItem('stockName');
+            var stockName = localStorage.getItem('stockName');
 
-    $("#stockName").text(stockName);
-
-
+            $("#stockName").text(stockName);
 
             const tableManager = new TableManager(config);
             tableManager.renderTable();
 
+            tableManager.setOnAfterCellEdit(rows => {
+                console.log(rows);
+                $('.dynamic-row.changed [data-field="ItemPrice2"]').each(function (index,val) {
+
+                    $(this).html(parseFloat(rows[index].ItemPrice) * parseFloat(rows[index].QtyStart));
+                });
+
+            })
+
+           
         });
+
+
     </script>
 }

@@ -109,6 +109,28 @@ namespace ProSoft.EF.DbContext
                 //.Ignore(us => us.EisSectionTypes)
                 .HasKey(us => new { us.UserId, us.SideId, us.RegionId, us.BranchId });
 
+
+            builder.Entity<MainItem>()
+                .HasIndex(e => e.MainCode)
+                .IsUnique();
+
+            builder.Entity <SubItem>()
+                .HasIndex(s => s.ItemCode)
+                .IsUnique();
+
+            builder.Entity<Stkbalance>()
+                .HasOne(s => s.MainItem)
+                .WithMany()
+                .HasForeignKey(s => s.MainCode)
+                .HasPrincipalKey(m => m.MainCode);
+
+            builder.Entity<Stkbalance>()
+                .HasOne(s => s.SubItem)
+                .WithMany()
+                .HasForeignKey(s => s.ItemCode)
+                .HasPrincipalKey(m => m.ItemCode);
+
+
         }
 
         public DbSet<Price> Prices { get; set; }
@@ -216,7 +238,7 @@ namespace ProSoft.EF.DbContext
         public DbSet<SubItemDtl> SubItemDtls { get; set; }
         public DbSet<Stkbalance> Stkbalances { get; set; }
         public DbSet<UsersGroup> UsersGroups { get; set; }
-       public DbSet<UserSide> UserSides { get; set; }
+        public DbSet<UserSide> UserSides { get; set; }
         ////////////////////
         // Accounts //
         public DbSet<AccMainCode> AccMainCodes { get; set; }
