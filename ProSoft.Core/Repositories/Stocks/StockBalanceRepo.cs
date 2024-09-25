@@ -25,5 +25,10 @@ namespace ProSoft.Core.Repositories.Stocks
         {
             _context.BulkInsert(entities);
         }
+
+        public Task<List<Stkbalance>> GetAllByStockId(int id)
+        {
+            return _context.Stkbalances.AsSplitQuery().Include(s=>s.MainItem).Include(s=>s.SubItem).Where(s => s.Stkcod == id).ToListAsync();
+        }
     }
 }

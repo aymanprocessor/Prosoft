@@ -34,10 +34,14 @@ class TableManager {
         $(document).on('blur', 'input, select', this.handleAfterCellEdit.bind(this));
         $(document).on('change', 'input, select', this.handleCellValueChange.bind(this));
         $(document).on('click', '.editable-cell', this.editCell.bind(this));
+        $(document).on('click', 'select', this.handleOnSelectClick.bind(this));
         $(document).on('click', TableManager.SELECTORS.TABLE_ROW, this.handleRowSelect.bind(this));
         $(document).on('click', `#${this.config.tableId}-delete-btn`, this.handleDelete.bind(this));
     }
 
+    handleOnSelectClick(event) {
+        console.log("select event", event.target);
+    }
     //handleSave(event) {
     //    const rowId = $(event.target).data('row-id');
     //    const formData = this.gatherFormData(rowId);
@@ -66,29 +70,69 @@ class TableManager {
         const currentColIndex = td.index();
         const currentRowIndex = tr.index();
         const totalRows = $(TableManager.SELECTORS.TABLE_ROW).length;
-        const totalCols = tr.find('td').length - 1;
-
-        if (event.key === 'Enter') {
+        console.log("Key Pressed :", event.key);
+        if (event.key === 'Enter' || event.key === "ArrowDown") {
             event.preventDefault();
+
             if (currentRowIndex < totalRows - 1) {
-                this.navigateToCell(currentRowIndex + 1, currentColIndex);
-            } else if (currentColIndex < totalCols - 1) {
-                this.navigateToCell(0, currentColIndex + 1);
+                // Only increase the row index, keeping the column index the same
+                this.navigateToCell(currentRowIndex + 1, currentColIndex - 1);
             }
         }
+        else if (event.key === "ArrowUp") {
+            event.preventDefault();
+
+            if (currentRowIndex >=0) {
+                // Only increase the row index, keeping the column index the same
+                this.navigateToCell(currentRowIndex -1, currentColIndex - 1);
+            }
+        }
+        else if (event.key === "ArrowLeft") {
+            event.preventDefault();
+
+           
+                // Only increase the row index, keeping the column index the same
+                this.navigateToCell(currentRowIndex, currentColIndex );
+            
+        }
+        else if (event.key === "ArrowRight") {
+            event.preventDefault();
+
+
+            // Only increase the row index, keeping the column index the same
+            this.navigateToCell(currentRowIndex, currentColIndex-2);
+
+        }
+        
     }
 
-    handleCellClick(event) {
-        const cell = $(event.currentTarget);
+    navigateToCell(rowIndex, colIndex) {
+        const targetRow = $(TableManager.SELECTORS.TABLE_ROW).eq(rowIndex);
+        const targetCell = targetRow.find('td').eq(colIndex);
+
+        // Instead of triggering a click, directly generate the input field
+        this.editCelll(targetCell);
+    }
+
+    editCelll(cell) {
         const field = this.config.fieldMapping[cell.index()];
         if (!field.editable) return;
 
         const rowId = cell.closest('tr').data('row-id');
         const currentValue = cell.text().trim();
         const inputField = this.generateInputField(rowId, field, currentValue);
+
+        // Replace the cell content with the input field and set focus
         cell.html(inputField);
-        cell.find('input, select').focus();
+        cell.find('input, select').focus().select();
     }
+
+    //handleCellClick(event) {
+    //    const cell = $(event.target);
+    //    console.log("cell",cell);
+    //    // Directly call the editCell method to transform the cell into an input
+    //    this.editCell(cell);
+    //}
 
     handleInputBlur(event) {
 
@@ -129,13 +173,13 @@ class TableManager {
         const cell = $(event.target);
         const field = this.config.fieldMapping[cell.index()];
 
-
-
         const rowId = cell.closest('tr').data('row-id');
         const currentValue = cell.text().trim();
         const inputField = this.generateInputField(rowId, field, currentValue);
+
         cell.html(inputField);
-        cell.find('input, select').focus();
+
+        cell.find('input, select').focus().select();
 
     }
 
@@ -306,10 +350,12 @@ class TableManager {
     }
 
     generateInputField(rowId, field, value) {
+
         const disabledClass = '';
         const titleCenter = field.titleCenter ? 'text-center' : '';
         const widthStyle = field.width ? `style="width: ${field.width};"` : `style="width: 100px;"`;
         const fieldId = `${field.name.replace('.', '_')}_${rowId}`;
+
         switch (field.type) {
             case 'hidden':
                 return `<input type="hidden" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${fieldId}" data-row-id="${rowId}" data-field-name="${field.name}"/>`;
@@ -323,6 +369,7 @@ class TableManager {
                 return `<input type="date" value="${this.parseDate(value, "YYYY-MM-DD")}" class="form-control ${titleCenter}" id="${fieldId}" data-row-id="${rowId}" data-field-name="${field.name}" ${disabledClass}/>`;
             case 'select':
                 const options = field.options.map(option => `<option value="${option.Value}" ${option.Value == value ? 'selected' : ''}>${option.Text}</option>`).join('');
+                console.log("option :",options);
                 return `<select class="form-control form-select ${titleCenter}" ${widthStyle} id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" ${disabledClass}>${options}</select>`;
             default:
                 return `<input type="text" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${fieldId}" data-row-id="${rowId}" data-field-name="${field.name}" ${disabledClass}/>`;
@@ -373,7 +420,7 @@ class TableManager {
     }
 
     generateTableCell(field, row) {
-        const value = this.getNestedValue(row, field.name) ?? (field.defaultValue ?? '');
+        let value = this.getNestedValue(row, field.name) ?? (field.defaultValue ?? '');
         const widthStyle = field.width ?? "100px";
 
         if (field.type === "action") {
@@ -384,7 +431,11 @@ class TableManager {
             return this.generateInputField(row[this.config.idName], field, value);
         }
 
+        if (field.type === 'date') {
+            value = this.parseDate(value, "YYYY-MM-DD");
+        }
         const editableClass = field.editable ? 'editable-cell' : 'cell-disabled';
+        
         return `<td class="${editableClass}" data-field="${field.name}" style="width:${widthStyle};">${value}</td>`;
     }
 
@@ -403,13 +454,34 @@ class TableManager {
     }
 
     generateToolbar() {
+
+        const sumQtyStart = this.config.data.reduce(
+            (accumulator, currentValue) => accumulator + currentValue.QtyStart,
+            0
+        );
+
+        const sumItemPrice2 = this.config.data.reduce(
+            (accumulator, currentValue) => accumulator + currentValue.ItemPrice2,
+            0
+        );
+
+
         const toolbarHtml = `
-            <div class="d-flex gap-2">
+        <div class="row">
+            <div class="col-4 d-flex gap-2 align-items-start">
                 ${this.addInsertRowButton()}
                 ${this.addSaveRowsButton()}
             </div>
+            
+             <div class="col-8 d-flex gap-2">
+               <p class="alert alert-primary">عدد السجلات : ${this.config.data.length}</p>
+               <p class="alert alert-success">اجمالي كمية الرصيد الافتتاحي : ${sumQtyStart} </p>
+               <p class="alert alert-success">اجمالي قيمة الرصيد اول المدة : ${sumItemPrice2} </p>
+            </div>
+        </div>
         `;
         $(`#${this.config.tableId}`).prepend(toolbarHtml);
+       
     }
 
     addInsertRowButton() {
@@ -420,12 +492,23 @@ class TableManager {
         return `<button id="${this.config.tableId}-save-row-btn" class="btn btn-warning mb-3"><i class="bi bi-floppy"></i> حفظ </button>`;
     }
 
-    navigateToCell(rowIndex, colIndex) {
-        const targetRow = $(TableManager.SELECTORS.TABLE_ROW).eq(rowIndex);
-        const targetCell = targetRow.find('td').eq(colIndex);
-        targetCell.click(); // Trigger the click event to transform the cell into an input
-    }
+  
+    refresh(newData) {
+        // Update the data in the config
+        this.config.data = newData;
 
+        // Re-render the table
+        this.renderTable();
+
+        // Re-initialize event listeners if necessary
+        this.initEventListeners();
+
+        // Clear any existing changed or deleted row sets
+        this.changedRows.clear();
+        this.deletedRows.clear();
+
+        console.log("Table refreshed with new data");
+    }
 
 
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace ProSoft.EF.Models.Stocks
 
         public string? ItemCode { get; set; }
 
-        [Column("QTY_START", TypeName = "decimal(12, 3)")]
+        [Column("QTY_START", TypeName = "decimal(12, 3)"), DefaultValue(0)]
         public decimal? QtyStart { get; set; }
 
         [Column("QTY_START_DT")]
@@ -44,13 +45,13 @@ namespace ProSoft.EF.Models.Stocks
         [Unicode(false)]
         public string? ItemFlag { get; set; }
 
-        [Column("ITEM_PRICE", TypeName = "decimal(12, 2)")]
+        [Column("ITEM_PRICE", TypeName = "decimal(12, 2)"), DefaultValue(0)]
         public decimal? ItemPrice { get; set; }
 
         [Column("F_YEAR")]
         public int? FYear { get; set; }
 
-        [Column("ITEM_PRICE2", TypeName = "decimal(12, 2)")]
+        [Column("ITEM_PRICE2", TypeName = "decimal(12, 2)"), DefaultValue(0)]
         public decimal? ItemPrice2 { get; set; }
 
         [Column("MAIN_CODE")]

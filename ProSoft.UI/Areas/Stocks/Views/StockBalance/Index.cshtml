@@ -14,11 +14,11 @@
 
     </div>
     <div class="d-flex border  rounded my-3 p-3">
-        <input class="form-control" type="text" placeholder="بحث ..." id="Search" style="width:200px" />
+        <input class="form-control" type="text" placeholder="بحث ..." id="Search" style="width:200px" disabled />
 
         <div class="d-flex mx-3 gap-2">
             <label class="form-label">عرض</label>
-            <select class="form-control form-select" style="width:200px">
+            <select class="form-control form-select" id="itemsFilter" style="width:200px"  disabled>
                 <option value="كل الاصناف">كل الاصناف</option>
                 <option value="اصناف لها كمية">اصناف لها كمية</option>
                 <option value="اصناف غير مسعرة">اصناف غير مسعرة</option>
@@ -35,6 +35,7 @@
 @section Scripts {
     <script>
         var data = @Html.Raw(JsonConvert.SerializeObject(Model.StockBalances));
+        console.log("DATA : ", data);
         var UnitCodeList = @Html.Raw(JsonConvert.SerializeObject(Model.UnitCodesList));
 
         const fieldMapping = [
@@ -43,12 +44,12 @@
             { name: 'ItemCode', title: '@localizer["Item Code"]', type: 'text', editable: false },
             { name: 'SubItem.SubName', title: '@localizer["Item Name"]', type: 'text', editable: false },
             { name: 'UnitCode', title: '@localizer["UnitCode Id"]', type: 'hidden', editable: false },
-            { name: 'QtyStartDt', title: '@localizer["Entry Date 1"]', type: 'text', editable: false },
+            { name: 'QtyStartDt', title: '@localizer["Entry Date 1"]', type: 'date', editable: false },
             { name: 'UnitCode', title: '@localizer["UnitCode Name"]', type: 'select', editable: true ,
                 options: UnitCodeList,
             },
-            { name: 'ExpM', title: '@localizer["Month"]', width: "100px", type: 'text', editable: true },
-            { name: 'ExpYr', title: '@localizer["Year 1"]', width: "100px", type: 'text', editable: true },
+            { name: 'ExpM', title: '@localizer["Month"]', width: "100px", type: 'text', defaultValue: 1, editable: false },
+            { name: 'ExpYr', title: '@localizer["Year 1"]', width: "100px", type: 'text', defaultValue: 2024, editable: false },
             { name: 'QtyStart', title: '@localizer["Amount Of Opening Balance"]', type: 'text', defaultValue: 0, editable: true },
             { name: 'ItemPrice', title: '@localizer["Unit Price"]', type: 'text', defaultValue: 0.00, editable: true },
             { name: 'ItemPrice2', title: '@localizer["The value of the beginning balance"]', width: "100px", type: 'text', defaultValue: 0.00, editable: false },
@@ -78,14 +79,35 @@
             const tableManager = new TableManager(config);
             tableManager.renderTable();
 
+            $("#Search").prop('disabled', false);
+            $("#itemsFilter").prop('disabled', false);
+
             tableManager.setOnAfterCellEdit(rows => {
-                console.log(rows);
                 $('.dynamic-row.changed [data-field="ItemPrice2"]').each(function (index,val) {
 
                     $(this).html(parseFloat(rows[index].ItemPrice) * parseFloat(rows[index].QtyStart));
                 });
 
             })
+
+            $('#Search').on('input', function (val) {
+
+                let searchValue = $(this).val()
+
+                $.ajax({
+                    url: '@Url.Action("Search", "StockBalance")', // Adjust your controller/action name
+                    type: 'GET',
+                    dataType:'json',
+                    data: { id: localStorage.getItem('stockId'), searchValue: searchValue },  // Pass the search value to the server
+                    success: function (result) {
+                        console.log(result);
+                        tableManager.refresh(result);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("An error occurred: ", error);
+                    }
+                });
+            });
 
            
         });

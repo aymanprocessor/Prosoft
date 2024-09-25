@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using ProSoft.Core.Repositories.Stocks;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.IRepositories.Stocks;
@@ -92,7 +93,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
                 await _stockBalanceRepo.SaveChangesAsync();
             }
 
-            List<Stkbalance> StockBalances1 = await _stockBalanceRepo.GetAllAsync();
+            List<Stkbalance> StockBalances1 = await _stockBalanceRepo.GetAllByStockId(id);
             StockBalanceViewDTO stockBalanceViewDTOs = new StockBalanceViewDTO()
             {
                 StockBalances = StockBalances1,
@@ -101,7 +102,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             return View(stockBalanceViewDTOs);
         }
 
-        [HttpGet]
+        [HttpGet("ChooseStockType")]
         public async Task<IActionResult> ChooseStockType()
         {
             int userId = _currentUserService.UserId;
@@ -109,6 +110,15 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             List<Stock> stocks = stockEmpTypes.Select(x => x.Stock).ToList();
 
             return View(stocks);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Search(int id,string searchValue)
+        {
+            List<Stkbalance> StockBalances =( await _stockBalanceRepo.GetAllByStockId(id)).Where(s => s.ItemCode.Contains(searchValue) || s.MainItem.MainName.Contains(searchValue)).ToList();
+           
+            return Ok(StockBalances);
+
         }
     }
 }
