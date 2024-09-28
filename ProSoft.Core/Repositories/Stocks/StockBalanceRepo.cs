@@ -21,14 +21,19 @@ namespace ProSoft.Core.Repositories.Stocks
         }
 
       
-        public void BulkInsert(IEnumerable<Stkbalance> entities)
+        public async Task BulkInsert(IEnumerable<Stkbalance> entities)
         {
             _context.BulkInsert(entities);
         }
 
+        public async Task BulkUpdate(IEnumerable<Stkbalance> entities)
+        {
+           await _context.BulkUpdateAsync(entities);
+        }
+
         public Task<List<Stkbalance>> GetAllByStockId(int id)
         {
-            return _context.Stkbalances.AsSplitQuery().Include(s=>s.MainItem).Include(s=>s.SubItem).Where(s => s.Stkcod == id).ToListAsync();
+            return _context.Stkbalances.AsSplitQuery().Include(s=>s.MainItem).Include(s=>s.SubItem).Include(s=>s.UnitCodee).Where(s => s.Stkcod == id).ToListAsync();
         }
     }
 }

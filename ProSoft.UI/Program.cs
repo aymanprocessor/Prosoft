@@ -53,7 +53,7 @@ builder.Services.AddControllersWithViews().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.PropertyNamingPolicy = null; // This enforces PascalCase
 
-
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
 
 // Register for Identity Package

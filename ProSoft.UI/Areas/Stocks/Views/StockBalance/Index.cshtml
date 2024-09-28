@@ -19,14 +19,22 @@
         <div class="d-flex mx-3 gap-2">
             <label class="form-label">عرض</label>
             <select class="form-control form-select" id="itemsFilter" style="width:200px"  disabled>
-                <option value="كل الاصناف">كل الاصناف</option>
-                <option value="اصناف لها كمية">اصناف لها كمية</option>
-                <option value="اصناف غير مسعرة">اصناف غير مسعرة</option>
+                <option value=0>كل الاصناف</option>
+                <option value=1>اصناف لها كمية</option>
+                <option value=2>اصناف غير مسعرة</option>
+            </select>
+        </div>
+        <div class="d-flex mx-3 gap-2">
+            <label class="form-label">نوع المخزن</label>
+            <select class="form-control form-select" id="stockTypeFilter" style="width:200px" disabled>
+                <option value=0>الكل</option>
+                <option value=2>الادوية</option>
+                <option value=3>مستلزمات</option>
             </select>
         </div>
     </div>
 
-    <div class="p-3 border">
+    <div class="p-3 border rounded">
         <div id="stock_balance">
         </div>
     </div>
@@ -39,25 +47,22 @@
         var UnitCodeList = @Html.Raw(JsonConvert.SerializeObject(Model.UnitCodesList));
 
         const fieldMapping = [
+            { name: 'Stkcod', type: 'hidden', editable: false },
             { name: 'StkbalanceId', title: '@localizer["Code"]', type: 'text', editable: false },
-            { name: 'MainItem.MainName', title: '@localizer["The Group"]', type: 'text', editable: false },
+            { name: 'MainItem.MainName', title: '@localizer["The Group"]',  type: 'text', editable: false },
             { name: 'ItemCode', title: '@localizer["Item Code"]', type: 'text', editable: false },
-            { name: 'SubItem.SubName', title: '@localizer["Item Name"]', type: 'text', editable: false },
+            { name: 'SubItem.SubName', title: '@localizer["Item Name"]', width: "250px", type: 'text', editable: false },
             { name: 'UnitCode', title: '@localizer["UnitCode Id"]', type: 'hidden', editable: false },
             { name: 'QtyStartDt', title: '@localizer["Entry Date 1"]', type: 'date', editable: false },
             { name: 'UnitCode', title: '@localizer["UnitCode Name"]', type: 'select', editable: true ,
-                options: UnitCodeList,
+            options: UnitCodeList,
             },
             { name: 'ExpM', title: '@localizer["Month"]', width: "100px", type: 'text', defaultValue: 1, editable: false },
             { name: 'ExpYr', title: '@localizer["Year 1"]', width: "100px", type: 'text', defaultValue: 2024, editable: false },
             { name: 'QtyStart', title: '@localizer["Amount Of Opening Balance"]', type: 'text', defaultValue: 0, editable: true },
             { name: 'ItemPrice', title: '@localizer["Unit Price"]', type: 'text', defaultValue: 0.00, editable: true },
             { name: 'ItemPrice2', title: '@localizer["The value of the beginning balance"]', width: "100px", type: 'text', defaultValue: 0.00, editable: false },
-            {
-                name: 'action', title: '@localizer["Action"]', type: 'action', list: [
-                    { name: 'Delete Button', options: { idName: 'id' } }
-                ]
-            }
+            
         ];
         console.log(data);
         const config = {
@@ -81,6 +86,7 @@
 
             $("#Search").prop('disabled', false);
             $("#itemsFilter").prop('disabled', false);
+            $("#stockTypeFilter").prop('disabled', false);
 
             tableManager.setOnAfterCellEdit(rows => {
                 $('.dynamic-row.changed [data-field="ItemPrice2"]').each(function (index,val) {
@@ -88,6 +94,25 @@
                     $(this).html(parseFloat(rows[index].ItemPrice) * parseFloat(rows[index].QtyStart));
                 });
 
+            })
+
+            tableManager.setOnSave(rows => {
+              
+                console.log("Rows On Save :", rows);
+
+                $.ajax({
+                    url: '@Url.Action("Update", "StockBalance")', // Adjust your controller/action name
+                    type: 'PUT',
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data:JSON.stringify( rows ),  // Pass the search value to the server
+                    success: function (result) {
+                        tableManager.refresh(data);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("An error occurred: ", error);
+                    }
+                });
             })
 
             $('#Search').on('input', function (val) {
@@ -109,6 +134,42 @@
                 });
             });
 
+
+            $('#itemsFilter').on('change', function (val) {
+
+                $.ajax({
+                    url: '@Url.Action("DisplayFilter", "StockBalance")', // Adjust your controller/action name
+                    type: 'GET',
+                    dataType: 'json',
+                    data: { id: localStorage.getItem('stockId'), filterValue: $(this).val() },  // Pass the search value to the server
+                    success: function (result) {
+                        console.log(result);
+                        tableManager.refresh(result);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("An error occurred: ", error);
+                    }
+                });
+
+
+            });
+            
+            $('#stockTypeFilter').on('change', function (val) {
+               
+                $.ajax({
+                    url: '@Url.Action("StockTypeFilter", "StockBalance")', // Adjust your controller/action name
+                    type: 'GET',
+                    dataType: 'json',
+                    data: { id: localStorage.getItem('stockId'), stockType: $(this).val() },  // Pass the search value to the server
+                    success: function (result) {
+                        console.log(result);
+                        tableManager.refresh(result);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("An error occurred: ", error);
+                    }
+                });
+            })
            
         });
 

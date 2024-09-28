@@ -194,17 +194,22 @@ class TableManager {
 
             var formField = {};
 
-            $(this).find('td').each(function () {
+            $(this).find('td,input').each(function () {
                 const td = $(this);
                 const fieldName = $(this).data("field");
                 let fieldValue;
                 if (td.find('input').length > 0) {
                     fieldValue = td.find('input').val();
                 } else {
-                    fieldValue = td.html();
+                    if (td.is('input')) {
+                        fieldValue = td.val(); // Get the value of the input field
+                    } else if (td.is('td')) {
+                        fieldValue = td.text(); // Get the text content of the td element
+                    }
                 }
                 formField[fieldName] = fieldValue;
             });
+            formField["UnitCode"]=1
             formFieldList.push(formField);
 
         });
@@ -358,21 +363,21 @@ class TableManager {
 
         switch (field.type) {
             case 'hidden':
-                return `<input type="hidden" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${fieldId}" data-row-id="${rowId}" data-field-name="${field.name}"/>`;
+                return `<input type="hidden" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${fieldId}" data-row-id="${rowId}" data-field="${field.name}"/>`;
             case 'text':
-                return `<input type="text" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${fieldId}" data-row-id="${rowId}" data-field-name="${field.name}" ${disabledClass}/>`;
+                return `<input type="text" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${fieldId}" data-row-id="${rowId}" data-field="${field.name}" ${disabledClass}/>`;
             case 'number':
-                return `<input type="text" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${fieldId}" data-row-id="${rowId}" data-field-name="${field.name}" pattern="\\d*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" ${disabledClass}/>`;
+                return `<input type="text" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${fieldId}" data-row-id="${rowId}" data-field="${field.name}" pattern="\\d*" oninput="this.value = this.value.replace(/[^0-9]/g, '');" ${disabledClass}/>`;
             case 'float':
-                return `<input type="text" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${fieldId}" data-row-id="${rowId}" data-field-name="${field.name}" pattern="\\d+(\\.\\d+)?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');" ${disabledClass}/>`;
+                return `<input type="text" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${fieldId}" data-row-id="${rowId}" data-field="${field.name}" pattern="\\d+(\\.\\d+)?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');" ${disabledClass}/>`;
             case 'date':
-                return `<input type="date" value="${this.parseDate(value, "YYYY-MM-DD")}" class="form-control ${titleCenter}" id="${fieldId}" data-row-id="${rowId}" data-field-name="${field.name}" ${disabledClass}/>`;
+                return `<input type="date" value="${this.parseDate(value, "YYYY-MM-DD")}" class="form-control ${titleCenter}" id="${fieldId}" data-row-id="${rowId}" data-field="${field.name}" ${disabledClass}/>`;
             case 'select':
                 const options = field.options.map(option => `<option value="${option.Value}" ${option.Value == value ? 'selected' : ''}>${option.Text}</option>`).join('');
                 console.log("option :",options);
-                return `<select class="form-control form-select ${titleCenter}" ${widthStyle} id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" ${disabledClass}>${options}</select>`;
+                return `<select class="form-control form-select ${titleCenter}" ${widthStyle} id="${field.name}_${rowId}" data-row-id="${rowId}" data-field="${field.name}" ${disabledClass}>${options}</select>`;
             default:
-                return `<input type="text" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${fieldId}" data-row-id="${rowId}" data-field-name="${field.name}" ${disabledClass}/>`;
+                return `<input type="text" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${fieldId}" data-row-id="${rowId}" data-field="${field.name}" ${disabledClass}/>`;
         }
     }
 
@@ -394,15 +399,16 @@ class TableManager {
     generateTableBody() {
         const headerHtml = this.generateTableHeader();
         const bodyHtml = this.generateTableRows();
-        return `<table class="table table-hover">${headerHtml}${bodyHtml}</table>`;
+        return `<table class="table table-hover table-bordered">${headerHtml}${bodyHtml}</table>`;
     }
 
     generateTableHeader() {
+        const actionCell = this.config.fieldMapping.type === 'action' ? '<th></th>' : '';
         const headerCells = this.config.fieldMapping
             .filter(field => field.type !== 'hidden')
             .map(field => `<th>${field.title}</th>`)
             .join('');
-        return `<thead><tr>${headerCells}<th></th></tr></thead>`;
+        return `<thead><tr>${headerCells}${actionCell}</tr></thead>`;
     }
 
     generateTableRows() {
@@ -469,7 +475,9 @@ class TableManager {
         const toolbarHtml = `
         <div class="row">
             <div class="col-4 d-flex gap-2 align-items-start">
-                ${this.addInsertRowButton()}
+
+                ${ this.addInsertRowButton()}
+    
                 ${this.addSaveRowsButton()}
             </div>
             
@@ -485,7 +493,11 @@ class TableManager {
     }
 
     addInsertRowButton() {
+        if (this.config.enableInsertBtn) {
+
         return `<button id="${this.config.tableId}-insert-new-row-btn" class="btn btn-success mb-3"><i class="bi bi-plus-circle"></i> اضافة </button>`;
+        }
+        return '';
     }
 
     addSaveRowsButton() {

@@ -16,7 +16,8 @@ namespace ProSoft.EF.IRepositories.Stocks
 {
     public interface IStockBalanceRepo : IRepository<Stkbalance, int>
     {
-        public void BulkInsert(IEnumerable<Stkbalance> entities);
+        public Task BulkInsert(IEnumerable<Stkbalance> entities);
+        public Task BulkUpdate(IEnumerable<Stkbalance> entities);
 
         public Task<List<Stkbalance>> GetAllByStockId(int id);
 

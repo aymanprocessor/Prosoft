@@ -39,33 +39,34 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(int id)
         {
-            if(id == 0)
+            if (id == 0)
             {
                 return NotFound("Stock Id Is Require");
             }
 
             var stock = await _stockRepo.GetByIdAsync(id);
-        
+
             var stkkkkk = await _stockBalanceRepo.GetAllAsync();
             stkkkkk = stkkkkk.Where(x => x.Stkcod == id).Where(x => x.FYear == _currentUserService.Year).ToList();
-           
+
             var subItems = _subItemRepo.GetAllSubItemByStockId(id);
-           
+
             var res = from si in subItems
                       join sbb in stkkkkk
-                      on new { si.ItemCode,si.Flag1 } equals new { sbb.ItemCode,sbb.Flag1 } into tableJoin
+                      on new { si.ItemCode, si.Flag1 } equals new { sbb.ItemCode, sbb.Flag1 } into tableJoin
                       from tj in tableJoin.DefaultIfEmpty()
                       where tj == null
                       select si;
 
 
-            var mainItems = (await _mainItemRepo.GetAllAsync()).Where(x => res.Select(r => r.MainCode ).Contains( x.MainCode)).ToList();
-          
+            var mainItems = (await _mainItemRepo.GetAllAsync()).Where(x => res.Select(r => r.MainCode).Contains(x.MainCode)).ToList();
+
 
             List<Stkbalance> stkbalances = [];
-            foreach(var item in res)
+            foreach (var item in res)
             {
                 var mainItem = mainItems.FirstOrDefault(x => x.MainCode == item.MainCode);
+
                 stkbalances.Add(new Stkbalance()
                 {
 
@@ -81,19 +82,20 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
                     BarCode = item.ItemCode,
                     ItemCounter = item.ItemCounter,
                     QtyStartDt = new DateTime(_currentUserService.Year, 1, 1),
-                  MainItem = mainItem,
-                  SubItem = item,
-                    
-                   
+                    MainItem = mainItem,
+                    SubItem = item,
+                 
+
                 });
             }
-            if(stkbalances.Count > 0)
+            if (stkbalances.Count > 0)
             {
-                _stockBalanceRepo.BulkInsert(stkbalances);
+                await _stockBalanceRepo.BulkInsert(stkbalances);
                 await _stockBalanceRepo.SaveChangesAsync();
             }
 
             List<Stkbalance> StockBalances1 = await _stockBalanceRepo.GetAllByStockId(id);
+            
             StockBalanceViewDTO stockBalanceViewDTOs = new StockBalanceViewDTO()
             {
                 StockBalances = StockBalances1,
@@ -112,11 +114,55 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             return View(stocks);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Search(int id,string searchValue)
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] List<Stkbalance> data)
         {
-            List<Stkbalance> StockBalances =( await _stockBalanceRepo.GetAllByStockId(id)).Where(s => s.ItemCode.Contains(searchValue) || s.MainItem.MainName.Contains(searchValue)).ToList();
-           
+            if (data == null) {Console.WriteLine("Data Is Nulllllll"); return Ok("Data Is Nulllllll"); }
+            await _stockBalanceRepo.BulkUpdate(data);
+            await _stockBalanceRepo.SaveChangesAsync();
+            return Json(data);
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Search(int id, string searchValue)
+        {
+            List<Stkbalance> StockBalances = (await _stockBalanceRepo.GetAllByStockId(id)).Where(s => s.ItemCode.Contains(searchValue) || s.MainItem.MainName.Contains(searchValue)).ToList();
+
+            return Ok(StockBalances);
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DisplayFilter(int id, int filterValue)
+        {
+            var StockBalances = (await _stockBalanceRepo.GetAllByStockId(id)).AsEnumerable();
+
+            switch (filterValue)
+            {
+                case 1:
+                    StockBalances= StockBalances.Where(x => x.QtyStart > 0).ToList(); break;
+                case 2:
+                    StockBalances= StockBalances.Where(x => x.ItemPrice == 0).ToList(); break;
+
+            }
+            return Ok(StockBalances);
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult>StockTypeFilter(int id, int stockType)
+        {
+            var StockBalances = (await _stockBalanceRepo.GetAllByStockId(id)).AsEnumerable();
+
+            switch (stockType)
+            {
+                case 2:
+                    StockBalances = StockBalances.Where(x => x.Flag1 == 2).ToList(); break;
+                case 3:
+                    StockBalances = StockBalances.Where(x => x.Flag1 == 3).ToList(); break;
+
+            }
             return Ok(StockBalances);
 
         }

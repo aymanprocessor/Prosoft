@@ -21,9 +21,19 @@
 @section Scripts {
     <script>
         function chooseStockType(e) {
-            localStorage.setItem("stockId", e.target.value);
-            localStorage.setItem("stockName", $('select option:selected').text());
-            e.target.parentElement.submit();
+            const selectedStockId = e.target.value;
+            const selectedStockName = $('select option:selected').text();
+
+            // Store the selected stock ID and name in localStorage
+            localStorage.setItem("stockId", selectedStockId);
+            localStorage.setItem("stockName", selectedStockName);
+
+
+            const form = document.getElementById('StockForm');
+            form.setAttribute('action', `/Stocks/StockBalance/Index/${selectedStockId}`);
+
+            // Submit the form
+            form.submit();
         }
     </script>
 }
