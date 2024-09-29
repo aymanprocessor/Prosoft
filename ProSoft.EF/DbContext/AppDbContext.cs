@@ -130,7 +130,11 @@ namespace ProSoft.EF.DbContext
                 .HasForeignKey(s => s.ItemCode)
                 .HasPrincipalKey(m => m.ItemCode);
 
-
+            builder.Entity<ItemUnit>()
+              .HasOne(s => s.SubItem)
+              .WithMany()
+              .HasForeignKey(s => s.ItemCode)
+              .HasPrincipalKey(m => m.ItemCode);
         }
 
         public DbSet<Price> Prices { get; set; }
@@ -239,6 +243,7 @@ namespace ProSoft.EF.DbContext
         public DbSet<Stkbalance> Stkbalances { get; set; }
         public DbSet<UsersGroup> UsersGroups { get; set; }
         public DbSet<UserSide> UserSides { get; set; }
+        public DbSet<ItemUnit> ItemUnits { get; set; }
         ////////////////////
         // Accounts //
         public DbSet<AccMainCode> AccMainCodes { get; set; }

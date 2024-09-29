@@ -430,3 +430,12 @@ html {
 .dynamic-row td.cell-disabled {
     background-color: #e3e3e3;
 }
+
+ .select2-selection{
+    height: auto !important;
+}
+.select2-selection__rendered {
+    height: 35px;
+    font-size: x-large;
+    text-align: center;
+}

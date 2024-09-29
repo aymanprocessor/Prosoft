@@ -14,6 +14,7 @@ namespace ProSoft.EF.IRepositories.Stocks
         // Code By Ayman Saad - 22-9-2024
        
         IEnumerable<SubItem> GetAllSubItemByStockId(int stkcod);
+        Task<IEnumerable<SubItem>> GetAllSubItemByStockTypeAsync(int stockType);
         
         // Code By Ayman Saad - 22-9-2024
 

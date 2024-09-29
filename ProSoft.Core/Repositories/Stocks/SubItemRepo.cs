@@ -22,6 +22,7 @@ namespace ProSoft.Core.Repositories.Stocks
         {
             _mapper = mapper;
         }
+        //-------------------- Ayman Saad --------------------//
 
         public IEnumerable<SubItem> GetAllSubItemByStockId(int stkcod)
         {
@@ -33,6 +34,13 @@ namespace ProSoft.Core.Repositories.Stocks
                          select si;
             return result;
         }
+
+        public async Task<IEnumerable<SubItem>> GetAllSubItemByStockTypeAsync(int stockType)
+        {
+            return await _Context.SubItems.Where(s => s.Flag1 == stockType).ToListAsync();
+        }
+
+        //-------------------- Ayman Saad --------------------//
         public async Task<List<SubItemViewDTO>> GetSubItemsByMainIdAsync(int mainId)
         {
             List<SubItem> subItems = await _DbSet.Where(obj => obj.MainId == mainId).ToListAsync();
@@ -256,5 +264,7 @@ namespace ProSoft.Core.Repositories.Stocks
                 subItem.ItemCode && obj.Flag1 == subItem.Flag1);
             return ifStkBalanceExists ? 1 : ifTransDtlExists ? 2 : 3;
         }
+
+       
     }
 }

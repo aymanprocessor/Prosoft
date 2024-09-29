@@ -1,0 +1,108 @@
+﻿@using ProSoft.EF.DTOs.Stocks.ItemUnits
+@model ItemUnitsViewDTO
+@{
+    ViewData["title"] = "Item Units";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="container pt-5">
+    <h1 class="mb-5 text-center">ربط الوحدات باصناف الانتاج التام</h1>
+    <div class="d-flex mx-3 mb-5 gap-2">
+        <label class="form-label fs-4 fw-bold">نوع المخزن</label>
+        <select class="form-control" asp-for="Flag1" asp-items="Model.Flag1" id="stockType" style="width:200px">
+            <option value="">اختر</option>
+           
+        </select>
+    </div>
+
+  
+    <div class="row mb-5">
+        <div class="col-6 border rounded  p-3" style="min-height:200px;max-height:500px;">
+            <table id="ItemsTable" class="table table-hover table-bordered" >
+                <thead>
+                    <tr>
+
+                        <th>كود الصنف</th>
+                        <th>اسم الصنف</th>
+                    </tr>
+                </thead>
+              <tbody></tbody>
+            </table>
+        </div>
+        
+    </div>
+   
+
+     <div class="row ">
+        
+        <div class="col border rounded  p-3" style="min-height:200px;max-height:500px;">
+             <div class="d-flex gap-2 mb-3">
+             <a class="btn btn-success">اضافة</a>
+         </div>
+            <table id="UnitsTable" class="table table-hover table-bordered" >
+                <thead>
+                    <tr>
+                        <th>كود</th>
+                        <th>الوحدة</th>
+                        <th>عدد الاجزاء</th>
+                        <th>الاكثر استخداما</th>
+                    </tr>
+                </thead>
+                <tbody>
+                      
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+
+        $(document).ready(function () { 
+            const stockTypeSelect = $('#stockType');
+            const subItemsSelect = $('#ItemSelect');
+            stockTypeSelect.select2({ multiple:false});
+            subItemsSelect.select2({multiple:false});
+           
+            stockTypeSelect.on('select2:select',function(event){
+               console.log(event.params.data.id);
+               const stockType = event.params.data.id;
+                      $('#ItemsTable').DataTable({
+                             destroy: true,
+                             scrollY: 200,
+                            deferRender:true,
+                            scroller:true,
+                            paging: false,
+                            searching: false,
+                             columns: [
+                                    { data: 'id' },
+                                    { data: 'text' },
+        
+                                    ],
+                            
+                            "ajax": {
+                                "url": `/Stocks/ItemUnits/GetSubItemsByStockType/${stockType}`,
+                                "type": "GET"
+                            },
+       
+                        });  
+            });
+
+
+            $('#ItemsTable tbody').on('click', 'tr', function () {
+                if ($(this).hasClass('selected')) {
+                    $(this).removeClass('selected');
+                }
+                else {
+                    $('#ItemsTable tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+            });
+          
+        });       
+        
+    </script>
+}

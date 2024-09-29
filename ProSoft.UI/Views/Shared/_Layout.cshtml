@@ -18,26 +18,28 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fancygrid/client/fancy.min.css" />
     <link rel="stylesheet" href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.min.css" />
-    
- <script src="https://kit.fontawesome.com/eb688b112b.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="~/lib/datatables.net-bs5/datatables.bootstrap5.min.css" />
+    <link rel="stylesheet" href="~/select2/css/select2.min.css" />
+    <link rel ="stylesheet" href="~/datatables.net-scroller-bs5/scroller.bootstrap5.min.css" />
+    <script src="https://kit.fontawesome.com/eb688b112b.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="d-flex justify-content-between align-items-center gap-2 p-2 shadow-sm rounded">
-       
-            @if (User.Identity.IsAuthenticated)
-            {
-                <a class="btn btn-secondary rounded-circle" href="/Home/Index" title="go to modules">
-                    <i class="fa-solid @(isRTL ? "fa-chevron-right" : "fa-chevron-left")"></i>
-                </a>
-                <span class="fw-bold text-capitalize">@User.Identity.Name</span>
-                <span class="fw-bold"> / @User.FindFirst(c => c.Type == "F_Year").Value</span>
-            }
-    
+
+        @if (User.Identity.IsAuthenticated)
+        {
+            <a class="btn btn-secondary rounded-circle" href="/Home/Index" title="go to modules">
+                <i class="fa-solid @(isRTL ? "fa-chevron-right" : "fa-chevron-left")"></i>
+            </a>
+            <span class="fw-bold text-capitalize">@User.Identity.Name</span>
+            <span class="fw-bold"> / @User.FindFirst(c => c.Type == "F_Year").Value</span>
+        }
+
         <div class="d-flex align-items-center gap-2 @(isRTL ? "me-auto" : "ms-auto")">
             <partial name="_SelectLanguagePartial" />
             @if (User.Identity.IsAuthenticated)
             {
-            <a asp-action="Logout" asp-controller="Account" asp-area="" class="btn btn-secondary">@localizer["Log out"]</a>
+                <a asp-action="Logout" asp-controller="Account" asp-area="" class="btn btn-secondary">@localizer["Log out"]</a>
             }
         </div>
     </div>
@@ -56,10 +58,14 @@
     <script src="~/lib/dayjs/dayjs.min.js"></script>
     <script src="~/lib/dayjs/plugin/customparseformat.min.js"></script>
     <script src="~/lib/tabledit/jquery.tabledit.min.js"></script>
-    <script src="~/js/tablemanager.js"></script>
-    @* for two way validation *@
+    <script src="~/js/tablemanager.js" asp-append-version="true"></script>
+    <script src="~/lib/datatables.net-bs5/datatables.bootstrap5.min.js"></script>
+    <script src="~/datatables.net/datatables.min.js"></script>
+    <script src="~/select2/js/select2.min.js"></script>
+    <script src="~/datatables.net-scroller-bs5/scroller.bootstrap5.min.js"></script>
+        @* for two way validation *@
     <script src="/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+        @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
