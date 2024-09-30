@@ -9,6 +9,6 @@ namespace ProSoft.EF.IRepositories.Stocks
 {
     public interface IItemUnitsRepo :IRepository<ItemUnit,int>
     {
-
+        public IEnumerable<ItemUnit> GetItemsByStockTypeAndItemCode(int stockType,string itemCode);
     }
 }

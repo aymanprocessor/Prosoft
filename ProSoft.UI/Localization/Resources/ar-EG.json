@@ -986,6 +986,9 @@
   "Year 1": "سنة",
   "Month": "شهر",
   "Amount Of Opening Balance": "كمية الرصيد الافتتاحي",
-  "The value of the beginning balance": "قيمة رصيد اول المدة"
-
+  "The value of the beginning balance": "قيمة رصيد اول المدة",
+  "Joining Units with Items": "ربط الوحدات بالاصناف",
+  "Linking Units With Finished Products": "إضافة عملية ربط الوحدات بأصناف الإنتاج التام",
+  "Number Of Items": "عدد الاصناف",
+  "Common Used": "الاكثر استخداما"
 }

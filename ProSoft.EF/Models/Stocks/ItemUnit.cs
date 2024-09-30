@@ -41,7 +41,7 @@ namespace ProSoft.EF.Models.Stocks
 
 
         [Column("DEFULT_UNIT")]
-        public int DefaultUnit { get; set; }
+        public bool DefaultUnit { get; set; }
 
 
         [Column("BR_REPLC")]

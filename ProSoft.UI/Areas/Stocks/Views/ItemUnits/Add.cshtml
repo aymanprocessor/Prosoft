@@ -1,0 +1,39 @@
+﻿@using ProSoft.EF.DTOs.Stocks.ItemUnits
+@inject IViewLocalizer localizer
+@model ItemUnitsAddEditDTO
+
+@{
+    ViewData["title"] = "Add Item Units";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+@Html.AntiForgeryToken()
+<div class="container py-5">
+    <h1 class="mb-5 text-center">@localizer["Linking Units With Finished Products"]</h1>
+
+    <div class="border rounded row p-3">
+        <form asp-controller="ItemUnits" asp-action="Add" method="post">
+            <input type="hidden" asp-for="@Model.ItemCode" />
+             <input type="hidden" asp-for="@Model.Flag1" /> 
+
+            <div class="col-4 mb-3 ">
+                <label class="form-label" asp-for="@Model.UnitCode"></label>
+                <select class="form-control form-select" asp-for="@Model.UnitCode" asp-items="@Model.Units"></select>
+                <span class="text-danger" asp-validation-for="@Model.UnitCode"></span>
+            </div>
+            <div class="col-4 mb-3 ">
+                <label class="form-label" asp-for="@Model.ItemQty"></label>
+                <input type="number"  class="form-control" asp-for="@Model.ItemQty"/>
+                <span class="text-danger" asp-validation-for="@Model.ItemQty" ></span>
+            </div>
+            <div class="col-4 mb-3 form-check" >
+                <label class="form-check-label" asp-for="@Model.DefaultUnit"></label>
+                <input type="checkbox" class="form-check-input" asp-for="@Model.DefaultUnit" />
+                
+            </div>
+            <a href="/Stocks/ItemUnits" class="btn btn-secondary">رجوع</a>
+            <button type="submit" class="btn btn-primary">حفظ</button>
+        </form>
+    </div>
+
+</div>

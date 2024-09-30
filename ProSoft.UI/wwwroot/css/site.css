@@ -431,6 +431,8 @@ html {
     background-color: #e3e3e3;
 }
 
+/* Select2 */
+
  .select2-selection{
     height: auto !important;
 }
@@ -438,4 +440,8 @@ html {
     height: 35px;
     font-size: x-large;
     text-align: center;
+}
+
+.select2-selection__arrow{
+    top :6px !important;
 }
