@@ -11,9 +11,20 @@ namespace ProSoft.Core.Repositories.Stocks
         {
         }
 
-        public  IEnumerable<ItemUnit> GetItemsByStockTypeAndItemCode(int stockType, string itemCode)
+        public ItemUnit? GetItemByStockTypeAndItemCodeAndUnitCodeAndBranchId(int stockType, string itemCode, int unitCode, int branchId)
         {
-            return  _Context.ItemUnits
+            return _Context.ItemUnits.Where(i =>
+                i.ItemCode == itemCode &&
+                i.Flag1 == stockType &&
+                i.UnitCode == unitCode &&
+                i.BranchId == branchId)
+                .FirstOrDefault()
+            ;
+        }
+
+        public IEnumerable<ItemUnit> GetItemsByStockTypeAndItemCode(int stockType, string itemCode)
+        {
+            return _Context.ItemUnits
                 .Include(i => i.UnitCodee)
                 .Where(i => i.ItemCode == itemCode && i.Flag1 == stockType).ToList();
         }

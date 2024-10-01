@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using ProSoft.EF.DTOs.Stocks.ItemUnits;
 using ProSoft.EF.IRepositories.Stocks;
 using ProSoft.EF.Models.Stocks;
+using System.Web.Razor.Parser.SyntaxTree;
 
 namespace ProSoft.UI.Areas.Stocks.Controllers
 {
@@ -72,8 +73,63 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             };
             await _itemUnitsRepo.AddAsync(itemUnit);
             await _itemUnitsRepo.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { stockType = itemUnit.Flag1, itemCode = itemUnit.ItemCode });
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int stockType, string itemCode,int unitCode,int branchId)
+        {
+            var existingItemUnit = _itemUnitsRepo.GetItemByStockTypeAndItemCodeAndUnitCodeAndBranchId(stockType, itemCode, unitCode, branchId);
+            if (existingItemUnit == null) return NotFound("Item Unit Is Not Exists");
+            ItemUnitsAddEditDTO itemUnitsAddEditDTO = new ItemUnitsAddEditDTO()
+            {
+                Flag1 = stockType,
+                ItemCode = itemCode,
+                UnitCode = existingItemUnit.UnitCode,
+                BranchId = existingItemUnit.BranchId,
+                DefaultUnit = existingItemUnit.DefaultUnit,
+                ItemQty = existingItemUnit.ItemQty,
+                Units = (await _unitCodeRepo.GetAllAsync()).Select(u => new SelectListItem { Text = u.Names, Value = u.Code.ToString() }).ToList()
+            };
+            return View(itemUnitsAddEditDTO);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(ItemUnitsAddEditDTO itemUnitsAddEditDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+
+                itemUnitsAddEditDTO.Units = (await _unitCodeRepo.GetAllAsync()).Select(u => new SelectListItem { Text = u.Names, Value = u.Code.ToString() }).ToList();
+
+                return View(itemUnitsAddEditDTO);
+            }
+            var existingItemUnit = _itemUnitsRepo.GetItemByStockTypeAndItemCodeAndUnitCodeAndBranchId(itemUnitsAddEditDTO.Flag1, itemUnitsAddEditDTO.ItemCode, itemUnitsAddEditDTO.UnitCode, itemUnitsAddEditDTO.BranchId);
+            if (existingItemUnit == null) return NotFound("Item Unit Is Not Exists");
+
+            existingItemUnit.DefaultUnit = itemUnitsAddEditDTO.DefaultUnit;
+            existingItemUnit.ItemQty = itemUnitsAddEditDTO.ItemQty;
+             
+            await _itemUnitsRepo.UpdateAsync(existingItemUnit);
+            await _itemUnitsRepo.SaveChangesAsync();
+            return RedirectToAction(nameof(Index),new { stockType=existingItemUnit.Flag1,itemCode=existingItemUnit.ItemCode});
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int stockType, string itemCode, int unitCode, int branchId)
+        {
+           
+            var existingItemUnit = _itemUnitsRepo.GetItemByStockTypeAndItemCodeAndUnitCodeAndBranchId( stockType,  itemCode,  unitCode,  branchId);
+            if (existingItemUnit == null) return NotFound("Item Unit Is Not Exists");
+
+           
+            await _itemUnitsRepo.DeleteAsync(existingItemUnit);
+            await _itemUnitsRepo.SaveChangesAsync();
+            return Json(new { success = true, message = "Item deleted successfully." });
+        }
+
 
 
         [HttpGet]

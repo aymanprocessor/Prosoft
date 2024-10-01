@@ -1,6 +1,7 @@
 ﻿@using ProSoft.EF.DTOs.Stocks.ItemUnits
 @using ProSoft.UI.Global
 @model ItemUnitsViewDTO
+@inject IViewLocalizer localizer
 @{
     ViewData["title"] = "Item Units";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -20,6 +21,7 @@
 
     <div class="row mb-5">
         <div class="col-6 border rounded  p-3" style="min-height:200px;max-height:500px;">
+            
             <table id="ItemsTable" class="table table-hover table-bordered">
                 <thead>
                     <tr>
@@ -44,10 +46,10 @@
             <table id="UnitsTable" class="table table-hover table-bordered">
                 <thead>
                     <tr>
-                        <th>الوحدة</th>
-                        <th>عدد الاجزاء</th>
-                        <th>الاكثر استخداما</th>
-                        <th>الاجراءات</th>
+                        <th class="text-center">الوحدة</th>
+                        <th class="text-center">عدد الاجزاء</th>
+                        <th class="text-center">الاكثر استخداما</th>
+                        <th class="text-center">الاجراءات</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -67,6 +69,9 @@
             const stockTypeSelect = $('#stockType');
             const subItemsSelect = $('#ItemSelect');
             const insertItemUnitBtn = $('#insertItemUnitBtn');
+            const queryParams = new URLSearchParams(window.location.search);
+
+
 
             var stockType;
             var itemCode;
@@ -74,31 +79,20 @@
             // --------------------- Initialization --------------------- //
             stockTypeSelect.select2({ multiple: false });
             subItemsSelect.select2({ multiple: false });
+            stockType = queryParams.get("stockType");
+            itemCode = queryParams.get("itemCode");
 
+            stockTypeSelect.val(stockType).trigger('change');
+            initializeItemsTableDataTable(stockType);
+            initializeUnitsTableDataTable(stockType, itemCode)
             // --------------------- Select Change Event --------------------- //
             stockTypeSelect.on('select2:select', function (event) {
                 stockType = event.params.data.id;
-
-                $('#ItemsTable').DataTable({
-                    destroy: true,
-                    scrollY: 200,
-                    deferRender: true,
-                    scroller: true,
-                    paging: false,
-                    searching: false,
-                    columns: [
-                        { data: 'id' },
-                        { data: 'text' },
-
-                    ],
-
-                    "ajax": {
-                        "url": `/Stocks/ItemUnits/GetSubItemsByStockType/${stockType}`,
-                        "type": "GET"
-                    },
-
-                });
+                updateQueryParams('stockType', stockType);
+                initializeItemsTableDataTable(stockType);
             });
+
+
 
             // --------------------- Select Row Event --------------------- //
             $('#ItemsTable tbody').on('click', 'tr', function () {
@@ -109,51 +103,116 @@
                     $('#ItemsTable tr.selected').removeClass('selected');
                     $(this).addClass('selected');
                     itemCode = $(this).find('td:first').text();
+                    updateQueryParams('itemCode', itemCode);
 
-                    $('#UnitsTable').DataTable({
-                        destroy: true,
-                        scrollY: 200,
-                        deferRender: true,
-                        scroller: true,
-                        paging: false,
-                        searching: false,
-                        columns: [
-                            { data: 'UnitCodee.Names' },
-                            { data: 'ItemQty' },
-                            {
-                                data: "DefaultUnit",  // Assuming each row has a unique ID
-                                render: function (data, type, row) {
-                                    var checked = data ? 'نعم' : 'لا';
-                                    return `<span>${checked}</span>`;
-                                },
-                                orderable: false,  // Disable sorting on this column
-                                searchable: false  // Disable searching on this column
-
-                            },
-                            { data: 'DefaultUnit' },
-
-                        ],
-
-                        "ajax": {
-                            "url": `/Stocks/ItemUnits/GetItemsUnitByItemCodeAndStockType/?stockType=${stockType}&itemCode=${itemCode}`,
-                            "type": "GET"
-                        },
-
-                    });
+                    initializeUnitsTableDataTable(stockType, itemCode);
 
                 }
 
             });
-
+            
             // --------------------- Insert Item Unit Button Event --------------------- //
             insertItemUnitBtn.on('click', function () {
                 window.location.href = `/Stocks/ItemUnits/Add?stockType=${stockType}&itemCode=${itemCode}`;
             })
 
 
-
-
         });
+
+        // --------------------- Functions --------------------- //
+        function initializeItemsTableDataTable(stockType) {
+            $('#ItemsTable').DataTable({
+                destroy: true, // Allow reinitialization
+                scrollY: 200,
+                deferRender: true,
+                scroller: true,
+                paging: false,
+                searching: true,
+                layout: {
+                    topEnd: {
+                        search: {
+                            text: '_INPUT_',
+                            placeholder:'@localizer["Search"]'
+
+                        }
+                    }
+                },
+                columns: [
+                    { data: 'id' },
+                    { data: 'text', searchable:true },
+                ],
+                "ajax": {
+                    "url": `/Stocks/ItemUnits/GetSubItemsByStockType/${stockType}`,
+                    "type": "GET"
+                },
+            });
+        }
+
+        function initializeUnitsTableDataTable(stockType, itemCode) {
+            $('#UnitsTable').DataTable({
+                destroy: true,
+                scrollY: 200,
+                deferRender: true,
+                scroller: true,
+                paging: false,
+                searching: false,
+                columns: [
+                    { data: 'UnitCodee.Names' },
+
+                    { data: 'ItemQty' },
+                    {
+                        data: "DefaultUnit",  // Assuming each row has a unique ID
+                        render: function (data, type, row) {
+                            var checked = data ? 'نعم' : 'لا';
+                            return `<span>${checked}</span>`;
+                        },
+                        orderable: false,  // Disable sorting on this column
+                        searchable: false  // Disable searching on this column
+
+                    },
+                    {
+                        render: function (data, type, row) {
+                            const editBtn = `<a href="/Stocks/ItemUnits/Edit?stockType=${stockType}&itemCode=${itemCode}&branchId=${row["BranchId"]}&unitCode=${row["UnitCode"]}" class="btn btn-warning me-1">@Html.Raw(GlobalConstants.EditIcon)</a>`;
+                            const DeleteBtn = `<a href="javascript:void(0);" onclick="deleteItem(${stockType},'${itemCode}',${row["BranchId"]},${row["UnitCode"]})" class="btn btn-danger me-1">@Html.Raw(GlobalConstants.DeleteIcon)</a>`;
+                            return `${editBtn}${DeleteBtn}`;
+                        }
+                    },
+
+                ],
+
+                "ajax": {
+                    "url": `/Stocks/ItemUnits/GetItemsUnitByItemCodeAndStockType/?stockType=${stockType}&itemCode=${itemCode}`,
+                    "type": "GET"
+                },
+
+            });
+        }
+
+        function deleteItem(stockType, itemCode, branchId, unitCode) {
+            const url = `/Stocks/ItemUnits/Delete?stockType=${stockType}&itemCode=${itemCode}&branchId=${branchId}&unitCode=${unitCode}`;
+
+            // Confirm delete action
+            if (!confirm('Are you sure you want to delete this item?')) {
+                return;
+            }
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                headers: {
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val() // Include CSRF token
+                },
+                success: function (data) {
+                    alert('Item deleted successfully.');
+                    $('#UnitsTable').DataTable().ajax.reload(); // Reload the DataTable after deletion
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                    alert('Error deleting item.');
+                }
+            });
+        }
+
 
     </script>
 }

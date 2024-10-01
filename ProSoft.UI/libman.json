@@ -91,6 +91,13 @@
       "files": [
         "css/bootstrap-rtl.min.css"
       ]
+    },
+    {
+      "library": "bootstrap@5.3.3",
+      "destination": "wwwroot/lib/bootstrap/bootstrap/",
+      "files": [
+        "js/bootstrap.bundle.min.js"
+      ]
     }
   ]
 }
