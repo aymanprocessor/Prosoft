@@ -991,5 +991,9 @@
   "Linking Units With Finished Products": "إضافة عملية ربط الوحدات بأصناف الإنتاج التام",
   "Number Of Items": "عدد الاصناف",
   "Common Used": "الاكثر استخداما",
-  "Edit Linking Units With Finished Products": "تعديل عملية ربط الوحدات بأصناف الإنتاج التام"
+  "Edit Linking Units With Finished Products": "تعديل عملية ربط الوحدات بأصناف الإنتاج التام",
+  "The Expense": "المصروفات",
+  "The Default Value": "القيمة الافتراضية",
+  "Add Expense": "اضافة مصروف",
+  "Edit Expense": "تعديل المصروف"
 }

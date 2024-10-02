@@ -22,6 +22,7 @@ using ProSoft.EF.Models.Treasury;
 using ProSoft.EF.DTOs.MedicalRecords;
 using ProSoft.EF.Models.MedicalRecords;
 using ProSoft.EF.DTOs.Treasury.Report;
+using ProSoft.EF.DTOs.Stocks.ExpenseData;
 
 namespace ProSoft.Core.AutoMapper
 {
@@ -150,6 +151,7 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<UserSideViewDTO, UserSide>().ReverseMap();
             CreateMap<UserSideEditAddDTO, UserSide>().ReverseMap();
             CreateMap<StockBalanceViewDTO, Stkbalance>().ReverseMap();
+            CreateMap<ExpenseDataAddEditDTO, ExpenseData>().ReverseMap();
             ////////// System ////////////////////
             CreateMap<EisPosting, EisPostingViewDTO>().ReverseMap();
             CreateMap<EisPosting, EisPostingEditAddDTO>().ReverseMap();

@@ -1,0 +1,36 @@
+﻿@using ProSoft.EF.DTOs.Stocks.ExpenseData
+
+@model ExpenseDataAddEditDTO
+
+@inject IViewLocalizer localizer
+@{
+    ViewData["title"] = "Edit Expense Data";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.AntiForgeryToken()
+<div class="container py-5">
+    <h1 class="mb-5 text-center">@localizer["Edit Expense"]</h1>
+
+    <div class="border rounded row p-3">
+        <form asp-controller="ExpenseData" asp-action="Edit" method="post">
+
+            <input type="hidden" asp-for="@Model.Id" />
+
+            <div class="col-4 mb-3 ">
+                <label class="form-label" asp-for="@Model.Name"></label>
+                <input type="text" class="form-control" asp-for="@Model.Name">
+                <span class="text-danger" asp-validation-for="@Model.Name"></span>
+            </div>
+            <div class="col-4 mb-3 ">
+                <label class="form-label" asp-for="@Model.ExpenseValue"></label>
+                <input type="number" class="form-control" asp-for="@Model.ExpenseValue" />
+                <span class="text-danger" asp-validation-for="@Model.ExpenseValue"></span>
+            </div>
+
+            <a href="/Stocks/ExpenseData" class="btn btn-secondary">رجوع</a>
+            <button type="submit" class="btn btn-primary">حفظ</button>
+        </form>
+    </div>
+
+</div>

@@ -1,0 +1,135 @@
+﻿@using ProSoft.UI.Global
+@inject IViewLocalizer localizer
+@{
+    ViewData["title"] = "Expense Data";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container p-3">
+    <h1 class="text-center my-3">@localizer["The Expense"]</h1>
+
+    <div class="border rounded p-5">
+        <table id="ExpenseTable" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center">@localizer["Code"]</th>
+                    <th class="text-center">@localizer["The Expense"]</th>
+                    <th class="text-center">@localizer["The Default Value"]</th>
+                    <th class="text-center">@localizer["Action"]</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script>
+        // --------------------- Declerations --------------------- //
+        const ExpenseTable = $('#ExpenseTable');
+
+        $(document).ready(function () {
+
+
+
+
+            // --------------------- Initialization --------------------- //
+
+            initializeExpenseTableDataTable();
+
+            $('<a>').html('@(Html.Raw(GlobalConstants.InsertIcon)) @localizer["Add New"] ')
+                .addClass("btn btn-success me-2 btn-sm")
+                .attr("href", "/Stocks/ExpenseData/Add")
+                .insertBefore("#dt-search-0")
+
+        });
+
+        // --------------------- Functions --------------------- //
+        function initializeExpenseTableDataTable() {
+            ExpenseTable.DataTable({
+                destroy: true, // Allow reinitialization
+                scrollY: 400,
+                deferRender: true,
+                scroller: true,
+                paging: false,
+                searching: true,
+                layout: {
+                    topEnd: null,
+                    topStart: {
+                        search: {
+                            text: '_INPUT_',
+                            placeholder: '@localizer["Search"]'
+
+                        },
+
+                    },
+                },
+                columns: [
+                    { data: 'Id' },
+                    { data: 'Name' },
+                    { data: 'ExpenseValue' },
+                    {
+                        render: function (data, type, row) {
+                            const editBtn = `<a href="/Stocks/ExpenseData/Edit?id=${row["Id"]}" class="btn btn-sm btn-warning me-1">@Html.Raw(GlobalConstants.EditIcon)</a>`;
+                            const DeleteBtn = `<a href="javascript:void(0);" onclick="deleteItem(${row["Id"]})" class="btn btn-sm btn-danger me-1">@Html.Raw(GlobalConstants.DeleteIcon)</a>`;
+                            return `${editBtn}${DeleteBtn}`;
+                        },
+                    },
+                ],
+                "ajax": {
+                    "url": `/Stocks/ExpenseData/GetAllExpense`,
+                    "type": "GET"
+                },
+            });
+        }
+
+
+
+        function deleteItem(id) {
+            const url = `/Stocks/ExpenseData/Delete?id=${id}`;
+
+            // Confirm delete action
+            // if (!confirm('Are you sure you want to delete this item?')) {
+            //     return;
+            // }
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        headers: {
+                            'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val() // Include CSRF token
+                        },
+                        success: function (data) {
+                            ExpenseTable.DataTable().ajax.reload(); // Reload the DataTable after deletion
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error:', error);
+                            alert('Error deleting item.');
+                        }
+                    });
+
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your file has been deleted.",
+                        icon: "success"
+                    });
+                }
+            });
+
+        }
+
+    </script>
+}

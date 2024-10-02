@@ -445,3 +445,9 @@ html {
 .select2-selection__arrow{
     top :6px !important;
 }
+
+/* DataTables */
+
+.dt-layout-row{
+    margin-bottom : 10px;
+}

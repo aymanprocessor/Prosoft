@@ -150,6 +150,7 @@ builder.Services.AddScoped<IUserSideRepo, UserSideRepo>();
 builder.Services.AddScoped<IUsersGroupRepo, UsersGroupRepo>();
 builder.Services.AddScoped<IStockBalanceRepo, StockBalanceRepo>();
 builder.Services.AddScoped<IItemUnitsRepo, ItemUnitsRepo>();
+builder.Services.AddScoped<IExpenseDataRepo, ExpenseDataRepo>();
 ///////////////// System ///////////////
 builder.Services.AddScoped<IEisPostingRepo, EisPostingRepo>();
 ///////////////// Treasury /////////////

@@ -244,6 +244,7 @@ namespace ProSoft.EF.DbContext
         public DbSet<UsersGroup> UsersGroups { get; set; }
         public DbSet<UserSide> UserSides { get; set; }
         public DbSet<ItemUnit> ItemUnits { get; set; }
+        public DbSet<ExpenseData> ExpenseDatas { get; set; }
         ////////////////////
         // Accounts //
         public DbSet<AccMainCode> AccMainCodes { get; set; }
