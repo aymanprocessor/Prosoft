@@ -76,6 +76,7 @@ namespace ProSoft.Core.Repositories.Stocks
 
             _mapper.Map(receiveTransMaster, receiveTransDtl);
             await AddAsync(receiveTransDtl);
+            await SaveChangesAsync();
         }
 
         public async Task UpdateReceiveFormDetailAsync(TransDtl convertTransDtl)

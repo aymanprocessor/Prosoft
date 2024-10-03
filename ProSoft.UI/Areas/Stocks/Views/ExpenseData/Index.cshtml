@@ -90,19 +90,14 @@
         function deleteItem(id) {
             const url = `/Stocks/ExpenseData/Delete?id=${id}`;
 
-            // Confirm delete action
-            // if (!confirm('Are you sure you want to delete this item?')) {
-            //     return;
-            // }
-
             Swal.fire({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                icon: "warning",
+                title: "هل أنت متأكد؟",
+                text: "لن تتمكن من التراجع عن هذا الإجراء!",
+                icon: "تحذير",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!"
+                confirmButtonText: "نعم، احذفها!"
             }).then((result) => {
                 if (result.isConfirmed) {
 
@@ -110,26 +105,27 @@
                         url: url,
                         type: 'POST',
                         headers: {
-                            'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val() // Include CSRF token
+                            'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val() 
                         },
                         success: function (data) {
-                            ExpenseTable.DataTable().ajax.reload(); // Reload the DataTable after deletion
+                            ExpenseTable.DataTable().ajax.reload(); 
                         },
                         error: function (xhr, status, error) {
-                            console.error('Error:', error);
-                            alert('Error deleting item.');
+                            console.error('خطأ:', error);
+                            alert('حدث خطأ أثناء حذف العنصر.');
                         }
                     });
 
                     Swal.fire({
-                        title: "Deleted!",
-                        text: "Your file has been deleted.",
-                        icon: "success"
+                        title: "تم الحذف!",
+                        text: "تم حذف العنصر بنجاح.",
+                        icon: "نجاح"
                     });
                 }
             });
 
         }
+
 
     </script>
 }

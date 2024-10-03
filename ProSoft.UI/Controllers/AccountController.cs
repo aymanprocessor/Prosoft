@@ -123,11 +123,6 @@ namespace ProSoft.UI.Controllers
                 bool checkkPassword = await _userManager.CheckPasswordAsync(user, userDTO.PassWord);
                 if (user != null && checkkPassword) 
                 {
-                    //create Cookie
-                    //SignInResult result = await _signInManager
-                    //    .PasswordSignInAsync(user, userDTO.PassWord, userDTO.rememberMe, false);
-
-                    // Sign in with additional claims
                     Branch branch = await _userRepo.GetUserBranchAsync(Convert.ToInt32(user.BranchId));
                     var claims = new List<Claim>
                     {
@@ -136,32 +131,21 @@ namespace ProSoft.UI.Controllers
                         new ("U_Branch_Id", branch.BranchId.ToString()),
                         new ("User_Code", user.UserCode.ToString()),
                     };
-                    //var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                    //var authProperties = new AuthenticationProperties
-                    //{
-                    //    IsPersistent = userDTO.rememberMe,
-                    //    ExpiresUtc = DateTimeOffset.UtcNow.AddYears(100)
-                    //};
-
-                   // await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
-
                     await _signInManager.SignInWithClaimsAsync(user, userDTO.rememberMe, claims);
 
-                    ////Check Cookie
-                    //if (result.Succeeded)
-                    //{
                     if (User.IsInRole("Admin"))
                     {
                         return RedirectToAction("Index", "Dashboard");
                     }else
                         return RedirectToAction("Index", "Home");
-                    //}
-                    //else
-                    //    ModelState.AddModelError("", "Invalid User Id or password");
+          
                 }
                 else
+                {
+
                     ModelState.AddModelError("", "Invalid User Id or password");
+                    return View(userDTO);
+                }
             }
             return View(userDTO);
         }

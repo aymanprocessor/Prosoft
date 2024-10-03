@@ -2,6 +2,8 @@
 
 @{
     var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+    var financialYearClaim = User.FindFirst(c => c.Type == "F_Year");
+
 }
 
 <!DOCTYPE html>
@@ -35,18 +37,20 @@
 <body>
     <div class="d-flex justify-content-between align-items-center gap-2 p-2 shadow-sm rounded">
 
-        @if (User.Identity.IsAuthenticated)
+        @if (User.Identity != null && User.Identity.IsAuthenticated)
         {
             <a class="btn btn-secondary rounded-circle" href="/Home/Index" title="go to modules">
                 <i class="fa-solid @(isRTL ? "fa-chevron-right" : "fa-chevron-left")"></i>
             </a>
-            <span class="fw-bold text-capitalize">@User.Identity.Name</span>
-            <span class="fw-bold"> / @User.FindFirst(c => c.Type == "F_Year").Value</span>
+            <span class="fw-bold text-capitalize">@User.Identity?.Name</span>
+             
+    
+            <span class="fw-bold"> / @(financialYearClaim != null ? financialYearClaim.Value : "No Financial Year")</span>
         }
 
         <div class="d-flex align-items-center gap-2 @(isRTL ? "me-auto" : "ms-auto")">
             <partial name="_SelectLanguagePartial" />
-            @if (User.Identity.IsAuthenticated)
+            @if (User.Identity != null && User.Identity.IsAuthenticated)
             {
                 <a asp-action="Logout" asp-controller="Account" asp-area="" class="btn btn-secondary">@localizer["Log out"]</a>
             }

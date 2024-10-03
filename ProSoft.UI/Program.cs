@@ -42,19 +42,19 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Register for AutoMapper service
 builder.Services.AddAutoMapper(typeof(AutoMap)); //builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-JsonConvert.DefaultSettings = () => new JsonSerializerSettings
-{
+//JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+//{
   
-    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-};
+//    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+//};
 
 // Add services to the container.
-builder.Services.AddControllersWithViews().AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.PropertyNamingPolicy = null; // This enforces PascalCase
+//builder.Services.AddControllersWithViews().AddJsonOptions(options =>
+//{
+//    options.JsonSerializerOptions.PropertyNamingPolicy = null; // This enforces PascalCase
 
-    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-});
+//    //options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+//});
 
 // Register for Identity Package
 builder.Services.AddIdentity<AppUser, IdentityRole>()
@@ -62,23 +62,22 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 
 // Register for Authentications Cookies
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie();
+    .AddCookie(options =>
+    {
+        options.Cookie.HttpOnly = true;
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(1000000);
+        options.SlidingExpiration = true;
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/AccessDenied";
+    });
 
-builder.Services.ConfigureApplicationCookie(options =>
+
+
+builder.Services.AddSession(options =>
 {
-    options.LoginPath = "/Account/Login"; // Path to your login page
-    options.AccessDeniedPath = "/Account/AccessDenied"; // Path to the access denied page
-
-    // Set an infinite expiration time
-    options.ExpireTimeSpan = TimeSpan.FromDays(365 * 100); // 100 years
-
-    // Disable sliding expiration
-    options.SlidingExpiration = false;
-
-    // Ensure the cookie is persistent
-    options.Cookie.IsEssential = true;
+    options.IdleTimeout = TimeSpan.FromMinutes(1000000);
     options.Cookie.HttpOnly = true;
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Secure the cookie in production
+    options.Cookie.IsEssential = true;
 });
 
 // General Response Register
@@ -250,6 +249,7 @@ app.UseRequestLocalization(localizationsOptions);
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseSession(); // Ensure session middleware is added
 
 // for using browser language
 app.UseRequestCulture();
