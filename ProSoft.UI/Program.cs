@@ -31,6 +31,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Microsoft.Extensions.Options;
 using System.Text.Json.Serialization;
+using ProSoft.EF.IRepositories.Stocks.Reports;
+using ProSoft.Core.Repositories.Stocks.Reports;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -122,6 +124,8 @@ builder.Services.AddScoped<ICheckupClinicRepo, CheckupClinicRepo>();
 builder.Services.AddScoped<IEisSectionTypeRepo, EisSectionTypeRepo>();
 builder.Services.AddScoped<IRegionRepo, RegionRepo>();
 ///////////////// Stock /////////////
+
+builder.Services.AddScoped<IReportTransferAndReceiptTransactionRepo, ReportTransferAndReceiptTransactionRepo>();
 builder.Services.AddScoped<IStockTypeRepo, StockTypeRepo>();
 builder.Services.AddScoped<IStockEmpFlagRepo, StockEmpFlagRepo>();
 builder.Services.AddScoped<IBranchRepo, BranchRepo>();

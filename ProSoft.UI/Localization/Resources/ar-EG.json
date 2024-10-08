@@ -995,5 +995,15 @@
   "The Expense": "المصروفات",
   "The Default Value": "القيمة الافتراضية",
   "Add Expense": "اضافة مصروف",
-  "Edit Expense": "تعديل المصروف"
+  "Edit Expense": "تعديل المصروف",
+  "Transfer And Receipt Transaction Report": "حركات اذون التحويل والاستلام خلال الفترة",
+  "Period From": "الفترة من",
+  "Until": "حتى",
+  "Search By Item Code": "بحث بكود الصنف",
+  "Search By Item Name": "بحث باسم الصنف",
+  "From Code": "من كود",
+  "To Code": "الى كود",
+  "View": "عرض"
+
+
 }

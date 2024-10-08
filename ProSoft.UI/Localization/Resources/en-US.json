@@ -997,6 +997,14 @@
   "The Expense": "Expense",
   "The Default Value": "Default Value",
   "Add Expense": "Add Expense",
-  "Edit Expense": "Edit Expense"
+  "Edit Expense": "Edit Expense",
+  "Transfer And Receipt Transaction Report": "Transfer And Receipt Transaction Report",
+  "Period From": "Period From",
+  "Until": "Until",
+  "Search By Item Code": "Search By Item Code",
+  "Search By Item Name": "Search By Item Name",
+  "From Code": "From Code",
+  "To Code": "To Code",
+  "View": "View"
 
 }

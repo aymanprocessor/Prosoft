@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProSoft.EF.DbContext;
 using ProSoft.EF.DTOs.Shared;
@@ -20,6 +21,13 @@ namespace ProSoft.Core.Repositories.Shared
             _mapper = mapper;
         }
 
+
+        // ------------- Ayman Saad -------------//
+        public IEnumerable<SelectListItem> GetAllAsSelectListItem()
+        {
+            return _Context.GeneralCodes.Select(g => new SelectListItem { Text = g.GDesc, Value = g.UniqueType.ToString() }).ToList();
+        }
+        // ------------- Ayman Saad -------------//
         public async Task<int> GetNewIdAsync()
         {
             int newID;
@@ -69,5 +77,7 @@ namespace ProSoft.Core.Repositories.Shared
             permissionDTO.Permissions = _mapper.Map<List<PermissionDefViewDTO>>(permissions);
             return permissionDTO;
         }
+
+       
     }
 }
