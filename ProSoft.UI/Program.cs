@@ -81,7 +81,7 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
-
+builder.Services.AddFastReport();
 // General Response Register
 
 builder.Services.AddScoped<IGeneralResponse<StockEmpFlag>, GeneralResponse<StockEmpFlag>>();
@@ -266,5 +266,5 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Account}/{action=Login}/{id?}");
-
+app.UseFastReport();
 app.Run();

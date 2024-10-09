@@ -45,7 +45,7 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
                             Price = transDtl.Price,
                             ItemVal = transDtl.ItemVal,
                             ItemMaster = transDtl.ItemMaster,
-                            UnitNmae = unitCode.Names
+                            UnitName = unitCode.Names
                       
                         };
           
