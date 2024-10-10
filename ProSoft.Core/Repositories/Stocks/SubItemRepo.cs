@@ -222,8 +222,10 @@ namespace ProSoft.Core.Repositories.Stocks
                 stockNalance.ItemId = 0;
                 stockNalance.BarCode = subItem.ItemCode;
                 stockNalance.Ser = int.Parse(subItem.SubCode);
+                stockNalance.MainId = (int)subItem.MainId;
 
                 await _Context.AddAsync(stockNalance);
+                
             }
         }
 

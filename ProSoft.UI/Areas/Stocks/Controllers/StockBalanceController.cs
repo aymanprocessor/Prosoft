@@ -95,12 +95,8 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             }
 
             List<Stkbalance> StockBalances1 = await _stockBalanceRepo.GetAllByStockId(id);
-            
-            StockBalanceViewDTO stockBalanceViewDTOs = new StockBalanceViewDTO()
-            {
-                StockBalances = StockBalances1,
-                UnitCodesList = (await _unitCodeRepo.GetAllAsync()).Select(u => new SelectListItem { Value = u.Code.ToString(), Text = u.Names }).ToList()
-            };
+            ViewBag.UnitCodes = (await _unitCodeRepo.GetAllAsync()).Select(u => new SelectListItem { Value = u.Code.ToString(), Text = u.Names });
+           List< StockBalanceViewDTO> stockBalanceViewDTOs = _mapper.Map<List<StockBalanceViewDTO>>(StockBalances1);
             return View(stockBalanceViewDTOs);
         }
 

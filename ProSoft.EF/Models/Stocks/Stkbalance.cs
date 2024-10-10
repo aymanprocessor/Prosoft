@@ -57,7 +57,6 @@ namespace ProSoft.EF.Models.Stocks
         [Column("MAIN_CODE")]
         [StringLength(10)]
         [Unicode(false)]
-            [ForeignKey(nameof(MainItem))]
         public string? MainCode { get; set; }
 
         [Column("SER")]
@@ -126,8 +125,10 @@ namespace ProSoft.EF.Models.Stocks
 
         [Column("S_ID")]
         public int? SId { get; set; }
+        [Column("MAIN_ID")]
+        [ForeignKey(nameof(MainItem))]
+        public int MainId { get; set; }
 
-      
 
         public MainItem MainItem { get; set; } 
         public SubItem SubItem { get; set; }

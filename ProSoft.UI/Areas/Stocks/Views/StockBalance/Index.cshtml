@@ -1,9 +1,17 @@
 ﻿@using Newtonsoft.Json
 @using ProSoft.EF.Models.Stocks
-@model StockBalanceViewDTO
+@model List<StockBalanceViewDTO>
 @{
     ViewData["title"] = "Stock Balance";
     Layout = "_Layout";
+     var setting = new Newtonsoft.Json.JsonSerializerSettings
+    {
+        ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+    };
+
+    var jsonStockBalances = Newtonsoft.Json.JsonConvert.SerializeObject(Model, setting);
+    var jsonUnitCodes = Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.UnitCodes, setting);
+
 }
 @inject IViewLocalizer localizer
 <div class="container my-5">
@@ -42,9 +50,9 @@
 
 @section Scripts {
     <script>
-        var data = @Html.Raw(JsonConvert.SerializeObject(Model.StockBalances));
-        console.log("DATA : ", data);
-        var UnitCodeList = @Html.Raw(JsonConvert.SerializeObject(Model.UnitCodesList));
+         var data = @Html.Raw(jsonStockBalances);
+        console.log("DATA : ", @Html.Raw(jsonStockBalances));
+        console.log("Unit Codes : ", @Html.Raw(jsonUnitCodes));
 
         const fieldMapping = [
             { name: 'Stkcod', type: 'hidden', editable: false },
@@ -55,7 +63,7 @@
             { name: 'UnitCode', title: '@localizer["UnitCode Id"]', type: 'hidden', editable: false },
             { name: 'QtyStartDt', title: '@localizer["Entry Date 1"]', type: 'date', editable: false },
             { name: 'UnitCode', title: '@localizer["UnitCode Name"]', type: 'select', editable: true ,
-            options: UnitCodeList,
+             options:@Html.Raw(jsonUnitCodes)
             },
             { name: 'ExpM', title: '@localizer["Month"]', width: "100px", type: 'text', defaultValue: 1, editable: false },
             { name: 'ExpYr', title: '@localizer["Year 1"]', width: "100px", type: 'text', defaultValue: 2024, editable: false },
