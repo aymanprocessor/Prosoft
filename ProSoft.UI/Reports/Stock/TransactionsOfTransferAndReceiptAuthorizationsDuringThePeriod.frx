@@ -1,13 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="10/08/2024 11:01:22" ReportInfo.Modified="10/09/2024 17:38:21" ReportInfo.CreatorVersion="2024.2.0.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="10/08/2024 11:01:22" ReportInfo.Modified="10/12/2024 13:23:46" ReportInfo.CreatorVersion="2024.2.0.0">
   <Dictionary>
     <BusinessObjectDataSource Name="table" ReferenceName="Table" DataType="System.Int32" Enabled="true">
+      <Column Name="SeqCode" DataType="System.Int32"/>
       <Column Name="DocNo" DataType="System.Int32"/>
-      <Column Name="DocDate" DataType="System.DateTime" Format="Date"/>
+      <Column Name="DocDate" DataType="System.String"/>
       <Column Name="ItemMaster" DataType="System.String"/>
       <Column Name="SubName" DataType="System.String"/>
       <Column Name="UnitName" DataType="System.String"/>
       <Column Name="UnitQty" DataType="System.Int32"/>
+      <Column Name="Price" DataType="System.Decimal"/>
       <Column Name="ItemVal" DataType="System.Decimal"/>
       <Column Name="SalePrice" DataType="System.Decimal"/>
     </BusinessObjectDataSource>
@@ -19,9 +21,9 @@
   </Dictionary>
   <ReportPage Name="Page1" Watermark.Font="Arial, 60pt">
     <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="94.5">
-      <TextObject Name="Text1" Left="226.8" Width="491.4" Height="37.8" Text="تقرير حركات اذن صرف لمخزن من [FromStock]الى [ToStock]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Arial, 14pt, style=Bold"/>
+      <TextObject Name="Text1" Left="226.8" Width="491.4" Height="37.8" Text="تقرير حركات اذن صرف لمخزن من [FromStock] الى [ToStock]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Arial, 14pt, style=Bold"/>
       <TextObject Name="Text3" Left="9.45" Top="18.9" Width="207.9" Height="37.8" Text="بيان تحليلي" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Arial, 12pt, style=Bold"/>
-      <TextObject Name="Text2" Left="226.8" Top="37.8" Width="491.4" Height="37.8" Text="الفترة من [FromDate]الى [ToDate]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Arial, 12pt"/>
+      <TextObject Name="Text2" Left="226.8" Top="37.8" Width="491.4" Height="37.8" Text="الفترة من [FromDate] حتى [ToDate]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Arial, 12pt"/>
       <TextObject Name="Text4" Left="-9450" Top="-9450" Width="94.5" Height="18.9" Text="String" Font="Arial, 10pt"/>
       <TextObject Name="Text5" Left="-9450" Top="-9450" Width="94.5" Height="18.9" Text="String" Font="Arial, 10pt"/>
     </ReportTitleBand>
@@ -42,14 +44,14 @@
           <TableCell Name="Cell34" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Calibri, 8pt"/>
           <TableCell Name="Cell35" Border.Lines="All" Text="[table.SalePrice]" HorzAlign="Center" VertAlign="Center" Font="Calibri, 8pt"/>
           <TableCell Name="Cell36" Border.Lines="All" Text="[table.ItemVal]" HorzAlign="Center" VertAlign="Center" Font="Calibri, 8pt"/>
-          <TableCell Name="Cell37" Border.Lines="All" Text="[table.UnitQty]" HorzAlign="Center" VertAlign="Center" Font="Calibri, 8pt"/>
+          <TableCell Name="Cell37" Border.Lines="All" Text="[table.Price]" HorzAlign="Center" VertAlign="Center" Font="Calibri, 8pt"/>
           <TableCell Name="Cell38" Border.Lines="All" Text="[table.UnitQty]" HorzAlign="Center" VertAlign="Center" Font="Calibri, 8pt"/>
           <TableCell Name="Cell39" Border.Lines="All" Text="[table.UnitName]" HorzAlign="Center" VertAlign="Center" Font="Calibri, 8pt"/>
           <TableCell Name="Cell40" Border.Lines="All" Text="[table.SubName]" HorzAlign="Center" VertAlign="Center" Font="Calibri, 8pt"/>
           <TableCell Name="Cell41" Border.Lines="All" Text="[table.ItemMaster]" HorzAlign="Center" VertAlign="Center" Font="Calibri, 8pt"/>
           <TableCell Name="Cell42" Border.Lines="All" Text="[table.DocDate]" HorzAlign="Center" VertAlign="Center" Font="Calibri, 8pt"/>
           <TableCell Name="Cell43" Border.Lines="All" Text="[table.DocNo]" HorzAlign="Center" VertAlign="Center" Font="Calibri, 8pt"/>
-          <TableCell Name="Cell44" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Calibri, 8pt"/>
+          <TableCell Name="Cell44" Border.Lines="All" Text="[table.SeqCode]" HorzAlign="Center" VertAlign="Center" Font="Calibri, 8pt"/>
         </TableRow>
       </TableObject>
       <DataHeaderBand Name="DataHeader1" Top="97.17" Width="718.2" Height="56.7">

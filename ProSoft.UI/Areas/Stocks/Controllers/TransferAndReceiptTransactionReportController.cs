@@ -51,7 +51,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(TransferAndReceiptTransactionReportRequestDTO model)
+        public async Task<IActionResult> Index(TransferAndReceiptTransactionReportRequestDTO model)
         {
 
             ViewBag.Branchs = _branchRepo.GetAllBranchesAsEnumerable();
@@ -65,13 +65,15 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             }
 
             var table = _reportTransferAndReceiptTransactionRepo.GetReport(model).ToList();
-            Console.WriteLine(Path.Combine(Environment.CurrentDirectory, "Reports\\Stock\\TransactionsOfTransferAndReceiptAuthorizationsDuringThePeriod.frx"));
             WebReport webReport = new();
             webReport.Report.Load(Path.Combine(Environment.CurrentDirectory, "Reports\\Stock\\TransactionsOfTransferAndReceiptAuthorizationsDuringThePeriod.frx"));
-            webReport.Report.SetParameterValue("FromStock", model.FromStock);
-            webReport.Report.SetParameterValue("ToStock", model.ToStock);
-            webReport.Report.SetParameterValue("FromDate", model.FromDate);
-            webReport.Report.SetParameterValue("ToDate", model.ToDate);
+            var fromStock = await _stockRepo.GetStockByIdAsync(model.FromStock);
+            var toStock = await _stockRepo.GetStockByIdAsync(model.ToStock);
+
+            webReport.Report.SetParameterValue("FromStock", fromStock.Stknam);
+            webReport.Report.SetParameterValue("ToStock", toStock.Stknam);
+            webReport.Report.SetParameterValue("FromDate", model.FromDate.ToString("dd/MM/yyyy"));
+            webReport.Report.SetParameterValue("ToDate", model.ToDate.ToString("dd/MM/yyyy"));
             webReport.Report.SetParameterValue("ReportType", "بيان تحيلي");
             webReport.Zoom = 1.5f;
             webReport.Report.RegisterData(table, "Table");

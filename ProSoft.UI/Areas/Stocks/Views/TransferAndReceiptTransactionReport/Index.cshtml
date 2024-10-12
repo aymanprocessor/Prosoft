@@ -56,19 +56,22 @@
         <div class="row mb-3 d-flex">
             <div class="col-lg-3 col-md-6">
                 <label class="form-label">@localizer["Search By Item Code"]</label>
-                <input type="text" class="form-control" />
+                <input type="text" class="form-control" asp-for="@Model.SearchItemMaster" />
             </div>
             <div class="col-lg-3 col-md-6">
                 <label class="form-label">@localizer["Search By Item Name"]</label>
-                <input type="text" class="form-control" />
+                <input type="text" class="form-control" asp-for="@Model.SearchSubName" />
             </div>
             <div class="col-lg-2 col-md-6">
                 <label class="form-label">@localizer["From Code"]</label>
-                <input type="text" class="form-control" />
+                <input type="text" class="form-control" asp-for="@Model.SearchFromItemMaster" />
+                <span asp-validation-for="@Model.SearchFromItemMaster" class="text-danger"></span>
             </div>
             <div class="col-lg-2 col-md-6">
                 <label class="form-label">@localizer["To Code"]</label>
-                <input type="text" class="form-control" />
+                <input type="text" class="form-control" asp-for="@Model.SearchToItemMaster" />
+                <span asp-validation-for="@Model.SearchToItemMaster" class="text-danger"></span>
+
             </div>
             <div class="col-lg-2 col-md-6 align-self-end">
                 <button type="submit" class="btn btn-primary">@localizer["View"]</button>

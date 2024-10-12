@@ -22,33 +22,60 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
 
         public IEnumerable<TransferAndReceiptTransactionReportDTO> GetReport(TransferAndReceiptTransactionReportRequestDTO model)
         {
-            var query = from generalCode in _context.GeneralCodes
-                        join transDtl in _context.TransDtls on generalCode.UniqueType equals transDtl.TransType
-                        join subItem in _context.SubItems on new { X1 = transDtl.MainCode, X2 = transDtl.ItemMaster } equals new { X1 = subItem.MainCode, X2 = subItem.ItemCode }
-                        join unitCode in _context.UnitCodes on transDtl.UnitCode equals unitCode.Code
-                        join transMaster in _context.TransMasters on new { transDtl.SerSys, transDtl.TransType, transDtl.StockCode, transDtl.FYear, transDtl.BranchId } equals new { transMaster.SerSys, transMaster.TransType, transMaster.StockCode, transMaster.FYear, transMaster.BranchId }
-                        join stockA in _context.Stocks on (int)transMaster.StockCode equals stockA.Stkcod
-                        join stockB in _context.Stocks on (int)transMaster.StockCode2 equals stockB.Stkcod
-                        where subItem.BranchId == model.BranchId
-                            && transMaster.StockCode == model.FromStock
-                            && transMaster.StockCode2 == model.ToStock
-                            && transDtl.TransType == model.TransType
-                            && transDtl.DocDate >= model.FromDate
-                            && transDtl.DocDate <= model.ToDate
-                            && unitCode.Flag1 == 1
-                        select new TransferAndReceiptTransactionReportDTO
-                        {
-                            DocNo = (int)transDtl.DocNo,
-                            DocDate = transDtl.DocDate,
-                            UnitQty = transDtl.UnitQty,
-                            SubName = subItem.SubName,
-                            Price = transDtl.Price,
-                            ItemVal = transDtl.ItemVal,
-                            ItemMaster = transDtl.ItemMaster,
-                            UnitName = unitCode.Names
-                      
-                        };
-          
+            // Step 1: Filter TransDtls early to reduce the number of records to process in joins
+            var filteredTransDtls = _context.TransDtls
+                .Where(transDtl =>
+                    transDtl.TransType == model.TransType &&
+                    transDtl.DocDate >= model.FromDate &&
+                    transDtl.DocDate <= model.ToDate)
+                .ToList(); // Force evaluation here to minimize further processing in memory
+
+            // Step 2: Perform joins with filtered data to create the desired result set
+            var query = filteredTransDtls
+                .Join(_context.GeneralCodes,
+                    transDtl => transDtl.TransType,
+                    generalCode => generalCode.UniqueType,
+                    (transDtl, generalCode) => new { transDtl, generalCode })
+                .Join(_context.SubItems,
+                    combined => new {X1= combined.transDtl.MainCode, X2=combined.transDtl.ItemMaster },
+                    subItem => new { X1=subItem.MainCode,X2= subItem.ItemCode },
+                    (combined, subItem) => new { combined.transDtl, combined.generalCode, subItem })
+                .Join(_context.UnitCodes,
+                    combined => combined.transDtl.UnitCode,
+                    unitCode => unitCode.Code,
+                    (combined, unitCode) => new { combined.transDtl, combined.generalCode, combined.subItem, unitCode })
+                .Join(_context.TransMasters,
+                    combined => new { combined.transDtl.SerSys, combined.transDtl.TransType, combined.transDtl.StockCode, combined.transDtl.FYear, combined.transDtl.BranchId },
+                    transMaster => new { transMaster.SerSys, transMaster.TransType, transMaster.StockCode, transMaster.FYear, transMaster.BranchId },
+                    (combined, transMaster) => new { combined.transDtl, combined.generalCode, combined.subItem, combined.unitCode, transMaster })
+                .Where(combined =>
+                    combined.subItem.BranchId == model.BranchId &&
+                    combined.transMaster.StockCode == model.FromStock &&
+                    combined.transMaster.StockCode2 == model.ToStock &&
+                    combined.unitCode.Flag1 == 1 &&
+                    (string.IsNullOrEmpty(model.SearchSubName) || combined. subItem.SubName.Contains(model.SearchSubName))&&
+                    (string.IsNullOrEmpty(model.SearchItemMaster) || combined.transDtl.ItemMaster.Contains(model.SearchItemMaster))&&
+                    ((string.IsNullOrEmpty(model.SearchFromItemMaster) && string.IsNullOrEmpty(model.SearchToItemMaster ))|| 
+                    string.Compare(combined.transDtl.ItemMaster, model.SearchFromItemMaster, StringComparison.Ordinal) >=0 &&
+                    string.Compare(combined.transDtl.ItemMaster, model.SearchToItemMaster, StringComparison.Ordinal) <=0 )
+
+                    )
+                //filter by model.SearchItemName if not null
+                .Select((combined, index) => new TransferAndReceiptTransactionReportDTO
+                {
+                    SeqCode = index + 1,  // Sequence code starting from 1
+                    DocNo = (int)combined.transDtl.DocNo,
+                    DocDate = combined.transDtl.DocDate.Value.ToString("dd/MM/yyyy"),
+                    UnitQty = (int)combined.transDtl.UnitQty,
+                    SubName = combined.subItem.SubName,
+                    Price = combined.transDtl.Price,
+                    ItemVal = combined.transDtl.ItemVal,
+                    ItemMaster = combined.transDtl.ItemMaster,
+                    UnitName = combined.unitCode.Names
+                })
+                .ToList();
+
+
             return query;
         }
     }
