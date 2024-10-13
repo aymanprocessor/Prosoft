@@ -14,17 +14,23 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
     public class PermissionFormDetailsController : Controller
     {
         private readonly ITransDtlRepo _transDtlRepo;
+        private readonly ITransMasterRepo _transMasterRepo;
         private readonly IMapper _mapper;
-        public PermissionFormDetailsController(ITransDtlRepo transDtlRepo, IMapper mapper)
+        public PermissionFormDetailsController(ITransDtlRepo transDtlRepo, IMapper mapper, ITransMasterRepo transMasterRepo)
         {
             _transDtlRepo = transDtlRepo;
             _mapper = mapper;
+            _transMasterRepo = transMasterRepo;
         }
 
         public async Task<IActionResult> GetPermissionDetails(int id)
         {
+            TransMaster transMaster = await _transMasterRepo.GetByIdAsync(id);
+
             List<TransDtlWithPriceDTO> transDtlListDTO = await _transDtlRepo.GetPermissionDetailsAsync(id);
-            return Json(transDtlListDTO);
+
+            return Json(new {data = transDtlListDTO,totalValue = transMaster.TotTransVal });
+
         }
 
         public async Task<IActionResult> GetItem(string itemBarcode)
@@ -121,7 +127,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add_TransDetail(int id, TransDtlDTO transDtlDTO)
         {
-            if(transDtlDTO.ItemMaster == null && transDtlDTO.ShowItemMaster == null)
+            if (transDtlDTO.ItemMaster == null && transDtlDTO.ShowItemMaster == null)
             {
                 ModelState.AddModelError("", "The Item is required");
                 TransDtlDTO newTransDtlDTO = await _transDtlRepo.GetNewTransDtlAsync(id);
@@ -162,7 +168,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             {
                 transDtlDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
                 transDtlDTO.UserCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
-                
+
                 await _transDtlRepo.UpdateTransDtlAsync(id, transDtlDTO);
                 return RedirectToAction("Index", "PermissionForm", new { id = newTransDtlDTO.TransMasterID });
             }

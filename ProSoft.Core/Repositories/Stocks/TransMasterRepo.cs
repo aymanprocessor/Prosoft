@@ -382,10 +382,10 @@ namespace ProSoft.Core.Repositories.Stocks
                 {
                     if (stockEmp.SubCodeAcc == null)
                     {
-                        SupCode supCode = await _Context.SupCodes.FirstOrDefaultAsync(obj =>
+                        SupCode? supCode = await _Context.SupCodes.FirstOrDefaultAsync(obj =>
                             obj.Sup.ToString() == ll_sup_no && obj.BranchId == transMaster.BranchId);
-                        sub_code_acc = supCode.SubCode;
-                        if (int.Parse(ll_sup_no) > 0)
+                        sub_code_acc = supCode != null? supCode.SubCode:null;
+                        if (ll_sup_no != null && int.Parse(ll_sup_no) > 0)
                         {
                             if (sub_code_acc == null && ll_trans_type == 2)
                             {
@@ -395,7 +395,7 @@ namespace ProSoft.Core.Repositories.Stocks
                             }
                         }
                         /////////////////////////////////////
-                        if (int.Parse(ll_cust_no) > 0)
+                        if (ll_cust_no != null && int.Parse(ll_cust_no) > 0)
                         {
                             CustCode custCode = await _Context.CustCodes.FirstOrDefaultAsync(obj =>
                                 obj.Cust.ToString() == ll_cust_no && obj.BranchId == transMaster.BranchId);

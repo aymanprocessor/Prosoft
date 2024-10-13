@@ -453,7 +453,6 @@
                     spinner.classList.add("d-none");
                     for (let item of result) {
                         let userPerm = document.createElement("tr");
-                        
                         let docDate = formatDate(item.docDate);
                         let supInvDate = formatDate(item.supInvDate);
                         let actions;
@@ -572,7 +571,9 @@
 
             $.ajax({
                 url: `/Stocks/PermissionFormDetails/GetPermissionDetails/${transMAsterID}`,
-                success: function (result) {
+                success: function (res) {
+                    console.log("Res", res);
+                    var result = res.data;
                     spinner.classList.add("d-none");
                     if (result[0] && result[0].transType == 23)
                         transDetailsAddButton.removeAttribute("href");
@@ -633,7 +634,7 @@
                             `;
                         totalQuantity += item.unitQty;
                         totalTax += item.taxVal;
-                        totalValue += item.itemVal;
+                        totalValue = res.totalValue;
                         transDetails.appendChild(transDtl);
                     }
                     if (result.length) {

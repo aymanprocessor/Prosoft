@@ -23,6 +23,7 @@ namespace ProSoft.Core.Repositories.Stocks
 
         public async Task<List<TransDtlWithPriceDTO>> GetPermissionDetailsAsync(int transMasterID)
         {
+
             List<TransDtl> transDtlList = await _DbSet.Where(obj => obj.TransMAsterID == transMasterID)
                 .OrderByDescending(obj => obj.Serial).ToListAsync();
             var transDtlListDTO = new List<TransDtlWithPriceDTO>();
@@ -33,7 +34,6 @@ namespace ProSoft.Core.Repositories.Stocks
                 StockEmp stockTrans = await _Context.StockEmps.FirstOrDefaultAsync(obj =>
                     obj.Stkcod == item.StockCode && obj.TransType == item.TransType &&
                     obj.UserId == item.UserCode);
-
                 transDtlDTO.ShowTransPrice = (int)stockTrans.ShowPrice;
                 transDtlListDTO.Add(transDtlDTO);
             }
