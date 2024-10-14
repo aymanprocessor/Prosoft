@@ -37,9 +37,14 @@ using ProSoft.Core.Repositories.Stocks.Reports;
 var builder = WebApplication.CreateBuilder(args);
 
 //Configration fo context connectio string
-var connectionString = builder.Configuration.GetConnectionString("MyConnection") ?? throw new InvalidOperationException("Connection string 'MyConnection' not found.");
+var sqlServerConnection = builder.Configuration.GetConnectionString("SqlServerConnection") ?? throw new InvalidOperationException("Connection string 'Sql Server Connection' not found.");
+var oracleConnection = builder.Configuration.GetConnectionString("OracleConnection") ?? throw new InvalidOperationException("Connection string 'Oracle Connection' not found.");
+
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(sqlServerConnection));
+
+//builder.Services.AddDbContext<OracleDbContext>(options =>
+//    options.UseOra(oracleConnection));
 
 // Register for AutoMapper service
 builder.Services.AddAutoMapper(typeof(AutoMap)); //builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

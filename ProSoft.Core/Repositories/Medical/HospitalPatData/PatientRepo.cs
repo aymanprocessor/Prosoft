@@ -7,6 +7,7 @@ using ProSoft.EF.Models.Medical.HospitalPatData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,6 +20,17 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
         {
             _mapper = mapper;
         }
+        // ------------------ Ayman Saad ------------------ // 
+        public async Task<List<PatViewDTO>> GetPatientsByDoctorIdAndDateAsync(int doctorId, DateTime date)
+        {
+            var query = from pat in _Context.Pats
+                        join pat_admission in _Context.PatAdmissions on new { X = pat.BranchId, Y = pat.PatId } equals new { X = (double?)pat_admission.BranchId, Y = (int)pat_admission.PatId!}
+                        join doctor in _Context.Doctors on new {X=pat_admission.DrCode,Y=pat_admission.BranchId } equals new {X=(int?)doctor.DrId , Y=(decimal?)doctor.BranchId} 
+                        select new PatViewDTO { PatId = pat.PatId, PatMobile = pat.PatMobile, PatName = pat.PatName };
+            return query.ToList();
+            ;
+        }
+        // ------------------ Ayman Saad ------------------ // 
 
         public async Task<List<PatViewDTO>> GetAllPatsAsync()
         {
@@ -56,5 +68,7 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             _Context.Remove(patient);
             await _Context.SaveChangesAsync();
         }
+
+      
     }
 }

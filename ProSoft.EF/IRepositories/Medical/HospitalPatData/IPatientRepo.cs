@@ -10,8 +10,12 @@ namespace ProSoft.EF.IRepositories.Medical.HospitalPatData
 {
     public interface IPatientRepo: IRepository<Pat, int>
     {
+        // ----------------- Ayman Saad ----------------- //
+        Task<List<PatViewDTO>> GetPatientsByDoctorIdAndDateAsync(int doctorId, DateTime date);
+        // ----------------- Ayman Saad ----------------- //
+
         Task<List<PatViewDTO>> GetAllPatsAsync();
-        Task<PatEditAddDTO> GetPatientByIdAsync(int id);
+		Task<PatEditAddDTO> GetPatientByIdAsync(int id);
 
         ////////////////////////////////////////////////////
         Task AddPatientAsync(PatEditAddDTO patDTO);

@@ -1,0 +1,27 @@
+﻿@model DoctorApologyRequestDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@inject IViewLocalizer localizer
+@{
+    ViewData["Title"] = "Doctor Apology";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="container">
+    <h1 class="my-5 text-center">@localizer["Doctor's Apology"]</h1>
+    <div class="row filter-box p-3 d-flex ">
+        <div class="col-lg-4 col-md-6">
+            <label class="form-label">@localizer["Doctor Name"]</label>
+            <select  class="form-control text-center" asp-for="@Model.DoctorId"  asp-items="@ViewBag.Doctors">
+                <option value="">@localizer["Choosee"]</option>
+            </select>
+            <span asp-validation-for="@Model.DoctorId" class="text-danger"></span>
+        </div>
+        <div class="col-lg-4 col-md-6">
+            <label class="form-label">@localizer["Date"]</label>
+            <input type="date" class="form-control text-center" asp-for="@Model.Date" value="@DateTime.Now.ToString("yyyy-M-d")" />
+            <span asp-validation-for="@Model.Date" class="text-danger"></span>
+        </div>
+      <button class="btn btn-primary col-lg-2 align-self-end">@localizer["Show Patients"]</button>
+    </div>
+</div>
