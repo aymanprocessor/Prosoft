@@ -135,10 +135,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         [HttpGet]
         public async Task<IActionResult> GetSubItemsByStockType(int id)
         {
-            //var flags = (await _stockTypeRepo.GetAllAsync()).Select(f => new SelectListItem { Text = f.KName, Value = f.KId.ToString() }).ToList();
             var subitems = ( await _subItemRepo.GetAllSubItemByStockTypeAsync(id)).Select(s => new  { text = s.SubName,id = s.ItemCode}).ToList();
-            Console.WriteLine("Count : " +subitems.Count());
-            //ItemUnitsViewDTO itemUnitsViewDTO = new() { Flag1 = flags , SubItems = subitems};
             var result = new
             {
                 draw = 1,
@@ -155,9 +152,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         [HttpGet]
         public async Task<IActionResult> GetItemsUnitByItemCodeAndStockType(int stockType,string itemCode)
         {
-            //var flags = (await _stockTypeRepo.GetAllAsync()).Select(f => new SelectListItem { Text = f.KName, Value = f.KId.ToString() }).ToList();
             var itemsUnit =  _itemUnitsRepo.GetItemsByStockTypeAndItemCode(stockType,itemCode);
-            //ItemUnitsViewDTO itemUnitsViewDTO = new() { Flag1 = flags , SubItems = subitems};
             var result = new
             {
                 draw = 1,

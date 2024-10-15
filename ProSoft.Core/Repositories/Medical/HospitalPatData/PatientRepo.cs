@@ -16,7 +16,7 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
     public class PatientRepo : Repository<Pat, int>, IPatientRepo
     {
         private readonly IMapper _mapper;
-        public PatientRepo(AppDbContext Context, IMapper mapper): base(Context)
+        public PatientRepo(AppDbContext Context, IMapper mapper) : base(Context)
         {
             _mapper = mapper;
         }
@@ -24,11 +24,12 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
         public async Task<List<PatViewDTO>> GetPatientsByDoctorIdAndDateAsync(int doctorId, DateTime date)
         {
             var query = from pat in _Context.Pats
-                        join pat_admission in _Context.PatAdmissions on new { X = pat.BranchId, Y = pat.PatId } equals new { X = (double?)pat_admission.BranchId, Y = (int)pat_admission.PatId!}
-                        join doctor in _Context.Doctors on new {X=pat_admission.DrCode,Y=pat_admission.BranchId } equals new {X=(int?)doctor.DrId , Y=(decimal?)doctor.BranchId} 
+                        join pat_admission in _Context.PatAdmissions on new { X = pat.BranchId, Y = pat.PatId } equals new { X = (double?)pat_admission.BranchId, Y = (int)pat_admission.PatId! }
+                        join doctor in _Context.Doctors on new { X = pat_admission.DrCode, Y = pat_admission.BranchId } equals new { X = (int?)doctor.DrId, Y = (decimal?)doctor.BranchId }
+                         where doctor.DrId == doctorId && pat_admission.PatAdDate == date
                         select new PatViewDTO { PatId = pat.PatId, PatMobile = pat.PatMobile, PatName = pat.PatName };
             return query.ToList();
-            ;
+            
         }
         // ------------------ Ayman Saad ------------------ // 
 
@@ -57,7 +58,7 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
         {
             Pat patient = await _Context.Pats.FirstOrDefaultAsync(obj => obj.PatId == id);
 
-            _mapper.Map(patientDTO,patient);
+            _mapper.Map(patientDTO, patient);
             _Context.Update(patient);
             await _Context.SaveChangesAsync();
         }
@@ -69,6 +70,6 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             await _Context.SaveChangesAsync();
         }
 
-      
+
     }
 }

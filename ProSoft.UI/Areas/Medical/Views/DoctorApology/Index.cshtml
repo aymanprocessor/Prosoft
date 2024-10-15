@@ -6,22 +6,92 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
-
+@Html.AntiForgeryToken()
 <div class="container">
     <h1 class="my-5 text-center">@localizer["Doctor's Apology"]</h1>
-    <div class="row filter-box p-3 d-flex ">
+    <div class="row filter-box p-3 d-flex " >
         <div class="col-lg-4 col-md-6">
             <label class="form-label">@localizer["Doctor Name"]</label>
-            <select  class="form-control text-center" asp-for="@Model.DoctorId"  asp-items="@ViewBag.Doctors">
+            <select id="doctorSelect" class="form-control text-center"  asp-items="@ViewBag.Doctors">
                 <option value="">@localizer["Choosee"]</option>
             </select>
-            <span asp-validation-for="@Model.DoctorId" class="text-danger"></span>
         </div>
         <div class="col-lg-4 col-md-6">
             <label class="form-label">@localizer["Date"]</label>
-            <input type="date" class="form-control text-center" asp-for="@Model.Date" value="@DateTime.Now.ToString("yyyy-M-d")" />
-            <span asp-validation-for="@Model.Date" class="text-danger"></span>
+            <input type="date" id="datePicker" class="form-control text-center" value="@DateTime.Now.ToString("yyyy-M-d")" />
         </div>
-      <button class="btn btn-primary col-lg-2 align-self-end">@localizer["Show Patients"]</button>
+      <button id="submit" class="btn btn-primary col-lg-2 align-self-end">@localizer["Show Patients"]</button>
     </div>
+
+    <table id="PatientsTable" class="table table-hover table-bordered display">
+        <thead>
+            <tr>
+                <th class="text-center">اسم المريض</th>
+                <th class="text-center">رقم الموبايل</th>
+             
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 </div>
+
+@section Scripts{
+
+    <script>
+        $(document).ready(function () {
+            const patientTable = $("#PatientsTable");
+            const doctorSelector = $("#doctorSelect");
+            const datePicker = $("#datePicker");
+            const submit = $("#submit");
+
+            var doctorId;
+            var date;
+
+            doctorSelector.select2({ multiple: false });
+            doctorSelector.on('select2:select', function (event) {
+                doctorId = event.params.data.id;
+               
+            });
+
+            datePicker.on('change', function (event) {
+            });
+
+            submit.on('click', function (event) {
+             
+                    doctorId = doctorSelector.val();
+                date = datePicker.val()
+                    console.log(doctorId)
+                console.log(date)
+                initPatientTable(doctorId, date)
+              
+                
+            })
+            function initPatientTable(doctorId,datePicker) {
+                patientTable.DataTable({
+                    destroy: true,
+                    scroller: true,
+                    searching: true,
+                    layout: {
+                        topEnd: {
+                            search: {
+                                text: '_INPUT_',
+                                placeholder: '@localizer["Search"]'
+
+                            }
+                        }
+                    },
+                    columns: [
+                        { data: 'patName' },
+                        { data: 'patMobile' },
+                    ],
+                    "ajax": {
+                        "url": `/Medical/DoctorApology/GetPatients?id=${doctorId}&date=${datePicker}`,
+                        "type": "POST"
+                    },
+                });
+            }
+           
+        });
+    </script>
+}

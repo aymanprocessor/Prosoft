@@ -10,5 +10,6 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
     {
         public int DoctorId { get; set; }
         public DateTime Date { get; set; }
+
     }
 }
