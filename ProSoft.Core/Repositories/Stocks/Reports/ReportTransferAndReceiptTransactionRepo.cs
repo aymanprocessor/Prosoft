@@ -25,7 +25,7 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
             // Step 1: Filter TransDtls early to reduce the number of records to process in joins
             var filteredTransDtls = _context.TransDtls
                 .Where(transDtl =>
-                    transDtl.TransType == model.TransType &&
+                    transDtl.TransType == model.UniqueType &&
                     transDtl.DocDate >= model.FromDate &&
                     transDtl.DocDate <= model.ToDate)
                 .ToList(); // Force evaluation here to minimize further processing in memory

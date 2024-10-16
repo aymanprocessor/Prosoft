@@ -4,6 +4,7 @@ using ProSoft.EF.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,7 +14,8 @@ namespace ProSoft.EF.IRepositories.Shared
     {
 
         // ------------- Ayman Saad ------------- //
-        public IEnumerable<SelectListItem> GetAllAsSelectListItem();
+        public IEnumerable<SelectListItem> GetAllAsSelectListItem(Expression<Func<GeneralCode, bool>>? predicate = null);
+        public Task<PermissionDefViewDTO> GetPermissionByUniqueTypeAsync(int id);
         // ------------- Ayman Saad ------------- //
         Task<int> GetNewIdAsync();
         Task<List<PermissionDefViewDTO>> GetPermissionsAsync(string GType);

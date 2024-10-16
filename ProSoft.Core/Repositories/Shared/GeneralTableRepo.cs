@@ -8,6 +8,7 @@ using ProSoft.EF.Models.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,9 +24,29 @@ namespace ProSoft.Core.Repositories.Shared
 
 
         // ------------- Ayman Saad -------------//
-        public IEnumerable<SelectListItem> GetAllAsSelectListItem()
+        public IEnumerable<SelectListItem> GetAllAsSelectListItem(Expression<Func<GeneralCode, bool>>? predicate = null)
         {
-            return _Context.GeneralCodes.Select(g => new SelectListItem { Text = g.GDesc, Value = g.UniqueType.ToString() }).ToList();
+            var query = _Context.GeneralCodes.AsQueryable();
+
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+            return query.Select(g => new SelectListItem { Text = g.GDesc, Value = g.UniqueType.ToString() }).ToList();
+
+        }
+
+        public async Task<PermissionDefViewDTO> GetPermissionByUniqueTypeAsync(int id)
+        {
+            GeneralCode? permission = await _Context.GeneralCodes.Where(g => g.UniqueType == id).FirstOrDefaultAsync();
+            PermissionDefViewDTO permissionDefViewDTO = new PermissionDefViewDTO();
+            if (permission != null) { 
+            
+            permissionDefViewDTO = _mapper.Map<PermissionDefViewDTO>(permission);
+            }
+            return permissionDefViewDTO;
+           
         }
         // ------------- Ayman Saad -------------//
         public async Task<int> GetNewIdAsync()

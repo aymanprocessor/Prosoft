@@ -13,7 +13,7 @@ namespace ProSoft.EF.DTOs.Stocks.Report.TransferAndReceiptTransactionReport
     {
         public int BranchId { get; set; }
         [Required]
-        public int TransType { get; set; }
+        public int UniqueType { get; set; }
         [Required]
         
         public DateTime FromDate { get; set; }
@@ -23,6 +23,7 @@ namespace ProSoft.EF.DTOs.Stocks.Report.TransferAndReceiptTransactionReport
         public int FromStock { get; set; }
         [Required]
         public int ToStock { get; set; }
+        public string StockType { get; set; } = string.Empty;
 
         public string? SearchSubName { get; set; }
        

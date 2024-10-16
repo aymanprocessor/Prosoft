@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="10/08/2024 11:01:22" ReportInfo.Modified="10/12/2024 13:23:46" ReportInfo.CreatorVersion="2024.2.0.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="10/08/2024 11:01:22" ReportInfo.Modified="10/16/2024 16:51:09" ReportInfo.CreatorVersion="2024.2.0.0">
   <Dictionary>
     <BusinessObjectDataSource Name="table" ReferenceName="Table" DataType="System.Int32" Enabled="true">
       <Column Name="SeqCode" DataType="System.Int32"/>
@@ -18,14 +18,18 @@
     <Parameter Name="FromStock" DataType="System.String" AsString=""/>
     <Parameter Name="ToStock" DataType="System.String" AsString=""/>
     <Parameter Name="ReportType" DataType="System.String" AsString=""/>
+    <Parameter Name="StockType" DataType="System.String" AsString=""/>
+    <Total Name="TotalItemVal" Expression="[table.ItemVal]" Evaluator="Data1"/>
+    <Total Name="TotalUnitQty" Expression="[table.UnitQty]" Evaluator="Data1"/>
   </Dictionary>
   <ReportPage Name="Page1" Watermark.Font="Arial, 60pt">
     <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="94.5">
-      <TextObject Name="Text1" Left="226.8" Width="491.4" Height="37.8" Text="تقرير حركات اذن صرف لمخزن من [FromStock] الى [ToStock]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Arial, 14pt, style=Bold"/>
-      <TextObject Name="Text3" Left="9.45" Top="18.9" Width="207.9" Height="37.8" Text="بيان تحليلي" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text1" Left="226.8" Width="491.4" Height="37.8" Text="تقرير حركات [StockType] من [FromStock] الى [ToStock]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Arial, 14pt, style=Bold"/>
+      <TextObject Name="Text3" Left="9.45" Top="37.8" Width="207.9" Height="37.8" Text="بيان تحليلي" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Arial, 12pt, style=Bold"/>
       <TextObject Name="Text2" Left="226.8" Top="37.8" Width="491.4" Height="37.8" Text="الفترة من [FromDate] حتى [ToDate]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Arial, 12pt"/>
       <TextObject Name="Text4" Left="-9450" Top="-9450" Width="94.5" Height="18.9" Text="String" Font="Arial, 10pt"/>
       <TextObject Name="Text5" Left="-9450" Top="-9450" Width="94.5" Height="18.9" Text="String" Font="Arial, 10pt"/>
+      <TextObject Name="Text7" Left="9.45" Top="9.45" Width="207.9" Height="18.9" Text="[Date]" Format="Date" Format.Format="d" HorzAlign="Center" Font="Arial, 10pt"/>
     </ReportTitleBand>
     <DataBand Name="Data1" Top="156.53" Width="718.2" Height="18.9" DataSource="table" Columns.Layout="DownThenAcross">
       <TableObject Name="Table2" Width="718.3" Height="18.9" Anchor="Top, Left, Right" PrintOnParent="true">
@@ -96,5 +100,36 @@
         </TableObject>
       </DataHeaderBand>
     </DataBand>
+    <ColumnFooterBand Name="ColumnFooter1" Top="178.1" Width="718.2" Height="18.9">
+      <TableObject Name="Table3" Width="718.3" Height="18.9" Anchor="Top, Left, Right" PrintOnParent="true">
+        <TableColumn Name="Column23" Width="55.85"/>
+        <TableColumn Name="Column24" Width="55.85"/>
+        <TableColumn Name="Column25" Width="55.85"/>
+        <TableColumn Name="Column26" Width="55.85"/>
+        <TableColumn Name="Column27" Width="55.85"/>
+        <TableColumn Name="Column28" Width="46.4"/>
+        <TableColumn Name="Column29" Width="169.25"/>
+        <TableColumn Name="Column30" Width="55.85"/>
+        <TableColumn Name="Column31" Width="65.3"/>
+        <TableColumn Name="Column32" Width="55.85"/>
+        <TableColumn Name="Column33" Width="46.4"/>
+        <TableRow Name="Row5">
+          <TableCell Name="Cell45" HorzAlign="Center" VertAlign="Center" Font="Calibri, 8pt"/>
+          <TableCell Name="Cell46" HorzAlign="Center" VertAlign="Center" Font="Calibri, 8pt"/>
+          <TableCell Name="Cell47" Border.Lines="All" Fill.Color="Gainsboro" Text="[TotalItemVal]" HorzAlign="Center" VertAlign="Center" Font="Calibri, 8pt"/>
+          <TableCell Name="Cell48" HorzAlign="Center" VertAlign="Center" Font="Calibri, 8pt"/>
+          <TableCell Name="Cell49" Border.Lines="All" Fill.Color="Gainsboro" Text="[TotalUnitQty]" HorzAlign="Center" VertAlign="Center" Font="Calibri, 8pt"/>
+          <TableCell Name="Cell50" HorzAlign="Center" VertAlign="Center" Font="Calibri, 8pt"/>
+          <TableCell Name="Cell51" HorzAlign="Center" VertAlign="Center" Font="Calibri, 8pt"/>
+          <TableCell Name="Cell52" HorzAlign="Center" VertAlign="Center" Font="Calibri, 8pt"/>
+          <TableCell Name="Cell53" HorzAlign="Center" VertAlign="Center" Font="Calibri, 8pt"/>
+          <TableCell Name="Cell54" HorzAlign="Center" VertAlign="Center" Font="Calibri, 8pt"/>
+          <TableCell Name="Cell55" HorzAlign="Center" VertAlign="Center" Font="Calibri, 8pt"/>
+        </TableRow>
+      </TableObject>
+    </ColumnFooterBand>
+    <PageFooterBand Name="PageFooter1" Top="199.67" Width="718.2" Height="18.9">
+      <TextObject Name="Text6" Left="264.6" Width="189" Height="18.9" Text="[Page] من [TotalPages#]" AutoWidth="true" HorzAlign="Center" RightToLeft="true" Font="Arial, 10pt"/>
+    </PageFooterBand>
   </ReportPage>
 </Report>

@@ -1,5 +1,6 @@
 ﻿@using FastReport.Web
 @using ProSoft.EF.DTOs.Stocks.Report.TransferAndReceiptTransactionReport
+@using ProSoft.UI.Global
 @model TransferAndReceiptTransactionReportRequestDTO
 @inject IViewLocalizer localizer
 @{
@@ -16,17 +17,20 @@
         <div class="row mt-3">
             <div class="col-lg-4 col-md-6">
                 <label class="form-label">@localizer["Branch"]</label>
-                <select class="form-select form-control" asp-items="@ViewBag.Branchs" asp-for="@Model.BranchId"></select>
+                <select class="form-select form-control" asp-items="@ViewBag.Branchs" asp-for="@Model.BranchId" readonly></select>
+
             </div>
 
             <div class="col-lg-4 col-md-6">
                 <label class="form-label">@localizer["Permission Type"]</label>
-                <select class="form-select form-control" asp-items="@ViewBag.GeneralCodes" asp-for="@Model.TransType"></select>
+                <select class="form-select form-control" asp-items="@ViewBag.GeneralCodes" asp-for="@Model.UniqueType">
+                    <option value="">@localizer["Choosee"]</option>
+                </select>
             </div>
 
             <div class="col-lg-3 col-md-6 d-flex my-3 justify-content-center">
                 <div class="form-check form-check-inline align-self-center ">
-                    <input class="form-check-input" type="radio" name="reportType" id="Analytical" value="Analytical">
+                    <input class="form-check-input" type="radio" name="reportType" id="Analytical" value="Analytical" checked>
                     <label class="form-check-label" for="Analytical">@localizer["Analytical"]</label>
                 </div>
                 <div class="form-check form-check-inline align-self-center">
@@ -38,19 +42,23 @@
         <div class="row my-3">
             <div class="col-lg-3 col-md-6">
                 <label class="form-label">@localizer["Period From"]</label>
-                <input type="date" class="form-control" asp-for="@Model.FromDate" />
+                <input type="date" class="form-control" asp-for="@Model.FromDate" value="@(new DateTime(DateTime.Now.Year,1,1).ToString(GlobalConstants.FormatDate))" />
             </div>
             <div class="col-lg-3 col-md-6">
                 <label class="form-label">@localizer["Until"]</label>
-                <input type="date" class="form-control" asp-for="@Model.ToDate" />
+                <input type="date" class="form-control" asp-for="@Model.ToDate" value="@(DateTime.Now.ToString(GlobalConstants.FormatDate))" />
             </div>
             <div class="col-lg-3 col-md-6">
                 <label class="form-label">@localizer["From Stock"]</label>
-                <select class="form-select form-control" asp-items="@ViewBag.FromStocks" asp-for="@Model.FromStock"></select>
+                <select class="form-select form-control" asp-items="@ViewBag.FromStocks" asp-for="@Model.FromStock">
+                    <option value="">@localizer["Choosee"]</option>
+                </select>
             </div>
             <div class="col-lg-3 col-md-6">
                 <label class="form-label">@localizer["To Stock"]</label>
-                <select class="form-select form-control" asp-items="@ViewBag.ToStocks" asp-for="@Model.ToStock"></select>
+                <select class="form-select form-control" asp-items="@ViewBag.ToStocks" asp-for="@Model.ToStock">
+                    <option value="">@localizer["Choosee"]</option>
+                </select>
             </div>
         </div>
         <div class="row mb-3 d-flex">

@@ -43,7 +43,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         public IActionResult Index()
         {
             ViewBag.Branchs = _branchRepo.GetAllBranchesAsEnumerable();
-            ViewBag.GeneralCodes = _generalTableRepo.GetAllAsSelectListItem();
+            ViewBag.GeneralCodes = _generalTableRepo.GetAllAsSelectListItem(g => g.UniqueType == 13 || g.UniqueType == 23);
             ViewBag.FromStocks = _stockRepo.GetAllStockAsEnumerable();
             ViewBag.ToStocks = _stockRepo.GetAllStockAsEnumerable();
 
@@ -55,7 +55,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         {
 
             ViewBag.Branchs = _branchRepo.GetAllBranchesAsEnumerable();
-            ViewBag.GeneralCodes = _generalTableRepo.GetAllAsSelectListItem();
+            ViewBag.GeneralCodes = _generalTableRepo.GetAllAsSelectListItem(g => g.UniqueType == 13 || g.UniqueType==23);
             ViewBag.FromStocks = _stockRepo.GetAllStockAsEnumerable();
             ViewBag.ToStocks = _stockRepo.GetAllStockAsEnumerable();
 
@@ -69,7 +69,8 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             webReport.Report.Load(Path.Combine(Environment.CurrentDirectory, "Reports\\Stock\\TransactionsOfTransferAndReceiptAuthorizationsDuringThePeriod.frx"));
             var fromStock = await _stockRepo.GetStockByIdAsync(model.FromStock);
             var toStock = await _stockRepo.GetStockByIdAsync(model.ToStock);
-
+            var stockType = await _generalTableRepo.GetPermissionByUniqueTypeAsync(model.UniqueType);
+            webReport.Report.SetParameterValue("StockType", stockType.GDesc);
             webReport.Report.SetParameterValue("FromStock", fromStock.Stknam);
             webReport.Report.SetParameterValue("ToStock", toStock.Stknam);
             webReport.Report.SetParameterValue("FromDate", model.FromDate.ToString("dd/MM/yyyy"));

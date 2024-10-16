@@ -26,6 +26,7 @@
     <table id="PatientsTable" class="table table-hover table-bordered display">
         <thead>
             <tr>
+                <th class="text-center"></th>
                 <th class="text-center">اسم المريض</th>
                 <th class="text-center">رقم الموبايل</th>
              
@@ -72,6 +73,10 @@
                     destroy: true,
                     scroller: true,
                     searching: true,
+                    select: {
+                        style: 'os',
+                        selector: 'td:first-child'
+                    },
                     layout: {
                         topEnd: {
                             search: {
@@ -80,8 +85,13 @@
 
                             }
                         }
-                    },
+                    },a
                     columns: [
+                          {
+                            orderable: false,
+                            render: DataTable.render.select(),
+                            targets: 0
+                        },
                         { data: 'patName' },
                         { data: 'patMobile' },
                     ],

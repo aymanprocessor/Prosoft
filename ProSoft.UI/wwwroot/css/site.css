@@ -451,3 +451,9 @@ html {
 .dt-layout-row{
     margin-bottom : 10px;
 }
+
+select[readonly] {
+    pointer-events: none;
+    touch-action: none;
+    background: #e9ecef; /* makes it look similar to disabled */
+}
