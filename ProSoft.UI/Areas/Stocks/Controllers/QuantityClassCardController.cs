@@ -22,7 +22,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             reportQuantityClassCardDTO.FYear= fYear;
             return View(reportQuantityClassCardDTO);
         }
-        public async Task<IActionResult> QuantityClassCardOnly(int id, int subItem, DateTime? fromPeriod, DateTime? toPeriod)
+        public async Task<IActionResult> QuantityClassCardOnly(int id, string subItem, DateTime? fromPeriod, DateTime? toPeriod)
         {
             var branch = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
 

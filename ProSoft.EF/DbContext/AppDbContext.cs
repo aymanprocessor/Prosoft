@@ -7,6 +7,7 @@ using ProSoft.EF.Models.Medical.HospitalPatData;
 using ProSoft.EF.Models.MedicalRecords;
 using ProSoft.EF.Models.Shared;
 using ProSoft.EF.Models.Stocks;
+using ProSoft.EF.Models.Stocks.StoredProcedure;
 using ProSoft.EF.Models.Treasury;
 using System.Reflection.Emit;
 
@@ -22,6 +23,13 @@ namespace ProSoft.EF.DbContext
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            // ------------------- Stored Procedures ------------------- //
+
+            builder.Entity<ItemBalance>().HasNoKey();
+            builder.Entity<ItemBalance>().Property(e => e.itm_balance).HasColumnType("decimal(18, 2)");
+            // ------------------- Tables ------------------- //
+
             builder.Entity<AppUser>(option =>
             {
                 option.ToTable(name: "USERS");
@@ -138,6 +146,8 @@ namespace ProSoft.EF.DbContext
         }
 
         public DbSet<Price> Prices { get; set; }
+        // Sored Procedures
+        public DbSet<ItemBalance> ItemBalances { get; set; }
 
         // Shared //
         public DbSet<NationalityEi> NationalityEis { get; set; }
