@@ -31,7 +31,7 @@
             <input asp-for="TransType" type="hidden" />
             <input asp-for="Flag3" type="hidden" value="1" />
 
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+             @* <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
             <div class="parent-permForm d-flex align-items-md-end justify-content-between gap-md-1 my-mobile ">
                 <div class="mb-3" style="width: 30%;">
                     <label style="width: 125px;">@localizer["Permission Date"]</label>
@@ -70,7 +70,7 @@
                 <div class="mb-3 justify-content-between" style="width: 35%;">
                     <label asp-for="SupNo" style="width: 20%;"></label>
                     <select asp-for="SupNo" asp-items="suppliers" class="form-control text-center" style="width: 72%;">
-                        <option value="">-- Choose --</option>
+                        <option value="">@localizer["Choosee"]</option>
                     </select>
                     <span asp-validation-for="SupNo" class="text-danger d-none"></span>
                 </div>

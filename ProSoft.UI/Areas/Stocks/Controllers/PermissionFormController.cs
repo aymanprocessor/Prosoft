@@ -125,6 +125,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         // Get Add
         public async Task<IActionResult> Add_PermissionForm(int id, int transType)
         {
+            
             var userCode = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "User_Code").Value);
             TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetNewTransMasterAsync(id, userCode, transType);
             permissionFormDTO.UserName = (await _userRepo.GetUserByIdAsync(userCode)).UserName;
