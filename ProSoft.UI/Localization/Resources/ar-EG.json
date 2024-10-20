@@ -1006,7 +1006,12 @@
   "To Code": "الى كود",
   "View": "عرض",
   "Doctor's Apology": "اعتذار الاطباء",
-  "Show Patients": "عرض المرضى"
+  "Show Patients": "عرض المرضى",
+  "Customer Pricing": "التسعير للعملاء",
+  "Pricing Category": "تصنيف السعر",
+  "Item Group": "مجموعة الصنف",
+  "Price": "سعر"
+
 
 
 }

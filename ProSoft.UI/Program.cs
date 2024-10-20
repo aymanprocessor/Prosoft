@@ -132,6 +132,8 @@ builder.Services.AddScoped<IRegionRepo, RegionRepo>();
 
 builder.Services.AddScoped<IReportTransferAndReceiptTransactionRepo, ReportTransferAndReceiptTransactionRepo>();
 builder.Services.AddScoped<IStockTypeRepo, StockTypeRepo>();
+builder.Services.AddScoped<IItemsCustPriceRepo, ItemsCustPriceRepo>();
+builder.Services.AddScoped<IAdjectiveCustRepo, AdjectiveCustRepo>();
 builder.Services.AddScoped<IStockEmpFlagRepo, StockEmpFlagRepo>();
 builder.Services.AddScoped<IBranchRepo, BranchRepo>();
 builder.Services.AddScoped<IStockRepo, StockRepo>();

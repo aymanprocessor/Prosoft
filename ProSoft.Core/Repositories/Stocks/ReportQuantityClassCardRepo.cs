@@ -227,20 +227,20 @@ namespace ProSoft.Core.Repositories.Stocks
 
 
                     }
-                    quantityAndValueCardDTO.TranPrice = item.Price;
-                    quantityAndValueCardDTO.TransDate = item.DocDate;
-                    quantityAndValueCardDTO.RefNo = transMaster.SupInvNo != null ? int.Parse(transMaster.SupInvNo) : null;
-                    quantityAndValueCardDTO.TransNo = (int)item.SerSys;
-                    quantityAndValueCardDTO.TransType = generalCode.GDesc;
-                    quantityAndValueCardDTO.TranCount = item.UnitQty;
-                    quantityAndValueCardDTO.RasidCount = ld_Count_Rasid;
-                    quantityAndValueCardDTO.DesItem = item.Flag1;
-                    quantityAndValueCardDTO.CustName = ls_Cust_SubName;
-                    quantityAndValueCardDTO.BalanceCount = ld_Rasid_c;
-                    quantityAndValueCardDTOs.Add(quantityAndValueCardDTO);
+                    //quantityAndValueCardDTO.TranPrice = item.Price;
+                    //quantityAndValueCardDTO.TransDate = item.DocDate;
+                    //quantityAndValueCardDTO.RefNo = transMaster.SupInvNo != null ? int.Parse(transMaster.SupInvNo) : null;
+                    //quantityAndValueCardDTO.TransNo = (int)item.SerSys;
+                    //quantityAndValueCardDTO.TransType = generalCode.GDesc;
+                    //quantityAndValueCardDTO.TranCount = item.UnitQty;
+                    //quantityAndValueCardDTO.RasidCount = ld_Count_Rasid;
+                    //quantityAndValueCardDTO.DesItem = item.Flag1;
+                    //quantityAndValueCardDTO.CustName = ls_Cust_SubName;
+                    //quantityAndValueCardDTO.BalanceCount = ld_Rasid_c;
+                    //quantityAndValueCardDTOs.Add(quantityAndValueCardDTO);
                 }
             }
-            return quantityCardOnlyDTOs;
+            return quantityAndValueCardDTOs;
         }
     }
 }

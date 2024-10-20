@@ -30,6 +30,8 @@ namespace ProSoft.EF.DbContext
             builder.Entity<ItemBalance>().Property(e => e.itm_balance).HasColumnType("decimal(18, 2)");
             // ------------------- Tables ------------------- //
 
+            // ------------------ APP USER ------------------ //
+
             builder.Entity<AppUser>(option =>
             {
                 option.ToTable(name: "USERS");
@@ -39,7 +41,8 @@ namespace ProSoft.EF.DbContext
                .Property(u => u.UserName)
                .HasColumnName("USER_NAME");
 
-
+            // ------------------ USER SIDE ------------------ //
+            
             builder.Entity<UserSide>()
                 .Property(u => u.UserId)
                 .HasColumnName("USER_CODE");
@@ -116,15 +119,27 @@ namespace ProSoft.EF.DbContext
                 //.Ignore(us => us.Branchs)
                 //.Ignore(us => us.EisSectionTypes)
                 .HasKey(us => new { us.UserId, us.SideId, us.RegionId, us.BranchId });
-
+          
+            // ------------------ MAIN ITEM ------------------ //
 
             builder.Entity<MainItem>()
                 .HasIndex(e => e.MainCode)
                 .IsUnique();
-
-            builder.Entity <SubItem>()
+            // ------------------ SUB ITEM ------------------ //
+            builder.Entity<SubItem>()
                 .HasIndex(s => s.ItemCode)
                 .IsUnique();
+
+            builder.Entity<SubItem>()
+                .HasOne(s => s.Main)
+                .WithMany(m => m.SubItems)
+                .HasForeignKey(s => s.MainId)
+
+                .OnDelete(DeleteBehavior.NoAction);
+                
+
+            // ------------------ STOCK BALANCE ------------------ //
+
 
             builder.Entity<Stkbalance>()
                 .HasOne(s => s.MainItem)
@@ -137,6 +152,9 @@ namespace ProSoft.EF.DbContext
                 .WithMany()
                 .HasForeignKey(s => s.ItemCode)
                 .HasPrincipalKey(m => m.ItemCode);
+
+            // ------------------ ITEM UNIT ------------------ //
+
 
             builder.Entity<ItemUnit>()
               .HasOne(s => s.SubItem)
@@ -244,6 +262,7 @@ namespace ProSoft.EF.DbContext
         public DbSet<SalesmenDatum> SalesmenData { get; set; }
         public DbSet<TransDtl> TransDtls { get; set; }
         public DbSet<ItemBatch> ItemBatches { get; set; }
+        public DbSet<ItemsCustPrice> ItemsCustPrices { get; set; }
         public DbSet<UsersSection> UsersSections { get; set; }
         public DbSet<ItmReorder> ItmReorders { get; set; }
         public DbSet<MainItemStock> MainItemStocks { get; set; }
