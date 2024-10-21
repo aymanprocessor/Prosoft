@@ -70,6 +70,81 @@ namespace ProSoft.Core.Repositories.Stocks
             return stocksDTO;
         }
 
+        public async Task<decimal?> GetItemBalance(int branchId, int stockId, DateTime beforeFromDateOneDay, string itemCode)
+        {
+
+            var stock = await _Context.Stocks.FirstOrDefaultAsync(s => s.Stkcod == stockId);
+            var item = await _Context.SubItems.FirstOrDefaultAsync(s => s.ItemCode == itemCode);
+            var transDtlList = await _Context.TransDtls.Where(t => t.ItemMaster == itemCode).ToListAsync();
+            var stkbalance = await _Context.Stkbalances.Where(st => st.FYear >= beforeFromDateOneDay.Year && st.Flag1 == stock.Flag1).ToListAsync();
+            var stkBalOpenQty = stkbalance.Sum(s => s.QtyStart);
+            var stlBalTotalPrice = stkbalance.Sum(s => s.ItemPrice2);
+            var avgPrice = Math.Round((stlBalTotalPrice / stkBalOpenQty).Value, 2);
+
+
+            decimal? qty =0 ;
+            decimal? price = 0;
+            decimal? total = 0;
+            foreach (var transDtl in transDtlList)
+            {
+                var generalCode = await _Context.GeneralCodes.FirstOrDefaultAsync(g => g.UniqueType == transDtl.TransType);
+
+                if (transDtl.DocDate.Value.Date <= beforeFromDateOneDay.Date && transDtl.DocDate.Value.Date >= new DateTime(DateTime.Now.Year, 1, 1))
+                {
+                    if (generalCode != null && generalCode.AddSub == 1) // وارد
+                    {
+
+
+                        stkBalOpenQty += transDtl.UnitQty;
+                        stlBalTotalPrice += transDtl.ItemVal;
+                        avgPrice = Math.Round((stlBalTotalPrice / stkBalOpenQty).Value, 2);
+                    }
+                    else if (generalCode != null && generalCode.AddSub == 2)
+                    {
+                        stkBalOpenQty -= transDtl.UnitQty;
+                        stlBalTotalPrice -= transDtl.ItemVal;
+                        avgPrice = Math.Round((stlBalTotalPrice / stkBalOpenQty).Value, 2);
+                    }
+                }
+
+                if (transDtl.DocDate.Value.Date > beforeFromDateOneDay.Date)
+                {
+                    if (generalCode != null && generalCode.AddSub == 1) // وارد
+                    {
+
+
+                        stkBalOpenQty = stkBalOpenQty + transDtl.UnitQty;
+                        stlBalTotalPrice = stlBalTotalPrice + transDtl.ItemVal;
+                        avgPrice = Math.Round((stlBalTotalPrice / stkBalOpenQty).Value, 2);
+                        Console.WriteLine($"Balance Qty : {stkBalOpenQty}");
+                        Console.WriteLine($"Balance Total : {stlBalTotalPrice}");
+                        Console.WriteLine($"Balance AVG Price : {avgPrice}");
+                    }
+                    else if (generalCode != null && generalCode.AddSub == 2)
+                    {
+
+                        stkBalOpenQty = stkBalOpenQty- transDtl.UnitQty;
+                        stlBalTotalPrice = stlBalTotalPrice - transDtl.ItemVal;
+                        avgPrice = Math.Round((stlBalTotalPrice / stkBalOpenQty).Value, 2);
+                        Console.WriteLine($"Balance Qty : {stkBalOpenQty}");
+                        Console.WriteLine($"Balance Total : {stlBalTotalPrice}");
+                        Console.WriteLine($"Balance AVG Price : {avgPrice}");
+                    }
+
+                }
+            }
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return stkBalOpenQty;
+        }
+
+
         public async Task<List<QuantityCardOnlyDTO>> GetQuantityCardOnly(int id, string subItem, DateTime? fromPeriod, DateTime? toPeriod, int branch)
         {
             List<QuantityCardOnlyDTO> quantityCardOnlyDTOs = new List<QuantityCardOnlyDTO>();
@@ -80,14 +155,14 @@ namespace ProSoft.Core.Repositories.Stocks
             if (fromPeriod.Value.Day == 1 && fromPeriod.Value.Month == 1)
             {
                 // fromPeriod is January 1st, so set fromDate to fromPeriod
-                fromDate = fromPeriod.Value;
+                fromDate = fromPeriod.Value.AddDays(-1);
             }
             else
             {
                 // fromPeriod is not January 1st, so subtract one day
-                fromDate = fromPeriod.Value.AddDays(-1);
+                fromDate = fromPeriod.Value;
             }
-   
+
             var brParam = new SqlParameter("@br", branch);
             var stkParam = new SqlParameter("@stk", id);
             var frDateParam = new SqlParameter("@fr_date", fromDate);
@@ -99,6 +174,7 @@ namespace ProSoft.Core.Repositories.Stocks
                 Direction = ParameterDirection.Output
             };
 
+            var bbalance = await GetItemBalance(branch, id, fromDate, subItem);
             // Execute the stored procedure
             await _Context.Database.ExecuteSqlRawAsync(
                 "EXEC @itm_balance = [dbo].[item_balance2] @br, @stk, @fr_date, @fr_itm",
@@ -106,7 +182,7 @@ namespace ProSoft.Core.Repositories.Stocks
             );
 
             // Return the output value
-            var balance =  (decimal)outputParam.Value;
+            var balance = (decimal)outputParam.Value;
             var ld_Rasid_c = balance;
             CompanyProfile companyProfile = await _Context.CompanyProfiles.FirstOrDefaultAsync(obj => obj.CoCode == 1);
 
@@ -116,26 +192,26 @@ namespace ProSoft.Core.Repositories.Stocks
                 QuantityCardOnlyDTO quantityCardOnlyDTO = new QuantityCardOnlyDTO();
                 GeneralCode generalCode = await _Context.GeneralCodes.FirstOrDefaultAsync(obj => (obj.GType == "4" || obj.GType == "4") && obj.UniqueType == item.TransType);
                 TransMaster transMaster = await _Context.TransMasters.FirstOrDefaultAsync(obj => obj.TransMAsterID == item.TransMAsterID);
-               
+
                 if (item.UnitQty > 0 && generalCode.AddSub > 0)
                 {
                     decimal ld_Count_Rasid = 0;
-                     var ls_Cust_SubName ="";
+                    var ls_Cust_SubName = "";
                     if (generalCode.AddSub == 1)
                     {
                         ld_Count_Rasid = (decimal)ld_Rasid_c + (decimal)item.UnitQty;
-                        var res = await _Context.SupCodes.FirstOrDefaultAsync(obj =>  obj.SupCode1 == transMaster.SupNo && obj.BranchId == branch);
+                        var res = await _Context.SupCodes.FirstOrDefaultAsync(obj => obj.SupCode1 == transMaster.SupNo && obj.BranchId == branch);
                         if (res != null) ls_Cust_SubName = res.SupName;
                     }
                     else if (generalCode.AddSub == 2)
                     {
                         ld_Count_Rasid = (decimal)ld_Rasid_c - (decimal)item.UnitQty;
-                       var res = await _Context.CustCodes.FirstOrDefaultAsync(obj => obj.CustCode1 == transMaster.CustNo && obj.BranchId == branch);
+                        var res = await _Context.CustCodes.FirstOrDefaultAsync(obj => obj.CustCode1 == transMaster.CustNo && obj.BranchId == branch);
                         if (res != null) ls_Cust_SubName = res.CustName;
                     }
                     quantityCardOnlyDTO.TranPrice = item.Price;
                     quantityCardOnlyDTO.TransDate = item.DocDate;
-                    quantityCardOnlyDTO.RefNo = transMaster.SupInvNo !=null? int.Parse(transMaster.SupInvNo):null;
+                    quantityCardOnlyDTO.RefNo = transMaster.SupInvNo != null ? int.Parse(transMaster.SupInvNo) : null;
                     quantityCardOnlyDTO.TransNo = (int)item.SerSys;
                     quantityCardOnlyDTO.TransType = generalCode.GDesc;
                     quantityCardOnlyDTO.TranCount = item.UnitQty;
@@ -200,7 +276,7 @@ namespace ProSoft.Core.Repositories.Stocks
 
                 if (item.UnitQty > 0 && generalCode.AddSub > 0)
                 {
-                    
+
                     var ls_Cust_SubName = "";
                     if (generalCode.AddSub == 1)
                     {
