@@ -13,10 +13,13 @@ namespace ProSoft.EF.DTOs.Stocks
     public class ReportQuantityClassCardDTO
     {
         [DisplayName("Account (Main)")]
-        [Required(ErrorMessage = "The field is required")]
         public string? MainCode { get; set; }
         public int? FYear { get; set; }
 
+        public DateTime FromDate {  get; set; }
+        public DateTime ToDate {  get; set; }
+        public int BranchId {  get; set; }
+        public int StockId {  get; set; }
         [DisplayName("The Item")]
         public string? ItemMaster { get; set; }
         public List<StockViewDTO>? stocks { get; set; }

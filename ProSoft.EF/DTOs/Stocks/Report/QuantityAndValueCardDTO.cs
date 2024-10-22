@@ -9,9 +9,9 @@ namespace ProSoft.EF.DTOs.Stocks.Report
     public class QuantityAndValueCardDTO
     {
         public int SeqNo { get; set; }
-        public DateTime? TransDate { get; set; }
+        public string? TransDate { get; set; }
         public int? TransNo { get; set; }
-        public string? TransType { get; set; }
+        public string? TransName { get; set; }
         public decimal? InQty { get; set; }
         public decimal? InPrice { get; set; }
         public decimal? InValue { get; set; }

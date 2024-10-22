@@ -1,0 +1,238 @@
+﻿@using FastReport.Web
+@using ProSoft.UI.Global
+
+@model ReportQuantityClassCardDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Class Card - Complete Production";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+
+    SelectList stocks = new SelectList(Model.stocks, "Stkcod", "Stknam");
+    SelectList subItems = new SelectList(Model.subItems, "ItemCode", "CodeAndName");
+
+    WebReport? webReport = ViewBag.WebReport;
+}
+@inject IViewLocalizer localizer
+
+
+<div class="container pt-2 ">
+
+    <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mt-1 mb-3">
+        <h2 class="header" style="color: #084298;">@localizer["Class Card - Quantity And Value - Complete Production"]</h2>
+        <div class="d-flex gap-2">
+          @*   <a class="btn btn-sm btn-primary fs-6" style="width:150px;background-color: #084298;color: yellow;border-radius: 8px;" onclick="CartSubItem(event)">
+                @localizer["Display"]
+            </a> *@
+        </div>
+    </div>
+
+    <form asp-action="QuantityAndValueClassCard" method="post" class="overflow-auto filter-box">
+        <div class=" d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 px-1 my-2">
+            <input id="fyear" asp-for="FYear" hidden class="form-control text-center p-0" />
+            <input  asp-for="BranchId" hidden class="form-control text-center p-0" />
+            <div class="d-flex align-items-center flex-column flex-md-row w-100">
+                <label for="stocks" style="color: #0000d7;" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Branches"]</label>
+                <select id="stocks" asp-items="stocks" asp-for="@Model.StockId" class="form-control text-center w-100 p-0">
+                    <option value="">@localizer["Stocks"]</option>
+                </select>
+            </div>
+            <div class="d-flex align-items-center w-100">
+                <label style="width:18% !important;color: #0000d7;" class="p-0">@localizer["The Item"]</label>
+                <select asp-for="ItemMaster" asp-items="subItems" class="form-control text-center">
+                    <option value="">@localizer["Choosee"]</option>
+                </select>
+                <span asp-validation-for="ItemMaster" class="text-danger"></span>
+            </div>
+           
+            <div class="d-flex align-items-center w-100">
+                <label style="width:60% !important;color: #0000d7;" class="p-0">@localizer["From Period"]</label>
+                <input id="fromPeriod" type="date" asp-for="@Model.FromDate" value="@(new DateTime(DateTime.Now.Year,1,1).ToString(GlobalConstants.FormatDate))" class="form-control text-center p-0" />
+            </div>
+            <div class="d-flex align-items-center w-100 p-0">
+                <label style="width:60% !important;color: #0000d7;">@localizer["To Period"]</label>
+                <input id="toPeriod" type="date" asp-for="@Model.ToDate" value="@(DateTime.Now.ToString(GlobalConstants.FormatDate))" class="form-control text-center p-0" />
+            </div>
+
+            <button type="submit" class="btn btn-primary">عرض</button>
+        </div>
+
+        @* <hr style="margin: 6px;" /><!----------------------------------------------------------> *@
+
+    </form>
+    @if (webReport != null)
+    {
+
+        <div class="webreport text-center">
+            @await webReport.Render()
+        </div>
+    }
+</div>
+@section Scripts {
+    <script>
+        ////for variables /////
+        var stocks = document.getElementById("stocks");
+        var itemMaster = document.getElementById("ItemMaster");
+        var fromPeriod = document.getElementById("fromPeriod");
+        var toPeriod = document.getElementById("toPeriod");
+        console.log(itemMaster.value);
+        //for report Analytical//
+        function CartSubItem(e) {
+            if (!stocks.value) {
+                stocks.focus();
+                return;
+            }
+            if (!itemMaster.value) {
+                itemMaster.focus();//Must Choose
+                return;
+            }
+            if (!fromPeriod.value) {
+                fromPeriod.focus();
+                return;
+            }
+            if (!toPeriod.value) {
+                toPeriod.focus();
+                return;
+            }
+            const fYear = document.getElementById("fyear").value;
+
+            // Get the year from fromPeriod and toPeriod
+            let fromYear = new Date(fromPeriod.value).getFullYear();
+            let toYear = new Date(toPeriod.value).getFullYear();
+
+            // Check if the year of 'From Period' and 'To Period' match the financial year
+            if (fromYear != fYear || toYear != fYear) {
+                alert("The year of Period must match year beside your name!");
+                fromPeriod.focus(); // Focus on the 'From Period' field after alert dismissal
+                return; // Exit the function to prevent further code execution
+            }
+            ///////////////////////////////////
+            var headReport = document.querySelector(".report");
+            var stockName = stocks.options[stocks.selectedIndex].textContent;
+            var itemNamee = itemMaster.options[itemMaster.selectedIndex].textContent;
+
+            let title;
+            title = "@localizer["Analytical Assistant Professor From"] " + fromPeriod.value + " @localizer["To"] " + toPeriod.value + " -- " + " @localizer["Item Name"] / " + itemNamee + " -- " + " @localizer["Stock Name"] / " + stockName;
+
+            headReport.innerHTML =
+                `
+                                   <div class="report-head d-flex justify-content-center align-items-center mt-4">
+                                       <h4 class="header" >${title}</h4>
+                                            <button onclick="printReport()" class="btn btn-success" style="margin-inline-start: auto;">Print</button>
+                                   </div>
+
+                                   <div class="print-table p-0 mb-2 overflow-auto">
+
+                                       <table id="myTable" class="table table-bordered border-dark table-hover Voucher-table" style="width:100%">
+                                             <thead class="table-primary border-dark">
+                                               <tr>
+                                               <th class="align-middle text-center" rowspan="2">
+        @localizer["Serial"]
+                                               </th>
+                                               <th class="align-middle text-center" rowspan="2">
+        @localizer["Transaction Date"]
+                                               </th>
+                                               <th class="align-middle text-center" rowspan="2">
+        @localizer["Transaction No"]
+                                               </th>
+                                               <th class="align-middle text-center" rowspan="2">
+        @localizer["Transaction Type"]
+                                               </th>
+                                               <th class="align-middle text-center" rowspan="2">
+        @localizer["Side Name"]
+                                               </th>
+                                               <th class="align-middle text-center" rowspan="2">
+        @localizer["Item Status"]
+                                               </th>
+                                               <th class="align-middle text-center" rowspan="2">
+        @localizer["Supplier / Customer"]
+                                               </th>
+                                               <th class="align-middle text-center" rowspan="2">
+        @localizer["Unit Price"]
+                                               </th>
+                                                    <th class="align-middle text-center" rowspan="2">
+        @localizer["Transaction"]
+                                               </th>
+                                              <th class="align-middle text-center" rowspan="2">
+        @localizer["Balance"]
+                                                </th>
+                                               </tr>
+
+                                           </thead>
+                                           <tbody>
+                                           </tbody>
+                                       </table>
+                                   </div>
+
+                               `;
+            let url = `/Stocks/QuantityClassCard/QuantityClassCardOnly/${stocks.value}?subItem=${itemMaster.value}&fromPeriod=${fromPeriod.value}&toPeriod=${toPeriod.value}`;
+
+            var dataa = document.querySelector(".Voucher-table tbody");
+            dataa.innerHTML = "";  // Empty data
+            $.ajax({
+                url: url,
+                success: function (result) {
+                    //  console.log(result);
+                    var index = 0;
+                    var valDepSum = 0;
+                    var valCreditSum = 0;
+                    var balance = 0;
+                    for (let item of result) {
+                        const forBalance = document.createElement("tr");
+                        forBalance.innerHTML += `
+                                    <td colspan="9">${index}</td>
+                                    <td class="align-middle">${item.balanceCount}</td>
+                                    `;
+                        dataa.appendChild(forBalance);
+
+                        let transDate = item.transDate == null ? "" : new Date(item.transDate).toISOString().split('T')[0];
+                        var transNo = item.transNo == 0 ? "" : item.transNo;
+                        const data = document.createElement("tr");
+                        balance += item.valDep;
+                        balance -= item.valCredit;
+
+                        data.innerHTML += `
+                                           <td class="align-middle">${index}</td>
+                                            <td class="align-middle">${transDate}</td>
+                                            <td class="align-middle">${transNo}</td>
+                                            <td class="align-middle">${item.transType}</td>
+                                            <td class="align-middle">${item.custName}</td>
+                                            <td class="align-middle">${item.desItem}</td>
+                                            <td class="align-middle">${item.refNo}</td>
+                                            <td class="align-middle">${item.tranPrice}</td>
+                                            <td class="align-middle">${item.tranCount}</td>
+                                            <td class="align-middle">${item.rasidCount}</td>
+
+                                           `;
+                        index++;
+                        valDepSum += item.valDep;
+                        valCreditSum += item.valCredit;
+                        dataa.appendChild(data);
+                    }
+                }
+            });
+        }
+        function printReport() {
+            let head = document.querySelector(".report-head");
+            let tableReport = document.querySelector(".print-table");
+            let originalContent = document.body.innerHTML;//all body
+
+            head.querySelector("button").style.display = "none";
+            document.body.style.padding = "30px 30px";
+            document.body.innerHTML = head.outerHTML + tableReport.outerHTML;
+            window.print();
+            document.body.innerHTML = originalContent;
+        }
+    </script>
+    @* For Custom Select Element *@
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#ItemMaster').select2({
+                placeholder: "-- Choose --",
+                allowClear: true
+            });
+        });
+    </script>
+}

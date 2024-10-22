@@ -40,6 +40,11 @@ namespace ProSoft.Core.Repositories.Stocks
             return await _Context.SubItems.Where(s => s.Flag1 == stockType).ToListAsync();
         }
 
+        public async Task<SubItem?> GetSubItemByItemCodeAsync(string ItemCode)
+        {
+           
+            return  await _DbSet.FirstOrDefaultAsync(obj => obj.ItemCode == ItemCode);
+        }
         //-------------------- Ayman Saad --------------------//
         public async Task<List<SubItemViewDTO>> GetSubItemsByMainIdAsync(int mainId)
         {
@@ -48,6 +53,7 @@ namespace ProSoft.Core.Repositories.Stocks
             return subItemsDTO;
         }
 
+       
         public async Task<int> ValidateItemCode(string itemCode)
         {
             // عدد حروف الباركود

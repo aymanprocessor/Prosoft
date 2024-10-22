@@ -88,8 +88,8 @@ namespace ProSoft.Core.Repositories.Stocks
             foreach (var transDtl in transDtlList)
             {
                 var generalCode = await _Context.GeneralCodes.FirstOrDefaultAsync(g => g.UniqueType == transDtl.TransType);
-
-                if (transDtl.DocDate.Value.Date <= beforeFromDateOneDay.Date && transDtl.DocDate.Value.Date >= new DateTime(DateTime.Now.Year, 1, 1))
+                // رصيد اول مدة
+                if (transDtl.DocDate.Value.Date <= beforeFromDateOneDay.Date && transDtl.DocDate.Value.Date >= new DateTime(DateTime.Now.Year, 1, 1)) 
                 {
                     if (generalCode != null && generalCode.AddSub == 1) // وارد
                     {
@@ -99,15 +99,16 @@ namespace ProSoft.Core.Repositories.Stocks
                         stlBalTotalPrice += transDtl.ItemVal;
                         avgPrice = Math.Round((stlBalTotalPrice / stkBalOpenQty).Value, 2);
                     }
-                    else if (generalCode != null && generalCode.AddSub == 2)
+                    else if (generalCode != null && generalCode.AddSub == 2) // منصرف
                     {
                         stkBalOpenQty -= transDtl.UnitQty;
                         stlBalTotalPrice -= transDtl.ItemVal;
                         avgPrice = Math.Round((stlBalTotalPrice / stkBalOpenQty).Value, 2);
                     }
-                }
 
-                if (transDtl.DocDate.Value.Date > beforeFromDateOneDay.Date)
+                }
+                // حركات
+                else if (transDtl.DocDate.Value.Date > beforeFromDateOneDay.Date)
                 {
                     if (generalCode != null && generalCode.AddSub == 1) // وارد
                     {
@@ -120,7 +121,7 @@ namespace ProSoft.Core.Repositories.Stocks
                         Console.WriteLine($"Balance Total : {stlBalTotalPrice}");
                         Console.WriteLine($"Balance AVG Price : {avgPrice}");
                     }
-                    else if (generalCode != null && generalCode.AddSub == 2)
+                    else if (generalCode != null && generalCode.AddSub == 2) // منصرف
                     {
 
                         stkBalOpenQty = stkBalOpenQty- transDtl.UnitQty;
@@ -133,13 +134,7 @@ namespace ProSoft.Core.Repositories.Stocks
 
                 }
             }
-            try
-            {
-
-            }
-            catch (Exception ex)
-            {
-            }
+           
 
             return stkBalOpenQty;
         }
@@ -225,10 +220,11 @@ namespace ProSoft.Core.Repositories.Stocks
             return quantityCardOnlyDTOs;
         }
         // ------------------------------- Ayman Saad ------------------------------- //
-        public async Task<List<QuantityAndValueCardDTO>> GetQuantityAndValueCard(int id, string subItem, DateTime? fromPeriod, DateTime? toPeriod, int branch)
+        public async Task<List<QuantityAndValueCardDTO>> GetQuantityAndValueCard(int id, string itemCode, DateTime? fromPeriod, DateTime? toPeriod, int branch)
         {
             List<QuantityAndValueCardDTO> quantityAndValueCardDTOs = new List<QuantityAndValueCardDTO>();
             // UnitCode unitCode = await _Context.UnitCodes.FirstOrDefaultAsync(obj=>obj.Code == 0 && obj.Flag1 ==1 );
+            QuantityAndValueCardDTO quantityAndValueCardDTO = new QuantityAndValueCardDTO();
 
             DateTime fromDate;
 
@@ -243,79 +239,93 @@ namespace ProSoft.Core.Repositories.Stocks
                 fromDate = fromPeriod.Value.AddDays(-1);
             }
 
-            var brParam = new SqlParameter("@br", branch);
-            var stkParam = new SqlParameter("@stk", id);
-            var frDateParam = new SqlParameter("@fr_date", fromDate);
-            var frItmParam = new SqlParameter("@fr_itm", subItem);
 
-            // Define the output parameter
-            var outputParam = new SqlParameter("@itm_balance", SqlDbType.Decimal)
+            var stock = await _Context.Stocks.FirstOrDefaultAsync(s => s.Stkcod == id);
+            var item = await _Context.SubItems.FirstOrDefaultAsync(s => s.ItemCode == itemCode);
+            var transDtlList = await _Context.TransDtls.Where(t => t.ItemMaster == itemCode).ToListAsync();
+            var stkbalance = await _Context.Stkbalances.Where(st => st.FYear >= fromPeriod.Value.Year && st.Flag1 == stock.Flag1).ToListAsync();
+            var stkBalOpenQty = stkbalance.Sum(s => s.QtyStart);
+            var stlBalTotalPrice = stkbalance.Sum(s => s.ItemPrice2);
+            var avgPrice = Math.Round((stlBalTotalPrice / stkBalOpenQty).Value, 2);
+
+            // رصيد اول المدة
+            var transDtlBetweenStartDateAndBeforeFromDateList = transDtlList.Where(t =>  t.DocDate.Value.Date >= new DateTime(DateTime.Now.Year,1,1) && t.DocDate.Value.Date <= fromPeriod.Value.Date).ToList();
+
+            if(transDtlBetweenStartDateAndBeforeFromDateList.Count > 0)
             {
-                Direction = ParameterDirection.Output
-            };
-
-            // Execute the stored procedure
-            await _Context.Database.ExecuteSqlRawAsync(
-                "EXEC @itm_balance = [dbo].[item_balance2] @br, @stk, @fr_date, @fr_itm",
-                outputParam, brParam, stkParam, frDateParam, frItmParam
-            );
-
-            // Return the output value
-            var balance = (decimal)outputParam.Value;
-            var BalanceQty = balance;
-            decimal TotalValue = 0;
-            decimal TotalQty = 0;
-            CompanyProfile companyProfile = await _Context.CompanyProfiles.FirstOrDefaultAsync(obj => obj.CoCode == 1);
-
-            List<TransDtl> transDtls = await _Context.TransDtls.Where(obj => obj.StockCode == id && obj.ItemMaster == subItem.ToString() && (obj.DocDate >= fromPeriod && obj.DocDate <= toPeriod)).ToListAsync();
-            foreach (var item in transDtls)
-            {
-                QuantityAndValueCardDTO quantityAndValueCardDTO = new QuantityAndValueCardDTO();
-                GeneralCode generalCode = await _Context.GeneralCodes.FirstOrDefaultAsync(obj => (obj.GType == "4" || obj.GType == "4") && obj.UniqueType == item.TransType);
-                TransMaster transMaster = await _Context.TransMasters.FirstOrDefaultAsync(obj => obj.TransMAsterID == item.TransMAsterID);
-
-                if (item.UnitQty > 0 && generalCode.AddSub > 0)
+                foreach (var tranDtl in transDtlBetweenStartDateAndBeforeFromDateList)
                 {
 
-                    var ls_Cust_SubName = "";
-                    if (generalCode.AddSub == 1)
-                    {
-                        BalanceQty = (decimal)BalanceQty + (decimal)item.UnitQty;
-                        var res = await _Context.SupCodes.FirstOrDefaultAsync(obj => obj.SupCode1 == transMaster.SupNo && obj.BranchId == branch);
-                        if (res != null) ls_Cust_SubName = res.SupName;
-
-                        quantityAndValueCardDTO.InPrice = item.Price;
-                        quantityAndValueCardDTO.InQty = item.UnitQty;
-                        quantityAndValueCardDTO.InValue = item.UnitQty * item.Price;
-
-
-                    }
-                    else if (generalCode.AddSub == 2)
-                    {
-                        BalanceQty = (decimal)BalanceQty - (decimal)item.UnitQty;
-                        var res = await _Context.CustCodes.FirstOrDefaultAsync(obj => obj.CustCode1 == transMaster.CustNo && obj.BranchId == branch);
-                        if (res != null) ls_Cust_SubName = res.CustName;
-
-                        quantityAndValueCardDTO.OutPrice = item.Price;
-                        quantityAndValueCardDTO.OutQty = item.UnitQty;
-                        quantityAndValueCardDTO.OutValue = item.UnitQty * item.Price;
-
-
-
-                    }
-                    //quantityAndValueCardDTO.TranPrice = item.Price;
-                    //quantityAndValueCardDTO.TransDate = item.DocDate;
-                    //quantityAndValueCardDTO.RefNo = transMaster.SupInvNo != null ? int.Parse(transMaster.SupInvNo) : null;
-                    //quantityAndValueCardDTO.TransNo = (int)item.SerSys;
-                    //quantityAndValueCardDTO.TransType = generalCode.GDesc;
-                    //quantityAndValueCardDTO.TranCount = item.UnitQty;
-                    //quantityAndValueCardDTO.RasidCount = ld_Count_Rasid;
-                    //quantityAndValueCardDTO.DesItem = item.Flag1;
-                    //quantityAndValueCardDTO.CustName = ls_Cust_SubName;
-                    //quantityAndValueCardDTO.BalanceCount = ld_Rasid_c;
-                    //quantityAndValueCardDTOs.Add(quantityAndValueCardDTO);
+                    stkBalOpenQty += tranDtl.UnitQty;
+                    stlBalTotalPrice += tranDtl.ItemVal;
+                    avgPrice = Math.Round((stlBalTotalPrice / stkBalOpenQty).Value, 2);
                 }
+
+
             }
+            quantityAndValueCardDTO.TransName = "رصيد اول المدة";
+            quantityAndValueCardDTO.TransDate = fromPeriod.Value.AddDays(-1).ToString("yyyy-MM-dd");
+
+            quantityAndValueCardDTO.BalanceQty = stkBalOpenQty;
+            quantityAndValueCardDTO.BalancePrice = avgPrice;
+            quantityAndValueCardDTO.BalanceValue = stlBalTotalPrice;
+
+            quantityAndValueCardDTOs.Add(quantityAndValueCardDTO);
+
+
+            // الحركات
+            var transDtlAfterFromDateList = transDtlList.Where(t =>  t.DocDate.Value.Date > fromPeriod.Value.Date && t.DocDate.Value.Date<= toPeriod.Value.Date).ToList();
+
+            foreach (var transDtl in transDtlAfterFromDateList)
+            {
+                quantityAndValueCardDTO = new();
+                var generalCode = await _Context.GeneralCodes.FirstOrDefaultAsync(g => g.UniqueType == transDtl.TransType);
+               
+            
+                    if (generalCode != null && generalCode.AddSub == 1) // وارد
+                    {
+
+
+                        stkBalOpenQty = stkBalOpenQty + transDtl.UnitQty;
+                        stlBalTotalPrice = stlBalTotalPrice + transDtl.ItemVal;
+                        avgPrice = Math.Round((stlBalTotalPrice / stkBalOpenQty).Value, 2);
+                        Console.WriteLine($"Balance Qty : {stkBalOpenQty}");
+                        Console.WriteLine($"Balance Total : {stlBalTotalPrice}");
+                        Console.WriteLine($"Balance AVG Price : {avgPrice}");
+
+                        quantityAndValueCardDTO.InQty = transDtl.UnitQty;
+                        quantityAndValueCardDTO.InValue = transDtl.ItemVal;
+                        quantityAndValueCardDTO.InPrice = transDtl.Price ;
+                    }
+                    else if (generalCode != null && generalCode.AddSub == 2) // منصرف
+                    {
+
+                        stkBalOpenQty = stkBalOpenQty - transDtl.UnitQty;
+                        stlBalTotalPrice = stlBalTotalPrice - transDtl.ItemVal;
+                        avgPrice = Math.Round((stlBalTotalPrice / stkBalOpenQty).Value, 2);
+                        Console.WriteLine($"Balance Qty : {stkBalOpenQty}");
+                        Console.WriteLine($"Balance Total : {stlBalTotalPrice}");
+                        Console.WriteLine($"Balance AVG Price : {avgPrice}");
+
+                        quantityAndValueCardDTO.OutQty = transDtl.UnitQty;
+                        quantityAndValueCardDTO.OutValue = transDtl.ItemVal;
+                        quantityAndValueCardDTO.OutPrice = transDtl.Price;
+                    }
+
+                    quantityAndValueCardDTO.TransName = generalCode.GDesc;
+                    quantityAndValueCardDTO.TransNo = (int)transDtl.SerSys;
+                    quantityAndValueCardDTO.TransDate = transDtl.DocDate.Value.ToString("yyyy-MM-dd");
+
+                quantityAndValueCardDTO.BalanceQty = stkBalOpenQty;
+                quantityAndValueCardDTO.BalancePrice = avgPrice;
+                quantityAndValueCardDTO.BalanceValue = stlBalTotalPrice;
+
+                quantityAndValueCardDTOs.Add(quantityAndValueCardDTO);
+
+            }
+
+
+            quantityAndValueCardDTOs = quantityAndValueCardDTOs.OrderBy(q => DateTime.Parse( q.TransDate)).ToList();
             return quantityAndValueCardDTOs;
         }
     }
