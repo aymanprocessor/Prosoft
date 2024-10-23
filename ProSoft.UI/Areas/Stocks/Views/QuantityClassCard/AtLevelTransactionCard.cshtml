@@ -1,0 +1,95 @@
+﻿@using FastReport.Web
+@using ProSoft.EF.DTOs.Stocks.Report.ClassCard
+@using ProSoft.UI.Global
+
+@model AtTransactionLevelRequestDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Class Card - Complete Production At Level Trasnaction";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+    SelectList stocks = new SelectList(ViewBag.Stocks, "Stkcod", "Stknam");
+    SelectList subItems = new SelectList(ViewBag.SubItems, "ItemCode", "SubName");
+    SelectList unitCodes = new SelectList(ViewBag.UnitCodes, "Code", "Names");
+    WebReport? webReport = ViewBag.WebReport;
+}
+@inject IViewLocalizer localizer
+
+
+<div class="container pt-2 ">
+
+    <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mt-1 mb-3">
+        <h2 class="header" style="color: #084298;">@localizer["Class Card - Complete Production At Level Trasnaction"]</h2>
+
+    </div>
+
+    <form asp-action="AtLevelTransactionCard" method="post" class="overflow-auto filter-box">
+        <div class=" d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 px-1 my-2">
+            <input asp-for="BranchId" value="@ViewBag.BranchId" hidden class="form-control text-center p-0" />
+
+            <div class="d-flex align-items-center flex-column flex-md-row w-100">
+                <label for="stocks" style="color: #0000d7;" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Stock"]</label>
+                <select id="stocks" asp-items="stocks" asp-for="@Model.StockId" class="form-control text-center w-100 p-0">
+                    <option value="">@localizer["Choosee"]</option>
+                </select>
+            </div>
+            <div class="d-flex align-items-center flex-column flex-md-row w-100">
+                <label for="UnitCode" style="color: #0000d7;" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["The Unit"]</label>
+                <select id="stocks" asp-items="unitCodes" asp-for="@Model.UnitCode" class="form-control text-center w-100 p-0">
+                    <option value="">@localizer["Choosee"]</option>
+                </select>
+            </div>
+            <div class="d-flex align-items-center w-100">
+                <label style="width:18% !important;color: #0000d7;" class="p-0">@localizer["The Item"]</label>
+                <select asp-for="ItemMaster" asp-items="subItems" class="form-control text-center">
+                    <option value="">@localizer["Choosee"]</option>
+                </select>
+                <span asp-validation-for="ItemMaster" class="text-danger"></span>
+            </div>
+
+            <div class="d-flex align-items-center w-100">
+                <label style="width:60% !important;color: #0000d7;" class="p-0">@localizer["From Period"]</label>
+                <input id="fromPeriod" type="date" asp-for="@Model.FromDate" value="@(new DateTime(DateTime.Now.Year,1,1).ToString(GlobalConstants.FormatDate))" class="form-control text-center p-0" />
+            </div>
+            <div class="d-flex align-items-center w-100 p-0">
+                <label style="width:60% !important;color: #0000d7;">@localizer["To Period"]</label>
+                <input id="toPeriod" type="date" asp-for="@Model.ToDate" value="@(DateTime.Now.ToString(GlobalConstants.FormatDate))" class="form-control text-center p-0" />
+            </div>
+
+            <button type="submit" id="btn-submit" class="btn btn-primary" style="width:auto">
+
+                @localizer["View"]
+                <span id="spinner"class="spinner-grow spinner-grow-sm d-none" ></span>
+
+            </button>
+        </div>
+
+        @* <hr style="margin: 6px;" /><!----------------------------------------------------------> *@
+
+    </form>
+    @if (webReport != null)
+    {
+
+        <div class="webreport text-center">
+            @await webReport.Render()
+        </div>
+    }
+</div>
+
+@section Scripts{
+    <script>
+     
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.querySelector("form");
+
+            const btnSubmit = document.getElementById("btn-submit");
+            const spinner = document.getElementById("spinner");
+            form.addEventListener("submit", function () {
+                btnSubmit.setAttribute("disabled", "disabled");
+                spinner.classList.remove("d-none");
+            });
+        });
+    </script>
+}

@@ -1011,7 +1011,10 @@
   "Pricing Category": "تصنيف السعر",
   "Item Group": "مجموعة الصنف",
   "Price": "سعر",
-  "Class Card - Quantity And Value - Complete Production": "كارت صنف - كمية وقيمة - انتاج تام"
+  "Class Card - Quantity And Value - Complete Production": "كارت صنف - كمية وقيمة - انتاج تام",
+  "Class Card - Complete Production At Level Trasnaction": "كارت صنف - انتاج تام علي مستوى الحركة",
+  "At Level Transaction Class Card": "كارت صنف علي مستوي الحركة",
+  "Quantity And Value Class Card": "كارت صنف كمية وقيمة"
 
 
 

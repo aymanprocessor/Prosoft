@@ -364,6 +364,16 @@
                                         </a>
                                     </li>
                                     <li class="nav-item has-submenu">
+                                        <a asp-area="Stocks" asp-controller="QuantityClassCard" asp-action="QuantityAndValueClassCard" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Quantity And Value Class Card"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Stocks" asp-controller="QuantityClassCard" asp-action="AtLevelTransactionCard" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["At Level Transaction Class Card"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
                                         <a asp-area="Stocks" asp-controller="TransferAndReceiptTransactionReport" asp-action="Index" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
                                             @localizer["Transfer And Receipt Transaction"]
                                         </a>

@@ -39,7 +39,39 @@ namespace ProSoft.Core.Repositories.Stocks
         }
 
 
-    
+
+        public async Task<List<StockViewDTO>> GetActiveStocksForUserAsync(int userCode)
+        {
+            List<StockEmp> stockTransList = await _Context.StockEmps
+                .Where(obj => obj.UserId == userCode && obj.StockDef == 1).ToListAsync();
+            List<Stock> stocksList = await _Context.Stocks.ToListAsync();
+
+            var stocksDTO = new List<StockViewDTO>();
+            var isExisted = false;
+            foreach (var stock in stocksList)
+            {
+                foreach (var stockTrans in stockTransList)
+                {
+                    if (stock.Stkcod == stockTrans.Stkcod)
+                    {
+                        isExisted = true;
+                        break;
+                    }
+                    else
+                        isExisted = false;
+                }
+                if (isExisted)
+                {
+                    var stockDTO = new StockViewDTO();
+                    stockDTO.Stkcod = stock.Stkcod;
+                    stockDTO.Stknam = (await _Context.Stocks
+                        .FindAsync(stock.Stkcod)).Stknam;
+                    stocksDTO.Add(stockDTO);
+                }
+            }
+            return stocksDTO;
+        }
+
 
 
         // ------------------- Coded By Ayman Saad ------------------- //

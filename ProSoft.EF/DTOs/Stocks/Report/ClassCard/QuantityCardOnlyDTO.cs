@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProSoft.EF.DTOs.Stocks.Report
+namespace ProSoft.EF.DTOs.Stocks.Report.ClassCard
 {
     public class QuantityCardOnlyDTO
     {

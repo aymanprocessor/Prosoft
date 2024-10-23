@@ -55,7 +55,7 @@
                 <input id="toPeriod" type="date" asp-for="@Model.ToDate" value="@(DateTime.Now.ToString(GlobalConstants.FormatDate))" class="form-control text-center p-0" />
             </div>
 
-            <button type="submit" class="btn btn-primary">عرض</button>
+            <button type="submit" class="btn btn-primary">@localizer["View"]</button>
         </div>
 
         @* <hr style="margin: 6px;" /><!----------------------------------------------------------> *@

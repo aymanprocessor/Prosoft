@@ -13,7 +13,9 @@ namespace ProSoft.EF.IRepositories.Stocks
     {
         // -------------------- Coded By Ayman Saad -------------------- //
 
-        public IEnumerable<SelectListItem> GetAllStockAsEnumerable();
+         IEnumerable<SelectListItem> GetAllStockAsEnumerable();
+        Task<List<StockViewDTO>> GetActiveStocksForUserAsync(int userCode);
+
 
         // -------------------- Coded By Ayman Saad -------------------- //
 

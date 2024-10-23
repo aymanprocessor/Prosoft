@@ -4,7 +4,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using ProSoft.EF.DbContext;
 using ProSoft.EF.DTOs.Stocks;
-using ProSoft.EF.DTOs.Stocks.Report;
+using ProSoft.EF.DTOs.Stocks.Report.ClassCard;
 using ProSoft.EF.IRepositories.Stocks;
 using ProSoft.EF.Migrations;
 using ProSoft.EF.Models;
@@ -328,5 +328,49 @@ namespace ProSoft.Core.Repositories.Stocks
             quantityAndValueCardDTOs = quantityAndValueCardDTOs.OrderBy(q => DateTime.Parse( q.TransDate)).ToList();
             return quantityAndValueCardDTOs;
         }
+        public async Task<List<AtTransactionLevelCardDTO>> GetAtLevelTransactionCard(int id, string itemCode,int unitCode, DateTime? fromPeriod, DateTime? toPeriod, int branch)
+        {
+            var stock = await _Context.Stocks.FirstOrDefaultAsync(s => s.Stkcod == id);
+            var item = await _Context.SubItems.FirstOrDefaultAsync(s => s.ItemCode == itemCode);
+            var transDtlList = await _Context.TransDtls.Where(t => t.ItemMaster == itemCode&&t.UnitCode== unitCode && t.DocDate >= fromPeriod && t.DocDate <= toPeriod).ToListAsync();
+            List< AtTransactionLevelCardDTO > atTransactionLevelCardDTOs = new();
+            foreach (var transDtl in transDtlList)
+            {
+                AtTransactionLevelCardDTO AtTransactionLevelCardDTO = new();
+                AtTransactionLevelCardDTO.TransDate = transDtl.DocDate.Value.ToString("yyyy-MM-dd");
+                AtTransactionLevelCardDTO.TransNo = (int)transDtl.DocNo;
+                AtTransactionLevelCardDTO.RefNo = transDtl.RefDocNo;
+                AtTransactionLevelCardDTO.itemType = 1;
+
+
+                switch (transDtl.TransType)
+                {
+                    case 2:
+                        AtTransactionLevelCardDTO.ItemIn = transDtl.UnitQty;
+                        break;
+                    case 4:
+                        AtTransactionLevelCardDTO.ItemOut = transDtl.UnitQty;
+                        break;
+                    case 12:
+                        AtTransactionLevelCardDTO.ItemOut = transDtl.UnitQty;
+                        break;
+                    case 16:
+                        AtTransactionLevelCardDTO.ReItemPlus = transDtl.UnitQty;
+                        break;
+                    case 24:
+                        AtTransactionLevelCardDTO.LevelingOut = transDtl.UnitQty;
+                        break;
+                    case 17:
+                        AtTransactionLevelCardDTO.ReItemMinus = transDtl.UnitQty;
+                        break;
+                   
+                }
+                atTransactionLevelCardDTOs.Add(AtTransactionLevelCardDTO);
+
+            }
+            return atTransactionLevelCardDTOs;
+        }
+        // ------------------------------- Ayman Saad ------------------------------- //
+
     }
 }
