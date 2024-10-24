@@ -124,3 +124,15 @@ html {
     }
 }
 /* End Style for Sidebar Our_Modules */
+
+.side-bar{
+    background : #1b1a1b;
+    width: 250px ;
+    height : 100vh;
+    position:fixed;
+    top:0;
+    overflow-y:auto;
+    transition:0.6s ease;
+    transition-property:left;
+
+}
