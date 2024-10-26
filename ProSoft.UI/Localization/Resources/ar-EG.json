@@ -772,6 +772,7 @@
   "Edit transaction": "تعديل الحركة",
   "for user": "للمستخدم",
   "The Suppliers": "الموردين",
+  "The Supplier": "المورد",
   "System Tools": "ادوات النظام",
   "System Accounts Coding": "تكويد حسابات النظام",
   "The Code": "الكود",
@@ -1014,8 +1015,8 @@
   "Class Card - Quantity And Value - Complete Production": "كارت صنف - كمية وقيمة - انتاج تام",
   "Class Card - Complete Production At Level Trasnaction": "كارت صنف - انتاج تام علي مستوى الحركة",
   "At Level Transaction Class Card": "كارت صنف علي مستوي الحركة",
-  "Quantity And Value Class Card": "كارت صنف كمية وقيمة"
-
+  "Quantity And Value Class Card": "كارت صنف كمية وقيمة",
+  "The Total Item Cards - Quantity": "كروت الاصناف الاجمالية - كمية"
 
 
 }
