@@ -4,7 +4,7 @@
     <BusinessObjectDataSource Name="table" ReferenceName="Table" DataType="System.Int32" Enabled="true">
       <Column Name="ItemCode" DataType="System.String" Format="Date"/>
       <Column Name="ItemName" DataType="System.String"/>
-      <Column Name="BalanceBefore" DataType="System.Decimal"/>
+      <Column Name="CarriedBalance" DataType="System.Decimal"/>
       <Column Name="TotalOfInQuantity" DataType="System.Decimal"/>
       <Column Name="TotalOfOutQuantity" DataType="System.Decimal"/>
       <Column Name="CurrentBalance" DataType="System.Decimal"/>
@@ -14,7 +14,7 @@
     <Parameter Name="FromDate" DataType="System.DateTime" AsString=""/>
     <Parameter Name="ToDate" DataType="System.DateTime" AsString=""/>
     <Parameter Name="StockName" DataType="System.String" AsString=""/>
-    <Total Name="SumBalanceBefore" Expression="[table.BalanceBefore]" Evaluator="Data1"/>
+    <Total Name="SumCarriedBalance" Expression="[table.CarriedBalance]" Evaluator="Data1"/>
     <Total Name="SumTotalOfInQuantity" Expression="[table.TotalOfInQuantity]" Evaluator="Data1"/>
     <Total Name="SumTotalOfOutQuantity" Expression="[table.TotalOfOutQuantity]" Evaluator="Data1"/>
     <Total Name="SumCurrentBalance" Expression="[table.CurrentBalance]" Evaluator="Data1"/>
@@ -39,7 +39,7 @@
           <TableCell Name="Cell44" Border.Lines="All" Text="[table.CurrentBalance]" HorzAlign="Center" VertAlign="Center" Font="Arial, 9pt"/>
           <TableCell Name="Cell45" Border.Lines="All" Text="[table.TotalOfOutQuantity]" HorzAlign="Center" VertAlign="Center" Font="Arial, 9pt"/>
           <TableCell Name="Cell46" Border.Lines="All" Text="[table.TotalOfInQuantity]" HorzAlign="Center" VertAlign="Center" Font="Arial, 9pt"/>
-          <TableCell Name="Cell47" Border.Lines="All" Text="[table.BalanceBefore]" HorzAlign="Center" VertAlign="Center" Font="Arial, 9pt"/>
+          <TableCell Name="Cell47" Border.Lines="All" Text="[table.CarriedBalance]" HorzAlign="Center" VertAlign="Center" Font="Arial, 9pt"/>
           <TableCell Name="Cell48" Border.Lines="All" Text="[table.ItemName]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt"/>
           <TableCell Name="Cell49" Border.Lines="All" Text="[table.ItemCode]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt"/>
           <TableCell Name="Cell50" Border.Lines="All" Text="[Row#]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt"/>
@@ -89,7 +89,7 @@
             <TableCell Name="Cell53" Border.Lines="All" Fill.Color="LightGray" Text="[SumCurrentBalance]" HorzAlign="Center" VertAlign="Center" Font="Arial, 9pt"/>
             <TableCell Name="Cell54" Border.Lines="All" Fill.Color="LightGray" Text="[SumTotalOfOutQuantity]" HorzAlign="Center" VertAlign="Center" Font="Arial, 9pt"/>
             <TableCell Name="Cell55" Border.Lines="All" Fill.Color="LightGray" Text="[SumTotalOfInQuantity]" HorzAlign="Center" VertAlign="Center" Font="Arial, 9pt"/>
-            <TableCell Name="Cell56" Border.Lines="All" Fill.Color="LightGray" Text="[SumBalanceBefore]" HorzAlign="Center" VertAlign="Center" Font="Arial, 9pt"/>
+            <TableCell Name="Cell56" Border.Lines="All" Fill.Color="LightGray" Text="[SumCarriedBalance]" HorzAlign="Center" VertAlign="Center" Font="Arial, 9pt"/>
             <TableCell Name="Cell57" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt"/>
             <TableCell Name="Cell58" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt"/>
             <TableCell Name="Cell59" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt"/>

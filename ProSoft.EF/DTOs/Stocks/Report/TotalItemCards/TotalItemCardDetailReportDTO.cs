@@ -10,20 +10,78 @@ namespace ProSoft.EF.DTOs.Stocks.Report.TotalItemCards
     {
         public string ItemCode { get; set; } = string.Empty;
         public string ItemName { get; set; } = string.Empty;
-        public decimal FirstBalance { get; set; }
+
+        private decimal _carriedBalance;
+        public decimal CarriedBalance
+        {
+            get => _carriedBalance;
+            set => _carriedBalance = Math.Round(value, 0);
+        }
 
         // ----- In ----- //
-        public decimal InAdd { get; set; }
-        public decimal InReturn { get; set; }
-        public decimal InOther { get; set; }
-        public decimal InTotal { get; set; }
+        private decimal _inAdd;
+        public decimal InAdd
+        {
+            get => _inAdd;
+            set => _inAdd = Math.Round(value, 0);
+        }
+
+        private decimal _inReturn;
+        public decimal InReturn
+        {
+            get => _inReturn;
+            set => _inReturn = Math.Round(value, 0);
+        }
+
+        private decimal _inOther;
+        public decimal InOther
+        {
+            get => _inOther;
+            set => _inOther = Math.Round(value, 0);
+        }
+
+        private decimal _inTotal;
+        public decimal InTotal
+        {
+            get => _inTotal;
+            set => _inTotal = Math.Round(value, 0);
+        }
 
         // ----- Out ----- //
-        public decimal OutAdd { get; set;  }
-        public decimal OutReturn { get; set; }
-        public decimal OutOther { get; set; }
-        public decimal OutTotal { get; set; }
+        private decimal _outAdd;
+        public decimal OutAdd
+        {
+            get => _outAdd;
+            set => _outAdd = Math.Round(value, 0);
+        }
 
-        public decimal CurrentBalance { get; set; }
+        private decimal _outReturn;
+        public decimal OutReturn
+        {
+            get => _outReturn;
+            set => _outReturn = Math.Round(value, 0);
+        }
+
+        private decimal _outOther;
+        public decimal OutOther
+        {
+            get => _outOther;
+            set => _outOther = Math.Round(value, 0);
+        }
+
+        private decimal _outTotal;
+        public decimal OutTotal
+        {
+            get => _outTotal;
+            set => _outTotal = Math.Round(value, 0);
+        }
+
+        private decimal _currentBalance;
+        public decimal CurrentBalance
+        {
+            get => _currentBalance;
+            set => _currentBalance = Math.Round(value, 0);
+        }
     }
+
 }

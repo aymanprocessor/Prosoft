@@ -833,7 +833,6 @@
   "Supplier Invoice Date": "تاريخ فاتورة المورد",
   "Lot Number": "رقم اللوط",
   "Purchase No": "رقم المشتريات",
-  "The Supplier": "المورد",
   "Discount Percentage %": "نسبة الخصم %",
   "Permission Approval": "اعتماد الاذن",
   "Purchases Value": "قيمة مشتريات",
@@ -1016,7 +1015,9 @@
   "Class Card - Complete Production At Level Trasnaction": "كارت صنف - انتاج تام علي مستوى الحركة",
   "At Level Transaction Class Card": "كارت صنف علي مستوي الحركة",
   "Quantity And Value Class Card": "كارت صنف كمية وقيمة",
-  "The Total Item Cards - Quantity": "كروت الاصناف الاجمالية - كمية"
+  "The Total Item Cards - Quantity": "كروت الاصناف الاجمالية - كمية",
+  "The Total Item Cards - Price": "كروت الاصناف الاجمالية - سعر",
+  "The Total Item Cards - Detail": "كروت الاصناف الاجمالية - تفصيلي"
 
 
 }

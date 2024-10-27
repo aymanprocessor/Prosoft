@@ -894,7 +894,6 @@
   "Item Status": "Item Status",
   "Warning": "Warning",
   "You can not approve this permission with no items.": "You can not approve this permission with no items.",
-  "Approve": "Approve",
   "Ok": "Ok",
   "The Codes": "The Codes",
   "Order Limit": "Order Limit",
@@ -1017,5 +1016,7 @@
   "Class Card - Complete Production At Level Trasnaction": "Class Card - Complete Production At Level Trasnaction",
   "At Level Transaction Class Card": "At Level Transaction Class Card",
   "Quantity And Value Class Card": "Quantity And Value Class Card",
-  "The Total Item Cards - Quantity": "The Total Item Cards - Quantity"
+  "The Total Item Cards - Quantity": "The Total Item Cards - Quantity",
+  "The Total Item Cards - Price": "The Total Item Cards - Price",
+  "The Total Item Cards - Detail": "The Total Item Cards - Detail"
 }

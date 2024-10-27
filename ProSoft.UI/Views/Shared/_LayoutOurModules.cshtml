@@ -380,6 +380,21 @@
                                             @localizer["Transfer And Receipt Transaction"]
                                         </a>
                                     </li>
+                                     <li class="nav-item has-submenu">
+                                        <a asp-area="Stocks" asp-controller="TotalItemCards" asp-action="TotalItemCardsQuantity" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["The Total Item Cards - Quantity"]
+                                        </a>
+                                    </li>
+                                     <li class="nav-item has-submenu">
+                                        <a asp-area="Stocks" asp-controller="TotalItemCards" asp-action="TotalItemCardsPrice" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["The Total Item Cards - Price"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Stocks" asp-controller="TotalItemCards" asp-action="TotalItemCardsDetail" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["The Total Item Cards - Detail"]
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>

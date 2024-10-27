@@ -77,6 +77,99 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
            
         }
 
+
+        public async Task<IActionResult> TotalItemCardsPrice()
+        {
+            List<StockViewDTO> stockViewDTOs = await _stockRepo.GetActiveStocksForUserAsync(_currentUserService.UserId);
+            ViewBag.MainItems = await GetMainItem();
+            ViewBag.Suppliers = await _context.SupCodes.ToListAsync();
+            ViewBag.BranchId = _currentUserService.BranchId;
+            ViewBag.Stocks = stockViewDTOs;
+            return View();
+        }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> TotalItemCardsPrice(TotalItemCardsRequestDTO model)
+        {
+
+            List<StockViewDTO> stockViewDTOs = await _stockRepo.GetActiveStocksForUserAsync(_currentUserService.UserId);
+            ViewBag.MainItems = await GetMainItem();
+            ViewBag.Suppliers = await _context.SupCodes.ToListAsync();
+            ViewBag.BranchId = model.BranchId;
+            ViewBag.Stocks = stockViewDTOs;
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var table = await _totalItemCardsRepo.GetTotalItemCardPrice(model.FromDate, model.ToDate);
+            WebReport webReport = new();
+            webReport.Report.Load(Path.Combine(Environment.CurrentDirectory, "Reports\\Stock\\TheTotalItemCards-Price.frx"));
+            var Stock = await _stockRepo.GetStockByIdAsync(model.StockId);
+
+            webReport.Report.SetParameterValue("FromDate", model.FromDate.ToString("dd/MM/yyyy"));
+            webReport.Report.SetParameterValue("ToDate", model.ToDate.ToString("dd/MM/yyyy"));
+            webReport.Report.SetParameterValue("StockName", Stock.Stknam);
+
+            webReport.Report.RegisterData(table, "Table");
+            webReport.Report.Prepare();
+
+            ViewBag.WebReport = webReport;
+            return View(model);
+
+
+
+        }
+
+        public async Task<IActionResult> TotalItemCardsDetail()
+        {
+            List<StockViewDTO> stockViewDTOs = await _stockRepo.GetActiveStocksForUserAsync(_currentUserService.UserId);
+            ViewBag.MainItems = await GetMainItem();
+            ViewBag.Suppliers = await _context.SupCodes.ToListAsync();
+            ViewBag.BranchId = _currentUserService.BranchId;
+            ViewBag.Stocks = stockViewDTOs;
+            return View();
+        }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> TotalItemCardsDetail(TotalItemCardsRequestDTO model)
+        {
+
+            List<StockViewDTO> stockViewDTOs = await _stockRepo.GetActiveStocksForUserAsync(_currentUserService.UserId);
+            ViewBag.MainItems = await GetMainItem();
+            ViewBag.Suppliers = await _context.SupCodes.ToListAsync();
+            ViewBag.BranchId = model.BranchId;
+            ViewBag.Stocks = stockViewDTOs;
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var table = await _totalItemCardsRepo.GetTotalItemCardDetail(model.FromDate, model.ToDate, model.StockId);
+            WebReport webReport = new();
+            webReport.Report.Load(Path.Combine(Environment.CurrentDirectory, "Reports\\Stock\\TheTotalItemCards-Detail.frx"));
+            var Stock = await _stockRepo.GetStockByIdAsync(model.StockId);
+
+            webReport.Report.SetParameterValue("FromDate", model.FromDate.ToString("dd/MM/yyyy"));
+            webReport.Report.SetParameterValue("ToDate", model.ToDate.ToString("dd/MM/yyyy"));
+            webReport.Report.SetParameterValue("StockName", Stock.Stknam);
+
+            webReport.Report.RegisterData(table, "Table");
+            webReport.Report.Prepare();
+
+            ViewBag.WebReport = webReport;
+            return View(model);
+
+
+
+        }
+
         private async Task<List<MainItemDTO>> GetMainItem()
         {
             return await _context.MainItems.Join(_context.SubItems, m => new { m.MainCode, m.Flag1 }

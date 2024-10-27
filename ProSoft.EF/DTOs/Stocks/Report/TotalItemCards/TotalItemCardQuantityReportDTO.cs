@@ -12,32 +12,32 @@ namespace ProSoft.EF.DTOs.Stocks.Report.TotalItemCards
         public string ItemCode  { get; set; } = string.Empty;
         public string ItemName  { get; set; } = string.Empty;
 
-        private decimal _balanceBefore;
-        public decimal BalanceBefore
+        private decimal _carriedBalance;
+        public decimal CarriedBalance
         {
-            get => _balanceBefore;
-            set => _balanceBefore = Math.Round(value, 2);
+            get => _carriedBalance;
+            set => _carriedBalance = Math.Round(value, 0);
         }
 
         private decimal _totalOfInQuantity;
         public decimal TotalOfInQuantity
         {
             get => _totalOfInQuantity;
-            set => _totalOfInQuantity = Math.Round(value, 2);
+            set => _totalOfInQuantity = Math.Round(value, 0);
         }
 
         private decimal _totalOfOutQuantity;
         public decimal TotalOfOutQuantity
         {
             get => _totalOfOutQuantity;
-            set => _totalOfOutQuantity = Math.Round(value, 2);
+            set => _totalOfOutQuantity = Math.Round(value, 0);
         }
 
         private decimal _currentBalance;
         public decimal CurrentBalance
         {
             get => _currentBalance;
-            set => _currentBalance = Math.Round(value, 2);
+            set => _currentBalance = Math.Round(value, 0);
         }
 
         private decimal _itemValue;
