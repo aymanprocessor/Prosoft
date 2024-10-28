@@ -10,6 +10,10 @@ namespace ProSoft.EF.IRepositories.Stocks
 {
     public interface IMainItemRepo : IRepository<MainItem, int>
     {
+        // ----- Ayman Saad ----- //
+        Task<List<MainItemDTO>> GetDistinctMainItemsWithSubConditions();
+        
+        // ----- Ayman Saad ----- //
         Task<List<MainItemViewDTO>> GetMainItemsByLevelAsync(int level, int flag1, string parentCode = "");
         Task<MainItemViewDTO> GetParentItemAsync(string mainCode, int flag1);
         Task<MainItemEditAddDTO> GetMainLevelByIdAsync(int id);

@@ -1017,7 +1017,10 @@
   "Quantity And Value Class Card": "كارت صنف كمية وقيمة",
   "The Total Item Cards - Quantity": "كروت الاصناف الاجمالية - كمية",
   "The Total Item Cards - Price": "كروت الاصناف الاجمالية - سعر",
-  "The Total Item Cards - Detail": "كروت الاصناف الاجمالية - تفصيلي"
+  "The Total Item Cards - Detail": "كروت الاصناف الاجمالية - تفصيلي",
+  "Fast Transaction Report": "الاصناف سريعة الحركة",
+  "Slow Transaction Report": "الاصناف بطيئة الحركة",
+  "Zero Transaction Report": "الاصناف الراكدة"
 
 
 }

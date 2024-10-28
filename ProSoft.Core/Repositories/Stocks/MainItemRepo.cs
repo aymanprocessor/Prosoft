@@ -21,6 +21,28 @@ namespace ProSoft.Core.Repositories.Stocks
         {
             _mapper = mapper;
         }
+        // ----- Ayman Saad ----- //
+
+        public async Task<List<MainItemDTO>> GetDistinctMainItemsWithSubConditions()
+        {
+            return await _Context.MainItems.Join(_Context.SubItems, m => new { m.MainCode, m.Flag1 }
+            , s => new { s.MainCode, s.Flag1 },
+            (m, s) => new { m, s }
+            ).Where(joined =>
+            string.Compare(joined.m.MainCode, "1") > 0 &&
+            joined.m.LastSub == 1 &&
+            joined.s.RowOnOff == 1
+            ).Select(joined => new MainItemDTO
+            {
+                Name = joined.m.MainName,
+                MainCode = joined.m.MainCode,
+                AllName = joined.m.MainNameAll,
+                Flag1 = joined.m.Flag1,
+            })
+            .Distinct()
+            .ToListAsync();
+        }     
+        // ----- Ayman Saad ----- //
 
         public async Task<List<MainItemViewDTO>> GetMainItemsByLevelAsync(int level, int flag1, string parentCode = "")
         {

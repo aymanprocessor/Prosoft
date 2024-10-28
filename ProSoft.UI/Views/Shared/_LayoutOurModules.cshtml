@@ -394,6 +394,21 @@
                                         <a asp-area="Stocks" asp-controller="TotalItemCards" asp-action="TotalItemCardsDetail" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
                                             @localizer["The Total Item Cards - Detail"]
                                         </a>
+                                    </li> 
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Stocks" asp-controller="TransactionReport" asp-action="FastTransactionReport" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Fast Transaction Report"]
+                                        </a>
+                                    </li> 
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Stocks" asp-controller="TransactionReport" asp-action="SlowTransactionReport" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Slow Transaction Report"]
+                                        </a>
+                                    </li> 
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Stocks" asp-controller="TransactionReport" asp-action="ZeroTransactionReport" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Zero Transaction Report"]
+                                        </a>
                                     </li>
                                 </ul>
                             </li>

@@ -9,9 +9,9 @@ namespace ProSoft.EF.IRepositories.Stocks.Reports
 {
     public interface ITotalItemCardsRepo
     {
-        Task<List<TotalItemCardQuantityReportDTO>> GetTotalItemCardQuantity(DateTime fromDate, DateTime toDate);
-        Task<List<TotalItemCardPriceReportDTO>> GetTotalItemCardPrice(DateTime fromDate, DateTime toDate);
-        Task<List<TotalItemCardDetailReportDTO>> GetTotalItemCardDetail(DateTime fromDate, DateTime toDate, int StockId);
+        Task<List<TotalItemCardQuantityReportDTO>> GetTotalItemCardQuantity(DateTime fromDate, DateTime toDate, int StockId, string? SearchByCode, string? SearchByName);
+        Task<List<TotalItemCardPriceReportDTO>> GetTotalItemCardPrice(DateTime fromDate, DateTime toDate, int StockId, string? SearchByCode, string? SearchByName);
+        Task<List<TotalItemCardDetailReportDTO>> GetTotalItemCardDetail(DateTime fromDate, DateTime toDate, int StockId, string? SearchByCode, string? SearchByName);
 
     }
 }

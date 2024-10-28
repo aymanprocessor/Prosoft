@@ -22,20 +22,22 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
             _currentUserService = currentUserService;
         }
 
-        public async Task<List<TotalItemCardQuantityReportDTO>> GetTotalItemCardQuantity(DateTime fromDate, DateTime toDate)
+        public async Task<List<TotalItemCardQuantityReportDTO>> GetTotalItemCardQuantity(DateTime fromDate, DateTime toDate,int StockId, string? SearchByCode, string? SearchByName)
         {
             List<TotalItemCardQuantityReportDTO> totalItemCardQuantityReportDTOs = new();
             var subItems = await _context.SubItems.ToListAsync();
+            if(!string.IsNullOrEmpty(SearchByName) || !string.IsNullOrEmpty(SearchByCode))
+            {
+                subItems = subItems.Where(s =>  s.ItemCode.Contains(SearchByCode) ||  s.SubName.Contains(SearchByName)).ToList();
+            }
             var startDate = new DateTime(DateTime.Now.Year, 1, 1);
 
             foreach (var subItem in subItems)
             {
                 TotalItemCardQuantityReportDTO reportDto = new();
-                var stkBal = await _context.Stkbalances.FirstOrDefaultAsync(s => s.ItemCode == subItem.ItemCode && s.QtyStartDt.Value == new DateTime(_currentUserService.Year, 1, 1));
+                var stkBal = await _context.Stkbalances.FirstOrDefaultAsync(s => s.ItemCode == subItem.ItemCode && s.QtyStartDt.Value == new DateTime(_currentUserService.Year, 1, 1) && s.Stkcod == StockId);
 
-                if (stkBal == null)
-                    continue;
-
+               
                 reportDto.CarriedBalance = (decimal)(stkBal?.QtyStart ?? 0);
                 reportDto.ItemValue = (decimal)(stkBal?.ItemPrice2 ?? 0);
                 reportDto.ItemCode = subItem.ItemCode;
@@ -43,7 +45,7 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
 
                 // Calculating Balance Before the Date Range
                 var txnDtlsBefore = await _context.TransDtls
-                                        .Where(t => t.DocDate >= startDate && t.DocDate < fromDate && t.ItemMaster == subItem.ItemCode)
+                                        .Where(t => t.DocDate.Value.Date >= startDate.Date && t.DocDate.Value.Date < fromDate.Date && t.ItemMaster == subItem.ItemCode && t.StockCode == StockId)
                                         .ToListAsync();
 
                 foreach (var txn in txnDtlsBefore)
@@ -57,7 +59,7 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
 
                 // Calculating Total In and Out Quantities within the Date Range
                 var txnDtlsInRange = await _context.TransDtls
-                                         .Where(t => t.DocDate >= fromDate && t.DocDate <= toDate && t.ItemMaster == subItem.ItemCode)
+                                         .Where(t => t.DocDate.Value.Date >= fromDate.Date && t.DocDate.Value.Date <= toDate.Date && t.ItemMaster == subItem.ItemCode && t.StockCode == StockId)
                                          .ToListAsync();
 
                 reportDto.TotalOfInQuantity = 0;
@@ -91,7 +93,7 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
         }
 
 
-        public async Task<List<TotalItemCardPriceReportDTO>> GetTotalItemCardPrice(DateTime fromDate, DateTime toDate)
+        public async Task<List<TotalItemCardPriceReportDTO>> GetTotalItemCardPrice(DateTime fromDate, DateTime toDate, int StockId, string? SearchByCode, string? SearchByName)
         {
             List<TotalItemCardPriceReportDTO> totalItemCardPriceReportDTOs = new();
             var subItems = await _context.SubItems.ToListAsync();
@@ -102,8 +104,8 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
                 TotalItemCardPriceReportDTO reportDto = new();
                 var stkBal = await _context.Stkbalances.FirstOrDefaultAsync(s => s.ItemCode == subItem.ItemCode && s.QtyStartDt.Value == new DateTime(_currentUserService.Year, 1, 1));
 
-                if (stkBal == null)
-                    continue;
+                
+                  
 
                 reportDto.TotalCarriedBalanceQty = (decimal)(stkBal?.QtyStart ?? 0);
                 reportDto.TotalCarriedBalanceValue = (decimal)(stkBal?.ItemPrice2 ?? 0);
@@ -112,7 +114,7 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
 
                 // Calculating Balance Before the Date Range
                 var txnDtlsBefore = await _context.TransDtls
-                                        .Where(t => t.DocDate >= startDate && t.DocDate < fromDate && t.ItemMaster == subItem.ItemCode)
+                                        .Where(t => t.DocDate.Value.Date >= startDate.Date && t.DocDate.Value.Date < fromDate.Date && t.ItemMaster == subItem.ItemCode)
                                         .ToListAsync();
 
                 foreach (var txn in txnDtlsBefore)
@@ -128,7 +130,7 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
                 reportDto.TotalCarriedBalanceAvgPrice = reportDto.TotalCarriedBalanceQty != 0 ? reportDto.TotalCarriedBalanceValue / reportDto.TotalCarriedBalanceQty : 0;
 
                 var txnDtlsInRange = await _context.TransDtls
-                                        .Where(t => t.DocDate >= fromDate && t.DocDate <= toDate && t.ItemMaster == subItem.ItemCode)
+                                        .Where(t => t.DocDate.Value.Date >= fromDate.Date && t.DocDate.Value.Date <= toDate.Date && t.ItemMaster == subItem.ItemCode)
                                         .ToListAsync();
 
                 reportDto.TotalInQty = 0;
@@ -170,7 +172,7 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
             return totalItemCardPriceReportDTOs;
         }
 
-        public async Task<List<TotalItemCardDetailReportDTO>> GetTotalItemCardDetail(DateTime fromDate, DateTime toDate, int StockId)
+        public async Task<List<TotalItemCardDetailReportDTO>> GetTotalItemCardDetail(DateTime fromDate, DateTime toDate, int StockId, string? SearchByCode, string? SearchByName)
         {
             List<TotalItemCardDetailReportDTO> totalItemCardDetailReportDTOs = new();
             var subItems = await _context.SubItems.ToListAsync();
@@ -181,15 +183,13 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
                 TotalItemCardDetailReportDTO reportDto = new();
                 var stkBal = await _context.Stkbalances.FirstOrDefaultAsync(s => s.ItemCode == subItem.ItemCode && s.QtyStartDt.Value == new DateTime(_currentUserService.Year, 1, 1) && s.Stkcod == StockId);
 
-                if (stkBal == null)
-                    continue;
-
+                
                 reportDto.CarriedBalance = (decimal)(stkBal?.QtyStart ?? 0);
                 reportDto.ItemCode = subItem.ItemCode;
                 reportDto.ItemName = subItem.SubName;
 
                 var txnDtlsBefore = await _context.TransDtls
-                                      .Where(t => t.DocDate >= startDate && t.DocDate < fromDate && t.ItemMaster == subItem.ItemCode && t.StockCode == StockId)
+                                      .Where(t => t.DocDate.Value.Date >= startDate.Date && t.DocDate.Value.Date < fromDate.Date && t.ItemMaster == subItem.ItemCode && t.StockCode == StockId)
                                       .ToListAsync();
 
                 foreach (var txn in txnDtlsBefore)
@@ -202,7 +202,7 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
                 }
 
                 var txnDtlsInRange = await _context.TransDtls
-                                       .Where(t => t.DocDate >= fromDate && t.DocDate <= toDate && t.ItemMaster == subItem.ItemCode && t.StockCode == StockId)
+                                       .Where(t => t.DocDate.Value.Date >= fromDate.Date && t.DocDate.Value.Date <= toDate.Date && t.ItemMaster == subItem.ItemCode && t.StockCode == StockId)
                                        .ToListAsync();
 
 

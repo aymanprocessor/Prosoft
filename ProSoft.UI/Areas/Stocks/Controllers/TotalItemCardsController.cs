@@ -18,9 +18,9 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IMainItemRepo _mainItemRepo;
-        private readonly ISupplierRepo _supplierRepo;
-        private readonly IStockRepo _stockRepo;
         private readonly ICurrentUserService _currentUserService;
+        private readonly IStockRepo _stockRepo;
+        private readonly ISupplierRepo _supplierRepo;
         private readonly ITotalItemCardsRepo _totalItemCardsRepo;
         public TotalItemCardsController(IMainItemRepo mainItemRepo, ISupplierRepo supplierRepo, AppDbContext context, ICurrentUserService currentUserService, IStockRepo stockRepo, ITotalItemCardsRepo totalItemCardsRepo)
         {
@@ -34,10 +34,10 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         public async Task<IActionResult> TotalItemCardsQuantity()
         {
             List<StockViewDTO> stockViewDTOs = await _stockRepo.GetActiveStocksForUserAsync(_currentUserService.UserId);
-            ViewBag.MainItems = await GetMainItem();
-            ViewBag.Suppliers = await _context.SupCodes.ToListAsync();
-            ViewBag.BranchId = _currentUserService.BranchId;
+            ViewBag.MainItems = await _mainItemRepo.GetDistinctMainItemsWithSubConditions();
             ViewBag.Stocks = stockViewDTOs;
+            ViewBag.BranchId = _currentUserService.BranchId;
+            ViewBag.Suppliers = await _context.SupCodes.ToListAsync();
             return View();
         }
 
@@ -48,7 +48,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         {
 
             List<StockViewDTO> stockViewDTOs = await _stockRepo.GetActiveStocksForUserAsync(_currentUserService.UserId);
-            ViewBag.MainItems = await GetMainItem();
+            ViewBag.MainItems = await _mainItemRepo.GetDistinctMainItemsWithSubConditions();
             ViewBag.Suppliers = await _context.SupCodes.ToListAsync();
             ViewBag.BranchId = model.BranchId;
             ViewBag.Stocks = stockViewDTOs;
@@ -58,7 +58,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
                 return View(model);
             }
 
-            var table = await _totalItemCardsRepo.GetTotalItemCardQuantity( model.FromDate, model.ToDate);
+            var table = await _totalItemCardsRepo.GetTotalItemCardQuantity( model.FromDate, model.ToDate,model.StockId,model.SearchByItemCode,model.SearchByItemName);
             WebReport webReport = new();
             webReport.Report.Load(Path.Combine(Environment.CurrentDirectory, "Reports\\Stock\\TheTotalItemCards-Quantity.frx"));
             var Stock = await _stockRepo.GetStockByIdAsync(model.StockId);
@@ -81,7 +81,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         public async Task<IActionResult> TotalItemCardsPrice()
         {
             List<StockViewDTO> stockViewDTOs = await _stockRepo.GetActiveStocksForUserAsync(_currentUserService.UserId);
-            ViewBag.MainItems = await GetMainItem();
+            ViewBag.MainItems = await _mainItemRepo.GetDistinctMainItemsWithSubConditions();
             ViewBag.Suppliers = await _context.SupCodes.ToListAsync();
             ViewBag.BranchId = _currentUserService.BranchId;
             ViewBag.Stocks = stockViewDTOs;
@@ -95,7 +95,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         {
 
             List<StockViewDTO> stockViewDTOs = await _stockRepo.GetActiveStocksForUserAsync(_currentUserService.UserId);
-            ViewBag.MainItems = await GetMainItem();
+            ViewBag.MainItems = await _mainItemRepo.GetDistinctMainItemsWithSubConditions();
             ViewBag.Suppliers = await _context.SupCodes.ToListAsync();
             ViewBag.BranchId = model.BranchId;
             ViewBag.Stocks = stockViewDTOs;
@@ -105,7 +105,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
                 return View(model);
             }
 
-            var table = await _totalItemCardsRepo.GetTotalItemCardPrice(model.FromDate, model.ToDate);
+            var table = await _totalItemCardsRepo.GetTotalItemCardPrice(model.FromDate, model.ToDate,model.StockId,model.SearchByItemCode,model.SearchByItemName);
             WebReport webReport = new();
             webReport.Report.Load(Path.Combine(Environment.CurrentDirectory, "Reports\\Stock\\TheTotalItemCards-Price.frx"));
             var Stock = await _stockRepo.GetStockByIdAsync(model.StockId);
@@ -127,7 +127,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         public async Task<IActionResult> TotalItemCardsDetail()
         {
             List<StockViewDTO> stockViewDTOs = await _stockRepo.GetActiveStocksForUserAsync(_currentUserService.UserId);
-            ViewBag.MainItems = await GetMainItem();
+            ViewBag.MainItems = await _mainItemRepo.GetDistinctMainItemsWithSubConditions();
             ViewBag.Suppliers = await _context.SupCodes.ToListAsync();
             ViewBag.BranchId = _currentUserService.BranchId;
             ViewBag.Stocks = stockViewDTOs;
@@ -141,7 +141,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         {
 
             List<StockViewDTO> stockViewDTOs = await _stockRepo.GetActiveStocksForUserAsync(_currentUserService.UserId);
-            ViewBag.MainItems = await GetMainItem();
+            ViewBag.MainItems = await _mainItemRepo.GetDistinctMainItemsWithSubConditions();
             ViewBag.Suppliers = await _context.SupCodes.ToListAsync();
             ViewBag.BranchId = model.BranchId;
             ViewBag.Stocks = stockViewDTOs;
@@ -151,7 +151,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
                 return View(model);
             }
 
-            var table = await _totalItemCardsRepo.GetTotalItemCardDetail(model.FromDate, model.ToDate, model.StockId);
+            var table = await _totalItemCardsRepo.GetTotalItemCardDetail(model.FromDate, model.ToDate, model.StockId,model.SearchByItemCode, model.SearchByItemName);
             WebReport webReport = new();
             webReport.Report.Load(Path.Combine(Environment.CurrentDirectory, "Reports\\Stock\\TheTotalItemCards-Detail.frx"));
             var Stock = await _stockRepo.GetStockByIdAsync(model.StockId);
@@ -170,24 +170,6 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
 
         }
 
-        private async Task<List<MainItemDTO>> GetMainItem()
-        {
-            return await _context.MainItems.Join(_context.SubItems, m => new { m.MainCode, m.Flag1 }
-            , s => new { s.MainCode, s.Flag1 },
-            (m, s) => new { m, s }
-            ).Where(joined =>
-            string.Compare(joined.m.MainCode, "1") > 0 &&
-            joined.m.LastSub == 1 &&
-            joined.s.RowOnOff == 1
-            ).Select(joined => new MainItemDTO
-            {
-                Name = joined.m.MainName,
-                MainCode = joined.m.MainCode,
-                AllName = joined.m.MainNameAll,
-                Flag1 = joined.m.Flag1,
-            })
-            .Distinct()
-            .ToListAsync();
-        }
+       
     }
 }

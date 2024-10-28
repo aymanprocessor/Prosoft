@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="10/27/2024 12:15:23" ReportInfo.Modified="10/27/2024 17:14:57" ReportInfo.CreatorVersion="2024.2.0.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="10/27/2024 12:15:23" ReportInfo.Modified="10/28/2024 13:52:42" ReportInfo.CreatorVersion="2024.2.0.0">
+  <Styles>
+    <Style Name="Light Gray" Fill.Color="LightGray" Font="Arial, 10pt"/>
+  </Styles>
   <Dictionary>
     <BusinessObjectDataSource Name="table" ReferenceName="Table" DataType="System.Int32" Enabled="true">
       <Column Name="ItemCode" DataType="System.String" Format="Date"/>
@@ -85,8 +88,8 @@
         </TableRow>
       </TableObject>
     </ColumnHeaderBand>
-    <DataBand Name="Data1" Top="187.39" Width="1047.06" Height="37.8">
-      <TableObject Name="Table2" Width="1047.42" Height="37.8" PrintOnParent="true">
+    <DataBand Name="Data1" Top="187.39" Width="1047.06" Height="37.8" DataSource="table">
+      <TableObject Name="Table2" Width="1047.42" Height="37.8" EvenStyle="Light Gray" PrintOnParent="true">
         <TableColumn Name="Column18" Width="69.65"/>
         <TableColumn Name="Column19" Width="8.28"/>
         <TableColumn Name="Column20" Width="8.28"/>

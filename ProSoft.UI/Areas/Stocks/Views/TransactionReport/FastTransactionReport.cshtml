@@ -1,0 +1,95 @@
+﻿@using FastReport.Web
+@using ProSoft.EF.DTOs.Stocks.Report.Transactions
+@using ProSoft.UI.Global
+
+@model TransactionRequestDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Fast Tranaction Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
+    SelectList MainItems = new SelectList(ViewBag.MainItems, "MainCode", "Name");
+    SelectList Stocks = new SelectList(ViewBag.Stocks, "Stkcod", "Stknam");
+
+    WebReport? webReport = ViewBag.WebReport;
+}
+@inject IViewLocalizer localizer
+
+
+<div class="container pt-2 ">
+
+    <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mt-1 mb-3">
+        <h2 class="header" style="color: #084298;">@localizer["Fast Tranaction Report"]</h2>
+
+    </div>
+
+    <form asp-action="FastTransactionReport" method="post" class=" filter-box">
+        <div class="row gx-2 gy-2 p-3">
+            <input asp-for="@Model.BranchId" value="@ViewBag.BranchId" hidden />
+
+            <div class="col-md-6 col-lg-4 ">
+                <label for="StockId" class="form-label">@localizer["Stock"]</label>
+                <select id="stocks" asp-items="Stocks" asp-for="@Model.StockId" class="form-control text-center">
+                    <option value="">@localizer["Choosee"]</option>
+                </select>
+                <span asp-validation-for="StockId" class="text-danger"></span>
+
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <label asp-for="FromDate" class="form-label">@localizer["From Period"]</label>
+                <input id="fromPeriod" type="date" asp-for="@Model.FromDate" value="@(new DateTime(DateTime.Now.Year,1,1).ToString(GlobalConstants.FormatDate))" class="form-control text-center " />
+                <span asp-validation-for="FromDate" class="text-danger"></span>
+
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <label asp-for="ToDate" class="form-label">@localizer["To Period"]</label>
+                <input id="toPeriod" type="date" asp-for="@Model.ToDate" value="@(DateTime.Now.ToString(GlobalConstants.FormatDate))" class="form-control text-center " />
+                <span asp-validation-for="ToDate" class="text-danger"></span>
+
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <label for="MainCode" class="form-label">@localizer["The Group"]</label>
+                <select id="stocks" asp-items="MainItems" asp-for="@Model.MainCode" class="form-control text-center ">
+                    <option value="">@localizer["Choosee"]</option>
+                </select>
+                <span asp-validation-for="MainCode" class="text-danger"></span>
+
+            </div>
+           
+            <button type="submit" id="btn-submit" class="btn btn-primary col-md-2 col-lg-2" style="width:auto">
+
+                @localizer["View"]
+                <span id="spinner" class="spinner-grow spinner-grow-sm d-none"></span>
+
+            </button>
+        </div>
+
+        @* <hr style="margin: 6px;" /><!----------------------------------------------------------> *@
+
+    </form>
+    @if (webReport != null)
+    {
+
+        <div class="webreport text-center">
+            @await webReport.Render()
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.querySelector("form");
+
+            const btnSubmit = document.getElementById("btn-submit");
+            const spinner = document.getElementById("spinner");
+            form.addEventListener("submit", function () {
+                btnSubmit.setAttribute("disabled", "disabled");
+                spinner.classList.remove("d-none");
+            });
+        });
+    </script>
+}
