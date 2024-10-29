@@ -37,6 +37,18 @@ namespace ProSoft.Core.Repositories.Shared
 
         }
 
+        public IEnumerable<GeneralCode> GetAll(Expression<Func<GeneralCode, bool>>? predicate = null)
+        {
+            var query = _Context.GeneralCodes.AsQueryable();
+
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+            return query.ToList();
+        }
+
         public async Task<PermissionDefViewDTO> GetPermissionByUniqueTypeAsync(int id)
         {
             GeneralCode? permission = await _Context.GeneralCodes.Where(g => g.UniqueType == id).FirstOrDefaultAsync();
@@ -99,6 +111,6 @@ namespace ProSoft.Core.Repositories.Shared
             return permissionDTO;
         }
 
-       
+        
     }
 }

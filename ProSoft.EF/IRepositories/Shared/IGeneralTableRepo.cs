@@ -15,6 +15,7 @@ namespace ProSoft.EF.IRepositories.Shared
 
         // ------------- Ayman Saad ------------- //
         public IEnumerable<SelectListItem> GetAllAsSelectListItem(Expression<Func<GeneralCode, bool>>? predicate = null);
+        public IEnumerable<GeneralCode> GetAll(Expression<Func<GeneralCode, bool>>? predicate = null);
         public Task<PermissionDefViewDTO> GetPermissionByUniqueTypeAsync(int id);
         // ------------- Ayman Saad ------------- //
         Task<int> GetNewIdAsync();

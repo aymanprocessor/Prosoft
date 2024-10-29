@@ -1,9 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="10/28/2024 14:11:25" ReportInfo.Modified="10/28/2024 14:24:27" ReportInfo.CreatorVersion="2024.2.0.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="10/28/2024 14:11:25" ReportInfo.Modified="10/29/2024 14:51:36" ReportInfo.CreatorVersion="2024.2.0.0">
   <Styles>
     <Style Name="Light Gray" Fill.Color="LightGray" Font="Arial, 10pt" ApplyBorder="false" ApplyTextFill="false" ApplyFont="false"/>
   </Styles>
-  <Dictionary/>
+  <Dictionary>
+    <BusinessObjectDataSource Name="table" ReferenceName="Table" DataType="System.Int32" Enabled="true">
+      <Column Name="ItemCode" DataType="System.String"/>
+      <Column Name="ItemName" DataType="System.String"/>
+      <Column Name="ItemQty" DataType="System.Int32"/>
+    </BusinessObjectDataSource>
+    <Parameter Name="FromDate" DataType="System.DateTime" AsString=""/>
+    <Parameter Name="ToDate" DataType="System.DateTime" AsString=""/>
+    <Parameter Name="StockName" DataType="System.String" AsString=""/>
+  </Dictionary>
   <ReportPage Name="Page1" Watermark.Font="Arial, 60pt">
     <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="37.8">
       <TextObject Name="Text1" Width="718.2" Height="37.8" Text="تاريخ الطباعة : [Date]" HorzAlign="Right" VertAlign="Center" RightToLeft="true" Font="Calibri, 10pt, style=Bold"/>
@@ -25,21 +34,35 @@
         </TableRow>
       </TableObject>
     </ColumnHeaderBand>
-    <DataBand Name="Data1" Top="184.81" Width="718.2" Height="28.35">
+    <DataBand Name="Data1" Top="184.81" Width="718.2" Height="28.35" DataSource="table">
       <TableObject Name="Table2" Left="37.8" Width="642.39" Height="28.35" EvenStyle="Light Gray" PrintOnParent="true">
         <TableColumn Name="Column5" Width="68.46"/>
         <TableColumn Name="Column6" Width="323.61"/>
         <TableColumn Name="Column7" Width="210.21"/>
         <TableColumn Name="Column8" Width="40.11"/>
         <TableRow Name="Row2" Height="28.35">
-          <TableCell Name="Cell5" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
-          <TableCell Name="Cell6" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
-          <TableCell Name="Cell7" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell5" Border.Lines="All" Text="[table.ItemQty]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell6" Border.Lines="All" Text="[table.ItemName]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell7" Border.Lines="All" Text="[table.ItemCode]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
           <TableCell Name="Cell8" Border.Lines="All" Text="[Row#]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
         </TableRow>
       </TableObject>
+      <ChildBand Name="Child1" Top="215.79" Width="718.2" Height="28.35" PrintIfDatabandEmpty="true">
+        <TableObject Name="Table3" Left="37.8" Width="642.39" Height="28.35" EvenStyle="Light Gray" PrintOnParent="true">
+          <TableColumn Name="Column9" Width="68.46"/>
+          <TableColumn Name="Column10" Width="323.61"/>
+          <TableColumn Name="Column11" Width="210.21"/>
+          <TableColumn Name="Column12" Width="40.11"/>
+          <TableRow Name="Row3" Height="28.35">
+            <TableCell Name="Cell9" Border.Lines="All" Fill.Color="White" Text="لا يوجد اصناف" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" ColSpan="4"/>
+            <TableCell Name="Cell10" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+            <TableCell Name="Cell11" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+            <TableCell Name="Cell12" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          </TableRow>
+        </TableObject>
+      </ChildBand>
     </DataBand>
-    <ColumnFooterBand Name="ColumnFooter1" Top="215.79" Width="718.2" Height="37.8">
+    <ColumnFooterBand Name="ColumnFooter1" Top="246.78" Width="718.2" Height="37.8">
       <TextObject Name="Text5" Width="718.2" Height="37.8" Text="[Page#] من [TotalPages#]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Calibri, 10pt, style=Bold"/>
     </ColumnFooterBand>
   </ReportPage>

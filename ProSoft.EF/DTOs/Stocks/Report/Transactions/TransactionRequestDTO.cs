@@ -14,5 +14,6 @@ namespace ProSoft.EF.DTOs.Stocks.Report.Transactions
         public DateTime ToDate { get; set; }
         public string? MainCode { get; set; }
         public int? FirstRows { get; set; }
+        public int? TransType { get; set; }
     }
 }

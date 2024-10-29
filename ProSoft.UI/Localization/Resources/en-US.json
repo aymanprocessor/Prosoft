@@ -1021,5 +1021,7 @@
   "The Total Item Cards - Detail": "The Total Item Cards - Detail",
   "Fast Transaction Report": "Fast Tranaction Report",
   "Slow Transaction Report": "Slow Tranaction Report",
-  "Zero Transaction Report": "Zero Tranaction Report"
+  "Zero Transaction Report": "Zero Tranaction Report",
+  "First Rows": "First Rows",
+  "Total Permits Transactions Report": "Total Permits Transactions Report"
 }

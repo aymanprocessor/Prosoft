@@ -52,6 +52,7 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
                     tnxDtls = tnxDtls.Take((int)FirstRows).ToList();
                 }
 
+               
                 transactionReportDTO.ItemQty = (int)tnxDtls.Sum(t => t.UnitQty);
                 transactionReportDTOs.Add(transactionReportDTO);
             }
@@ -66,6 +67,46 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
 
             }
             return transactionReportDTOs;
+        }
+
+        public async Task<List<TransactionReportDTO>> GetZeroTransactionReport(DateTime FromDate, DateTime ToDate, int StockId,int FYear, int? FirstRows = null)
+        {
+            List<TransactionReportDTO> transactionReportDTOs = new();
+            var stkBals = await _context.Stkbalances.Where(s => s.FYear== FYear && s.Stkcod == StockId).ToListAsync();
+
+            foreach (var stk in stkBals)
+            {
+                var  transTypes = new int[]{ 4, 10, 13 };
+                var tnxDtls = await _context.TransDtls.Where(t =>
+
+                t.DocDate.Value.Date >= FromDate.Date &&
+                t.DocDate.Value.Date <= ToDate.Date &&
+                t.StockCode == StockId &&
+                transTypes.Contains((int)t.TransType)
+                ).ToListAsync();
+
+                // check if stk.ItemCode not in tnxdtls.ItemMaster
+                bool stkNotInTransactions = tnxDtls.All(t => t.ItemMaster != stk.ItemCode);
+
+                if (stkNotInTransactions)
+                {
+                    // Add your logic for the items not in transactions
+                    var subItem = await _context.SubItems.FirstOrDefaultAsync(s => s.ItemCode == stk.ItemCode);
+                    transactionReportDTOs.Add(new TransactionReportDTO
+                    {
+                        ItemCode = stk.ItemCode,
+                        ItemName = subItem.SubName,
+                        ItemQty =0
+                    });
+                }
+
+                if(FirstRows != null&&FirstRows > 0)
+                {
+                    transactionReportDTOs = transactionReportDTOs.Take((int)FirstRows).ToList();
+                }
+            }
+            return transactionReportDTOs;
+
         }
     }
 }
