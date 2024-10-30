@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="10/28/2024 14:11:25" ReportInfo.Modified="10/29/2024 14:51:36" ReportInfo.CreatorVersion="2024.2.0.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="10/28/2024 14:11:25" ReportInfo.Modified="10/30/2024 15:57:39" ReportInfo.CreatorVersion="2024.2.0.0">
   <Styles>
     <Style Name="Light Gray" Fill.Color="LightGray" Font="Arial, 10pt" ApplyBorder="false" ApplyTextFill="false" ApplyFont="false"/>
   </Styles>
@@ -17,10 +17,10 @@
     <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="37.8">
       <TextObject Name="Text1" Width="718.2" Height="37.8" Text="تاريخ الطباعة : [Date]" HorzAlign="Right" VertAlign="Center" RightToLeft="true" Font="Calibri, 10pt, style=Bold"/>
     </ReportTitleBand>
-    <ColumnHeaderBand Name="ColumnHeader1" Top="40.43" Width="718.2" Height="141.75">
+    <ColumnHeaderBand Name="ColumnHeader1" Top="41.72" Width="718.2" Height="141.75">
       <TextObject Name="Text2" Width="718.2" Height="37.8" Text="بيان بالاصناف  الراكدة" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Calibri, 12pt, style=Bold"/>
-      <TextObject Name="Text3" Top="37.8" Width="718.2" Height="37.8" Text="الفترة من حتى " HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Calibri, 10pt, style=Bold"/>
-      <TextObject Name="Text4" Top="75.6" Width="718.2" Height="37.8" Text="المخزن : 	المجموعة:" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Calibri, 10pt, style=Bold"/>
+      <TextObject Name="Text3" Top="37.8" Width="718.2" Height="37.8" Text="الفترة من [FromDate] حتى [ToDate]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Calibri, 10pt, style=Bold"/>
+      <TextObject Name="Text4" Top="75.6" Width="718.2" Height="37.8" Text="المخزن : [StockName]	المجموعة:" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Calibri, 10pt, style=Bold"/>
       <TableObject Name="Table1" Left="37.8" Top="113.4" Width="642.39" Height="28.35">
         <TableColumn Name="Column1" Width="68.46"/>
         <TableColumn Name="Column2" Width="323.61"/>
@@ -34,7 +34,7 @@
         </TableRow>
       </TableObject>
     </ColumnHeaderBand>
-    <DataBand Name="Data1" Top="184.81" Width="718.2" Height="28.35" DataSource="table">
+    <DataBand Name="Data1" Top="187.39" Width="718.2" Height="28.35" DataSource="table">
       <TableObject Name="Table2" Left="37.8" Width="642.39" Height="28.35" EvenStyle="Light Gray" PrintOnParent="true">
         <TableColumn Name="Column5" Width="68.46"/>
         <TableColumn Name="Column6" Width="323.61"/>
@@ -47,7 +47,7 @@
           <TableCell Name="Cell8" Border.Lines="All" Text="[Row#]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
         </TableRow>
       </TableObject>
-      <ChildBand Name="Child1" Top="215.79" Width="718.2" Height="28.35" PrintIfDatabandEmpty="true">
+      <ChildBand Name="Child1" Top="219.66" Width="718.2" Height="28.35" PrintIfDatabandEmpty="true">
         <TableObject Name="Table3" Left="37.8" Width="642.39" Height="28.35" EvenStyle="Light Gray" PrintOnParent="true">
           <TableColumn Name="Column9" Width="68.46"/>
           <TableColumn Name="Column10" Width="323.61"/>
@@ -62,8 +62,8 @@
         </TableObject>
       </ChildBand>
     </DataBand>
-    <ColumnFooterBand Name="ColumnFooter1" Top="246.78" Width="718.2" Height="37.8">
+    <PageFooterBand Name="PageFooter1" Top="251.94" Width="718.2" Height="37.8">
       <TextObject Name="Text5" Width="718.2" Height="37.8" Text="[Page#] من [TotalPages#]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Calibri, 10pt, style=Bold"/>
-    </ColumnFooterBand>
+    </PageFooterBand>
   </ReportPage>
 </Report>

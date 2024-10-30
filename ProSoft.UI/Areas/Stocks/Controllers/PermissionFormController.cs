@@ -18,13 +18,15 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         private readonly ITransMasterRepo _transMasterRepo;
         private readonly IUserRepo _userRepo;
         private readonly ITransDtlRepo _transDtlRepo;
+        private readonly IStockRepo _stockRepo;
 
         public PermissionFormController(ITransMasterRepo transMasterRepo,
-            IUserRepo userRepo, ITransDtlRepo transDtlRepo)
+            IUserRepo userRepo, ITransDtlRepo transDtlRepo, IStockRepo stockRepo)
         {
             _transMasterRepo = transMasterRepo;
             _userRepo = userRepo;
             _transDtlRepo = transDtlRepo;
+            _stockRepo = stockRepo;
         }
 
         public async Task<IActionResult> Index(int? id)
@@ -199,7 +201,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             var branchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
             TransMasterEditAddDTO permissionFormDTO = await _transMasterRepo.GetNewDisburseOrConvertFormAsync(id, userCode, transType, branchId);
             permissionFormDTO.UserName = (await _userRepo.GetUserByIdAsync(userCode)).UserName;
-
+            ViewBag.Stocks = await _stockRepo.GetAllAsync();
             return View(permissionFormDTO);
         }
 
@@ -208,6 +210,8 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add_DisburseOrConvertForm(int id, TransMasterEditAddDTO permissionFormDTO)
         {
+            ViewBag.Stocks = await _stockRepo.GetAllAsync();
+
             if (ModelState.IsValid)
             {
                 permissionFormDTO.BranchId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Id").Value);
@@ -497,6 +501,13 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
                 return RedirectToAction(nameof(Index), new { id });
             }
             return View(permissionFormDTO);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetStockDependOnFromStock(int id)
+        {
+            var stocks = await _stockRepo.GetStocksDependOnFromStock(id);
+            return Json(stocks);
         }
     }
 }

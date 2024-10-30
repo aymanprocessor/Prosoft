@@ -6,6 +6,7 @@ using ProSoft.EF.DTOs.Accounts;
 using ProSoft.EF.DTOs.Shared;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.IRepositories.Stocks;
+using ProSoft.EF.Migrations;
 using ProSoft.EF.Models.Accounts;
 using ProSoft.EF.Models.Shared;
 using ProSoft.EF.Models.Stocks;
@@ -73,7 +74,10 @@ namespace ProSoft.Core.Repositories.Stocks
         }
 
 
-
+        public async Task<List<Stock>> GetStocksDependOnFromStock(int stockId)
+        {
+            return await _Context.Stocks.Where(obj => obj.Stkcod != stockId).ToListAsync();
+        }
         // ------------------- Coded By Ayman Saad ------------------- //
 
 

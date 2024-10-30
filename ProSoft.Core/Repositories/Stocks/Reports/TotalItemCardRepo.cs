@@ -77,8 +77,8 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
                         }
                         else if (genCd.AddSub == 2) // Total Out Quantity
                         {
-                            reportDto.TotalOfOutQuantity -= (decimal)txn.UnitQty;
-                            reportDto.ItemValue -= (decimal)txn.ItemVal;
+                            reportDto.TotalOfOutQuantity += (decimal)txn.UnitQty;
+                            reportDto.ItemValue += (decimal)txn.ItemVal;
                         }
                     }
                 }
@@ -153,8 +153,8 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
                         }
                         else if (genCd.AddSub == 2) // Total Out Quantity
                         {
-                            reportDto.TotalOutQty -= (decimal)txn.UnitQty;
-                            reportDto.TotalOutValue -= (decimal)txn.ItemVal;
+                            reportDto.TotalOutQty += (decimal)txn.UnitQty;
+                            reportDto.TotalOutValue += (decimal)txn.ItemVal;
                         }
                     }
                 }

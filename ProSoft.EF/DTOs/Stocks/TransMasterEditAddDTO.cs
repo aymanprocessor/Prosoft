@@ -40,8 +40,8 @@ namespace ProSoft.EF.DTOs.Stocks
         public string? RefDocNo { get; set; }
 
         [DisplayName("The Supplier")]
-        [Required(ErrorMessage = "The field is required")]
-        public string SupNo { get; set; }
+        
+        public string? SupNo { get; set; }
 
         [DisplayName("Discount Percentage %")]
         public decimal? DiscPers { get; set; }

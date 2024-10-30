@@ -59,11 +59,11 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
             if(OrderType == "ASC")
             {
 
-            transactionReportDTOs = transactionReportDTOs.OrderBy(t => t.ItemQty).ToList();
+            transactionReportDTOs = transactionReportDTOs.OrderByDescending(t => t.ItemQty).ToList();
             }
             else
             {
-            transactionReportDTOs = transactionReportDTOs.OrderByDescending(t => t.ItemQty).ToList();
+            transactionReportDTOs = transactionReportDTOs.OrderBy(t => t.ItemQty).ToList();
 
             }
             return transactionReportDTOs;
