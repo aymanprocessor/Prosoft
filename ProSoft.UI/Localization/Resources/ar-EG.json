@@ -1018,11 +1018,12 @@
   "The Total Item Cards - Quantity": "كروت الاصناف الاجمالية - كمية",
   "The Total Item Cards - Price": "كروت الاصناف الاجمالية - سعر",
   "The Total Item Cards - Detail": "كروت الاصناف الاجمالية - تفصيلي",
-  "Fast Transaction Report": "الاصناف سريعة الحركة",
-  "Slow Transaction Report": "الاصناف بطيئة الحركة",
-  "Zero Transaction Report": "الاصناف الراكدة",
+  "Fast Transaction Report": "تقرير الاصناف سريعة الحركة",
+  "Slow Transaction Report": "تقرير الاصناف بطيئة الحركة",
+  "Zero Transaction Report": "تقرير الاصناف الراكدة",
   "First Rows": "اول",
-  "Total Permits Transactions Report": "تقرير اجمالي حركة الاذون"
+  "Total Permits Transaction Report": "تقرير اجمالي حركة الاذون"
+
 
 
 }

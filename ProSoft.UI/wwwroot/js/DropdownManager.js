@@ -52,7 +52,9 @@ const DropdownManager = (function () {
         }
 
         try {
-            const response = await fetch(`${config.apiEndpoint}/${parentId}`);
+            const paramsString = new URLSearchParams(config.apiEndpoint.params).toString();
+
+            const response = await fetch(`${config.apiEndpoint.url}/${parentId}?${paramsString}`);
             if (!response.ok) throw new Error('Network response was not ok');
 
             const data = await response.json();

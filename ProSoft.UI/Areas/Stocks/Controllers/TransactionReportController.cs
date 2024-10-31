@@ -8,6 +8,7 @@ using ProSoft.EF.DTOs.Stocks.Report.Transactions;
 using ProSoft.EF.IRepositories.Shared;
 using ProSoft.EF.IRepositories.Stocks;
 using ProSoft.EF.IRepositories.Stocks.Reports;
+using ProSoft.EF.Models.MedicalRecords;
 
 namespace ProSoft.UI.Areas.Stocks.Controllers
 {
@@ -20,15 +21,18 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         private readonly IStockRepo _stockRepo;
         private readonly ITransactionReportRepo _transactionReportRepo;
         private readonly ITransMasterRepo _transMasterRepo;
+        private readonly IGeneralTableRepo _generalTableRepo;
 
-        public TransactionReportController(ICurrentUserService currentUserService, IMainItemRepo mainItemRepo, IStockRepo stockRepo, ITransactionReportRepo transactionReportRepo, ITransMasterRepo transMasterRepo)
+        public TransactionReportController(ICurrentUserService currentUserService, IMainItemRepo mainItemRepo, IStockRepo stockRepo, ITransactionReportRepo transactionReportRepo, ITransMasterRepo transMasterRepo, IGeneralTableRepo generalTableRepo)
         {
             _currentUserService = currentUserService;
             _mainItemRepo = mainItemRepo;
             _stockRepo = stockRepo;
             _transactionReportRepo = transactionReportRepo;
             _transMasterRepo = transMasterRepo;
+            _generalTableRepo = generalTableRepo;
         }
+        // -------------------------------------------------- FastTransactionReport --------------------------------------------------//
 
         public async Task<IActionResult> FastTransactionReport()
         {
@@ -69,6 +73,9 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             return View(model);
         }
 
+        // -------------------------------------------------- SlowTransactionReport --------------------------------------------------//
+
+
         public async Task<IActionResult> SlowTransactionReport()
         {
             List<StockViewDTO> stockViewDTOs = await _stockRepo.GetActiveStocksForUserAsync(_currentUserService.UserId);
@@ -108,6 +115,9 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             return View(model);
         }
 
+        // -------------------------------------------------- ZeroTransactionReport --------------------------------------------------//
+
+
         public async Task<IActionResult> ZeroTransactionReport()
         {
             List<StockViewDTO> stockViewDTOs = await _stockRepo.GetActiveStocksForUserAsync(_currentUserService.UserId);
@@ -117,8 +127,6 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
 
             return View();
         }
-
-
         [HttpPost]
         public async Task<IActionResult> ZeroTransactionReport(TransactionRequestDTO model)
         {
@@ -147,19 +155,21 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             return View(model);
         }
 
+
+        // -------------------------------------------------- TotalPermitsTransactionReport --------------------------------------------------//
+
         public async Task<IActionResult> TotalPermitsTransactionReport()
         {
             List<StockViewDTO> stockViewDTOs = await _stockRepo.GetActiveStocksForUserAsync(_currentUserService.UserId);
             ViewBag.Stocks = stockViewDTOs;
             //ViewBag.PermitTypes = _transMasterRepo.GetUserPermissionsForStockAsync()
             ViewBag.BranchId = _currentUserService.BranchId;
+            ViewBag.WebReport = null;
 
             return View();
         }
-
-
         [HttpPost]
-        public async Task<IActionResult> TotalPermitsTransactionReport(TransactionRequestDTO model)
+        public async Task<IActionResult> TotalPermitsTransactionReport(TotalPermitsTransactionRequestDTO model)
         {
             List<StockViewDTO> stockViewDTOs = await _stockRepo.GetActiveStocksForUserAsync(_currentUserService.UserId);
             ViewBag.Stocks = stockViewDTOs;
@@ -170,13 +180,15 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             }
 
 
-            var table = await _transactionReportRepo.GetZeroTransactionReport(model.FromDate, model.ToDate, model.StockId, _currentUserService.Year, FirstRows: model.FirstRows ?? null);
+            var table = await _transactionReportRepo.GetTotalPermitsTransactionReport(model.FromDate, model.ToDate,model.BranchId,(int)model.TransType);
             WebReport webReport = new();
-            webReport.Report.Load(Path.Combine(Environment.CurrentDirectory, "Reports\\Stock\\Zero Transaction Items.frx"));
+            webReport.Report.Load(Path.Combine(Environment.CurrentDirectory, "Reports\\Stock\\Total Permit Transactions.frx"));
+            var TransType = await _generalTableRepo.GetPermissionByUniqueTypeAsync((int)model.TransType);
             var Stock = await _stockRepo.GetStockByIdAsync(model.StockId);
 
             webReport.Report.SetParameterValue("FromDate", model.FromDate.ToString("dd/MM/yyyy"));
             webReport.Report.SetParameterValue("ToDate", model.ToDate.ToString("dd/MM/yyyy"));
+            webReport.Report.SetParameterValue("TransName", TransType.GDesc);
             webReport.Report.SetParameterValue("StockName", Stock.Stknam);
 
             webReport.Report.RegisterData(table, "Table");
@@ -185,5 +197,11 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             ViewBag.WebReport = webReport;
             return View(model);
         }
+
+        public async Task<IActionResult> GetPermitsDependOnStock(int id,int userCode) 
+        {
+            return Json(await _transMasterRepo.GetUserPermissionsForStockAsync(userCode, id));
+        }
+
     }
 }

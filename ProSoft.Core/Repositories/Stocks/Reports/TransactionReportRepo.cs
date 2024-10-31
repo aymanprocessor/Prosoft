@@ -52,31 +52,31 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
                     tnxDtls = tnxDtls.Take((int)FirstRows).ToList();
                 }
 
-               
+
                 transactionReportDTO.ItemQty = (int)tnxDtls.Sum(t => t.UnitQty);
                 transactionReportDTOs.Add(transactionReportDTO);
             }
-            if(OrderType == "ASC")
+            if (OrderType == "ASC")
             {
 
-            transactionReportDTOs = transactionReportDTOs.OrderByDescending(t => t.ItemQty).ToList();
+                transactionReportDTOs = transactionReportDTOs.OrderByDescending(t => t.ItemQty).ToList();
             }
             else
             {
-            transactionReportDTOs = transactionReportDTOs.OrderBy(t => t.ItemQty).ToList();
+                transactionReportDTOs = transactionReportDTOs.OrderBy(t => t.ItemQty).ToList();
 
             }
             return transactionReportDTOs;
         }
 
-        public async Task<List<TransactionReportDTO>> GetZeroTransactionReport(DateTime FromDate, DateTime ToDate, int StockId,int FYear, int? FirstRows = null)
+        public async Task<List<TransactionReportDTO>> GetZeroTransactionReport(DateTime FromDate, DateTime ToDate, int StockId, int FYear, int? FirstRows = null)
         {
             List<TransactionReportDTO> transactionReportDTOs = new();
-            var stkBals = await _context.Stkbalances.Where(s => s.FYear== FYear && s.Stkcod == StockId).ToListAsync();
+            var stkBals = await _context.Stkbalances.Where(s => s.FYear == FYear && s.Stkcod == StockId).ToListAsync();
 
             foreach (var stk in stkBals)
             {
-                var  transTypes = new int[]{ 4, 10, 13 };
+                var transTypes = new int[] { 4, 10, 13 };
                 var tnxDtls = await _context.TransDtls.Where(t =>
 
                 t.DocDate.Value.Date >= FromDate.Date &&
@@ -96,17 +96,46 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
                     {
                         ItemCode = stk.ItemCode,
                         ItemName = subItem.SubName,
-                        ItemQty =0
+                        ItemQty = 0
                     });
                 }
 
-                if(FirstRows != null&&FirstRows > 0)
+                if (FirstRows != null && FirstRows > 0)
                 {
                     transactionReportDTOs = transactionReportDTOs.Take((int)FirstRows).ToList();
                 }
             }
             return transactionReportDTOs;
 
+        }
+
+        public async Task<List<TotalPermitsTransactionReportDTO>> GetTotalPermitsTransactionReport(DateTime FromDate, DateTime ToDate, int BranchId, int transType)
+        {
+
+            List<TotalPermitsTransactionReportDTO> totalPermitsTransactionReportDTOs = new();
+            var tnxMstrs = await _context.TransMasters.Where(t =>
+            t.TransType == transType &&
+            t.BranchId == BranchId &&
+            t.DocDate.Value.Date >= FromDate.Date &&
+            t.DocDate.Value.Date <= ToDate.Date
+            ).ToListAsync();
+
+            foreach (var tnxMstr in tnxMstrs)
+            {
+
+                TotalPermitsTransactionReportDTO reportDTO = new();
+
+                reportDTO.DocDate = tnxMstr.DocDate.Value.ToString("yyyy-MM-dd");
+                reportDTO.DocNo = tnxMstr.DocNo;
+                reportDTO.RefDocNo = tnxMstr.RefDocNo;
+                reportDTO.TotTransVal = tnxMstr.TotTransVal??0;
+                reportDTO.Descount = tnxMstr.Descount ?? 0;
+                reportDTO.NetTransValue = reportDTO.TotTransVal - reportDTO.Descount ;
+
+                totalPermitsTransactionReportDTOs.Add(reportDTO);
+
+            }
+            return totalPermitsTransactionReportDTOs;
         }
     }
 }
