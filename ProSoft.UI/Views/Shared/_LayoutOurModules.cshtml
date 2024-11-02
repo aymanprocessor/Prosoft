@@ -410,6 +410,16 @@
                                             @localizer["Zero Transaction Report"]
                                         </a>
                                     </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Stocks" asp-controller="TransactionReport" asp-action="TotalPermitsTransactionReport" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Total Permits Transaction Report"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Stocks" asp-controller="TransactionReport" asp-action="SupplierPermitsTransactionReport" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Supplier Permits Transaction Report"]
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>

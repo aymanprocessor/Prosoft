@@ -32,6 +32,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ProSoft.Core\ProSoft.Core.csproj" />
     <ProjectReference Include="..\ProSoft.EF\ProSoft.EF.csproj" />
+    <ProjectReference Include="..\Shared\ProSoft.Shared.csproj" />
   </ItemGroup>
 
 </Project>

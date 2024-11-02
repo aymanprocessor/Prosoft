@@ -3,6 +3,7 @@ using ProSoft.Core.Enums;
 using ProSoft.EF.DbContext;
 using ProSoft.EF.DTOs.Stocks.Report.Transactions;
 using ProSoft.EF.IRepositories.Stocks.Reports;
+using Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -109,13 +110,14 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
 
         }
 
-        public async Task<List<TotalPermitsTransactionReportDTO>> GetTotalPermitsTransactionReport(DateTime FromDate, DateTime ToDate, int BranchId, int transType)
+        public async Task<List<TotalPermitsTransactionReportDTO>> GetTotalPermitsTransactionReport(DateTime FromDate, DateTime ToDate, int BranchId, int transType,int StockId)
         {
 
             List<TotalPermitsTransactionReportDTO> totalPermitsTransactionReportDTOs = new();
             var tnxMstrs = await _context.TransMasters.Where(t =>
             t.TransType == transType &&
             t.BranchId == BranchId &&
+            t.StockCode == StockId &&
             t.DocDate.Value.Date >= FromDate.Date &&
             t.DocDate.Value.Date <= ToDate.Date
             ).ToListAsync();
@@ -128,14 +130,64 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
                 reportDTO.DocDate = tnxMstr.DocDate.Value.ToString("yyyy-MM-dd");
                 reportDTO.DocNo = tnxMstr.DocNo;
                 reportDTO.RefDocNo = tnxMstr.RefDocNo;
-                reportDTO.TotTransVal = tnxMstr.TotTransVal??0;
+                reportDTO.TotTransVal = tnxMstr.TotTransVal ?? 0;
                 reportDTO.Descount = tnxMstr.Descount ?? 0;
-                reportDTO.NetTransValue = reportDTO.TotTransVal - reportDTO.Descount ;
+                reportDTO.NetTransValue = reportDTO.TotTransVal - reportDTO.Descount;
 
                 totalPermitsTransactionReportDTOs.Add(reportDTO);
 
             }
             return totalPermitsTransactionReportDTOs;
         }
+
+        public async Task<List<SupplierPermitsTransactionReportDTO>> GetSupplierPermitsTransactionReport(DateTime FromDate, DateTime ToDate, int BranchId, int transType, int StockId, Filter? filter)
+        {
+
+            List<SupplierPermitsTransactionReportDTO> supplierPermitsTransactionReportDTOs = new();
+            var tnxDtls = await _context.TransDtls.Where(t =>
+            t.TransType == transType &&
+            t.StockCode == StockId &&
+            t.BranchId == BranchId &&
+            t.DocDate.Value.Date >= FromDate.Date &&
+            t.DocDate.Value.Date <= ToDate.Date
+            ).OrderBy(t => t.DocDate)
+             .ToListAsync();
+
+            if (filter?.SupplierId != null) tnxDtls = tnxDtls.Where(t => t.SubCode == filter.SupplierId).ToList();
+            if (!string.IsNullOrEmpty(filter?.SearchByItemCode)) tnxDtls = tnxDtls.Where(t => t.ItemMaster.Contains(filter.SearchByItemCode)).ToList();
+            if (!string.IsNullOrEmpty(filter?.SearchByItemName)) tnxDtls = tnxDtls.Where(t => ( _context.SubItems.FirstOrDefault(s=>s.ItemCode == t.ItemMaster)).SubName.Contains(filter.SearchByItemName)).ToList();
+            if (!string.IsNullOrEmpty(filter?.FromCode)) tnxDtls = tnxDtls.Where(t => string.Compare(t.ItemMaster, filter.FromCode,StringComparison.Ordinal )>=0 && string.Compare(t.ItemMaster, filter.ToCode, StringComparison.Ordinal) <= 0).ToList();
+            if (!string.IsNullOrEmpty(filter?.ToCode)) tnxDtls = tnxDtls.Where(t => t.ItemMaster.Contains(filter.SearchByItemCode)).ToList();
+            
+
+            foreach (var tnxDtl in tnxDtls)
+            {
+
+                SupplierPermitsTransactionReportDTO reportDTO = new();
+
+                var Suppliers = await _context.SupCodes.FirstOrDefaultAsync(s => s.SupCode1== tnxDtl.SubCode.ToString());
+                var SubItem = await _context.SubItems.FirstOrDefaultAsync(s => s.ItemCode == tnxDtl.ItemMaster);
+                var Unit = await _context.UnitCodes.FirstOrDefaultAsync(u => u.Code == tnxDtl.UnitCode);
+
+                reportDTO.DocDate = tnxDtl.DocDate.Value.ToString("yyyy-MM-dd");
+                reportDTO.DocNo = tnxDtl.DocNo;
+                reportDTO.SupplierName = Suppliers?.SupName;
+                reportDTO.ItemCode = tnxDtl.ItemMaster;
+                reportDTO.ItemName = SubItem?.SubName;
+                reportDTO.UnitName = Unit?.Names;
+                reportDTO.ItemQty = tnxDtl.UnitQty;
+                reportDTO.ItemPrice = tnxDtl.Price;
+                reportDTO.ItemValue = tnxDtl.ItemVal;
+
+
+
+
+                supplierPermitsTransactionReportDTOs.Add(reportDTO);
+
+            }
+            return supplierPermitsTransactionReportDTOs;
+        }
+
+
     }
 }

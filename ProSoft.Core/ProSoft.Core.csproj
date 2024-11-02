@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ProSoft.EF\ProSoft.EF.csproj" />
+    <ProjectReference Include="..\Shared\ProSoft.Shared.csproj" />
   </ItemGroup>
 
 </Project>

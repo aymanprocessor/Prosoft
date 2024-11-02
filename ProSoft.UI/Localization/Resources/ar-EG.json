@@ -1022,7 +1022,9 @@
   "Slow Transaction Report": "تقرير الاصناف بطيئة الحركة",
   "Zero Transaction Report": "تقرير الاصناف الراكدة",
   "First Rows": "اول",
-  "Total Permits Transaction Report": "تقرير اجمالي حركة الاذون"
+  "Total Permits Transaction Report": "تقرير اجمالي حركة الاذون",
+  "Supplier Permits Transaction Report": "تقرير حركة اذون المورد",
+  "No Filter": "بدون فلتر"
 
 
 

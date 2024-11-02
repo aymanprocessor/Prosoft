@@ -30,6 +30,10 @@
 
   <ItemGroup>
     <Folder Include="Models\Medical\Analysis\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\ProSoft.Shared.csproj" />
   </ItemGroup> 
 	
 
