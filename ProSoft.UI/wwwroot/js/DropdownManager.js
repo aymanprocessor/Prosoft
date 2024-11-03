@@ -70,6 +70,10 @@ const DropdownManager = (function () {
                 childDropdown.appendChild(option);
             });
 
+            // Dispatch custom event after child dropdown is populated
+            const event = new CustomEvent('childLoaded', { detail: { parentId, data } });
+            childDropdown.dispatchEvent(event);
+
         } catch (error) {
             console.error('Error fetching dependent dropdown data:', error);
             clearChildDropdown();
@@ -82,6 +86,11 @@ const DropdownManager = (function () {
     //};
     // Public methods
     return {
+
+      
+
+
+            
         init: function (options) {
             config = { ...config, ...options };
 

@@ -71,21 +71,20 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.Cookie.HttpOnly = true;
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(1000000);
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
+        
         options.SlidingExpiration = true;
         options.LoginPath = "/Account/Login";
-        options.AccessDeniedPath = "/Account/AccessDenied";
     });
 
 
 
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromMinutes(1000000);
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
-});
+//builder.Services.AddSession(options =>
+//{
+//    options.IdleTimeout = TimeSpan.FromMinutes(1000000);
+//    options.Cookie.HttpOnly = true;
+//    options.Cookie.IsEssential = true;
+//});
 builder.Services.AddFastReport();
 // General Response Register
 
@@ -262,7 +261,7 @@ app.UseRequestLocalization(localizationsOptions);
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseSession(); // Ensure session middleware is added
+//app.UseSession(); // Ensure session middleware is added
 
 // for using browser language
 app.UseRequestCulture();

@@ -112,9 +112,9 @@
 
 @section Scripts {
     <script>
-
-
         document.addEventListener('DOMContentLoaded', function () {
+
+            // Initialize the dropdown manager
             DropdownManager.init({
                 parentDropdownId: 'StockSelect',
                 childDropdownId: 'permitsSelect',
@@ -129,6 +129,26 @@
                     id: 'uniqueType',
                     text: 'gDesc'
                 }
+            });
+
+
+            const permitsSelect = document.getElementById('permitsSelect');
+
+            permitsSelect.addEventListener("childLoaded", function (e) {
+                console.log(e.detail);
+                const permitsSelectValue = localStorage.getItem('permitsSelect');
+                // condition for input is not disabled
+
+
+                if (permitsSelectValue && !permitsSelect.disabled) {
+                    permitsSelect.value = permitsSelectValue;
+                }
+            })
+
+           
+            // Save the selected value in the permitsSelect dropdown
+            permitsSelect.addEventListener('change', function () {
+                localStorage.setItem('permitsSelect', permitsSelect.value);
             });
         });
     </script>

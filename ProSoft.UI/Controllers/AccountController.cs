@@ -1,22 +1,15 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using ProSoft.EF.DTOs.Auth;
 using ProSoft.EF.IRepositories;
 using ProSoft.EF.IRepositories.Shared;
 using ProSoft.EF.Models;
 using ProSoft.EF.Models.Shared;
-using System.Data;
 using System.Security.Claims;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 //declare SignInResult
-using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace ProSoft.UI.Controllers
 {
