@@ -446,10 +446,13 @@ html {
     top :6px !important;
 }
 
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    position: relative !important;
+    right: 0 !important;
+}
 /* DataTables */
-
-.dt-layout-row{
-    margin-bottom : 10px;
+.dt-layout-row {
+    margin-bottom: 10px;
 }
 
 select[readonly] {

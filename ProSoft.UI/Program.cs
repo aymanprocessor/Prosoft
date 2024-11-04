@@ -33,6 +33,7 @@ using Microsoft.Extensions.Options;
 using System.Text.Json.Serialization;
 using ProSoft.EF.IRepositories.Stocks.Reports;
 using ProSoft.Core.Repositories.Stocks.Reports;
+using ProSoft.UI.Areas.Accounts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -77,7 +78,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LoginPath = "/Account/Login";
     });
 
-
+builder.Services.ConfigureOptions<ConfigureSecurityStampOptions>();
 
 //builder.Services.AddSession(options =>
 //{
@@ -132,6 +133,7 @@ builder.Services.AddScoped<IRegionRepo, RegionRepo>();
 builder.Services.AddScoped<IReportTransferAndReceiptTransactionRepo, ReportTransferAndReceiptTransactionRepo>();
 builder.Services.AddScoped<ITotalItemCardsRepo, TotalItemCardRepo>();
 builder.Services.AddScoped<IStockTypeRepo, StockTypeRepo>();
+builder.Services.AddScoped<IStockBalanceReportRepo, StockBalanceReportRepo>();
 builder.Services.AddScoped<ITransactionReportRepo, TransactionReportRepo>();
 builder.Services.AddScoped<IItemsCustPriceRepo, ItemsCustPriceRepo>();
 builder.Services.AddScoped<IAdjectiveCustRepo, AdjectiveCustRepo>();

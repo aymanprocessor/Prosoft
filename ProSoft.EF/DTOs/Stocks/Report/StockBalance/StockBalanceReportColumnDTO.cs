@@ -13,16 +13,11 @@ namespace ProSoft.EF.DTOs.Stocks.Report.StockBalance
         public string? ItemCode { get; set; }
         public string? ItemName { get; set; }
         public string? StockName { get; set; }
-        public decimal? ItemQty { get; set; }
-        public decimal? ItemPrice { get; set; }
-        public decimal? ItemValue { get; set; }
-        public decimal? SumItemQty { get; set; }
-        public decimal? SumItemValue { get; set; }
-
-
-
-
-
+        public decimal? ItemQty { get; set; } = 0;
+        public decimal? ItemPrice { get; set; } = 0;
+        public decimal? ItemValue { get; set; } = 0;
+        public decimal? SumItemQty { get; set; } = 0;
+        public decimal? SumItemValue { get; set; } = 0;
 
     }
 }

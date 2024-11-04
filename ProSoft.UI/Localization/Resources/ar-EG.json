@@ -1025,7 +1025,13 @@
   "Total Permits Transaction Report": "تقرير اجمالي حركة الاذون",
   "Supplier Permits Transaction Report": "تقرير حركة اذون المورد",
   "No Filter": "بدون فلتر",
-  "Stock Balance Report": "تقرير ارصدة اصناف المخازن"
+  "Stock Balance Report": "تقرير ارصدة اصناف المخازن",
+  "Columns": "اعمدة",
+  "Rows By Stock": "اسطر بالمخزن",
+  "Rows By Item": "اسطر بالصنف",
+  "Nagative Qty":"كميات بالسالب",
+  "Zero Qty":"كميات صفر",
+  "Positive Qty":"كميات اكبر من صفر"
 
 
 

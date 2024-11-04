@@ -9,7 +9,7 @@ namespace ProSoft.EF.DTOs.Stocks.Report.StockBalance
     public  class StockBalanceReportRequestDTO
     {
         public int BranchId { get; set; }
-        public List<int> StockIds { get; set; } = new List<int>();
+        public List<string> StockIds { get; set; } = new List<string>();
 
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
@@ -23,6 +23,8 @@ namespace ProSoft.EF.DTOs.Stocks.Report.StockBalance
         public bool NagativeQty { get; set; } = false;
         public bool ZeroQty { get; set; } = false;
         public bool PositiveQty { get; set; } = true;
+
+        public string ReportType { get; set; } = string.Empty;
 
     }
 }

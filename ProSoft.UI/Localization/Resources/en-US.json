@@ -1025,5 +1025,12 @@
   "First Rows": "First Rows",
   "Total Permits Transactions Report": "Total Permits Transactions Report",
   "Supplier Permits Transaction Report": "Supplier Permits Transaction Report",
-  "Stock Balance Report": "Stock Balance Report"
+  "Stock Balance Report": "Stock Balance Report",
+  "Columns": "Columns",
+  "Rows By Stock": "Rows By Stock",
+  "Rows By Item": "Rows By Item",
+  "Nagative Qty": "Nagative Quantity",
+  "Zero Qty": "Zero Quantity",
+  "Positive Qty": "Positive Quantity"
+
 }
