@@ -1,10 +1,15 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FastReport.Web;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ProSoft.Core.Repositories;
+using ProSoft.Core.Repositories.Stocks.Reports;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.DTOs.Stocks.Report.StockBalance;
 using ProSoft.EF.IRepositories.Stocks;
 using ProSoft.EF.IRepositories.Stocks.Reports;
+using System.Collections;
+using System.Data;
 
 namespace ProSoft.UI.Areas.Stocks.Controllers
 {
@@ -40,20 +45,40 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             if (!ModelState.IsValid)
             {
                 return View(model);
-            }
-
+            } 
+            WebReport webReport = new();
+            IEnumerable table ;
             switch (model.ReportType)
             {
                 case "ColumnReport":
-                    var columns = await _stockBalanceReportRepo.GetStockBalanceReportColumns(model.BranchId, model.StockIds, model.FromDate, model.ToDate);
+                     table = await _stockBalanceReportRepo.GetStockBalanceReportColumns(model.BranchId, model.StockIds, model.FromDate, model.ToDate,_currentUserService.Year);
+                    webReport.Report.Load(Path.Combine(Environment.CurrentDirectory, "Reports\\Stock\\Stock Balance Report Column.frx"));
+                    webReport.Report.RegisterData(table, "Table");
                     break;
                 case "RowsByStock":
+                     table = await _stockBalanceReportRepo.GetStockBalanceReportRowByStocks(model.BranchId, model.StockIds, model.FromDate, model.ToDate, _currentUserService.Year);
+                    webReport.Report.Load(Path.Combine(Environment.CurrentDirectory, "Reports\\Stock\\Stock Balance Report Row By Stock.frx"));
+                    webReport.Report.RegisterData(table, "Table");
                     break;
                 case "RowsByItem":
+                     table = await _stockBalanceReportRepo.GetStockBalanceReportRowByItems(model.BranchId, model.StockIds, model.FromDate, model.ToDate, _currentUserService.Year);
+                    webReport.Report.Load(Path.Combine(Environment.CurrentDirectory, "Reports\\Stock\\Stock Balance Report Row By Item.frx"));
+                    webReport.Report.RegisterData(table, "Table");
                     break;
-
             }
+
+            
            
+            
+
+            webReport.Report.SetParameterValue("FromDate", model.FromDate.ToString("dd/MM/yyyy"));
+            webReport.Report.SetParameterValue("ToDate", model.ToDate.ToString("dd/MM/yyyy"));
+
+           
+            webReport.Report.Prepare();
+
+            ViewBag.WebReport = webReport;
+
             return View(model);
         }
     }

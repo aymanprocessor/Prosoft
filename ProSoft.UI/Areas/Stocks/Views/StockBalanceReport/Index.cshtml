@@ -1,4 +1,5 @@
-﻿@using ProSoft.EF.DTOs.Stocks.Report.StockBalance
+﻿@using FastReport.Web
+@using ProSoft.EF.DTOs.Stocks.Report.StockBalance
 @using ProSoft.UI.Global
 @model StockBalanceReportRequestDTO
 @{
@@ -6,6 +7,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     SelectList stocks = new SelectList(ViewBag.Stocks, "Stkcod", "Stknam");
+    WebReport? webReport = ViewBag.WebReport;
 
 }
 
@@ -22,10 +24,9 @@
 
 
     <form asp-action="Index" method="post" class="filter-box p-3">
-        <div class="row gx-2 gy-2 p-3">
+       
             <input asp-for="@Model.BranchId" value="@ViewBag.BranchId" hidden />
-            <input asp-for="@Model.StockIds" value="[1,2]" hidden />
-        </div>
+           
 
         <div class="row">
            
@@ -34,7 +35,7 @@
             <div class="vol-12">
                 <label asp-for="StockIds" class="form-label">@localizer["Stocks"]</label>
 
-                <select id="stockselect" name="StockIds" multiple="multiple" style="width:100%">
+                <select id="stockselect" class="js-states form-control" name="StockIds" multiple="multiple" style="width:100%">
                  <option value="">@localizer["Choosee"]</option>
                 </select>
             </div>
@@ -106,6 +107,13 @@
             </div>
         </div>
     </form>
+    @if (webReport != null)
+    {
+
+        <div class="webreport text-center">
+            @await webReport.Render()
+        </div>
+    }
 </div>
 
 @section Scripts {
@@ -113,20 +121,21 @@
         $(document).ready(function () {
             // map SelectList to select2
 
-            var stocksData = @Html.Raw(Json.Serialize(stocks));
+            var stocksData1 = @Html.Raw(Json.Serialize(ViewBag.Stocks));
+            console.log(stocksData1);
 
-            var stocksData = $.map(stocksData, function (obj) {
-                obj.id = obj.id || obj.Value; // replace pk with your identifier
-                obj.text = obj.text || obj.Text; // replace name with the property used for the text
+             var stocksData = $.map(stocksData1, function (obj) {
+                 obj.id = obj.id || obj.stkcod; // replace pk with your identifier
+                 obj.text = obj.text || obj.stknam; // replace name with the property used for the text
 
-                return obj;
-            });
+                 return obj;
+             });
 
-            console.log(stocksData);
+             console.log(stocksData);
 
-            $("#stockselect").select2({
+             $("#stockselect").select2({
                 data: stocksData,
-                placeholder:"@localizer["Choosee"]",
+                 placeholder:"@localizer["Choosee"]",
                 dir: "rtl"
             });
         });

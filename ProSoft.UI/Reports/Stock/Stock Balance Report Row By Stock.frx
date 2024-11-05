@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="11/03/2024 14:27:18" ReportInfo.Modified="11/05/2024 16:49:30" ReportInfo.CreatorVersion="2024.2.0.0">
+  <Dictionary>
+    <BusinessObjectDataSource Name="table" ReferenceName="Table" DataType="System.Int32" Enabled="true">
+      <Column Name="ItemCode" DataType="System.String"/>
+      <Column Name="ItemName" DataType="System.String"/>
+      <Column Name="StockName" DataType="System.String"/>
+      <Column Name="CarriedBalanceItemQty" DataType="System.Decimal"/>
+      <Column Name="CarriedBalanceItemPrice" DataType="System.Decimal"/>
+      <Column Name="CarriedBalanceItemValue" DataType="System.Decimal"/>
+      <Column Name="InItemQty" DataType="System.Decimal"/>
+      <Column Name="InItemPrice" DataType="System.Decimal"/>
+      <Column Name="InItemValue" DataType="System.Decimal"/>
+      <Column Name="OutItemQty" DataType="System.Decimal"/>
+      <Column Name="OutItemPrice" DataType="System.Decimal"/>
+      <Column Name="OutItemValue" DataType="System.Decimal"/>
+      <Column Name="CurrentBalanceItemQty" DataType="System.Decimal"/>
+      <Column Name="CurrentBalanceItemPrice" DataType="System.Decimal"/>
+      <Column Name="CurrentBalanceItemValue" DataType="System.Decimal"/>
+    </BusinessObjectDataSource>
+    <Parameter Name="FromDate" DataType="System.DateTime" AsString=""/>
+    <Parameter Name="ToDate" DataType="System.DateTime" AsString=""/>
+  </Dictionary>
+  <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" Watermark.Font="Arial, 60pt">
+    <PageHeaderBand Name="PageHeader1" Top="20" Width="1047.06" Height="37.8">
+      <TextObject Name="Text1" Width="340.2" Height="37.8" Text="تاريخ الطباعة : [Date]" HorzAlign="Right" VertAlign="Center" RightToLeft="true" Font="Calibri, 10pt, style=Bold"/>
+    </PageHeaderBand>
+    <ColumnHeaderBand Name="ColumnHeader1" Top="77.8" Width="1047.06" Height="132.3">
+      <TextObject Name="Text3" Width="1048.95" Height="37.8" Text="تقرير تفصيلي حركة اصدة الاصناف على مستوى المخازن" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Calibri, 12pt, style=Bold"/>
+      <TextObject Name="Text4" Top="37.8" Width="1048.95" Height="37.8" Text="الفترة من [FromDate] حتى [ToDate]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Calibri, 10pt, style=Bold"/>
+      <TableObject Name="Table1" Top="94.5" Width="1046.89" Height="37.8">
+        <TableColumn Name="Column1" Width="71"/>
+        <TableColumn Name="Column2" Width="71"/>
+        <TableColumn Name="Column3" Width="71"/>
+        <TableColumn Name="Column29" Width="7"/>
+        <TableColumn Name="Column4" Width="71"/>
+        <TableColumn Name="Column5" Width="71"/>
+        <TableColumn Name="Column6" Width="71"/>
+        <TableColumn Name="Column28" Width="7"/>
+        <TableColumn Name="Column7" Width="71"/>
+        <TableColumn Name="Column8" Width="71"/>
+        <TableColumn Name="Column9" Width="71"/>
+        <TableColumn Name="Column27" Width="8"/>
+        <TableColumn Name="Column10" Width="71"/>
+        <TableColumn Name="Column11" Width="71"/>
+        <TableColumn Name="Column12" Width="71"/>
+        <TableColumn Name="Column30" Width="7.39"/>
+        <TableColumn Name="Column13" Width="165.5"/>
+        <TableRow Name="Row1">
+          <TableCell Name="Cell1" Border.Lines="All" Fill.Color="LightGray" Text="الرصيد الحالي" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" ColSpan="3"/>
+          <TableCell Name="Cell2" Border.Lines="All" Fill.Color="LightGray" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell3" Border.Lines="All" Fill.Color="LightGray" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell106" Font="Arial, 10pt"/>
+          <TableCell Name="Cell4" Border.Lines="All" Fill.Color="LightGray" Text="الصرف" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" ColSpan="3"/>
+          <TableCell Name="Cell5" Border.Lines="All" Fill.Color="LightGray" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell26" Border.Lines="All" Fill.Color="LightGray" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell104" Font="Arial, 10pt"/>
+          <TableCell Name="Cell31" Border.Lines="All" Fill.Color="LightGray" Text="الاضافات" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" ColSpan="3"/>
+          <TableCell Name="Cell36" Border.Lines="All" Fill.Color="LightGray" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell41" Border.Lines="All" Fill.Color="LightGray" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell102" Font="Arial, 10pt"/>
+          <TableCell Name="Cell46" Border.Lines="All" Fill.Color="LightGray" Text="رصيد اول المدة" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" ColSpan="3"/>
+          <TableCell Name="Cell51" Border.Lines="All" Fill.Color="LightGray" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell56" Border.Lines="All" Fill.Color="LightGray" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell108" Font="Arial, 10pt"/>
+          <TableCell Name="Cell61" Border.Lines="All" Fill.Color="LightGray" Text="الصنف" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" RowSpan="2"/>
+        </TableRow>
+        <TableRow Name="Row2">
+          <TableCell Name="Cell6" Border.Lines="All" Fill.Color="LightGray" Text="م.سعر وحدة" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell7" Border.Lines="All" Fill.Color="LightGray" Text="قيمة" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell8" Border.Lines="All" Fill.Color="LightGray" Text="كمية" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell107" Font="Arial, 10pt"/>
+          <TableCell Name="Cell9" Border.Lines="All" Fill.Color="LightGray" Text="م.سعر وحدة" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell10" Border.Lines="All" Fill.Color="LightGray" Text="قيمة" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell27" Border.Lines="All" Fill.Color="LightGray" Text="كمية" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell105" Font="Arial, 10pt"/>
+          <TableCell Name="Cell32" Border.Lines="All" Fill.Color="LightGray" Text="م.سعر وحدة" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell37" Border.Lines="All" Fill.Color="LightGray" Text="قيمة" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell42" Border.Lines="All" Fill.Color="LightGray" Text="كمية" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell103" Font="Arial, 10pt"/>
+          <TableCell Name="Cell47" Border.Lines="All" Fill.Color="LightGray" Text="م.سعر وحدة" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell52" Border.Lines="All" Fill.Color="LightGray" Text="قيمة" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell57" Border.Lines="All" Fill.Color="LightGray" Text="كمية" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell109" Font="Arial, 10pt"/>
+          <TableCell Name="Cell62" Border.Lines="All" Fill.Color="LightGray" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+        </TableRow>
+      </TableObject>
+    </ColumnHeaderBand>
+    <GroupHeaderBand Name="GroupHeader1" Top="230.1" Width="1047.06" Height="37.8" Condition="[table.StockName]">
+      <TextObject Name="Text5" Top="9.45" Width="1048.95" Height="28.35" Border.Lines="All" Fill.Color="MistyRose" Text="المخزن : [table.StockName]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Arial, 10pt, style=Bold"/>
+      <DataBand Name="Data1" Top="287.9" Width="1047.06" Height="37.8" DataSource="table" Columns.Layout="DownThenAcross">
+        <TableObject Name="Table2" Width="1049.52" Height="37.8">
+          <TableColumn Name="Column14" Width="73.45"/>
+          <TableColumn Name="Column15" Width="73.45"/>
+          <TableColumn Name="Column16" Width="65.78"/>
+          <TableColumn Name="Column31" Width="7.43"/>
+          <TableColumn Name="Column17" Width="73.45"/>
+          <TableColumn Name="Column18" Width="73.45"/>
+          <TableColumn Name="Column19" Width="66.41"/>
+          <TableColumn Name="Column32" Width="6.73"/>
+          <TableColumn Name="Column20" Width="73.45"/>
+          <TableColumn Name="Column21" Width="73.45"/>
+          <TableColumn Name="Column22" Width="65.8"/>
+          <TableColumn Name="Column33" Width="8.01"/>
+          <TableColumn Name="Column23" Width="73.45"/>
+          <TableColumn Name="Column24" Width="73.45"/>
+          <TableColumn Name="Column25" Width="66.53"/>
+          <TableColumn Name="Column34" Width="7.28"/>
+          <TableColumn Name="Column26" Width="167.95"/>
+          <TableRow Name="Row5">
+            <TableCell Name="Cell89" Border.Lines="All" Text="[table.CurrentBalanceItemPrice]" Font="Arial, 10pt" RowSpan="2"/>
+            <TableCell Name="Cell90" Border.Lines="All" Text="[table.CurrentBalanceItemValue]" Font="Arial, 10pt" RowSpan="2"/>
+            <TableCell Name="Cell91" Border.Lines="All" Text="[table.CurrentBalanceItemQty]" Font="Arial, 10pt" RowSpan="2"/>
+            <TableCell Name="Cell110" Font="Arial, 10pt"/>
+            <TableCell Name="Cell92" Border.Lines="All" Text="[table.OutItemPrice]" Font="Arial, 10pt" RowSpan="2"/>
+            <TableCell Name="Cell93" Border.Lines="All" Text="[table.OutItemValue]" Font="Arial, 10pt" RowSpan="2"/>
+            <TableCell Name="Cell94" Border.Lines="All" Text="[table.OutItemQty]" Font="Arial, 10pt" RowSpan="2"/>
+            <TableCell Name="Cell112" Font="Arial, 10pt"/>
+            <TableCell Name="Cell95" Border.Lines="All" Text="[table.InItemPrice]" Font="Arial, 10pt" RowSpan="2"/>
+            <TableCell Name="Cell96" Border.Lines="All" Text="[table.InItemValue]" Font="Arial, 10pt" RowSpan="2"/>
+            <TableCell Name="Cell97" Border.Lines="All" Text="[table.InItemQty]" Font="Arial, 10pt" RowSpan="2"/>
+            <TableCell Name="Cell114" Font="Arial, 10pt"/>
+            <TableCell Name="Cell98" Border.Lines="All" Text="[table.CarriedBalanceItemPrice]" Font="Arial, 10pt" RowSpan="2"/>
+            <TableCell Name="Cell99" Border.Lines="All" Text="[table.CarriedBalanceItemValue]" Font="Arial, 10pt" RowSpan="2"/>
+            <TableCell Name="Cell100" Border.Lines="All" Text="[table.CarriedBalanceItemQty]" Font="Arial, 10pt" RowSpan="2"/>
+            <TableCell Name="Cell116" Font="Arial, 10pt"/>
+            <TableCell Name="Cell101" Border.Lines="All" Text="[table.ItemCode]" HorzAlign="Right" Font="Arial, 10pt, style=Bold"/>
+          </TableRow>
+          <TableRow Name="Row4">
+            <TableCell Name="Cell76" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+            <TableCell Name="Cell77" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+            <TableCell Name="Cell78" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+            <TableCell Name="Cell111" Font="Arial, 10pt"/>
+            <TableCell Name="Cell79" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+            <TableCell Name="Cell80" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+            <TableCell Name="Cell81" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+            <TableCell Name="Cell113" Font="Arial, 10pt"/>
+            <TableCell Name="Cell82" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+            <TableCell Name="Cell83" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+            <TableCell Name="Cell84" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+            <TableCell Name="Cell115" Font="Arial, 10pt"/>
+            <TableCell Name="Cell85" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+            <TableCell Name="Cell86" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+            <TableCell Name="Cell87" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+            <TableCell Name="Cell117" Font="Arial, 10pt"/>
+            <TableCell Name="Cell88" Border.Lines="All" Text="[table.ItemName]" HorzAlign="Right" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          </TableRow>
+        </TableObject>
+        <ChildBand Name="Child1" Top="345.7" Width="1047.06" Height="37.8" PrintIfDatabandEmpty="true">
+          <TextObject Name="Text2" Width="1048.95" Height="37.8" Text="لا يوجد بيانات" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Calibri, 10pt, style=Bold"/>
+        </ChildBand>
+      </DataBand>
+    </GroupHeaderBand>
+    <PageFooterBand Name="PageFooter1" Top="403.5" Width="1047.06" Height="37.8">
+      <TextObject Name="Text6" Width="1048.95" Height="37.8" Text="[Page#] من [TotalPages#]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Calibri, 10pt, style=Bold"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>
