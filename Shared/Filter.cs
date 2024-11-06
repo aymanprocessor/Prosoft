@@ -8,5 +8,10 @@
         public string? ToCode { get; set; } = string.Empty;
         public int? SupplierId {  get; set; }
 
+        public bool? NagativeQty { get; set; }
+        public bool? ZeroQty { get; set; }
+        public bool? PositiveQty { get; set; }
+
+
     }
 }

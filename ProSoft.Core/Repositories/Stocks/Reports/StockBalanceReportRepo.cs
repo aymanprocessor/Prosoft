@@ -19,37 +19,70 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
 
         public async Task<List<StockBalanceReportColumnDTO>> GetStockBalanceReportColumns(int BranchId, List<string> StockIds, DateTime FromDate, DateTime ToDate, int FYear, Filter? filter = null)
         {
-            List<StockBalanceReportColumnDTO> stockBalanceReportColumnDTOs = new();
-            var tnxDtls = await _context.TransDtls.Where(t =>
-            t.DocDate.Value.Date >= FromDate.Date &&
-            t.DocDate.Value.Date <= ToDate.Date
-            ).ToListAsync();
 
-            foreach (var tnxDtl in tnxDtls)
+
+            List<StockBalanceReportColumnDTO> stockBalanceReportColumnDTOs = new();
+            var subItems = await _context.SubItems.ToListAsync();
+
+
+            if (filter != null && !string.IsNullOrEmpty(filter.FromCode) && !string.IsNullOrEmpty(filter.ToCode))
             {
+                subItems = subItems.Where(s =>
+                    string.Compare( s.ItemCode,filter.FromCode, StringComparison.OrdinalIgnoreCase) >= 0 &&
+                    string.Compare(s.ItemCode, filter.ToCode, StringComparison.OrdinalIgnoreCase) <= 0).ToList();
+            }
+            if (filter != null && !string.IsNullOrEmpty(filter.SearchByItemName))
+            {
+                subItems = subItems.Where(s => s.SubName.Contains(filter.SearchByItemName)).ToList();
+            }
+
+            foreach (var subItem in subItems)
+            {
+
                 StockBalanceReportColumnDTO stockBalanceReportColumnDTO = new();
+
+                var tnxDtls = await _context.TransDtls.Where(t =>
+                t.ItemMaster == subItem.ItemCode &&
+                t.DocDate.Value.Date >= FromDate.Date &&
+                t.DocDate.Value.Date <= ToDate.Date
+                ).ToListAsync();
                 foreach (var StockId in StockIds)
                 {
-                    if (tnxDtl?.StockCode != int.Parse(StockId)) continue;
 
-                    var subItem = await _context.SubItems.FirstOrDefaultAsync(s => s.ItemCode == tnxDtl.ItemMaster);
-                    var stock = await _context.Stocks.FirstOrDefaultAsync(s => s.Stkcod == tnxDtl.StockCode);
+                    foreach (var tnxDtl in tnxDtls)
+                    {
+                        if (tnxDtl?.StockCode != int.Parse(StockId)) continue;
 
-                    stockBalanceReportColumnDTO.BranchId = BranchId;
-                    stockBalanceReportColumnDTO.ItemCode = tnxDtl!.ItemMaster;
-                    stockBalanceReportColumnDTO.ItemName = subItem!.SubName;
-                    stockBalanceReportColumnDTO.StockName = stock!.Stknam;
-                    stockBalanceReportColumnDTO.ItemQty = tnxDtl?.UnitQty ?? 0;
-                    stockBalanceReportColumnDTO.ItemPrice = tnxDtl?.Price ?? 0;
-                    stockBalanceReportColumnDTO.ItemValue = tnxDtl?.ItemVal ?? 0;
-                    stockBalanceReportColumnDTO.SumItemQty += tnxDtl?.UnitQty ?? 0;
-                    stockBalanceReportColumnDTO.SumItemValue += tnxDtl?.Price ?? 0;
+                        var stock = await _context.Stocks.FirstOrDefaultAsync(s => s.Stkcod == tnxDtl.StockCode);
+                        var generalCode = await _context.GeneralCodes.FirstOrDefaultAsync(g => g.UniqueType == tnxDtl.TransType);
+
+                        stockBalanceReportColumnDTO.BranchId = BranchId;
+                        stockBalanceReportColumnDTO.ItemCode = tnxDtl!.ItemMaster;
+                        stockBalanceReportColumnDTO.ItemName = subItem!.SubName;
+                        stockBalanceReportColumnDTO.StockName = stock!.Stknam;
+
+                        if (generalCode.AddSub == 1)
+                        {
+
+                            stockBalanceReportColumnDTO.ItemQty += tnxDtl?.UnitQty ?? 0;
+                            stockBalanceReportColumnDTO.ItemValue += tnxDtl?.ItemVal ?? 0;
+                            stockBalanceReportColumnDTO.ItemPrice = (tnxDtl?.ItemVal / tnxDtl?.UnitQty) ?? 0;
+
+                        }
+                        else if (generalCode.AddSub == 2)
+                        {
+                            stockBalanceReportColumnDTO.ItemQty -= tnxDtl?.UnitQty ?? 0;
+                            stockBalanceReportColumnDTO.ItemValue -= tnxDtl?.ItemVal ?? 0;
+                            stockBalanceReportColumnDTO.ItemPrice = (tnxDtl?.ItemVal / tnxDtl?.UnitQty) ?? 0;
+                        }
+
+
+
+                    }
+
 
 
                 }
-
-
-
                 stockBalanceReportColumnDTOs.Add(stockBalanceReportColumnDTO);
             }
 
