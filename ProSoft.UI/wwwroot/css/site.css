@@ -1,3 +1,6 @@
+*{
+    box-sizing : border-box;
+}
 html {
     font-size: 14px;
 }
@@ -460,3 +463,6 @@ select[readonly] {
     touch-action: none;
     background: #e9ecef; /* makes it look similar to disabled */
 }
+
+/* Nav Bar*/
+
