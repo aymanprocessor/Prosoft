@@ -10,6 +10,7 @@ using ProSoft.EF.IRepositories.Stocks;
 using ProSoft.EF.IRepositories.Stocks.Reports;
 using ProSoft.EF.Models.MedicalRecords;
 using Shared;
+using FastReport.Export.PdfSimple;
 
 namespace ProSoft.UI.Areas.Stocks.Controllers
 {
@@ -113,6 +114,8 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
 
             webReport.Report.RegisterData(table, "Table");
             webReport.Report.Prepare();
+
+
 
             ViewBag.WebReport = webReport;
             return View(model);

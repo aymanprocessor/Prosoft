@@ -48,10 +48,7 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
                     tnxDtls = tnxDtls.Where(t => t.MainCode == MainCode).ToList();
                 }
 
-                if (FirstRows != null && FirstRows > 0)
-                {
-                    tnxDtls = tnxDtls.Take((int)FirstRows).ToList();
-                }
+              
 
 
                 transactionReportDTO.ItemQty = (int)tnxDtls.Sum(t => t.UnitQty);
@@ -66,6 +63,11 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
             {
                 transactionReportDTOs = transactionReportDTOs.OrderBy(t => t.ItemQty).ToList();
 
+            }
+
+            if (FirstRows != null && FirstRows > 0)
+            {
+                transactionReportDTOs = transactionReportDTOs.Take((int)FirstRows).ToList();
             }
             return transactionReportDTOs;
         }
@@ -185,6 +187,7 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
                 supplierPermitsTransactionReportDTOs.Add(reportDTO);
 
             }
+
             return supplierPermitsTransactionReportDTOs;
         }
 
