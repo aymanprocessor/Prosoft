@@ -13,9 +13,9 @@ namespace ProSoft.EF.DTOs.Stocks.Report.Request_Limit_Items_Report
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
 
-        public string FromCode { get; set; }
-        public string ToCode { get; set; }
+        public string? FromCode { get; set; }
+        public string? ToCode { get; set; }
 
-        public string ItemName { get; set; }
+        public string? SearchByItemName { get; set; }
     }
 }

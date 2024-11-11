@@ -1029,9 +1029,10 @@
   "Columns": "اعمدة",
   "Rows By Stock": "اسطر بالمخزن",
   "Rows By Item": "اسطر بالصنف",
-  "Nagative Qty":"كميات بالسالب",
-  "Zero Qty":"كميات صفر",
-  "Positive Qty":"كميات اكبر من صفر"
+  "Nagative Qty": "كميات بالسالب",
+  "Zero Qty": "كميات صفر",
+  "Positive Qty": "كميات اكبر من صفر",
+  "Request Limit Item Report": "تقرير الاصناف حد الطلب للمخزن"
 
 
 

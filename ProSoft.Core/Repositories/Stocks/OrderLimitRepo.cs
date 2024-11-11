@@ -93,6 +93,12 @@ namespace ProSoft.Core.Repositories.Stocks
         {
             ItmReorder itmReorder = await GetByIdAsync(itemReorderId);
             _mapper.Map(orderLimitDTO, itmReorder);
+
+            var subItem = await _Context.SubItems.FirstOrDefaultAsync(s => s.ItemCode == itmReorder.ItemCd);
+            if(subItem != null)
+            {
+                subItem.LemitCall = orderLimitDTO.ReordQty;
+            }
             await UpdateAsync(itmReorder);
             await SaveChangesAsync();
         }

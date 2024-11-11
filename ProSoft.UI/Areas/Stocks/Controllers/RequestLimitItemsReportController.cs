@@ -6,6 +6,7 @@ using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.DTOs.Stocks.Report.Request_Limit_Items_Report;
 using ProSoft.EF.IRepositories.Stocks;
 using ProSoft.EF.IRepositories.Stocks.Reports;
+using ProSoft.UI.Global;
 using Shared;
 
 namespace ProSoft.UI.Areas.Stocks.Controllers
@@ -39,6 +40,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             List<StockViewDTO> stockViewDTOs = await _stockRepo.GetActiveStocksForUserAsync(_currentUserService.UserId);
             ViewBag.Stocks = stockViewDTOs;
             ViewBag.BranchId = _currentUserService.BranchId;
+            model.FromDate = new DateTime(_currentUserService.Year, 1, 1);
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -56,7 +58,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             WebReport webReport = new();
 
             var table = await _requestLimitItemsReportRepo.GetRequestLimitItemsReport(model.StockId, model.BranchId, filter: filter);
-            webReport.Report.Load(Path.Combine(Environment.CurrentDirectory, "Reports\\Stock\\Stock Balance Report Column.frx"));
+            webReport.Report.Load(Path.Combine(Environment.CurrentDirectory, "Reports\\Stock\\Request Limit Items Report.frx"));
             webReport.Report.RegisterData(table, "Table");
             var stock = await _stockRepo.GetStockByIdAsync(model.StockId);
             webReport.Report.SetParameterValue("FromDate", model.FromDate.ToString("dd/MM/yyyy"));

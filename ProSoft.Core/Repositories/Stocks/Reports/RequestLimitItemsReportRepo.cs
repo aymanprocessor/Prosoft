@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProSoft.EF.DbContext;
 using ProSoft.EF.DTOs.Stocks.Report.Request_Limit_Items_Report;
+using ProSoft.EF.IRepositories.Stocks.Reports;
 using Shared;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ProSoft.Core.Repositories.Stocks.Reports
 {
-    public class RequestLimitItemsReportRepo
+    public class RequestLimitItemsReportRepo: IRequestLimitItemsReportRepo
     {
 
         private readonly AppDbContext _context;
@@ -27,7 +28,7 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
             List<RequestLimitItemsReportDTO> requestLimitItemsReportDTOs = new();
             var subItems = await _context.SubItems.Where(s => s.BranchId == BranchId).ToListAsync();
 
-            if (filter != null)
+            if (filter != null && (filter.FromCode != null || filter.ToCode != null))
             {
                 subItems = subItems.Where(s =>
                 string.Compare(s.ItemCode, filter.FromCode, StringComparison.OrdinalIgnoreCase) >= 0 &&
@@ -39,13 +40,13 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
             {
 
                 RequestLimitItemsReportDTO reportDTO = new();
-                var requestItem = await _context.ItmReorders.FirstOrDefaultAsync(i => i.BranchId == BranchId && i.StoreId == stockId && i.ReordQty > 0);
+               // var requestItem = await _context.ItmReorders.FirstOrDefaultAsync(i => i.BranchId == BranchId && i.ItemCd == subItem.ItemCode&& i.StoreId == stockId && i.ReordQty > 0);
 
-                if (requestItem == null) continue;
+                //if (requestItem == null) continue;
 
-                reportDTO.MaxRequestLimit = (decimal)requestItem.MaxQty;
-                reportDTO.MinRequestLimit = (decimal)requestItem.MinQty;
-                reportDTO.RequestLimit = (decimal)requestItem.ReordQty;
+                //reportDTO.MaxRequestLimit = (decimal)requestItem.MaxQty;
+               // reportDTO.MinRequestLimit = (decimal)requestItem.MinQty;
+                reportDTO.RequestLimit = (decimal)subItem.LemitCall;
                 reportDTO.ItemName = subItem.SubName;
                 reportDTO.ItemCode = subItem.ItemCode;
                 
@@ -89,7 +90,7 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
 
                 }
 
-                if(reportDTO.CurrentBalance < requestItem.ReordQty)
+                if(reportDTO.CurrentBalance < subItem.LemitCall)
                 {
                     requestLimitItemsReportDTOs.Add(reportDTO);
                 }

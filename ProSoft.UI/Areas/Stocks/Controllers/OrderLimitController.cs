@@ -47,9 +47,11 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 await _orderLimitRepo.EditItemReorderAsync(id, orderLimitDTO);
                 return RedirectToAction(nameof(Index));
             }
+            
             //SubItemEditAddDTO _subItemDTO = await _subItemRepo.GetSubItemByIdAsync(id);
             //_mapper.Map(_subItemDTO, subItemDTO);
             return View(orderLimitDTO);

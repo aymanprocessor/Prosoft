@@ -132,6 +132,7 @@ builder.Services.AddScoped<IRegionRepo, RegionRepo>();
 
 builder.Services.AddScoped<IReportTransferAndReceiptTransactionRepo, ReportTransferAndReceiptTransactionRepo>();
 builder.Services.AddScoped<ITotalItemCardsRepo, TotalItemCardRepo>();
+builder.Services.AddScoped<IRequestLimitItemsReportRepo, RequestLimitItemsReportRepo>();
 builder.Services.AddScoped<IStockTypeRepo, StockTypeRepo>();
 builder.Services.AddScoped<IStockBalanceReportRepo, StockBalanceReportRepo>();
 builder.Services.AddScoped<ITransactionReportRepo, TransactionReportRepo>();
