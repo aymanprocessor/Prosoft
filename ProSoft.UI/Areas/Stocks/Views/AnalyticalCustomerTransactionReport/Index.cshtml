@@ -1,0 +1,69 @@
+﻿@using FastReport.Web
+@using ProSoft.EF.DTOs.Stocks.Report.Analytical_Customer_Transaction_Report
+@using ProSoft.EF.DTOs.Stocks.Report.Request_Limit_Items_Report
+@using ProSoft.UI.Global
+
+@model AnalyticalCustomerTransactionReportRequestDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Analytical Customer Transaction Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    SelectList Customers = new SelectList(ViewBag.Customers, "CustCode1", "CustName");
+    WebReport? webReport = ViewBag.WebReport ?? new WebReport();
+}
+@inject IViewLocalizer localizer
+
+
+<div class="container pt-2 ">
+
+    <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mt-1 mb-3">
+        <h2 class="header" style="color: #084298;">@localizer["Analytical Customer Transaction Report"]</h2>
+
+    </div>
+
+    <form asp-action="Index" method="post" class=" filter-box">
+        <div class="row gx-2 gy-2 p-3">
+
+            <div class="col-md-6 col-lg-4 ">
+                <label for="@Model.CustomerId" class="form-label">@localizer["The Customer"]</label>
+                <select id="stocks" asp-items="Customers" asp-for="@Model.CustomerId" class="form-control text-center">
+                    <option value="">@localizer["Choosee"]</option>
+                </select>
+                <span asp-validation-for="@Model.CustomerId" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <label asp-for="FromDate" class="form-label">@localizer["From Period"]</label>
+                <input id="fromPeriod" type="date" asp-for="@Model.FromDate" value="@(new DateTime(DateTime.Now.Year,1,1).ToString(GlobalConstants.FormatDate))" class="form-control text-center " />
+                <span asp-validation-for="FromDate" class="text-danger"></span>
+
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <label asp-for="ToDate" class="form-label">@localizer["To Period"]</label>
+                <input id="toPeriod" type="date" asp-for="@Model.ToDate" value="@(DateTime.Now.ToString(GlobalConstants.FormatDate))" class="form-control text-center " />
+                <span asp-validation-for="ToDate" class="text-danger"></span>
+
+            </div>
+
+
+
+
+            <button type="submit" id="btn-submit" class="btn btn-primary col-md-2 col-lg-2" style="width:auto">
+
+                @localizer["View"]
+
+            </button>
+        </div>
+
+
+    </form>
+    @if (webReport != null)
+    {
+
+        <div class="webreport text-center">
+            @await webReport.Render()
+        </div>
+    }
+</div>

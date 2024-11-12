@@ -10,6 +10,7 @@
       
         public DateTime? ToDate { get; set; }
         public int? SupplierId {  get; set; }
+        public string? CustomerId {  get; set; }
 
         public bool? NagativeQty { get; set; }
         public bool? ZeroQty { get; set; }

@@ -1032,7 +1032,8 @@
   "Nagative Qty": "كميات بالسالب",
   "Zero Qty": "كميات صفر",
   "Positive Qty": "كميات اكبر من صفر",
-  "Request Limit Item Report": "تقرير الاصناف حد الطلب للمخزن"
+  "Request Limit Item Report": "تقرير الاصناف حد الطلب للمخزن",
+  "Analytical Customer Transaction Report":"تقرير حركة العملاء تحليلية"
 
 
 
