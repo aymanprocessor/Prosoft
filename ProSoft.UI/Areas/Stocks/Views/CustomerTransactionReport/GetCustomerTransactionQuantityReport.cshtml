@@ -1,0 +1,84 @@
+﻿@using FastReport.Web
+@using ProSoft.EF.DTOs.Stocks.Report.Customer_Transaction
+@model CustomerTransactionReportRequestDTO
+
+@{
+    ViewData["Title"] = "Customer Transaction Quantity Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    WebReport? webReport = ViewBag.WebReport ;
+}
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@inject IViewLocalizer localizer
+
+
+<div class="container pt-2 ">
+
+    <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mt-1 mb-3">
+        <h2 class="header" style="color: #084298;">@localizer["Customer Transaction Quantity Report"]</h2>
+
+    </div>
+    <form asp-action="GetCustomerTransactionQuantityReport" method="post" class=" filter-box">
+        <div class="row gx-2 gy-2 p-3">
+
+            <div class="col-md-6 col-lg-4 ">
+                <label for="@Model.CustomerId" class="form-label">@localizer["The Customer"]</label>
+                <select  asp-items="@ViewBag.Customers" asp-for="@Model.CustomerId" class="form-control text-center">
+                    <option value="">@localizer["Choosee"]</option>
+                </select>
+                <span asp-validation-for="@Model.CustomerId" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 col-lg-4 ">
+                <label for="@Model.StockId" class="form-label">@localizer["Stock"]</label>
+                <select  asp-items="@ViewBag.Stocks" asp-for="@Model.StockId" class="form-control text-center">
+                    <option value="">@localizer["Choosee"]</option>
+                </select>
+                <span asp-validation-for="@Model.StockId" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 col-lg-4 ">
+                <label for="@Model.TransType" class="form-label">@localizer["Transaction"]</label>
+                <select asp-items="@ViewBag.Transactions" asp-for="@Model.TransType" class="form-control text-center">
+                    <option value="">@localizer["Choosee"]</option>
+                </select>
+                <span asp-validation-for="@Model.TransType" class="text-danger"></span>
+            </div>
+
+
+            <div class="col-md-6 col-lg-4">
+                <label asp-for="FromDate" class="form-label">@localizer["From Period"]</label>
+                <input id="fromPeriod" type="date" asp-for="@Model.FromDate"  class="form-control text-center " />
+                <span asp-validation-for="FromDate" class="text-danger"></span>
+
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <label asp-for="ToDate" class="form-label">@localizer["To Period"]</label>
+                <input id="toPeriod" type="date" asp-for="@Model.ToDate"  class="form-control text-center " />
+                <span asp-validation-for="ToDate" class="text-danger"></span>
+
+            </div>
+
+
+
+
+            <button type="submit" id="btn-submit" class="btn btn-primary d-flex align-self-end col-md-2 col-lg-2" style="width:auto;height:min-content">
+
+                @localizer["View"]
+
+            </button>
+        </div>
+
+
+    </form>
+    @if (webReport != null)
+    {
+
+        <div class="webreport text-center">
+            @await webReport.Render()
+        </div>
+    }
+    </div>
+
+

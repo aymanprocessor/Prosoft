@@ -1033,6 +1033,8 @@
   "Zero Qty": "Zero Quantity",
   "Positive Qty": "Positive Quantity",
   "Request Limit Item Report": "Request Limit Item Report",
-  "Analytical Customer Transaction Report": "Analytical Customer Transaction Report"
+  "Analytical Customer Transaction Report": "Analytical Customer Transaction Report",
+  "Customer Transaction Quantity Report": "Customer Transaction Quantity Report",
+  "Customer Transaction Value Report": "Customer Transaction Value Report"
 
 }

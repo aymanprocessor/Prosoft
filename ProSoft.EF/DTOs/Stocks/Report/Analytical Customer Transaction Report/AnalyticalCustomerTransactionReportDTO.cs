@@ -9,10 +9,10 @@ namespace ProSoft.EF.DTOs.Stocks.Report.Analytical_Customer_Transaction_Report
     public class AnalyticalCustomerTransactionReportDTO
     {
      
-        public string CustomerName { get; set; } = string.Empty;
-        public decimal InvoiceNo { get; set; } = 0;
-        public DateTime InvoiceDate { get; set; }
-        public DateTime DueDate { get; set; }
+        public string? CustomerName { get; set; } = string.Empty;
+        public decimal? InvoiceNo { get; set; } = 0;
+        public DateTime? InvoiceDate { get; set; }
+        public DateTime? DueDate { get; set; }
 
         private decimal _salesValue = 0;
         public decimal SalesValue

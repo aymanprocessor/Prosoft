@@ -1,6 +1,7 @@
 ﻿using FastReport.Web;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ProSoft.Core.Repositories.Stocks;
 using ProSoft.Core.Repositories.Stocks.Reports;
 using ProSoft.EF.DTOs.Stocks.Report.Analytical_Customer_Transaction_Report;
@@ -25,7 +26,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
 
         public async Task<IActionResult> Index()
         {
-            ViewBag.Customers = await _customerRepo.GetAllAsync();
+            ViewBag.Customers = new SelectList(await _customerRepo.GetAllAsync(), "CustCode1", "CustName");
 
             return View();
         }
@@ -33,7 +34,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(AnalyticalCustomerTransactionReportRequestDTO model)
         {
-            ViewBag.Customers = await _customerRepo.GetAllAsync();
+            ViewBag.Customers = new SelectList(await _customerRepo.GetAllAsync(), "CustCode1", "CustName");
 
             if (!ModelState.IsValid)
             {
