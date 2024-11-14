@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using FastReport.Web;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ProSoft.Core.Repositories;
+using ProSoft.Core.Repositories.Stocks.Reports;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.DTOs.Stocks.Report.Customer_Transaction;
 using ProSoft.EF.IRepositories.Stocks;
 using ProSoft.EF.IRepositories.Stocks.Reports;
+using Shared;
 
 namespace ProSoft.UI.Areas.Stocks.Controllers
 {
@@ -53,7 +56,25 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
 
             await PopulateSelectLists();
 
+
+            Filter filter = new();
+
+            filter.FromDate = model.FromDate;
+            filter.ToDate = model.ToDate;
+            filter.CustomerId = model.CustomerId;
+            WebReport webReport = new();
+
+            var table = await _customerTransactionReportRepo.GetCustomerTransactionValueReport(model, filter: filter);
+            webReport.Report.Load(Path.Combine(Environment.CurrentDirectory, "Reports\\Stock\\Analytical Customer Transaction Report.frx"));
+            webReport.Report.RegisterData(table, "Table");
+            webReport.Report.SetParameterValue("FromDate", model.FromDate.ToString("dd/MM/yyyy"));
+            webReport.Report.SetParameterValue("ToDate", model.ToDate.ToString("dd/MM/yyyy"));
+
+            webReport.Report.Prepare();
+
+            ViewBag.WebReport = webReport;
             return View(model);
+
         }
 
         [HttpGet]

@@ -16,37 +16,40 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
             _context = context;
         }
 
-        public async Task<List<AnalyticalCustomerTransactionReportDTO>> GetAnalyticalCustomerTransactionReport(DateTime FromDate, DateTime ToDate,Filter filter)
+        public async Task<List<AnalyticalCustomerTransactionReportDTO>> GetAnalyticalCustomerTransactionReport(DateTime FromDate, DateTime ToDate, Filter filter)
         {
 
             List<AnalyticalCustomerTransactionReportDTO> analyticalCustomerTransactionReportDTOs = new();
 
-            
+            var transTypes = new[] { 12 };
+
             var tnxMstrs = await _context.TransMasters.Where(t =>
+            t.DocDate.HasValue &&
             t.DocDate.Value.Date >= FromDate.Date &&
-            t.DocDate <= ToDate.Date &&
-            t.TransType == 12
+            t.DocDate.Value.Date <= ToDate.Date &&
+            transTypes.Contains((int)t.TransType)
             ).ToListAsync();
 
-            if(filter != null && !string.IsNullOrEmpty( filter.CustomerId))
+            if (filter != null && !string.IsNullOrEmpty(filter.CustomerId))
             {
                 tnxMstrs = tnxMstrs.Where(t => t.CustNo == filter.CustomerId).ToList();
             }
 
-            AnalyticalCustomerTransactionReportDTO reportDTO = new();
+            
             foreach (var tnxMstr in tnxMstrs)
             {
+                AnalyticalCustomerTransactionReportDTO reportDTO = new();
                 var customer = await _context.CustCodes.FirstOrDefaultAsync(t => t.CustCode1 == tnxMstr.CustNo);
                 if (customer != null) { reportDTO.CustomerName = customer.CustName; }
 
-                reportDTO.InvoiceNo = (decimal)tnxMstr.DocNo;
-                reportDTO.InvoiceDate = (DateTime)tnxMstr.DocDate;
-                reportDTO.DueDate = (DateTime)tnxMstr.DueDate;
-                reportDTO.SalesValue = (decimal)tnxMstr.DueValue;
-                reportDTO.CashAmount = (decimal)tnxMstr.CashAmount;
+                reportDTO.InvoiceNo = (decimal)tnxMstr?.DocNo;
+                reportDTO.InvoiceDate = tnxMstr?.DocDate?.Date.ToString("yyyy-MM-dd");
+                reportDTO.DueDate = tnxMstr?.DueDate?.Date.ToString("yyyy-MM-dd") ?? null;
+                reportDTO.SalesValue = (decimal)tnxMstr?.DueValue;
+                reportDTO.CashAmount = (decimal)tnxMstr?.CashAmount;
                 reportDTO.DueValue = (decimal)tnxMstr.DueValue - (decimal)tnxMstr.CashAmount;
 
-            analyticalCustomerTransactionReportDTOs.Add(reportDTO);
+                analyticalCustomerTransactionReportDTOs.Add(reportDTO);
             }
             return analyticalCustomerTransactionReportDTOs;
         }

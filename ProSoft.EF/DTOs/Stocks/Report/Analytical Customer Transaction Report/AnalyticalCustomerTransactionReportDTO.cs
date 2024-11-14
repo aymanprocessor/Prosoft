@@ -11,8 +11,8 @@ namespace ProSoft.EF.DTOs.Stocks.Report.Analytical_Customer_Transaction_Report
      
         public string? CustomerName { get; set; } = string.Empty;
         public decimal? InvoiceNo { get; set; } = 0;
-        public DateTime? InvoiceDate { get; set; }
-        public DateTime? DueDate { get; set; }
+        public string? InvoiceDate { get; set; } = null;
+        public string? DueDate { get; set; } = null;
 
         private decimal _salesValue = 0;
         public decimal SalesValue
