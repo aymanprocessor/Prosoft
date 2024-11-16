@@ -1035,7 +1035,8 @@
   "Request Limit Item Report": "تقرير الاصناف حد الطلب للمخزن",
   "Analytical Customer Transaction Report": "تقرير حركة العملاء تحليلية",
   "Customer Transaction Quantity Report": "تقرير حركة العملاء كمية",
-  "Customer Transaction Value Report": "تقرير حركة العملاء قيمة"
+  "Customer Transaction Value Report": "تقرير حركة العملاء قيمة",
+  "Total Customer Transaction Report": "تقرير حركة العملاء الاجمالية"
 
 
 

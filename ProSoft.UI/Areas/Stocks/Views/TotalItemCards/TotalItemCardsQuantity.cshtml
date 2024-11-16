@@ -78,7 +78,6 @@
             <button type="submit" id="btn-submit" class="btn btn-primary col-md-2 col-lg-2" style="width:auto">
 
                 @localizer["View"]
-                <span id="spinner" class="spinner-grow spinner-grow-sm d-none"></span>
 
             </button>
         </div>
@@ -95,19 +94,3 @@
     }
 </div>
 
-@section Scripts {
-    <script>
-
-
-        document.addEventListener("DOMContentLoaded", function () {
-            const form = document.querySelector("form");
-
-            const btnSubmit = document.getElementById("btn-submit");
-            const spinner = document.getElementById("spinner");
-            form.addEventListener("submit", function () {
-                btnSubmit.setAttribute("disabled", "disabled");
-                spinner.classList.remove("d-none");
-            });
-        });
-    </script>
-}

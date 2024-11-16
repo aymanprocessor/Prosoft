@@ -10,8 +10,8 @@ namespace ProSoft.EF.IRepositories.Stocks.Reports
 {
     public interface ICustomerTransactionReportRepo
     {
-        List<CustomerTransactionValueReportDTO> GetCustomerTransactionValueReport(CustomerTransactionReportRequestDTO request, Filter filter );
-        List<CustomerTransactionQuantityReportDTO> GetCustomerTransactionQuantityReport(CustomerTransactionReportRequestDTO request, Filter filter );
+        Task<List<CustomerTransactionValueReportDTO>> GetCustomerTransactionValueReport(CustomerTransactionReportRequestDTO request, Filter filter );
+        Task<List<CustomerTransactionQuantityReportDTO>> GetCustomerTransactionQuantityReport(CustomerTransactionReportRequestDTO request, Filter filter );
 
     }
 }

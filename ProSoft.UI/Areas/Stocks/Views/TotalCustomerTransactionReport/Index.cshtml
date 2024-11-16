@@ -1,9 +1,9 @@
 ﻿@using FastReport.Web
-@using ProSoft.EF.DTOs.Stocks.Report.Customer_Transaction
-@model CustomerTransactionReportRequestDTO
+@using ProSoft.EF.DTOs.Stocks.Report.Total_Customer_Transaction
+@model TotalCustomerTransactionReportRequestDTO
 
 @{
-    ViewData["Title"] = "Customer Transaction Value Report";
+    ViewData["Title"] = "Total Customer Transaction Report";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     WebReport? webReport = ViewBag.WebReport;
@@ -16,7 +16,7 @@
 <div class="container pt-2 ">
 
     <div class="d-flex justify-content-between align-items-center flex-column flex-md-row mt-1 mb-3">
-        <h2 class="header" style="color: #084298;">@localizer["Customer Transaction Value Report"]</h2>
+        <h2 class="header" style="color: #084298;">@localizer["Total Customer Transaction Report"]</h2>
 
     </div>
     <form asp-action="GetCustomerTransactionValueReport" method="post" class=" filter-box">
@@ -29,23 +29,6 @@
                 </select>
                 <span asp-validation-for="@Model.CustomerId" class="text-danger"></span>
             </div>
-
-            <div class="col-md-6 col-lg-4 ">
-                <label for="@Model.StockId" class="form-label">@localizer["Stock"]</label>
-                <select id="StockSelect" asp-items="@ViewBag.Stocks" asp-for="@Model.StockId" class="form-control text-center">
-                    <option value="">@localizer["Choosee"]</option>
-                </select>
-                <span asp-validation-for="@Model.StockId" class="text-danger"></span>
-            </div>
-
-            <div class="col-md-6 col-lg-4 ">
-                <label for="@Model.TransType" class="form-label">@localizer["Transaction"]</label>
-                <select id="permitsSelect" asp-items="@ViewBag.Transactions" asp-for="@Model.TransType" class="form-control text-center">
-                    <option value="">@localizer["Choosee"]</option>
-                </select>
-                <span asp-validation-for="@Model.TransType" class="text-danger"></span>
-            </div>
-
 
             <div class="col-md-6 col-lg-4">
                 <label asp-for="FromDate" class="form-label">@localizer["From Period"]</label>
@@ -82,26 +65,4 @@
 </div>
 
 
-@section Scripts {
-    <script>
 
-
-        document.addEventListener('DOMContentLoaded', function () {
-            DropdownManager.init({
-                parentDropdownId: 'StockSelect',
-                childDropdownId: 'permitsSelect',
-                apiEndpoint: {
-                    url: '/Stocks/CustomerTransactionReport/GetPermitsDependOnStock',
-                    params: {
-                        "UserCode": @ViewBag.UserId
-                    },
-                },
-                defaultChildOption: '@localizer["Choosee"]',
-                fields: {
-                    id: 'uniqueType',
-                    text: 'gDesc'
-                }
-            });
-        });
-    </script>
-}
