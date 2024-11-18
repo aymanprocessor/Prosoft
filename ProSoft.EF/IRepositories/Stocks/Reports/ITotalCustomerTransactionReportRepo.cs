@@ -9,6 +9,6 @@ namespace ProSoft.EF.IRepositories.Stocks.Reports
 {
     public interface ITotalCustomerTransactionReportRepo
     {
-        Task<IEnumerable<TotalCustomerTransactionReportDTO>> GetTotalCustomerTransactionQuantityReport(TotalCustomerTransactionReportRequestDTO request);
+        Task<IEnumerable<TotalCustomerTransactionReportDTO>> GetTotalCustomerTransactionReport(TotalCustomerTransactionReportRequestDTO request);
     }
 }

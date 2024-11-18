@@ -64,13 +64,13 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             await PopulateSelectLists();
 
 
-            Filter filter = new();
+            Filter filter = new Filter
+            {
+                FromDate = model.FromDate,
+                ToDate = model.ToDate,
+                CustomerId = model.CustomerId
+            };
 
-            filter.FromDate = model.FromDate;
-            filter.ToDate = model.ToDate;
-            filter.CustomerId = model.CustomerId;
-
-            
             WebReport webReport = new();
 
             var table = await _customerTransactionReportRepo.GetCustomerTransactionValueReport(model, filter: filter);

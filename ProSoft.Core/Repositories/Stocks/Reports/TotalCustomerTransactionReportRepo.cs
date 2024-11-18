@@ -1,4 +1,5 @@
-﻿using ProSoft.EF.DTOs.Stocks.Report.Total_Customer_Transaction;
+﻿using ProSoft.EF.DbContext;
+using ProSoft.EF.DTOs.Stocks.Report.Total_Customer_Transaction;
 using ProSoft.EF.IRepositories.Stocks.Reports;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,46 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
 {
     public class TotalCustomerTransactionReportRepo : ITotalCustomerTransactionReportRepo
     {
-        public async Task<IEnumerable<TotalCustomerTransactionReportDTO>> GetTotalCustomerTransactionQuantityReport(TotalCustomerTransactionReportRequestDTO request)
+        private readonly AppDbContext _context;
+
+        public TotalCustomerTransactionReportRepo(AppDbContext context)
         {
-            // Add data-fetching logic here
-            return new List<TotalCustomerTransactionReportDTO>();
+            _context = context;
+        }
+
+        public async Task<IEnumerable<TotalCustomerTransactionReportDTO>> GetTotalCustomerTransactionReport(TotalCustomerTransactionReportRequestDTO request)
+        {
+            List<TotalCustomerTransactionReportDTO> totalCustomerTransactionReportDTOs = new();
+            var transTypes = new[] { 2, 4 };
+            var tnxMstrs =  _context.TransMasters.Where(
+                t => t.DocDate >= request.FromDate &&
+                t.DocDate <= request.ToDate &&
+               transTypes.Contains( (int)t.TransType)
+                )
+                .ToList();
+
+            TotalCustomerTransactionReportDTO reportDTO = new();
+            foreach (var tnxMstr in tnxMstrs)
+            {
+                var generalCode = _context.GeneralCodes.FirstOrDefault(g => g.UniqueType == tnxMstr.TransType);
+                if (generalCode.AddSub == 1)
+                {
+                    reportDTO.NetSales += (decimal)tnxMstr?.TotTransVal;
+                    reportDTO.DueAmount += (decimal)tnxMstr?.DueValue;
+                }
+
+                else if (generalCode.AddSub == 2)
+                {
+                    reportDTO.NetSales -= (decimal)tnxMstr?.TotTransVal;
+                    reportDTO.DueAmount -= (decimal)tnxMstr?.DueValue;
+                }
+
+            }
+
+            reportDTO.PaymentAmount = reportDTO.NetSales - reportDTO.DueAmount;
+            totalCustomerTransactionReportDTOs.Add(reportDTO);
+
+            return totalCustomerTransactionReportDTOs;
         }
     }
 }

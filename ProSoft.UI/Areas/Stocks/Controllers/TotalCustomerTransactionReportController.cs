@@ -21,8 +21,6 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         public async Task<IActionResult> Index()
         {
 
-            var customers = await _customerRepo.GetAllAsync();
-            ViewBag.Customers = new SelectList(customers, "CustCode1", "CustName");
 
             if (!ModelState.IsValid)
             {
@@ -35,8 +33,6 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         [HttpPost]
         public async Task<IActionResult> Index( TotalCustomerTransactionReportRequestDTO request)
         {
-            var customers = await _customerRepo.GetAllAsync();
-            ViewBag.Customers = new SelectList(customers, "CustCode1", "CustName");
             if (!ModelState.IsValid)
             {
                 return View(request);
