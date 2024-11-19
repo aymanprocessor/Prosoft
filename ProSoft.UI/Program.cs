@@ -130,6 +130,7 @@ builder.Services.AddScoped<IEisSectionTypeRepo, EisSectionTypeRepo>();
 builder.Services.AddScoped<IRegionRepo, RegionRepo>();
 ///////////////// Stock /////////////
 
+builder.Services.AddScoped<ITotalCustomerTransactionReportRepo, TotalCustomerTransactionReportRepo>();
 builder.Services.AddScoped<ICustomerTransactionReportRepo, CustomerTransactionReportRepo>();
 builder.Services.AddScoped<IAnalyticalCustomerTransactionReportRepo, AnalyticalCustomerTransactionReportRepo>();
 builder.Services.AddScoped<IReportTransferAndReceiptTransactionRepo, ReportTransferAndReceiptTransactionRepo>();

@@ -1,0 +1,99 @@
+﻿@using FastReport.Web
+@using ProSoft.EF.DTOs.Stocks.TransferSuppliesToStocks
+@model TransferSuppliesToStocksRequestDTO
+
+@{
+    ViewData["Title"] = "Transfer Supplies To Stocks";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    WebReport? webReport = ViewBag.WebReport;
+}
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@inject IViewLocalizer localizer
+
+
+<div class="container pt-2 ">
+
+
+    <h2 class="header text-center" style="color: #084298;">@localizer["Transfer Supplies To Stocks"]</h2>
+
+
+    <form asp-action="Index" method="post" >
+        <div class="row gx-2 gy-2 p-3">
+
+            <div class="col-md-6 col-lg-4 ">
+                <label asp-for="@Model.BranchId" class="form-label">@localizer["The Branch"]</label>
+                <select asp-items="@ViewBag.Branchs" asp-for="@Model.BranchId" class="form-control text-center">
+                    <option value="">@localizer["Choosee"]</option>
+                </select>
+                <span asp-validation-for="@Model.BranchId" class="text-danger"></span>
+            </div>
+            <div class="col-md-6 col-lg-4 ">
+                <label asp-for="@Model.ReqgionId" class="form-label">@localizer["The Customer"]</label>
+                <select asp-items="@ViewBag.Regions" asp-for="@Model.ReqgionId" class="form-control text-center">
+                    <option value="">@localizer["Choosee"]</option>
+                </select>
+                <span asp-validation-for="@Model.ReqgionId" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <label asp-for="FromDate" class="form-label">@localizer["From Period"]</label>
+                <input id="fromPeriod" type="date" asp-for="@Model.FromDate" class="form-control text-center " />
+                <span asp-validation-for="FromDate" class="text-danger"></span>
+
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <label asp-for="ToDate" class="form-label">@localizer["To Period"]</label>
+                <input id="toPeriod" type="date" asp-for="@Model.ToDate" class="form-control text-center " />
+                <span asp-validation-for="ToDate" class="text-danger"></span>
+
+            </div>
+
+
+
+
+            <button type="submit" id="btn-submit" class="btn btn-primary d-flex align-self-end col-md-2 col-lg-2" style="width:auto;height:min-content">
+
+                @localizer["View"]
+
+            </button>
+        </div>
+
+
+    </form>
+
+
+
+    <div class="row mb-5">
+        <div class="col-6 border rounded  p-3" style="min-height:200px;max-height:500px;">
+
+            <table id="ItemsTable" class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+
+                        <th class="text-center">@localizer["Date"]</th>
+                        <th class="text-center">@localizer["Side Name"]</th>
+                        <th class="text-center">@localizer["The Patient"]</th>
+                        <th class="text-center">@localizer["The Supervising Doctor"]</th>
+                        <th class="text-center">@localizer["Exit Status"]</th>
+                        <th class="text-center">@localizer["Exit Date"]</th>
+                        <th class="text-center">@localizer["Invoice Total"]</th>
+                        <th class="text-center">@localizer["Invoice No"]</th>
+                        <th class="text-center">@localizer["Post"]</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+    </div>
+
+
+   
+</div>
+
+
+
+
+

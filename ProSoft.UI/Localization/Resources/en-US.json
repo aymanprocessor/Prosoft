@@ -1035,6 +1035,9 @@
   "Request Limit Item Report": "Request Limit Item Report",
   "Analytical Customer Transaction Report": "Analytical Customer Transaction Report",
   "Customer Transaction Quantity Report": "Customer Transaction Quantity Report",
-  "Customer Transaction Value Report": "Customer Transaction Value Report"
+  "Customer Transaction Value Report": "Customer Transaction Value Report",
+  "Total Customer Transaction Report": "Total Customer Transaction Report",
+  "The Supervising Doctor": "The Supervising Doctor",
+  "Exit Status": "Exit Status"
 
 }

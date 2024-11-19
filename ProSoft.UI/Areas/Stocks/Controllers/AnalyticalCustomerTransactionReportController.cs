@@ -40,11 +40,9 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             {
                 return View(model);
             }
-            Filter filter = new();
+            Filter filter = new() { CustomerId = model.CustomerId, FromDate = model.FromDate, ToDate = model.ToDate };
         
-            filter.FromDate = model.FromDate;
-            filter.ToDate = model.ToDate;
-            filter.CustomerId = model.CustomerId;
+        
             WebReport webReport = new();
 
             var table = await _analyticalCustomerTransactionReportRepo.GetAnalyticalCustomerTransactionReport(model.FromDate,model.ToDate, filter: filter);

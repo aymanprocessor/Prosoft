@@ -1,6 +1,7 @@
 ﻿using ProSoft.EF.DbContext;
 using ProSoft.EF.DTOs.Stocks.Report.Total_Customer_Transaction;
 using ProSoft.EF.IRepositories.Stocks.Reports;
+using Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
             _context = context;
         }
 
-        public async Task<IEnumerable<TotalCustomerTransactionReportDTO>> GetTotalCustomerTransactionReport(TotalCustomerTransactionReportRequestDTO request)
+        public async Task<IEnumerable<TotalCustomerTransactionReportDTO>> GetTotalCustomerTransactionReport(TotalCustomerTransactionReportRequestDTO request, Filter filter)
         {
             List<TotalCustomerTransactionReportDTO> totalCustomerTransactionReportDTOs = new();
             var transTypes = new[] { 2, 4 };
@@ -44,8 +45,12 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
                     reportDTO.NetSales -= (decimal)tnxMstr?.TotTransVal;
                     reportDTO.DueAmount -= (decimal)tnxMstr?.DueValue;
                 }
+                reportDTO.InvoiceCount++;
 
             }
+          
+
+           
 
             reportDTO.PaymentAmount = reportDTO.NetSales - reportDTO.DueAmount;
             totalCustomerTransactionReportDTOs.Add(reportDTO);

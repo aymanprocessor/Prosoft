@@ -21,7 +21,7 @@
 
     <div class="row mb-5">
         <div class="col-6 border rounded  p-3" style="min-height:200px;max-height:500px;">
-            
+
             <table id="ItemsTable" class="table table-hover table-bordered">
                 <thead>
                     <tr>
@@ -110,7 +110,7 @@
                 }
 
             });
-            
+
             // --------------------- Insert Item Unit Button Event --------------------- //
             insertItemUnitBtn.on('click', function () {
                 window.location.href = `/Stocks/ItemUnits/Add?stockType=${stockType}&itemCode=${itemCode}`;
@@ -132,20 +132,20 @@
                     topEnd: {
                         search: {
                             text: '_INPUT_',
-                            placeholder:'@localizer["Search"]'
+                            placeholder: '@localizer["Search"]'
 
                         }
                     }
                 },
                 columns: [
                     { data: 'id' },
-                    { data: 'text', searchable:true },
+                    { data: 'text', searchable: true },
                 ],
                 "ajax": {
                     "url": `/Stocks/ItemUnits/GetSubItemsByStockType/${stockType}`,
                     "type": "GET"
                 },
-              
+
             });
         }
 
