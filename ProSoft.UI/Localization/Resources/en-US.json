@@ -1038,6 +1038,10 @@
   "Customer Transaction Value Report": "Customer Transaction Value Report",
   "Total Customer Transaction Report": "Total Customer Transaction Report",
   "The Supervising Doctor": "The Supervising Doctor",
-  "Exit Status": "Exit Status"
+  "Exit Status": "Exit Status",
+  "Post Supplies To Stocks": "Post Supplies To Stocks",
+  "The Cost": "Cost",
+  "The Sell": "Sell",
+  "Post Supplies": "Post Supplies"
 
 }

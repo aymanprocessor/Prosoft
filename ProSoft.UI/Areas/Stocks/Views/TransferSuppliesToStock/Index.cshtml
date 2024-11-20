@@ -1,9 +1,10 @@
 ﻿@using FastReport.Web
 @using ProSoft.EF.DTOs.Stocks.TransferSuppliesToStocks
+@using ProSoft.UI.Global
 @model TransferSuppliesToStocksRequestDTO
 
 @{
-    ViewData["Title"] = "Transfer Supplies To Stocks";
+    ViewData["Title"] = "Post Supplies To Stocks";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     WebReport? webReport = ViewBag.WebReport;
@@ -16,34 +17,34 @@
 <div class="container pt-2 ">
 
 
-    <h2 class="header text-center" style="color: #084298;">@localizer["Transfer Supplies To Stocks"]</h2>
+    <h2 class="header text-center" style="color: #084298;">@localizer["Post Supplies To Stocks"]</h2>
 
 
-    <form asp-action="Index" method="post" >
+    <form asp-action="Index" method="post">
         <div class="row gx-2 gy-2 p-3">
 
-            <div class="col-md-6 col-lg-4 ">
+            <div class="col-md-6 col-lg-3 ">
                 <label asp-for="@Model.BranchId" class="form-label">@localizer["The Branch"]</label>
-                <select asp-items="@ViewBag.Branchs" asp-for="@Model.BranchId" class="form-control text-center">
+                <select id="BranchId" asp-items="@ViewBag.Branchs" asp-for="@Model.BranchId" class="form-control text-center">
                     <option value="">@localizer["Choosee"]</option>
                 </select>
                 <span asp-validation-for="@Model.BranchId" class="text-danger"></span>
             </div>
-            <div class="col-md-6 col-lg-4 ">
-                <label asp-for="@Model.ReqgionId" class="form-label">@localizer["The Customer"]</label>
-                <select asp-items="@ViewBag.Regions" asp-for="@Model.ReqgionId" class="form-control text-center">
+            <div class="col-md-6 col-lg-3 ">
+                <label  asp-for="@Model.ReqgionId" class="form-label">@localizer["The Customer"]</label>
+                <select id="ReqgionId" asp-items="@ViewBag.Regions" asp-for="@Model.ReqgionId" class="form-control text-center">
                     <option value="">@localizer["Choosee"]</option>
                 </select>
                 <span asp-validation-for="@Model.ReqgionId" class="text-danger"></span>
             </div>
 
-            <div class="col-md-6 col-lg-4">
+            <div class="col-md-6 col-lg-3">
                 <label asp-for="FromDate" class="form-label">@localizer["From Period"]</label>
                 <input id="fromPeriod" type="date" asp-for="@Model.FromDate" class="form-control text-center " />
                 <span asp-validation-for="FromDate" class="text-danger"></span>
 
             </div>
-            <div class="col-md-6 col-lg-4">
+            <div class="col-md-6 col-lg-3">
                 <label asp-for="ToDate" class="form-label">@localizer["To Period"]</label>
                 <input id="toPeriod" type="date" asp-for="@Model.ToDate" class="form-control text-center " />
                 <span asp-validation-for="ToDate" class="text-danger"></span>
@@ -66,9 +67,8 @@
 
 
     <div class="row mb-5">
-        <div class="col-6 border rounded  p-3" style="min-height:200px;max-height:500px;">
-
-            <table id="ItemsTable" class="table table-hover table-bordered">
+        <div class="col-12 border rounded  p-3" style="max-height:500px;">
+            <table id="MasterTable" class="table table-hover table-bordered">
                 <thead>
                     <tr>
 
@@ -83,17 +83,131 @@
                         <th class="text-center">@localizer["Post"]</th>
                     </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody>
+                </tbody>
             </table>
         </div>
 
+        <div class="col-12 border rounded  p-3 mt-3" style="max-height:500px;">
+            <table id="DetailTable" class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+
+                        <th class="text-center">@localizer["Date"]</th>
+                        <th class="text-center">@localizer["Item Name"]</th>
+                        <th class="text-center">@localizer["Item Code"]</th>
+                        <th class="text-center">@localizer["The Quantity"]</th>
+                        <th class="text-center">@localizer["Stock"]</th>
+                        <th class="text-center">@localizer["The Cost"]</th>
+                        <th class="text-center">@localizer["The Sell"]</th>
+                        <th class="text-center">@localizer["Permission No"]</th>
+                     
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
     </div>
 
 
-   
+
 </div>
 
 
+@section Scripts {
+
+    <script>
+        $(document).ready(function () {
+            $('#btn-submit').click(function (e) {
+                e.preventDefault();
+                var branchId = $('#BranchId').val();
+                var regionId = $('#ReqgionId').val();
+                var fromDate = $('#fromPeriod').val();
+                var toDate = $('#toPeriod').val();
+                var url = '/Stocks/TransferSuppliesToStock/GetPatAdmissions?branchId=' + branchId + '&regionId=' + regionId + '&fromDate=' + fromDate + '&toDate=' + toDate;
 
 
+                $('#MasterTable').DataTable({
+                    destroy: true,
+
+                    deferRender: true,
+                    scroller: true,
+                    paging: false,
+                    searching: false,
+                    // columns: [
+                    //     { data: 'Date' },
+
+                    //     { data: 'CompanyName' },
+                    //     // {
+                    //     //     data: "DefaultUnit",  // Assuming each row has a unique ID
+                    //     //     render: function (data, type, row) {
+                    //     //         var checked = data ? 'نعم' : 'لا';
+                    //     //         return `<span>${checked}</span>`;
+                    //     //     },
+                    //     //     orderable: false,  // Disable sorting on this column
+                    //     //     searchable: false  // Disable searching on this column
+
+                    //     // },
+                    //     // {
+                    //     //     render: function (data, type, row) {
+                    //     //         const editBtn = `<a href="/Stocks/ItemUnits/Edit?stockType=${stockType}&itemCode=${itemCode}&branchId=${row["BranchId"]}&unitCode=${row["UnitCode"]}" class="btn btn-warning me-1">@Html.Raw(GlobalConstants.EditIcon)</a>`;
+                    //     //         const DeleteBtn = `<a href="javascript:void(0);" onclick="deleteItem(${stockType},'${itemCode}',${row["BranchId"]},${row["UnitCode"]})" class="btn btn-danger me-1">@Html.Raw(GlobalConstants.DeleteIcon)</a>`;
+                    //     //         return `${editBtn}${DeleteBtn}`;
+                    //     //     }
+                    //     // },
+
+                    // ],
+
+                    "ajax": {
+                        "url": url,
+                        "type": "GET"
+                    },
+
+                });
+
+
+                $('#DetailTable').DataTable({
+                    destroy: true,
+
+                    deferRender: true,
+                    scroller: true,
+                    paging: false,
+                    searching: false,
+                    // columns: [
+                    //     { data: 'UnitCodee.Names' },
+
+                    //     { data: 'ItemQty' },
+                    //     {
+                    //         data: "DefaultUnit",  // Assuming each row has a unique ID
+                    //         render: function (data, type, row) {
+                    //             var checked = data ? 'نعم' : 'لا';
+                    //             return `<span>${checked}</span>`;
+                    //         },
+                    //         orderable: false,  // Disable sorting on this column
+                    //         searchable: false  // Disable searching on this column
+
+                    //     },
+                    //     {
+                    //         render: function (data, type, row) {
+                    //             const editBtn = `<a href="/Stocks/ItemUnits/Edit?stockType=${stockType}&itemCode=${itemCode}&branchId=${row["BranchId"]}&unitCode=${row["UnitCode"]}" class="btn btn-warning me-1">@Html.Raw(GlobalConstants.EditIcon)</a>`;
+                    //             const DeleteBtn = `<a href="javascript:void(0);" onclick="deleteItem(${stockType},'${itemCode}',${row["BranchId"]},${row["UnitCode"]})" class="btn btn-danger me-1">@Html.Raw(GlobalConstants.DeleteIcon)</a>`;
+                    //             return `${editBtn}${DeleteBtn}`;
+                    //         }
+                    //     },
+
+                    // ],
+
+                    // "ajax": {
+                    //     "url": `/Stocks/ItemUnits/GetItemsUnitByItemCodeAndStockType/?stockType=${stockType}&itemCode=${itemCode}`,
+                    //     "type": "GET"
+                    // },
+
+                });
+
+
+            });
+        });
+    </script>
+}
 

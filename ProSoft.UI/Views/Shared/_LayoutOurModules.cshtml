@@ -94,26 +94,107 @@
         const navbar = new NavbarManager('navbarContainer');
         navbar.createNav([
             {
-                // Medical System
                 text: '@localizer["Medical System"]',
-                subMenu: [{
-                    text: '@localizer["Main data"]',
-                    subMenu: [
-                        {
-                            text: '@localizer["Definitions"]',
-                            subMenu: []
-                        },]
-                },
-                {
-                    text: '@localizer["Transactions"]',
-                    subMenu: []
-                },
-                {
-                    text: '@localizer["Reports"]',
-                    subMenu: []
-                },
+                subMenu: [
+                    {
+                        text: '@localizer["Main data"]',
+                        subMenu: [
+                            {
+                                text: '@localizer["Analysis guide"]',
+                                href: '/Medical/MainAnalysis/Index'
+                            },
+                            {
+                                text: '@localizer["Price Lists"]',
+                                href: '/Medical/PriceList/Index'
+                            },
+                            {
+                                text: '@localizer["Companys"]',
+                                href: '/Medical/CompanyGroup/Index'
+                            },
+                            {
+                                text: '@localizer["Definitions"]',
+                                subMenu: [
+                                    {
+                                        text: '@localizer["Patient Definations"]',
+                                        href: '/Medical/patient/Patients'
+                                    },
+                                    {
+                                        text: '@localizer["Doctor Degree"]',
+                                        href: '/Medical/DrDegree/Index'
+                                    },
+                                    {
+                                        text: '@localizer["Doctor Definations"]',
+                                        href: '/Medical/Doctor/Index'
+                                    },
+                                    {
+                                        text: '@localizer["Doctors Percentages"]',
+                                        href: '/Medical/DoctorPercentage/Index'
+                                    },
+                                    {
+                                        text: '@localizer["Doctors Appointments"]',
+                                        href: '/Medical/DrTimeSheet/Index'
+                                    },
+                                    {
+                                        text: '@localizer["Types of Examinations"]',
+                                        href: '/Medical/CheckupClinic/Index'
+                                    },
+                                    {
+                                        text: '@localizer["Department services"]',
+                                        href: '/Medical/MainClinic/Index'
+                                    },
+                                    {
+                                        text: '@localizer["National Definations"]',
+                                        href: '/Shared/Nationality/Nationalities'
+                                    },
+                                    {
+                                        text: '@localizer["Nursing Data"]',
+                                        href: '/Medical/NursingData/Index'
+                                    },
+                                    {
+                                        text: '@localizer["kinship"]',
+                                        href: '/Medical/kinship/Index'
+                                    },
+                                    {
+                                        text: '@localizer["Joining Users With Medical Services"]',
+                                        href: '/Medical/UsersSection/Index'
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        text: '@localizer["Transactions"]',
+                        subMenu: [
+                            {
+                                text: '@localizer["Medical Records"]',
+                                href: '/MedicalRecords/PatRecord/AllPatients'
+                            },
+                            {
+                                text: '@localizer["Medical Analysis"]',
+                                href: '/Medical/HospitalPatData/AnalysisTransactions'
+                            },
+                            {
+                                text: '@localizer["Medical Invoices"]',
+                                href: '/Medical/HospitalPatData/Invoices'
+                            },
+                            {
+                                text: '@localizer["Medical Requirements"]',
+                                href: '/Medical/HospitalPatData/Requirements'
+                            }
+                        ]
+                    },
+                    {
+                        text: '@localizer["Reports"]',
+                        subMenu: [
+                            {
+                                text: '@localizer["Doctor\'s fees"]',
+                                href: '/Medical/ReportDoctorFees/Index'
+                            }
+                        ]
+                    }
                 ]
-            }, {
+            }
+            , {
                 // Stocks System
                 text: '@localizer["Stocks System"]',
                 subMenu: [
@@ -229,6 +310,14 @@
                         subMenu: [{
                             text: '@localizer["Opening and closing Transactions"]',
                             href: '/Stocks/OpenCloseTransaction/Index'
+                        },
+                        ]
+                    },
+                    {
+                        text: '@localizer["Post Supplies"]',
+                        subMenu: [{
+                            text: '@localizer["Post Supplies To Stocks"]',
+                            href: '/Stocks/TransferSuppliesToStock/Index'
                         },
                         ]
                     },
