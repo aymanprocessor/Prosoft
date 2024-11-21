@@ -24,14 +24,14 @@
         <div class="row gx-2 gy-2 p-3">
 
             <div class="col-md-6 col-lg-3 ">
-                <label asp-for="@Model.BranchId" class="form-label">@localizer["The Branch"]</label>
+                <label asp-for="@Model.BranchId" class="form-label">@localizer["Branch"]</label>
                 <select id="BranchId" asp-items="@ViewBag.Branchs" asp-for="@Model.BranchId" class="form-control text-center">
                     <option value="">@localizer["Choosee"]</option>
                 </select>
                 <span asp-validation-for="@Model.BranchId" class="text-danger"></span>
             </div>
             <div class="col-md-6 col-lg-3 ">
-                <label  asp-for="@Model.ReqgionId" class="form-label">@localizer["The Customer"]</label>
+                <label asp-for="@Model.ReqgionId" class="form-label">@localizer["Section"]</label>
                 <select id="ReqgionId" asp-items="@ViewBag.Regions" asp-for="@Model.ReqgionId" class="form-control text-center">
                     <option value="">@localizer["Choosee"]</option>
                 </select>
@@ -101,7 +101,7 @@
                         <th class="text-center">@localizer["The Cost"]</th>
                         <th class="text-center">@localizer["The Sell"]</th>
                         <th class="text-center">@localizer["Permission No"]</th>
-                     
+
                     </tr>
                 </thead>
                 <tbody>
@@ -119,6 +119,8 @@
 
     <script>
         $(document).ready(function () {
+
+
             $('#btn-submit').click(function (e) {
                 e.preventDefault();
                 var branchId = $('#BranchId').val();
@@ -130,42 +132,63 @@
 
                 $('#MasterTable').DataTable({
                     destroy: true,
-
                     deferRender: true,
                     scroller: true,
                     paging: false,
                     searching: false,
-                    // columns: [
-                    //     { data: 'Date' },
-
-                    //     { data: 'CompanyName' },
-                    //     // {
-                    //     //     data: "DefaultUnit",  // Assuming each row has a unique ID
-                    //     //     render: function (data, type, row) {
-                    //     //         var checked = data ? 'نعم' : 'لا';
-                    //     //         return `<span>${checked}</span>`;
-                    //     //     },
-                    //     //     orderable: false,  // Disable sorting on this column
-                    //     //     searchable: false  // Disable searching on this column
-
-                    //     // },
-                    //     // {
-                    //     //     render: function (data, type, row) {
-                    //     //         const editBtn = `<a href="/Stocks/ItemUnits/Edit?stockType=${stockType}&itemCode=${itemCode}&branchId=${row["BranchId"]}&unitCode=${row["UnitCode"]}" class="btn btn-warning me-1">@Html.Raw(GlobalConstants.EditIcon)</a>`;
-                    //     //         const DeleteBtn = `<a href="javascript:void(0);" onclick="deleteItem(${stockType},'${itemCode}',${row["BranchId"]},${row["UnitCode"]})" class="btn btn-danger me-1">@Html.Raw(GlobalConstants.DeleteIcon)</a>`;
-                    //     //         return `${editBtn}${DeleteBtn}`;
-                    //     //     }
-                    //     // },
-
-                    // ],
-
+                    select: true,
+                    columns: [
+                       // Hidden column for patId
+                        { data: 'date' },
+                        { data: 'companyName' },
+                        { data: 'patientName' },
+                        { data: 'doctorName' },
+                        {
+                            data: 'exitStatus',
+                            render: function (data, type, row) {
+                                return (data === null || data === 0) ? 'لا' : 'نعم';
+                            }
+                        },
+                        { data: 'exitDate' },
+                        { data: 'invoiceTotal' },
+                        { data: 'invoiceNo' },
+                        {
+                            data: 'post',
+                            render: function (data, type, row) {
+                                return '<input type="checkbox" ' + (data == 1 ? 'checked' : '') + ' >';
+                            }
+                        },
+                                 { data: 'masterId', visible: false }, // Hidden column for masterId
+                        { data: 'patId', visible: false }
+                    ],
                     "ajax": {
                         "url": url,
                         "type": "GET"
                     },
-
                 });
 
+
+               
+
+
+            });
+
+
+            $('#MasterTable').on('select.dt', function (e, dt, type, indexes) {
+                var branchId = $('#BranchId').val();
+
+                if (type === 'row') {
+                    // Get the selected row data
+                    var rowData = dt.rows(indexes).data().toArray()[0];
+                     loadClinicTransactions(branchId, rowData.masterId, rowData.patId)
+                    // Log or process the data
+                    console.log('Selected Row Data:', rowData);
+                }
+            });
+
+
+            function loadClinicTransactions(branchId, masterId, patId) {
+                var url = '/Stocks/TransferSuppliesToStock/GetClinicTnxs?BranchId=' + branchId + '&MasterId=' + masterId + '&PatId=' + patId;
 
                 $('#DetailTable').DataTable({
                     destroy: true,
@@ -174,39 +197,24 @@
                     scroller: true,
                     paging: false,
                     searching: false,
-                    // columns: [
-                    //     { data: 'UnitCodee.Names' },
 
-                    //     { data: 'ItemQty' },
-                    //     {
-                    //         data: "DefaultUnit",  // Assuming each row has a unique ID
-                    //         render: function (data, type, row) {
-                    //             var checked = data ? 'نعم' : 'لا';
-                    //             return `<span>${checked}</span>`;
-                    //         },
-                    //         orderable: false,  // Disable sorting on this column
-                    //         searchable: false  // Disable searching on this column
-
-                    //     },
-                    //     {
-                    //         render: function (data, type, row) {
-                    //             const editBtn = `<a href="/Stocks/ItemUnits/Edit?stockType=${stockType}&itemCode=${itemCode}&branchId=${row["BranchId"]}&unitCode=${row["UnitCode"]}" class="btn btn-warning me-1">@Html.Raw(GlobalConstants.EditIcon)</a>`;
-                    //             const DeleteBtn = `<a href="javascript:void(0);" onclick="deleteItem(${stockType},'${itemCode}',${row["BranchId"]},${row["UnitCode"]})" class="btn btn-danger me-1">@Html.Raw(GlobalConstants.DeleteIcon)</a>`;
-                    //             return `${editBtn}${DeleteBtn}`;
-                    //         }
-                    //     },
-
-                    // ],
-
-                    // "ajax": {
-                    //     "url": `/Stocks/ItemUnits/GetItemsUnitByItemCodeAndStockType/?stockType=${stockType}&itemCode=${itemCode}`,
-                    //     "type": "GET"
-                    // },
-
+                    columns: [
+                        { data: 'date' },
+                        { data: 'itemCode' },
+                        { data: 'itemName' },
+                        { data: 'qty' },
+                        { data: 'stockName' },
+                        { data: 'cost' },
+                        { data: 'sell' },
+                        { data: 'permissionNo' },
+                       
+                    ],
+                    "ajax": {
+                        "url": url,
+                        "type": "GET"
+                    },
                 });
-
-
-            });
+            }
         });
     </script>
 }

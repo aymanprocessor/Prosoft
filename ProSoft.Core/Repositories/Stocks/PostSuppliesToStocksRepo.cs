@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ProSoft.Core.Repositories.Stocks
 {
-    public class PostSuppliesToStocksRepo: IPostSuppliesToStocksRepo
+    public class PostSuppliesToStocksRepo : IPostSuppliesToStocksRepo
     {
         private readonly AppDbContext _context;
 
@@ -19,10 +19,10 @@ namespace ProSoft.Core.Repositories.Stocks
             _context = context;
         }
 
-        public async Task<List<TransferSuppliesToStocksMasterDTO>> GetPatAdmissions(int branchId,int RegionId,DateTime FromDate,DateTime ToDate)
+        public async Task<List<TransferSuppliesToStocksMasterDTO>> GetPatAdmissions(int branchId, int RegionId, DateTime FromDate, DateTime ToDate)
         {
             List<TransferSuppliesToStocksMasterDTO> transferSuppliesToStocksMasterDTOs = new();
-            var patAdmissions =  _context.PatAdmissions.Where(p => 
+            var patAdmissions = _context.PatAdmissions.Where(p =>
             p.BranchId == branchId &&
             p.PatDateExit.Value.Date >= FromDate.Date &&
             p.PatDateExit.Value.Date <= ToDate.Date &&
@@ -42,9 +42,11 @@ namespace ProSoft.Core.Repositories.Stocks
                 c.ExYear == patAdmission.ExYear &&
                 c.Flag == patAdmission.Flag &&
                 c.ExchangeType == patAdmission.ExchangeType &&
-                c.PipeFlag == null && 
+                c.PipeFlag == null &&
                 c.ItmServFlag == 2);
 
+                reportDTO.MasterId = patAdmission?.MasterId;
+                reportDTO.PatId = patAdmission?.PatId;
                 reportDTO.Date = patAdmission?.PatAdDate?.Date;
                 reportDTO.CompanyName = Company?.CompName;
                 reportDTO.PatientName = Pat?.PatName;
@@ -63,6 +65,45 @@ namespace ProSoft.Core.Repositories.Stocks
 
             return transferSuppliesToStocksMasterDTOs;
 
+        }
+
+        public async Task<List<TransferSuppliesToStocksDetailDTO>> GetClinicTnxs(int branchId,int MasterId,int PatId,int Year)
+        {
+            List<TransferSuppliesToStocksDetailDTO> transferSuppliesToStocksDetailDTOs = new();
+
+            var ClinicTnxs =  _context.ClinicTrans.Where(
+                c => 
+                c.MasterId == MasterId&&
+                c.BranchId == branchId &&
+                c.ExYear == Year &&
+                c.ItmServFlag == 2 &&
+                c.PipeFlag == null &&
+                c.PatId == PatId).ToList();
+
+            foreach (var ClinicTnx in ClinicTnxs)
+            {
+
+                var SubItem = await _context.SubItems.FirstOrDefaultAsync(s => s.ItemCode == ClinicTnx.ItemMaster);
+                var Stock = await _context.Stocks.FirstOrDefaultAsync(s => s.Stkcod == ClinicTnx.StockCode);
+
+                TransferSuppliesToStocksDetailDTO reportDTO = new()
+                {
+                    Date = ClinicTnx?.ExDate?.Date,
+                    ItemCode = ClinicTnx?.ItemMaster,
+                    ItemName = SubItem?.SubName,
+                    Qty = ClinicTnx?.Qty,
+                    StockName = Stock?.Stknam,
+                    Cost = ClinicTnx?.Qty * ClinicTnx?.CostPrice,
+                    Sell = ClinicTnx?.ValueService,
+                    PermissionNo = ClinicTnx?.SerSys
+                };
+
+                transferSuppliesToStocksDetailDTOs.Add(reportDTO);
+
+
+            }
+
+            return transferSuppliesToStocksDetailDTOs;
         }
     }
 }

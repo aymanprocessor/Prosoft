@@ -8,6 +8,9 @@ namespace ProSoft.EF.DTOs.Stocks.TransferSuppliesToStocks
 {
     public class TransferSuppliesToStocksMasterDTO
     {
+
+        public int? MasterId { get; set; }
+        public int? PatId { get; set; }
         public DateTime? Date { get; set; }
         public string? CompanyName { get; set; } = string.Empty;
         public string? PatientName { get; set; } = string.Empty;

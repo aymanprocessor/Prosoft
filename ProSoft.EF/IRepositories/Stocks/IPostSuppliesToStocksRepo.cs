@@ -10,5 +10,7 @@ namespace ProSoft.EF.IRepositories.Stocks
     public interface IPostSuppliesToStocksRepo
     {
         Task<List<TransferSuppliesToStocksMasterDTO>> GetPatAdmissions(int branchId, int RegionId, DateTime FromDate, DateTime ToDate);
+       Task<List<TransferSuppliesToStocksDetailDTO>> GetClinicTnxs(int branchId, int MasterId, int PatId, int Year);
+
     }
 }

@@ -5,6 +5,7 @@ using ProSoft.EF.DTOs.Stocks.TransferSuppliesToStocks;
 using ProSoft.EF.IRepositories.Medical.HospitalPatData;
 using ProSoft.EF.IRepositories.Shared;
 using ProSoft.EF.IRepositories.Stocks;
+using ProSoft.EF.Migrations;
 
 namespace ProSoft.UI.Areas.Stocks.Controllers
 {
@@ -15,13 +16,15 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         private readonly IBranchRepo _branchRepo;
         private readonly IRegionRepo _regionRepo;
         private readonly IPostSuppliesToStocksRepo _postSuppliesToStocksRepo;
+        private readonly ICurrentUserService _currentUserService;
 
 
-        public TransferSuppliesToStockController(IBranchRepo branchRepo, IRegionRepo regionRepo, IPostSuppliesToStocksRepo postSuppliesToStocksRepo)
+        public TransferSuppliesToStockController(IBranchRepo branchRepo, IRegionRepo regionRepo, IPostSuppliesToStocksRepo postSuppliesToStocksRepo, ICurrentUserService currentUserService)
         {
             _branchRepo = branchRepo;
             _regionRepo = regionRepo;
             _postSuppliesToStocksRepo = postSuppliesToStocksRepo;
+            _currentUserService = currentUserService;
         }
 
         public async Task<IActionResult> Index()
@@ -46,9 +49,24 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             };
 
             return Json(result);
-
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetClinicTnxs(int BranchId, int MasterId,int PatId)
+        {
+            var ClinicTnxs = await _postSuppliesToStocksRepo.GetClinicTnxs(BranchId, MasterId,PatId, _currentUserService.Year);
+            var result = new
+            {
+                
+                draw = 1,
+                recordsTotal = ClinicTnxs.Count(),       // Total number of records
+                recordsFiltered = ClinicTnxs.Count(),    // Total filtered records (for paging)
+                data = ClinicTnxs                        // Actual data to display
+            };
+
+            return Json(result);
+
+        }
 
     }
 }
