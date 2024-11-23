@@ -15,10 +15,12 @@ namespace ProSoft.UI.Areas.Medical.Controllers
     {
         private readonly IClinicTransRepo _clinicTransRepo;
         private readonly IPatAdmissionRepo _patAdmissionRepo;
-        public ClinicTransController(IClinicTransRepo clinicTransRepo, IPatAdmissionRepo patAdmissionRepo)
+        private readonly ICurrentUserService _currentUserService;
+        public ClinicTransController(IClinicTransRepo clinicTransRepo, IPatAdmissionRepo patAdmissionRepo, ICurrentUserService currentUserService)
         {
             _clinicTransRepo = clinicTransRepo;
             _patAdmissionRepo = patAdmissionRepo;
+            _currentUserService = currentUserService;
         }
 
         public async Task<IActionResult> GetClinicTrans(int id, int flag)
@@ -60,8 +62,8 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         {
             DoctorPrecentViewDTO doctorPrecentDTO = await _clinicTransRepo.GetDoctorPrices(id, sClincID, servID);
             //To Get Percentage of doctor in case ==0 in doctor Precentage
-            ServiceClinicViewDTO serviceClinicDTO = await _clinicTransRepo.GetServiceClinicByIDs(id, sClincID, servID);
-            ViewBag.DoctorPercentSC = serviceClinicDTO.DrPerc;
+            //ServiceClinicViewDTO serviceClinicDTO = await _clinicTransRepo.GetServiceClinicByIDs(id, sClincID, servID);
+            //ViewBag.DoctorPercentSC = serviceClinicDTO.DrPerc;
             return Json(doctorPrecentDTO);
         }
 
@@ -71,6 +73,11 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         public async Task<IActionResult> Add_ClinicTrans(int id ,string redirect, int flag)
         {
             ClinicTransEditAddDTO clinicTransEditAddDTO = await _clinicTransRepo.GetEmptyClinicTransAsync();
+            clinicTransEditAddDTO.ExYear = _currentUserService.Year;
+            clinicTransEditAddDTO.BranchId = _currentUserService.BranchId;
+            ViewBag.MainClinics = clinicTransEditAddDTO.MainClinics;
+            ViewBag.MainItems = clinicTransEditAddDTO.MainItems;
+            ViewBag.Doctors = clinicTransEditAddDTO.Doctors;
             ViewBag.Master = id;
             ViewBag.flag = flag;
             //Set Invoice number
@@ -92,6 +99,12 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add_ClinicTrans(int id, string redirect, int flag, ClinicTransEditAddDTO clinicTranDTO)
         {
+            ClinicTransEditAddDTO clinicTransEditAddDTO = await _clinicTransRepo.GetEmptyClinicTransAsync();
+            clinicTransEditAddDTO.ExYear = _currentUserService.Year;
+            clinicTransEditAddDTO.BranchId = _currentUserService.BranchId;
+            ViewBag.MainClinics = clinicTransEditAddDTO.MainClinics;
+            ViewBag.MainItems = clinicTransEditAddDTO.MainItems;
+            ViewBag.Doctors = clinicTransEditAddDTO.Doctors;
             if (ModelState.IsValid) 
             {
                 await _clinicTransRepo.AddClinicTransAsync(id, flag, clinicTranDTO);
@@ -121,6 +134,8 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit_ClinicTrans(int id, string redirect, ClinicTransEditAddDTO clinicTranDTO)
         {
+            clinicTranDTO.ExYear = _currentUserService.Year;
+            clinicTranDTO.BranchId = _currentUserService.BranchId;
             if (ModelState.IsValid)
             {
                 await _clinicTransRepo.EditClinicTransAsync(id, clinicTranDTO);

@@ -138,7 +138,6 @@
                     searching: false,
                     select: true,
                     columns: [
-                       // Hidden column for patId
                         { data: 'date' },
                         { data: 'companyName' },
                         { data: 'patientName' },
@@ -158,8 +157,8 @@
                                 return '<input type="checkbox" ' + (data == 1 ? 'checked' : '') + ' >';
                             }
                         },
-                                 { data: 'masterId', visible: false }, // Hidden column for masterId
-                        { data: 'patId', visible: false }
+                        { data: 'masterId', visible: false }, // Hidden column for masterId
+                        { data: 'patId', visible: false }  // Hidden column for patId
                     ],
                     "ajax": {
                         "url": url,
@@ -168,7 +167,7 @@
                 });
 
 
-               
+
 
 
             });
@@ -180,7 +179,7 @@
                 if (type === 'row') {
                     // Get the selected row data
                     var rowData = dt.rows(indexes).data().toArray()[0];
-                     loadClinicTransactions(branchId, rowData.masterId, rowData.patId)
+                    loadClinicTransactions(branchId, rowData.masterId, rowData.patId)
                     // Log or process the data
                     console.log('Selected Row Data:', rowData);
                 }
@@ -207,7 +206,7 @@
                         { data: 'cost' },
                         { data: 'sell' },
                         { data: 'permissionNo' },
-                       
+
                     ],
                     "ajax": {
                         "url": url,

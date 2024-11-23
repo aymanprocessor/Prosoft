@@ -93,7 +93,7 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             return clinicTransEditAddDTO;
         }
 
-        ///////////////////////////////////Get for Ajax//////////////////////////////////
+        /////////////////////////////////// Get for Ajax //////////////////////////////////
         public async Task<List<SubClinicViewDTO>> GetSubClinic(int id)
         {
            List<SubClinic> subClinics =await _Context.SubClinics.Where(obj => obj.ClinicId == id).ToListAsync();
@@ -196,6 +196,7 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
 
             clinicTransDTO.Flag = flag;
 
+
             ClinicTran lastClinicTrans = await _Context.ClinicTrans.OrderBy(obj => obj.Counter)
                     .LastOrDefaultAsync(obj => obj.MasterId == visitId);
             //for set counter
@@ -247,8 +248,8 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
                 }
             }
             ClinicTran clinicTran = _mapper.Map<ClinicTran>(clinicTransDTO);
-            //await _Context.AddAsync(clinicTran);
-            //await _Context.SaveChangesAsync();
+            await _Context.AddAsync(clinicTran);
+            await _Context.SaveChangesAsync();
 
             //Belong to Deposit
             // Call GetPricesOfServices to get the total price of services

@@ -11,14 +11,17 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
 {
     public class ClinicTransEditAddDTO
     {
+
+        public int BranchId { get; set; }
+        public int ExYear { get; set; }
         public int ItmServFlag { get; set; }
-        public int ClinicId { get; set; }
-        public int SClinicId { get; set; }
+        public int? ClinicId { get; set; }
+        public int? SClinicId { get; set; }
         public int? MainId { get; set; }
         public int? SubId { get; set; }
         public string? ServDesc { get; set; }
         public string? DrDesc { get; set; }
-        public int ServId { get; set; }
+        public int? ServId { get; set; }
         public int DrSend { get; set; }
         public int ExInvoiceNo { get; set; }
         [Required]

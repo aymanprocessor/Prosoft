@@ -4,9 +4,9 @@
 @{
     ViewData["Title"] = "Analysis Transaction";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    SelectList mainList = new SelectList(Model.MainClinics, "ClinicId", "ClinicDesc");
-    SelectList mainItemList = new SelectList(Model.MainItems, "MainId", "MainName");
-    SelectList drList = new SelectList(Model.Doctors, "DrId", "DrDesc");
+    SelectList mainList = new SelectList(ViewBag.MainClinics, "ClinicId", "ClinicDesc");
+    SelectList mainItemList = new SelectList(ViewBag.MainItems, "MainId", "MainName");
+    SelectList drList = new SelectList(ViewBag.Doctors, "DrId", "DrDesc");
 }
 
 <style>
