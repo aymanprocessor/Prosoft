@@ -466,3 +466,18 @@ select[readonly] {
 
 /* Nav Bar*/
 
+table.dataTable tbody tr.selected {
+    color: white !important;
+    background-color: #eeeeee !important;
+}
+
+.checkbox-md {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.dt-center {
+    text-align: center; /* Ensures column data is centered */
+    vertical-align: middle;
+}

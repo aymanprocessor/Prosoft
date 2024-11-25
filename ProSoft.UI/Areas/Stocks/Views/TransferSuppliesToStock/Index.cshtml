@@ -68,6 +68,7 @@
 
     <div class="row mb-5">
         <div class="col-12 border rounded  p-3" style="max-height:500px;">
+            <button id="btn-transfer" class="btn btn-primary mb-3" disabled>@localizer["Post"]</button>
             <table id="MasterTable" class="table table-hover table-bordered">
                 <thead>
                     <tr>
@@ -119,24 +120,39 @@
 
     <script>
         $(document).ready(function () {
+            // Define table IDs
+            var MasterTableId = '#MasterTable';
+            var DetailTableId = '#DetailTable';
 
-
+            // Handle form submission
             $('#btn-submit').click(function (e) {
                 e.preventDefault();
+
+                // Get form inputs
                 var branchId = $('#BranchId').val();
                 var regionId = $('#ReqgionId').val();
                 var fromDate = $('#fromPeriod').val();
                 var toDate = $('#toPeriod').val();
-                var url = '/Stocks/TransferSuppliesToStock/GetPatAdmissions?branchId=' + branchId + '&regionId=' + regionId + '&fromDate=' + fromDate + '&toDate=' + toDate;
+
+                // Construct the AJAX URL
+                var url = `/Stocks/TransferSuppliesToStock/GetPatAdmissions?branchId=${branchId}&regionId=${regionId}&fromDate=${fromDate}&toDate=${toDate}`;
 
 
-                $('#MasterTable').DataTable({
+
+
+
+                // Initialize or refresh Master Table
+                $(MasterTableId).DataTable({
                     destroy: true,
                     deferRender: true,
                     scroller: true,
                     paging: false,
                     searching: false,
-                    select: true,
+
+                    select: {
+                        style: 'single', // Single-row selection
+                        toggleable: false // Disable deselecting rows
+                    },
                     columns: [
                         { data: 'date' },
                         { data: 'companyName' },
@@ -144,8 +160,8 @@
                         { data: 'doctorName' },
                         {
                             data: 'exitStatus',
-                            render: function (data, type, row) {
-                                return (data === null || data === 0) ? 'لا' : 'نعم';
+                            render: function (data) {
+                                return (data === null || data === 0) ? 'لا' : 'نعم'; // Render "لا" or "نعم" based on exitStatus
                             }
                         },
                         { data: 'exitDate' },
@@ -153,50 +169,74 @@
                         { data: 'invoiceNo' },
                         {
                             data: 'post',
-                            render: function (data, type, row) {
-                                return '<input type="checkbox" ' + (data == 1 ? 'checked' : '') + ' >';
-                            }
+                            render: function (data) {
+                                return `<div class="d-flex justify-content-center align-items-center" style="height:100%;">
+                                                                    <input type="checkbox" class="checkbox-md row-checkbox" ${data == 1 ? 'checked' : ''}>
+                                                        </div>`;
+                            },
+                            className: 'dt-center'
                         },
                         { data: 'masterId', visible: false }, // Hidden column for masterId
-                        { data: 'patId', visible: false }  // Hidden column for patId
+                        { data: 'patId', visible: false } // Hidden column for patId
                     ],
-                    "ajax": {
-                        "url": url,
-                        "type": "GET"
-                    },
+                    ajax: {
+                        url: url,
+                        type: 'GET'
+                    }
                 });
-
-
-
-
-
             });
 
+            function toggleTransferButton(enabled) {
+                if (enabled === true) {
+                    $('#btn-transfer').prop('disabled', true);
+                } else {
+                    $('#btn-transfer').prop('disabled', false);
+                }
+            }
 
-            $('#MasterTable').on('select.dt', function (e, dt, type, indexes) {
-                var branchId = $('#BranchId').val();
 
-                if (type === 'row') {
-                    // Get the selected row data
-                    var rowData = dt.rows(indexes).data().toArray()[0];
-                    loadClinicTransactions(branchId, rowData.masterId, rowData.patId)
-                    // Log or process the data
-                    console.log('Selected Row Data:', rowData);
+            $(document).on('change', '.row-checkbox', function () {
+
+                var selectedCount = $('.row-checkbox:checked').length;
+
+                if (selectedCount === 0) {
+                    console.log('No checkboxes selected');
+                    // Disable actions or buttons if needed
+                    $('#btn-transfer').prop('disabled', true);
+                } else {
+                    console.log(`${selectedCount} checkbox(es) selected`);
+                    // Enable actions or buttons
+                    $('#btn-transfer').prop('disabled', false);
                 }
             });
 
+            // Handle row selection in Master Table
+            $(MasterTableId).on('select.dt', function (e, dt, type, indexes) {
+                
 
+
+                if (type === 'row') {
+                    // Get the selected row's data
+                    var rowData = dt.rows(indexes).data().toArray()[0];
+                    var branchId = $('#BranchId').val();
+
+                    // Load clinic transactions based on selected row
+                    loadClinicTransactions(branchId, rowData.masterId, rowData.patId);
+
+                    console.log('Selected Row Data:', rowData); // Log selected row data
+                }
+            });
+
+            // Function to load clinic transactions into the Detail Table
             function loadClinicTransactions(branchId, masterId, patId) {
-                var url = '/Stocks/TransferSuppliesToStock/GetClinicTnxs?BranchId=' + branchId + '&MasterId=' + masterId + '&PatId=' + patId;
+                var url = `/Stocks/TransferSuppliesToStock/GetClinicTnxs?BranchId=${branchId}&MasterId=${masterId}&PatId=${patId}`;
 
-                $('#DetailTable').DataTable({
+                $(DetailTableId).DataTable({
                     destroy: true,
-
                     deferRender: true,
                     scroller: true,
                     paging: false,
                     searching: false,
-
                     columns: [
                         { data: 'date' },
                         { data: 'itemCode' },
@@ -205,16 +245,56 @@
                         { data: 'stockName' },
                         { data: 'cost' },
                         { data: 'sell' },
-                        { data: 'permissionNo' },
-
+                        { data: 'permissionNo' }
                     ],
-                    "ajax": {
-                        "url": url,
-                        "type": "GET"
-                    },
+                    ajax: {
+                        url: url,
+                        type: 'GET'
+                    }
                 });
             }
+
+            // Function to get selected rows in Master Table
+            function getSelectedRows() {
+                var selectedData = [];
+                $(`${MasterTableId} .row-checkbox:checked`).each(function () {
+                    var row = $(MasterTableId).DataTable().row($(this).closest('tr'));
+                    selectedData.push(row.data()); // Collect data from selected rows
+                });
+                return selectedData;
+            }
+
+            // Handle row transfer button click
+            $('#btn-transfer').on('click', function () {
+                var selectedRows = getSelectedRows();
+
+                if (selectedRows.length === 0) {
+                    alert('No rows selected!');
+                    return;
+                }
+
+                console.log('Transferring rows:', selectedRows); // Log selected rows
+
+                // Example: Send selected rows to the server
+                
+                $.ajax({
+                    url: 'Post',
+                    method: 'POST',
+                    contentType: 'application/json',
+
+                    data: JSON.stringify({ rows: selectedRows } ),
+                    success: function (response) {
+                        console.log('Rows transferred successfully!');
+                    },
+                    error: function (xhr) {
+                        console.log('Transfer failed.');
+                    }
+                });
+                
+            });
         });
+
+
     </script>
 }
 

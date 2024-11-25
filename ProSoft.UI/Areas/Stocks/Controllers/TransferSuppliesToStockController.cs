@@ -68,5 +68,18 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
 
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Post(List<TransferSuppliesToStocksAJAXReqDTO> rows)
+        {
+            using (var reader = new StreamReader(Request.Body))
+            {
+                var body = await reader.ReadToEndAsync();
+                Console.WriteLine(rows); // Check the incoming payload
+            }
+
+            return Ok();
+
+        }
+
     }
 }

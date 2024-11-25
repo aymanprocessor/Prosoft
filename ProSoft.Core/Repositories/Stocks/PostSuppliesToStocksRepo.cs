@@ -105,5 +105,10 @@ namespace ProSoft.Core.Repositories.Stocks
 
             return transferSuppliesToStocksDetailDTOs;
         }
+
+        public async Task Post()
+        {
+
+        }
     }
 }

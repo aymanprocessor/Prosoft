@@ -186,6 +186,12 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
         {
             PatAdmission patAdmission = await _Context.PatAdmissions
                      .FirstOrDefaultAsync(obj => obj.MasterId == visitId);
+            var SubClinic = await _Context.SubClinics.FirstOrDefaultAsync(s => s.ClinicId == clinicTransDTO.ClinicId && s.SClinicId == clinicTransDTO.SClinicId);
+            if( SubClinic != null)
+            {
+
+            clinicTransDTO.StockCode = (int)SubClinic.StockCd;
+            }
             clinicTransDTO.PatId = patAdmission.PatId;
             clinicTransDTO.CompId = patAdmission.CompId;
             clinicTransDTO.CompIdDtl = patAdmission.CompIdDtl;
@@ -248,7 +254,18 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
                 }
             }
             ClinicTran clinicTran = _mapper.Map<ClinicTran>(clinicTransDTO);
-            await _Context.AddAsync(clinicTran);
+
+            if (clinicTran.ItmServFlag == 2)
+            {
+                var SubItem = await _Context.SubItems.FirstOrDefaultAsync(s => s.SubId == clinicTran.SubId);
+                if (SubItem != null)
+                {
+                    clinicTran.ItemMaster = SubItem.ItemCode;
+                    
+                }
+            }
+
+                await _Context.AddAsync(clinicTran);
             await _Context.SaveChangesAsync();
 
             //Belong to Deposit
@@ -301,6 +318,8 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             var counter = myClinicTran.Counter;
             var itemServflag = myClinicTran.ItmServFlag;
             var flag = myClinicTran.Flag;
+            var patId = myClinicTran.PatId;
+            var stockCode = myClinicTran.StockCode;
 
             //mapper
             _mapper.Map(clinicTransDTO, myClinicTran);
@@ -309,7 +328,18 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             myClinicTran.Counter = counter;
             myClinicTran.ItmServFlag = itemServflag;
             myClinicTran.Flag = flag;
+            myClinicTran.PatId = patId;
+            myClinicTran.StockCode = stockCode;
 
+            if (myClinicTran.ItmServFlag == 2)
+            {
+                var SubItem = await _Context.SubItems.FirstOrDefaultAsync(s => s.SubId == myClinicTran.SubId);
+                if (SubItem != null)
+                {
+                    myClinicTran.ItemMaster = SubItem.ItemCode;
+
+                }
+            }
             _Context.Update(myClinicTran);
             await _Context.SaveChangesAsync();
         }
