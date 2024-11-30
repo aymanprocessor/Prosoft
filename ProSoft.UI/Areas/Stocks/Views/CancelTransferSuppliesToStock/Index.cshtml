@@ -4,7 +4,7 @@
 @model TransferSuppliesToStocksRequestDTO
 
 @{
-    ViewData["Title"] = "Post Supplies To Stocks";
+    ViewData["Title"] = "Cancel Post Supplies To Stocks";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     WebReport? webReport = ViewBag.WebReport;
@@ -17,7 +17,7 @@
 <div class="container pt-2 ">
 
 
-    <h2 class="header text-center" style="color: #084298;">@localizer["Post Supplies To Stocks"]</h2>
+    <h2 class="header text-center" style="color: #084298;">@localizer["Cancel Post Supplies To Stocks"]</h2>
 
 
     <form asp-action="Index" method="post">
@@ -68,7 +68,7 @@
 
     <div class="row mb-5">
         <div class="col-12 border rounded  p-3" style="max-height:500px;">
-            <button id="btn-transfer" class="btn btn-primary mb-3" disabled>@localizer["Post"]</button>
+            <button id="btn-cancel-transfer" class="btn btn-primary mb-3" disabled>@localizer["Cancel Post"]</button>
             <table id="MasterTable" class="table table-hover table-bordered">
                 <thead>
                     <tr>
@@ -135,7 +135,7 @@
                 var toDate = $('#toPeriod').val();
 
                 // Construct the AJAX URL
-                var url = `/Stocks/TransferSuppliesToStock/GetPatAdmissions?branchId=${branchId}&regionId=${regionId}&fromDate=${fromDate}&toDate=${toDate}`;
+                var url = `/Stocks/CancelTransferSuppliesToStock/GetPatAdmissions?branchId=${branchId}&regionId=${regionId}&fromDate=${fromDate}&toDate=${toDate}`;
 
 
 
@@ -188,9 +188,9 @@
 
             function toggleTransferButton(enabled) {
                 if (enabled === true) {
-                    $('#btn-transfer').prop('disabled', true);
+                    $('#btn-cancel-transfer').prop('disabled', true);
                 } else {
-                    $('#btn-transfer').prop('disabled', false);
+                    $('#btn-cancel-transfer').prop('disabled', false);
                 }
             }
 
@@ -202,17 +202,17 @@
                 if (selectedCount === 0) {
                     console.log('No checkboxes selected');
                     // Disable actions or buttons if needed
-                    $('#btn-transfer').prop('disabled', true);
+                    $('#btn-cancel-transfer').prop('disabled', true);
                 } else {
                     console.log(`${selectedCount} checkbox(es) selected`);
                     // Enable actions or buttons
-                    $('#btn-transfer').prop('disabled', false);
+                    $('#btn-cancel-transfer').prop('disabled', false);
                 }
             });
 
             // Handle row selection in Master Table
             $(MasterTableId).on('select.dt', function (e, dt, type, indexes) {
-                
+
 
 
                 if (type === 'row') {
@@ -229,7 +229,7 @@
 
             // Function to load clinic transactions into the Detail Table
             function loadClinicTransactions(branchId, masterId, patId) {
-                var url = `/Stocks/TransferSuppliesToStock/GetClinicTnxs?BranchId=${branchId}&MasterId=${masterId}&PatId=${patId}`;
+                var url = `/Stocks/CancelTransferSuppliesToStock/GetClinicTnxs?BranchId=${branchId}&MasterId=${masterId}&PatId=${patId}`;
 
                 $(DetailTableId).DataTable({
                     destroy: true,
@@ -265,7 +265,7 @@
             }
 
             // Handle row transfer button click
-            $('#btn-transfer').on('click', function () {
+            $('#btn-cancel-transfer').on('click', function () {
                 var selectedRows = getSelectedRows();
 
                 if (selectedRows.length === 0) {
@@ -276,9 +276,9 @@
                 console.log('Transferring rows:', selectedRows); // Log selected rows
 
                 // Example: Send selected rows to the server
-                
+
                 $.ajax({
-                    url: 'PostSuppliesToStocks',
+                    url: 'CancelPostSuppliesToStocks',
                     method: 'POST',
                     contentType: 'application/json',
                     dataType: 'json',
@@ -290,7 +290,7 @@
                         console.log('Transfer failed.');
                     }
                 });
-                
+
             });
         });
 

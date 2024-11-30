@@ -1044,8 +1044,8 @@
   "Post Supplies To Stocks": "ترحيل المستلزمات الي المخازن",
   "The Cost": "التكلفة",
   "The Sell": "البيع",
-  "Post Supplies": "ترحيل المستلزمات"
-
-
+  "Post Supplies": "ترحيل المستلزمات",
+  "Cancel Post Supplies To Stocks": "الغاء ترحيل المستلزمات الي المخازن",
+  "Cancel Post": "الغاء ترحيل",
 
 }

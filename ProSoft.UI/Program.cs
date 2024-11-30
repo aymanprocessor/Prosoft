@@ -39,7 +39,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 //Configration fo context connectio string
 var sqlServerConnection = builder.Configuration.GetConnectionString("SqlServerConnection") ?? throw new InvalidOperationException("Connection string 'Sql Server Connection' not found.");
-var oracleConnection = builder.Configuration.GetConnectionString("OracleConnection") ?? throw new InvalidOperationException("Connection string 'Oracle Connection' not found.");
+//var oracleConnection = builder.Configuration.GetConnectionString("OracleConnection") ?? throw new InvalidOperationException("Connection string 'Oracle Connection' not found.");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(sqlServerConnection));
