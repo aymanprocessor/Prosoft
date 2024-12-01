@@ -67,7 +67,7 @@
 
 
     <div class="row mb-5">
-        <div class="col-12 border rounded  p-3" style="max-height:500px;">
+        <div class="col-12 border border-dark rounded  p-3" style="max-height:500px;">
             <button id="btn-cancel-transfer" class="btn btn-primary mb-3" disabled>@localizer["Cancel Post"]</button>
             <table id="MasterTable" class="table table-hover table-bordered">
                 <thead>
@@ -81,7 +81,7 @@
                         <th class="text-center">@localizer["Exit Date"]</th>
                         <th class="text-center">@localizer["Invoice Total"]</th>
                         <th class="text-center">@localizer["Invoice No"]</th>
-                        <th class="text-center">@localizer["Post"]</th>
+                        <th class="text-center">@localizer["Cancel Post"]</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -89,7 +89,7 @@
             </table>
         </div>
 
-        <div class="col-12 border rounded  p-3 mt-3" style="max-height:500px;">
+        <div class="col-12 border border-dark rounded  p-3 mt-3" style="max-height:500px;">
             <table id="DetailTable" class="table table-hover table-bordered">
                 <thead>
                     <tr>
@@ -285,6 +285,11 @@
                     data: JSON.stringify(selectedRows),
                     success: function (response) {
                         console.log('Rows transferred successfully!');
+                        // Assuming you have a DataTable instance
+                        var table = $(MasterTableId).DataTable(); // Replace with your actual DataTable ID
+
+                        // Reload the DataTable to reflect the updated data
+                        table.ajax.reload(null, false);
                     },
                     error: function (xhr) {
                         console.log('Transfer failed.');

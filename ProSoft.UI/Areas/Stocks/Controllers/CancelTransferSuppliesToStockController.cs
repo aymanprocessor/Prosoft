@@ -79,8 +79,11 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
                 {
                     await _postSuppliesToStocksRepo.CancelTransferSuppliesToStocks(selectedRows, _currentUserService.BranchId, _currentUserService.Year, _currentUserService.UserId);
                 }
+                return Ok(new { success = true, message = "Rows revert transferred successfully", transferredRowsCount = selectedRows.Count });
+
             }
-            return Ok();
+            return BadRequest(new { success = false, message = "No rows selected" });
+
 
         }
     }

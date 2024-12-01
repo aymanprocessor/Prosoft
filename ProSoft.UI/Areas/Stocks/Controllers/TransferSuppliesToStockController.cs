@@ -74,17 +74,27 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
         [HttpPost]
         public async Task<IActionResult> PostSuppliesToStocks([FromBody] List<TransferSuppliesToStocksAJAXReqDTO> selectedRows)
         {
-            if(selectedRows != null && selectedRows.Count >0)
+            // Check if selectedRows is not null and contains any data
+            if (selectedRows != null && selectedRows.Count > 0)
             {
+                // Iterate over the selected rows and process each one
                 foreach (var row in selectedRows)
                 {
-                   await _postSuppliesToStocksRepo.TransferSuppliesToStocks(selectedRows, _currentUserService.BranchId,_currentUserService.Year,_currentUserService.UserId);
+                    // Call the repository method to transfer supplies to stocks
+                    await _postSuppliesToStocksRepo.TransferSuppliesToStocks(
+                        selectedRows,
+                        _currentUserService.BranchId,
+                        _currentUserService.Year,
+                        _currentUserService.UserId
+                    );
                 }
 
+                // Return a success response with the count of transferred rows
+                return Ok(new { success = true, message = "Rows transferred successfully", transferredRowsCount = selectedRows.Count });
             }
-          
 
-            return Ok();
+            // If no rows were selected, return a failure response
+            return BadRequest(new { success = false, message = "No rows selected" });
 
         }
 
