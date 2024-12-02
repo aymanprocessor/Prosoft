@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
+using ProSoft.Core.Repositories;
 using ProSoft.Core.Repositories.Medical.HospitalPatData;
 using ProSoft.EF.DTOs.Medical.HospitalPatData;
 using ProSoft.EF.IRepositories.Medical.HospitalPatData;
@@ -14,9 +15,13 @@ namespace ProSoft.UI.Areas.Medical.Controllers
     public class PatAdmissionController : Controller
     {
         private readonly IPatAdmissionRepo _patAdmissionRepo;
-        public PatAdmissionController(IPatAdmissionRepo patAdmissionRepo)
+        private readonly ICurrentUserService _currentUserService;
+
+        public PatAdmissionController(IPatAdmissionRepo patAdmissionRepo, ICurrentUserService currentUserService)
         {
             _patAdmissionRepo = patAdmissionRepo;
+            _currentUserService = currentUserService;
+
         }
 
         public async Task<IActionResult> GetAdmissions(int id)
@@ -67,6 +72,8 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         {
             if (ModelState.IsValid)
             {
+                patAdmissionDTO.ExYear = _currentUserService.Year;
+                patAdmissionDTO.BranchId = _currentUserService.BranchId;
                 await _patAdmissionRepo.AddPatAdmissionAsync(id, patAdmissionDTO);
                 return RedirectToAction(redirect, "HospitalPatData");
             }
@@ -89,6 +96,8 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         {
             if (ModelState.IsValid)
             {
+                patAdmissionDTO.ExYear = _currentUserService.Year;
+                patAdmissionDTO.BranchId = _currentUserService.BranchId;
                 await _patAdmissionRepo.EditPatAdmissionAsync(id, patAdmissionDTO);
                 return RedirectToAction(redirect, "HospitalPatData");
             }

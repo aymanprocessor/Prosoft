@@ -73,8 +73,7 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         public async Task<IActionResult> Add_ClinicTrans(int id ,string redirect, int flag)
         {
             ClinicTransEditAddDTO clinicTransEditAddDTO = await _clinicTransRepo.GetEmptyClinicTransAsync();
-            clinicTransEditAddDTO.ExYear = _currentUserService.Year;
-            clinicTransEditAddDTO.BranchId = _currentUserService.BranchId;
+       
             ViewBag.MainClinics = clinicTransEditAddDTO.MainClinics;
             ViewBag.MainItems = clinicTransEditAddDTO.MainItems;
             ViewBag.Doctors = clinicTransEditAddDTO.Doctors;
@@ -100,13 +99,13 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         public async Task<IActionResult> Add_ClinicTrans(int id, string redirect, int flag, ClinicTransEditAddDTO clinicTranDTO)
         {
             ClinicTransEditAddDTO clinicTransEditAddDTO = await _clinicTransRepo.GetEmptyClinicTransAsync();
-            clinicTransEditAddDTO.ExYear = _currentUserService.Year;
-            clinicTransEditAddDTO.BranchId = _currentUserService.BranchId;
             ViewBag.MainClinics = clinicTransEditAddDTO.MainClinics;
             ViewBag.MainItems = clinicTransEditAddDTO.MainItems;
             ViewBag.Doctors = clinicTransEditAddDTO.Doctors;
             if (ModelState.IsValid) 
             {
+            clinicTranDTO.ExYear = _currentUserService.Year;
+            clinicTranDTO.BranchId = _currentUserService.BranchId;
                 await _clinicTransRepo.AddClinicTransAsync(id, flag, clinicTranDTO);
                 // return RedirectToAction(redirect, "HospitalPatData");
                 return RedirectToAction("Add_ClinicTrans", new { id , redirect , flag });
@@ -134,10 +133,11 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit_ClinicTrans(int id, string redirect, ClinicTransEditAddDTO clinicTranDTO)
         {
-            clinicTranDTO.ExYear = _currentUserService.Year;
-            clinicTranDTO.BranchId = _currentUserService.BranchId;
+        
             if (ModelState.IsValid)
             {
+                clinicTranDTO.ExYear = _currentUserService.Year;
+                clinicTranDTO.BranchId = _currentUserService.BranchId;
                 await _clinicTransRepo.EditClinicTransAsync(id, clinicTranDTO);
                 return RedirectToAction(redirect, "HospitalPatData");
             }

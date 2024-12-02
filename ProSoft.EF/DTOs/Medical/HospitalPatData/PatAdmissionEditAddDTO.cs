@@ -9,6 +9,9 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
 {
     public class PatAdmissionEditAddDTO
     {
+        public int? BranchId { get; set; }
+        public int? ExYear { get; set; }
+
         public string? PatName { get; set; }
         public int? patId { get; set; }
         public int? MasterId { get; set; }

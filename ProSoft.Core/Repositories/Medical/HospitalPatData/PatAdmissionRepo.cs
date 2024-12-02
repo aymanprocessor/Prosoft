@@ -84,7 +84,9 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
         public async Task AddPatAdmissionAsync(int patId, PatAdmissionEditAddDTO patAdmissionDTO)
         {
             patAdmissionDTO.patId = patId;
+           
             PatAdmission patAdmission = _mapper.Map<PatAdmission>(patAdmissionDTO);
+
             await _Context.AddAsync(patAdmission);
             await _Context.SaveChangesAsync();
         }
@@ -132,6 +134,7 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             _mapper.Map(patAdmissionDTO, patAdmission);
             patAdmission.PatId = patId;
             patAdmission.MasterId = id;
+
             await _Context.SaveChangesAsync();
         }
 
