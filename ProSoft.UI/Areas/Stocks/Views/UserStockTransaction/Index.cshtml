@@ -1,4 +1,5 @@
-﻿@model List<UserDTO>
+﻿@using ProSoft.UI.Global
+@model List<UserDTO>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
@@ -48,8 +49,8 @@
 
     <div class="transactions-table-head d-flex justify-content-between align-items-center mt-3 mb-1">
         <h2 class="header">@localizer["Transactions of Stocks for User"] :</h2>
-        <a class="btn btn-sm btn-primary fs-6" style="width:150px">
-            @localizer["Add New Transaction"]
+        <a class="btn btn-sm btn-success fs-6" >
+            @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add New Transaction"]
         </a>
     </div>
 
@@ -177,12 +178,12 @@
                             <td class="align-middle text-center">${item.accountStk}</td>
                             <td class="align-middle text-center">${item.accountAcc}</td>
                             <td class="align-middle text-center">${item.jornalName}</td>
-                            <td class="text-center align-middle" style="width: 325px;">
-                                <a href="/Stocks/UserStockTransaction/Edit_StockTrans/${item.stockEmpID}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
+                            <td class="align-middle">
+                                        <a href="/Stocks/UserStockTransaction/Edit_StockTrans/${item.stockEmpID}" class="btn btn-sm btn-warning mb-1 fs-6">@Html.Raw(GlobalConstants.EditIcon)</a>
                                 <form action="/Stocks/UserStockTransaction/Delete_StockTrans" method="post" class="d-inline">
                                         @Html.AntiForgeryToken()
                                     <input type="hidden" name="id" value="${item.stockEmpID}" />
-                                    <button class="btn btn-sm btn-danger mb-1 fs-6" onclick="return confirm('Are you sure you want to delete this one?')" style="width: 150px">@localizer["Delete"]</button>
+                                            <button class="btn btn-sm btn-danger mb-1 fs-6" onclick="return confirm('Are you sure you want to delete this one?')">@Html.Raw(GlobalConstants.DeleteIcon)</button>
                                 </form>
                             </td>
                             `;

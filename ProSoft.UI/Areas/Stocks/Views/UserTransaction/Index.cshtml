@@ -1,4 +1,5 @@
-﻿@model List<UserDTO>
+﻿@using ProSoft.UI.Global
+@model List<UserDTO>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
@@ -178,8 +179,8 @@
                                 <td class="align-middle text-center">${ueDel}</td>
                                 <td class="align-middle text-center">${ueSav}</td>
                                 <td class="align-middle text-center">${transFlag}</td>
-                                <td class="text-center align-middle" style="width: 325px;">
-                                    <a href="/Stocks/UserTransaction/Edit_Transaction/${userCode}?gId=${item.gId}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
+                                <td class="align-middle">
+                                            <a href="/Stocks/UserTransaction/Edit_Transaction/${userCode}?gId=${item.gId}" class="btn btn-sm btn-warning mb-1 fs-6">@Html.Raw(GlobalConstants.EditIcon)</a>
                                 </td>
                                 `;
                             userTransactions.appendChild(userTrans);
