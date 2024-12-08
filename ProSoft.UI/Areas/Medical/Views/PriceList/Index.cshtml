@@ -1,4 +1,5 @@
-﻿@model List<PriceListViewDTO>
+﻿@using ProSoft.UI.Global
+@model List<PriceListViewDTO>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
@@ -82,15 +83,15 @@
                             @pl.Year
                         </td>
 
-                        <td width="30%" class="text-center">
-                            <a asp-controller="PriceList" asp-action="Edit_PriceList" asp-route-ID="@pl.PLId" class="btn btn-sm btn-success mb-1 fs-6" style="width:150px">
-                                <i class="bi bi-pencil"></i> @localizer["Edit"]
+                        <td  class="text-center">
+                            <a asp-controller="PriceList" asp-action="Edit_PriceList" asp-route-ID="@pl.PLId" class="btn btn-sm btn-warning mb-1 fs-6" >
+                                @Html.Raw(GlobalConstants.EditIcon)
                             </a>
 
                             <form asp-action="Delete_PriceList" method="post" class="d-inline">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="id" value="@pl.PLId" />
-                                <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">@localizer["Delete"] </button>
+                                <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');">@Html.Raw(GlobalConstants.EditIcon)</button>
                             </form>
                         </td>
                     </tr>

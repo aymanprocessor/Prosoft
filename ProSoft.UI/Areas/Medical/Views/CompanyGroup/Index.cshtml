@@ -1,4 +1,5 @@
-﻿@model List<CompanyGroupDTO>
+﻿@using ProSoft.UI.Global
+@model List<CompanyGroupDTO>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
@@ -15,7 +16,7 @@
     <div class="d-flex justify-content-between mb-2 gap-2">
         <div>
             <a asp-area="Medical" asp-controller="CompanyGroup" asp-action="Add_CompanyGroup" class="btn btn-sm btn-primary fs-6" style="width:170px">
-                @localizer["Add CompanyGroup"]
+                @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add CompanyGroup"]
             </a>
         </div>
     </div>
@@ -49,12 +50,12 @@
                             else
                                 @localizer["No"]
                             </td>
-                        <td class="text-center align-middle" style="width: 325px;">
-                            <a asp-action="Edit_CompanyGroup" asp-route-id="@item.GroupId" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
+                        <td class="text-center align-middle">
+                            <a asp-action="Edit_CompanyGroup" asp-route-id="@item.GroupId" class="btn btn-sm btn-warning mb-1 fs-6" >@Html.Raw(GlobalConstants.EditIcon)</a>
                             <form asp-action="Delete_CompanyGroup" method="post" class="d-inline">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="id" value="@item.GroupId" />
-                                <button class="btn btn-sm btn-danger mb-1 fs-6" onclick="return confirm('Are you sure you want to delete this one?')" style="width: 150px">@localizer["Delete"]</button>
+                                <button class="btn btn-sm btn-danger mb-1 fs-6" onclick="return confirm('Are you sure you want to delete this one?')" >@Html.Raw(GlobalConstants.DeleteIcon)</button>
                             </form>
                         </td>
                     </tr>
@@ -282,13 +283,13 @@
                                     <td class="align-middle">${item.insurancePeriod} </td>
 
                                 <td width="30%" class="text-center">
-                                 <a href="/Medical/companyDetail/Edit_Company/${item.compId}" class="btn btn-sm btn-success mb-1  fs-6" style="width:150px">
-                                    <i class="bi bi-pencil"></i> @localizer["Edit"]
+                                 <a href="/Medical/companyDetail/Edit_Company/${item.compId}" class="btn btn-sm btn-warning mb-1  fs-6" >
+    @Html.Raw(GlobalConstants.EditIcon)
                                     </a>
                                 <form action="/Medical/companyDetail/Delete_Company" method="post" class="d-inline">
                                     @Html.AntiForgeryToken()
                                         <input type="hidden" name="id" value="${item.compId}" />
-                                 <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">@localizer["Delete"]</button>
+                                 <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" >@Html.Raw(GlobalConstants.DeleteIcon)</button>
                                     </form>
                                 </td>
                                                 `;
@@ -376,13 +377,13 @@
                             <td class="align-middle">${winvItemsFlgg}</td>
 
                             <td width="30%" class="text-center">
-                                <a href="/Medical/companyDetail/Edit_CompanyDtl/${item.compIdDtl}" class="btn btn-sm btn-success mb-1  fs-6" style="width:150px">
-                                    <i class="bi bi-pencil"></i> @localizer["Edit"]
+                                <a href="/Medical/companyDetail/Edit_CompanyDtl/${item.compIdDtl}" class="btn btn-sm btn-warning mb-1  fs-6">
+    @Html.Raw(GlobalConstants.EditIcon)
                                 </a>
                                    <form action="/Medical/companyDetail/Delete_CompanyDtl" method="post" class="d-inline">
                             @Html.AntiForgeryToken()
                                         <input type="hidden" name="id" value="${item.compIdDtl}" />
-                                    <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">@localizer["Delete"]</button>
+                                    <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" >@Html.Raw(GlobalConstants.EditIcon)</button>
                                 </form>
                             </td>
                                                         `;

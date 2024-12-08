@@ -1,4 +1,5 @@
-﻿@model UserSideViewDTO
+﻿@using ProSoft.UI.Global
+@model UserSideViewDTO
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
@@ -18,7 +19,7 @@
             </select>
         </div>
         <div class="mx-2">
-            <button id="addbutton" class="btn btn-primary disabled">@localizer["Add User"]</button>
+            <button id="addbutton" class="btn btn-success disabled">@Html.Raw(GlobalConstants.InsertIcon) @localizer["Add User"]</button>
         </div>
 
     </div>
