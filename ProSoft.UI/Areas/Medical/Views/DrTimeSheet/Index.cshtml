@@ -1,4 +1,5 @@
-﻿@model List<DoctorViewDTO>
+﻿@using ProSoft.UI.Global
+@model List<DoctorViewDTO>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
@@ -47,8 +48,8 @@
 
     <div class="transactions-table-head d-flex justify-content-between align-items-center mt-3 mb-1">
         <h2 class="header">@localizer["Doctor Appointments"] :</h2>
-        <a class="btn btn-sm btn-primary fs-6" style="width:150px">
-            @localizer["Add Appointments"]
+        <a class="btn btn-sm btn-primary fs-6" >
+           @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add Appointments"]
         </a>
     </div>
 
@@ -187,12 +188,12 @@
                                 <td class="align-middle text-center">${exPeriod}</td>
                                 <td class="align-middle text-center">${Timfrom}</td>
                                 <td class="align-middle text-center">${Timto}</td>
-                                <td class="text-center align-middle" style="width: 325px;">
-                                 <a href="/Medical/DrTimeSheet/Edit_DrTimeSheet/${item.drTimId}?drId=${DrId}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>
+                                <td class="text-center align-middle">
+                                 <a href="/Medical/DrTimeSheet/Edit_DrTimeSheet/${item.drTimId}?drId=${DrId}" class="btn btn-sm btn-warning mb-1 fs-6">@Html.Raw(GlobalConstants.EditIcon)</a>
                                   <form action="/Medical/DrTimeSheet/Delete_DrTimeSheet" method="post" class="d-inline">
                                         @Html.AntiForgeryToken()
                                             <input type="hidden" name="id" value="${item.drTimId}" />
-                                        <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width:150px">@localizer["Delete"]</button>
+                                        <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target>@Html.Raw(GlobalConstants.DeleteIcon)</button>
                                         <div class="modal-container">
                                             <div class="modal 4" id="modal">
                                                 <div class="modal-header fs-4">

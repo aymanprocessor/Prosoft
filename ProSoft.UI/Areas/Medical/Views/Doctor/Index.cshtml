@@ -1,4 +1,5 @@
-﻿@model List<DoctorViewDTO>
+﻿@using ProSoft.UI.Global
+@model List<DoctorViewDTO>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
@@ -26,13 +27,13 @@
 </style>
 
 <div class="container pt-2" style=" min-height:100vh;">
-    <img class="image" src="/background.jpg" style="position:absolute;" />
+
 
     <div class="d-flex justify-content-between align-items-center mt-4 ">
         <h1 class="header">@localizer["Doctors"]</h1>
 
-        <a asp-controller="Doctor" asp-action="Add_Doctor" class="btn btn-sm btn-primary fs-6" style="width:150px">
-            @localizer["Add Doctor"]
+        <a asp-controller="Doctor" asp-action="Add_Doctor" class="btn btn-sm btn-primary fs-6" >
+            @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add Doctor"]
         </a>
     </div>
     <div class="overflow-auto"  style="height: 300px;">
@@ -109,15 +110,15 @@
                                 @localizer["No"]
 
                         </td>
-                        <td width="30%" class="text-center">
-                            <a asp-controller="Doctor" asp-action="Edit_Doctor" asp-route-ID="@dr.DrId" class="btn btn-sm btn-success mb-1 fs-6" style="width:150px">
-                                <i class="bi bi-pencil"></i> @localizer["Edit"]
+                        <td class="text-center">
+                            <a asp-controller="Doctor" asp-action="Edit_Doctor" asp-route-ID="@dr.DrId" class="btn btn-sm btn-warning mb-1 fs-6" >
+                                @Html.Raw(GlobalConstants.EditIcon)
                             </a>
 
                             <form asp-action="Delete_Doctor" method="post" class="d-inline">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="id" value="@dr.DrId" />
-                                <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">@localizer["Delete"] </button>
+                                <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" > @Html.Raw(GlobalConstants.DeleteIcon)</button>
                             </form>
                         </td>
                     </tr>
@@ -132,8 +133,8 @@
     <div class="DocSubDtl-table-head d-flex justify-content-between align-items-center mt-4">
         <h2 class="header DocSub-Dtl">@localizer["Specialties of Doctor"] :</h2>
 
-        <a class="btn btn-sm btn-primary fs-6" style="width:150px">
-            @localizer["Add Specialty"]
+        <a class="btn btn-sm btn-primary fs-6" >
+            @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add Specialty"]
         </a>
         @* asp-controller="MedAnalysis" asp-action="Add_SubItemAnalysis" asp-route-ID="@ViewBag.item.MainCode" asp-route-itemAnalCode="" *@
     </div>
@@ -229,15 +230,15 @@
                                 `<td class="align-middle">@localizer["Main Specialty"]</td>`
                                 : `<td class="align-middle">@localizer["Un-Main Specialty"]</td>`}
 
-                                <td width="30%" class="text-center">
-                                  <a href="/Medical/DoctorSpecialties/Edit_DocSubDtl/${item.docSubId}" class="btn btn-sm btn-success mb-1  fs-6" style="width:150px">
-                                        <i class="bi bi-pencil"></i> @localizer["Edit"]
+                                <td class="text-center">
+                                  <a href="/Medical/DoctorSpecialties/Edit_DocSubDtl/${item.docSubId}" class="btn btn-sm btn-warning mb-1  fs-6">
+    @Html.Raw(GlobalConstants.EditIcon)
                                     </a>
                                 <form action="/Medical/DoctorSpecialties/Delete_DocSubDtl" method="post" class="d-inline">
                             @Html.AntiForgeryToken()
                                         <input type="hidden" name="id" value="${item.docSubId}" />
                                         <input type="hidden" name="redirect" value="Invoices" />
-                                    <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">@localizer["Delete"]</button>
+                                    <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');"> @Html.Raw(GlobalConstants.DeleteIcon)</button>
                                     </form>
                                 </td>
                                         `;

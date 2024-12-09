@@ -1,4 +1,5 @@
-﻿@model List<MainClinicViewDTO>
+﻿@using ProSoft.UI.Global
+@model List<MainClinicViewDTO>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
@@ -28,7 +29,7 @@
 
 
 <div class="container pt-2" style=" min-height:100vh;">
-    <img class="image" src="/background.jpg" style="position:absolute;" />
+
 
     <div class="d-flex justify-content-center align-items-center mt-2 ">
       <h1 class="header">@localizer["Department services"]</h1>
@@ -36,8 +37,8 @@
     <div class="d-flex justify-content-between align-items-center ">
         <h1 class="header">@localizer["Level 1"]</h1>
 
-        <a asp-controller="MainClinic" asp-action="Add_MainClinic" class="btn btn-sm btn-primary fs-6" style="width:150px">
-            @localizer["Add Clinic"]
+        <a asp-controller="MainClinic" asp-action="Add_MainClinic" class="btn btn-sm btn-primary fs-6" >
+            @Html.Raw(GlobalConstants.EditIcon) @localizer["Add Clinic"]
         </a>
     </div>
     <div class="overflow-auto" style="height: 225px;">
@@ -81,14 +82,14 @@
                                 @localizer["No"]
                         </td>
                         <td width="30%" class="text-center">
-                            <a asp-controller="MainClinic" asp-action="Edit_MainClinic" asp-route-ID="@clc.ClinicId" class="btn btn-sm btn-success mb-1 fs-6" style="width:150px">
-                                <i class="bi bi-pencil"></i> @localizer["Edit"]
+                            <a asp-controller="MainClinic" asp-action="Edit_MainClinic" asp-route-ID="@clc.ClinicId" class="btn btn-sm btn-warning mb-1 fs-6" >
+                                @Html.Raw(GlobalConstants.EditIcon)
                             </a>
 
                             <form asp-action="Delete_MainClinic" method="post" class="d-inline">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="id" value="@clc.ClinicId" />
-                                <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">@localizer["Delete"] </button>
+                                <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');">@Html.Raw(GlobalConstants.DeleteIcon)</button>
                             </form>
                         </td>
                     </tr>
@@ -103,8 +104,8 @@
     <div class="subClinic-table-head d-flex justify-content-between align-items-center mt-4">
         <h2 class="header subClinic-Dtl">@localizer["Level 2"] :</h2>
 
-        <a class="btn btn-sm btn-primary fs-6" style="width:150px">
-            @localizer["Add SubClinic"]
+        <a class="btn btn-sm btn-primary fs-6" >
+            @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add SubClinic"]
         </a>
         @* asp-controller="MedAnalysis" asp-action="Add_SubItemAnalysis" asp-route-ID="@ViewBag.item.MainCode" asp-route-itemAnalCode="" *@
     </div>
@@ -156,8 +157,8 @@
     <div class="servClinic-table-head d-flex justify-content-between align-items-center mt-4">
         <h2 class="header servClinic-Dtl">@localizer["Level 3"] :</h2>
 
-        <a class="btn btn-sm btn-primary fs-6" style="width:150px">
-            @localizer["Add ServClinic"]
+        <a class="btn btn-sm btn-primary fs-6" >
+            @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add ServClinic"]
         </a>
         @* asp-controller="MedAnalysis" asp-action="Add_SubItemAnalysis" asp-route-ID="@ViewBag.item.MainCode" asp-route-itemAnalCode="" *@
     </div>
@@ -285,14 +286,14 @@
                     <td class="align-middle">${item.einvItem}</td>
                     <td class="align-middle">${itemType}</td>
                     <td class="align-middle">${item.stknam}</td>
-                    <td width="30%" class="text-center">
-                        <a href="/Medical/SubClinic/Edit_SubClinic/${item.sClinicId}" class="btn btn-sm btn-success mb-1 fs-6" style="width:150px">
-                            <i class="bi bi-pencil"></i> @localizer["Edit"]
+                    <td class="text-center">
+                        <a href="/Medical/SubClinic/Edit_SubClinic/${item.sClinicId}" class="btn btn-sm btn-warning mb-1 fs-6" >
+    @Html.Raw(GlobalConstants.EditIcon)
                         </a>
                           <form action="/Medical/SubClinic/Delete_SubClinic" method="post" class="d-inline">
     @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="${item.sClinicId}" />
-                            <button type="submit" class="btn btn-sm btn-danger mb-1 fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">@localizer["Delete"]</button>
+                            <button type="submit" class="btn btn-sm btn-danger mb-1 fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" >@Html.Raw(GlobalConstants.DeleteIcon)</button>
                         </form>
                     </td>
                 `;
@@ -382,14 +383,14 @@
                         <td class="align-middle">${protect}</td>
                         <td class="align-middle">${active}</td>
 
-                        <td width="30%" class="text-center">
-                                        <a href="/Medical/ServiceClinic/Edit_ServClinic/${item.servId}" class="btn btn-sm btn-success mb-1 fs-6" style="width:150px">
-                                <i class="bi bi-pencil"></i> @localizer["Edit"]
+                        <td  class="text-center">
+                                        <a href="/Medical/ServiceClinic/Edit_ServClinic/${item.servId}" class="btn btn-sm btn-warning mb-1 fs-6" >
+    @Html.Raw(GlobalConstants.EditIcon)
                             </a>
                           <form action="/Medical/ServiceClinic/Delete_ServClinic" method="post" class="d-inline">
     @Html.AntiForgeryToken()
                                     <input type="hidden" name="id" value="${item.servId}" />
-                                <button type="submit" class="btn btn-sm btn-danger mb-1 fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" style="width:150px">@localizer["Delete"]</button>
+                                <button type="submit" class="btn btn-sm btn-danger mb-1 fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" >@Html.Raw(GlobalConstants.DeleteIcon)</button>
                             </form>
                         </td>
                     `;
