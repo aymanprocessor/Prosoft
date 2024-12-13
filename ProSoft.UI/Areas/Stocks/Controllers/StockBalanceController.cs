@@ -100,7 +100,7 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             return View(stockBalanceViewDTOs);
         }
 
-        [HttpGet("ChooseStockType")]
+        [HttpGet]
         public async Task<IActionResult> ChooseStockType()
         {
             int userId = _currentUserService.UserId;

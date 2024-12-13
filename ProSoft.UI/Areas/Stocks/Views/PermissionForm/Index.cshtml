@@ -1,4 +1,5 @@
-﻿@model TransMasterViewDTO
+﻿@using ProSoft.UI.Global
+@model TransMasterViewDTO
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Permissions Forms";
@@ -17,22 +18,29 @@
     <input id="stocksNum" type="hidden" value="@ViewBag.stockCode" />
     <input id="permissionsNum" type="hidden" value="@ViewBag.trans_Type" />
 
-    <div class="page-head d-flex justify-content-between align-items-center flex-column flex-md-row gap-3 my-2">
-        <div class="d-flex align-items-center flex-column flex-md-row w-50">
+    <div class="page-head d-flex justify-content-md-between align-items-center flex-column flex-md-row gap-3 my-2">
+      
+
+        
+        <div class="d-flex justify-content-md-start align-items-center flex-column flex-md-row gap-3 my-2">
+        
+        <div class="d-flex align-items-center ms-3 flex-column flex-md-row w-100">
             <label for="stocks" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Stocks"]</label>
             <select id="stocks" asp-items="stocks" class="form-control text-center w-100" onchange="getUserPermissionsForStock()">
                 <option value="">-- Choose --</option>
             </select>
         </div>
-        <div class="d-flex align-items-center flex-column flex-md-row w-50">
+        <div class="d-flex align-items-center ms-3 flex-column flex-md-row w-100">
             <label for="permissions" class="@(isRTL ? "ms-3" : "me-3") mb-1 mb-md-0">@localizer["Permissions"]</label>
             <select id="permissions" class="form-control text-center w-100" onchange="getPermissionsInStock()">
                 <option value="">-- Choose --</option>
             </select>
         </div>
-        <a onclick="goToAddPermissionForm(event, 'permissions', 'stocks')" class="btn btn-sm btn-primary fs-6" style="width:150px">
-            @localizer["Add Permission Form"]
+        </div>
+        <a onclick="goToAddPermissionForm(event, 'permissions', 'stocks')" class="btn btn-sm btn-primary ms-3 fs-6" >
+            @Html.Raw(GlobalConstants.InsertIcon)  @localizer["Add Permission Form"]
         </a>
+      
         <input id="docNo" type="hidden" value="@ViewBag.docNo" />
     </div>
 
@@ -83,36 +91,36 @@
                     <td>@Model.DocNoFr</td>
                     <td>@Model.StockName2</td>
                     <td>@Model.SupInvDate</td>
-                    <td style="width: 325px;">
-                        <a onclick="approvePermission(event, @Model.TransMAsterID)" class="btn btn-sm btn-primary mb-1 fs-6" style="width: 60px">@localizer["Approve"]</a>
+                    <td >
+                        <a onclick="approvePermission(event, @Model.TransMAsterID)" class="btn btn-sm btn-primary mb-1 fs-6" >@localizer["Approve"]</a>
                         @switch (Model.TransType)
                         {
                             case 4:
                             case 13:
-                                <a href="/Stocks/PermissionForm/Edit_DisburseOrConvertForm/@Model.TransMAsterID" class="btn btn-sm btn-success mb-1 fs-6" style="width: 60px">@localizer["Edit"]</a>
+                                    <a href="/Stocks/PermissionForm/Edit_DisburseOrConvertForm/@Model.TransMAsterID" class="btn btn-sm btn-warning mb-1 fs-6">@Html.Raw(GlobalConstants.EditIcon)</a>
                                 break;
                             case 12:
-                                <a href="/Stocks/PermissionForm/Edit_SalesInvoice/@Model.TransMAsterID" class="btn btn-sm btn-success mb-1 fs-6" style="width: 60px">@localizer["Edit"]</a>
+                                    <a href="/Stocks/PermissionForm/Edit_SalesInvoice/@Model.TransMAsterID" class="btn btn-sm btn-warning mb-1 fs-6">@Html.Raw(GlobalConstants.EditIcon)</a>
                                 break;
                             case 24:
                             case 26:
-                                <a href="/Stocks/PermissionForm/Edit_Settlement/@Model.TransMAsterID" class="btn btn-sm btn-success mb-1 fs-6" style="width: 60px">@localizer["Edit"]</a>
+                                    <a href="/Stocks/PermissionForm/Edit_Settlement/@Model.TransMAsterID" class="btn btn-sm btn-warning mb-1 fs-6">@Html.Raw(GlobalConstants.EditIcon)</a>
                                 break;
                             case 5:
-                                <a href="/Stocks/PermissionForm/Edit_ReqDisburse/@Model.TransMAsterID" class="btn btn-sm btn-success mb-1 fs-6" style="width: 60px">@localizer["Edit"]</a>
+                                    <a href="/Stocks/PermissionForm/Edit_ReqDisburse/@Model.TransMAsterID" class="btn btn-sm btn-warning mb-1 fs-6">@Html.Raw(GlobalConstants.EditIcon)</a>
                                 break;
                             case 30:
-                                <a href="/Stocks/PermissionForm/Edit_ReturnPermission/@Model.TransMAsterID" class="btn btn-sm btn-success mb-1 fs-6" style="width: 60px">@localizer["Edit"]</a>
+                                    <a href="/Stocks/PermissionForm/Edit_ReturnPermission/@Model.TransMAsterID" class="btn btn-sm btn-warning mb-1 fs-6">@Html.Raw(GlobalConstants.EditIcon)</a>
                                 break;
                             default:
-                                <a href="/Stocks/PermissionForm/Edit_PermissionForm/@Model.TransMAsterID" class="btn btn-sm btn-success mb-1 fs-6" style="width: 60px">@localizer["Edit"]</a>
+                                    <a href="/Stocks/PermissionForm/Edit_PermissionForm/@Model.TransMAsterID" class="btn btn-sm btn-warning mb-1 fs-6">@Html.Raw(GlobalConstants.EditIcon)</a>
                                 break;
                         }
 
                         <form action="/Stocks/PermissionForm/Delete_PermissionForm" method="post" class="d-inline">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@Model.TransMAsterID" />
-                            <button type="button" onclick="deleteTransMaster(event, @Model.TransMAsterID)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width: 60px">@localizer["Delete"]</button>
+                                <button type="button" onclick="deleteTransMaster(event, @Model.TransMAsterID)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target >@Html.Raw(GlobalConstants.DeleteIcon)</button>
                             <div class="modal-container">
                                 <div class="modal 4" id="modal">
                                     <div class="modal-header fs-4">
@@ -146,8 +154,8 @@
 
     <div class="details-table-head d-flex justify-content-between align-items-center mt-3 mb-1">
         <h2 class="header">@localizer["The Items"]</h2>
-        <a class="btn btn-sm btn-primary fs-6" style="width:150px">
-            @localizer["Add Item"]
+        <a class="btn btn-sm btn-primary fs-6" >
+            @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add Item"]
         </a>
     </div>
 
@@ -481,7 +489,7 @@
                         };
 
                         let editButton = item.transType == 23 ?
-                            "" : `<a href="/Stocks/PermissionForm/${actions[0]}/${item.transMAsterID}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 60px">@localizer["Edit"]</a>`;
+                            "" : `<a href="/Stocks/PermissionForm/${actions[0]}/${item.transMAsterID}" class="btn btn-sm btn-warning mb-1 fs-6" >@Html.Raw(GlobalConstants.EditIcon)</a>`;
 
                         let deleteButton = item.transType == 23 ?
                             "" : 
@@ -489,7 +497,7 @@
                             <form action="/Stocks/PermissionForm/Delete_PermissionForm" method="post" class="d-inline">
                                     @Html.AntiForgeryToken()
                                 <input type="hidden" name="id" value="${item.transMAsterID}" />
-                                <button type="button" onclick="deleteTransMaster(event, ${item.transMAsterID})" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width: 60px">@localizer["Delete"]</button>
+                                        <button type="button" onclick="deleteTransMaster(event, ${item.transMAsterID})" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target>@Html.Raw(GlobalConstants.DeleteIcon)</button>
                                 <div class="modal-container">
                                     <div class="modal 4" id="modal">
                                         <div class="modal-header fs-4">
@@ -589,14 +597,14 @@
                         let editAction = showTransPrice ? "Edit_TransDetailWithPrice" : "Edit_TransDetail";
 
                         let editButton = item.transType == 23 ?
-                            "" : `<a href="/Stocks/PermissionFormDetails/${editAction}/${item.transDtlId}" class="btn btn-sm btn-success mb-1 fs-6" style="width: 150px">@localizer["Edit"]</a>`;
+                            "" : `<a href="/Stocks/PermissionFormDetails/${editAction}/${item.transDtlId}" class="btn btn-sm btn-warning mb-1 fs-6" >@Html.Raw(GlobalConstants.EditIcon)</a>`;
 
                         let deleteButton = item.transType == 30 || item.transType == 23 ? "" :
                             `
                             <form action="/Stocks/PermissionFormDetails/Delete_TransDetail" method="post" class="d-inline">
                                     @Html.AntiForgeryToken()
                                 <input type="hidden" name="id" value="${item.transDtlId}" />
-                                <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target style="width: 150px">@localizer["Delete"]</button>
+                                        <button type="button" onclick="openModalListener(event)" class="btn btn-sm btn-danger mb-1  fs-6" data-modal-target >@Html.Raw(GlobalConstants.DeleteIcon)</button>
                                 <div class="modal-container">
                                     <div class="modal 4" id="modal">
                                         <div class="modal-header fs-4">
