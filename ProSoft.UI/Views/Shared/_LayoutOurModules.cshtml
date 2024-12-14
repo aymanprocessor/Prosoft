@@ -324,7 +324,7 @@
                             href: '/Stocks/CancelTransferSuppliesToStock/Index'
                         }
                         ]
-                       
+
                     },
                     {
                         text: '@localizer["Reports"]',
@@ -336,11 +336,11 @@
                             {
                                 text: '@localizer["Customer Transaction Quantity Report"]',
                                 href: '/Stocks/CustomerTransactionReport/GetCustomerTransactionQuantityReport'
-                            }, 
+                            },
                             {
                                 text: '@localizer["Customer Transaction Value Report"]',
                                 href: '/Stocks/CustomerTransactionReport/GetCustomerTransactionValueReport'
-                            }, 
+                            },
                             {
                                 text: '@localizer["Analytical Customer Transaction Report"]',
                                 href: '/Stocks/AnalyticalCustomerTransactionReport/Index'
@@ -416,17 +416,77 @@
                         subMenu: [
                             {
                                 text: '@localizer["Definitions"]',
-                                subMenu: []
+                                subMenu: [
+                                 {
+              "text": "@localizer["Treasury Names"]",
+              "href": "/Treasury/TreasuryName/Index"
+            },
+            {
+              "text": "@localizer["Currencies"]",
+              "href": "/Treasury/Currency/Index"
+            },
+            {
+              "text": "@localizer["Banks"]",
+              "href": "/Treasury/BankData/Index"
+            },
+            {
+              "text": "@localizer["Cost Center Treasury"]",
+              "href": "/Treasury/CostCenterTreasury/Index"
+            },
+            {
+              "text": "@localizer["Joining Users With Treasurys"]",
+              "href": "/Treasury/UserCashNo/Index"
+            }]
                             },
                         ]
                     },
                     {
                         text: '@localizer["Transactions"]',
-                        subMenu: []
+                        subMenu: [
+                         {
+          "text": "@localizer["The Cash"]",
+          "subMenu": [
+            {
+              "text": "@localizer["Payment Receipt"]",
+              "href": "/Treasury/AccSafeCash/Index?docType=SFCIN&flagType=oneANDtwo"
+            },
+            {
+              "text": "@localizer["Disbursement permission"]",
+              "href": "/Treasury/DisbursementPermission/Index?docType=SFCOT&flagType=oneANDtwo"
+            },
+            {
+              "text": "@localizer["Receive Permission"]",
+              "href": "/Treasury/ReceivePermission/Index?docType=SFTIN&flagType=oneANDtwoAndthree"
+            },
+            {
+              "text": "@localizer["Transfer Permission"]",
+              "href": "/Treasury/TransferPermission/Index?docType=SFTOT&flagType=oneANDtwoAndthree"
+            }
+          ]
+        },
+        {
+          "text": "@localizer["The Checks"]",
+          "subMenu": [
+            {
+              "text": "@localizer["Deposit check in Treasury"]",
+              "href": "/Treasury/AccSafeCheck/Index?tranType=SFSIN&flagType=oneANDtwo"
+            },
+            {
+              "text": "@localizer["Disbursement permission Checks"]",
+              "href": "/Treasury/DisbursementPermissionCheck/Index?tranType=SFOUT&flagType=oneANDtwo"
+            }
+          ]
+        }
+                        ]
                     },
                     {
                         text: '@localizer["Reports"]',
-                        subMenu: []
+                        subMenu: [
+                         {
+          "text": "@localizer["Follow up cash and checks"]",
+          "href": "/Treasury/ReportCashAndChecks/Index?tranType=SFOUT&flagType=oneANDtwo"
+        }
+                        ]
                     },
                 ]
             }, {
@@ -437,20 +497,96 @@
                         subMenu: [
                             {
                                 text: '@localizer["Definitions"]',
-                                subMenu: []
+                                subMenu: [
+                                 {
+              "text": "@localizer["Accounts guide"]",
+              "href": "/Accounts/AccMainCode/Index"
+            },
+            {
+              "text": "@localizer["Cost Centers"]",
+              "href": "/Accounts/CostCenter/Index"
+            },
+            {
+              "text": "@localizer["Journal Types"]",
+              "href": "/Accounts/JournalType/Index"
+            },
+            {
+              "text": "@localizer["Modification of account codes"]",
+              "href": "/Accounts/AccSubCodeEdit/Index"
+            },
+            {
+              "text": "@localizer["Opening Balances"]",
+              "href": "/Accounts/AccStartBal/Index"
+            },
+            {
+              "text": "@localizer["Joining Users With Journals"]",
+              "href": "/Accounts/UserJournalType/Index"
+            }
+                                ]
                             },
                         ]
                     },
                     {
                         text: '@localizer["Recording Restrictions"]',
-                        subMenu: []
+                        subMenu: [
+                          {
+          "text": "@localizer["Journals"]",
+          "href": "/Accounts/UserJournalType/JournalTypeForUser"
+        },
+        {
+          "text": "@localizer["Cancel Journal Voucher"]",
+          "href": "/Accounts/CancelJournalVoucher/Index"
+        }
+                        ]
                     }, {
                         text: '@localizer["Closing Procedures"]',
-                        subMenu: []
+                        subMenu: [
+                         {
+          "text": "@localizer["Monthly Closing"]",
+          "href": "/Accounts/MonthlyClosing/Index"
+        },
+        {
+          "text": "@localizer["Cancel Journal Voucher"]",
+          "href": "/Accounts/CancelJournalVoucher/Index"
+        }
+                        ]
                     },
                     {
                         text: '@localizer["Reports"]',
-                        subMenu: []
+                        subMenu: [
+                         {
+          "text": "@localizer["American Daily"]",
+          "href": "/Accounts/AmericanDaily/Index"
+        },
+        {
+          "text": "@localizer["Print From Voucher To Voucher"]",
+          "href": "/Accounts/ReportFromVoucherToVoucher/Index"
+        },
+        {
+          "text": "@localizer["Assistant Professor(Analytical/Overall)"]",
+          "href": "/Accounts/ReportAssistantProfessor/Index"
+        },
+        {
+          "text": "@localizer["Transaction account for journal Level"]",
+          "href": "/Accounts/ReportTransactionAccountJournal/Index"
+        },
+        {
+          "text": "@localizer["Expense Analysis"]",
+          "href": "/Accounts/ReportExpenseAnalysis/Index"
+        },
+        {
+          "text": "@localizer["Review Journal Vouchers"]",
+          "href": "/Accounts/ReportReviewJournalVouchers/Index"
+        },
+        {
+          "text": "@localizer["General Professor For Facility"]",
+          "href": "/Accounts/ReportGeneralProfessorFacility/Index"
+        },
+        {
+          "text": "@localizer["Daily assistance for Voucher level"]",
+          "href": "/Accounts/ReportDailyAssistance/Index"
+        }
+                        ]
                     },
                 ]
             }, {
@@ -458,7 +594,17 @@
                 text: '@localizer["System Tools"]', subMenu: [
                     {
                         text: '@localizer["Main data"]',
-                        subMenu: []
+                        subMenu: [
+                        {
+          "text": "@localizer["Definitions"]",
+          "subMenu": [
+            {
+              "text": "@localizer["System Accounts Coding"]",
+              "href": "/Shared/EisPosting/Index"
+            }
+          ]
+        }
+                        ]
                     },
                 ]
             },
