@@ -1,0 +1,53 @@
+﻿@using ProSoft.EF.DTOs.Stocks
+@model StentDesDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Add Source Of Catheter";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+    <h1 class="mt-4">@localizer["Add Source Of Catheter"]</h1>
+    <form method="post" asp-action="Add">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly"></div>
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <label asp-for="StentId"></label>
+                    <input asp-for="StentId" class="form-control" disabled value="@ViewBag.NewCode" />
+                    <span asp-validation-for="StentId" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label>@localizer["Source Of Catheter"]</label>
+                    <input asp-for="StentDesc" class="form-control" />
+                    <span asp-validation-for="StentDesc" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label>@localizer["Source Of Catheter"]</label>
+                    <select asp-for="StentType" class="form-select" >
+                        <option value="">@localizer["Choosee"]</option>
+                        <option value="عادية">عادية</option>
+                        <option value="دوائية">دوائية</option>
+                        <option value="تشخيصية">تشخيصية</option>
+                        <option value="مرشدة">مرشدة</option>
+                       
+                    </select>
+                    <span asp-validation-for="StentDesc" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------->
+            <div class="parent d-flex justify-content-md-center gap-2 ">
+                <button type="submit" class="btn btn-primary" style="width:150px">
+                    @localizer["Add Source"]
+                </button>
+                <a asp-controller="SourceOfCatheter" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>

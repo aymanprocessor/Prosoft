@@ -1047,5 +1047,16 @@
   "Post Supplies": "ترحيل المستلزمات",
   "Cancel Post Supplies To Stocks": "الغاء ترحيل المستلزمات الي المخازن",
   "Cancel Post": "الغاء ترحيل",
-
+  "Source Of Catheter": "الجهة الوارد منها حالة القسطرة",
+  "Add Source": "اضافة الجهة",
+  "Add Source Of Catheter": "اضافة الجهة الوارد منها حالة القسطرة",
+  "Edit Source Of Catheter": "تعديل الجهة الوارد منها حالة القسطرة",
+  "Catheter Section": "قسم القسطرة",
+  "Add Catheter Procedure Name": "اضافة اسم اجراء القسطرة",
+  "Catheter Procedure Name": "اسم اجراء القسطرة",
+  "List Of Catheter Procedures": "اسماء اجراءات القسطرة",
+  "Add Procedure Name": "اضافة الاجراء",
+  "Edit Catheter Procedure Name": "تعديل اسم اجراء القسطرة",
+  "List of Stents And Catheters": "اسماء الدعامات والقساطر",
+  "The Type": "النوع"
 }

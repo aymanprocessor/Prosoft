@@ -1,0 +1,44 @@
+﻿@model GTablelDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Edit Source Of Catheter";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+    <h1 class="mt-4">@localizer["Edit Source Of Catheter"] : @Model.GDesc</h1>
+    <form method="post" asp-action="Edit">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly"></div>
+            @* hidden *@
+            <input asp-for="GCode" type="hidden" />
+            <input asp-for="Flag" type="hidden" />
+
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <label asp-for="GCode"></label>
+                    <input asp-for="GCode" class="form-control" disabled />
+                    <span asp-validation-for="GCode" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label>@localizer["Source Of Catheter"]</label>
+                    <input asp-for="GDesc" class="form-control" />
+                    <span asp-validation-for="GDesc" class="text-danger"></span>
+                </div>
+            </div>
+            <!------------------------------------------------------------------------------->
+            <div class="parent d-flex justify-content-md-center gap-2 ">
+                <button type="submit" class="btn btn-success" style="width:150px">
+                    @localizer["Save Changes"]
+                </button>
+                <a asp-controller="SourceOfCatheter" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>

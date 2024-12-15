@@ -1,0 +1,60 @@
+﻿@using ProSoft.UI.Global
+@model List<GTablelDTO>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Source Of Catheter";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2 ">
+    <div class="d-flex justify-content-between align-items-center mt-4 ">
+        <h1 class="header">@localizer["Source Of Catheter"]</h1>
+
+        <a asp-controller="SourceOfCatheter" asp-action="Add" class="btn btn-sm btn-primary fs-6">
+            @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add Source"]
+        </a>
+    </div>
+    <div class="overflow-auto" style="max-height:calc(100vh - 145px)">
+        <table id="myTable" class="table table-bordered table-hover" style="width:100%">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        @localizer["Code"]
+                    </th>
+                    <th>
+                        @localizer["Source Of Catheter"]
+                    </th>
+                    <th>
+                        @localizer["Action"]
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var gTablel in Model)
+                {
+                    <tr>
+                        <td>
+                            @gTablel.GCode
+                        </td>
+                        <td>
+                            @gTablel.GDesc
+                        </td>
+                        <td class="text-center">
+                            <a asp-controller="SourceOfCatheter" asp-action="Edit" asp-route-ID="@gTablel.GCode" class="btn btn-sm btn-warning mb-1 fs-6">
+                                @Html.Raw(GlobalConstants.EditIcon)
+                            </a>
+
+                            <form asp-controller="SourceOfCatheter" asp-action="Delete" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@gTablel.GCode" />
+                                <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');"> @Html.Raw(GlobalConstants.DeleteIcon)</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
