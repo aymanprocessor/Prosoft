@@ -1057,6 +1057,9 @@
   "List Of Catheter Procedures": "اسماء اجراءات القسطرة",
   "Add Procedure Name": "اضافة الاجراء",
   "Edit Catheter Procedure Name": "تعديل اسم اجراء القسطرة",
-  "List of Stents And Catheters": "اسماء الدعامات والقساطر",
-  "The Type": "النوع"
+  "List Of Stents And Catheters": "اسماء الدعامات والقساطر",
+  "The Type": "النوع",
+  "Add Name Of Stents And Catheters": "اضافة اسم الدعامات و القساطر",
+  "Edit Name Of Stents And Catheters": "تعديل اسم الدعامات و القساطر",
+  "Add Name": "اضافة الاسم"
 }

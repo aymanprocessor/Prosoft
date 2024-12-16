@@ -103,6 +103,8 @@ builder.Services.AddScoped<ILabUnitRepo, LabUnitRepo>();
 builder.Services.AddScoped<ISubRepo, SubRepo>();
 builder.Services.AddScoped<IItemAnalysisRepo, ItemAnalysisRepo>();
 /////////////////
+
+builder.Services.AddScoped<IStentsRepo, StentsRepo>();
 builder.Services.AddScoped<IPatientRepo, PatientRepo>();
 builder.Services.AddScoped<IPatAdmissionRepo, PatAdmissionRepo>();
 builder.Services.AddScoped<IClinicTransRepo, ClinicTransRepo>();

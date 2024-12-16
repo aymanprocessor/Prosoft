@@ -1055,7 +1055,10 @@
   "Edit Catheter Procedure Name": "Edit Catheter Procedure Name",
   "List Of Catheter Procedures": "List Of Catheter Procedures",
   "Add Procedure Name": "Add Procedure Name",
-  "List of Stents And Catheters": "List of Stents And Catheters",
-    "The Type": "Type"
+  "List Of Stents And Catheters": "List Of Stents And Catheters",
+  "The Type": "Type",
+  "Add Name Of Stents And Catheters": "Add Name Of Stents And Catheters",
+  "Edit Name Of Stents And Catheters": "Edit Name Of Stents And Catheters",
+  "Add Name": "Add Name"
 
 }

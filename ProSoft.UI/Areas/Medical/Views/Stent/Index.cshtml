@@ -4,16 +4,16 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "List of Stents And Catheters";
+    ViewData["Title"] = "List Of Stents And Catheters";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @inject IViewLocalizer localizer
 
 <div class="container pt-2 ">
     <div class="d-flex justify-content-between align-items-center mt-4 ">
-        <h1 class="header">@localizer["List of Stents And Catheters"]</h1>
+        <h1 class="header">@localizer["List Of Stents And Catheters"]</h1>
 
-        <a asp-controller="ListOfCatheterProcedures" asp-action="Add" class="btn btn-sm btn-primary fs-6">
+        <a asp-controller="Stent" asp-action="Add" class="btn btn-sm btn-primary fs-6">
             @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add Name"]
         </a>
     </div>

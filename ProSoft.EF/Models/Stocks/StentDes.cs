@@ -9,10 +9,12 @@ using System.Threading.Tasks;
 
 namespace ProSoft.EF.Models.Stocks
 {
-    [Keyless]
     [Table("STENT_DES")]
     public partial class StentDes
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+
         [Column("STENT_ID")]
         public int? StentId { get; set; }
 

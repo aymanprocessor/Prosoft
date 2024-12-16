@@ -181,6 +181,7 @@ namespace ProSoft.EF.DbContext
         public DbSet<Analdetail> Analdetails { get; set; }
         /////
         // Hospital Patient data //
+        public DbSet<BedCode> BedCodes { get; set; }
         public DbSet<ClassificationCust> ClassificationCusts { get; set; }
 
         public DbSet<ClinicTran> ClinicTrans { get; set; }
@@ -192,6 +193,7 @@ namespace ProSoft.EF.DbContext
         public DbSet<CompanyGroup> CompanyGroups { get; set; }
 
         public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<DegreeCode> DegreeCodes { get; set; }
 
         public DbSet<DocSubDtl> DocSubDtls { get; set; }
 
@@ -206,6 +208,7 @@ namespace ProSoft.EF.DbContext
         public DbSet<Deposit> Deposits { get; set; }
 
         public DbSet<Region> Regions { get; set; }
+        public DbSet<RoomCode> RoomCodes { get; set; }
 
         public DbSet<ServiceClinic> ServiceClinics { get; set; }
 
