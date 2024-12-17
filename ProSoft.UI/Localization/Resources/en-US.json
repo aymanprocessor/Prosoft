@@ -1059,6 +1059,17 @@
   "The Type": "Type",
   "Add Name Of Stents And Catheters": "Add Name Of Stents And Catheters",
   "Edit Name Of Stents And Catheters": "Edit Name Of Stents And Catheters",
-  "Add Name": "Add Name"
+  "Add Name": "Add Name",
+  "Degree And Room And Bed": "Degree And Room And Bed",
+  "Room Code": "Room Code",
+  "Patient Price": "Patient Price",
+  "Relativet Price": "Relativet Price",
+  "Bed Code": "Bed Code",
+  "Degree Code": "Degree Code",
+  "Bed - Room - Degree": "Bed - Room - Degree",
+  "Booked": "Booked",
+  "Degrees": "Degrees",
+  "Rooms": "Rooms",
+  "Beds": "Beds"
 
 }

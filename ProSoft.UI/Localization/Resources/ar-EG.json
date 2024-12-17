@@ -1061,5 +1061,18 @@
   "The Type": "النوع",
   "Add Name Of Stents And Catheters": "اضافة اسم الدعامات و القساطر",
   "Edit Name Of Stents And Catheters": "تعديل اسم الدعامات و القساطر",
-  "Add Name": "اضافة الاسم"
+  "Add Name": "اضافة الاسم",
+  "Degree And Room And Bed": "تعريف الدرجات والغرف والاسرة",
+  "Room Code": "رقم الغرفة",
+  "Patient Price": "سعر المريض",
+  "Relativet Price": "سعر المرافق",
+  "Bed Code": "رقم السرير",
+  "Degree Code": "رقم الدرجة",
+  "Bed - Room - Degree": "سرير - غرفة - درجة",
+  "Booked": "محجوزة",
+  "Degrees": "الدرجات",
+  "Rooms": "الغرف",
+  "Beds": "الاسرة",
+  "Add Room": "اضافة غرفة",
+  "Add Bed": "اضافة سرير"
 }

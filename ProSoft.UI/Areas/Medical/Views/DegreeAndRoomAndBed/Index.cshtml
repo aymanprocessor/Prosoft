@@ -1,0 +1,167 @@
+﻿@using ProSoft.UI.Global
+
+
+@{
+
+    ViewData["Title"] = "Degree & Room & Bed";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@inject IViewLocalizer localizer
+
+<div class="container pt-2 ">
+    <h1 class="text-center header">@localizer["Degree And Room And Bed"]</h1>
+
+    <div class="d-flex justify-content-between align-items-center mt-4 ">
+        <h3 class="text-center header">@localizer["Degrees"]</h3>
+
+        <a asp-controller="ListOfCatheterProcedures" asp-action="Add" class="btn btn-sm btn-primary fs-6">
+            @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add Degree"]
+        </a>
+    </div>
+
+    <div class="border rounded-2 border-dark mt-3 p-3">
+        <table id="DegreeTable" class="table table-hover table-bordered display">
+            <thead>
+                <tr>
+                    <th class="text-center">@localizer["Activation"]</th>
+                    <th class="text-center">@localizer["The Code"]</th>
+                    <th class="text-center">@localizer["The Description"]</th>
+                    <th class="text-center">@localizer["Action"]</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-4 ">
+        <h3 class="text-center header">@localizer["Rooms"]</h3>
+
+        <a asp-controller="ListOfCatheterProcedures" asp-action="Add" class="btn btn-sm btn-primary fs-6">
+            @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add Room"]
+        </a>
+    </div>
+
+    <div class="border rounded-2 border-dark mt-3 p-3">
+        <table id="RoomTable" class="table table-hover table-bordered display">
+            <thead>
+                <tr>
+                    <th class="text-center">@localizer["Activation"]</th>
+                    <th class="text-center">@localizer["Room Code"]</th>
+                    <th class="text-center">@localizer["Patient Price"]</th>
+                    <th class="text-center">@localizer["Relativet Price"]</th>
+                    <th class="text-center">@localizer["Action"]</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-4 ">
+        <h3 class="text-center header">@localizer["Beds"]</h3>
+
+        <a asp-controller="ListOfCatheterProcedures" asp-action="Add" class="btn btn-sm btn-primary fs-6">
+            @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add Bed"]
+        </a>
+    </div>
+
+    <div class="border rounded-2 border-dark mt-3 p-3">
+        <table id="BedTable" class="table table-hover table-bordered display">
+            <thead>
+                <tr>
+                    <th class="text-center">@localizer["Activation"]</th>
+                    <th class="text-center">@localizer["Bed Code"]</th>
+                    <th class="text-center">@localizer["BedRoomDegree"]</th>
+                    <th class="text-center">@localizer["Patient Price"]</th>
+                    <th class="text-center">@localizer["Relativet Price"]</th>
+                    <th class="text-center">@localizer["Booked"]</th>
+                    <th class="text-center">@localizer["Action"]</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+           const DegreeTable = $("#DegreeTable");
+           const RoomTable = $("#RoomTable");
+           const BedTable = $("#BedTable");
+
+             DegreeTable.DataTable({
+                    destroy: true,
+                    scroller: true,
+                    searching: true,
+                    paging:false,
+                    select: {
+                        style: 'os',
+                        selector: 'td:first-child'
+                    },
+                    layout: {
+                        topEnd: {
+                            search: {
+                                text: '_INPUT_',
+                                placeholder: '@localizer["Search"]'
+
+                            }
+                        }
+                    },
+
+
+                });
+
+                RoomTable.DataTable({
+                    destroy: true,
+                    scroller: true,
+                    searching: true,
+                    paging:false,
+
+                    select: {
+                        style: 'os',
+                        selector: 'td:first-child'
+                    },
+                    layout: {
+                        topEnd: {
+                            search: {
+                                text: '_INPUT_',
+                                placeholder: '@localizer["Search"]'
+
+                            }
+                        }
+                    },
+
+
+                });
+
+                BedTable.DataTable({
+                    destroy: true,
+                    scroller: true,
+                    paging:false,
+                    searching: true,
+                    select: {
+                        style: 'os',
+                        selector: 'td:first-child'
+                    },
+                    layout: {
+                        topEnd: {
+                            search: {
+                                text: '_INPUT_',
+                                placeholder: '@localizer["Search"]'
+
+                            }
+                        }
+                    },
+
+
+                });
+        });
+
+    </script>
+}
