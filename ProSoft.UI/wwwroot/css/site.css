@@ -481,3 +481,9 @@ table.dataTable tbody tr.selected {
     text-align: center; /* Ensures column data is centered */
     vertical-align: middle;
 }
+
+a[disabled]{
+    pointer-events:none;
+    opacity:0.5;
+    cursor:not-allowed;
+}

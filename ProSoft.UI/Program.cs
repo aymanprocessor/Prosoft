@@ -104,6 +104,9 @@ builder.Services.AddScoped<ISubRepo, SubRepo>();
 builder.Services.AddScoped<IItemAnalysisRepo, ItemAnalysisRepo>();
 /////////////////
 
+builder.Services.AddScoped<IDegreeCodeRepo, DegreeCodeRepo>();
+builder.Services.AddScoped<IRoomCodeRepo, RoomCodeRepo>();
+builder.Services.AddScoped<IBedCodeRepo, BedCodeRepo>();
 builder.Services.AddScoped<IStentsRepo, StentsRepo>();
 builder.Services.AddScoped<IPatientRepo, PatientRepo>();
 builder.Services.AddScoped<IPatAdmissionRepo, PatAdmissionRepo>();

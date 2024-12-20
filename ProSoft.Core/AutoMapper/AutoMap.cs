@@ -75,6 +75,9 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<CompanyDtlViewDTO, CompanyDtl>().ReverseMap();
             CreateMap<RegionViewDTO, Region>().ReverseMap();
             ////////////////////////
+            CreateMap<DegreeRequestDTO, DegreeCode>().ReverseMap();
+            CreateMap<RoomRequestDTO, RoomCode>().ReverseMap();
+            CreateMap<BedRequestDTO, BedCode>().ReverseMap();
             CreateMap<NationalityDTO, NationalityEi>().ReverseMap();
             CreateMap<DrDegreeDTO, DrDegree>().ReverseMap();
             CreateMap<DocSubDtlViewDTO, DocSubDtl>().ReverseMap();

@@ -1070,6 +1070,10 @@
   "Booked": "Booked",
   "Degrees": "Degrees",
   "Rooms": "Rooms",
-  "Beds": "Beds"
+  "Beds": "Beds",
+  "Add Room": "Add Room",
+  "Add Bed": "Add Bed",
+  "Edit Room": "Edit Room",
+  "Edit Bed": "Edit Bed"
 
 }

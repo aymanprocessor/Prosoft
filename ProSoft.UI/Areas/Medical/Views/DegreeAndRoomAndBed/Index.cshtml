@@ -16,7 +16,7 @@
     <div class="d-flex justify-content-between align-items-center mt-4 ">
         <h3 class="text-center header">@localizer["Degrees"]</h3>
 
-        <a asp-controller="ListOfCatheterProcedures" asp-action="Add" class="btn btn-sm btn-primary fs-6">
+        <a asp-controller="DegreeAndRoomAndBed" asp-action="AddDegree" class="btn btn-sm btn-primary fs-6">
             @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add Degree"]
         </a>
     </div>
@@ -39,7 +39,7 @@
     <div class="d-flex justify-content-between align-items-center mt-4 ">
         <h3 class="text-center header">@localizer["Rooms"]</h3>
 
-        <a asp-controller="ListOfCatheterProcedures" asp-action="Add" class="btn btn-sm btn-primary fs-6">
+        <a id="addRoomButton" asp-controller="DegreeAndRoomAndBed" asp-action="AddRoom" class="btn btn-sm btn-primary fs-6" disabled>
             @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add Room"]
         </a>
     </div>
@@ -63,7 +63,7 @@
     <div class="d-flex justify-content-between align-items-center mt-4 ">
         <h3 class="text-center header">@localizer["Beds"]</h3>
 
-        <a asp-controller="ListOfCatheterProcedures" asp-action="Add" class="btn btn-sm btn-primary fs-6">
+        <a id="addBedButton" asp-controller="DegreeAndRoomAndBed" asp-action="AddBed" class="btn btn-sm btn-primary fs-6" disabled>
             @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add Bed"]
         </a>
     </div>
@@ -91,76 +91,147 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-           const DegreeTable = $("#DegreeTable");
-           const RoomTable = $("#RoomTable");
-           const BedTable = $("#BedTable");
+            const DegreeTable = $("#DegreeTable");
+            const RoomTable = $("#RoomTable");
+            const BedTable = $("#BedTable");
+            const addRoomButton = $("#addRoomButton");
+            const addBedButton = $("#addBedButton");
 
-             DegreeTable.DataTable({
-                    destroy: true,
-                    scroller: true,
-                    searching: true,
-                    paging:false,
-                    select: {
-                        style: 'os',
-                        selector: 'td:first-child'
-                    },
-                    layout: {
-                        topEnd: {
-                            search: {
-                                text: '_INPUT_',
-                                placeholder: '@localizer["Search"]'
+            DegreeTable.DataTable({
+                //destroy: true,
+                scroller: true,
+                searching: true,
+                paging: false,
+                select: {
+                    style: 'os',
+                    toggleable: false
+                },
+                layout: {
+                    topEnd: {
+                        search: {
+                            text: '_INPUT_',
+                            placeholder: '@localizer["Search"]'
 
-                            }
+                        }
+                    }
+                },
+                columns: [
+                    {
+                        data: 'degreeOnOff',
+                        className: 'text-center',
+                                render: function (data, type, row) {
+                            const isChecked = data == 1 ? 'checked' : '';
+                            return `<input type="checkbox" data-toggle="switchbutton" data-onstyle="success" data-size="sm" ${isChecked} onchange="handleCheckboxChange(this, '${row.id}')">`;
                         }
                     },
-
-
-                });
-
-                RoomTable.DataTable({
-                    destroy: true,
-                    scroller: true,
-                    searching: true,
-                    paging:false,
-
-                    select: {
-                        style: 'os',
-                        selector: 'td:first-child'
-                    },
-                    layout: {
-                        topEnd: {
-                            search: {
-                                text: '_INPUT_',
-                                placeholder: '@localizer["Search"]'
-
-                            }
+                    { data: 'id', searchable: true, className: 'text-center' },
+                    { data: 'degreeName', searchable: true },
+                    {
+                        className: 'text-center',
+                                render: function (data, type, row) {
+                            const editBtn = `<a href="/Medical/DegreeAndRoomAndBed/EditDegree/${row.id}" class="btn btn-warning me-1">@Html.Raw(GlobalConstants.EditIcon)</a>`;
+                            const DeleteBtn = `<a href="/Medical/DegreeAndRoomAndBed/DeleteDegree/${row.id}" class="btn btn-danger me-1">@Html.Raw(GlobalConstants.DeleteIcon)</a>`;
+                            return `${editBtn}${DeleteBtn}`;
                         }
                     },
+                ],
+
+                "ajax": {
+                    "url": `/Medical/DegreeAndRoomAndBed/GetDegrees`,
+                    "type": "GET"
+                },
+
+            });
 
 
-                });
+           
+            RoomTable.DataTable({
+                //destroy: true,
+                scroller: true,
+                searching: true,
+                paging: false,
 
-                BedTable.DataTable({
-                    destroy: true,
-                    scroller: true,
-                    paging:false,
-                    searching: true,
-                    select: {
-                        style: 'os',
-                        selector: 'td:first-child'
-                    },
-                    layout: {
-                        topEnd: {
-                            search: {
-                                text: '_INPUT_',
-                                placeholder: '@localizer["Search"]'
+                select: {
+                    style: 'os',
+                    toggleable: false
 
-                            }
+                },
+                layout: {
+                    topEnd: {
+                        search: {
+                            text: '_INPUT_',
+                            placeholder: '@localizer["Search"]'
+
                         }
+                    }
+                },
+
+
+            });
+
+            BedTable.DataTable({
+               // destroy: true,
+                scroller: true,
+                paging: false,
+                searching: true,
+                select: {
+                    style: 'os',
+                    toggleable: false
+
+                },
+                layout: {
+                    topEnd: {
+                        search: {
+                            text: '_INPUT_',
+                            placeholder: '@localizer["Search"]'
+
+                        }
+                    }
+                },
+
+               
+            });
+
+
+            DegreeTable.on("select.dt", function (e, dt, type, indexes) {
+           
+                    // Get the selected row's data
+                    const rowData = dt.row(indexes).data();
+                    if (!rowData) {
+                        console.error("No row data found.");
+                        return;
+                    }
+
+                    const degreeId = rowData.id; // Adjust 'id' to match your data structure
+                    console.log("Selected Row Data:", rowData);
+
+                    // Enable the Add Room button
+                addRoomButton.removeAttr("disabled");
+
+                    // Update the Add Room button's URL to include DegreeId
+                    addRoomButton.attr("href", `/DegreeAndRoomAndBed/AddRoom?degreeId=${degreeId}`);
+
+                    // Fetch data for RoomTable based on DegreeId
+                    fetchRoomData(degreeId);
+                
+            });
+
+            function fetchRoomData(degreeId) {
+                $.ajax({
+                    url: `/DegreeAndRoomAndBed/GetRoomsByDegreeId`, // Backend endpoint to fetch room data
+                    method: 'GET',
+                    data: { degreeId: degreeId },
+                    success: function (data) {
+                        // Populate RoomTable with the fetched data
+                        var table = new DataTable('#DegreeTable');
+                        table.clear().rows.add(data).draw();
                     },
-
-
+                    error: function (xhr, status, error) {
+                        console.error('Failed to fetch room data:', error);
+                        RoomTable.clear().draw(); // Clear RoomTable in case of error
+                    }
                 });
+            }
         });
 
     </script>
