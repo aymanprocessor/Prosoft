@@ -23,5 +23,12 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
 
             return (maxId ?? 0) + 1;
         }
-}
+
+        public async Task<List<BedCode>> GetBedsByDegreeIdAndRoomId(int degreeId, int roomId)
+        {
+            var beds = await _Context.BedCodes.Where(b => b.DegreeCode == degreeId && b.RoomCode == roomId).ToListAsync();
+            return beds;
+        }
+
+    }
 }

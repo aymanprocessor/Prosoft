@@ -1,28 +1,31 @@
 ﻿@using ProSoft.EF.DTOs.Stocks
-@model RoomRequestDTO
+@model BedRequestDTO
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    ViewData["Title"] = "Add Room";
+    ViewData["Title"] = "Edit Bed";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @inject IViewLocalizer localizer
 
 <div class="container pt-2">
-    <h1 class="mt-4">@localizer["Add Room"]</h1>
-    <form method="post" asp-action="AddRoom">
+    <h1 class="mt-4">@localizer["Edit Bed"] : @ViewBag.BedCode</h1>
+    <form method="post" asp-action="EditBed">
         <div class="border p-3 mt-4">
 
             <div asp-validation-summary="ModelOnly"></div>
-            <input type="hidden" asp-for="Id" value="@ViewBag.NewCode" />
-            <input type="hidden" asp-for="DegreeId" value="@ViewBag.DegreeId" />
-            <input type="hidden" asp-for="Branch" value="@ViewBag.Branch" />
-            <input type="hidden" asp-for="RoomOnOff" value="@ViewBag.RoomOnOff" />
+
+            <input type="hidden" asp-for="Branch" />
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="DegreeId" />
+            <input type="hidden" asp-for="RoomId" />
+            <input type="hidden" asp-for="BedCodeSys" />
+            <input type="hidden" asp-for="BedOnOff" />
 
             <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
                 <div class="mb-3">
-                    <label>@localizer["Room Code"]</label>
-                    <input asp-for="Id" class="form-control" disabled value="@ViewBag.NewCode" />
+                    <label>@localizer["Bed Code"]</label>
+                    <input asp-for="Id" class="form-control" disabled />
                     <span asp-validation-for="Id" class="text-danger"></span>
                 </div>
                 <div class="mb-3 ">
@@ -30,7 +33,6 @@
                     <input type="number" asp-for="PatientPrice" class="form-control" />
                     <span asp-validation-for="PatientPrice" class="text-danger"></span>
                 </div>
-
                 <div class="mb-3 ">
                     <label>@localizer["Relativet Price"]</label>
                     <input type="number" asp-for="RelativetPrice" class="form-control" />

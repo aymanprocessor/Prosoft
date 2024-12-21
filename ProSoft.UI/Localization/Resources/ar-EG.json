@@ -1068,7 +1068,7 @@
   "Relativet Price": "سعر المرافق",
   "Bed Code": "رقم السرير",
   "Degree Code": "رقم الدرجة",
-  "Bed - Room - Degree": "سرير - غرفة - درجة",
+  "BedRoomDegree": "سرير - غرفة - درجة",
   "Booked": "محجوزة",
   "Degrees": "الدرجات",
   "Rooms": "الغرف",
@@ -1077,4 +1077,7 @@
   "Add Bed": "اضافة سرير",
   "Edit Room": "تعديل غرفة",
   "Edit Bed": "تعديل سرير",
+  "No Degrees": "لا يوجد درجات",
+  "No Rooms": "لا يوجد غرف",
+  "No Beds": "لا يوجد الاسرة"
 }

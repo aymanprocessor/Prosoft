@@ -1066,7 +1066,7 @@
   "Relativet Price": "Relativet Price",
   "Bed Code": "Bed Code",
   "Degree Code": "Degree Code",
-  "Bed - Room - Degree": "Bed - Room - Degree",
+  "BedRoomDegree": "Bed - Room - Degree",
   "Booked": "Booked",
   "Degrees": "Degrees",
   "Rooms": "Rooms",
@@ -1074,6 +1074,8 @@
   "Add Room": "Add Room",
   "Add Bed": "Add Bed",
   "Edit Room": "Edit Room",
-  "Edit Bed": "Edit Bed"
-
+  "Edit Bed": "Edit Bed",
+  "No Degrees": "No Degrees",
+  "No Rooms": "No Rooms",
+  "No Beds": "No Beds"
 }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ProSoft.EF.DTOs.Medical.HospitalPatData;
 using ProSoft.EF.IRepositories.Medical.HospitalPatData;
 using ProSoft.EF.Models.Medical.HospitalPatData;
+using ProSoft.EF.Models.Stocks;
 
 namespace ProSoft.UI.Areas.Medical.Controllers
 {
@@ -131,10 +132,12 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         //******************************** ROOM ********************************//
 
         [HttpGet]
-        public async Task<IActionResult> AddRoom()
+        public async Task<IActionResult> AddRoom(int id)
         {
-
+            ViewBag.DegreeId = id;
             ViewBag.NewCode = await _roomCodeRepo.GetNewIdAsync();
+            ViewBag.Branch = _currentUserService.BranchId;
+            ViewBag.RoomOnOff = 1;
             return View();
 
         }
@@ -147,9 +150,8 @@ namespace ProSoft.UI.Areas.Medical.Controllers
                 return View(model);
             }
             
-            model.RoomOnOff = 1;
-            model.Branch = _currentUserService.BranchId;
             RoomCode roomCode = _mapper.Map<RoomCode>(model);
+            roomCode.DegreeCode = model.DegreeId;
             await _roomCodeRepo.AddAsync(roomCode);
             await _roomCodeRepo.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -206,12 +208,116 @@ namespace ProSoft.UI.Areas.Medical.Controllers
 
 
         [HttpGet]
-        public IActionResult GetRoomsByDegreeId(int degreeId)
+        public async Task<IActionResult> GetRoomsByDegreeId(int degreeId)
         {
             // Fetch room data based on DegreeId (use your database logic)
-            var rooms = _roomCodeRepo.GetRoomsByDegreeId(degreeId); // Replace with your service/repository call
-
-            return Json(rooms);
+            var rooms = await _roomCodeRepo.GetRoomsByDegreeId(degreeId); // Replace with your service/repository call
+            var result = new
+            {
+                draw = 1,
+                recordsTotal = rooms.Count(),       // Total number of records
+                recordsFiltered = rooms.Count(),    // Total filtered records (for paging)
+                data = rooms                        // Actual data to display
+            };
+            return Json(result);
         }
+
+
+        //******************************** BED ********************************//
+
+        [HttpGet]
+        public async Task<IActionResult> AddBed(int degreeId,int roomId)
+        {
+            ViewBag.DegreeId = degreeId;
+            ViewBag.RoomId = roomId;
+            ViewBag.NewCode = await _bedCodeRepo.GetNewIdAsync();
+            ViewBag.Branch = _currentUserService.BranchId;
+            ViewBag.BookId = 0;
+            ViewBag.BedOnOff = 1;
+            return View();
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddBed(BedRequestDTO model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            BedCode bedCode = _mapper.Map<BedCode>(model);
+            bedCode.DegreeCode = model.DegreeId;
+            bedCode.RoomCode = model.RoomId;
+            bedCode.BedCodeSys = model.Id.ToString() + model.RoomId.ToString() + model.DegreeId.ToString();
+            await _bedCodeRepo.AddAsync(bedCode);
+            await _bedCodeRepo.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+
+        }
+
+
+
+        [HttpGet]
+        public async Task<IActionResult> EditBed(int id)
+        {
+
+            BedCode bedCode = await _bedCodeRepo.GetByIdAsync(id);
+            if (bedCode == null)
+            {
+                return NotFound();
+            }
+            BedRequestDTO roomRequestDTO = _mapper.Map<BedRequestDTO>(bedCode);
+
+            ViewBag.BedCode = bedCode?.Id;
+            return View(roomRequestDTO);
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditBed(int id, RoomRequestDTO model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            model.Branch = _currentUserService.BranchId;
+
+            BedCode bedCode = await _bedCodeRepo.GetByIdAsync(id);
+
+            _mapper.Map(model, bedCode);
+
+            await _bedCodeRepo.UpdateAsync(bedCode);
+            await _bedCodeRepo.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteBed(int id)
+        {
+            BedCode bedCode = await _bedCodeRepo.GetByIdAsync(id);
+            await _bedCodeRepo.DeleteAsync(bedCode);
+            await _bedCodeRepo.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetBedsByDegreeIdAndRoomId(int degreeId, int roomId)
+        {
+            // Fetch room data based on DegreeId (use your database logic)
+            var beds = await _bedCodeRepo.GetBedsByDegreeIdAndRoomId(degreeId, roomId); // Replace with your service/repository call
+            var result = new
+            {
+                draw = 1,
+                recordsTotal = beds.Count(),       // Total number of records
+                recordsFiltered = beds.Count(),    // Total filtered records (for paging)
+                data = beds                        // Actual data to display
+            };
+            return Json(result);
+        }
+
+
     }
 }
