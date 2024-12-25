@@ -190,6 +190,8 @@
                             return `${editBtn}${deleteBtn}`;
                         }
                     },
+                    { data: 'degreeCode', visible: false },
+
                 ]
             });
 
@@ -244,30 +246,43 @@
             });
 
             // Degree Table row select event
-            DegreeTable.on("select.dt", function (e, dt, type, indexes) {
-                const rowData = dt.row(indexes).data();
+            DegreeTable.on("select", function (e, dt, type, indexes) {
+                const rowData = DegreeTable.row(indexes).data();
+                const degreeId = rowData.id;
+                fetchRoomData(degreeId);
+
+                const roomDataCounts = RoomTable.rows().count();
+                console.log("Count : ", roomDataCounts);
+                
+                addBedButton.attr("disabled",'');
+                BedTable.clear().draw();
+
                 if (!rowData) {
                     console.error("No row data found.");
                     return;
                 }
-
-                const degreeId = rowData.id;
                 addRoomButton.removeAttr("disabled").attr("href", `/Medical/DegreeAndRoomAndBed/AddRoom/${degreeId}`);
-                fetchRoomData(degreeId);
+                
+                
+                
             });
 
             // Room Table row select event
-            RoomTable.on("select.dt", function (e, dt, type, indexes) {
+            RoomTable.on("select", function (e, dt, type, indexes) { 
                 const rowData = dt.row(indexes).data();
-                if (!rowData) {
+                const roomId = rowData.id;
+                const degreeId = rowData.degreeCode;
+                fetchBedData(degreeId, roomId);
+
+                const bedDataCounts = BedTable.rows().count();
+                console.log("Count : ", bedDataCounts);
+                if (!rowData ) {
                     console.error("No row data found.");
                     return;
                 }
 
-                const roomId = rowData.id;
-                const degreeId = rowData.degreeId; // Assuming `degreeId` is part of room data
+                // Assuming `degreeId` is part of room data
                 addBedButton.removeAttr("disabled").attr("href", `/Medical/DegreeAndRoomAndBed/AddBed/?degreeId=${degreeId}&roomId=${roomId}`);
-                fetchBedData(degreeId, roomId);
             });
 
             // Fetch Room data based on degreeId

@@ -1079,5 +1079,16 @@
   "Edit Bed": "تعديل سرير",
   "No Degrees": "لا يوجد درجات",
   "No Rooms": "لا يوجد غرف",
-  "No Beds": "لا يوجد الاسرة"
+  "No Beds": "لا يوجد الاسرة",
+  "Referral Doctor Commissions": "نسب الاطباء الراسلين",
+  "Referral Doctor Commission": "نسبة الطبيب الراسل",
+  "Add Doctor Commission": "اضافة نسبة الطبيب",
+  "Doctor Code": "كود الطبيب",
+  "Discount For": "الخصم لصالح",
+  "No Commissions": "لا يوجد نسب",
+  "Doctor Commission": "نسبة الطبيب خاص",
+  "Doctor Commission Contract": "نسبة الطبيب تعاقدات",
+  "Doctor": "الطبيب",
+  "Patient": "المريض"
+
 }

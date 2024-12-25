@@ -28,6 +28,8 @@ namespace ProSoft.EF.DbContext
 
             builder.Entity<ItemBalance>().HasNoKey();
             builder.Entity<ItemBalance>().Property(e => e.itm_balance).HasColumnType("decimal(18, 2)");
+
+
             // ------------------- Tables ------------------- //
 
             // ------------------ APP USER ------------------ //
@@ -193,6 +195,7 @@ namespace ProSoft.EF.DbContext
         public DbSet<CompanyGroup> CompanyGroups { get; set; }
 
         public DbSet<Doctor> Doctors { get; set; }
+        public DbSet<DrDiscount> DrDiscounts { get; set; }
         public DbSet<DegreeCode> DegreeCodes { get; set; }
 
         public DbSet<DocSubDtl> DocSubDtls { get; set; }

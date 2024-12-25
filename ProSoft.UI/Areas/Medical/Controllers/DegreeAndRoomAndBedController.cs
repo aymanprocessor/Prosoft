@@ -249,7 +249,7 @@ namespace ProSoft.UI.Areas.Medical.Controllers
             BedCode bedCode = _mapper.Map<BedCode>(model);
             bedCode.DegreeCode = model.DegreeId;
             bedCode.RoomCode = model.RoomId;
-            bedCode.BedCodeSys = model.Id.ToString() + model.RoomId.ToString() + model.DegreeId.ToString();
+            bedCode.BedCodeSys = model.DegreeId.ToString() + model.RoomId.ToString() + model.Id.ToString();
             await _bedCodeRepo.AddAsync(bedCode);
             await _bedCodeRepo.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
