@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using ProSoft.Core.Enums;
 using ProSoft.EF.Models;
 using ProSoft.EF.Models.Accounts;
 using ProSoft.EF.Models.Medical.Analysis;
@@ -10,15 +13,86 @@ using ProSoft.EF.Models.Stocks;
 using ProSoft.EF.Models.Stocks.StoredProcedure;
 using ProSoft.EF.Models.Treasury;
 using System.Reflection.Emit;
+using System.Security.Claims;
 
 namespace ProSoft.EF.DbContext
 {
     public class AppDbContext : IdentityDbContext<AppUser>
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly AuditScope _auditScope;
+        public AppDbContext(DbContextOptions<AppDbContext> options, AuditScope auditScope, IHttpContextAccessor httpContextAccessor) : base(options)
         {
+            _auditScope = auditScope;
+            _httpContextAccessor = httpContextAccessor;
+        }
+
+        public override int SaveChanges()
+        {
+            var auditEntries = OnBeforeSaveChanges();
+            var result = base.SaveChanges();
+            OnAfterSaveChanges(auditEntries);
+            return result;
+        }
+        private List<EntityEntry> OnBeforeSaveChanges()
+        {
+            return ChangeTracker.Entries().ToList();
+        }
+
+        private void OnAfterSaveChanges(List<EntityEntry> auditEntries)
+        {
+            foreach (var entry in auditEntries)
+            {
+                if (entry.Entity is AuditLog) continue;
+
+                var tableName = entry.Metadata.GetTableName();
+                var auditLog = new AuditLog();
+                auditLog.Id = Guid.NewGuid();
+                auditLog.AuditLogEventType = entry.State switch { 
+                EntityState.Added => AuditLogEventTypes.Added,
+                EntityState.Modified => AuditLogEventTypes.Modified,
+                EntityState.Detached => AuditLogEventTypes.Detached,
+                EntityState.Deleted => AuditLogEventTypes.Deleted,
+                EntityState.Unchanged => AuditLogEventTypes.Unchanged,
+                _ => AuditLogEventTypes.Unknown
+
+                };
+
+                auditLog.EntityId = entry.OriginalValues[entry.Metadata.FindPrimaryKey()!.Properties.First().Name]!.ToString();
+                auditLog.EntityName = tableName;
+                auditLog.UserName = _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Name);
+                auditLog.UserRole = _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Role) != null
+                    ? string.Join(",", _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Role))
+                    : null;
+
+                foreach (var property in entry.Properties)
+                {
+                    var columnName = property.Metadata.Name;
+                    var oldValue = property.OriginalValue?.ToString();
+                    var newValue = property.CurrentValue?.ToString();
+
+                    if (!Equals(oldValue, newValue))
+                    {
+                        var entityPropertyChange = new EntityPropertyChange
+                        {
+                            Id = Guid.NewGuid(),
+                            NewValue = newValue,
+                            OriginalValue = oldValue,
+                            PropertyName = columnName,
+                            PropertyTypeFullName = property.Metadata.ClrType.FullName,
+                            AuditLogId = auditLog.Id
+                        };
+
+                        auditLog.EntityPropertyChanges.Add(entityPropertyChange);
+                    }
+                }
+
+                _auditScope.Logs.Add(auditLog);
+            }
 
         }
+
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -42,7 +116,7 @@ namespace ProSoft.EF.DbContext
                .HasColumnName("USER_NAME");
 
             // ------------------ USER SIDE ------------------ //
-            
+
             builder.Entity<UserSide>()
                 .Property(u => u.UserId)
                 .HasColumnName("USER_CODE");
@@ -119,7 +193,7 @@ namespace ProSoft.EF.DbContext
                 //.Ignore(us => us.Branchs)
                 //.Ignore(us => us.EisSectionTypes)
                 .HasKey(us => new { us.UserId, us.SideId, us.RegionId, us.BranchId });
-          
+
             // ------------------ MAIN ITEM ------------------ //
 
             builder.Entity<MainItem>()
@@ -136,7 +210,7 @@ namespace ProSoft.EF.DbContext
                 .HasForeignKey(s => s.MainId)
 
                 .OnDelete(DeleteBehavior.NoAction);
-                
+
 
             // ------------------ STOCK BALANCE ------------------ //
 

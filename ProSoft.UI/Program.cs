@@ -34,6 +34,7 @@ using System.Text.Json.Serialization;
 using ProSoft.EF.IRepositories.Stocks.Reports;
 using ProSoft.Core.Repositories.Stocks.Reports;
 using ProSoft.UI.Areas.Accounts;
+using ProSoft.UI.MiddleWares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -89,6 +90,7 @@ builder.Services.ConfigureOptions<ConfigureSecurityStampOptions>();
 builder.Services.AddFastReport();
 // General Response Register
 
+builder.Services.AddScoped<AuditScope>();
 builder.Services.AddScoped<IGeneralResponse<StockEmpFlag>, GeneralResponse<StockEmpFlag>>();
 
 //Register for Interfaces
@@ -257,6 +259,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+//app.UseMiddleware<AuditLogMiddleware>();
 
 app.UseRouting();
 
