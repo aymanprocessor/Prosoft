@@ -1,0 +1,114 @@
+﻿@using ProSoft.UI.Global
+
+
+@{
+
+    ViewData["Title"] = "Referral Doctor Commissions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    
+}
+
+
+@inject IViewLocalizer localizer
+
+<div class="container pt-2 ">
+    <h1 class="text-center header">@localizer["Referral Doctor Commissions"]</h1>
+
+    <div class="d-flex justify-content-between align-items-center mt-4 ">
+
+
+        <a asp-controller="DrDiscount" asp-action="Add" class="btn btn-sm btn-primary fs-6">
+            @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add Doctor Commission"]
+        </a>
+    </div>
+
+    <div class="border rounded-2 border-dark mt-3 p-3">
+        <table id="DrDiscountTable" class="table table-hover table-bordered display">
+            <thead>
+                <tr>
+                    <th class="text-center" rowspan="2">@localizer["Doctor Code"]</th>
+                    <th class="text-center" rowspan="2">@localizer["Doctor Name"]</th>
+                    <th class="text-center" colspan="2" data-dt-order="disable">@localizer["Referral Doctor Commission"]</th>
+                    <th class="text-center" rowspan="2">@localizer["Discount For"]</th>
+                    <th class="text-center" rowspan="2">@localizer["Action"]</th>
+                </tr>
+                <tr>
+                    <th class="text-center">@localizer["Private"]</th>
+                    <th class="text-center">@localizer["Contract"]</th>
+
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+        
+            // Initialize DrDiscount Table
+            var DrDiscountTable = new DataTable("#DrDiscountTable", {
+                scroller: true,
+                searching: true,
+                paging: false,
+                select: {
+                    style: 'os',
+                    toggleable: false
+                },
+                layout: {
+                    topEnd: {
+                        search: {
+                            text: '_INPUT_',
+                            placeholder: '@localizer["Search"]'
+                        }
+                    }
+                },
+                language: {
+                    emptyTable: "@localizer["No Commissions"]"
+                },
+                columns: [
+                 
+                    { data: 'drId', searchable: true, className: 'text-center' },
+                    { data: 'doctorName', searchable: true },
+                    { data: 'drPercentage', searchable: true },
+                    { data: 'drPercentageContract', searchable: true },
+                    { 
+                        data: 'flagDisc',
+                        searchable: true,
+                        render: function (data, type, row) {
+                            if (data === 1) {
+                                return '@localizer["Patient"]';
+                            } else if (data === 2) {
+                                return '@localizer["Doctor"]';
+                            } else {
+                                return ''; // Default empty string for other values
+                            }
+                        }
+                     },
+                    {
+                        className: 'text-center',
+                        render: function (data, type, row) {
+                            const editBtn = `<a href="/Medical/DrDiscount/Edit/${row.id}" class="btn btn-warning me-1">@Html.Raw(GlobalConstants.EditIcon)</a>`;
+                            const deleteBtn = `
+                                                        <form action="/Medical/DrDiscount/Delete?id=${row.id}" method="POST" style="display: inline;">
+                                                    <button type="submit" class="btn btn-danger me-1">
+                                                         @Html.Raw(GlobalConstants.DeleteIcon)
+                                                    </button>
+                                                </form>`;
+                            return `${editBtn}${deleteBtn}`;
+                        }
+                    },
+                ],
+                ajax: {
+                    url: `/Medical/DrDiscount/GetDoctorCommissions`,
+                    type: "GET"
+                }
+            });
+
+        });
+    </script>
+}

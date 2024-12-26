@@ -1077,5 +1077,16 @@
   "Edit Bed": "Edit Bed",
   "No Degrees": "No Degrees",
   "No Rooms": "No Rooms",
-  "No Beds": "No Beds"
+  "No Beds": "No Beds",
+  "Referral Doctor Commissions": "Referral Doctor Commissions",
+  "Referral Doctor Commission": "Referral Doctor Commission",
+  "Add Doctor Commission": "Add Doctor Commission",
+  "Doctor Code": "Doctor Code",
+  "Discount For": "Discount For",
+  "No Commissions": "No Commissions",
+  "Doctor Commission": "Doctor Commission",
+  "Doctor Commission Contract": "Doctor Commission Contract",
+  "Doctor": "Doctor",
+  "Patient": "Patient"
+
 }

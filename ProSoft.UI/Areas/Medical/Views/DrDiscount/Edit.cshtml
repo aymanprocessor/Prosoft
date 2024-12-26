@@ -1,0 +1,63 @@
+﻿@using ProSoft.EF.DTOs.Stocks
+@model DrDiscountRequestDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "Edit Doctor Commission";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@inject IViewLocalizer localizer
+
+<div class="container pt-2">
+    <h1 class="mt-4">@localizer["Edit Doctor Commission"]</h1>
+    <form method="post" asp-action="Edit">
+        <div class="border p-3 mt-4">
+
+            <div asp-validation-summary="ModelOnly"></div>
+            <input type="hidden" asp-for="BranchId" />
+            <input type="hidden" asp-for="DrId" />
+
+
+            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+                <div class="mb-3">
+                    <label class="mb-3">@localizer["Doctor Name"]</label>
+                    <select asp-for="DrId" class="form-select" asp-items="@ViewBag.Doctors" disabled>
+                        <option value="">@localizer["Choosee"]</option>
+                    </select>
+                    <span asp-validation-for="DrId" class="text-danger"></span>
+                </div>
+                <div class="mb-3 ">
+                    <label class="mb-3">@localizer["Doctor Commission"]</label>
+                    <input type="number" asp-for="DrPercentage" class="form-control" />
+                    <span asp-validation-for="DrPercentage" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3 ">
+                    <label class="mb-3">@localizer["Doctor Commission Contract"]</label>
+                    <input type="number" asp-for="DrPercentageContract" class="form-control" />
+                    <span asp-validation-for="DrPercentageContract" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="mb-3">@localizer["Discount For"]</label>
+                    <select asp-for="FlagDisc" class="form-select">
+                        <option value="">@localizer["Choosee"]</option>
+                        <option value="1">@localizer["Patient"]</option>
+                        <option value="2">@localizer["Doctor"]</option>
+                    </select>
+                    <span asp-validation-for="FlagDisc" class="text-danger"></span>
+                </div>
+
+            </div>
+            <!------------------------------------------------------------------------------->
+            <div class="parent d-flex justify-content-md-center gap-2 ">
+                <button type="submit" class="btn btn-primary" style="width:150px">
+                    @localizer["Save"]
+                </button>
+                <a asp-controller="DrDiscount" asp-action="Index" class="btn btn-secondary" style="width:150px">
+                    @localizer["Cancel"]
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
