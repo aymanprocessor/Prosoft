@@ -21,32 +21,83 @@ namespace ProSoft.Core.Repositories
 
         public async Task<List<T>> GetAllAsync()
         {
-            return await _DbSet.ToListAsync();
+            try
+            {
+                return await _DbSet.ToListAsync();
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new RepositoryException($"Error retrieving all {typeof(T).Name}s.", ex);
+            }
         }
 
         public async Task<T> GetByIdAsync(Key id)
         {
-            return await _DbSet.FindAsync(id);
+            try
+            {
+                return await _DbSet.FindAsync(id);
+            }
+            catch (Exception ex)
+            {
+                throw new RepositoryException($"Error retrieving {typeof(T).Name} with ID {id}.", ex);
+            }
         }
 
         public async Task AddAsync(T entity)
         {
-            await _DbSet.AddAsync(entity);
+            try
+            {
+                await _DbSet.AddAsync(entity);
+            }
+            catch (Exception ex)
+            {
+                throw new RepositoryException($"Error adding new {typeof(T).Name}.", ex);
+            }
         }
 
         public async Task UpdateAsync(T entity)
         {
-            _DbSet.Update(entity);
+            try
+            {
+                _DbSet.Update(entity);
+            }
+            catch (Exception ex)
+            {
+                throw new RepositoryException($"Error updating {typeof(T).Name}.", ex);
+            }
         }
 
         public async Task DeleteAsync(T entity)
         {
-            _DbSet.Remove(entity);
+            try
+            {
+               
+                _DbSet.Remove(entity);
+            }
+            catch (Exception ex)
+            {
+               throw new RepositoryException($"Error deleting {typeof(T).Name}.", ex);
+            }
         }
 
         public async Task SaveChangesAsync()
         {
-            await _Context.SaveChangesAsync();
+            try
+            {
+                await _Context.SaveChangesAsync();
+            }
+            catch (DbUpdateException dbEx)
+            {
+               //_logger.LogError(dbEx, "An error occurred while updating the database.");
+                throw new RepositoryException("An error occurred while saving changes to the database.", dbEx);
+            }
+            catch (Exception ex)
+            {
+                //_logger.LogError(ex, "An unexpected error occurred while saving changes.");
+                throw new RepositoryException("An unexpected error occurred while saving changes.", ex);
+            }
         }
     }
 }

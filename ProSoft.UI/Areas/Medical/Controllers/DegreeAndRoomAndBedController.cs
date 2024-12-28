@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProSoft.Core.Repositories;
 using ProSoft.EF.DTOs.Medical.HospitalPatData;
 using ProSoft.EF.IRepositories.Medical.HospitalPatData;
 using ProSoft.EF.Models.Medical.HospitalPatData;
@@ -63,16 +64,31 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         [HttpGet]
         public async Task<IActionResult> EditDegree(int id)
         {
-            
             DegreeCode degreeCode = await _degreeCodeRepo.GetByIdAsync(id);
-            if(degreeCode == null)
+
+            if (degreeCode == null)
             {
-                return NotFound();
+                return BadRequest(new { success = false, message = "Degree ID mismatch" });
             }
-            DegreeRequestDTO degreeRequestDTO = _mapper.Map<DegreeRequestDTO>(degreeCode);
-            
-            ViewBag.DegreeName = degreeCode?.DegreeName;
-            return View(degreeRequestDTO);
+            try
+            {
+
+               
+                DegreeRequestDTO degreeRequestDTO = _mapper.Map<DegreeRequestDTO>(degreeCode);
+
+                ViewBag.DegreeName = degreeCode?.DegreeName;
+                return View(degreeRequestDTO);
+            }
+            catch (ServiceException serEx)
+            {
+                return StatusCode(500, new { success = false, message = serEx.Message });
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, new { success = false, message = "An unexpected error occurred." });
+            }
+           
 
         }
 
@@ -81,7 +97,7 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return BadRequest(new { success = false, message = "Invalid customer data.", errors = ModelState });
             }
 
             model.DegreeType = 100;
