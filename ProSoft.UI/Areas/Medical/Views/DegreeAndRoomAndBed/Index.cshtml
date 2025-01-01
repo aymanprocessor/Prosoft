@@ -88,8 +88,33 @@
     </div>
 </div>
 
+
+
 @section Scripts {
     <script>
+   
+
+    // Check for error message
+    @if (TempData["ErrorMessage"] != null)
+    {
+            <text>
+                    Toast.fire({
+                        icon: 'error',
+                    title: '@localizer[TempData["ErrorMessage"].ToString()]'
+                });
+            </text>
+    }
+
+    // Check for success message
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <text>
+        Toast.fire({
+            icon: 'success',
+            title: '@localizer[TempData["SuccessMessage"].ToString()]'
+        });
+        </text>
+    }
         $(document).ready(function () {
             const addRoomButton = $("#addRoomButton");
             const addBedButton = $("#addBedButton");
@@ -232,9 +257,9 @@
                     {
                         className: 'text-center',
                         render: function (data, type, row) {
-                            const editBtn = `<a href="/Medical/DegreeAndRoomAndBed/EditRoom/${row.id}" class="btn btn-warning me-1">@Html.Raw(GlobalConstants.EditIcon)</a>`;
+                            const editBtn = `<a href="/Medical/DegreeAndRoomAndBed/EditBed/${row.id}" class="btn btn-warning me-1">@Html.Raw(GlobalConstants.EditIcon)</a>`;
                             const deleteBtn = `
-                                <form action="/Medical/DegreeAndRoomAndBed/DeleteRoom/${row.id}" method="POST" style="display: inline;">
+                                <form action="/Medical/DegreeAndRoomAndBed/DeleteBed/${row.id}" method="POST" style="display: inline;">
                                     <button type="submit" class="btn btn-danger me-1">
         @Html.Raw(GlobalConstants.DeleteIcon)
                                     </button>

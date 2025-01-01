@@ -1089,6 +1089,15 @@
   "Doctor Commission": "نسبة الطبيب خاص",
   "Doctor Commission Contract": "نسبة الطبيب تعاقدات",
   "Doctor": "الطبيب",
-  "Patient": "المريض"
+  "Patient": "المريض",
+  "CannotDeleteDegreeWithRooms": "لا يمكن حذف الدرجة لأنها تحتوي على غرف مرتبطة بها",
+  "DegreeNotFound": "الدرجة غير موجودة",
+  "DeleteSuccess": "تم الحذف بنجاح",
+  "EditSuccess": "تم التعديل بنجاح",
+  "AddSuccess": "تم الاضافة بنجاح",
+  "UnexpectedError": "حدث خطأ غير متوقع",
+  "RoomNotFound": "الغرفة غير موجودة",
+  "RoomHasBeds": "لا يمكن حذف الغرفة لأنها تحتوي على أسرة مرتبطة بها",
+  "BedNotFound": "السرير غير موجود"
 
 }

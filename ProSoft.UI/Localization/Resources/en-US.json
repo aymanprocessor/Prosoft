@@ -1087,6 +1087,14 @@
   "Doctor Commission": "Doctor Commission",
   "Doctor Commission Contract": "Doctor Commission Contract",
   "Doctor": "Doctor",
-  "Patient": "Patient"
-
+  "Patient": "Patient",
+  "CannotDeleteDegreeWithRooms": "Cannot delete the degree because it has associated rooms",
+  "DegreeNotFound": "Degree not found",
+  "DeleteSuccess": "Deleted successfully",
+  "ModifySuccess": "Modified successfully",
+  "AddSuccess": "Added successfully",
+  "UnexpectedError": "An unexpected error occurred",
+  "RoomNotFound": "Room not found",
+  "RoomHasBeds": "Cannot delete the room because it has associated beds",
+  "BedNotFound": "Bed not found",
 }

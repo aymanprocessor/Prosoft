@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Localization;
 using ProSoft.Core.Repositories;
 using ProSoft.EF.DTOs.Medical.HospitalPatData;
 using ProSoft.EF.IRepositories.Medical.HospitalPatData;
@@ -18,6 +19,7 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         private readonly IBedCodeRepo _bedCodeRepo;
         private readonly ICurrentUserService _currentUserService;
         private readonly IMapper _mapper;
+        
 
         public DegreeAndRoomAndBedController(ICurrentUserService currentUserService, IDegreeCodeRepo degreeCodeRepo, IRoomCodeRepo roomCodeRepo, IBedCodeRepo bedCodeRepo, IMapper mapper)
         {
@@ -100,27 +102,72 @@ namespace ProSoft.UI.Areas.Medical.Controllers
                 return BadRequest(new { success = false, message = "Invalid customer data.", errors = ModelState });
             }
 
-            model.DegreeType = 100;
-            model.Branch = _currentUserService.BranchId;
+           
 
-            DegreeCode degreeCode = await _degreeCodeRepo.GetByIdAsync(id);
+            try
+            {
+                model.DegreeType = 100;
+                model.Branch = _currentUserService.BranchId;
 
-            _mapper.Map(model, degreeCode);
-            
-            await _degreeCodeRepo.UpdateAsync(degreeCode);
-            await _degreeCodeRepo.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+                DegreeCode degreeCode = await _degreeCodeRepo.GetByIdAsync(id);
 
+                _mapper.Map(model, degreeCode);
+
+                await _degreeCodeRepo.UpdateAsync(degreeCode);
+                await _degreeCodeRepo.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (ServiceException serEx)
+            {
+                TempData["ErrorMessage"] = serEx.Message;
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An unexpected error occurred.";
+                return View(model);
+                
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> DeleteDegree(int id)
         {
-            DegreeCode degreeCode = await _degreeCodeRepo.GetByIdAsync(id);
-            await _degreeCodeRepo.DeleteAsync(degreeCode);
-            await _degreeCodeRepo.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                DegreeCode degreeCode = await _degreeCodeRepo.GetByIdAsync(id);
+                if (degreeCode == null)
+                {
+                    TempData["ErrorMessage"] = "DegreeNotFound";
+                    return RedirectToAction(nameof(Index));
+                }
 
+                var hasRooms = (await _roomCodeRepo.GetRoomsByDegreeId(id)).Count()>0;
+                if (hasRooms)
+                {
+                   
+                        TempData["ErrorMessage"] = "CannotDeleteDegreeWithRooms";
+                        return RedirectToAction(nameof(Index));
+                    
+                }
+
+               
+                await _degreeCodeRepo.DeleteAsync(degreeCode);
+                await _degreeCodeRepo.SaveChangesAsync();
+
+                TempData["SuccessMessage"] = "DeleteSuccess";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (ServiceException serEx)
+            {
+                TempData["ErrorMessage"] = serEx.Message;
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "UnexpectedError";
+                return RedirectToAction(nameof(Index));
+            }
         }
 
 
@@ -215,11 +262,44 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteRoom(int id)
         {
-            RoomCode roomCode = await _roomCodeRepo.GetByIdAsync(id);
-            await _roomCodeRepo.DeleteAsync(roomCode);
-            await _roomCodeRepo.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                // Fetch the room by ID
+                RoomCode roomCode = await _roomCodeRepo.GetByIdAsync(id);
 
+                // Check if the room exists
+                if (roomCode == null)
+                {
+                    TempData["ErrorMessage"] ="RoomNotFound";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                var hasBeds = (await _bedCodeRepo.GetAllAsync()).Any(b => b.RoomCode == id);
+                if (hasBeds)
+                {
+                    TempData["ErrorMessage"] = "RoomHasBeds";
+                    return RedirectToAction(nameof(Index));
+                }
+                // Delete the room
+                await _roomCodeRepo.DeleteAsync(roomCode);
+                await _roomCodeRepo.SaveChangesAsync();
+
+                // Success message
+                TempData["SuccessMessage"] = "DeleteSuccess";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (ServiceException serEx)
+            {
+                TempData["ErrorMessage"] = serEx.Message;
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+              
+                // Error message
+                TempData["ErrorMessage"] = "UnexpectedError";
+                return RedirectToAction(nameof(Index));
+            }
         }
 
 
@@ -313,11 +393,40 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteBed(int id)
         {
-            BedCode bedCode = await _bedCodeRepo.GetByIdAsync(id);
-            await _bedCodeRepo.DeleteAsync(bedCode);
-            await _bedCodeRepo.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                // Fetch the bed by ID
+                BedCode bedCode = await _bedCodeRepo.GetByIdAsync(id);
 
+                // Check if the bed exists
+                if (bedCode == null)
+                {
+                    TempData["ErrorMessage"] = "BedNotFound";
+                    return RedirectToAction(nameof(Index));
+                }
+
+             
+
+                // Delete the bed
+                await _bedCodeRepo.DeleteAsync(bedCode);
+                await _bedCodeRepo.SaveChangesAsync();
+
+                // Success message
+                TempData["SuccessMessage"] = "DeleteSuccess";
+                return RedirectToAction(nameof(Index));
+            }
+            catch (ServiceException serEx)
+            {
+                TempData["ErrorMessage"] = serEx.Message;
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+           
+                // Error message
+                TempData["ErrorMessage"] = "UnexpectedError";
+                return RedirectToAction(nameof(Index));
+            }
         }
         [HttpGet]
         public async Task<IActionResult> GetBedsByDegreeIdAndRoomId(int degreeId, int roomId)
