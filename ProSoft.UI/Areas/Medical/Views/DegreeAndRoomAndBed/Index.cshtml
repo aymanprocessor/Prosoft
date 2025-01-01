@@ -92,234 +92,284 @@
 
 @section Scripts {
     <script>
-   
 
-    // Check for error message
-    @if (TempData["ErrorMessage"] != null)
-    {
+
+        // Check for error message
+        @if (TempData["ErrorMessage"] != null)
+        {
             <text>
-                    Toast.fire({
-                        icon: 'error',
-                    title: '@localizer[TempData["ErrorMessage"].ToString()]'
-                });
+                                                        Toast.fire({
+                                                            icon: 'error',
+                                                        title: '@localizer[TempData["ErrorMessage"].ToString()]'
+                                                    });
             </text>
-    }
+        }
 
-    // Check for success message
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <text>
-        Toast.fire({
-            icon: 'success',
-            title: '@localizer[TempData["SuccessMessage"].ToString()]'
-        });
-        </text>
-    }
-        $(document).ready(function () {
-            const addRoomButton = $("#addRoomButton");
-            const addBedButton = $("#addBedButton");
+        // Check for success message
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+                                            Toast.fire({
+                                                icon: 'success',
+                                                title: '@localizer[TempData["SuccessMessage"].ToString()]'
+                                            });
+            </text>
+        }
+            $(document).ready(function () {
+                const addRoomButton = $("#addRoomButton");
+                const addBedButton = $("#addBedButton");
 
-            // Initialize Degree Table
-            var DegreeTable = new DataTable("#DegreeTable", {
-                scroller: true,
-                searching: true,
-                paging: false,
-                select: {
-                    style: 'os',
-                    toggleable: false
-                },
-                layout: {
-                    topEnd: {
-                        search: {
-                            text: '_INPUT_',
-                            placeholder: '@localizer["Search"]'
-                        }
-                    }
-                },
-                language: {
-                    emptyTable: "@localizer["No Degrees"]"
-                },
-                columns: [
-                    {
-                        data: 'degreeOnOff',
-                        className: 'text-center',
-                        render: function (data, type, row) {
-                            const isChecked = data == 1 ? 'checked' : '';
-                            return `<input type="checkbox" data-toggle="switchbutton" data-onstyle="success" data-size="sm" ${isChecked} onchange="handleCheckboxChange(this, '${row.id}')">`;
+                // Initialize Degree Table
+                var DegreeTable = new DataTable("#DegreeTable", {
+                    scroller: true,
+                    searching: true,
+                    paging: false,
+                    stateSave: true,
+                    select: {
+                        style: 'os',
+                        toggleable: false
+                    },
+                    layout: {
+                        topEnd: {
+                            search: {
+                                text: '_INPUT_',
+                                placeholder: '@localizer["Search"]'
+                            }
                         }
                     },
-                    { data: 'id', searchable: true, className: 'text-center' },
-                    { data: 'degreeName', searchable: true },
-                    {
-                        className: 'text-center',
-                        render: function (data, type, row) {
-                            const editBtn = `<a href="/Medical/DegreeAndRoomAndBed/EditDegree/${row.id}" class="btn btn-warning me-1">@Html.Raw(GlobalConstants.EditIcon)</a>`;
-                            const deleteBtn = `
-                                <form action="/Medical/DegreeAndRoomAndBed/DeleteDegree/${row.id}" method="POST" style="display: inline;">
-                                    <button type="submit" class="btn btn-danger me-1">
+                    language: {
+                        emptyTable: "@localizer["No Degrees"]"
+                    },
+                    rowId:'id',
+                    columns: [
+                        {
+                            data: 'degreeOnOff',
+                            className: 'text-center',
+                            render: function (data, type, row) {
+                                const isChecked = data == 1 ? 'checked' : '';
+                                return `<input type="checkbox" data-toggle="switchbutton" data-onstyle="success" data-size="sm" ${isChecked} onchange="handleCheckboxChange(this, '${row.id}')">`;
+                            }
+                        },
+                        { data: 'id', searchable: true, className: 'text-center' },
+                        { data: 'degreeName', searchable: true },
+                        {
+                            className: 'text-center',
+                            render: function (data, type, row) {
+                                const editBtn = `<a href="/Medical/DegreeAndRoomAndBed/EditDegree/${row.id}" class="btn btn-warning me-1">@Html.Raw(GlobalConstants.EditIcon)</a>`;
+                                const deleteBtn = `
+                                    <form action="/Medical/DegreeAndRoomAndBed/DeleteDegree/${row.id}" method="POST" style="display: inline;">
+                                        <button type="submit" class="btn btn-danger me-1">
         @Html.Raw(GlobalConstants.DeleteIcon)
-                                    </button>
-                                </form>`;
-                            return `${editBtn}${deleteBtn}`;
-                        }
+                                        </button>
+                                    </form>`;
+                                return `${editBtn}${deleteBtn}`;
+                            }
+                        },
+                    ],
+                    ajax: {
+                        url: `/Medical/DegreeAndRoomAndBed/GetDegrees`,
+                        type: "GET"
                     },
-                ],
-                ajax: {
-                    url: `/Medical/DegreeAndRoomAndBed/GetDegrees`,
-                    type: "GET"
-                }
-            });
+                    initComplete:function(){
+                         const savedDegree = JSON.parse(localStorage.getItem("selectedDegree"));
+                if (savedDegree) {
+                 console.log("Saved Degree :",savedDegree);
+                 console.log("Saved Degree Rpows:",DegreeTable.rows());
 
-            // Initialize Room Table
-            var RoomTable = new DataTable("#RoomTable", {
-                scroller: true,
-                searching: true,
-                paging: false,
-                select: {
-                    style: 'os',
-                    toggleable: false
-                },
-                layout: {
-                    topEnd: {
-                        search: {
-                            text: '_INPUT_',
-                            placeholder: '@localizer["Search"]'
+                     DegreeTable.rows().every(function (rowIdx, tableLoop, rowLoop) {
+                        console.log("Saved Degree In");
+
+                        const rowData = this.data();
+                        console.log("Saved Degree into:",rowData);
+
+                        if (rowData.id === savedDegree.id) {
+                            console.log("Saved Degree condition:",this);
+
+                            this.select(); // Select the row
+                            fetchRoomData(savedDegree.id);
+                            enableRoomBtn(savedDegree.id);
+                            return false; // Exit the loop
                         }
+                     });
+                   
+                } 
+                initializeRoomTable();
                     }
-                },
-                language: {
-                    emptyTable: "@localizer["No Rooms"]"
-                },
-                columns: [
-                    {
-                        data: 'roomOnOff',
-                        className: 'text-center',
-                        render: function (data, type, row) {
-                            const isChecked = data == 1 ? 'checked' : '';
-                            return `<input type="checkbox" data-toggle="switchbutton" data-onstyle="success" data-size="sm" ${isChecked} onchange="handleCheckboxChangee(this, '${row.id}')">`;
+                });
+
+                function initializeRoomTable(){
+
+                // Initialize Room Table
+                var RoomTable = new DataTable("#RoomTable", {
+                    scroller: true,
+                    searching: true,
+                    paging: false,
+                    select: {
+                        style: 'os',
+                        toggleable: false
+                    },
+                    layout: {
+                        topEnd: {
+                            search: {
+                                text: '_INPUT_',
+                                placeholder: '@localizer["Search"]'
+                            }
                         }
                     },
-                    { data: 'id', searchable: true, className: 'text-center' },
-                    { data: 'patientPrice', searchable: true, className: 'text-center' },
-                    { data: 'relativetPrice', searchable: true, className: 'text-center' },
-                    {
-                        className: 'text-center',
-                        render: function (data, type, row) {
-                            const editBtn = `<a href="/Medical/DegreeAndRoomAndBed/EditRoom/${row.id}" class="btn btn-warning me-1">@Html.Raw(GlobalConstants.EditIcon)</a>`;
-                            const deleteBtn = `
-                                <form action="/Medical/DegreeAndRoomAndBed/DeleteRoom/${row.id}" method="POST" style="display: inline;">
-                                    <button type="submit" class="btn btn-danger me-1">
+                    language: {
+                        emptyTable: "@localizer["No Rooms"]"
+                    },
+                    columns: [
+                        {
+                            data: 'roomOnOff',
+                            className: 'text-center',
+                            render: function (data, type, row) {
+                                const isChecked = data == 1 ? 'checked' : '';
+                                return `<input type="checkbox" data-toggle="switchbutton" data-onstyle="success" data-size="sm" ${isChecked} onchange="handleCheckboxChangee(this, '${row.id}')">`;
+                            }
+                        },
+                        { data: 'id', searchable: true, className: 'text-center' },
+                        { data: 'patientPrice', searchable: true, className: 'text-center' },
+                        { data: 'relativetPrice', searchable: true, className: 'text-center' },
+                        {
+                            className: 'text-center',
+                            render: function (data, type, row) {
+                                const editBtn = `<a href="/Medical/DegreeAndRoomAndBed/EditRoom/${row.id}" class="btn btn-warning me-1">@Html.Raw(GlobalConstants.EditIcon)</a>`;
+                                const deleteBtn = `
+                                    <form action="/Medical/DegreeAndRoomAndBed/DeleteRoom/${row.id}" method="POST" style="display: inline;">
+                                        <button type="submit" class="btn btn-danger me-1">
         @Html.Raw(GlobalConstants.DeleteIcon)
-                                    </button>
-                                </form>`;
-                            return `${editBtn}${deleteBtn}`;
-                        }
-                    },
-                    { data: 'degreeCode', visible: false },
+                                        </button>
+                                    </form>`;
+                                return `${editBtn}${deleteBtn}`;
+                            }
+                        },
+                        { data: 'degreeCode', visible: false },
 
-                ]
-            });
+                    ],
+                    initComplete:function(){
 
-            // Initialize Bed Table
-            var BedTable = new DataTable("#BedTable", {
-                scroller: true,
-                searching: true,
-                paging: false,
-                select: {
-                    style: 'os',
-                    toggleable: false
-                },
-                layout: {
-                    topEnd: {
-                        search: {
-                            text: '_INPUT_',
-                            placeholder: '@localizer["Search"]'
-                        }
+                          const savedRoom = JSON.parse(localStorage.getItem("selectedRoom"));
+            if (savedRoom) {
+                RoomTable.rows().every(function () {
+                    const rowData = this.data();
+                    if (rowData.id === savedRoom.id) {
+                        this.select(); // Select the row
+                        fetchBedData(savedRoom.degreeCode, savedRoom.id);
+                    enableBedBtn(savedRoom.degreeCode,savedRoom.id);
+                        return false; // Exit the loop
                     }
-                },
-                language: {
-                    emptyTable: "@localizer["No Beds"]"
-                },
-                columns: [
-                    {
-                        data: 'bedOnOff',
-                        className: 'text-center',
-                        render: function (data, type, row) {
-                            const isChecked = data == 1 ? 'checked' : '';
-                            return `<input type="checkbox" data-toggle="switchbutton" data-onstyle="success" data-size="sm" ${isChecked} onchange="handleCheckboxChangee(this, '${row.id}')">`;
-                        }
-                    },
-                    { data: 'id', searchable: true, className: 'text-center' },
-                    { data: 'bedCodeSys', searchable: true, className: 'text-center' },
-                    { data: 'patientPrice', searchable: true, className: 'text-center' },
-                    { data: 'relativetPrice', searchable: true, className: 'text-center' },
-                    { data: 'bookId', searchable: true, className: 'text-center' },
-                    {
-                        className: 'text-center',
-                        render: function (data, type, row) {
-                            const editBtn = `<a href="/Medical/DegreeAndRoomAndBed/EditBed/${row.id}" class="btn btn-warning me-1">@Html.Raw(GlobalConstants.EditIcon)</a>`;
-                            const deleteBtn = `
-                                <form action="/Medical/DegreeAndRoomAndBed/DeleteBed/${row.id}" method="POST" style="display: inline;">
-                                    <button type="submit" class="btn btn-danger me-1">
-        @Html.Raw(GlobalConstants.DeleteIcon)
-                                    </button>
-                                </form>`;
-                            return `${editBtn}${deleteBtn}`;
-                        }
-                    },
-                ]
-            });
-
-            // Degree Table row select event
-            DegreeTable.on("select", function (e, dt, type, indexes) {
-                const rowData = DegreeTable.row(indexes).data();
-                const degreeId = rowData.id;
-                fetchRoomData(degreeId);
-
-                const roomDataCounts = RoomTable.rows().count();
-                console.log("Count : ", roomDataCounts);
-                
-                addBedButton.attr("disabled",'');
-                BedTable.clear().draw();
-
-                if (!rowData) {
-                    console.error("No row data found.");
-                    return;
-                }
-                addRoomButton.removeAttr("disabled").attr("href", `/Medical/DegreeAndRoomAndBed/AddRoom/${degreeId}`);
-                
-                
-                
-            });
-
-            // Room Table row select event
-            RoomTable.on("select", function (e, dt, type, indexes) { 
-                const rowData = dt.row(indexes).data();
-                const roomId = rowData.id;
-                const degreeId = rowData.degreeCode;
-                fetchBedData(degreeId, roomId);
-
-                const bedDataCounts = BedTable.rows().count();
-                console.log("Count : ", bedDataCounts);
-                if (!rowData ) {
-                    console.error("No row data found.");
-                    return;
-                }
-
-                // Assuming `degreeId` is part of room data
-                addBedButton.removeAttr("disabled").attr("href", `/Medical/DegreeAndRoomAndBed/AddBed/?degreeId=${degreeId}&roomId=${roomId}`);
-            });
-
-            // Fetch Room data based on degreeId
-            function fetchRoomData(degreeId) {
-                RoomTable.ajax.url(`/Medical/DegreeAndRoomAndBed/GetRoomsByDegreeId?degreeId=${degreeId}`).load();
+                });
             }
 
-            // Fetch Bed data based on degreeId and roomId
-            function fetchBedData(degreeId, roomId) {
-                BedTable.ajax.url(`/Medical/DegreeAndRoomAndBed/GetBedsByDegreeIdAndRoomId?degreeId=${degreeId}&roomId=${roomId}`).load();
-            }
-        });
+                    }
+                });
+
+                }
+                // Initialize Bed Table
+                var BedTable = new DataTable("#BedTable", {
+                    scroller: true,
+                    searching: true,
+                    paging: false,
+                    select: {
+                        style: 'os',
+                        toggleable: false
+                    },
+                    layout: {
+                        topEnd: {
+                            search: {
+                                text: '_INPUT_',
+                                placeholder: '@localizer["Search"]'
+                            }
+                        }
+                    },
+                    language: {
+                        emptyTable: "@localizer["No Beds"]"
+                    },
+                    columns: [
+                        {
+                            data: 'bedOnOff',
+                            className: 'text-center',
+                            render: function (data, type, row) {
+                                const isChecked = data == 1 ? 'checked' : '';
+                                return `<input type="checkbox" data-toggle="switchbutton" data-onstyle="success" data-size="sm" ${isChecked} onchange="handleCheckboxChangee(this, '${row.id}')">`;
+                            }
+                        },
+                        { data: 'id', searchable: true, className: 'text-center' },
+                        { data: 'bedCodeSys', searchable: true, className: 'text-center' },
+                        { data: 'patientPrice', searchable: true, className: 'text-center' },
+                        { data: 'relativetPrice', searchable: true, className: 'text-center' },
+                        { data: 'bookId', searchable: true, className: 'text-center' },
+                        {
+                            className: 'text-center',
+                            render: function (data, type, row) {
+                                const editBtn = `<a href="/Medical/DegreeAndRoomAndBed/EditBed/${row.id}" class="btn btn-warning me-1">@Html.Raw(GlobalConstants.EditIcon)</a>`;
+                                const deleteBtn = `
+                                    <form action="/Medical/DegreeAndRoomAndBed/DeleteBed/${row.id}" method="POST" style="display: inline;">
+                                        <button type="submit" class="btn btn-danger me-1">
+        @Html.Raw(GlobalConstants.DeleteIcon)
+                                        </button>
+                                    </form>`;
+                                return `${editBtn}${deleteBtn}`;
+                            }
+                        },
+                    ]
+                });
+
+                // Degree Table row select event
+                DegreeTable.on("select", function (e, dt, type, indexes) {
+                    const rowData = DegreeTable.row(indexes).data();
+                    localStorage.setItem("selectedDegree",JSON.stringify(rowData));
+                    const degreeId = rowData.id;
+                    fetchRoomData(degreeId);
+
+                    addBedButton.attr("disabled",'');
+                    BedTable.clear().draw();
+
+                    if (rowData) {
+                         enableRoomBtn(degreeId);
+                    }
+
+                });
+
+                // Room Table row select event
+                RoomTable.on("select", function (e, dt, type, indexes) {
+                    const rowData = dt.row(indexes).data();
+                    localStorage.setItem("selectedRoom",JSON.stringify(rowData));
+
+                    const roomId = rowData.id;
+                    const degreeId = rowData.degreeCode;
+
+                    fetchBedData(degreeId, roomId);
+
+                    if (rowData ) {
+                    enableBedBtn(degreeId,roomId);
+                    }
+
+
+
+                });
+
+
+
+
+
+                function enableRoomBtn(degreeId){
+                        addRoomButton.removeAttr("disabled").attr("href", `/Medical/DegreeAndRoomAndBed/AddRoom/${degreeId}`);
+                }
+                function enableBedBtn(degreeId,roomId){
+                        addBedButton.removeAttr("disabled").attr("href", `/Medical/DegreeAndRoomAndBed/AddBed/?degreeId=${degreeId}&roomId=${roomId}`);
+                }
+                // Fetch Room data based on degreeId
+                function fetchRoomData(degreeId) {
+                    RoomTable.ajax.url(`/Medical/DegreeAndRoomAndBed/GetRoomsByDegreeId?degreeId=${degreeId}`).load();
+                }
+
+                // Fetch Bed data based on degreeId and roomId
+                function fetchBedData(degreeId, roomId) {
+                    BedTable.ajax.url(`/Medical/DegreeAndRoomAndBed/GetBedsByDegreeIdAndRoomId?degreeId=${degreeId}&roomId=${roomId}`).load();
+                }
+            });
     </script>
 
 }

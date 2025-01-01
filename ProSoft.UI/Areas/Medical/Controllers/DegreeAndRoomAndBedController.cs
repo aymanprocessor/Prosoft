@@ -147,11 +147,10 @@ namespace ProSoft.UI.Areas.Medical.Controllers
                 {
                    
                         TempData["ErrorMessage"] = "CannotDeleteDegreeWithRooms";
-                        return RedirectToAction(nameof(Index));
-                    
+                    return RedirectToAction(nameof(Index));
                 }
 
-               
+
                 await _degreeCodeRepo.DeleteAsync(degreeCode);
                 await _degreeCodeRepo.SaveChangesAsync();
 

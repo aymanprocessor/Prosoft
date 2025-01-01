@@ -1,4 +1,5 @@
-﻿using ProSoft.Core.Enums;
+﻿
+using ProSoft.Core.Enums;
 
 public class AuditLog
 {

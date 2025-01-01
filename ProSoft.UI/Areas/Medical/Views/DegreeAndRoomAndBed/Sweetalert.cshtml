@@ -1,0 +1,29 @@
+﻿@inject IViewLocalizer localizer
+
+@section Scripts {
+    <script>
+   
+
+    // Check for error message
+    @if (TempData["ErrorMessage"] != null)
+    {
+            <text>
+                    Toast.fire({
+                        icon: 'error',
+                    title: '@localizer[TempData["ErrorMessage"].ToString()]'
+                });
+            </text>
+    }
+
+    // Check for success message
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <text>
+        Toast.fire({
+            icon: 'success',
+            title: '@localizer[TempData["SuccessMessage"].ToString()]'
+        });
+        </text>
+    }
+    </script>
+}
