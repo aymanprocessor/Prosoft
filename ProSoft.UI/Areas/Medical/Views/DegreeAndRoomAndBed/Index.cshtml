@@ -98,10 +98,10 @@
         @if (TempData["ErrorMessage"] != null)
         {
             <text>
-                                                        Toast.fire({
-                                                            icon: 'error',
-                                                        title: '@localizer[TempData["ErrorMessage"].ToString()]'
-                                                    });
+                                                                Toast.fire({
+                                                                    icon: 'error',
+                                                                title: '@localizer[TempData["ErrorMessage"].ToString()]'
+                                                            });
             </text>
         }
 
@@ -109,10 +109,10 @@
         @if (TempData["SuccessMessage"] != null)
         {
             <text>
-                                            Toast.fire({
-                                                icon: 'success',
-                                                title: '@localizer[TempData["SuccessMessage"].ToString()]'
-                                            });
+                                                    Toast.fire({
+                                                        icon: 'success',
+                                                        title: '@localizer[TempData["SuccessMessage"].ToString()]'
+                                                    });
             </text>
         }
             $(document).ready(function () {
@@ -191,13 +191,12 @@
                             return false; // Exit the loop
                         }
                      });
-                   
-                } 
-                initializeRoomTable();
+
+                }
+
                     }
                 });
 
-                function initializeRoomTable(){
 
                 // Initialize Room Table
                 var RoomTable = new DataTable("#RoomTable", {
@@ -249,23 +248,23 @@
                     ],
                     initComplete:function(){
 
-                          const savedRoom = JSON.parse(localStorage.getItem("selectedRoom"));
-            if (savedRoom) {
-                RoomTable.rows().every(function () {
-                    const rowData = this.data();
-                    if (rowData.id === savedRoom.id) {
-                        this.select(); // Select the row
-                        fetchBedData(savedRoom.degreeCode, savedRoom.id);
-                    enableBedBtn(savedRoom.degreeCode,savedRoom.id);
-                        return false; // Exit the loop
-                    }
-                });
-            }
+            //               const savedRoom = JSON.parse(localStorage.getItem("selectedRoom"));
+            // if (savedRoom) {
+            //     RoomTable.rows().every(function () {
+            //         const rowData = this.data();
+            //         if (rowData.id === savedRoom.id) {
+            //             this.select(); Select the row
+            //             fetchBedData(savedRoom.degreeCode, savedRoom.id);
+            //         enableBedBtn(savedRoom.degreeCode,savedRoom.id);
+            //             return false; Exit the loop
+            //         }
+            //     });
+            // }
 
                     }
-                });
+               });
 
-                }
+
                 // Initialize Bed Table
                 var BedTable = new DataTable("#BedTable", {
                     scroller: true,
@@ -299,7 +298,19 @@
                         { data: 'bedCodeSys', searchable: true, className: 'text-center' },
                         { data: 'patientPrice', searchable: true, className: 'text-center' },
                         { data: 'relativetPrice', searchable: true, className: 'text-center' },
-                        { data: 'bookId', searchable: true, className: 'text-center' },
+                        {
+                            data: 'bookId',
+                            searchable: true,
+                            className: 'text-center',
+                            render: function(data, type, row) {
+                                if (data === 0) {
+                                    return '@localizer["No"]';
+                                } else if (data === 1) {
+                                    return '@localizer["Yes"]';
+                                }
+                                return data; // Return the original data if it's neither 0 nor 1
+                            }
+                        },
                         {
                             className: 'text-center',
                             render: function (data, type, row) {
