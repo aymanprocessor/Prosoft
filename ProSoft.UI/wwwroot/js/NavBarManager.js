@@ -4,6 +4,14 @@
         if (this.navbarContainer.length === 0) {
             throw new Error('Invalid container element ID');
         }
+
+        // Add a click event listener to the document to handle clicks outside the submenu
+        $(document).on('click', (e) => {
+            if (!$(e.target).closest('.eis-dropdown').length) {
+                // Hide all submenus if the click is outside any dropdown
+                $('.eis-dropdown ul').css('display', 'none');
+            }
+        });
     }
 
     createNav(items) {
@@ -33,6 +41,8 @@
                     alignItems: 'center',
                     padding: '10px 15px',
                     marginBottom: '5px',
+                    marginLeft: '5px',
+                    marginRight: '5px',
                     height: '50px',
                     color: '#000',
                     textDecoration: 'none',
@@ -41,7 +51,7 @@
                 })
                 .hover(
                     function () {
-                        $(this).css({ background: 'rgba(0,0,0,0.7)', color: '#fff' });
+                        $(this).css({ background: '#00796b', color: '#fff' });
                     },
                     function () {
                         $(this).css({ background: 'none', color: '#000' });
@@ -56,24 +66,23 @@
 
                 const subUl = this.createMenu(item.subMenu)
                     .css({
-                    position: 'absolute',
-                    width: '250px',
-                    right: '250px',
-                    top: '0',
-                    display: 'none',
-                   // background: 'rgba(230,230,230,1)',
-                    boxShadow: '2px 2px 10px rgba(0,0,0,.1)'
-                });
+                        position: 'absolute',
+                        width: '250px',
+                        right: '260px',
+                        top: '0',
+                        display: 'none',
+                        background: '#f1fff5',
+                        boxShadow: '2px 2px 10px rgba(0,0,0,.1)',
+                        borderRadius: '10px'
+
+                    });
                 li.append(subUl);
 
-                li.hover(
-                    function () {
-                        subUl.css('display', 'block');
-                    },
-                    function () {
-                        subUl.css('display', 'none');
-                    }
-                );
+                // Toggle submenu on click
+                a.on('click', (e) => {
+                    e.preventDefault(); // Prevent default link behavior
+                    subUl.css('display', subUl.css('display') === 'none' ? 'block' : 'none');
+                });
             }
 
             li.append(a);
