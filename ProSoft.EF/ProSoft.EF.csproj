@@ -1,13 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
-
-
   <ItemGroup>
     <PackageReference Include="FastReport.OpenSource" Version="2025.1.0" />
     <PackageReference Include="FastReport.OpenSource.Web" Version="2025.1.0" />
@@ -27,14 +23,11 @@
     </PackageReference>
     <PackageReference Include="Oracle.EntityFrameworkCore" Version="8.23.60" />
   </ItemGroup>
-
   <ItemGroup>
+    <Folder Include="IRepositories/Medical/HospitalPatData/Reports/" />
     <Folder Include="Models\Medical\Analysis\" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Shared\ProSoft.Shared.csproj" />
-  </ItemGroup> 
-	
-
+  </ItemGroup>
 </Project>
