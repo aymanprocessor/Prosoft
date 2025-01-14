@@ -1098,6 +1098,15 @@
   "UnexpectedError": "حدث خطأ غير متوقع",
   "RoomNotFound": "الغرفة غير موجودة",
   "RoomHasBeds": "لا يمكن حذف الغرفة لأنها تحتوي على أسرة مرتبطة بها",
-  "BedNotFound": "السرير غير موجود"
-
+  "BedNotFound": "السرير غير موجود",
+  "ReceiptInquiry": "استعلام عن ايصال",
+  "Inquiries": "استعلامات",
+  "#": "م",
+  "Time": "الوقت",
+  "PatientCode": "كود المريض",
+  "PatientName": "اسم المريض",
+  "Side": "الجهة",
+  "ReceiptStatus":"حالة الايصال",
+  "NoReceipts":"لا يوجد ايصالات",
+  "Inquiry":"استعلم"
 }

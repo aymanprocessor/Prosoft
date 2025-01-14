@@ -673,14 +673,6 @@
   "Transaction No": "Transaction No",
   "Supplier / Customer": "Supplier/Customer",
   "Transaction": "Transaction",
-
-
-
-
-
-
-
-
   "Cost Name": "Cost Name",
   "Stocks System": "Stocks System",
   "Stocks Types": "Stocks Types",
@@ -1097,4 +1089,14 @@
   "RoomNotFound": "Room not found",
   "RoomHasBeds": "Cannot delete the room because it has associated beds",
   "BedNotFound": "Bed not found",
+  "Recepit Inquiry": "Recepit Inquiry",
+  "Inquiries": "Inquiries",
+  "#": "#",
+  "Time": "Time",
+  "PatientCode": "Patient Code",
+  "PatientName": "Patient Name",
+  "Side": "Side",
+  "ReceiptStatus":"Receipt Status",
+  "NoReceipts":"No Receipts",
+  "Inquiry":"Inquiry"
 }

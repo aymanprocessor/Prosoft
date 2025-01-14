@@ -1,0 +1,149 @@
+﻿@using ProSoft.UI.Global
+
+@inject IViewLocalizer localizer
+
+@{
+
+    ViewData["Title"] = "Recepit Inquiry";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container pt-2 ">
+    <h3 class="text-center mt-4">@localizer["ReceiptInquiry"]</h3>
+
+<div class="card card-kanban">
+  <div class="progress">
+    <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+  </div>
+  <div class="card-body">
+    <div class="dropdown card-options">
+      <button class="btn-options" type="button" id="..." data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="material-icons">more_vert</i>
+      </button>
+      <div class="dropdown-menu dropdown-menu-right">
+        ...
+      </div>
+    </div>
+    <div class="card-title">
+      <a href="#" data-toggle="modal" data-target="#task-modal"><h6>Task Title</h6></a>
+    </div>
+    <ul class="avatars">
+      ...
+    </ul>
+    <div class="card-meta d-flex justify-content-between">
+      <div class="d-flex align-items-center">
+        <i class="material-icons">playlist_add_check</i>
+        <span>-/-</span>
+      </div>
+      <span class="text-small">Due 2 days</span>
+    </div>
+  </div>
+</div>
+    <div class="row mt-4">
+        <div class="col-12 mb-2">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row g-3 row-cols-lg-auto align-items-center">
+
+                        <div class="col-6">
+                            <label class="col-form-label">رقم الايصال</label>
+                        </div>
+                        <div class="col-6">
+                            <input type="number" class="form-control" />
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">سنة الايصال :</label>
+                        </div>
+                        <div class="col-6">
+                            <input type="number" class="form-control text-center no-arrows" value="2024" disabled />
+                        </div>
+                          <div class="col-6">
+                            <button type="submit" class="btn btn-primary">@localizer["Inquiry"]</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <table id="ReceiptTable" class="table table-hover table-bordered display">
+                        <thead>
+                            <tr>
+                                <th class="text-center">@localizer["#"]</th>
+                                <th class="text-center">@localizer["Receipt"]</th>
+                                <th class="text-center">@localizer["Date"]</th>
+                                <th class="text-center">@localizer["Time"]</th>
+                                <th class="text-center">@localizer["PatientCode"]</th>
+                                <th class="text-center">@localizer["PatientName"]</th>
+                                <th class="text-center">@localizer["Side"]</th>
+                                <th class="text-center">@localizer["Clinic Service"]</th>
+                                <th class="text-center">@localizer["Data Entry"]</th>
+                                <th class="text-center">@localizer["Data Editor"]</th>
+                                <th class="text-center">@localizer["ReceiptStatus"]</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var DegreeTable = new DataTable("#ReceiptTable", {
+                scroller: true,
+                searching: true,
+                paging: false,
+                select: {
+                    style: 'os',
+                    toggleable: false
+                },
+                layout: {
+                    topEnd: {
+                        search: {
+                            text: '_INPUT_',
+                            placeholder: '@localizer["Search"]'
+                        }
+                    }
+                },
+                language: {
+                    emptyTable: "@localizer["NoReceipts"]"
+                },
+        @* columns: [
+                    {
+                        data: 'degreeOnOff',
+
+                    },
+                    { data: 'id', searchable: true, className: 'text-center' },
+                    { data: 'degreeName', searchable: true },
+                    {
+                        className: 'text-center',
+                        render: function (data, type, row) {
+                            const editBtn = `<a href="/Medical/DegreeAndRoomAndBed/EditDegree/${row.id}" class="btn btn-warning me-1">@Html.Raw(GlobalConstants.EditIcon)</a>`;
+                            const deleteBtn = `
+                                            <form action="/Medical/DegreeAndRoomAndBed/DeleteDegree/${row.id}" method="POST" style="display: inline;">
+                                                <button type="submit" class="btn btn-danger me-1">@Html.Raw(GlobalConstants.DeleteIcon)</button>
+                                            </form>`;
+                            return `${editBtn}${deleteBtn}`;
+                        }
+                    },
+                ], *@
+        @* ajax: {
+                    url: `/Medical/DegreeAndRoomAndBed/GetDegrees`,
+                    type: "GET"
+                }, *@
+
+                            });
+                        });
+    </script>
+}
