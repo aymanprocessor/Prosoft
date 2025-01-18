@@ -1,7 +1,8 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Our Modules";
-    Layout = "~/Views/Shared/_LayoutOurModules.cshtml";
+    @* Layout = "~/Views/Shared/_LayoutOurModules.cshtml"; *@
+    Layout = "~/Views/Shared/_KaiadminLayout.cshtml";
     var BranchName = User.Claims.FirstOrDefault(c => c.Type == "U_Branch_Name");
 }
 
