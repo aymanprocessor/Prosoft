@@ -1,5 +1,7 @@
-﻿@using ProSoft.UI.Global
+﻿@using ProSoft.EF.DTOs.Medical.HospitalPatData.Reports
+@using ProSoft.UI.Global
 
+@model ReceiptInquiryRequestDTO
 @inject IViewLocalizer localizer
 
 @{
@@ -11,36 +13,8 @@
 <div class="container pt-2 ">
     <h3 class="text-center mt-4">@localizer["ReceiptInquiry"]</h3>
 
-<div class="card card-kanban">
-  <div class="progress">
-    <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-  </div>
-  <div class="card-body">
-    <div class="dropdown card-options">
-      <button class="btn-options" type="button" id="..." data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="material-icons">more_vert</i>
-      </button>
-      <div class="dropdown-menu dropdown-menu-right">
-        ...
-      </div>
-    </div>
-    <div class="card-title">
-      <a href="#" data-toggle="modal" data-target="#task-modal"><h6>Task Title</h6></a>
-    </div>
-    <ul class="avatars">
-      ...
-    </ul>
-    <div class="card-meta d-flex justify-content-between">
-      <div class="d-flex align-items-center">
-        <i class="material-icons">playlist_add_check</i>
-        <span>-/-</span>
-      </div>
-      <span class="text-small">Due 2 days</span>
-    </div>
-  </div>
-</div>
     <div class="row mt-4">
-        <div class="col-12 mb-2">
+        <form asp-action="GetReceiptInquiry" class="col-12 mb-2">
             <div class="card">
                 <div class="card-body">
                     <div class="row g-3 row-cols-lg-auto align-items-center">
@@ -49,7 +23,7 @@
                             <label class="col-form-label">رقم الايصال</label>
                         </div>
                         <div class="col-6">
-                            <input type="number" class="form-control" />
+                            <input type="number" asp-for="ExInvoiceNo" class="form-control" />
                         </div>
                         <div class="col-6">
                             <label class="form-label">سنة الايصال :</label>
@@ -63,7 +37,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
         <div class="col-12">
             <div class="card">
                 <div class="card-body">

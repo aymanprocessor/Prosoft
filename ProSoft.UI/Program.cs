@@ -35,6 +35,7 @@ using ProSoft.EF.IRepositories.Stocks.Reports;
 using ProSoft.Core.Repositories.Stocks.Reports;
 using ProSoft.UI.Areas.Accounts;
 using ProSoft.UI.MiddleWares;
+using ProSoft.Core.Repositories.Medical.HospitalPatData.Reports;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -106,6 +107,7 @@ builder.Services.AddScoped<ISubRepo, SubRepo>();
 builder.Services.AddScoped<IItemAnalysisRepo, ItemAnalysisRepo>();
 /////////////////
 
+builder.Services.AddScoped<IReceiptInquiryRepo, ReceiptInquiryRepo>();
 builder.Services.AddScoped<IDrDiscountRepo, DrDiscountRepo>();
 builder.Services.AddScoped<IDegreeCodeRepo, DegreeCodeRepo>();
 builder.Services.AddScoped<IRoomCodeRepo, RoomCodeRepo>();
