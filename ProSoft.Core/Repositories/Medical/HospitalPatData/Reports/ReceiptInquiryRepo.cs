@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ProSoft.EF.DbContext;
 using ProSoft.EF.DTOs.Medical.HospitalPatData.Reports;
 using ProSoft.EF.IRepositories.Medical.HospitalPatData;
 using ProSoft.EF.Models.Medical.HospitalPatData;
@@ -10,17 +11,18 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData.Reports;
 
 public class ReceiptInquiryRepo : IReceiptInquiryRepo
 {
-    public IEnumerable<ReceiptInquiryReportDTO> GetReceiptInquiryReport(int arg_inv_n, int arg_year, int arg_br)
+    private readonly AppDbContext _context;
+    public ReceiptInquiryRepo( AppDbContext context)
     {
-        // Example data sources (replace with your actual data sources)
-        var clinicTransList = new List<ClinicTran>();
-        var patList = new List<Pat>();
-        var depositList = new List<Deposit>();
-        var patAdmissionList = new List<PatAdmission>();
+        _context = context;
+    }
+    public IEnumerable<ReceiptInquiryReportDTO> GetReceiptInquiryReport(int arg_inv_n, int arg_year, int arg_br)
+
+    { 
 
         // First query (clinic_trans and related tables)
-        var query1 = from ct in clinicTransList
-                     join p in patList
+        var query1 = from ct in _context.ClinicTrans
+                     join p in _context.Pats
                          on new { x1 = ct.PatId, x2 = ct.BranchId } equals new { x1 = (int?)p.PatId, x2 = (int?)p.BranchId } // Inner join
                      where ct.ExInvoiceNo == arg_inv_n && ct.ExYear == arg_year && ct.BranchId == arg_br
                      select new
@@ -41,10 +43,10 @@ public class ReceiptInquiryRepo : IReceiptInquiryRepo
                      };
 
         // Second query (DEPOSIT and related tables)
-        var query2 = from d in depositList
-                     join pa in patAdmissionList
+        var query2 = from d in _context.Deposits
+                     join pa in _context.PatAdmissions
                          on new { x1 = d.MasterId, x2 = d.FYear, x3 = d.BranchId, x4 = d.ExchangeType } equals new { x1 = (int?)pa.MasterId, x2 = (int?)pa.ExYear, x3 = (int?)pa.BranchId, x4 = (int?)pa.ExchangeType } // Inner join
-                     join p in patList
+                     join p in _context.Pats
                          on new { x1 = pa.PatId, x2 = pa.BranchId } equals new { x1 = (int?)p.PatId, x2 = (decimal?)p.BranchId } // Inner join
                      where d.SafeDocNo == arg_inv_n && d.FYear == arg_year && d.BranchId == arg_br
                      select new
@@ -64,8 +66,10 @@ public class ReceiptInquiryRepo : IReceiptInquiryRepo
                          Deal = (int?)pa.Deal
                      };
 
+        var query1List = query1.ToList();
+        var query2List = query2.ToList();
         // Combine both queries using UNION ALL
-        var finalResult = query1.Concat(query2).ToList();
+        var finalResult = query1List.Concat(query2List).ToList();
 
         // Convert the final result to the desired DTO
         var result = finalResult.Select(x => new ReceiptInquiryReportDTO

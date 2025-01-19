@@ -21,11 +21,13 @@ namespace ProSoft.UI.Areas.Medical.Controllers
 
         public IActionResult Index()
         {
+
             return View();
         }
         [HttpPost]
         public IActionResult GetReceiptInquiry(ReceiptInquiryRequestDTO model)
         {
+                ViewBag.FYear = _currentUserService.Year;
             if (!ModelState.IsValid)
             {
                 return View(model);
