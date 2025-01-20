@@ -33,7 +33,11 @@ namespace ProSoft.Core.Repositories.Stocks
 
         public Task<List<Stkbalance>> GetAllByStockId(int id)
         {
-            return _context.Stkbalances.AsSplitQuery().Include(s=>s.MainItem).Include(s=>s.SubItem).Include(s=>s.UnitCodee).Where(s => s.Stkcod == id).ToListAsync();
+            return _context.Stkbalances.AsSplitQuery()
+                .Include(s=>s.MainItem)
+                .Include(s=>s.SubItem)
+                .Include(s=>s.UnitCodee)
+                .Where(s => s.Stkcod == id).ToListAsync();
         }
     }
 }

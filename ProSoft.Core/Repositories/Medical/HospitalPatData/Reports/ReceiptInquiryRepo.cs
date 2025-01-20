@@ -6,6 +6,7 @@ using ProSoft.EF.DTOs.Medical.HospitalPatData.Reports;
 using ProSoft.EF.IRepositories.Medical.HospitalPatData;
 using ProSoft.EF.Models.Medical.HospitalPatData;
 using ProSoft.EF.Models.Stocks;
+using ProSoft.UI.Global;
 
 namespace ProSoft.Core.Repositories.Medical.HospitalPatData.Reports;
 
@@ -22,6 +23,8 @@ public class ReceiptInquiryRepo : IReceiptInquiryRepo
 
         // First query (clinic_trans and related tables)
         var query1 = from ct in _context.ClinicTrans
+                     join sc in _context.ServiceClinics
+                     on new { x1 = ct.ServId } equals new {x1 = (int?)sc.ServId }
                      join p in _context.Pats
                          on new { x1 = ct.PatId, x2 = ct.BranchId } equals new { x1 = (int?)p.PatId, x2 = (int?)p.BranchId } // Inner join
                      where ct.ExInvoiceNo == arg_inv_n && ct.ExYear == arg_year && ct.BranchId == arg_br
@@ -35,6 +38,7 @@ public class ReceiptInquiryRepo : IReceiptInquiryRepo
                          ct.UserCodeModify,
                          ct.UserCodeCreate,
                          CheckIdCancel = (int?)ct.CheckIdCancel,
+                         sc.ServDesc,
                          Flag = (int?)ct.Flag,
                          ct.PatAdDate,
                          ct.PatId,
@@ -59,6 +63,7 @@ public class ReceiptInquiryRepo : IReceiptInquiryRepo
                          UserCodeModify = d.UserCode,
                          UserCodeCreate = d.UserCode,
                          CheckIdCancel = (int?)1,
+                         ServDesc = "",
                          Flag = (int?)1,
                          PatAdDate = d.DpsDate,
                          pa.PatId,
@@ -75,12 +80,14 @@ public class ReceiptInquiryRepo : IReceiptInquiryRepo
         var result = finalResult.Select(x => new ReceiptInquiryReportDTO
         {
             
-            ExDate = x.ExDate,
+            ExDate = x.ExDate.Value.ToString(GlobalConstants.FormatDate),
+            ExTime = x.ExDate.Value.ToString(GlobalConstants.FormatTime),
             ItmServFlag= x.ITM_SERV_FLAG,
             ExInvoiceNo = x.ExInvoiceNo,
             UserCodeModify = x.UserCodeModify,
             UserCodeCreate = x.UserCodeCreate,
             PatId = x.PatId,
+            ServiceDesc = x.ServDesc,
             PatName = x.PatName,
             Deal = x.Deal
 
