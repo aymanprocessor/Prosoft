@@ -21,16 +21,20 @@ namespace ProSoft.UI.Areas.Medical.Controllers
 
         public IActionResult Index()
         {
+            ViewBag.FYear = _currentUserService.Year;
+
             return View();
         }
+
         [HttpPost]
-        public IActionResult GetReceiptInquiry(ReceiptInquiryRequestDTO model)
+        public IActionResult Index(ReceiptInquiryRequestDTO model)
         {
+            ViewBag.FYear = _currentUserService.Year;
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            var table =  _receiptInquiryRepo.GetReceiptInquiryReport(model.ExInvoiceNo, _currentUserService.Year, _currentUserService.BranchId);
+            var table =  _receiptInquiryRepo.GetReceiptInquiryReport(model.ExInvoiceNo, _currentUserService.Year, _currentUserService.BranchId).ToList();
             WebReport webReport = new();
             webReport.Report.Load(Path.Combine(Environment.CurrentDirectory, "Reports\\Medical\\ReceiptInquiry.frx"));
 
@@ -39,7 +43,7 @@ namespace ProSoft.UI.Areas.Medical.Controllers
             webReport.Report.Prepare();
 
             ViewBag.WebReport = webReport;
-            return View(model);
+            return View();
         }
     }
 }

@@ -37,8 +37,8 @@ namespace ProSoft.Core.Repositories.Stocks.Reports
                     generalCode => generalCode.UniqueType,
                     (transDtl, generalCode) => new { transDtl, generalCode })
                 .Join(_context.SubItems,
-                    combined => new {X1= combined.transDtl.MainCode, X2=combined.transDtl.ItemMaster },
-                    subItem => new { X1=subItem.MainCode,X2= subItem.ItemCode },
+                    combined => new {x1 =  combined.transDtl.MainCode, x2 = combined.transDtl.ItemMaster },
+                    subItem => new { x1=subItem.MainCode,x2= subItem.ItemCode },
                     (combined, subItem) => new { combined.transDtl, combined.generalCode, subItem })
                 .Join(_context.UnitCodes,
                     combined => combined.transDtl.UnitCode,

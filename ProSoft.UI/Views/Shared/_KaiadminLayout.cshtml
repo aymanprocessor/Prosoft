@@ -32,24 +32,20 @@
 </head>
 <body>
     <div class="wrapper">
-       
-    @Html.Partial("_Sidebar")
-    <div class="main-panel">
-        @Html.Partial("_NavBar")
-    
-              
 
+        @Html.Partial("_Sidebar")
+        <div class="main-panel">
+            @Html.Partial("_NavBar")
+            <div class="container">
+                <div class="page-inner">
 
-        <div class="container">
-            <div class="page-inner">
-             
-                <div class="page-category">
+                    <div class="page-category">
 
- @RenderBody()
+                        @RenderBody()
+                    </div>
                 </div>
             </div>
         </div>
- </div>   
         <footer class="footer">
             <div class="container-fluid">
                 <nav class="pull-left">
@@ -139,6 +135,6 @@
 
     <!-- Kaiadmin JS -->
     <script src="~/js/kaiadmin.min.js"></script>
-       @await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
