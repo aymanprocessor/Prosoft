@@ -20,9 +20,11 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData.Reports
         public decimal? DiscountValue { get; set; }
         public decimal? CompanyValue { get; set; }
         public string? DoctorName { get; set; }
+        public string? DoctorSendName { get; set; }
         public string? Note { get; set; }
         public int? KnowUsFrom { get; set; }
         public string? UserName { get; set; }
+        public string? SendFrom { get; set; }
 
 
 

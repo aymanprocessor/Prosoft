@@ -24,7 +24,6 @@
     <PackageReference Include="Oracle.EntityFrameworkCore" Version="8.23.60" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="IRepositories/Medical/HospitalPatData/Reports/" />
     <Folder Include="Models\Medical\Analysis\" />
   </ItemGroup>
   <ItemGroup>

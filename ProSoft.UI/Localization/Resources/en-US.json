@@ -1096,7 +1096,8 @@
   "PatientCode": "Patient Code",
   "PatientName": "Patient Name",
   "Side": "Side",
-  "ReceiptStatus":"Receipt Status",
-  "NoReceipts":"No Receipts",
-  "Inquiry":"Inquiry"
+  "ReceiptStatus": "Receipt Status",
+  "NoReceipts": "No Receipts",
+  "Inquiry": "Inquiry",
+  "DoctorsAppointmentsInquiry": "Doctors Appointments Inquiry"
 }

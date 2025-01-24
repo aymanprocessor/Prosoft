@@ -430,7 +430,7 @@
   "To Period": "الي الفترة",
   "Treasury Transaction During Period from": "حركة الخزينة خلال الفترة من",
   "Treasury Transaction For Receipt from": "حركة الخزينة للايصالات من",
-  "To": "الي",
+  "To": "الى",
   "Permission No": "رقم الاذن",
   "Name": "الاسم",
   "Treasury Order": "امر الخزينة",
@@ -1106,7 +1106,8 @@
   "PatientCode": "كود المريض",
   "PatientName": "اسم المريض",
   "Side": "الجهة",
-  "ReceiptStatus":"حالة الايصال",
-  "NoReceipts":"لا يوجد ايصالات",
-  "Inquiry":"استعلم"
+  "ReceiptStatus": "حالة الايصال",
+  "NoReceipts": "لا يوجد ايصالات",
+  "Inquiry": "استعلم",
+  "DoctorsAppointmentsInquiry": "استعلام عن حجوزات لدى الطبيب",
 }

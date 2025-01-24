@@ -40,88 +40,14 @@
                     </div>
                 </div>
             </div>
-        </form>@if (webReport != null)
-                    {
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <table id="ReceiptTable" class="table table-hover table-bordered display">
-                        <thead>
-                            <tr>
-                                <th class="text-center">@localizer["#"]</th>
-                                <th class="text-center">@localizer["Receipt"]</th>
-                                <th class="text-center">@localizer["Date"]</th>
-                                <th class="text-center">@localizer["Time"]</th>
-                                <th class="text-center">@localizer["PatientCode"]</th>
-                                <th class="text-center">@localizer["PatientName"]</th>
-                                <th class="text-center">@localizer["Side"]</th>
-                                <th class="text-center">@localizer["Clinic Service"]</th>
-                                <th class="text-center">@localizer["Data Entry"]</th>
-                                <th class="text-center">@localizer["Data Editor"]</th>
-                                <th class="text-center">@localizer["ReceiptStatus"]</th>
-                            </tr>
-                        </thead>
+        </form>
+        @if (webReport != null)
+        {
 
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="webreport text-center">
+                @await webReport.Render()
             </div>
-        </div>
+        }
     </div>
-
-
-
-
 </div>
 
-@section Scripts {
-    <script>
-        $(document).ready(function () {
-            var DegreeTable = new DataTable("#ReceiptTable", {
-                scroller: true,
-                searching: true,
-                paging: false,
-                select: {
-                    style: 'os',
-                    toggleable: false
-                },
-                layout: {
-                    topEnd: {
-                        search: {
-                            text: '_INPUT_',
-                            placeholder: '@localizer["Search"]'
-                        }
-                    }
-                },
-                language: {
-                    emptyTable: "@localizer["NoReceipts"]"
-                },
-        @* columns: [
-                    {
-                        data: 'degreeOnOff',
-
-                    },
-                    { data: 'id', searchable: true, className: 'text-center' },
-                    { data: 'degreeName', searchable: true },
-                    {
-                        className: 'text-center',
-                        render: function (data, type, row) {
-                            const editBtn = `<a href="/Medical/DegreeAndRoomAndBed/EditDegree/${row.id}" class="btn btn-warning me-1">@Html.Raw(GlobalConstants.EditIcon)</a>`;
-                            const deleteBtn = `
-                                            <form action="/Medical/DegreeAndRoomAndBed/DeleteDegree/${row.id}" method="POST" style="display: inline;">
-                                                <button type="submit" class="btn btn-danger me-1">@Html.Raw(GlobalConstants.DeleteIcon)</button>
-                                            </form>`;
-                            return `${editBtn}${deleteBtn}`;
-                        }
-                    },
-                ], *@
-        @* ajax: {
-                    url: `/Medical/DegreeAndRoomAndBed/GetDegrees`,
-                    type: "GET"
-                }, *@
-
-                            });
-                        });
-    </script>
-}

@@ -10,9 +10,9 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData.Reports
     {
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
-        public string DoctorName { get; set; } = string.Empty;
+        public int DoctorId { get; set; }
         
-        public string SearchText { get; set; } = string.Empty;
+        public string? SearchText { get; set; } = string.Empty;
 
     }
 

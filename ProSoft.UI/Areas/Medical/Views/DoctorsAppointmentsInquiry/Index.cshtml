@@ -1,69 +1,60 @@
-﻿@using ProSoft.EF.DTOs.Medical.HospitalPatData.Reports
+﻿@using FastReport.Web
+@using ProSoft.EF.DTOs.Medical.HospitalPatData.Reports
 @using ProSoft.UI.Global
 
-@model ReceiptInquiryRequestDTO
+@model DoctorsAppointmentsInquiryRequestDTO
 @inject IViewLocalizer localizer
 
 @{
 
-    ViewData["Title"] = "Recepit Inquiry";
+    ViewData["Title"] = "Doctor's Appointments Inquiry";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    WebReport webReport = ViewBag.WebReport;
 }
 
 <div class="container pt-2 ">
-    <h3 class="text-center mt-4">@localizer["ReceiptInquiry"]</h3>
+    <h3 class="text-center mt-4">@localizer["DoctorsAppointmentsInquiry"]</h3>
 
     <div class="row mt-4">
-        <form asp-action="GetReceiptInquiry" class="col-12 mb-2">
+        <form asp-action="Index" class="col-12 mb-2">
             <div class="card">
                 <div class="card-body">
                     <div class="row g-3 row-cols-lg-auto align-items-center">
 
-                        <div class="col-6">
-                            <label class="col-form-label">رقم الايصال</label>
+                        <div class="col-12">
+                            <label class="col-form-label">@localizer["From"]</label>
                         </div>
-                        <div class="col-6">
-                            <input type="number" asp-for="ExInvoiceNo" class="form-control" />
+                        <div class="col-12">
+                            <input type="date" asp-for="@Model.FromDate" value="@(DateTime.Now.ToString("yyyy-MM-dd"))" class="form-control" />
                         </div>
-                        <div class="col-6">
-                            <label class="form-label">سنة الايصال :</label>
+                        <div class="col-12">
+                            <label class="col-form-label">@localizer["To"]</label>
                         </div>
-                        <div class="col-6">
-                            <input type="number" class="form-control text-center no-arrows" value="2024" disabled />
+                        <div class="col-12">
+                            <input type="date" asp-for="@Model.ToDate" value="@(DateTime.Now.ToString("yyyy-MM-dd"))" class="form-control" />
                         </div>
-                        <div class="col-6">
+                        <div class="col-12">
+                            <label class="col-form-label">@localizer["Doctor"]</label>
+                        </div>
+                        <div class="col-12">
+                           <select asp-for="@Model.DoctorId" class="form-select text-center" asp-items="ViewBag.Doctors">
+                               <option value="">@localizer["Choosee"]</option>
+                           </select>
+                        </div>
+                        <div class="col-12">
                             <button type="submit" class="btn btn-primary">@localizer["Inquiry"]</button>
                         </div>
                     </div>
                 </div>
             </div>
         </form>
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <table id="ReceiptTable" class="table table-hover table-bordered display">
-                        <thead>
-                            <tr>
-                                <th class="text-center">@localizer["#"]</th>
-                                <th class="text-center">@localizer["Receipt"]</th>
-                                <th class="text-center">@localizer["Date"]</th>
-                                <th class="text-center">@localizer["Time"]</th>
-                                <th class="text-center">@localizer["PatientCode"]</th>
-                                <th class="text-center">@localizer["PatientName"]</th>
-                                <th class="text-center">@localizer["Side"]</th>
-                                <th class="text-center">@localizer["Clinic Service"]</th>
-                                <th class="text-center">@localizer["Data Entry"]</th>
-                                <th class="text-center">@localizer["Data Editor"]</th>
-                                <th class="text-center">@localizer["ReceiptStatus"]</th>
-                            </tr>
-                        </thead>
+        @if (webReport != null)
+        {
 
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="webreport text-center">
+                @await webReport.Render()
             </div>
-        </div>
+        }
     </div>
 </div>
 

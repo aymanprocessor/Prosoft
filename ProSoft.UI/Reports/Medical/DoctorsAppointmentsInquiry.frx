@@ -1,16 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="01/14/2025 11:35:21" ReportInfo.Modified="01/23/2025 17:02:21" ReportInfo.CreatorVersion="2025.1.0.0">
-  <Dictionary/>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="01/14/2025 11:35:21" ReportInfo.Modified="01/24/2025 23:55:28" ReportInfo.CreatorVersion="2025.1.0.0">
+  <Dictionary>
+    <BusinessObjectDataSource Name="table" ReferenceName="Table" DataType="System.Int32" Enabled="true">
+      <Column Name="Date" DataType="System.String"/>
+      <Column Name="Time" DataType="System.String"/>
+      <Column Name="PatId" DataType="System.Int32"/>
+      <Column Name="PatName" DataType="System.String"/>
+      <Column Name="PatMobile" DataType="System.String"/>
+      <Column Name="CompanyName" DataType="System.Int32"/>
+      <Column Name="ServiceName" DataType="System.String"/>
+      <Column Name="ServiceValue" DataType="System.Decimal"/>
+      <Column Name="PatientValue" DataType="System.Decimal"/>
+      <Column Name="DiscountValue" DataType="System.Decimal"/>
+      <Column Name="CompanyValue" DataType="System.Decimal"/>
+      <Column Name="DoctorName" DataType="System.String"/>
+      <Column Name="DoctorSendName" DataType="System.String"/>
+      <Column Name="Note" DataType="System.String"/>
+      <Column Name="KnowUsFrom" DataType="System.Int32"/>
+      <Column Name="UserName" DataType="System.String"/>
+      <Column Name="SendFrom" DataType="System.String"/>
+    </BusinessObjectDataSource>
+    <Parameter Name="DrName" DataType="System.String" AsString=""/>
+    <Parameter Name="FromDate" DataType="System.String" AsString=""/>
+    <Parameter Name="ToDate" DataType="System.String" AsString=""/>
+  </Dictionary>
   <ReportPage Name="Page1" Landscape="true" PaperWidth="297" PaperHeight="210" RawPaperSize="9" Watermark.Font="Arial, 60pt" LastPageSource="15" FirstPageSource="15">
     <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="37.8" Guides="37.8">
       <TextObject Name="Text1" Width="1048.95" Height="37.8" Text="تاريخ الطباعة : [Date]" HorzAlign="Right" VertAlign="Center" RightToLeft="true" Font="Arial, 10pt, style=Bold"/>
     </ReportTitleBand>
-    <ColumnHeaderBand Name="ColumnHeader1" Top="41.8" Width="1047.06" Height="141.75" Border.Lines="All">
-      <TextObject Name="Text2" Width="1048.95" Height="37.8" Text="كشوفات د/ احمد سعد" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Arial, 14pt, style=Bold"/>
-      <TextObject Name="Text5" Top="37.8" Width="1048.95" Height="37.8" Text="من 1-1-2025 الى 25-1-2025&#13;&#10;" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Arial, 14pt, style=Bold"/>
+    <ColumnHeaderBand Name="ColumnHeader1" Top="41.8" Width="1047.06" Height="151.2">
+      <TextObject Name="Text2" Width="1048.95" Height="37.8" Text="كشوفات [DrName]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Arial, 14pt, style=Bold"/>
+      <TextObject Name="Text5" Top="37.8" Width="1048.95" Height="37.8" Text="من [FromDate] الى [ToDate]&#13;&#10;" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Arial, 14pt, style=Bold"/>
       <TableObject Name="Table1" Top="94.5" Width="1046.37" Height="47.24">
         <TableColumn Name="Column1" Width="79.59"/>
-        <TableColumn Name="Column27" Width="70.88"/>
+        <TableColumn Name="Column27" Width="51.98"/>
         <TableColumn Name="Column26" Width="70.88"/>
         <TableColumn Name="Column25" Width="70.88"/>
         <TableColumn Name="Column24" Width="70.88"/>
@@ -20,7 +43,7 @@
         <TableColumn Name="Column2" Width="79.59"/>
         <TableColumn Name="Column3" Width="79.59"/>
         <TableColumn Name="Column4" Width="126.84"/>
-        <TableColumn Name="Column7" Width="79.59"/>
+        <TableColumn Name="Column7" Width="98.49"/>
         <TableColumn Name="Column19" Width="76.13"/>
         <TableColumn Name="Column22" Width="28.88"/>
         <TableRow Name="Row1" Height="23.62">
@@ -57,12 +80,12 @@
         </TableRow>
       </TableObject>
     </ColumnHeaderBand>
-    <GroupHeaderBand Name="GroupHeader1" Top="187.55" Width="1047.06" Height="37.8">
-      <TextObject Name="Text6" Width="1048.95" Height="37.8" Fill.Color="PowderBlue" Text="القسم : عيادات خارجية" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Arial, 10pt, style=Bold"/>
-      <DataBand Name="Data1" Top="229.35" Width="1047.06" Height="47.25">
+    <GroupHeaderBand Name="GroupHeader1" Top="197" Width="1047.06" Height="47.25" Condition="[table.SendFrom]">
+      <TextObject Name="Text6" Width="1048.95" Height="37.8" Border.Lines="All" Fill.Color="PowderBlue" Text="القسم : [table.SendFrom]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Arial, 10pt, style=Bold"/>
+      <DataBand Name="Data1" Top="248.25" Width="1047.06" Height="47.25" DataSource="table">
         <TableObject Name="Table2" Width="1046.37" Height="47.24">
           <TableColumn Name="Column12" Width="79.59"/>
-          <TableColumn Name="Column32" Width="70.88"/>
+          <TableColumn Name="Column32" Width="51.98"/>
           <TableColumn Name="Column31" Width="70.88"/>
           <TableColumn Name="Column30" Width="70.88"/>
           <TableColumn Name="Column29" Width="70.88"/>
@@ -72,45 +95,45 @@
           <TableColumn Name="Column13" Width="79.59"/>
           <TableColumn Name="Column14" Width="79.59"/>
           <TableColumn Name="Column15" Width="126.84"/>
-          <TableColumn Name="Column18" Width="79.59"/>
+          <TableColumn Name="Column18" Width="98.49"/>
           <TableColumn Name="Column20" Width="76.13"/>
           <TableColumn Name="Column21" Width="28.88"/>
           <TableRow Name="Row2" Height="23.62">
-            <TableCell Name="Cell12" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" RowSpan="2"/>
-            <TableCell Name="Cell32" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" RowSpan="2"/>
-            <TableCell Name="Cell31" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" RowSpan="2"/>
-            <TableCell Name="Cell30" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" RowSpan="2"/>
-            <TableCell Name="Cell29" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" RowSpan="2"/>
-            <TableCell Name="Cell28" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" RowSpan="2"/>
-            <TableCell Name="Cell37" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
-            <TableCell Name="Cell36" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" RowSpan="2"/>
-            <TableCell Name="Cell13" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" RowSpan="2"/>
-            <TableCell Name="Cell14" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" RowSpan="2"/>
-            <TableCell Name="Cell15" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" RowSpan="2"/>
-            <TableCell Name="Cell18" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
-            <TableCell Name="Cell20" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" RowSpan="2"/>
-            <TableCell Name="Cell21" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" RowSpan="2"/>
+            <TableCell Name="Cell12" Border.Lines="All" Text="[table.UserName]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" RowSpan="2"/>
+            <TableCell Name="Cell32" Border.Lines="All" Text="[table.KnowUsFrom]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" RowSpan="2"/>
+            <TableCell Name="Cell31" Border.Lines="All" Text="[table.Note]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" RowSpan="2"/>
+            <TableCell Name="Cell30" Border.Lines="All" Text="[table.DoctorSendName]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" RowSpan="2"/>
+            <TableCell Name="Cell29" Border.Lines="All" Text="[table.CompanyValue]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" RowSpan="2"/>
+            <TableCell Name="Cell28" Border.Lines="All" Text="[table.PatientValue]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" RowSpan="2"/>
+            <TableCell Name="Cell37" Border.Lines="All" Text="[table.ServiceValue]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+            <TableCell Name="Cell36" Border.Lines="All" Text="[table.Time]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" RowSpan="2"/>
+            <TableCell Name="Cell13" Border.Lines="All" Text="[table.ServiceName]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" RowSpan="2"/>
+            <TableCell Name="Cell14" Border.Lines="All" Text="[table.CompanyName]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" RowSpan="2"/>
+            <TableCell Name="Cell15" Border.Lines="All" Text="[table.PatName]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" RowSpan="2"/>
+            <TableCell Name="Cell18" Border.Lines="All" Text="[table.PatId]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+            <TableCell Name="Cell20" Border.Lines="All" Text="[table.Date]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" RowSpan="2"/>
+            <TableCell Name="Cell21" Border.Lines="All" Text="[Row#]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold" RowSpan="2"/>
           </TableRow>
           <TableRow Name="Row4" Height="23.62">
-            <TableCell Name="Cell52" Font="Arial, 10pt"/>
-            <TableCell Name="Cell53" Font="Arial, 10pt"/>
-            <TableCell Name="Cell54" Font="Arial, 10pt"/>
-            <TableCell Name="Cell55" Font="Arial, 10pt"/>
-            <TableCell Name="Cell56" Font="Arial, 10pt"/>
-            <TableCell Name="Cell57" Font="Arial, 10pt"/>
-            <TableCell Name="Cell58" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
-            <TableCell Name="Cell59" Font="Arial, 10pt"/>
-            <TableCell Name="Cell60" Font="Arial, 10pt"/>
-            <TableCell Name="Cell61" Font="Arial, 10pt"/>
-            <TableCell Name="Cell62" Font="Arial, 10pt"/>
-            <TableCell Name="Cell63" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
-            <TableCell Name="Cell64" Font="Arial, 10pt"/>
-            <TableCell Name="Cell65" Font="Arial, 10pt"/>
+            <TableCell Name="Cell52" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt"/>
+            <TableCell Name="Cell53" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt"/>
+            <TableCell Name="Cell54" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt"/>
+            <TableCell Name="Cell55" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt"/>
+            <TableCell Name="Cell56" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt"/>
+            <TableCell Name="Cell57" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt"/>
+            <TableCell Name="Cell58" Border.Lines="All" Text="[table.DiscountValue]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+            <TableCell Name="Cell59" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt"/>
+            <TableCell Name="Cell60" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt"/>
+            <TableCell Name="Cell61" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt"/>
+            <TableCell Name="Cell62" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt"/>
+            <TableCell Name="Cell63" Border.Lines="All" Text="[table.PatMobile]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+            <TableCell Name="Cell64" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt"/>
+            <TableCell Name="Cell65" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt"/>
           </TableRow>
         </TableObject>
       </DataBand>
     </GroupHeaderBand>
-    <PageFooterBand Name="PageFooter1" Top="280.6" Width="1047.06" Height="37.8">
+    <PageFooterBand Name="PageFooter1" Top="299.5" Width="1047.06" Height="37.8">
       <TextObject Name="Text4" Width="1048.95" Height="37.8" Text="[Page#] من [TotalPages#]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Arial, 10pt, style=Bold"/>
     </PageFooterBand>
   </ReportPage>
