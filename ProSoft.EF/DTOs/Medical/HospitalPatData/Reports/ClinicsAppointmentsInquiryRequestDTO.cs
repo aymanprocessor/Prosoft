@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace ProSoft.EF.DTOs.Medical.HospitalPatData.Reports
 {
-    internal class ClinicsAppointmentsInquiryRequestDTO
+    public class ClinicsAppointmentsInquiryRequestDTO
     {
+        public int DoctorId { get; set; }
+        public DateTime Date { get; set; }
     }
 }

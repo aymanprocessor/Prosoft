@@ -1,0 +1,54 @@
+﻿@using FastReport.Web
+@using ProSoft.EF.DTOs.Medical.HospitalPatData.Reports
+@using ProSoft.UI.Global
+
+@model ClinicsAppointmentsInquiryRequestDTO
+@inject IViewLocalizer localizer
+
+@{
+
+    ViewData["Title"] = "Clinic's Appointments Inquiry";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    WebReport webReport = ViewBag.WebReport;
+}
+
+<div class="container pt-2 ">
+    <h3 class="text-center mt-4">@localizer["ClinicsAppointmentsInquiry"]</h3>
+
+    <div class="row mt-4">
+        <form asp-action="Index" class="col-12 mb-2">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row g-3 row-cols-lg-auto align-items-center">
+
+                        <div class="col-12">
+                            <label class="col-form-label">@localizer["Date"]</label>
+                        </div>
+                        <div class="col-12">
+                            <input type="date" asp-for="@Model.Date" value="@(DateTime.Now.ToString("yyyy-MM-dd"))" class="form-control" />
+                        </div>
+                        <div class="col-12">
+                            <label class="col-form-label">@localizer["Doctor"]</label>
+                        </div>
+                        <div class="col-12">
+                            <select asp-for="@Model.DoctorId" class="form-select text-center" asp-items="ViewBag.Doctors">
+                                <option value="">@localizer["Choosee"]</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">@localizer["Inquiry"]</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        @if (webReport != null)
+        {
+
+            <div class="webreport text-center">
+                @await webReport.Render()
+            </div>
+        }
+    </div>
+</div>
+

@@ -1099,5 +1099,6 @@
   "ReceiptStatus": "Receipt Status",
   "NoReceipts": "No Receipts",
   "Inquiry": "Inquiry",
-  "DoctorsAppointmentsInquiry": "Doctors Appointments Inquiry"
+  "DoctorsAppointmentsInquiry": "Doctors Appointments Inquiry",
+  "ClinicsAppointmentsInquiry": "Clinics Appointments Inquiry"
 }
