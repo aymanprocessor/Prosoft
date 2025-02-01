@@ -106,6 +106,7 @@ namespace ProSoft.UI.Areas.Medical.Controllers
             {
             clinicTranDTO.ExYear = _currentUserService.Year;
             clinicTranDTO.BranchId = _currentUserService.BranchId;
+                
                 await _clinicTransRepo.AddClinicTransAsync(id, flag, clinicTranDTO);
                 // return RedirectToAction(redirect, "HospitalPatData");
                 return RedirectToAction("Add_ClinicTrans", new { id , redirect , flag });

@@ -59,7 +59,7 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         public async Task<IActionResult> Add_PatientAdmission(int id, string redirect)
         {
             PatAdmissionEditAddDTO patAdmissionEditAddDTO = await _patAdmissionRepo.GetEmptyPatAdmissionAsync(id);
-
+            patAdmissionEditAddDTO.PatAdDate = DateTime.Now;
             //for redirction
             ViewBag.redirect = redirect;
             return View(patAdmissionEditAddDTO);

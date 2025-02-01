@@ -41,14 +41,14 @@ namespace ProSoft.UI.Areas.Medical.Controllers
             }
 
             var timesheetTable =  await _clinicsAppointmentsInquiryRepo.GetDoctorTimeSheet(_currentUserService.BranchId, model.DoctorId);
-           // var clinicsTable = await _clinicsAppointmentsInquiryRepo.GetClinicsAppointments(_currentUserService.BranchId, model.DoctorId, model.Date);
+            var clinicsTable = await _clinicsAppointmentsInquiryRepo.GetClinicsAppointments(_currentUserService.BranchId, model.DoctorId, model.Date);
 
             WebReport webReport = new();
             webReport.Report.Load(Path.Combine(Environment.CurrentDirectory, "Reports\\Medical\\ClinicsAppointmentsInquiry.frx"));
 
 
+            webReport.Report.RegisterData(clinicsTable, "ClinicsTable");
             webReport.Report.RegisterData(timesheetTable, "TimeSheetTable");
-            //webReport.Report.RegisterData(clinicsTable, "ClinicsTable");
 
             var drName = (await _doctorRepo.GetByIdAsync(model.DoctorId)).DrDesc;
             webReport.Report.SetParameterValue("DrName", drName);

@@ -22,7 +22,8 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
         public string? ServDesc { get; set; }
         public string? DrDesc { get; set; }
         public int? ServId { get; set; }
-        public int DrSend { get; set; }
+        public int? DrCode { get; set; }
+        public int? DrSend { get; set; }
         public int ExInvoiceNo { get; set; }
         [Required]
         public DateTime? ExDate { get; set; }

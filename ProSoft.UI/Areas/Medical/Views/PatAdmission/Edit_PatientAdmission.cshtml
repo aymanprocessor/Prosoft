@@ -38,7 +38,7 @@
 
     <h1 class="mt-4">@localizer["Edit Admission No"] : @Model.MasterId @localizer["for"] : @Model.PatName</h1>
     <form method="post" asp-action="Edit_PatientAdmission">
-        <div class="border p-3 mt-4">
+        <div class="border rounded p-3 mt-4 bg-white">
 
             @* <input type="hidden" name="MasterId" value="@Model.MasterId" /> *@
             <div asp-validation-summary="ModelOnly"></div>

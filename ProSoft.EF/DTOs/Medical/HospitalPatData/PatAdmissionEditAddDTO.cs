@@ -15,7 +15,7 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
         public string? PatName { get; set; }
         public int? patId { get; set; }
         public int? MasterId { get; set; }
-        public DateTime? PatAdDate { get; set; }
+        public DateTime PatAdDate { get; set; }
         public decimal Deal { get; set; }
         public int CompId { get; set; }
         public int CompIdDtl { get; set; }

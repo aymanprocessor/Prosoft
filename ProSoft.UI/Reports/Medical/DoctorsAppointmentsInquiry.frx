@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="01/14/2025 11:35:21" ReportInfo.Modified="01/24/2025 23:55:28" ReportInfo.CreatorVersion="2025.1.0.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="01/14/2025 11:35:21" ReportInfo.Modified="02/01/2025 17:41:32" ReportInfo.CreatorVersion="2024.2.0.0">
   <Dictionary>
     <BusinessObjectDataSource Name="table" ReferenceName="Table" DataType="System.Int32" Enabled="true">
       <Column Name="Date" DataType="System.String"/>
@@ -28,8 +28,8 @@
     <ReportTitleBand Name="ReportTitle1" Width="1047.06" Height="37.8" Guides="37.8">
       <TextObject Name="Text1" Width="1048.95" Height="37.8" Text="تاريخ الطباعة : [Date]" HorzAlign="Right" VertAlign="Center" RightToLeft="true" Font="Arial, 10pt, style=Bold"/>
     </ReportTitleBand>
-    <ColumnHeaderBand Name="ColumnHeader1" Top="41.8" Width="1047.06" Height="151.2">
-      <TextObject Name="Text2" Width="1048.95" Height="37.8" Text="كشوفات [DrName]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Arial, 14pt, style=Bold"/>
+    <ColumnHeaderBand Name="ColumnHeader1" Top="40.95" Width="1047.06" Height="151.2">
+      <TextObject Name="Text2" Width="1048.95" Height="37.8" Text="كشوفات د/[DrName]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Arial, 14pt, style=Bold"/>
       <TextObject Name="Text5" Top="37.8" Width="1048.95" Height="37.8" Text="من [FromDate] الى [ToDate]&#13;&#10;" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Arial, 14pt, style=Bold"/>
       <TableObject Name="Table1" Top="94.5" Width="1046.37" Height="47.24">
         <TableColumn Name="Column1" Width="79.59"/>
@@ -80,9 +80,9 @@
         </TableRow>
       </TableObject>
     </ColumnHeaderBand>
-    <GroupHeaderBand Name="GroupHeader1" Top="197" Width="1047.06" Height="47.25" Condition="[table.SendFrom]">
+    <GroupHeaderBand Name="GroupHeader1" Top="195.3" Width="1047.06" Height="47.25" Condition="[table.SendFrom]">
       <TextObject Name="Text6" Width="1048.95" Height="37.8" Border.Lines="All" Fill.Color="PowderBlue" Text="القسم : [table.SendFrom]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Arial, 10pt, style=Bold"/>
-      <DataBand Name="Data1" Top="248.25" Width="1047.06" Height="47.25" DataSource="table">
+      <DataBand Name="Data1" Top="245.7" Width="1047.06" Height="47.25" DataSource="table">
         <TableObject Name="Table2" Width="1046.37" Height="47.24">
           <TableColumn Name="Column12" Width="79.59"/>
           <TableColumn Name="Column32" Width="51.98"/>
@@ -133,7 +133,7 @@
         </TableObject>
       </DataBand>
     </GroupHeaderBand>
-    <PageFooterBand Name="PageFooter1" Top="299.5" Width="1047.06" Height="37.8">
+    <PageFooterBand Name="PageFooter1" Top="296.1" Width="1047.06" Height="37.8">
       <TextObject Name="Text4" Width="1048.95" Height="37.8" Text="[Page#] من [TotalPages#]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Arial, 10pt, style=Bold"/>
     </PageFooterBand>
   </ReportPage>

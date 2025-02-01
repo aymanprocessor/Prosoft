@@ -8,6 +8,7 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData.Reports
 {
     public class ClinicsAppointmentsInquiryReportDTO
     {
+        public int? PatientCode { get; set; }
         public string? PatientName { get; set; }
         public string? CompanyName { get; set; }
         public string? Time { get; set; }

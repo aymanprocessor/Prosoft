@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="01/14/2025 11:35:21" ReportInfo.Modified="01/26/2025 00:14:50" ReportInfo.CreatorVersion="2025.1.0.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="01/14/2025 11:35:21" ReportInfo.Modified="02/01/2025 17:02:57" ReportInfo.CreatorVersion="2024.2.0.0">
   <Dictionary>
     <BusinessObjectDataSource Name="timesheetTable" ReferenceName="TimeSheetTable" DataType="System.Int32" Enabled="true">
       <Column Name="Day" DataType="System.String"/>
@@ -7,7 +7,8 @@
       <Column Name="TimeFrom" DataType="System.String"/>
       <Column Name="TimeTo" DataType="System.String"/>
     </BusinessObjectDataSource>
-    <BusinessObjectDataSource Name="clinicsTable" ReferenceName="ClincisTable" DataType="System.Int32" Enabled="true">
+    <BusinessObjectDataSource Name="clinicsTable" ReferenceName="ClinicsTable" DataType="System.Int32" Enabled="true">
+      <Column Name="PatientCode" DataType="System.Int32"/>
       <Column Name="PatientName" DataType="System.String"/>
       <Column Name="CompanyName" DataType="System.String"/>
       <Column Name="Time" DataType="System.String"/>
@@ -23,11 +24,11 @@
     <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="37.8" Guides="37.8">
       <TextObject Name="Text1" Width="718.2" Height="37.8" Text="تاريخ الطباعة : [Date]" HorzAlign="Right" VertAlign="Center" RightToLeft="true" Font="Arial, 10pt, style=Bold"/>
     </ReportTitleBand>
-    <ColumnHeaderBand Name="ColumnHeader1" Top="40.47" Width="718.2" Height="75.6">
+    <ColumnHeaderBand Name="ColumnHeader1" Top="40.95" Width="718.2" Height="75.6">
       <TextObject Name="Text2" Width="718.2" Height="37.8" Text="حجوزات العيادات - بتاريخ [Datee]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Arial, 14pt, style=Bold"/>
       <TextObject Name="Text5" Top="37.8" Width="718.2" Height="37.8" Text="د/ [DrName]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Arial, 14pt, style=Bold"/>
     </ColumnHeaderBand>
-    <DataBand Name="Data2" Top="159.2" Width="718.2" Height="28.35" DataSource="timesheetTable">
+    <DataBand Name="Data2" Top="160.65" Width="718.2" Height="28.35" DataSource="timesheetTable">
       <TableObject Name="Table4" Left="170.1" Width="370.84" Height="28.35">
         <TableColumn Name="Column32" Width="74.86"/>
         <TableColumn Name="Column33" Width="74.86"/>
@@ -42,7 +43,7 @@
           <TableCell Name="Cell40" Border.Lines="All" Text="[Row#]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
         </TableRow>
       </TableObject>
-      <DataHeaderBand Name="DataHeader2" Top="118.73" Width="718.2" Height="37.8">
+      <DataHeaderBand Name="DataHeader2" Top="119.7" Width="718.2" Height="37.8">
         <TableObject Name="Table3" Left="170.1" Top="9.45" Width="370.84" Height="28.35">
           <TableColumn Name="Column23" Width="74.86"/>
           <TableColumn Name="Column24" Width="74.86"/>
@@ -59,7 +60,7 @@
         </TableObject>
       </DataHeaderBand>
     </DataBand>
-    <DataBand Name="Data1" Top="230.68" Width="718.2" Height="28.35">
+    <DataBand Name="Data1" Top="233.1" Width="718.2" Height="28.35" DataSource="clinicsTable">
       <TableObject Name="Table2" Width="714.07" Height="28.35">
         <TableColumn Name="Column12" Width="74.86"/>
         <TableColumn Name="Column13" Width="74.86"/>
@@ -71,18 +72,18 @@
         <TableColumn Name="Column20" Width="71.4"/>
         <TableColumn Name="Column21" Width="24.15"/>
         <TableRow Name="Row2" Height="28.35">
-          <TableCell Name="Cell12" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
-          <TableCell Name="Cell13" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
-          <TableCell Name="Cell14" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
-          <TableCell Name="Cell15" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
-          <TableCell Name="Cell16" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
-          <TableCell Name="Cell17" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
-          <TableCell Name="Cell18" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
-          <TableCell Name="Cell20" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
-          <TableCell Name="Cell21" Border.Lines="All" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell12" Border.Lines="All" Text="[clinicsTable.Time]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell13" Border.Lines="All" Text="[clinicsTable.ServiceName]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell14" Border.Lines="All" Text="[clinicsTable.CompanyName]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell15" Border.Lines="All" Text="[clinicsTable.PatientName]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell16" Border.Lines="All" Text="[clinicsTable.FileNumber]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell17" Border.Lines="All" Text="[clinicsTable.PatientMobile]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell18" Border.Lines="All" Text="[clinicsTable.PatientCode]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell20" Border.Lines="All" Text="[clinicsTable.EntryDate]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
+          <TableCell Name="Cell21" Border.Lines="All" Text="[Row#]" HorzAlign="Center" VertAlign="Center" Font="Arial, 10pt, style=Bold"/>
         </TableRow>
       </TableObject>
-      <DataHeaderBand Name="DataHeader1" Top="190.22" Width="718.2" Height="37.8">
+      <DataHeaderBand Name="DataHeader1" Top="192.15" Width="718.2" Height="37.8">
         <TableObject Name="Table1" Top="9.45" Width="714.07" Height="28.35">
           <TableColumn Name="Column1" Width="74.86"/>
           <TableColumn Name="Column2" Width="74.86"/>
@@ -107,7 +108,7 @@
         </TableObject>
       </DataHeaderBand>
     </DataBand>
-    <PageFooterBand Name="PageFooter1" Top="261.7" Width="718.2" Height="37.8">
+    <PageFooterBand Name="PageFooter1" Top="264.6" Width="718.2" Height="37.8">
       <TextObject Name="Text4" Width="718.2" Height="37.8" Text="[Page#] من [TotalPages#]" HorzAlign="Center" VertAlign="Center" RightToLeft="true" Font="Arial, 10pt, style=Bold"/>
     </PageFooterBand>
   </ReportPage>
