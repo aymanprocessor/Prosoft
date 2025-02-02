@@ -37,18 +37,19 @@ using ProSoft.UI.Areas.Accounts;
 using ProSoft.UI.MiddleWares;
 using ProSoft.Core.Repositories.Medical.HospitalPatData.Reports;
 using ProSoft.EF.IRepositories.Medical.HospitalPatData.Reports;
+using Oracle.ManagedDataAccess.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
 //Configration fo context connectio string
-//var sqlServerConnection = builder.Configuration.GetConnectionString("SqlServerConnection") ?? throw new InvalidOperationException("Connection string 'Sql Server Connection' not found.");
-var oracleConnection = builder.Configuration.GetConnectionString("OracleConnection") ?? throw new InvalidOperationException("Connection string 'Oracle Connection' not found.");
-
-//builder.Services.AddDbContext<AppDbContext>(options =>
-//    options.UseSqlServer(sqlServerConnection));
+var sqlServerConnection = builder.Configuration.GetConnectionString("SqlServerConnection") ?? throw new InvalidOperationException("Connection string 'Sql Server Connection' not found.");
+//var oracleConnection = builder.Configuration.GetConnectionString("OracleConnection") ?? throw new InvalidOperationException("Connection string 'Oracle Connection' not found.");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseOracle(oracleConnection));
+    options.UseSqlServer(sqlServerConnection));
+
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//    options.UseOracle(oracleConnection));
 
 // Register for AutoMapper service
 builder.Services.AddAutoMapper(typeof(AutoMap)); //builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

@@ -1,29 +1,31 @@
- <!-- Sidebar -->
-        <div class="sidebar" data-background-color="dark">
-            <div class="sidebar-logo">
-                <!-- Logo Header -->
-                <div class="logo-header" data-background-color="dark">
-                    <a href="index.html" class="logo">
-                        <img src="logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
-                    </a>
-                    <div class="nav-toggle">
-                        <button class="btn btn-toggle toggle-sidebar">
-                            <i class="gg-menu-right"></i>
-                        </button>
-                        <button class="btn btn-toggle sidenav-toggler">
-                            <i class="gg-menu-left"></i>
-                        </button>
-                    </div>
-                    <button class="topbar-toggler more">
-                        <i class="gg-more-vertical-alt"></i>
-                    </button>
-                </div>
-                <!-- End Logo Header -->
+﻿@inject IViewLocalizer localizer
+
+<!-- Sidebar -->
+<div class="sidebar" data-background-color="dark">
+    <div class="sidebar-logo">
+        <!-- Logo Header -->
+        <div class="logo-header" data-background-color="dark">
+            <a href="index.html" class="logo">
+                <img src="~/images/logo.png" alt="navbar brand" class="navbar-brand" height="50" />
+            </a>
+            <div class="nav-toggle">
+                <button class="btn btn-toggle toggle-sidebar">
+                    <i class="gg-menu-right"></i>
+                </button>
+                <button class="btn btn-toggle sidenav-toggler">
+                    <i class="gg-menu-left"></i>
+                </button>
             </div>
-            <div class="sidebar-wrapper scrollbar scrollbar-inner">
-                <div class="sidebar-content">
-                    <ul class="nav nav-secondary">
-                        <li class="nav-item active">
+            <button class="topbar-toggler more">
+                <i class="gg-more-vertical-alt"></i>
+            </button>
+        </div>
+        <!-- End Logo Header -->
+    </div>
+    <div class="sidebar-wrapper scrollbar scrollbar-inner">
+        <div class="sidebar-content">
+            <ul class="nav nav-secondary">
+                @*  <li class="nav-item active">
                             <a data-bs-toggle="collapse" href="#dashboard" class="collapsed" aria-expanded="false">
                                 <i class="fas fa-home"></i>
                                 <p>Dashboard</p>
@@ -78,8 +80,8 @@
                                     </li>
                                 </ul>
                             </div>
-                        </li>
-                        <li class="nav-section">
+                        </li> *@
+                @* <li class="nav-section">
                             <span class="sidebar-mini-icon">
                                 <i class="fa fa-ellipsis-h"></i>
                             </span>
@@ -399,60 +401,871 @@
                                     </li>
                                 </ul>
                             </div>
-                        </li>
-                        <li class="nav-item">
-                            <a data-bs-toggle="collapse" href="#submenu">
-                                <i class="fas fa-bars"></i>
-                                <p>Menu Levels</p>
-                                <span class="caret"></span>
-                            </a>
-                            <div class="collapse" id="submenu">
-                                <ul class="nav nav-collapse">
-                                    <li>
-                                        <a data-bs-toggle="collapse" href="#subnav1">
-                                            <span class="sub-item">Level 1</span>
-                                            <span class="caret"></span>
-                                        </a>
-                                        <div class="collapse" id="subnav1">
-                                            <ul class="nav nav-collapse subnav">
-                                                <li>
-                                                    <a href="#">
-                                                        <span class="sub-item">Level 2</span>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <span class="sub-item">Level 2</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <a data-bs-toggle="collapse" href="#subnav2">
-                                            <span class="sub-item">Level 1</span>
-                                            <span class="caret"></span>
-                                        </a>
-                                        <div class="collapse" id="subnav2">
-                                            <ul class="nav nav-collapse subnav">
-                                                <li>
-                                                    <a href="#">
-                                                        <span class="sub-item">Level 2</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <span class="sub-item">Level 1</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+                        </li> *@
+
+                @* Medical *@
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#medical-system">
+                        <i class="fas fa-hospital"></i>
+                        <p>@localizer["Medical System"]</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="medical-system">
+                        <ul class="nav nav-collapse">
+                            <!-- Main data -->
+                            <li>
+                                <a data-bs-toggle="collapse" href="#main-data">
+                                    <span class="sub-item">@localizer["Main data"]</span>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="main-data">
+                                    <ul class="nav nav-collapse subnav">
+                                        <li>
+                                            <a href="/Medical/MainAnalysis/Index">
+                                                <span class="sub-item">@localizer["Analysis guide"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Medical/PriceList/Index">
+                                                <span class="sub-item">@localizer["Price Lists"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Medical/CompanyGroup/Index">
+                                                <span class="sub-item">@localizer["Companys"]</span>
+                                            </a>
+                                        </li>
+                                        <!-- Definitions submenu -->
+                                        <li>
+                                            <a data-bs-toggle="collapse" href="#definitions">
+                                                <span class="sub-item">@localizer["Definitions"]</span>
+                                                <span class="caret"></span>
+                                            </a>
+                                            <div class="collapse" id="definitions">
+                                                <ul class="nav nav-collapse subnav">
+                                                    <!-- Catheter Section -->
+                                                    <li>
+                                                        <a data-bs-toggle="collapse" href="#catheter-section">
+                                                            <span class="sub-item">@localizer["Catheter Section"]</span>
+                                                            <span class="caret"></span>
+                                                        </a>
+                                                        <div class="collapse" id="catheter-section">
+                                                            <ul class="nav nav-collapse subnav">
+                                                                <li>
+                                                                    <a href="/Medical/SourceOfCatheter/Index">
+                                                                        <span class="sub-item">@localizer["Source Of Catheter"]</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="/Medical/ListOfCatheterProcedures/Index">
+                                                                        <span class="sub-item">@localizer["List Of Catheter Procedures"]</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li>
+                                                                    <a href="/Medical/Stent/Index">
+                                                                        <span class="sub-item">@localizer["List Of Stents And Catheters"]</span>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+                                                    <!-- Other Definition Items -->
+                                                    <li>
+                                                        <a href="/Medical/DegreeAndRoomAndBed/Index">
+                                                            <span class="sub-item">@localizer["Degree And Room And Bed"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Medical/patient/Patients">
+                                                            <span class="sub-item">@localizer["Patient Definations"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Medical/DrDegree/Index">
+                                                            <span class="sub-item">@localizer["Doctor Degree"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Medical/Doctor/Index">
+                                                            <span class="sub-item">@localizer["Doctor Definations"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Medical/DoctorPercentage/Index">
+                                                            <span class="sub-item">@localizer["Doctors Percentages"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Medical/DrDiscount/Index">
+                                                            <span class="sub-item">@localizer["Referral Doctor Commissions"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Medical/DrTimeSheet/Index">
+                                                            <span class="sub-item">@localizer["Doctors Appointments"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Medical/CheckupClinic/Index">
+                                                            <span class="sub-item">@localizer["Types of Examinations"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Medical/MainClinic/Index">
+                                                            <span class="sub-item">@localizer["Department services"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Shared/Nationality/Nationalities">
+                                                            <span class="sub-item">@localizer["National Definations"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Medical/NursingData/Index">
+                                                            <span class="sub-item">@localizer["Nursing Data"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Medical/kinship/Index">
+                                                            <span class="sub-item">@localizer["kinship"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Medical/UsersSection/Index">
+                                                            <span class="sub-item">@localizer["Joining Users With Medical Services"]</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <!-- Transactions -->
+                            <li>
+                                <a data-bs-toggle="collapse" href="#transactions">
+                                    <span class="sub-item">@localizer["Transactions"]</span>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="transactions">
+                                    <ul class="nav nav-collapse subnav">
+                                        <li>
+                                            <a href="/MedicalRecords/PatRecord/AllPatients">
+                                                <span class="sub-item">@localizer["Medical Records"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Medical/HospitalPatData/AnalysisTransactions">
+                                                <span class="sub-item">@localizer["Medical Analysis"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Medical/HospitalPatData/Invoices">
+                                                <span class="sub-item">@localizer["Medical Invoices"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Medical/HospitalPatData/Requirements">
+                                                <span class="sub-item">@localizer["Medical Requirements"]</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <!-- Inquiries -->
+                            <li>
+                                <a data-bs-toggle="collapse" href="#inquiries">
+                                    <span class="sub-item">@localizer["Inquiries"]</span>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="inquiries">
+                                    <ul class="nav nav-collapse subnav">
+                                        <li>
+                                            <a href="/Medical/ReceiptInquiry/Index">
+                                                <span class="sub-item">@localizer["ReceiptInquiry"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Medical/ClinicsAppointmentsInquiry/Index">
+                                                <span class="sub-item">@localizer["ClinicsAppointmentsInquiry"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Medical/DoctorsAppointmentsInquiry/Index">
+                                                <span class="sub-item">@localizer["DoctorsAppointmentsInquiry"]</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <!-- Reports -->
+                            <li>
+                                <a data-bs-toggle="collapse" href="#reports">
+                                    <span class="sub-item">@localizer["Reports"]</span>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="reports">
+                                    <ul class="nav nav-collapse subnav">
+                                        <li>
+                                            <a href="/Medical/ReportDoctorFees/Index">
+                                                <span class="sub-item">@localizer["Doctor's fees"]</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                @* Stocks*@
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#stocks-system">
+                        <i class="fas fa-boxes"></i>
+                        <p>@localizer["Stocks System"]</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="stocks-system">
+                        <ul class="nav nav-collapse">
+                            <!-- Main data -->
+                            <li>
+                                <a data-bs-toggle="collapse" href="#stocks-main-data">
+                                    <span class="sub-item">@localizer["Main data"]</span>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="stocks-main-data">
+                                    <ul class="nav nav-collapse subnav">
+                                        <!-- Definitions submenu -->
+                                        <li>
+                                            <a data-bs-toggle="collapse" href="#stocks-definitions">
+                                                <span class="sub-item">@localizer["Definitions"]</span>
+                                                <span class="caret"></span>
+                                            </a>
+                                            <div class="collapse" id="stocks-definitions">
+                                                <ul class="nav nav-collapse subnav">
+                                                    <li>
+                                                        <a href="/Stocks/StockType/Index">
+                                                            <span class="sub-item">@localizer["Stocks Types"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Stocks/Stock/Index">
+                                                            <span class="sub-item">@localizer["Stocks"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Stocks/Side/Index">
+                                                            <span class="sub-item">@localizer["Sides"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Stocks/UnitCode/Index">
+                                                            <span class="sub-item">@localizer["Unit Codes"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Shared/ClassificationCust/Index">
+                                                            <span class="sub-item">@localizer["Departments"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Shared/Section/Index">
+                                                            <span class="sub-item">@localizer["The Sections"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Stocks/DepartmentsWithSections/Index">
+                                                            <span class="sub-item">@localizer["Joining Departments With Sections"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Stocks/ItemsCustPrice/Index">
+                                                            <span class="sub-item">@localizer["Customer Pricing"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Shared/PermitDefinition/Index">
+                                                            <span class="sub-item">@localizer["Permissions Names"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Stocks/UserTransaction/Index">
+                                                            <span class="sub-item">@localizer["Joining Users With Transactions"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Stocks/Supplier/Index">
+                                                            <span class="sub-item">@localizer["The Suppliers"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Stocks/Customer/Index">
+                                                            <span class="sub-item">@localizer["Customers"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Stocks/UserStockTransaction/Index">
+                                                            <span class="sub-item">@localizer["Joining Users With Stocks and Accounts"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Stocks/StockEmpFlag/Index">
+                                                            <span class="sub-item">@localizer["Joining Users With Stock Type"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Stocks/UsersGroup/Index">
+                                                            <span class="sub-item">@localizer["Users Group"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Stocks/UserSide/Index">
+                                                            <span class="sub-item">@localizer["Joining Users With Side"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Stocks/ItemUnits/Index">
+                                                            <span class="sub-item">@localizer["Joining Units with Items"]</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <!-- The Balances -->
+                            <li>
+                                <a data-bs-toggle="collapse" href="#stock-balances">
+                                    <span class="sub-item">@localizer["The Balances"]</span>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="stock-balances">
+                                    <ul class="nav nav-collapse subnav">
+                                        <li>
+                                            <a href="/Stocks/StockBalance/ChooseStockType">
+                                                <span class="sub-item">@localizer["The Stock Balances"]</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <!-- The Codes -->
+                            <li>
+                                <a data-bs-toggle="collapse" href="#stock-codes">
+                                    <span class="sub-item">@localizer["The Codes"]</span>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="stock-codes">
+                                    <ul class="nav nav-collapse subnav">
+                                        <li>
+                                            <a href="/Stocks/OrderLimit/Index">
+                                                <span class="sub-item">@localizer["Order Limit"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Stocks/MainItem/ChooseStockType">
+                                                <span class="sub-item">@localizer["Items Guide"]</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <!-- Transactions -->
+                            <li>
+                                <a data-bs-toggle="collapse" href="#stock-transactions">
+                                    <span class="sub-item">@localizer["Transactions"]</span>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="stock-transactions">
+                                    <ul class="nav nav-collapse subnav">
+                                        <li>
+                                            <a href="/Stocks/PermissionForm/Index">
+                                                <span class="sub-item">@localizer["Permissions Forms"]</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <!-- Closing Procedures -->
+                            <li>
+                                <a data-bs-toggle="collapse" href="#closing-procedures">
+                                    <span class="sub-item">@localizer["Closing Procedures"]</span>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="closing-procedures">
+                                    <ul class="nav nav-collapse subnav">
+                                        <li>
+                                            <a href="/Stocks/OpenCloseTransaction/Index">
+                                                <span class="sub-item">@localizer["Opening and closing Transactions"]</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <!-- Post Supplies -->
+                            <li>
+                                <a data-bs-toggle="collapse" href="#post-supplies">
+                                    <span class="sub-item">@localizer["Post Supplies"]</span>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="post-supplies">
+                                    <ul class="nav nav-collapse subnav">
+                                        <li>
+                                            <a href="/Stocks/TransferSuppliesToStock/Index">
+                                                <span class="sub-item">@localizer["Post Supplies To Stocks"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Stocks/CancelTransferSuppliesToStock/Index">
+                                                <span class="sub-item">@localizer["Cancel Post Supplies To Stocks"]</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <!-- Reports -->
+                            <li>
+                                <a data-bs-toggle="collapse" href="#stock-reports">
+                                    <span class="sub-item">@localizer["Reports"]</span>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="stock-reports">
+                                    <ul class="nav nav-collapse subnav">
+                                        <li>
+                                            <a href="/Stocks/TotalCustomerTransactionReport/Index">
+                                                <span class="sub-item">@localizer["Total Customer Transaction Report"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Stocks/CustomerTransactionReport/GetCustomerTransactionQuantityReport">
+                                                <span class="sub-item">@localizer["Customer Transaction Quantity Report"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Stocks/CustomerTransactionReport/GetCustomerTransactionValueReport">
+                                                <span class="sub-item">@localizer["Customer Transaction Value Report"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Stocks/AnalyticalCustomerTransactionReport/Index">
+                                                <span class="sub-item">@localizer["Analytical Customer Transaction Report"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Stocks/RequestLimitItemsReport/Index">
+                                                <span class="sub-item">@localizer["Request Limit Item Report"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Stocks/PermissionForm/AllRermissionForm">
+                                                <span class="sub-item">@localizer["Display Permissions Forms"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Stocks/QuantityClassCard/Index">
+                                                <span class="sub-item">@localizer["Quantity class card only"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Stocks/QuantityClassCard/QuantityAndValueClassCard">
+                                                <span class="sub-item">@localizer["Quantity And Value Class Card"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Stocks/QuantityClassCard/AtLevelTransactionCard">
+                                                <span class="sub-item">@localizer["At Level Transaction Class Card"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Stocks/TransferAndReceiptTransactionReport/Index">
+                                                <span class="sub-item">@localizer["Transfer And Receipt Transaction"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Stocks/TotalItemCards/TotalItemCardsQuantity">
+                                                <span class="sub-item">@localizer["The Total Item Cards - Quantity"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Stocks/TotalItemCards/TotalItemCardsPrice">
+                                                <span class="sub-item">@localizer["The Total Item Cards - Price"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Stocks/TotalItemCards/TotalItemCardsDetail">
+                                                <span class="sub-item">@localizer["The Total Item Cards - Detail"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Stocks/TransactionReport/FastTransactionReport">
+                                                <span class="sub-item">@localizer["Fast Transaction Report"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Stocks/TransactionReport/SlowTransactionReport">
+                                                <span class="sub-item">@localizer["Slow Transaction Report"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Stocks/TransactionReport/ZeroTransactionReport">
+                                                <span class="sub-item">@localizer["Zero Transaction Report"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Stocks/TransactionReport/TotalPermitsTransactionReport">
+                                                <span class="sub-item">@localizer["Total Permits Transaction Report"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Stocks/TransactionReport/SupplierPermitsTransactionReport">
+                                                <span class="sub-item">@localizer["Supplier Permits Transaction Report"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Stocks/StockBalanceReport/Index">
+                                                <span class="sub-item">@localizer["Stock Balance Report"]</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                @* Treasury *@
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#treasury-system">
+                        <i class="fas fa-coins"></i>
+                        <p>@localizer["Treasury System"]</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="treasury-system">
+                        <ul class="nav nav-collapse">
+                            <!-- Main data -->
+                            <li>
+                                <a data-bs-toggle="collapse" href="#treasury-main-data">
+                                    <span class="sub-item">@localizer["Main data"]</span>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="treasury-main-data">
+                                    <ul class="nav nav-collapse subnav">
+                                        <!-- Definitions submenu -->
+                                        <li>
+                                            <a data-bs-toggle="collapse" href="#treasury-definitions">
+                                                <span class="sub-item">@localizer["Definitions"]</span>
+                                                <span class="caret"></span>
+                                            </a>
+                                            <div class="collapse" id="treasury-definitions">
+                                                <ul class="nav nav-collapse subnav">
+                                                    <li>
+                                                        <a href="/Treasury/TreasuryName/Index">
+                                                            <span class="sub-item">@localizer["Treasury Names"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Treasury/Currency/Index">
+                                                            <span class="sub-item">@localizer["Currencies"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Treasury/BankData/Index">
+                                                            <span class="sub-item">@localizer["Banks"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Treasury/CostCenterTreasury/Index">
+                                                            <span class="sub-item">@localizer["Cost Center Treasury"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Treasury/UserCashNo/Index">
+                                                            <span class="sub-item">@localizer["Joining Users With Treasurys"]</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <!-- Transactions -->
+                            <li>
+                                <a data-bs-toggle="collapse" href="#treasury-transactions">
+                                    <span class="sub-item">@localizer["Transactions"]</span>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="treasury-transactions">
+                                    <ul class="nav nav-collapse subnav">
+                                        <!-- The Cash -->
+                                        <li>
+                                            <a data-bs-toggle="collapse" href="#treasury-cash">
+                                                <span class="sub-item">@localizer["The Cash"]</span>
+                                                <span class="caret"></span>
+                                            </a>
+                                            <div class="collapse" id="treasury-cash">
+                                                <ul class="nav nav-collapse subnav">
+                                                    <li>
+                                                        <a href="/Treasury/AccSafeCash/Index?docType=SFCIN&flagType=oneANDtwo">
+                                                            <span class="sub-item">@localizer["Payment Receipt"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Treasury/DisbursementPermission/Index?docType=SFCOT&flagType=oneANDtwo">
+                                                            <span class="sub-item">@localizer["Disbursement permission"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Treasury/ReceivePermission/Index?docType=SFTIN&flagType=oneANDtwoAndthree">
+                                                            <span class="sub-item">@localizer["Receive Permission"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Treasury/TransferPermission/Index?docType=SFTOT&flagType=oneANDtwoAndthree">
+                                                            <span class="sub-item">@localizer["Transfer Permission"]</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <!-- The Checks -->
+                                        <li>
+                                            <a data-bs-toggle="collapse" href="#treasury-checks">
+                                                <span class="sub-item">@localizer["The Checks"]</span>
+                                                <span class="caret"></span>
+                                            </a>
+                                            <div class="collapse" id="treasury-checks">
+                                                <ul class="nav nav-collapse subnav">
+                                                    <li>
+                                                        <a href="/Treasury/AccSafeCheck/Index?tranType=SFSIN&flagType=oneANDtwo">
+                                                            <span class="sub-item">@localizer["Deposit check in Treasury"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Treasury/DisbursementPermissionCheck/Index?tranType=SFOUT&flagType=oneANDtwo">
+                                                            <span class="sub-item">@localizer["Disbursement permission Checks"]</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <!-- Reports -->
+                            <li>
+                                <a data-bs-toggle="collapse" href="#treasury-reports">
+                                    <span class="sub-item">@localizer["Reports"]</span>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="treasury-reports">
+                                    <ul class="nav nav-collapse subnav">
+                                        <li>
+                                            <a href="/Treasury/ReportCashAndChecks/Index?tranType=SFOUT&flagType=oneANDtwo">
+                                                <span class="sub-item">@localizer["Follow up cash and checks"]</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                @* Accounts *@
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#accounts-system">
+                        <i class="fas fa-calculator"></i>
+                        <p>@localizer["Accounts System"]</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="accounts-system">
+                        <ul class="nav nav-collapse">
+                            <!-- Main data -->
+                            <li>
+                                <a data-bs-toggle="collapse" href="#accounts-main-data">
+                                    <span class="sub-item">@localizer["Main data"]</span>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="accounts-main-data">
+                                    <ul class="nav nav-collapse subnav">
+                                        <!-- Definitions submenu -->
+                                        <li>
+                                            <a data-bs-toggle="collapse" href="#accounts-definitions">
+                                                <span class="sub-item">@localizer["Definitions"]</span>
+                                                <span class="caret"></span>
+                                            </a>
+                                            <div class="collapse" id="accounts-definitions">
+                                                <ul class="nav nav-collapse subnav">
+                                                    <li>
+                                                        <a href="/Accounts/AccMainCode/Index">
+                                                            <span class="sub-item">@localizer["Accounts guide"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Accounts/CostCenter/Index">
+                                                            <span class="sub-item">@localizer["Cost Centers"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Accounts/JournalType/Index">
+                                                            <span class="sub-item">@localizer["Journal Types"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Accounts/AccSubCodeEdit/Index">
+                                                            <span class="sub-item">@localizer["Modification of account codes"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Accounts/AccStartBal/Index">
+                                                            <span class="sub-item">@localizer["Opening Balances"]</span>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/Accounts/UserJournalType/Index">
+                                                            <span class="sub-item">@localizer["Joining Users With Journals"]</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <!-- Recording Restrictions -->
+                            <li>
+                                <a data-bs-toggle="collapse" href="#recording-restrictions">
+                                    <span class="sub-item">@localizer["Recording Restrictions"]</span>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="recording-restrictions">
+                                    <ul class="nav nav-collapse subnav">
+                                        <li>
+                                            <a href="/Accounts/UserJournalType/JournalTypeForUser">
+                                                <span class="sub-item">@localizer["Journals"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Accounts/CancelJournalVoucher/Index">
+                                                <span class="sub-item">@localizer["Cancel Journal Voucher"]</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <!-- Closing Procedures -->
+                            <li>
+                                <a data-bs-toggle="collapse" href="#accounts-closing">
+                                    <span class="sub-item">@localizer["Closing Procedures"]</span>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="accounts-closing">
+                                    <ul class="nav nav-collapse subnav">
+                                        <li>
+                                            <a href="/Accounts/MonthlyClosing/Index">
+                                                <span class="sub-item">@localizer["Monthly Closing"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Accounts/CancelJournalVoucher/Index">
+                                                <span class="sub-item">@localizer["Cancel Journal Voucher"]</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <!-- Reports -->
+                            <li>
+                                <a data-bs-toggle="collapse" href="#accounts-reports">
+                                    <span class="sub-item">@localizer["Reports"]</span>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="accounts-reports">
+                                    <ul class="nav nav-collapse subnav">
+                                        <li>
+                                            <a href="/Accounts/AmericanDaily/Index">
+                                                <span class="sub-item">@localizer["American Daily"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Accounts/ReportFromVoucherToVoucher/Index">
+                                                <span class="sub-item">@localizer["Print From Voucher To Voucher"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Accounts/ReportAssistantProfessor/Index">
+                                                <span class="sub-item">@localizer["Assistant Professor(Analytical/Overall)"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Accounts/ReportTransactionAccountJournal/Index">
+                                                <span class="sub-item">@localizer["Transaction account for journal Level"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Accounts/ReportExpenseAnalysis/Index">
+                                                <span class="sub-item">@localizer["Expense Analysis"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Accounts/ReportReviewJournalVouchers/Index">
+                                                <span class="sub-item">@localizer["Review Journal Vouchers"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Accounts/ReportGeneralProfessorFacility/Index">
+                                                <span class="sub-item">@localizer["General Professor For Facility"]</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/Accounts/ReportDailyAssistance/Index">
+                                                <span class="sub-item">@localizer["Daily assistance for Voucher level"]</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                @* System Tools *@
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#systemToolsMenu">
+                        <i class="fas fa-tools"></i>
+                        <p>@localizer["System Tools"]</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="systemToolsMenu">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a data-bs-toggle="collapse" href="#mainDataMenu">
+                                    <span class="sub-item">@localizer["Main data"]</span>
+                                    <span class="caret"></span>
+                                </a>
+                                <div class="collapse" id="mainDataMenu">
+                                    <ul class="nav nav-collapse subnav">
+                                        <li>
+                                            <a data-bs-toggle="collapse" href="#definitionsMenu">
+                                                <span class="sub-item">@localizer["Definitions"]</span>
+                                                <span class="caret"></span>
+                                            </a>
+                                            <div class="collapse" id="definitionsMenu">
+                                                <ul class="nav nav-collapse subnav">
+                                                    <li>
+                                                        <a href="/Shared/EisPosting/Index">
+                                                            <span class="sub-item">@localizer["System Accounts Coding"]</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
         </div>
-        <!-- End Sidebar -->
+    </div>
+</div>
+<!-- End Sidebar -->
