@@ -8,7 +8,7 @@
 }
 
 @inject IViewLocalizer localizer
-
+@*
 <div class="container pt-2">
     <div class="d-flex justify-content-between align-items-center mt-4">
         @if (User.Identity != null && User.Identity.IsAuthenticated)
@@ -23,4 +23,269 @@
             <a asp-controller="Account" asp-action="Edit_FinancialYear" class="btn btn-primary">@localizer["Change"]</a>
         </div>
     </div>
+</div> *@
+<div class="container p-4">
+    <h2 class="mb-4">Dashboard</h2>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card bg-success bg-gradient text-white mb-3 shadow-sm rounded rounded-4">
+
+                <div class="card-body">
+                    <div class="row">
+
+                        <div class="col-6">
+                            <div class="row">
+
+                                <i class="col-12 fas fa-user-injured fa-2x"></i>
+                                <span class=" col-12 fs-4">المرضى</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+
+                            <h5 class="card-title fs-1">1300</h5>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-between">
+                        <div class="col-6">هذا اليوم</div>
+                        <div class="col-6 d-flex justify-content-end">30</div>
+                    </div>
+                    <div class="row d-flex justify-content-between">
+                        <div class="col-6">هذا الاسبوع</div>
+                        <div class="col-6 d-flex justify-content-end">100</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-danger bg-gradient text-white mb-3 shadow-sm rounded rounded-4">
+
+                <div class="card-body">
+                    <div class="row">
+
+                        <div class="col-6">
+                            <div class="row">
+
+                                <i class="col-12 fas fa-calendar-day fa-2x"></i>
+                                <span class=" col-12 fs-4">الحجوزات</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+
+                            <h5 class="card-title fs-1">1300</h5>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-between">
+                        <div class="col-6">هذا اليوم</div>
+                        <div class="col-6 d-flex justify-content-end">30</div>
+                    </div>
+                    <div class="row d-flex justify-content-between">
+                        <div class="col-6">هذا الاسبوع</div>
+                        <div class="col-6 d-flex justify-content-end">100</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-primary bg-gradient text-white mb-3 shadow-sm rounded rounded-4">
+
+                <div class="card-body">
+                    <div class="row">
+
+                        <div class="col-6">
+                            <div class="row">
+
+                                <i class="col-12 fas fa-user-injured fa-2x"></i>
+                                <span class=" col-12 fs-4">الوارد</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+
+                            <h5 class="card-title fs-1">6300</h5>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-between">
+                        <div class="col-6">هذا اليوم</div>
+                        <div class="col-6 d-flex justify-content-end">3120</div>
+                    </div>
+                    <div class="row d-flex justify-content-between">
+                        <div class="col-6">هذا الاسبوع</div>
+                        <div class="col-6 d-flex justify-content-end">3500</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info bg-gradient text-white mb-3 shadow-sm rounded rounded-4">
+
+                <div class="card-body">
+                    <div class="row">
+
+                        <div class="col-6">
+                            <div class="row">
+
+                                <i class="col-12 fas fa-user-injured fa-2x"></i>
+                                <span class=" col-12 fs-4">الصرف</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+
+                            <h5 class="card-title fs-1">4500</h5>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-between">
+                        <div class="col-6">هذا اليوم</div>
+                        <div class="col-6 d-flex justify-content-end">2050</div>
+                    </div>
+                    <div class="row d-flex justify-content-between">
+                        <div class="col-6">هذا الاسبوع</div>
+                        <div class="col-6 d-flex justify-content-end">3450</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+     
+    </div>
+    <div class="row">
+        <div class="mt-5 col-6">
+            <h4 class="text-center mb-4">📅 جدول المواعيد اليومية</h4>
+            <table class="table table-bordered table-hover">
+                <thead class="table-success">
+                    <tr>
+                        <th>اسم المريض</th>
+                        <th>الوقت</th>
+                        <th>تفاصيل الطبيب</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Appointment 1 -->
+                    <tr>
+                        <td>محمد أحمد</td>
+                        <td>10:00 ص - 10:30 ص</td>
+                        <td>د. علي، أمراض القلب</td>
+
+                    </tr>
+                    <!-- Appointment 2 -->
+                    <tr>
+                        <td>فاطمة خالد</td>
+                        <td>11:00 ص - 11:30 ص</td>
+                        <td>د. سارة، الأمراض الجلدية</td>
+
+                    </tr>
+                    <!-- Appointment 3 -->
+                    <tr>
+                        <td>علي حسن</td>
+                        <td>2:00 م - 2:30 م</td>
+                        <td>د. ليلى، طب الأطفال</td>
+
+                    </tr>
+                    <!-- Appointment 4 -->
+                    <tr>
+                        <td>نورة عبدالله</td>
+                        <td>3:00 م - 3:30 م</td>
+                        <td>د. أحمد، العظام</td>
+
+
+                    </tr>
+                    <!-- Appointment 5 -->
+                    <tr>
+                        <td>خالد سعيد</td>
+                        <td>4:00 م - 4:30 م</td>
+                        <td>د. كريم، الأعصاب</td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class ="col-6" style="display: flex; justify-content: center; align-items: center; height: 400px;">
+            <canvas id="appointmentChart" style="width: 100%; height: 100%;"></canvas>
+        </div>
+    </div>
 </div>
+
+@section Scripts{
+    <script>
+        // Data for the chart
+        const data = {
+            labels: ['الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت', 'الأحد'],
+            datasets: [{
+                label: 'عدد المواعيد',
+                data: [12, 19, 8, 15, 10, 7, 14], // Example data
+                borderColor: '#4CAF50', // Green line color
+                backgroundColor: 'rgba(75, 192, 192, 0.2)', // Fill color
+                borderWidth: 3,
+                pointBackgroundColor: '#4CAF50', // Point color
+                pointRadius: 5,
+                pointHoverRadius: 7,
+                fill: true, // Fill area under the line
+                tension: 0.4, // Smoothness of the line
+            }]
+        };
+
+        // Configuration for the chart
+        const config = {
+            type: 'line', // Type of chart (line, bar, pie, etc.)
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false, // Allow custom height
+                scales: {
+                    y: {
+                        beginAtZero: true, // Start y-axis from 0
+                        title: {
+                            display: true,
+                            text: 'عدد المواعيد',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        },
+                        grid: {
+                            color: '#e0e0e0', // Light gray grid lines
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'أيام الأسبوع',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        },
+                        grid: {
+                            color: '#e0e0e0', // Light gray grid lines
+                        }
+                    }
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'المواعيد الأسبوعية للمرضى',
+                        font: {
+                            size: 18,
+                            weight: 'bold'
+                        }
+                    },
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            font: {
+                                size: 14
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        // Render the chart
+        const appointmentChart = new Chart(
+            document.getElementById('appointmentChart'),
+            config
+        );
+    </script>
+}
