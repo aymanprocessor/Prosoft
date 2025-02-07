@@ -25,6 +25,56 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             _Context = Context;
             _mapper = mapper;
         }
+        public async Task<IEnumerable<ClinicTran>> GetClinicTransAsync()
+        {
+            return await _Context.ClinicTrans.ToListAsync();
+        }
+        //public IEnumerable<ClinicTran> GetClinicTransactionsWithDoctorAndPatient()
+        //{
+        //    var Trans = from ct in _Context.ClinicTrans
+        //                join d in _Context.Doctors on new { x1 = ct.BranchId, x2 = ct.DrCode } equals new { x1 = (int?)d.BranchId, x2 = (int?)d.DrId }
+        //                join p in _Context.Pats on new { x1 = ct.BranchId, x2 = ct.PatId } equals new { x1 = (int?)p.BranchId, x2 = (int?)p.PatId }
+        //                select
+        //}
+
+
+        public async Task<IEnumerable<ClinicTran>> ClinicTransRangeFilter(string range)
+        {
+            var today = DateTime.Today;
+            var Trans = _Context.ClinicTrans.AsQueryable();
+            switch (range)
+            {
+                case "today":
+                   return await Trans.Where(c => c.ExDate!.Value.Date == today.Date).ToListAsync();
+                case "tomorrow":
+                    return await Trans.Where(c => c.ExDate!.Value.Date == today.AddDays(1).Date).ToListAsync();
+                case "week":
+                    var endOfWeek = today.AddDays(7);
+                    return await Trans.Where(c => c.ExDate!.Value.Date >= today.Date && c.ExDate!.Value.Date <= endOfWeek.Date).ToListAsync();
+                case "month":
+                    var endOfMonth = today.AddMonths(1);
+                    return await Trans.Where(c => c.ExDate!.Value.Date >= today.Date && c.ExDate!.Value.Date <= endOfMonth.Date).ToListAsync();
+                default:
+                    return await Trans.ToListAsync();
+
+            }
+        }
+        public int ClinicTransCounts()
+        {
+            return _Context.ClinicTrans.Count();
+        }
+        public int ClinicTransCountsDaily()
+        {
+            return _Context.ClinicTrans.Count(c => c.ExDate!.Value.Date == DateTime.Now.Date );
+
+        }
+        public int ClinicTransCountsWeekly()
+        {
+            var today = DateTime.Now;
+            var startOfWeek = today.AddDays(-today.DayOfYear);
+            return _Context.ClinicTrans.Count(c => c.ExDate!.Value.Date <= today.Date && c.ExDate!.Value.Date >= startOfWeek.Date);
+
+        }
         public async Task<List<ClinicTransViewDTO>> GetClinicTransByAdmissionAsync(int visitId, int flag)
         {
             List<ClinicTransViewDTO> clinicTransDTO = await _Context.ClinicTrans

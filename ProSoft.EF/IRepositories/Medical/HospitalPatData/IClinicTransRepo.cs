@@ -1,5 +1,6 @@
 ﻿using ProSoft.EF.DTOs.Medical.HospitalPatData;
 using ProSoft.EF.DTOs.Stocks;
+using ProSoft.EF.Models.Medical.HospitalPatData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,10 @@ namespace ProSoft.EF.IRepositories.Medical.HospitalPatData
 {
     public interface IClinicTransRepo
     {
+        Task<IEnumerable<ClinicTran>> ClinicTransRangeFilter(string range);
+        int ClinicTransCounts();
+        int ClinicTransCountsDaily();
+        int ClinicTransCountsWeekly();
         Task<List<ClinicTransViewDTO>> GetClinicTransByAdmissionAsync(int visitId, int flag);
         Task<ClinicTransEditAddDTO> GetClinicTransByIdAsync(int checkId);
         Task<ClinicTransEditAddDTO> GetEmptyClinicTransAsync();

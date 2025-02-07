@@ -12,6 +12,9 @@ namespace ProSoft.EF.IRepositories.Medical.HospitalPatData
     {
         // ----------------- Ayman Saad ----------------- //
         Task<List<PatViewDTO>> GetPatientsByDoctorIdAndDateAsync(int doctorId, DateTime date);
+        int GetPatientCounts();
+        int GetPatientCountsDaily();
+        int GetPatientCountsWeekly();
         // ----------------- Ayman Saad ----------------- //
 
         Task<List<PatViewDTO>> GetAllPatsAsync();

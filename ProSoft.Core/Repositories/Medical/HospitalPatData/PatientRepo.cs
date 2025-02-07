@@ -31,6 +31,21 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             return query.ToList();
             
         }
+
+        public int GetPatientCounts()
+        {
+            return _Context.Pats.Count();
+        }
+        public int GetPatientCountsDaily()
+        {
+            return _Context.Pats.Count(p => p.PatDate!.Value.Date == DateTime.Now.Date);
+        }
+        public  int GetPatientCountsWeekly()
+        {
+            var today = DateTime.Today;
+            var startOfWeek = today.AddDays(-(int)today.DayOfWeek);
+            return _Context.Pats.Count(p => p.PatDate!.Value.Date <= DateTime.Now.Date && p.PatDate.Value.Date >= startOfWeek);
+        }
         // ------------------ Ayman Saad ------------------ // 
 
         public async Task<List<PatViewDTO>> GetAllPatsAsync()
