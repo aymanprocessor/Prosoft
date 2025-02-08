@@ -523,3 +523,7 @@ a[disabled]{
 .colored-toast .swal2-html-container {
     color: white;
 }
+
+.cursor-pointer{
+   cursor:pointer;
+}
