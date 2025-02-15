@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Login";
     Layout = null; // Temporarily remove layout for debugging
-    SelectList users = new SelectList(Model.users, "UserCode", "UserName");
+    //SelectList users = new SelectList(Model.users, "UserCode", "UserName");
 }
 @inject IViewLocalizer localizer
 
@@ -32,7 +32,7 @@
             <h2 class="text-center mb-4" style="color: #00796b;">@localizer["User Login"]</h2>
             <div class="mb-3">
                 <label asp-for="UserCode" class="form-label" style="color: #004d40;">@localizer["User Name"]</label>
-                <select asp-for="UserCode" asp-items="users" class="form-control text-center" style="border-color: #b2dfdb;">
+                <select asp-for="UserCode" asp-items="ViewBag.users" class="form-control text-center" style="border-color: #b2dfdb;">
                     <option value="">@localizer["Choose User"]</option>
                 </select>
                 <span asp-validation-for="UserCode" class="text-danger"></span>
@@ -40,7 +40,7 @@
             <div class="mb-3">
                 <label asp-for="PassWord" class="form-label" style="color: #004d40;">@localizer["Password"]</label>
                 <div class="input-field position-relative">
-                    <input asp-for="PassWord" class="form-control" type="password" style="border-color: #b2dfdb;" />
+                    <input asp-for="PassWord" class="form-control text-center" type="password" style="border-color: #b2dfdb;" />
                     <i class="bx bx-hide show-hide position-absolute top-50 end-0 translate-middle-y me-2" style="color: #00796b; cursor: pointer;"></i>
                 </div>
                 <span asp-validation-for="PassWord" class="text-danger"></span>

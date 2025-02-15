@@ -7,6 +7,7 @@ using ProSoft.EF.IRepositories;
 using ProSoft.EF.IRepositories.Shared;
 using ProSoft.EF.Models;
 using ProSoft.EF.Models.Shared;
+using ProSoft.UI.Global;
 using System.Security.Claims;
 
 //declare SignInResult
@@ -53,7 +54,7 @@ namespace ProSoft.UI.Controllers
             if (ModelState.IsValid)
             {
                 // Set Id
-                var allUsers= await _userRepo.GetAllUsersAsync();
+                var allUsers = await _userRepo.GetAllUsersAsync();
                 userDTO.UserCode = allUsers.Count() == 0 ? 1 : allUsers.Max(obj => obj.UserCode) + 1;
 
                 // Mapping from view model
@@ -100,47 +101,50 @@ namespace ProSoft.UI.Controllers
         //Get Login
         public async Task<IActionResult> Login()
         {
-            List<AppUser> users = await _userRepo.GetAllUsersAsync();
-            var userLoginDTOs = new UserLoginDTO();
-            userLoginDTOs.users = _mapper.Map<List<UserDTO>>(users);
-            return View(userLoginDTOs);
+            ViewBag.users = (await _userRepo.GetAllUsersAsync()).ToSelectListItem(u => u.UserName, u => u.UserCode.ToString());
+            //var userLoginDTOs = new UserLoginDTO();
+            //userLoginDTOs.users = _mapper.Map<List<UserDTO>>(users);
+            return View();
         }
         //Get Login
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(UserLoginDTO userDTO)
         {
-           if (ModelState.IsValid) 
-           {
-                AppUser user = await _userRepo.GetUserByIdAsync(userDTO.UserCode);
-                bool checkkPassword = await _userManager.CheckPasswordAsync(user, userDTO.PassWord);
-                if (user != null && checkkPassword) 
-                {
-                    Branch branch = await _userRepo.GetUserBranchAsync(Convert.ToInt32(user.BranchId));
-                    var claims = new List<Claim>
+            ViewBag.users = (await _userRepo.GetAllUsersAsync()).ToSelectListItem(u => u.UserName, u => u.UserCode.ToString());
+
+            if (!ModelState.IsValid)
+            {
+
+                return View(userDTO);
+            }
+            AppUser user = await _userRepo.GetUserByIdAsync(userDTO.UserCode);
+            bool checkkPassword = await _userManager.CheckPasswordAsync(user, userDTO.PassWord);
+            if (user != null && checkkPassword)
+            {
+                Branch branch = await _userRepo.GetUserBranchAsync(Convert.ToInt32(user.BranchId));
+                var claims = new List<Claim>
                     {
                         new ("F_Year", user.FYear.ToString()),
                         new ("U_Branch_Name", branch.BranchDesc),
                         new ("U_Branch_Id", branch.BranchId.ToString()),
                         new ("User_Code", user.UserCode.ToString()),
                     };
-                    await _signInManager.SignInWithClaimsAsync(user, userDTO.rememberMe, claims);
+                await _signInManager.SignInWithClaimsAsync(user, userDTO.rememberMe, claims);
 
-                    if (User.IsInRole("Admin"))
-                    {
-                        return RedirectToAction("Index", "Dashboard");
-                    }else
-                        return RedirectToAction("Index", "Home");
-          
+                if (User.IsInRole("Admin"))
+                {
+                    return RedirectToAction("Index", "Dashboard");
                 }
                 else
-                {
+                    return RedirectToAction("Index", "Home");
 
-                    ModelState.AddModelError("", "Invalid User Id or password");
-                    return View(userDTO);
-                }
             }
-            return View(userDTO);
+            else
+            {
+
+                return View();
+            }
         }
         public async Task<IActionResult> Logout()
         {
@@ -212,7 +216,7 @@ namespace ProSoft.UI.Controllers
         {
             return View();
         }
-        
+
         // Post Change Financial Year
         [HttpPost]
         [ValidateAntiForgeryToken]
