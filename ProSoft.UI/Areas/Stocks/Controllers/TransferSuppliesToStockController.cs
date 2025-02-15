@@ -5,7 +5,6 @@ using ProSoft.EF.DTOs.Stocks.TransferSuppliesToStocks;
 using ProSoft.EF.IRepositories.Medical.HospitalPatData;
 using ProSoft.EF.IRepositories.Shared;
 using ProSoft.EF.IRepositories.Stocks;
-using ProSoft.EF.Migrations;
 
 namespace ProSoft.UI.Areas.Stocks.Controllers
 {

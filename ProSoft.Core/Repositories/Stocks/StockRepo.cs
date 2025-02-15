@@ -6,16 +6,9 @@ using ProSoft.EF.DTOs.Accounts;
 using ProSoft.EF.DTOs.Shared;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.IRepositories.Stocks;
-using ProSoft.EF.Migrations;
 using ProSoft.EF.Models.Accounts;
 using ProSoft.EF.Models.Shared;
 using ProSoft.EF.Models.Stocks;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProSoft.Core.Repositories.Stocks
 {

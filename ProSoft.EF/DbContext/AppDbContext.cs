@@ -21,8 +21,14 @@ namespace ProSoft.EF.DbContext
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly AuditScope _auditScope;
-        public AppDbContext(DbContextOptions<AppDbContext> options, AuditScope auditScope, IHttpContextAccessor httpContextAccessor) : base(options)
+        private readonly string _connectionString;
+        private readonly string _provider;
+
+       
+        public AppDbContext(string connectionString, string provider, AuditScope auditScope = default!, IHttpContextAccessor httpContextAccessor = default!)
         {
+            _connectionString = connectionString;
+            _provider = provider;
             _auditScope = auditScope;
             _httpContextAccessor = httpContextAccessor;
         }
@@ -92,12 +98,43 @@ namespace ProSoft.EF.DbContext
 
         }
 
-
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (_provider == "SqlServer")
+            {
+                optionsBuilder.UseSqlServer(_connectionString);
+            }
+            else if (_provider == "Oracle")
+            {
+                optionsBuilder.UseOracle(_connectionString);
+            }
+            else
+            {
+                throw new ArgumentException("Unsupported database provider.");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
+            if (_provider == "Oracle")
+            {
+                // Example: Use Oracle sequences for primary keys
+                //modelBuilder.Entity<YourEntity>(entity =>
+                //{
+                //    
+                //});
+            }
+
+            if (_provider == "SqlServer")
+            {
+                // Example: Use SqlServer sequences for primary keys
+                //modelBuilder.Entity<YourEntity>(entity =>
+                //{
+                //    
+                //});
+            }
             // ------------------- Stored Procedures ------------------- //
 
             builder.Entity<ItemBalance>().HasNoKey();

@@ -1,12 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ProSoft.Core.Repositories.Treasury;
-using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.DTOs.Treasury;
 using ProSoft.EF.IRepositories.Treasury;
-using ProSoft.EF.Migrations;
-using ProSoft.EF.Models.Stocks;
 using ProSoft.EF.Models.Treasury;
 
 namespace ProSoft.UI.Areas.Treasury.Controllers

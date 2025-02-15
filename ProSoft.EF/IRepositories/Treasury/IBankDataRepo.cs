@@ -1,5 +1,4 @@
-﻿using ProSoft.EF.Migrations;
-using ProSoft.EF.Models.Treasury;
+﻿using ProSoft.EF.Models.Treasury;
 using System;
 using System.Collections.Generic;
 using System.Linq;

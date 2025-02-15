@@ -7,22 +7,13 @@ using ProSoft.EF.DTOs.Shared;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.DTOs.Treasury;
 using ProSoft.EF.IRepositories.Stocks;
-using ProSoft.EF.Migrations;
 using ProSoft.EF.Models;
 using ProSoft.EF.Models.Accounts;
 using ProSoft.EF.Models.Medical.HospitalPatData;
 using ProSoft.EF.Models.Shared;
 using ProSoft.EF.Models.Stocks;
 using ProSoft.EF.Models.Treasury;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Security;
-using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace ProSoft.Core.Repositories.Stocks
 {

@@ -43,13 +43,22 @@ var builder = WebApplication.CreateBuilder(args);
 
 //Configration fo context connectio string
 //var sqlServerConnection = builder.Configuration.GetConnectionString("SqlServerConnection") ?? throw new InvalidOperationException("Connection string 'Sql Server Connection' not found.");
-var oracleConnection = builder.Configuration.GetConnectionString("OracleConnection") ?? throw new InvalidOperationException("Connection string 'Oracle Connection' not found.");
+var dbProvider = builder.Configuration["DatabaseProvider"];
+var connectionString = builder.Configuration.GetConnectionString($"{dbProvider}Connection");
+if (string.IsNullOrEmpty(dbProvider) || string.IsNullOrEmpty(connectionString))
+{
+    throw new InvalidOperationException("Database provider or connection string not configured.");
+}
 
+builder.Services.AddScoped(sp =>
+{
+    return new AppDbContext(connectionString, dbProvider);
+});
 //builder.Services.AddDbContext<AppDbContext>(options =>
 //    options.UseSqlServer(sqlServerConnection));
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseOracle(oracleConnection));
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//    options.UseOracle(oracleConnection));
 
 // Register for AutoMapper service
 builder.Services.AddAutoMapper(typeof(AutoMap)); //builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
