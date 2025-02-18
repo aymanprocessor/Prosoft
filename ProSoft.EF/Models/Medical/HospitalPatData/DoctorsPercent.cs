@@ -34,16 +34,16 @@ public partial class DoctorsPercent
     [Column("SRV_FLAG")]
     public int? SrvFlag { get; set; }
 
-    [Column("DR_VAL", TypeName = "decimal(11, 2)")]
+    [Column("DR_VAL")]
     public decimal? DrVal { get; set; }
 
-    [Column("VALUE_SERVICE", TypeName = "decimal(11, 2)")]
+    [Column("VALUE_SERVICE")]
     public decimal? ValueService { get; set; }
 
-    [Column("DR_VAL_CONTRACT", TypeName = "decimal(11, 2)")]
+    [Column("DR_VAL_CONTRACT")]
     public decimal? DrValContract { get; set; }
 
-    [Column("DR_PERC_CONTRACT", TypeName = "decimal(5, 2)")]
+    [Column("DR_PERC_CONTRACT")]
     public decimal? DrPercContract { get; set; }
 
     [Column("DR_VAL_FLG")]

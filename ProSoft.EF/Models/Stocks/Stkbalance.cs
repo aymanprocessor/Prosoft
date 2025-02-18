@@ -26,14 +26,14 @@ namespace ProSoft.EF.Models.Stocks
 
         public string? ItemCode { get; set; }
 
-        [Column("QTY_START", TypeName = "decimal(12, 3)"), DefaultValue(0)]
+        [Column("QTY_START"), DefaultValue(0)]
         public decimal? QtyStart { get; set; }
 
         [Column("QTY_START_DT")]
         [Precision(6)]
         public DateTime? QtyStartDt { get; set; }
 
-        [Column("QTY_CURR", TypeName = "decimal(8, 2)")]
+        [Column("QTY_CURR")]
         public decimal? QtyCurr { get; set; }
 
         [Column("QTY_CURR_DT")]
@@ -45,13 +45,13 @@ namespace ProSoft.EF.Models.Stocks
         [Unicode(false)]
         public string? ItemFlag { get; set; }
 
-        [Column("ITEM_PRICE", TypeName = "decimal(12, 2)"), DefaultValue(0)]
+        [Column("ITEM_PRICE"), DefaultValue(0)]
         public decimal? ItemPrice { get; set; }
 
         [Column("F_YEAR")]
         public int? FYear { get; set; }
 
-        [Column("ITEM_PRICE2", TypeName = "decimal(12, 2)"), DefaultValue(0)]
+        [Column("ITEM_PRICE2"), DefaultValue(0)]
         public decimal? ItemPrice2 { get; set; }
 
         [Column("MAIN_CODE")]
@@ -99,16 +99,16 @@ namespace ProSoft.EF.Models.Stocks
         [ForeignKey("UnitCodee")]
         public int? UnitCode { get; set; }
 
-        [Column("EXP_DATE", TypeName = "datetime")]
+        [Column("EXP_DATE")]
         public DateTime? ExpDate { get; set; }
 
         [Column("POST_POS")]
         public int? PostPos { get; set; }
 
-        [Column("QTY_LAST", TypeName = "decimal(12, 3)")]
+        [Column("QTY_LAST")]
         public decimal? QtyLast { get; set; }
 
-        [Column("COST_LAST_VAL", TypeName = "decimal(12, 2)")]
+        [Column("COST_LAST_VAL")]
         public decimal? CostLastVal { get; set; }
 
         [Column("EXP_M")]

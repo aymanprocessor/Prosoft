@@ -23,10 +23,10 @@ public partial class CostCenter
     [Column("COST_FLAG")]
     public int? CostFlag { get; set; }
 
-    [Column("DEPIT_VAL", TypeName = "decimal(11, 3)")]
+    [Column("DEPIT_VAL")]
     public decimal? DepitVal { get; set; }
 
-    [Column("CREDIT_VAL", TypeName = "decimal(11, 3)")]
+    [Column("CREDIT_VAL")]
     public decimal? CreditVal { get; set; }
 
     [Column("F_YEAR")]

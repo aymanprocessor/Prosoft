@@ -22,7 +22,7 @@ namespace ProSoft.EF.Models.MedicalRecords
         [Unicode(false)]
         public string? PatSsn { get; set; }
 
-        [Column("ENTRY_DATE", TypeName = "datetime")]
+        [Column("ENTRY_DATE")]
         public DateTime? EntryDate { get; set; }
 
         [Column("TROP")]
@@ -30,34 +30,34 @@ namespace ProSoft.EF.Models.MedicalRecords
         [Unicode(false)]
         public string? Trop { get; set; }
 
-        [Column("LDH", TypeName = "decimal(6, 2)")]
+        [Column("LDH")]
         public decimal? Ldh { get; set; }
 
-        [Column("PLATELET", TypeName = "decimal(6, 2)")]
+        [Column("PLATELET")]
         public decimal? Platelet { get; set; }
 
-        [Column("BIL", TypeName = "decimal(6, 2)")]
+        [Column("BIL")]
         public decimal? Bil { get; set; }
 
-        [Column("AST", TypeName = "decimal(6, 2)")]
+        [Column("AST")]
         public decimal? Ast { get; set; }
 
-        [Column("LDL", TypeName = "decimal(6, 2)")]
+        [Column("LDL")]
         public decimal? Ldl { get; set; }
 
-        [Column("TG", TypeName = "decimal(6, 2)")]
+        [Column("TG")]
         public decimal? Tg { get; set; }
 
-        [Column("CR_BEFORE_ANGIOPLASTY", TypeName = "decimal(6, 2)")]
+        [Column("CR_BEFORE_ANGIOPLASTY")]
         public decimal? CrBeforeAngioplasty { get; set; }
 
-        [Column("UREA", TypeName = "decimal(6, 2)")]
+        [Column("UREA")]
         public decimal? Urea { get; set; }
 
         [Column(TypeName = "decimal(6, 2)")]
         public decimal? K { get; set; }
 
-        [Column("MG", TypeName = "decimal(6, 2)")]
+        [Column("MG")]
         public decimal? Mg { get; set; }
 
         [Column("HCV_AB")]
@@ -65,7 +65,7 @@ namespace ProSoft.EF.Models.MedicalRecords
         [Unicode(false)]
         public string? HcvAb { get; set; }
 
-        [Column("HCV_A1C", TypeName = "decimal(6, 2)")]
+        [Column("HCV_A1C")]
         public decimal? HcvA1c { get; set; }
 
         [Column("NOTES")]
@@ -73,37 +73,37 @@ namespace ProSoft.EF.Models.MedicalRecords
         [Unicode(false)]
         public string? Notes { get; set; }
 
-        [Column("CKMB", TypeName = "decimal(6, 2)")]
+        [Column("CKMB")]
         public decimal? Ckmb { get; set; }
 
-        [Column("HB", TypeName = "decimal(6, 2)")]
+        [Column("HB")]
         public decimal? Hb { get; set; }
 
-        [Column("WBCS", TypeName = "decimal(6, 2)")]
+        [Column("WBCS")]
         public decimal? Wbcs { get; set; }
 
-        [Column("ALT", TypeName = "decimal(6, 2)")]
+        [Column("ALT")]
         public decimal? Alt { get; set; }
 
-        [Column("ALB", TypeName = "decimal(6, 2)")]
+        [Column("ALB")]
         public decimal? Alb { get; set; }
 
-        [Column("HDL", TypeName = "decimal(6, 2)")]
+        [Column("HDL")]
         public decimal? Hdl { get; set; }
 
-        [Column("CHOLESTEROL", TypeName = "decimal(6, 2)")]
+        [Column("CHOLESTEROL")]
         public decimal? Cholesterol { get; set; }
 
-        [Column("CR_48_H_AFTER_ANGIOPLASTY", TypeName = "decimal(6, 2)")]
+        [Column("CR_48_H_AFTER_ANGIOPLASTY")]
         public decimal? Cr48HAfterAngioplasty { get; set; }
 
-        [Column("INR", TypeName = "decimal(6, 2)")]
+        [Column("INR")]
         public decimal? Inr { get; set; }
 
-        [Column("NA", TypeName = "decimal(6, 2)")]
+        [Column("NA")]
         public decimal? Na { get; set; }
 
-        [Column("CA", TypeName = "decimal(6, 2)")]
+        [Column("CA")]
         public decimal? Ca { get; set; }
 
         [Column("HBVSAG")]
@@ -111,13 +111,13 @@ namespace ProSoft.EF.Models.MedicalRecords
         [Unicode(false)]
         public string? Hbvsag { get; set; }
 
-        [Column("TSH", TypeName = "decimal(6, 2)")]
+        [Column("TSH")]
         public decimal? Tsh { get; set; }
 
         [Column("PAT_ID")]
         public int? PatId { get; set; }
 
-        [Column("SERIAL", TypeName = "numeric(8, 0)")]
+        [Column("SERIAL")]
         public decimal? Serial { get; set; }
 
         [ForeignKey("PatId")]

@@ -18,10 +18,10 @@ namespace ProSoft.EF.Models.Stocks
         [Column("BRANCH_ID")]
         public int? BranchId { get; set; }
 
-        [Column("F_DATE", TypeName = "datetime")]
+        [Column("F_DATE")]
         public DateTime? FDate { get; set; }
 
-        [Column("T_DATE", TypeName = "datetime")]
+        [Column("T_DATE")]
         public DateTime? TDate { get; set; }
 
         [Column("STORE_ID")]
@@ -32,13 +32,13 @@ namespace ProSoft.EF.Models.Stocks
         [Unicode(false)]
         public string? ItemCd { get; set; }
 
-        [Column("REORD_QTY", TypeName = "decimal(9, 2)")]
+        [Column("REORD_QTY")]
         public decimal? ReordQty { get; set; }
 
-        [Column("MIN_QTY", TypeName = "decimal(9, 2)")]
+        [Column("MIN_QTY")]
         public decimal? MinQty { get; set; }
 
-        [Column("MAX_QTY", TypeName = "decimal(9, 2)")]
+        [Column("MAX_QTY")]
         public decimal? MaxQty { get; set; }
     }
 }

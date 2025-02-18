@@ -32,16 +32,16 @@ namespace ProSoft.EF.Models.Accounts
         [Unicode(false)]
         public string? SubCode { get; set; }
 
-        [Column("F_DEP_OR", TypeName = "decimal(12, 2)")]
+        [Column("F_DEP_OR")]
         public decimal? FDepOr { get; set; }
 
-        [Column("F_CREDIT_OR", TypeName = "decimal(12, 2)")]
+        [Column("F_CREDIT_OR")]
         public decimal? FCreditOr { get; set; }
 
-        [Column("F_DEP_CUR", TypeName = "decimal(12, 2)")]
+        [Column("F_DEP_CUR")]
         public decimal? FDepCur { get; set; }
 
-        [Column("F_CREDIT_CUR", TypeName = "decimal(12, 2)")]
+        [Column("F_CREDIT_CUR")]
         public decimal? FCreditCur { get; set; }
 
         [Column("CUR_CODE")]
@@ -49,7 +49,7 @@ namespace ProSoft.EF.Models.Accounts
         [Unicode(false)]
         public string? CurCode { get; set; }
 
-        [Column("CUR_RATE", TypeName = "decimal(6, 5)")]
+        [Column("CUR_RATE")]
         public decimal? CurRate { get; set; }
 
         [Column("ACC_NAME")]

@@ -28,7 +28,7 @@ namespace ProSoft.EF.Models.Treasury
         [Column("G_TYPE")]
         public int? GType { get; set; }
 
-        [Column("G_VALUE", TypeName = "decimal(11, 2)")]
+        [Column("G_VALUE")]
         public decimal? GValue { get; set; }
 
         public ICollection<AccSafeCash>? AccSafeCashes { get; set; }

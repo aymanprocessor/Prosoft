@@ -41,7 +41,7 @@ namespace ProSoft.EF.Models.Accounts
         [Unicode(false)]
         public string? TransDesc { get; set; }
 
-        [Column("TOTAL_TRANS", TypeName = "decimal(12, 2)")]
+        [Column("TOTAL_TRANS")]
         public decimal? TotalTrans { get; set; }
 
         [Column("OK_POST")]
@@ -58,7 +58,7 @@ namespace ProSoft.EF.Models.Accounts
         [Precision(6)]
         public DateTime? AprDate { get; set; }
 
-        [Column("CUR_RATE", TypeName = "decimal(9, 6)")]
+        [Column("CUR_RATE")]
         public decimal? CurRate { get; set; }
 
         [Column("YEAR_TRANS_NO")]
@@ -83,7 +83,7 @@ namespace ProSoft.EF.Models.Accounts
         [Unicode(false)]
         public string? BrReplc { get; set; }
 
-        [Column("ENTRY_DATE", TypeName = "datetime")]
+        [Column("ENTRY_DATE")]
         public DateTime? EntryDate { get; set; }
 
         [Column("M_CODE_DTL")]
@@ -104,7 +104,7 @@ namespace ProSoft.EF.Models.Accounts
         [Column("USER_CODE_MODIFY")]
         public int? UserCodeModify { get; set; }
 
-        [Column("USER_DATE_MODIFY", TypeName = "datetime")]
+        [Column("USER_DATE_MODIFY")]
         public DateTime? UserDateModify { get; set; }
         public ICollection<AccTransDetail>? AccTransDetails { get; set; }
 

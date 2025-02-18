@@ -70,13 +70,13 @@ public partial class SubItem
     [Column("SUB")]
     public int? Sub { get; set; }
 
-    [Column("ITEM_PRICE", TypeName = "decimal(9, 2)")]
+    [Column("ITEM_PRICE")]
     public decimal? ItemPrice { get; set; }
 
-    [Column("ITEM_TAX", TypeName = "decimal(9, 2)")]
+    [Column("ITEM_TAX")]
     public decimal? ItemTax { get; set; }
 
-    [Column("LEMIT_CALL", TypeName = "decimal(8, 2)")]
+    [Column("LEMIT_CALL")]
     public decimal? LemitCall { get; set; }
 
     [Column("REPLCATE")]

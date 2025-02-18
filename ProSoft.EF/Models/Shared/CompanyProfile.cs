@@ -84,7 +84,7 @@ namespace ProSoft.EF.Models.Shared
         [Unicode(false)]
         public string? LogoHeader { get; set; }
 
-        [Column("LAST_UP_DATE", TypeName = "datetime")]
+        [Column("LAST_UP_DATE")]
         public DateTime? LastUpDate { get; set; }
     }
 }

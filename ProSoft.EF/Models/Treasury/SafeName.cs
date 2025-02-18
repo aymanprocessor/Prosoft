@@ -38,10 +38,10 @@ public partial class SafeName
     [Column("USER_MODIFY_CD")]
     public int? UserModifyCd { get; set; }
 
-    [Column("ENTRY_DATE", TypeName = "datetime")]
+    [Column("ENTRY_DATE")]
     public DateTime? EntryDate { get; set; }
 
-    [Column("MODIFY_DATE", TypeName = "datetime")]
+    [Column("MODIFY_DATE")]
     public DateTime? ModifyDate { get; set; }
     public ICollection<AccSafeCash>? AccSafeCashes { get; set; }
     public ICollection<AccSafeCheck>? AccSafeChecks { get; set; }

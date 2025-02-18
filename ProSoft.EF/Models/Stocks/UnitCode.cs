@@ -18,7 +18,7 @@ public partial class UnitCode
     [Unicode(false)]
     public string? Names { get; set; }
 
-    [Column("ITEM_QTY", TypeName = "decimal(15, 3)")]
+    [Column("ITEM_QTY")]
     public decimal? ItemQty { get; set; }
 
     [Column("FLAG1")]

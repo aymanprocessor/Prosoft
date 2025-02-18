@@ -45,13 +45,13 @@ public partial class Pat
     [Unicode(false)]
     public string? PatMobile { get; set; }
 
-    [Column("BIRTH_DATE", TypeName = "datetime")]
+    [Column("BIRTH_DATE")]
     public DateTime? BirthDate { get; set; }
 
     [Column("PERSON_KIND")]
     public double? PersonKind { get; set; }
 
-    [Column("PAT_DATE", TypeName = "datetime")]
+    [Column("PAT_DATE")]
     public DateTime? PatDate { get; set; }
 
     [Column("USER_CODE")]
@@ -83,7 +83,7 @@ public partial class Pat
     [Unicode(false)]
     public string? BrReplc { get; set; }
 
-    [Column("ENTRY_DATE", TypeName = "datetime")]
+    [Column("ENTRY_DATE")]
     public DateTime? EntryDate { get; set; }
 
     [Column("PAT_EMAIL")]
@@ -148,7 +148,7 @@ public partial class Pat
     [Column("ENTRY_NO")]
     public double? EntryNo { get; set; }
 
-    [Column("ENTRY_TIME", TypeName = "datetime")]
+    [Column("ENTRY_TIME")]
     public DateTime? EntryTime { get; set; }
 
     [Column("PAT_HOSPITAL")]

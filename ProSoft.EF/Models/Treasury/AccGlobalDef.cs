@@ -31,7 +31,7 @@ namespace ProSoft.EF.Models.Shared
         [Unicode(false)]
         public string? CodeDesc { get; set; }
 
-        [Column("CUR_RATE", TypeName = "decimal(9, 6)")]
+        [Column("CUR_RATE")]
         public decimal? CurRate { get; set; }
 
         [Column("CODE_KEY")]

@@ -78,7 +78,7 @@ public partial class Doctor
     [Unicode(false)]
     public string? OtherDesc { get; set; }
 
-    [Column("VISIT_VAL", TypeName = "decimal(11, 2)")]
+    [Column("VISIT_VAL")]
     public decimal? VisitVal { get; set; }
 
     [Column("BR_REPLC")]

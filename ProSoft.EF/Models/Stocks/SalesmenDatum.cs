@@ -49,10 +49,10 @@ namespace ProSoft.EF.Models.Stocks
         [Unicode(false)]
         public string? SmActive { get; set; }
 
-        [Column("TARGET", TypeName = "decimal(10, 2)")]
+        [Column("TARGET")]
         public decimal? Target { get; set; }
 
-        [Column("SALARY", TypeName = "decimal(10, 3)")]
+        [Column("SALARY")]
         public decimal? Salary { get; set; }
 
         [Column("FLAG")]

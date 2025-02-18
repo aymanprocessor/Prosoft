@@ -21,7 +21,7 @@ public partial class DrDegree
     [Column("BRANCH_ID")]
     public int? BranchId { get; set; }
 
-    [Column("DR_PERC", TypeName = "decimal(5, 2)")]
+    [Column("DR_PERC")]
     public decimal? DrPerc { get; set; }
 
     [Column("REPLCATE")]

@@ -39,7 +39,7 @@ public partial class MedicalAnalysisSub
     [Column("MEDICAL_FLAG")]
     public double? MedicalFlag { get; set; }
 
-    [Column("ANALYSIS_VAL", TypeName = "decimal(11, 2)")]
+    [Column("ANALYSIS_VAL")]
     public decimal? AnalysisVal { get; set; }
 
     [Column("SUB_NAME2")]
@@ -47,6 +47,6 @@ public partial class MedicalAnalysisSub
     [Unicode(false)]
     public string? SubName2 { get; set; }
 
-    [Column("ANALYSIS_COST", TypeName = "decimal(11, 2)")]
+    [Column("ANALYSIS_COST")]
     public decimal? AnalysisCost { get; set; }
 }

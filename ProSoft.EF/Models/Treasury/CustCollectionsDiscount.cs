@@ -23,10 +23,10 @@ namespace ProSoft.EF.Models.Treasury
         [Precision(6)]
         public DateTime? ReceiptDate { get; set; }
 
-        [Column("DISC_PRC", TypeName = "decimal(4, 2)")]
+        [Column("DISC_PRC")]
         public decimal? DiscPrc { get; set; }
 
-        [Column("DISC_VALUE", TypeName = "decimal(15, 2)")]
+        [Column("DISC_VALUE")]
         public decimal? DiscValue { get; set; }
 
         [Column("DOC_TYPE")]

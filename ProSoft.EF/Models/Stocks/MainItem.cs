@@ -63,7 +63,7 @@ public partial class MainItem
     [Column("POLICY_PRICE")]
     public int? PolicyPrice { get; set; }
 
-    [Column("SERVICE_PRC", TypeName = "decimal(5, 2)")]
+    [Column("SERVICE_PRC")]
     public decimal? ServicePrc { get; set; }
 
     [Column("BR_REPLC")]

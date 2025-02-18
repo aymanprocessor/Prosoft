@@ -17,10 +17,10 @@ public partial class PriceListDetail
     [Column("P_L_ID")]
     public int? PLId { get; set; }
 
-    [Column("COMP_COV_PERCENTAGE", TypeName = "decimal(5, 2)")]
+    [Column("COMP_COV_PERCENTAGE")]
     public decimal? CompCovPercentage { get; set; }
 
-    [Column("COMP_VALUE", TypeName = "decimal(9, 2)")]
+    [Column("COMP_VALUE")]
     public decimal? CompValue { get; set; }
 
     [Column("COVERED")]
@@ -35,10 +35,10 @@ public partial class PriceListDetail
     [Column("SERV_ID")]
     public int? ServId { get; set; }
 
-    [Column("PL_VALUE", TypeName = "decimal(9, 2)")]
+    [Column("PL_VALUE")]
     public decimal? PlValue { get; set; }
 
-    [Column("P_L_DATE", TypeName = "datetime")]
+    [Column("P_L_DATE")]
     public DateTime? PLDate { get; set; }
 
     [Column("P_L_DETAIL_CODE")]
@@ -50,10 +50,10 @@ public partial class PriceListDetail
     [Column("REPLCATE")]
     public int? Replcate { get; set; }
 
-    [Column("PL_VALUE2", TypeName = "decimal(9, 2)")]
+    [Column("PL_VALUE2")]
     public decimal? PlValue2 { get; set; }
 
-    [Column("DISCOUT_COMP", TypeName = "decimal(5, 2)")]
+    [Column("DISCOUT_COMP")]
     public decimal? DiscoutComp { get; set; }
 
     [Column("SERV_DESC")]
@@ -61,25 +61,25 @@ public partial class PriceListDetail
     [Unicode(false)]
     public string? ServDesc { get; set; }
 
-    [Column("SERV_BEF_DESC", TypeName = "decimal(9, 2)")]
+    [Column("SERV_BEF_DESC")]
     public decimal? ServBefDesc { get; set; }
 
-    [Column("DR_PERC", TypeName = "decimal(5, 2)")]
+    [Column("DR_PERC")]
     public decimal? DrPerc { get; set; }
 
     [Column("USER_CODE")]
     public int? UserCode { get; set; }
 
-    [Column("PL_VALUE3", TypeName = "decimal(9, 2)")]
+    [Column("PL_VALUE3")]
     public decimal? PlValue3 { get; set; }
 
-    [Column("COMP_COV_PERCENTAGE2", TypeName = "decimal(5, 2)")]
+    [Column("COMP_COV_PERCENTAGE2")]
     public decimal? CompCovPercentage2 { get; set; }
 
-    [Column("COMP_VALUE2", TypeName = "decimal(9, 2)")]
+    [Column("COMP_VALUE2")]
     public decimal? CompValue2 { get; set; }
 
-    [Column("COST_CARE", TypeName = "decimal(11, 2)")]
+    [Column("COST_CARE")]
     public decimal? CostCare { get; set; }
 
     [Column("BR_REPLC")]
@@ -90,16 +90,16 @@ public partial class PriceListDetail
     [Column("SERV_ON_OFF")]
     public int? ServOnOff { get; set; }
 
-    [Column("ENTRY_DATE", TypeName = "datetime")]
+    [Column("ENTRY_DATE")]
     public DateTime? EntryDate { get; set; }
 
-    [Column("MODFY_DATE", TypeName = "datetime")]
+    [Column("MODFY_DATE")]
     public DateTime? ModfyDate { get; set; }
 
     [Column("USER_MODIFY")]
     public double? UserModify { get; set; }
 
-    [Column("EXTRA_VAL", TypeName = "decimal(9, 2)")]
+    [Column("EXTRA_VAL")]
     public decimal? ExtraVal { get; set; }
 
     [Column("ITEM_SRV_FLG")]
@@ -115,7 +115,7 @@ public partial class PriceListDetail
     [Unicode(false)]
     public string? ItemCode { get; set; }
 
-    [Column("EXTRA_VAL2", TypeName = "decimal(9, 2)")]
+    [Column("EXTRA_VAL2")]
     public decimal? ExtraVal2 { get; set; }
 
     [ForeignKey("BranchId")]

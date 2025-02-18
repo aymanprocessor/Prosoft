@@ -42,7 +42,7 @@ public partial class AccSafeCash
     [Unicode(false)]
     public string? PersonName { get; set; }
 
-    [Column("VALUE_PAY", TypeName = "decimal(12, 3)")]
+    [Column("VALUE_PAY")]
     public decimal? ValuePay { get; set; }
 
     [Column("COMMENTT")]
@@ -50,7 +50,7 @@ public partial class AccSafeCash
     [Unicode(false)]
     public string? Commentt { get; set; }
 
-    [Column("DISCOUNT_VAL", TypeName = "decimal(12, 3)")]
+    [Column("DISCOUNT_VAL")]
     public decimal? DiscountVal { get; set; }
 
     [Column("MAIN_CODE")]
@@ -78,10 +78,10 @@ public partial class AccSafeCash
     [Unicode(false)]
     public string? FlagPay { get; set; }
 
-    [Column("PROFIT_TAX", TypeName = "decimal(9, 3)")]
+    [Column("PROFIT_TAX")]
     public decimal? ProfitTax { get; set; }
 
-    [Column("VAL_PAY_AFTER", TypeName = "decimal(9, 3)")]
+    [Column("VAL_PAY_AFTER")]
     public decimal? ValPayAfter { get; set; }
 
     [Column("ACC_NAME")]
@@ -95,7 +95,7 @@ public partial class AccSafeCash
     [Column("FLAG")]
     public int? Flag { get; set; }
 
-    [Column("RATE1", TypeName = "decimal(7, 4)")]
+    [Column("RATE1")]
     public decimal? Rate1 { get; set; }
 
     [Column("F_MONTH")]
@@ -131,7 +131,7 @@ public partial class AccSafeCash
     [Column("PAT_RET_FLAG")]
     public int? PatRetFlag { get; set; }
 
-    [Column("ENTRY_DATE", TypeName = "datetime")]
+    [Column("ENTRY_DATE")]
     public DateTime? EntryDate { get; set; }
 
     [Column("BR_REPLC")]
@@ -148,7 +148,7 @@ public partial class AccSafeCash
     [Column("COST_CENTER_CODE")]
     public int? CostCenterCode { get; set; }
 
-    [Column("G_VALUE_PAY", TypeName = "decimal(12, 3)")]
+    [Column("G_VALUE_PAY")]
     public decimal? GValuePay { get; set; }
 
     [Column("SAFE_CODE2")]

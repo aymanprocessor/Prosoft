@@ -32,7 +32,7 @@ public partial class ClinicTran
     [Column("CLINIC_ID")]
     public int? ClinicId { get; set; }
 
-    [Column("EX_DATE", TypeName = "datetime")]
+    [Column("EX_DATE")]
     public DateTime? ExDate { get; set; }
 
     [Column("EX_DAY")]
@@ -52,7 +52,7 @@ public partial class ClinicTran
     [Column("ENTRY_STATUS")]
     public int? EntryStatus { get; set; }
 
-    [Column("VALUE_SERVICE", TypeName = "decimal(9, 2)")]
+    [Column("VALUE_SERVICE")]
     public decimal? ValueService { get; set; }
 
     [Column("PAT_EXTERNAL")]
@@ -73,7 +73,7 @@ public partial class ClinicTran
     [Column("COMP_ID")]
     public int? CompId { get; set; }
 
-    [Column("PATIENT_VALUE", TypeName = "decimal(9, 2)")]
+    [Column("PATIENT_VALUE")]
     public decimal? PatientValue { get; set; }
 
     [Column("CHECK_ID_CANCEL")]
@@ -94,7 +94,7 @@ public partial class ClinicTran
     [Column("QTY")]
     public int? Qty { get; set; }
 
-    [Column("PAT_TIME", TypeName = "datetime")]
+    [Column("PAT_TIME")]
     public DateTime? PatTime { get; set; }
 
     [Column("FLAG")]
@@ -108,31 +108,31 @@ public partial class ClinicTran
     [Unicode(false)]
     public string? PatPharName { get; set; }
 
-    [Column("CREATE_DATE", TypeName = "datetime")]
+    [Column("CREATE_DATE")]
     public DateTime? CreateDate { get; set; }
 
-    [Column("PAT_PERC", TypeName = "decimal(5, 2)")]
+    [Column("PAT_PERC")]
     public decimal? PatPerc { get; set; }
 
-    [Column("MODIFY_DATE_TIME", TypeName = "datetime")]
+    [Column("MODIFY_DATE_TIME")]
     public DateTime? ModifyDateTime { get; set; }
 
-    [Column("DR_VAL", TypeName = "decimal(9, 2)")]
+    [Column("DR_VAL")]
     public decimal? DrVal { get; set; }
 
-    [Column("HO_VAL", TypeName = "decimal(9, 2)")]
+    [Column("HO_VAL")]
     public decimal? HoVal { get; set; }
 
-    [Column("DR_VAL_PAT", TypeName = "decimal(9, 2)")]
+    [Column("DR_VAL_PAT")]
     public decimal? DrValPat { get; set; }
 
-    [Column("HO_VAL_PAT", TypeName = "decimal(9, 2)")]
+    [Column("HO_VAL_PAT")]
     public decimal? HoValPat { get; set; }
 
     [Column("BRANCH_ID")]
     public int? BranchId { get; set; }
 
-    [Column("COMP_VALUE", TypeName = "decimal(9, 2)")]
+    [Column("COMP_VALUE")]
     public decimal? CompValue { get; set; }
 
     [Column("WAIT_STATUS")]
@@ -144,7 +144,7 @@ public partial class ClinicTran
     [Column("VIST_CONFIRM")]
     public int? VistConfirm { get; set; }
 
-    [Column("WAIT_DATE", TypeName = "datetime")]
+    [Column("WAIT_DATE")]
     public DateTime? WaitDate { get; set; }
 
     [Column("WAIT_CONV")]
@@ -165,7 +165,7 @@ public partial class ClinicTran
     [Column("USER_CODE_MODIFY")]
     public int? UserCodeModify { get; set; }
 
-    [Column("CONV_DATE", TypeName = "datetime")]
+    [Column("CONV_DATE")]
     public DateTime? ConvDate { get; set; }
 
     [Column("STOCK_CODE")]
@@ -201,10 +201,10 @@ public partial class ClinicTran
     [Column("RESERVE_FLAG")]
     public int? ReserveFlag { get; set; }
 
-    [Column("UNIT_PRICE", TypeName = "decimal(9, 2)")]
+    [Column("UNIT_PRICE")]
     public decimal? UnitPrice { get; set; }
 
-    [Column("PAT_AD_DATE", TypeName = "datetime")]
+    [Column("PAT_AD_DATE")]
     public DateTime? PatAdDate { get; set; }
 
     [Column("DR_SEND")]
@@ -219,7 +219,7 @@ public partial class ClinicTran
     [Column("MACHINE")]
     public int? Machine { get; set; }
 
-    [Column("MCH_HOURS", TypeName = "decimal(6, 2)")]
+    [Column("MCH_HOURS")]
     public decimal? MchHours { get; set; }
 
     [Column("ITM_SERV_FLAG")]
@@ -242,7 +242,7 @@ public partial class ClinicTran
     [Column("NERSE2")]
     public int? Nerse2 { get; set; }
 
-    [Column("DATE_ANALYSIS", TypeName = "datetime")]
+    [Column("DATE_ANALYSIS")]
     public DateTime? DateAnalysis { get; set; }
 
     [Column("FLAG1")]
@@ -251,16 +251,16 @@ public partial class ClinicTran
     [Column("SERIVICE_WITH_ITEMS")]
     public int? SeriviceWithItems { get; set; }
 
-    [Column("DR_SEND_VAL", TypeName = "decimal(11, 2)")]
+    [Column("DR_SEND_VAL")]
     public decimal? DrSendVal { get; set; }
 
     [Column("FLAG_DR_DISC")]
     public int? FlagDrDisc { get; set; }
 
-    [Column("COST_PRICE", TypeName = "decimal(12, 2)")]
+    [Column("COST_PRICE")]
     public decimal? CostPrice { get; set; }
 
-    [Column("DISCOUNT_VAL", TypeName = "decimal(11, 2)")]
+    [Column("DISCOUNT_VAL")]
     public decimal? DiscountVal { get; set; }
 
     [Column("PIPE_FLAG")]
@@ -274,7 +274,7 @@ public partial class ClinicTran
     [Unicode(false)]
     public string? ItmBarcode { get; set; }
 
-    [Column("ENTRY_DATE", TypeName = "datetime")]
+    [Column("ENTRY_DATE")]
     public DateTime? EntryDate { get; set; }
 
     [Column("DEAL")]
@@ -283,7 +283,7 @@ public partial class ClinicTran
     [Column("APPROVAL_PERIOD")]
     public int? ApprovalPeriod { get; set; }
 
-    [Column("APPROVAL_DATE", TypeName = "datetime")]
+    [Column("APPROVAL_DATE")]
     public DateTime? ApprovalDate { get; set; }
 
     [Column("USER_APPROVAL")]
@@ -312,7 +312,7 @@ public partial class ClinicTran
     [Column("INCOMING_FR")]
     public int? IncomingFr { get; set; }
 
-    [Column("EXTRA_VAL", TypeName = "decimal(9, 2)")]
+    [Column("EXTRA_VAL")]
     public decimal? ExtraVal { get; set; }
 
     [Column("COMP_ID_DTL")]
@@ -327,10 +327,10 @@ public partial class ClinicTran
     [Column("MAIN_INV_TOT")]
     public int? MainInvTot { get; set; }
 
-    [Column("SALSE_PRICE", TypeName = "decimal(12, 3)")]
+    [Column("SALSE_PRICE")]
     public decimal? SalsePrice { get; set; }
 
-    [Column("DR_DUE_VAL", TypeName = "decimal(9, 2)")]
+    [Column("DR_DUE_VAL")]
     public decimal? DrDueVal { get; set; }
 
     [Column("PAT_ID_SECTION")]
@@ -348,7 +348,7 @@ public partial class ClinicTran
     [Column("KNOW_US_FR")]
     public short? KnowUsFr { get; set; }
 
-    [Column("EXTRA_VAL2", TypeName = "decimal(9, 2)")]
+    [Column("EXTRA_VAL2")]
     public decimal? ExtraVal2 { get; set; }
 
     [Column("SUP_CODE")]

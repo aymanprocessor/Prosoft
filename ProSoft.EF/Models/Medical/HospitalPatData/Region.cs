@@ -24,13 +24,13 @@ public partial class Region
     [Column("FLAG")]
     public int? Flag { get; set; }
 
-    [Column("QTY_ORE", TypeName = "decimal(10, 2)")]
+    [Column("QTY_ORE")]
     public decimal? QtyOre { get; set; }
 
-    [Column("QTY_IN", TypeName = "decimal(10, 2)")]
+    [Column("QTY_IN")]
     public decimal? QtyIn { get; set; }
 
-    [Column("QTY_OUT", TypeName = "decimal(10, 2)")]
+    [Column("QTY_OUT")]
     public decimal? QtyOut { get; set; }
 
     [Column("REG_DATE")]

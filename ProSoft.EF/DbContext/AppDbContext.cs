@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ProSoft.Core.Enums;
 using ProSoft.EF.Models;
 using ProSoft.EF.Models.Accounts;
@@ -24,7 +26,7 @@ namespace ProSoft.EF.DbContext
         private readonly string _connectionString;
         private readonly string _provider;
 
-       
+
         public AppDbContext(string connectionString, string provider, AuditScope auditScope = default!, IHttpContextAccessor httpContextAccessor = default!)
         {
             _connectionString = connectionString;
@@ -54,13 +56,14 @@ namespace ProSoft.EF.DbContext
                 var tableName = entry.Metadata.GetTableName();
                 var auditLog = new AuditLog();
                 auditLog.Id = Guid.NewGuid();
-                auditLog.AuditLogEventType = entry.State switch { 
-                EntityState.Added => AuditLogEventTypes.Added,
-                EntityState.Modified => AuditLogEventTypes.Modified,
-                EntityState.Detached => AuditLogEventTypes.Detached,
-                EntityState.Deleted => AuditLogEventTypes.Deleted,
-                EntityState.Unchanged => AuditLogEventTypes.Unchanged,
-                _ => AuditLogEventTypes.Unknown
+                auditLog.AuditLogEventType = entry.State switch
+                {
+                    EntityState.Added => AuditLogEventTypes.Added,
+                    EntityState.Modified => AuditLogEventTypes.Modified,
+                    EntityState.Detached => AuditLogEventTypes.Detached,
+                    EntityState.Deleted => AuditLogEventTypes.Deleted,
+                    EntityState.Unchanged => AuditLogEventTypes.Unchanged,
+                    _ => AuditLogEventTypes.Unknown
 
                 };
 
@@ -114,27 +117,25 @@ namespace ProSoft.EF.DbContext
             }
         }
 
+        private string ShortenIdentifier(string identifier)
+        {
+           
+            // Truncate to 30 characters if necessary
+            return identifier.Length > 30 ? identifier.Substring(0, 30) : identifier;
+        }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            if (_provider == "Oracle")
-            {
-                // Example: Use Oracle sequences for primary keys
-                //modelBuilder.Entity<YourEntity>(entity =>
-                //{
-                //    
-                //});
-            }
+            Console.WriteLine("Start Here");
+            builder.Entity<ApplicationRoleClaim>()
+                .HasOne<ApplicationRole>() // Relate to IdentityRole
+                .WithMany(role => role.Claims) // No navigation property on IdentityRole
+                .HasForeignKey(rc => rc.RoleId)
+                .OnDelete(DeleteBehavior.NoAction);
 
-            if (_provider == "SqlServer")
-            {
-                // Example: Use SqlServer sequences for primary keys
-                //modelBuilder.Entity<YourEntity>(entity =>
-                //{
-                //    
-                //});
-            }
+           
             // ------------------- Stored Procedures ------------------- //
 
             builder.Entity<ItemBalance>().HasNoKey();
@@ -154,6 +155,7 @@ namespace ProSoft.EF.DbContext
                .Property(u => u.UserName)
                .HasColumnName("USER_NAME");
 
+         
             // ------------------ USER SIDE ------------------ //
 
             builder.Entity<UserSide>()
@@ -274,7 +276,125 @@ namespace ProSoft.EF.DbContext
               .WithMany()
               .HasForeignKey(s => s.ItemCode)
               .HasPrincipalKey(m => m.ItemCode);
+
+
+            if (_provider == "Oracle")
+            {
+
+                Console.WriteLine("This Is Oracle Provider");
+                foreach (var entity in builder.Model.GetEntityTypes())
+                {
+                    // Apply the schema to all tables
+                    entity.SetSchema("C##EIS");
+
+                    builder.Entity<AppUser>(entity =>
+                    {
+                        entity.Property(e => e.EmailConfirmed)
+                              .HasColumnType("NUMBER(1)");
+
+                        entity.Property(e => e.TwoFactorEnabled)
+                              .HasColumnType("NUMBER(1)");
+
+                        entity.Property(e => e.LockoutEnabled)
+                             .HasColumnType("NUMBER(1)");
+
+                        entity.Property(e => e.PhoneNumberConfirmed)
+                              .HasColumnType("NUMBER(1)");
+                    });
+                }
+
+                foreach (var entity in builder.Model.GetEntityTypes())
+                {
+                    // Loop through all properties of each entity
+                    foreach (var property in entity.GetProperties())
+                    {
+                        string tableName = entity.GetTableName()!;
+                        if (tableName.Length > 30)
+                        {
+                            entity.SetTableName(ShortenIdentifier(tableName));
+                        }
+
+                        // Check if the property type is boolean (which maps to BOOLEAN in database)
+                        if (property.ClrType == typeof(bool) || property.ClrType == typeof(bool?))
+                        {
+                            // Set the column type to NUMBER(1) for all boolean properties
+                            property.SetColumnType("NUMBER(1)");
+                        }
+
+
+                        string columnName = property.Name;
+                        if (columnName.Length > 30)
+                        {
+                            property.SetColumnName(ShortenIdentifier(columnName));
+                        }
+
+                    }
+
+                    //  primary key names
+                    foreach (var key in entity.GetKeys())
+                    {
+                        string pkName = key.GetName()!;
+                        if (pkName.Length > 30)
+                        {
+                            builder.Entity(entity.Name)
+                                .HasKey(key.Properties.Select(p => p.Name).ToArray())
+                                .HasName(ShortenIdentifier(pkName));
+                        }
+                    }
+
+
+                    // foreignKey names
+                    foreach (var foreignKey in entity.GetForeignKeys())
+                    {
+                        Console.WriteLine($"Entity: {entity.Name}, " +
+                          $"ForeignKey: {foreignKey.Properties.First().Name}, " +
+                          $"ConstraintName: {foreignKey.GetConstraintName()}, " +
+                          $"PrincipalName: {foreignKey.PrincipalEntityType.Name}");
+                        string? fkName = foreignKey.GetConstraintName();
+                        if (fkName == null) continue;
+                        Console.WriteLine($"Org FK Name => {fkName}");
+                        if (fkName.Length > 30)
+                        {
+                            builder.Entity(entity.Name)
+                                .HasOne(foreignKey.PrincipalEntityType.Name)
+                                .WithMany()
+                                .HasForeignKey(foreignKey.Properties.Select(p => p.Name).ToArray())
+                                .HasConstraintName(ShortenIdentifier(fkName));
+
+                            Console.WriteLine("Shorten FK Name => ", ShortenIdentifier(fkName));
+
+                        }
+                    }
+
+                    //  index names
+                    //foreach (var index in entity.GetIndexes())
+                    //{
+                    //    if (index == null && index.Name == null) continue;
+                    //    string indexName = index.Name!;
+                    //    if (indexName.Length > 30)
+                    //    {
+                    //        builder.Entity(entity.Name)
+                    //            .HasIndex(index.Properties.Select(p => p.Name).ToArray(), ShortenIdentifier(indexName));
+                    //    }
+                    //}
+                }
+
+
+            }
+
+            if (_provider == "SqlServer")
+            {
+
+                Console.WriteLine("This Is SqlServer Provider");
+                foreach (var entity in builder.Model.GetEntityTypes())
+                {
+                    // Apply the schema to all tables
+                    entity.SetSchema("dbo");
+                }
+            }
         }
+
+
 
         public DbSet<Price> Prices { get; set; }
         // Sored Procedures

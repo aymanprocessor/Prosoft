@@ -22,7 +22,7 @@ namespace ProSoft.EF.Models.MedicalRecords
         [Unicode(false)]
         public string? PatSsn { get; set; }
 
-        [Column("ENTRY_DATE", TypeName = "datetime")]
+        [Column("ENTRY_DATE")]
         public DateTime? EntryDate { get; set; }
 
         [Column("BELONGING_TO_SUB_SPECIALITY")]
@@ -50,25 +50,25 @@ namespace ProSoft.EF.Models.MedicalRecords
         [Unicode(false)]
         public string? GeneralExamination { get; set; }
 
-        [Column("WEIGHT", TypeName = "decimal(6, 2)")]
+        [Column("WEIGHT")]
         public decimal? Weight { get; set; }
 
-        [Column("HEIGHT", TypeName = "decimal(6, 2)")]
+        [Column("HEIGHT")]
         public decimal? Height { get; set; }
 
-        [Column("SYTOLIC_BLOOD_PRESSURE", TypeName = "decimal(6, 2)")]
+        [Column("SYTOLIC_BLOOD_PRESSURE")]
         public decimal? SytolicBloodPressure { get; set; }
 
-        [Column("DIASTOLIC_BLOOD_PRESSURE", TypeName = "decimal(6, 2)")]
+        [Column("DIASTOLIC_BLOOD_PRESSURE")]
         public decimal? DiastolicBloodPressure { get; set; }
 
-        [Column("TEMP", TypeName = "decimal(6, 2)")]
+        [Column("TEMP")]
         public decimal? Temp { get; set; }
 
-        [Column("RESP_RATE", TypeName = "decimal(6, 2)")]
+        [Column("RESP_RATE")]
         public decimal? RespRate { get; set; }
 
-        [Column("OXYGEN_SAT", TypeName = "decimal(6, 2)")]
+        [Column("OXYGEN_SAT")]
         public decimal? OxygenSat { get; set; }
 
         [Column("ECHO_ADMISSION")]
@@ -86,10 +86,10 @@ namespace ProSoft.EF.Models.MedicalRecords
         [Unicode(false)]
         public string? ProvisionalDiagnosis { get; set; }
 
-        [Column("DOOR_TO_BALLOON_H", TypeName = "decimal(6, 2)")]
+        [Column("DOOR_TO_BALLOON_H")]
         public decimal? DoorToBalloonH { get; set; }
 
-        [Column("SYMP_TO_DOOR_H", TypeName = "decimal(6, 2)")]
+        [Column("SYMP_TO_DOOR_H")]
         public decimal? SympToDoorH { get; set; }
 
         [Column("KILLIP_CLASS")]
@@ -127,7 +127,7 @@ namespace ProSoft.EF.Models.MedicalRecords
         [Column("PAT_ID")]
         public int? PatId { get; set; }
 
-        [Column("SERIAL", TypeName = "numeric(8, 0)")]
+        [Column("SERIAL")]
         public decimal? Serial { get; set; }
 
         [ForeignKey("PatId")]

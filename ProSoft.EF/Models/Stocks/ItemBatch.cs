@@ -28,19 +28,19 @@ namespace ProSoft.EF.Models.Stocks
         [Column("SER_BATCH")]
         public int? SerBatch { get; set; }
 
-        [Column("UNIT_QTY", TypeName = "decimal(11, 2)")]
+        [Column("UNIT_QTY")]
         public decimal? UnitQty { get; set; }
 
-        [Column("PRICE", TypeName = "decimal(11, 3)")]
+        [Column("PRICE")]
         public decimal? Price { get; set; }
 
-        [Column("REQ_DATE", TypeName = "datetime")]
+        [Column("REQ_DATE")]
         public DateTime? ReqDate { get; set; }
 
         [Column("USER_CODE")]
         public int? UserCode { get; set; }
 
-        [Column("EXP_DATE", TypeName = "datetime")]
+        [Column("EXP_DATE")]
         public DateTime? ExpDate { get; set; }
 
         [Column("TRANS_N")]

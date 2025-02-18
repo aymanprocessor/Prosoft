@@ -77,13 +77,13 @@ public partial class Company
     [Column("REPLCATE")]
     public int? Replcate { get; set; }
 
-    [Column("STAMP", TypeName = "decimal(4, 2)")]
+    [Column("STAMP")]
     public decimal? Stamp { get; set; }
 
-    [Column("COMP_PER", TypeName = "decimal(5, 2)")]
+    [Column("COMP_PER")]
     public decimal? CompPer { get; set; }
 
-    [Column("COMPANY_TYPE", TypeName = "decimal(38, 0)")]
+    [Column("COMPANY_TYPE")]
     public decimal? CompanyType { get; set; }
 
     [Column("SUB_CODE")]
@@ -96,10 +96,10 @@ public partial class Company
     [Unicode(false)]
     public string? MainCode { get; set; }
 
-    [Column("STAMP_PER", TypeName = "decimal(4, 2)")]
+    [Column("STAMP_PER")]
     public decimal? StampPer { get; set; }
 
-    [Column("TAX_PER", TypeName = "decimal(4, 2)")]
+    [Column("TAX_PER")]
     public decimal? TaxPer { get; set; }
 
     [Column("KIND_STORE")]
@@ -118,7 +118,7 @@ public partial class Company
     [Unicode(false)]
     public string? TaxNo { get; set; }
 
-    [Column("ENTRY_DATE", TypeName = "datetime")]
+    [Column("ENTRY_DATE")]
     public DateTime? EntryDate { get; set; }
 
     [Column("USER_CREATE")]
@@ -127,7 +127,7 @@ public partial class Company
     [Column("USER_MODIFY")]
     public int? UserModify { get; set; }
 
-    [Column("MODIFY_DATE", TypeName = "datetime")]
+    [Column("MODIFY_DATE")]
     public DateTime? ModifyDate { get; set; }
 
     [Column("E_INV_MAIN_FLG")]

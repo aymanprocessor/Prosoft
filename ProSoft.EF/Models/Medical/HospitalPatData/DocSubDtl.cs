@@ -34,7 +34,7 @@ public partial class DocSubDtl
     [Column("DOC_SUB_DEF")]
     public int? DocSubDef { get; set; }
 
-    [Column("ENTRY_DATE", TypeName = "datetime")]
+    [Column("ENTRY_DATE")]
     public DateTime? EntryDate { get; set; }
 
     [Column("USER_CREATE")]

@@ -37,19 +37,19 @@ public partial class ServiceClinic
     [Column("REPLCATE")]
     public int? Replcate { get; set; }
 
-    [Column("DR_PERC", TypeName = "decimal(5, 2)")]
+    [Column("DR_PERC")]
     public decimal? DrPerc { get; set; }
 
-    [Column("PL_VALUE", TypeName = "decimal(9, 2)")]
+    [Column("PL_VALUE")]
     public decimal? PlValue { get; set; }
 
     [Column("SERV_TYPE")]
     public int? ServType { get; set; }
 
-    [Column("DR_VAL", TypeName = "decimal(11, 2)")]
+    [Column("DR_VAL")]
     public decimal? DrVal { get; set; }
 
-    [Column("SERV_VAL", TypeName = "decimal(11, 2)")]
+    [Column("SERV_VAL")]
     public decimal? ServVal { get; set; }
 
     [Column("PROTECT_ID")]
@@ -58,10 +58,10 @@ public partial class ServiceClinic
     [Column("SERV_ON_OFF")]
     public int? ServOnOff { get; set; }
 
-    [Column("ENTRY_DATE", TypeName = "datetime")]
+    [Column("ENTRY_DATE")]
     public DateTime? EntryDate { get; set; }
 
-    [Column("MODFY_DATE", TypeName = "datetime")]
+    [Column("MODFY_DATE")]
     public DateTime? ModfyDate { get; set; }
 
     [Column("USER_ENTRY")]
@@ -70,7 +70,7 @@ public partial class ServiceClinic
     [Column("USER_MODIFY")]
     public int? UserModify { get; set; }
 
-    [Column("SERV_COST_VAL", TypeName = "decimal(11, 2)")]
+    [Column("SERV_COST_VAL")]
     public decimal? ServCostVal { get; set; }
 
     [Column("CLINIC_ID_NEW")]

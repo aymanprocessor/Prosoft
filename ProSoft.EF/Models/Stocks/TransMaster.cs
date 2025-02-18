@@ -58,10 +58,10 @@ namespace ProSoft.EF.Models.Stocks
         [Unicode(false)]
         public string? Remark { get; set; }
 
-        [Column("TOT_TRANS_VAL", TypeName = "decimal(10, 2)")]
+        [Column("TOT_TRANS_VAL")]
         public decimal? TotTransVal { get; set; }
 
-        [Column("DESCOUNT", TypeName = "decimal(10, 4)")]
+        [Column("DESCOUNT")]
         public decimal? Descount { get; set; }
 
         [Column("STATUS_BAL")]
@@ -74,7 +74,7 @@ namespace ProSoft.EF.Models.Stocks
         [Unicode(false)]
         public string? Flag { get; set; }
 
-        [Column("TOT_WEIGHT", TypeName = "decimal(10, 2)")]
+        [Column("TOT_WEIGHT")]
         public decimal? TotWeight { get; set; }
 
         [Column("PAY")]
@@ -90,13 +90,13 @@ namespace ProSoft.EF.Models.Stocks
         [Unicode(false)]
         public string? Flag2 { get; set; }
 
-        [Column("TOT_TRANS_VAL2", TypeName = "decimal(10, 2)")]
+        [Column("TOT_TRANS_VAL2")]
         public decimal? TotTransVal2 { get; set; }
 
-        [Column("AMOUNT_VISA", TypeName = "decimal(10, 2)")]
+        [Column("AMOUNT_VISA")]
         public decimal? AmountVisa { get; set; }
 
-        [Column("CASH_AMOUNT", TypeName = "decimal(10, 2)")]
+        [Column("CASH_AMOUNT")]
         public decimal? CashAmount { get; set; }
 
         [Column("SALE_STATUS")]
@@ -104,41 +104,41 @@ namespace ProSoft.EF.Models.Stocks
         [Unicode(false)]
         public string? SaleStatus { get; set; }
 
-        [Column("ADD_PERS", TypeName = "decimal(4, 2)")]
+        [Column("ADD_PERS")]
         public decimal? AddPers { get; set; }
 
         [Column("USER_CODE")]
         public int? UserCode { get; set; }
 
-        [Column("DISC_PERS", TypeName = "decimal(4, 2)")]
+        [Column("DISC_PERS")]
         public decimal? DiscPers { get; set; }
 
         [Column("DUE_DATE")]
         [Precision(6)]
         public DateTime? DueDate { get; set; }
 
-        [Column("CUST_DISC1", TypeName = "decimal(10, 2)")]
+        [Column("CUST_DISC1")]
         public decimal? CustDisc1 { get; set; }
 
-        [Column("CUST_DISC2", TypeName = "decimal(10, 2)")]
+        [Column("CUST_DISC2")]
         public decimal? CustDisc2 { get; set; }
 
-        [Column("CUST_DISC3", TypeName = "decimal(10, 2)")]
+        [Column("CUST_DISC3")]
         public decimal? CustDisc3 { get; set; }
 
-        [Column("CUST_DISC4", TypeName = "decimal(10, 2)")]
+        [Column("CUST_DISC4")]
         public decimal? CustDisc4 { get; set; }
 
-        [Column("CUST_DISC5", TypeName = "decimal(10, 2)")]
+        [Column("CUST_DISC5")]
         public decimal? CustDisc5 { get; set; }
 
-        [Column("TAX_PRC", TypeName = "decimal(4, 2)")]
+        [Column("TAX_PRC")]
         public decimal? TaxPrc { get; set; }
 
-        [Column("TAX_VALUE", TypeName = "decimal(10, 2)")]
+        [Column("TAX_VALUE")]
         public decimal? TaxValue { get; set; }
 
-        [Column("DUE_VALUE", TypeName = "decimal(10, 2)")]
+        [Column("DUE_VALUE")]
         public decimal? DueValue { get; set; }
 
         [Column("INV_NO")]
@@ -294,10 +294,10 @@ namespace ProSoft.EF.Models.Stocks
         [Unicode(false)]
         public string? LotNo { get; set; }
 
-        [Column("ENTRY_DATE", TypeName = "datetime")]
+        [Column("ENTRY_DATE")]
         public DateTime? EntryDate { get; set; }
 
-        [Column("MODIFY_DATE", TypeName = "datetime")]
+        [Column("MODIFY_DATE")]
         public DateTime? ModifyDate { get; set; }
 
         [Column("SEND_FR")]

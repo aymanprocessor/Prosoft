@@ -22,7 +22,7 @@ namespace ProSoft.EF.Models.MedicalRecords
         [Unicode(false)]
         public string? PatSsn { get; set; }
 
-        [Column("ENTRY_DATE", TypeName = "datetime")]
+        [Column("ENTRY_DATE")]
         public DateTime? EntryDate { get; set; }
 
         [Column("REFERING_DR")]
@@ -70,13 +70,13 @@ namespace ProSoft.EF.Models.MedicalRecords
         [Unicode(false)]
         public string? Prescription { get; set; }
 
-        [Column("NEXT_FOLLWUP_DATE", TypeName = "datetime")]
+        [Column("NEXT_FOLLWUP_DATE")]
         public DateTime? NextFollwupDate { get; set; }
 
         [Column("PAT_ID")]
         public int? PatId { get; set; }
 
-        [Column("SERIAL", TypeName = "numeric(8, 0)")]
+        [Column("SERIAL")]
         public decimal? Serial { get; set; }
 
         [ForeignKey("PatId")]

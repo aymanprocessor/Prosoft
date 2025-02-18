@@ -48,31 +48,31 @@ public partial class CustCode
     [Unicode(false)]
     public string? Remarks { get; set; }
 
-    [Column("VAL_DEPT", TypeName = "decimal(17, 3)")]
+    [Column("VAL_DEPT")]
     public decimal? ValDept { get; set; }
 
-    [Column("VAL_CREDIT", TypeName = "decimal(17, 3)")]
+    [Column("VAL_CREDIT")]
     public decimal? ValCredit { get; set; }
 
-    [Column("CUST_LIMIT", TypeName = "decimal(15, 2)")]
+    [Column("CUST_LIMIT")]
     public decimal? CustLimit { get; set; }
 
     [Column("DEU_PERIOD")]
     public int? DeuPeriod { get; set; }
 
-    [Column("CUST_DISC1", TypeName = "decimal(4, 2)")]
+    [Column("CUST_DISC1")]
     public decimal? CustDisc1 { get; set; }
 
-    [Column("CUST_DISC2", TypeName = "decimal(4, 2)")]
+    [Column("CUST_DISC2")]
     public decimal? CustDisc2 { get; set; }
 
-    [Column("CUST_DISC3", TypeName = "decimal(4, 2)")]
+    [Column("CUST_DISC3")]
     public decimal? CustDisc3 { get; set; }
 
     [Column("CUST_DISC4")]
     public int? CustDisc4 { get; set; }
 
-    [Column("CUST_DISC5", TypeName = "decimal(4, 2)")]
+    [Column("CUST_DISC5")]
     public decimal? CustDisc5 { get; set; }
 
     [Column("TAX_TYPE")]

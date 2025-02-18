@@ -48,10 +48,10 @@ public partial class SupCode
     [Unicode(false)]
     public string? Remarks { get; set; }
 
-    [Column("VAL_DEPT", TypeName = "decimal(17, 3)")]
+    [Column("VAL_DEPT")]
     public decimal? ValDept { get; set; }
 
-    [Column("VAL_CREDIT", TypeName = "decimal(17, 3)")]
+    [Column("VAL_CREDIT")]
     public decimal? ValCredit { get; set; }
 
     [Column("SUB_CODE")]

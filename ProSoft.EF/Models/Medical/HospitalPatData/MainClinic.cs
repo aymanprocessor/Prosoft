@@ -30,10 +30,10 @@ public partial class MainClinic
     [Column("M_ON_OFF")]
     public int? MOnOff { get; set; }
 
-    [Column("ENTRY_DATE", TypeName = "datetime")]
+    [Column("ENTRY_DATE")]
     public DateTime? EntryDate { get; set; }
 
-    [Column("MODFY_DATE", TypeName = "datetime")]
+    [Column("MODFY_DATE")]
     public DateTime? ModfyDate { get; set; }
 
     [Column("USER_ENTRY")]

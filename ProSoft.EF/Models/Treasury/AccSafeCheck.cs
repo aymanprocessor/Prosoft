@@ -54,7 +54,7 @@ namespace ProSoft.EF.Models.Treasury
         [Precision(6)]
         public DateTime? SattlDate { get; set; }
 
-        [Column("VALUE_PAY", TypeName = "decimal(12, 3)")]
+        [Column("VALUE_PAY")]
         public decimal? ValuePay { get; set; }
 
         [Column("COMMENTT")]
@@ -121,7 +121,7 @@ namespace ProSoft.EF.Models.Treasury
         [Column("FLAG")]
         public int? Flag { get; set; }
 
-        [Column("RATE1", TypeName = "decimal(7, 4)")]
+        [Column("RATE1")]
         public decimal? Rate1 { get; set; }
 
         [Column("F_MONTH")]
@@ -137,10 +137,10 @@ namespace ProSoft.EF.Models.Treasury
         [Column("DOC_NO2")]
         public int? DocNo2 { get; set; }
 
-        [Column("PROFIT_TAX", TypeName = "decimal(9, 3)")]
+        [Column("PROFIT_TAX")]
         public decimal? ProfitTax { get; set; }
 
-        [Column("DISCOUNT_VAL", TypeName = "decimal(12, 3)")]
+        [Column("DISCOUNT_VAL")]
         public decimal? DiscountVal { get; set; }
 
         [Column("MAIN_CODE2")]
@@ -188,7 +188,7 @@ namespace ProSoft.EF.Models.Treasury
         [Column("CHECK_TYPE")]
         public int? CheckType { get; set; }
 
-        [Column("ENTRY_DATE", TypeName = "datetime")]
+        [Column("ENTRY_DATE")]
         public DateTime? EntryDate { get; set; }
 
         [Column("BR_REPLC")]
@@ -207,7 +207,7 @@ namespace ProSoft.EF.Models.Treasury
         [Column("COST_CENTER_CODE")]
         public int? CostCenterCode { get; set; }
 
-        [Column("G_VALUE_PAY", TypeName = "decimal(12, 3)")]
+        [Column("G_VALUE_PAY")]
         public decimal? GValuePay { get; set; }
 
         [Column("USER_CODE")]

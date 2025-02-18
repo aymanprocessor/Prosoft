@@ -13,13 +13,13 @@ public partial class Deposit
     [Column("DPS_SER")]
     public int DpsSer { get; set; }
 
-    [Column("DPS_DATE", TypeName = "datetime")]
+    [Column("DPS_DATE")]
     public DateTime? DpsDate { get; set; }
 
     [Column("DPS_TYPE")]
     public int? DpsType { get; set; }
 
-    [Column("DPS_VAL", TypeName = "decimal(9, 2)")]
+    [Column("DPS_VAL")]
     public decimal? DpsVal { get; set; }
 
     [Column("MOD_ID")]
@@ -36,7 +36,7 @@ public partial class Deposit
     [Unicode(false)]
     public string? CheckNo { get; set; }
 
-    [Column("CHECK_DATE", TypeName = "datetime")]
+    [Column("CHECK_DATE")]
     public DateTime? CheckDate { get; set; }
 
     [Column("BANK_ID")]
@@ -70,10 +70,10 @@ public partial class Deposit
     [Unicode(false)]
     public string? DepositDesc { get; set; }
 
-    [Column("ENTRY_DATE", TypeName = "datetime")]
+    [Column("ENTRY_DATE")]
     public DateTime? EntryDate { get; set; }
 
-    [Column("MODFY_DATE", TypeName = "datetime")]
+    [Column("MODFY_DATE")]
     public DateTime? ModfyDate { get; set; }
 
     [Column("USER_MODIFY")]

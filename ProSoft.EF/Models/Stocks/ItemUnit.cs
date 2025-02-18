@@ -28,7 +28,7 @@ namespace ProSoft.EF.Models.Stocks
         public int UnitCode { get; set; }
 
 
-        [Column("ITEM_QTY", TypeName = "decimal(6, 2)")]
+        [Column("ITEM_QTY")]
         public float ItemQty { get; set; }
 
         [Key]

@@ -19,7 +19,7 @@ public partial class PriceList
     [Unicode(false)]
     public string? PlDesc { get; set; }
 
-    [Column("P_L_DATE", TypeName = "datetime")]
+    [Column("P_L_DATE")]
     public DateTime? PLDate { get; set; }
 
     [Column("BRANCH_ID")]
@@ -45,10 +45,10 @@ public partial class PriceList
     [Column("SERV_ON_OFF")]
     public int? ServOnOff { get; set; }
 
-    [Column("ENTRY_DATE", TypeName = "datetime")]
+    [Column("ENTRY_DATE")]
     public DateTime? EntryDate { get; set; }
 
-    [Column("MODFY_DATE", TypeName = "datetime")]
+    [Column("MODFY_DATE")]
     public DateTime? ModfyDate { get; set; }
 
     [Column("USER_MODIFY")]

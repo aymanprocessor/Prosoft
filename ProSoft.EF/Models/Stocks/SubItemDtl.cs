@@ -42,28 +42,28 @@ namespace ProSoft.EF.Models.Stocks
         [Column("UNIT_CODE")]
         public int? UnitCode { get; set; }
 
-        [Column("SALE_PRICE", TypeName = "decimal(7, 2)")]
+        [Column("SALE_PRICE")]
         public decimal? SalePrice { get; set; }
 
-        [Column("DISCOUT_S1", TypeName = "decimal(5, 2)")]
+        [Column("DISCOUT_S1")]
         public decimal? DiscoutS1 { get; set; }
 
-        [Column("DISC_VAL_S1", TypeName = "decimal(7, 2)")]
+        [Column("DISC_VAL_S1")]
         public decimal? DiscValS1 { get; set; }
 
-        [Column("PURCH_PRICE", TypeName = "decimal(7, 2)")]
+        [Column("PURCH_PRICE")]
         public decimal? PurchPrice { get; set; }
 
-        [Column("DISCOUT_P1", TypeName = "decimal(5, 2)")]
+        [Column("DISCOUT_P1")]
         public decimal? DiscoutP1 { get; set; }
 
-        [Column("DISC_VAL_P1", TypeName = "decimal(7, 2)")]
+        [Column("DISC_VAL_P1")]
         public decimal? DiscValP1 { get; set; }
 
         [Column("PIECE_COUNT")]
         public int? PieceCount { get; set; }
 
-        [Column("PURCH_AVERAGE", TypeName = "decimal(7, 2)")]
+        [Column("PURCH_AVERAGE")]
         public decimal? PurchAverage { get; set; }
 
         [Column("PROTECT_COLUMUN")]
@@ -75,7 +75,7 @@ namespace ProSoft.EF.Models.Stocks
         [Column("USER_MODIFY_CODE")]
         public int? UserModifyCode { get; set; }
 
-        [Column("USER_MODIFY_DATE", TypeName = "datetime")]
+        [Column("USER_MODIFY_DATE")]
         public DateTime? UserModifyDate { get; set; }
 
         [Column("SMALL_U_FLAG")]

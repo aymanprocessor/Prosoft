@@ -13,34 +13,34 @@ public partial class PatAdmission
     [Column("MASTER_ID")]
     public int MasterId { get; set; }
 
-    [Column("BRANCH_ID", TypeName = "decimal(38, 0)")]
+    [Column("BRANCH_ID")]
     public decimal? BranchId { get; set; }
 
     [Column("PAT_ID")]
     public int? PatId { get; set; }
 
-    [Column("DEAL", TypeName = "decimal(38, 0)")]
+    [Column("DEAL")]
     public decimal? Deal { get; set; }
 
-    [Column("PAT_AD_DATE", TypeName = "datetime")]
+    [Column("PAT_AD_DATE")]
     public DateTime? PatAdDate { get; set; }
 
     [Column("COMP_ID")]
     public int? CompId { get; set; }
 
-    [Column("PAT_INTERNAL", TypeName = "decimal(38, 0)")]
+    [Column("PAT_INTERNAL")]
     public decimal? PatInternal { get; set; }
 
-    [Column("PAT_EXTERNAL", TypeName = "decimal(38, 0)")]
+    [Column("PAT_EXTERNAL")]
     public decimal? PatExternal { get; set; }
 
-    [Column("PAT_EMERGENCY", TypeName = "decimal(38, 0)")]
+    [Column("PAT_EMERGENCY")]
     public decimal? PatEmergency { get; set; }
 
-    [Column("PAT_EXIT", TypeName = "decimal(38, 0)")]
+    [Column("PAT_EXIT")]
     public decimal? PatExit { get; set; }
 
-    [Column("PAT_DATE_EXIT", TypeName = "datetime")]
+    [Column("PAT_DATE_EXIT")]
     public DateTime? PatDateExit { get; set; }
 
     [Column("DECISION_SHEET")]
@@ -48,22 +48,22 @@ public partial class PatAdmission
     [Unicode(false)]
     public string? DecisionSheet { get; set; }
 
-    [Column("PAT_CARD_ID", TypeName = "decimal(38, 0)")]
+    [Column("PAT_CARD_ID")]
     public decimal? PatCardId { get; set; }
 
-    [Column("REPLCATE", TypeName = "decimal(38, 0)")]
+    [Column("REPLCATE")]
     public decimal? Replcate { get; set; }
 
-    [Column("EX_YEAR", TypeName = "decimal(38, 0)")]
+    [Column("EX_YEAR")]
     public decimal? ExYear { get; set; }
 
-    [Column("PAT_AD_TIME", TypeName = "datetime")]
+    [Column("PAT_AD_TIME")]
     public DateTime? PatAdTime { get; set; }
 
     [Column("MAIN_INV_NO")]
     public int? MainInvNo { get; set; }
 
-    [Column("MAIN_INV_TOT", TypeName = "decimal(9, 2)")]
+    [Column("MAIN_INV_TOT")]
     public decimal? MainInvTot { get; set; }
 
     [Column("MAIN_INV_DESC")]
@@ -71,28 +71,28 @@ public partial class PatAdmission
     [Unicode(false)]
     public string? MainInvDesc { get; set; }
 
-    [Column("PATIENT_VALUE", TypeName = "decimal(9, 2)")]
+    [Column("PATIENT_VALUE")]
     public decimal? PatientValue { get; set; }
 
-    [Column("COMP_VALUE", TypeName = "decimal(9, 2)")]
+    [Column("COMP_VALUE")]
     public decimal? CompValue { get; set; }
 
     [Column("DR_CODE")]
     public int? DrCode { get; set; }
 
-    [Column("DR_VAL", TypeName = "decimal(10, 2)")]
+    [Column("DR_VAL")]
     public decimal? DrVal { get; set; }
 
-    [Column("DR_TAX", TypeName = "decimal(10, 2)")]
+    [Column("DR_TAX")]
     public decimal? DrTax { get; set; }
 
-    [Column("EX_MONTH", TypeName = "decimal(38, 0)")]
+    [Column("EX_MONTH")]
     public decimal? ExMonth { get; set; }
 
-    [Column("DR_OBTAIN", TypeName = "decimal(38, 0)")]
+    [Column("DR_OBTAIN")]
     public decimal? DrObtain { get; set; }
 
-    [Column("DISCOUNT_VAL", TypeName = "decimal(9, 2)")]
+    [Column("DISCOUNT_VAL")]
     public decimal? DiscountVal { get; set; }
 
     [Column("ACC_TRANS_NO")]
@@ -117,19 +117,19 @@ public partial class PatAdmission
     [Unicode(false)]
     public string? RoomNo { get; set; }
 
-    [Column("DAYS_NO", TypeName = "decimal(38, 0)")]
+    [Column("DAYS_NO")]
     public decimal? DaysNo { get; set; }
 
-    [Column("DAYS_VALUE", TypeName = "decimal(9, 2)")]
+    [Column("DAYS_VALUE")]
     public decimal? DaysValue { get; set; }
 
-    [Column("FLAG", TypeName = "decimal(38, 0)")]
+    [Column("FLAG")]
     public decimal? Flag { get; set; }
 
-    [Column("DUE_VAL", TypeName = "decimal(9, 2)")]
+    [Column("DUE_VAL")]
     public decimal? DueVal { get; set; }
 
-    [Column("EXCHANGE_TYPE", TypeName = "decimal(38, 0)")]
+    [Column("EXCHANGE_TYPE")]
     public decimal? ExchangeType { get; set; }
 
     [Column("NOTE")]
@@ -137,10 +137,10 @@ public partial class PatAdmission
     [Unicode(false)]
     public string? Note { get; set; }
 
-    [Column("AMANAT", TypeName = "decimal(11, 2)")]
+    [Column("AMANAT")]
     public decimal? Amanat { get; set; }
 
-    [Column("AMANAT_RET", TypeName = "decimal(11, 2)")]
+    [Column("AMANAT_RET")]
     public decimal? AmanatRet { get; set; }
 
     [Column("SAFE_IN_NO1")]
@@ -149,13 +149,13 @@ public partial class PatAdmission
     [Column("SAFE_IN_NO2")]
     public int? SafeInNo2 { get; set; }
 
-    [Column("AMANAT_RET_PAT", TypeName = "decimal(11, 2)")]
+    [Column("AMANAT_RET_PAT")]
     public decimal? AmanatRetPat { get; set; }
 
-    [Column("KASTARA_TOT", TypeName = "decimal(11, 2)")]
+    [Column("KASTARA_TOT")]
     public decimal? KastaraTot { get; set; }
 
-    [Column("ENAYA_TOT", TypeName = "decimal(11, 2)")]
+    [Column("ENAYA_TOT")]
     public decimal? EnayaTot { get; set; }
 
     [Column("JOR_KIED_NO1")]
@@ -167,7 +167,7 @@ public partial class PatAdmission
     [Column("CASH_NO")]
     public int? CashNo { get; set; }
 
-    [Column("STAMP_VAL", TypeName = "decimal(9, 2)")]
+    [Column("STAMP_VAL")]
     public decimal? StampVal { get; set; }
 
     [Column("BR_REPLC")]
@@ -214,19 +214,19 @@ public partial class PatAdmission
     [Column("INV_TYPE")]
     public int? InvType { get; set; }
 
-    [Column("ENTRY_DATE", TypeName = "datetime")]
+    [Column("ENTRY_DATE")]
     public DateTime? EntryDate { get; set; }
 
-    [Column("TRANSF_VAL", TypeName = "decimal(12, 2)")]
+    [Column("TRANSF_VAL")]
     public decimal? TransfVal { get; set; }
 
-    [Column("POST_ID", TypeName = "decimal(38, 0)")]
+    [Column("POST_ID")]
     public decimal? PostId { get; set; }
 
-    [Column("PAT_RELATIONSHIP", TypeName = "decimal(38, 0)")]
+    [Column("PAT_RELATIONSHIP")]
     public decimal? PatRelationship { get; set; }
 
-    [Column("ACC_TRANS_TYPE", TypeName = "decimal(38, 0)")]
+    [Column("ACC_TRANS_TYPE")]
     public decimal? AccTransType { get; set; }
 
     [Column("BRNACH_INITIAL")]
@@ -235,13 +235,13 @@ public partial class PatAdmission
     [Column("DR_SEND")]
     public int? DrSend { get; set; }
 
-    [Column("PAY_PAT_TOT", TypeName = "decimal(11, 2)")]
+    [Column("PAY_PAT_TOT")]
     public decimal? PayPatTot { get; set; }
 
     [Column("PAT_ID_SECTION")]
     public int? PatIdSection { get; set; }
 
-    [Column("WINDOW_FLAG", TypeName = "decimal(38, 0)")]
+    [Column("WINDOW_FLAG")]
     public decimal? WindowFlag { get; set; }
 
     [Column("CO_NAME_2")]
@@ -255,7 +255,7 @@ public partial class PatAdmission
     [Column("MAIN_INV_NO_ALL")]
     public int? MainInvNoAll { get; set; }
 
-    [Column("PAT_DATE_OUT", TypeName = "datetime")]
+    [Column("PAT_DATE_OUT")]
     public DateTime? PatDateOut { get; set; }
 
     [Column("PROCEDURE_ID")]
@@ -317,7 +317,7 @@ public partial class PatAdmission
     [Column("OPERATION_TYPE")]
     public int? OperationType { get; set; }
 
-    [Column("EXTRA_VAL", TypeName = "decimal(9, 2)")]
+    [Column("EXTRA_VAL")]
     public decimal? ExtraVal { get; set; }
 
     [Column("COMP_ID_DTL")]
@@ -338,7 +338,7 @@ public partial class PatAdmission
     [Unicode(false)]
     public string? EInvSts { get; set; }
 
-    [Column("EINV_DATE", TypeName = "datetime")]
+    [Column("EINV_DATE")]
     public DateTime? EinvDate { get; set; }
 
     [Column("E_INV_ID")]
@@ -354,10 +354,10 @@ public partial class PatAdmission
     [Column("TAX_FLAG")]
     public int? TaxFlag { get; set; }
 
-    [Column("TAX_DATE", TypeName = "datetime")]
+    [Column("TAX_DATE")]
     public DateTime? TaxDate { get; set; }
 
-    [Column("PREPAID", TypeName = "decimal(12, 2)")]
+    [Column("PREPAID")]
     public decimal? Prepaid { get; set; }
 
     [Column("SESSION_NO")]
@@ -366,7 +366,7 @@ public partial class PatAdmission
     [Column("KNOW_US_FR")]
     public short? KnowUsFr { get; set; }
 
-    [Column("EXTRA_VAL2", TypeName = "decimal(9, 2)")]
+    [Column("EXTRA_VAL2")]
     public decimal? ExtraVal2 { get; set; }
 
     [ForeignKey("BrnachInitial")]

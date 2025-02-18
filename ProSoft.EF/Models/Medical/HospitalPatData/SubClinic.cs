@@ -32,16 +32,16 @@ public partial class SubClinic
     [Column("REPLCATE")]
     public int? Replcate { get; set; }
 
-    [Column("TAX_PREC", TypeName = "decimal(4, 2)")]
+    [Column("TAX_PREC")]
     public decimal? TaxPrec { get; set; }
 
     [Column("S_ON_OFF")]
     public int? SOnOff { get; set; }
 
-    [Column("ENTRY_DATE", TypeName = "datetime")]
+    [Column("ENTRY_DATE")]
     public DateTime? EntryDate { get; set; }
 
-    [Column("MODFY_DATE", TypeName = "datetime")]
+    [Column("MODFY_DATE")]
     public DateTime? ModfyDate { get; set; }
 
     [Column("USER_ENTRY")]

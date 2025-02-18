@@ -45,16 +45,16 @@ namespace ProSoft.EF.Models.Stocks
         [Unicode(false)]
         public string? ItemMaster { get; set; }
 
-        [Column("ITEM_COUNT", TypeName = "decimal(10, 2)")]
+        [Column("ITEM_COUNT")]
         public decimal? ItemCount { get; set; }
 
-        [Column("ITEM_QTY", TypeName = "decimal(10, 2)")]
+        [Column("ITEM_QTY")]
         public decimal? ItemQty { get; set; }
 
-        [Column("PRICE", TypeName = "decimal(11, 3)")]
+        [Column("PRICE")]
         public decimal? Price { get; set; }
 
-        [Column("ITEM_VAL", TypeName = "decimal(12, 3)")]
+        [Column("ITEM_VAL")]
         public decimal? ItemVal { get; set; }
 
         [Column("FLAG_INV")]
@@ -70,19 +70,19 @@ namespace ProSoft.EF.Models.Stocks
         [Column("F_YEAR")]
         public int? FYear { get; set; }
 
-        [Column("ITEM_UNIT_QTY", TypeName = "decimal(11, 3)")]
+        [Column("ITEM_UNIT_QTY")]
         public decimal? ItemUnitQty { get; set; }
 
-        [Column("PRICE_PURCHASE", TypeName = "decimal(11, 3)")]
+        [Column("PRICE_PURCHASE")]
         public decimal? PricePurchase { get; set; }
 
-        [Column("PRICE_WITHOUT_TAX", TypeName = "decimal(11, 4)")]
+        [Column("PRICE_WITHOUT_TAX")]
         public decimal? PriceWithoutTax { get; set; }
 
-        [Column("PRICE2", TypeName = "decimal(12, 4)")]
+        [Column("PRICE2")]
         public decimal? Price2 { get; set; }
 
-        [Column("ITEM_VAL2", TypeName = "decimal(12, 4)")]
+        [Column("ITEM_VAL2")]
         public decimal? ItemVal2 { get; set; }
 
         [Column("F_MONTH")]
@@ -101,22 +101,22 @@ namespace ProSoft.EF.Models.Stocks
         [Unicode(false)]
         public string? ItemMasterOre { get; set; }
 
-        [Column("UNIT_QTY", TypeName = "decimal(11, 2)")]
+        [Column("UNIT_QTY")]
         public decimal? UnitQty { get; set; }
 
         [Column("BRANCH_ID")]
         public int? BranchId { get; set; }
 
-        [Column("PRICE_WITH_TAX", TypeName = "decimal(11, 3)")]
+        [Column("PRICE_WITH_TAX")]
         public decimal? PriceWithTax { get; set; }
 
         [Column("CURRANCY_TYPE")]
         public short? CurrancyType { get; set; }
 
-        [Column("CURRANCY_VAL", TypeName = "decimal(11, 3)")]
+        [Column("CURRANCY_VAL")]
         public decimal? CurrancyVal { get; set; }
 
-        [Column("CURRANCY_RATE", TypeName = "decimal(7, 3)")]
+        [Column("CURRANCY_RATE")]
         public decimal? CurrancyRate { get; set; }
 
         [Column("SER_SYS")]
@@ -129,28 +129,28 @@ namespace ProSoft.EF.Models.Stocks
         [Precision(6)]
         public DateTime? ExpireDate { get; set; }
 
-        [Column("TAX_PRC", TypeName = "decimal(4, 2)")]
+        [Column("TAX_PRC")]
         public decimal? TaxPrc { get; set; }
 
         [Column("SUP_NO")]
         public int? SupNo { get; set; }
 
-        [Column("TAX_VAL", TypeName = "decimal(11, 2)")]
+        [Column("TAX_VAL")]
         public decimal? TaxVal { get; set; }
 
         [Column("CURRANCY_TYPE2")]
         public short? CurrancyType2 { get; set; }
 
-        [Column("CURRANCY_VAL2", TypeName = "decimal(11, 3)")]
+        [Column("CURRANCY_VAL2")]
         public decimal? CurrancyVal2 { get; set; }
 
-        [Column("CURRANCY_RATE2", TypeName = "decimal(7, 3)")]
+        [Column("CURRANCY_RATE2")]
         public decimal? CurrancyRate2 { get; set; }
 
-        [Column("EXPEN_VAL", TypeName = "decimal(10, 2)")]
+        [Column("EXPEN_VAL")]
         public decimal? ExpenVal { get; set; }
 
-        [Column("EXPEN_QTY", TypeName = "decimal(10, 2)")]
+        [Column("EXPEN_QTY")]
         public decimal? ExpenQty { get; set; }
 
         [Column("SHOW_ROW")]
@@ -167,7 +167,7 @@ namespace ProSoft.EF.Models.Stocks
         [Column("ITEM_MASTER2")]
         public int? ItemMaster2 { get; set; }
 
-        [Column("PRICE3", TypeName = "decimal(11, 3)")]
+        [Column("PRICE3")]
         public decimal? Price3 { get; set; }
 
         [Column("PRICE_TYPE")]
@@ -178,7 +178,7 @@ namespace ProSoft.EF.Models.Stocks
         [Unicode(false)]
         public string? Availability { get; set; }
 
-        [Column("TOT_SALES_PRICE", TypeName = "decimal(10, 2)")]
+        [Column("TOT_SALES_PRICE")]
         public decimal? TotSalesPrice { get; set; }
 
         [Column("TAX_TYPE")]
@@ -229,16 +229,16 @@ namespace ProSoft.EF.Models.Stocks
         [Unicode(false)]
         public string? TaxBase { get; set; }
 
-        [Column("ITEM_DISCOUNT", TypeName = "decimal(11, 2)")]
+        [Column("ITEM_DISCOUNT")]
         public decimal? ItemDiscount { get; set; }
 
-        [Column("BOUNS_QTY", TypeName = "decimal(10, 2)")]
+        [Column("BOUNS_QTY")]
         public decimal? BounsQty { get; set; }
 
-        [Column("PUR_QTY", TypeName = "decimal(10, 2)")]
+        [Column("PUR_QTY")]
         public decimal? PurQty { get; set; }
 
-        [Column("ITEM_DISCOUNT_PRC", TypeName = "decimal(5, 2)")]
+        [Column("ITEM_DISCOUNT_PRC")]
         public decimal? ItemDiscountPrc { get; set; }
 
         [Column("DISC_BASE")]
@@ -251,10 +251,10 @@ namespace ProSoft.EF.Models.Stocks
         [Unicode(false)]
         public string? LotNo { get; set; }
 
-        [Column("ENTRY_DATE", TypeName = "datetime")]
+        [Column("ENTRY_DATE")]
         public DateTime? EntryDate { get; set; }
 
-        [Column("MODIFY_DATE", TypeName = "datetime")]
+        [Column("MODIFY_DATE")]
         public DateTime? ModifyDate { get; set; }
 
         [Column("G_ID")]

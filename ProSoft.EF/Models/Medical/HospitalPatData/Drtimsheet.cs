@@ -24,10 +24,10 @@ namespace ProSoft.EF.Models.Medical.HospitalPatData
         [Column("DAY_NUMBER")]
         public int? DayNumber { get; set; }
 
-        [Column("TIMFROM", TypeName = "datetime")]
+        [Column("TIMFROM")]
         public DateTime? Timfrom { get; set; }
 
-        [Column("TIMTO", TypeName = "datetime")]
+        [Column("TIMTO")]
         public DateTime? Timto { get; set; }
 
         [Column("EX_PERIOD")]

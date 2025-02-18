@@ -22,7 +22,7 @@ namespace ProSoft.EF.Models.MedicalRecords
         [Column("SERIAL_HISTORY")]
         public int SerialHistory { get; set; }
 
-        [Column("ENTRY_DATE", TypeName = "datetime")]
+        [Column("ENTRY_DATE")]
         public DateTime? EntryDate { get; set; }
 
         [Column("FIRST_OPERATOR")]
@@ -353,7 +353,7 @@ namespace ProSoft.EF.Models.MedicalRecords
         [Column("PAT_ID")]
         public int? PatId { get; set; }
 
-        [Column("SERIAL", TypeName = "numeric(8, 0)")]
+        [Column("SERIAL")]
         public decimal? Serial { get; set; }
 
         [ForeignKey("PatId")]
