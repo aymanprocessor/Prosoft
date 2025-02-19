@@ -139,7 +139,7 @@ namespace ProSoft.EF.Models.Accounts
         [Column("TRANS_ID")]
         public int TransId { get; set; }
 
-        [ForeignKey("TransId")]
+        //[ForeignKey("TransId")]
         public AccTransMaster? AccTransMasters { get; set; }
     }
 }

@@ -128,12 +128,7 @@ namespace ProSoft.EF.DbContext
         {
             base.OnModelCreating(builder);
 
-            Console.WriteLine("Start Here");
-            builder.Entity<ApplicationRoleClaim>()
-                .HasOne<ApplicationRole>() // Relate to IdentityRole
-                .WithMany(role => role.Claims) // No navigation property on IdentityRole
-                .HasForeignKey(rc => rc.RoleId)
-                .OnDelete(DeleteBehavior.NoAction);
+            
 
            
             // ------------------- Stored Procedures ------------------- //
@@ -235,15 +230,7 @@ namespace ProSoft.EF.DbContext
                 //.Ignore(us => us.EisSectionTypes)
                 .HasKey(us => new { us.UserId, us.SideId, us.RegionId, us.BranchId });
 
-            // ------------------ MAIN ITEM ------------------ //
-
-            builder.Entity<MainItem>()
-                .HasIndex(e => e.MainCode)
-                .IsUnique();
-            // ------------------ SUB ITEM ------------------ //
-            builder.Entity<SubItem>()
-                .HasIndex(s => s.ItemCode)
-                .IsUnique();
+      
 
             builder.Entity<SubItem>()
                 .HasOne(s => s.Main)
@@ -281,6 +268,8 @@ namespace ProSoft.EF.DbContext
             if (_provider == "Oracle")
             {
 
+              
+
                 Console.WriteLine("This Is Oracle Provider");
                 foreach (var entity in builder.Model.GetEntityTypes())
                 {
@@ -308,11 +297,11 @@ namespace ProSoft.EF.DbContext
                     // Loop through all properties of each entity
                     foreach (var property in entity.GetProperties())
                     {
-                        string tableName = entity.GetTableName()!;
-                        if (tableName.Length > 30)
-                        {
-                            entity.SetTableName(ShortenIdentifier(tableName));
-                        }
+                        //string tableName = entity.GetTableName()!;
+                        //if (tableName.Length > 30)
+                        //{
+                        //    entity.SetTableName(ShortenIdentifier(tableName));
+                        //}
 
                         // Check if the property type is boolean (which maps to BOOLEAN in database)
                         if (property.ClrType == typeof(bool) || property.ClrType == typeof(bool?))
@@ -322,49 +311,49 @@ namespace ProSoft.EF.DbContext
                         }
 
 
-                        string columnName = property.Name;
-                        if (columnName.Length > 30)
-                        {
-                            property.SetColumnName(ShortenIdentifier(columnName));
-                        }
+                        //string columnName = property.Name;
+                        //if (columnName.Length > 30)
+                        //{
+                        //    property.SetColumnName(ShortenIdentifier(columnName));
+                        //}
 
                     }
 
-                    //  primary key names
-                    foreach (var key in entity.GetKeys())
-                    {
-                        string pkName = key.GetName()!;
-                        if (pkName.Length > 30)
-                        {
-                            builder.Entity(entity.Name)
-                                .HasKey(key.Properties.Select(p => p.Name).ToArray())
-                                .HasName(ShortenIdentifier(pkName));
-                        }
-                    }
+                    ////  primary key names
+                    //foreach (var key in entity.GetKeys())
+                    //{
+                    //    string pkName = key.GetName()!;
+                    //    if (pkName.Length > 30)
+                    //    {
+                    //        builder.Entity(entity.Name)
+                    //            .HasKey(key.Properties.Select(p => p.Name).ToArray())
+                    //            .HasName(ShortenIdentifier(pkName));
+                    //    }
+                    //}
 
 
-                    // foreignKey names
-                    foreach (var foreignKey in entity.GetForeignKeys())
-                    {
-                        Console.WriteLine($"Entity: {entity.Name}, " +
-                          $"ForeignKey: {foreignKey.Properties.First().Name}, " +
-                          $"ConstraintName: {foreignKey.GetConstraintName()}, " +
-                          $"PrincipalName: {foreignKey.PrincipalEntityType.Name}");
-                        string? fkName = foreignKey.GetConstraintName();
-                        if (fkName == null) continue;
-                        Console.WriteLine($"Org FK Name => {fkName}");
-                        if (fkName.Length > 30)
-                        {
-                            builder.Entity(entity.Name)
-                                .HasOne(foreignKey.PrincipalEntityType.Name)
-                                .WithMany()
-                                .HasForeignKey(foreignKey.Properties.Select(p => p.Name).ToArray())
-                                .HasConstraintName(ShortenIdentifier(fkName));
+                    //// foreignKey names
+                    //foreach (var foreignKey in entity.GetForeignKeys())
+                    //{
+                    //    Console.WriteLine($"Entity: {entity.Name}, " +
+                    //      $"ForeignKey: {foreignKey.Properties.First().Name}, " +
+                    //      $"ConstraintName: {foreignKey.GetConstraintName()}, " +
+                    //      $"PrincipalName: {foreignKey.PrincipalEntityType.Name}");
+                    //    string? fkName = foreignKey.GetConstraintName();
+                    //    if (fkName == null) continue;
+                    //    Console.WriteLine($"Org FK Name => {fkName}");
+                    //    if (fkName.Length > 30)
+                    //    {
+                    //        builder.Entity(entity.Name)
+                    //            .HasOne(foreignKey.PrincipalEntityType.Name)
+                    //            .WithMany()
+                    //            .HasForeignKey(foreignKey.Properties.Select(p => p.Name).ToArray())
+                    //            .HasConstraintName(ShortenIdentifier(fkName));
 
-                            Console.WriteLine("Shorten FK Name => ", ShortenIdentifier(fkName));
+                    //        Console.WriteLine("Shorten FK Name => ", ShortenIdentifier(fkName));
 
-                        }
-                    }
+                    //    }
+                    //}
 
                     //  index names
                     //foreach (var index in entity.GetIndexes())
@@ -391,6 +380,16 @@ namespace ProSoft.EF.DbContext
                     // Apply the schema to all tables
                     entity.SetSchema("dbo");
                 }
+
+                // ------------------ MAIN ITEM ------------------ //
+
+                builder.Entity<MainItem>()
+                    .HasIndex(e => e.MainCode)
+                    .IsUnique();
+                // ------------------ SUB ITEM ------------------ //
+                builder.Entity<SubItem>()
+                    .HasIndex(s => s.ItemCode)
+                    .IsUnique();
             }
         }
 

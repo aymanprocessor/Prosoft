@@ -11,7 +11,7 @@ namespace ProSoft.EF.Models.Medical.HospitalPatData
 {
     [PrimaryKey("BranchId", "CheckupId", "Flag1")]
     [Table("CHECKUP_CLINIC")]
-    [Index("BranchId", "CheckupId", "Flag1", Name = "PK_CHECKUP_CLINIC_2", IsUnique = true)]
+    //[Index("BranchId", "CheckupId", "Flag1", Name = "PK_CHECKUP_CLINIC_2", IsUnique = true)]
     public class CheckupClinic
     {
         [Key]
