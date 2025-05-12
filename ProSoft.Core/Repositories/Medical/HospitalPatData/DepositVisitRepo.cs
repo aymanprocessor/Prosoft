@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
 using ProSoft.EF.DbContext;
 using ProSoft.EF.DTOs.Accounts;
 using ProSoft.EF.DTOs.Medical.HospitalPatData;
@@ -9,12 +8,6 @@ using ProSoft.EF.Models.Accounts;
 using ProSoft.EF.Models.Medical.HospitalPatData;
 using ProSoft.EF.Models.Shared;
 using ProSoft.EF.Models.Treasury;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace ProSoft.Core.Repositories.Medical.HospitalPatData
 {

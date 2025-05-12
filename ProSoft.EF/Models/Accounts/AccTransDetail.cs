@@ -16,7 +16,8 @@ namespace ProSoft.EF.Models.Accounts
         [Key]
         [Column("TRANS_DTL_ID")]
         public int TransDtlId { get; set; }
-
+        [Column("AccTransMastersTransId")]
+        public int AccTransMasterTransId { get; set; }
         [Column("CO_CODE")]
         public int? CoCode { get; set; }
 

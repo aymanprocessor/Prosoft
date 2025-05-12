@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  prosoft-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: prosoft-web
+    ports:
+      - "8080:80"
+      - "8443:443" 
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/certs/cert.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
+    volumes:
+      - ./certs:/app/certs:ro
+    depends_on:
+      - oracle-db
+    networks:
+      - prosoft-network
+    restart: unless-stopped
+
+  oracle-db:
+    image: truevoly/oracle-12c
+    container_name: oracle-db
+    environment:
+      - ORACLE_PWD=${ORACLE_PASSWORD}
+      - ORACLE_CHARACTERSET=AL32UTF8
+    ports:
+      - "1521:1521"
+    volumes:
+      - oracle-data:/u01/app/oracle
+    networks:
+      - prosoft-network
+    restart: unless-stopped
+    shm_size: '2gb'
+
+volumes:
+  oracle-data:
+
+networks:
+  prosoft-network:
+    driver: bridge

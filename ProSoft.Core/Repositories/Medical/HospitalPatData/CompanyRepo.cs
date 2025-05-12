@@ -23,6 +23,33 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             _mapper= mapper;
         }
 
+        public async Task<List<CompanyViewDTO>> GetAllCompanyAsync()
+        {
+            List<CompanyViewDTO> companyDTOs = await _Context.Companies
+                 .Select(obj => new CompanyViewDTO()
+                 {
+                     CompId = (int)obj.CompId,
+                     CompName = obj.CompName,
+                     PLId = (int)obj.PL.PLId,
+                     PlDesc = obj.PL.PlDesc,
+                     EInvMainFlg = obj.EInvMainFlg,
+                     TaxNo = obj.TaxNo,
+                     SubCode = obj.SubCode,
+                     MainCode = obj.MainCode,
+                     Stamp = (decimal)obj.Stamp,
+                     StampPer = (decimal)obj.StampPer,
+                     TaxPer = (decimal)obj.TaxPer,
+                     KName = obj.KindStoreNavigation.KName,
+                     ComAdd = obj.ComAdd,
+                     CompTelephone = obj.CompTelephone,
+                     CompFax = obj.CompFax,
+                     MedicalManager = obj.MedicalManager,
+                     InsurancePeriod = obj.InsurancePeriod,
+                 })
+                 .ToListAsync();
+            return companyDTOs;
+        }
+
         public async Task<List<CompanyViewDTO>> GetAllCompanyAsync(int id)
         {
             List<CompanyViewDTO> companyDTOs = await _Context.Companies.Where(obj => obj.GroupId == id)

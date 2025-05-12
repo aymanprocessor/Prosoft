@@ -150,7 +150,15 @@ namespace ProSoft.EF.DbContext
                .Property(u => u.UserName)
                .HasColumnName("USER_NAME");
 
-         
+            // ------------------ ACC_TRANS_DETAIL ------------------ //
+            //  builder.Entity<AccTransDetail>()
+            //.HasOne(d => d.AccTransMasters)
+            //.WithMany()
+            //.HasForeignKey(d => d.TransId) // Ensure this matches the actual column name in the database
+            //.HasPrincipalKey(m => m.TransId); // Ensure this matches the primary key of AccTransMaster
+            builder.Entity<AccTransDetail>()
+      .Ignore(x => x.AccTransMasterTransId);
+
             // ------------------ USER SIDE ------------------ //
 
             builder.Entity<UserSide>()

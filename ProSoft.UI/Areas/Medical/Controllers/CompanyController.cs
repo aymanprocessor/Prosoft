@@ -17,11 +17,14 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         {
             _companyRepo = companyRepo;
         }
+
         public async Task<IActionResult> GetCompany(int id)
         {
             List<CompanyViewDTO> companyDTOs = await _companyRepo.GetAllCompanyAsync(id);
             return Json(companyDTOs);
         }
+
+      
 
         //Get add
         public async Task<IActionResult> Add_Company(int id)

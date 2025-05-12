@@ -87,3 +87,4 @@ artifacts/
 bin/
 obj/
 .aider*
+.env
