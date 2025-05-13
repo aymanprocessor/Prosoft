@@ -1,0 +1,5 @@
+-- Create the common user
+CREATE USER C##EIS IDENTIFIED BY Eiss2024 CONTAINER=ALL;
+
+-- Grant necessary privileges
+GRANT CONNECT, RESOURCE, DBA TO C##EIS CONTAINER=ALL;
