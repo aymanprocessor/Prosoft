@@ -8,6 +8,7 @@ WORKDIR /src
 COPY ["ProSoft.UI/ProSoft.UI.csproj", "ProSoft.UI/"]
 COPY ["ProSoft.Core/ProSoft.Core.csproj", "ProSoft.Core/"]
 COPY ["ProSoft.EF/ProSoft.EF.csproj", "ProSoft.EF/"]
+COPY ["Shared/ProSoft.Shared.csproj", "Shared/"]
 RUN dotnet restore "ProSoft.UI/ProSoft.UI.csproj"
 COPY . .
 WORKDIR "/src/ProSoft.UI"
