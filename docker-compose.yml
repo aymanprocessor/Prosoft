@@ -23,7 +23,7 @@ services:
     restart: unless-stopped
 
   oracle-db:
-    image: oracle/database:12.2.0.1-ee  # Oracle 12c Enterprise Edition (12.2.0.1)
+    image: houdinisparks/oracle_db:12.2.0.2-latest  # Oracle 12c Enterprise Edition (12.2.0.1)
     container_name: oracle-db
     environment:
       - ORACLE_PASSWORD=Eiss2024  # Set the password for the SYS and SYSTEM users
