@@ -5,7 +5,7 @@
     var F_Year = User.Claims.FirstOrDefault(c => c.Type == "F_Year");
 }
 <!DOCTYPE html>
-<html lang="en" dir="@(isRTL ? "rtl" : "ltr")">
+<html lang="en" dir="@(isRTL ? "RTL" : "LTR")">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,9 +13,11 @@
     @if (isRTL)
     {
         <link rel="stylesheet" href="~/css/bootstrap-rtl.min.css" asp-append-version="true" />
+
     }
     else
     {
+
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     }
     <link rel="stylesheet" href="~/css/layout_ourModules.css" asp-append-version="true" />
@@ -24,742 +26,784 @@
           integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
           crossorigin="anonymous"
           referrerpolicy="no-referrer" />
-    <style>
-        /* Medical Theme Styles */
-        :root {
-            --medical-primary: #007bff; /* Blue for primary actions */
-            --medical-secondary: #6c757d; /* Gray for secondary elements */
-            --medical-background: #f0f8ff; /* Light blue background */
-            --medical-text: #333; /* Dark text for readability */
-            --medical-accent: #28a745; /* Green for accents */
-            --medical-border: #ddd; /* Light border color */
-        }
-
-        body {
-            background-color: var(--medical-background);
-            color: var(--medical-text);
-            font-family: 'Arial', sans-serif;
-        }
-
-        .main-container {
-            display: flex;
-            width: 100%;
-            height: 100vh; /* Full height of the viewport */
-        }
-
-        #navbarContainer {
-            width: 250px; /* Fixed width for the navbar */
-            background-color: white; /* White background for the navbar */
-            border-right: 1px solid var(--medical-border);
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-            padding: 20px;
-            margin: 20px;
-            border-radius: 10px;
-        }
-
-            #navbarContainer a {
-                color: var(--medical-text);
-                text-decoration: none;
-                display: block;
-                padding: 10px;
-                border-radius: 5px;
-                transition: background-color 0.3s ease;
-            }
-
-                #navbarContainer a:hover {
-                    background-color: var(--medical-primary);
-                    color: white;
-                }
-
-        .content-container {
-            flex: 1; /* Take remaining space */
-            padding: 20px; /* Add some padding */
-            background-color: white; /* White background for content */
-            margin: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-        }
-
-        /* Medical-themed buttons */
-        .btn-medical-primary {
-            background-color: var(--medical-primary);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-            .btn-medical-primary:hover {
-                background-color: #0056b3; /* Darker blue on hover */
-            }
-
-        .btn-medical-secondary {
-            background-color: var(--medical-secondary);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-            .btn-medical-secondary:hover {
-                background-color: #5a6268; /* Darker gray on hover */
-            }
-
-        /* Medical-themed headings */
-        h1, h2, h3, h4, h5, h6 {
-            color: var(--medical-primary);
-        }
-
-        /* Medical-themed table */
-        .table-medical {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-            .table-medical th,
-            .table-medical td {
-                padding: 12px;
-                border: 1px solid var(--medical-border);
-            }
-
-            .table-medical th {
-                background-color: var(--medical-primary);
-                color: white;
-            }
-
-            .table-medical tr:nth-child(even) {
-                background-color: #f9f9f9;
-            }
-
-            .table-medical tr:hover {
-                background-color: #f1f1f1;
-            }
-    </style>
 </head>
 <body>
-    <div class="main-container">
-        <!-- Navbar -->
-        <div id="navbarContainer">
-            <!-- Navbar content will be injected here by JavaScript -->
+
+
+    <div class="d-flex">
+        <div id="mySidebar" class="col-2 p-0">
+            <div class="vh-100 p-1 d-flex flex-column">
+                <a asp-controller="Home" asp-action="Index" class="nav-link d-flex my-2 justify-content-center text-white text-decoration-none">
+                    <span class="fs-4 d-sm-inline ">@localizer["Moudules"]</span>
+                </a>
+
+                <ul class="nav nav-pills flex-column p-0">
+                    @* medical system *@
+                    <li class="nav-item has-submenu">
+                        <a class="nav-link hover-link">
+                            <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Medical System"]
+                        </a>
+
+                        <ul class="submenu collapse p-0">
+                            @* ////Medical Analysis *@
+                            <li class="nav-item has-submenu">
+                                <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
+                                    <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Main data"]
+                                </a>
+                                <ul class="submenu collapse p-0 ">
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Medical" asp-controller="MainAnalysis" asp-action="Index" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Analysis guide"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Medical" asp-controller="PriceList" asp-action="Index" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Price Lists"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Medical" asp-controller="CompanyGroup" asp-action="Index" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Companys"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a class="nav-link hover-link @(isRTL ? "me-3 pe-3" : "ms-3 ps-3")">
+                                            <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i> @localizer["Definitions"]
+                                        </a>
+                                        <ul class="submenu collapse p-0 ">
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Medical" asp-controller="patient" asp-action="Patients" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                                    @localizer["Patient Definations"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Medical" asp-controller="DrDegree" asp-action="Index" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                                    @localizer["Doctor Degree"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Medical" asp-controller="Doctor" asp-action="Index" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                                    @localizer["Doctor Definations"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Medical" asp-controller="DoctorPercentage" asp-action="Index" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                                    @localizer["Doctors Percentages"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Medical" asp-controller="DrTimeSheet" asp-action="Index" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                                    @localizer["Doctors Appointments"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Medical" asp-controller="CheckupClinic" asp-action="Index" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                                    @localizer["Types of Examinations"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Medical" asp-controller="MainClinic" asp-action="Index" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                                    @localizer["Department services"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Shared" asp-controller="Nationality" asp-action="Nationalities" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                                    @localizer["National Definations"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Medical" asp-controller="NursingData" asp-action="Index" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                                    @localizer["Nursing Data"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Medical" asp-controller="kinship" asp-action="Index" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                                    @localizer["kinship"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Medical" asp-controller="UsersSection" asp-action="Index" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                                    @localizer["Joining Users With Medical Services"]
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            @* ////Hospital Patient Data *@
+                            <li class="nav-item has-submenu">
+                                <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
+                                    <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Transactions"]
+                                </a>
+                                <ul class="submenu collapse p-0 ">
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="MedicalRecords" asp-controller="PatRecord" asp-action="AllPatients" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Medical Records"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Medical" asp-controller="HospitalPatData" asp-action="AnalysisTransactions" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Medical Analysis"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Medical" asp-controller="HospitalPatData" asp-action="Invoices" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Medical Invoices"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Medical" asp-controller="HospitalPatData" asp-action="Requirements" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Medical Requirements"]
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            @* ////Hospital Patient Data *@
+                            <li class="nav-item has-submenu">
+                                <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
+                                    <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Reports"]
+                                </a>
+                                <ul class="submenu collapse p-0 ">
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Medical" asp-controller="ReportDoctorFees" asp-action="Index" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Doctor's fees"]
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    @* medical system *@
+
+                    @* Stocks System *@
+                    <li class="nav-item has-submenu">
+                        <a class="nav-link hover-link">
+                            <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Stocks System"]
+                        </a>
+
+                        <ul class="submenu collapse p-0">
+                            <li class="nav-item has-submenu">
+                                <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
+                                    <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Main data"]
+                                </a>
+                                <ul class="submenu collapse p-0 ">
+                                    @* ------------------------------- تعريفات -------------------------------*@
+                                    <li class="nav-item has-submenu">
+                                        <a class="nav-link hover-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i> @localizer["Definitions"]
+                                        </a>
+                                        <ul class="submenu collapse p-0 ">
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Stocks" asp-controller="StockType" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["Stocks Types"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Stocks" asp-controller="Stock" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["Stocks"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Stocks" asp-controller="Side" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["Sides"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Stocks" asp-controller="UnitCode" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["Unit Codes"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Shared" asp-controller="ClassificationCust" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["Departments"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Shared" asp-controller="Section" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["The Sections"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Stocks" asp-controller="DepartmentsWithSections" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["Joining Departments With Sections"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Stocks" asp-controller="ItemsCustPrice" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["Customer Pricing"]
+                                                </a>
+                                            </li>
+                                            @if (User.IsInRole("Admin"))
+                                            {
+                                                <li class="nav-item has-submenu">
+                                                    <a asp-area="Shared" asp-controller="PermitDefinition" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                        @localizer["Permissions Names"]
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item has-submenu">
+                                                    <a asp-area="Stocks" asp-controller="UserTransaction" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                        @localizer["Joining Users With Transactions"]
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item has-submenu">
+                                                    <a asp-area="Stocks" asp-controller="Supplier" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                        @localizer["The Suppliers"]
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item has-submenu">
+                                                    <a asp-area="Stocks" asp-controller="Customer" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                        @localizer["Customers"]
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item has-submenu">
+                                                    <a asp-area="Stocks" asp-controller="UserStockTransaction" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                        @localizer["Joining Users With Stocks and Accounts"]
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item has-submenu">
+                                                    <a asp-area="Stocks" asp-controller="StockEmpFlag" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                        @localizer["Joining Users With Stock Type"]
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item has-submenu">
+                                                    <a asp-area="Stocks" asp-controller="UsersGroup" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                        @localizer["Users Group"]
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item has-submenu">
+                                                    <a asp-area="Stocks" asp-controller="UserSide" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                        @localizer["Joining Users With Side"]
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item has-submenu">
+                                                    <a asp-area="Stocks" asp-controller="ItemUnits" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                        @localizer["Joining Units with Items"]
+                                                    </a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                    @* ------------------------------- الارصدة -------------------------------*@
+
+                                    <li class="nav-item has-submenu">
+                                        <a class="nav-link hover-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i> @localizer["The Balances"]
+                                        </a>
+                                        <ul class="submenu collapse p-0 ">
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Stocks" asp-controller="StockBalance" asp-action="ChooseStockType" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["The Stock Balances"]
+                                                </a>
+                                            </li>
+
+                                        </ul>
+                                    </li>
+                                    @* ------------------------------- الاكواد -------------------------------*@
+
+                                    <li class="nav-item has-submenu">
+                                        <a class="nav-link hover-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i> @localizer["The Codes"]
+                                        </a>
+                                        <ul class="submenu collapse p-0 ">
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Stocks" asp-controller="OrderLimit" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["Order Limit"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Stocks" asp-controller="MainItem" asp-action="ChooseStockType" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["Items Guide"]
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            @* ------------------------------- الحركات -------------------------------*@
+
+                            <li class="nav-item has-submenu">
+                                <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
+                                    <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Transactions"]
+                                </a>
+                                <ul class="submenu collapse p-0 ">
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Stocks" asp-controller="PermissionForm" asp-action="Index" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Permissions Forms"]
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            @* ------------------------------- قفل وفتح الحركات -------------------------------*@
+
+                            <li class="nav-item has-submenu">
+                                <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
+                                    <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Closing Procedures"]
+                                </a>
+                                <ul class="submenu collapse p-0 ">
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Stocks" asp-controller="OpenCloseTransaction" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                            @localizer["Opening and closing Transactions"]
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            @* ------------------------------- التقارير -------------------------------*@
+
+                            <li class="nav-item has-submenu">
+                                <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
+                                    <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Reports"]
+                                </a>
+                                <ul class="submenu collapse p-0 ">
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Stocks" asp-controller="PermissionForm" asp-action="AllRermissionForm" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Display Permissions Forms"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Stocks" asp-controller="QuantityClassCard" asp-action="Index" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Quantity class card only"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Stocks" asp-controller="QuantityClassCard" asp-action="QuantityAndValueClassCard" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Quantity And Value Class Card"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Stocks" asp-controller="QuantityClassCard" asp-action="AtLevelTransactionCard" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["At Level Transaction Class Card"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Stocks" asp-controller="TransferAndReceiptTransactionReport" asp-action="Index" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Transfer And Receipt Transaction"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Stocks" asp-controller="TotalItemCards" asp-action="TotalItemCardsQuantity" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["The Total Item Cards - Quantity"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Stocks" asp-controller="TotalItemCards" asp-action="TotalItemCardsPrice" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["The Total Item Cards - Price"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Stocks" asp-controller="TotalItemCards" asp-action="TotalItemCardsDetail" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["The Total Item Cards - Detail"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Stocks" asp-controller="TransactionReport" asp-action="FastTransactionReport" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Fast Transaction Report"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Stocks" asp-controller="TransactionReport" asp-action="SlowTransactionReport" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Slow Transaction Report"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Stocks" asp-controller="TransactionReport" asp-action="ZeroTransactionReport" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Zero Transaction Report"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Stocks" asp-controller="TransactionReport" asp-action="TotalPermitsTransactionReport" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Total Permits Transaction Report"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Stocks" asp-controller="TransactionReport" asp-action="SupplierPermitsTransactionReport" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Supplier Permits Transaction Report"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Stocks" asp-controller="StockBalanceReport" asp-action="Index" class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            @localizer["Stock Balance Report"]
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    @* Stocks System *@
+
+                    @* Treasury System *@
+                    <li class="nav-item has-submenu">
+                        <a class="nav-link hover-link">
+                            <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Treasury System"]
+                        </a>
+
+                        <ul class="submenu collapse p-0">
+                            <li class="nav-item has-submenu">
+                                <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
+                                    <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Main data"]
+                                </a>
+                                <ul class="submenu collapse p-0 ">
+                                    <li class="nav-item has-submenu">
+                                        <a class="nav-link hover-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i> @localizer["Definitions"]
+                                        </a>
+                                        <ul class="submenu collapse p-0 ">
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Treasury" asp-controller="TreasuryName" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["Treasury Names"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Treasury" asp-controller="Currency" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["Currencies"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Treasury" asp-controller="BankData" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["Banks"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Treasury" asp-controller="CostCenterTreasury" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["Cost Center Treasury"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Treasury" asp-controller="UserCashNo" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["Joining Users With Treasurys"]
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item has-submenu">
+                                <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
+                                    <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Transactions"]
+                                </a>
+                                <ul class="submenu collapse p-0 ">
+                                    <li class="nav-item has-submenu">
+                                        <a class="nav-link hover-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["The Cash"]
+                                        </a>
+
+                                        <ul class="submenu collapse p-0 ">
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Treasury" asp-controller="AccSafeCash" asp-action="Index" asp-route-docType="SFCIN" asp-route-flagType="oneANDtwo" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["Payment Receipt"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Treasury" asp-controller="DisbursementPermission" asp-action="Index" asp-route-docType="SFCOT" asp-route-flagType="oneANDtwo" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["Disbursement permission"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Treasury" asp-controller="ReceivePermission" asp-action="Index" asp-route-docType="SFTIN" asp-route-flagType="oneANDtwoAndthree" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["Receive Permission"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Treasury" asp-controller="TransferPermission" asp-action="Index" asp-route-docType="SFTOT" asp-route-flagType="oneANDtwoAndthree" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["Transfer Permission"]
+                                                </a>
+                                            </li>
+                                        </ul>
+
+                                        <ul class="submenu collapse p-0 show">
+                                            <li class="nav-item has-submenu">
+                                                <a class="nav-link hover-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                                    <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["The Checks"]
+                                                </a>
+
+                                                <ul class="submenu collapse p-0 ">
+                                                    <li class="nav-item has-submenu">
+                                                        <a asp-area="Treasury" asp-controller="AccSafeCheck" asp-action="Index" asp-route-tranType="SFSIN" asp-route-flagType="oneANDtwo" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                            @localizer["Deposit check in Treasury"]
+                                                        </a>
+                                                    </li>
+                                                    <li class="nav-item has-submenu">
+                                                        <a asp-area="Treasury" asp-controller="DisbursementPermissionCheck" asp-action="Index" asp-route-tranType="SFOUT" asp-route-flagType="oneANDtwo" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                            @localizer["Disbursement permission Checks"]
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+
+                                    </li>
+                                </ul>
+
+                            </li>
+                            <li class="nav-item has-submenu">
+                                <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
+                                    <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Reports"]
+                                </a>
+                                <ul class="submenu collapse p-0 ">
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Treasury" asp-controller="ReportCashAndChecks" asp-action="Index" asp-route-tranType="SFOUT" asp-route-flagType="oneANDtwo" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                            @localizer["Follow up cash and checks"]
+                                        </a>
+                                    </li>
+                                </ul>
+
+                            </li>
+                        </ul>
+                    </li>
+                    @* Treasury System *@
+
+                    @* Accounts System *@
+                    <li class="nav-item has-submenu">
+                        <a class="nav-link hover-link">
+                            <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Accounts System"]
+                        </a>
+
+                        <ul class="submenu collapse p-0">
+                            <li class="nav-item has-submenu">
+                                <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
+                                    <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Main data"]
+                                </a>
+                                <ul class="submenu collapse p-0 ">
+                                    <li class="nav-item has-submenu">
+                                        <a class="nav-link hover-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                            <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i> @localizer["Definitions"]
+                                        </a>
+                                        <ul class="submenu collapse p-0 ">
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Accounts" asp-controller="AccMainCode" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["Accounts guide"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Accounts" asp-controller="CostCenter" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["Cost Centers"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Accounts" asp-controller="JournalType" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["Journal Types"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Accounts" asp-controller="AccSubCodeEdit" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["Modification of account codes"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Accounts" asp-controller="AccStartBal" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["Opening Balances"]
+                                                </a>
+                                            </li>
+                                            <li class="nav-item has-submenu">
+                                                <a asp-area="Accounts" asp-controller="UserJournalType" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                    @localizer["Joining Users With Journals"]
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item has-submenu">
+                                <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
+                                    <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Recording Restrictions"]
+                                </a>
+                                <ul class="submenu collapse p-0 ">
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Accounts" asp-controller="UserJournalType" asp-action="JournalTypeForUser" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                            @localizer["Journals"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Accounts" asp-controller="CancelJournalVoucher" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                            @localizer["Cancel Journal Voucher"]
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item has-submenu">
+                                <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
+                                    <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Closing Procedures"]
+                                </a>
+                                <ul class="submenu collapse p-0 ">
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Accounts" asp-controller="MonthlyClosing" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                            @localizer["Monthly Closing"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Accounts" asp-controller="CancelJournalVoucher" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                            @localizer["Cancel Journal Voucher"]
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            @*   <li class="nav-item has-submenu">
+                            <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
+                            <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Transactions"]
+                            </a>
+                            <ul class="submenu collapse p-0 ">
+                            <li class="nav-item has-submenu">
+                            <a class="nav-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                            @localizer["Medical Records"]
+                            </a>
+                            </li>
+                            </ul>
+                            </li> *@
+                            <li class="nav-item has-submenu">
+                                <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
+                                    <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Reports"]
+                                </a>
+                                <ul class="submenu collapse p-0 ">
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Accounts" asp-controller="AmericanDaily" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                            @localizer["American Daily"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Accounts" asp-controller="ReportFromVoucherToVoucher" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                            @localizer["Print From Voucher To Voucher"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Accounts" asp-controller="ReportAssistantProfessor" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                            @localizer["Assistant Professor(Analytical/Overall)"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Accounts" asp-controller="ReportTransactionAccountJournal" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                            @localizer["Transaction account for journal Level"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Accounts" asp-controller="ReportExpenseAnalysis" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                            @localizer["Expense Analysis"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Accounts" asp-controller="ReportReviewJournalVouchers" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                            @localizer["Review Journal Vouchers"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Accounts" asp-controller="ReportGeneralProfessorFacility" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                            @localizer["General Professor For Facility"]
+                                        </a>
+                                    </li>
+                                    <li class="nav-item has-submenu">
+                                        <a asp-area="Accounts" asp-controller="ReportDailyAssistance" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                            @localizer["Daily assistance for Voucher level"]
+                                        </a>
+                                    </li>
+                                </ul>
+
+
+
+                            </li>
+                        </ul>
+                    </li>
+                    @* Accounts System *@
+
+                    @* System Tools *@
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item has-submenu">
+                            <a class="nav-link hover-link">
+                                <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["System Tools"]
+                            </a>
+
+                            <ul class="submenu collapse p-0">
+                                @* ////Medical Analysis *@
+                                <li class="nav-item has-submenu">
+                                    <a class="nav-link hover-link @(isRTL ? "pe-4" : "ps-4")">
+                                        <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i>@localizer["Main data"]
+                                    </a>
+                                    <ul class="submenu collapse p-0 ">
+                                        <li class="nav-item has-submenu">
+                                            <a class="nav-link hover-link @(isRTL ? "me-3 pe-4" : "ms-3 ps-4")">
+                                                <i class="fa-solid @(isRTL ? "fa-caret-left mx-2" : "fa-caret-right me-2")"></i> @localizer["Definitions"]
+                                            </a>
+                                            <ul class="submenu collapse p-0 ">
+                                                <li class="nav-item has-submenu">
+                                                    <a asp-area="Shared" asp-controller="EisPosting" asp-action="Index" class="nav-link @(isRTL ? "me-4 pe-4" : "ms-4 ps-4")">
+                                                        @localizer["System Accounts Coding"]
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                    @* System Tools *@
+                </ul>
+
+                @if (!User.IsInRole("Admin"))
+                {
+                    <a asp-action="ChangePassword" asp-controller="Account" class="btn btn-primary mt-auto align-self-center mb-2">@localizer["Change My Password"]</a>
+                }
+            </div>
         </div>
 
-        <!-- Main content -->
-        <div class="content-container">
+        <div class="content pb-3 position-relative" style="flex: 1;">
+            <div class="d-flex justify-content-between align-items-center gap-2 p-2 shadow-sm rounded">
+                <button class="toggler btn btn-secondary rounded-4" onclick="toggleNav()">☰</button>
+                <span class="fw-bold text-capitalize">@User.Identity.Name</span>
+                <span class="fw-bold"> / @(F_Year != null ? F_Year.Value : "No Financial Year")</span>
+                <div class="d-flex align-items-center gap-2 @(isRTL ? "me-auto" : "ms-auto")">
+                    <partial name="_SelectLanguagePartial" />
+                    <a asp-action="Logout" asp-controller="Account" class="btn btn-secondary">@localizer["Log out"]</a>
+                </div>
+            </div>
             @RenderBody()
         </div>
+
+        @* Overlay for sidebar in small screen *@
+        <div class="overlay position-absolute" onclick="toggleNav()"></div>
     </div>
+    @* Overlay for sidebar in small screen *@
+    <div class="overlay position-absolute" onclick="toggleNav()"></div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/navbarmanager.js" asp-append-version="true"></script>
     <script>
-                // function toggleNav() {
-                //     const navBar = document.getElementById("mySidebar");
-                //     navBar.classList.toggle("nav-open");
+        function toggleNav() {
+            const navBar = document.getElementById("mySidebar");
+            navBar.classList.toggle("nav-open");
 
-                //     const overlay = document.querySelector(".overlay");
-                //     overlay.classList.toggle("lay-active");
-                // }
-
-
-                const navbar = new NavbarManager('navbarContainer');
-                navbar.createNav([
-                    {
-                        text: '@localizer["Medical System"]',
-                        subMenu: [
-                            {
-                                text: '@localizer["Main data"]',
-                                subMenu: [
-                                    {
-                                        text: '@localizer["Analysis guide"]',
-                                        href: '/Medical/MainAnalysis/Index'
-                                    },
-                                    {
-                                        text: '@localizer["Price Lists"]',
-                                        href: '/Medical/PriceList/Index'
-                                    },
-                                    {
-                                        text: '@localizer["Companys"]',
-                                        href: '/Medical/CompanyGroup/Index'
-                                    },
-                                    {
-                                        text: '@localizer["Definitions"]',
-                                        subMenu: [
-                                            {
-                                                text: '@localizer["Catheter Section"]',
-                                                subMenu: [
-                                                    {
-                                                        text: '@localizer["Source Of Catheter"]',
-                                                        href: '/Medical/SourceOfCatheter/Index'
-                                                    },
-                                                    {
-                                                        text: '@localizer["List Of Catheter Procedures"]',
-                                                        href: '/Medical/ListOfCatheterProcedures/Index'
-                                                    },
-                                                    {
-                                                        text: '@localizer["List Of Stents And Catheters"]',
-                                                        href: '/Medical/Stent/Index'
-                                                    }
-                                                ]
-                                            },
-
-                                            {
-                                                text: '@localizer["Degree And Room And Bed"]',
-                                                href: '/Medical/DegreeAndRoomAndBed/Index'
-                                            },
-                                            {
-                                                text: '@localizer["Patient Definations"]',
-                                                href: '/Medical/patient/Patients'
-                                            },
-                                            {
-                                                text: '@localizer["Doctor Degree"]',
-                                                href: '/Medical/DrDegree/Index'
-                                            },
-                                            {
-                                                text: '@localizer["Doctor Definations"]',
-                                                href: '/Medical/Doctor/Index'
-                                            },
-                                            {
-                                                text: '@localizer["Doctors Percentages"]',
-                                                href: '/Medical/DoctorPercentage/Index'
-                                            },
-                                            {
-                                                text: '@localizer["Referral Doctor Commissions"]',
-                                                href: '/Medical/DrDiscount/Index'
-                                            },
-                                            {
-                                                text: '@localizer["Doctors Appointments"]',
-                                                href: '/Medical/DrTimeSheet/Index'
-                                            },
-                                            {
-                                                text: '@localizer["Types of Examinations"]',
-                                                href: '/Medical/CheckupClinic/Index'
-                                            },
-                                            {
-                                                text: '@localizer["Department services"]',
-                                                href: '/Medical/MainClinic/Index'
-                                            },
-                                            {
-                                                text: '@localizer["National Definations"]',
-                                                href: '/Shared/Nationality/Nationalities'
-                                            },
-                                            {
-                                                text: '@localizer["Nursing Data"]',
-                                                href: '/Medical/NursingData/Index'
-                                            },
-                                            {
-                                                text: '@localizer["kinship"]',
-                                                href: '/Medical/kinship/Index'
-                                            },
-                                            {
-                                                text: '@localizer["Joining Users With Medical Services"]',
-                                                href: '/Medical/UsersSection/Index'
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                text: '@localizer["Transactions"]',
-                                subMenu: [
-                                    {
-                                        text: '@localizer["Medical Records"]',
-                                        href: '/MedicalRecords/PatRecord/AllPatients'
-                                    },
-                                    {
-                                        text: '@localizer["Medical Analysis"]',
-                                        href: '/Medical/HospitalPatData/AnalysisTransactions'
-                                    },
-                                    {
-                                        text: '@localizer["Medical Invoices"]',
-                                        href: '/Medical/HospitalPatData/Invoices'
-                                    },
-                                    {
-                                        text: '@localizer["Medical Requirements"]',
-                                        href: '/Medical/HospitalPatData/Requirements'
-                                    }
-                                ]
-                            },
-                            {
-                                text: '@localizer["Inquiries"]',
-                                subMenu: [
-                                    {
-                                        text: '@localizer["ReceiptInquiry"]',
-                                        href: '/Medical/ReceiptInquiry/Index'
-                                    },
-                                    {
-                                        text: '@localizer["ClinicsAppointmentsInquiry"]',
-                                        href: '/Medical/ClinicsAppointmentsInquiry/Index'
-                                    },
-                                    {
-                                        text: '@localizer["DoctorsAppointmentsInquiry"]',
-                                        href: '/Medical/DoctorsAppointmentsInquiry/Index'
-                                    }
-                                ]
-                            },
-                            {
-                                text: '@localizer["Reports"]',
-                                subMenu: [
-                                    {
-                                        text: '@localizer["Doctor\'s fees"]',
-                                        href: '/Medical/ReportDoctorFees/Index'
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                    , {
-                        // Stocks System
-                        text: '@localizer["Stocks System"]',
-                        subMenu: [
-                            {
-                                text: '@localizer["Main data"]',
-                                subMenu: [
-                                    {
-                                        text: '@localizer["Definitions"]',
-                                        subMenu:
-                                            [
-                                                {
-                                                    text: '@localizer["Stocks Types"]',
-                                                    href: '/Stocks/StockType/Index'
-                                                },
-                                                {
-                                                    text: '@localizer["Stocks"]',
-                                                    href: '/Stocks/Stock/Index'
-                                                },
-                                                {
-                                                    text: '@localizer["Sides"]',
-                                                    href: '/Stocks/Side/Index'
-                                                },
-                                                {
-                                                    text: '@localizer["Unit Codes"]',
-                                                    href: '/Stocks/UnitCode/Index'
-                                                },
-                                                {
-                                                    text: '@localizer["Departments"]',
-                                                    href: '/Shared/ClassificationCust/Index'
-                                                },
-                                                {
-                                                    text: '@localizer["The Sections"]',
-                                                    href: '/Shared/Section/Index'
-                                                },
-                                                {
-                                                    text: '@localizer["Joining Departments With Sections"]',
-                                                    href: '/Stocks/DepartmentsWithSections/Index'
-                                                },
-                                                {
-                                                    text: '@localizer["Customer Pricing"]',
-                                                    href: '/Stocks/ItemsCustPrice/Index'
-                                                },
-                                                {
-                                                    text: '@localizer["Permissions Names"]',
-                                                    href: '/Shared/PermitDefinition/Index'
-                                                },
-                                                {
-                                                    text: '@localizer["Joining Users With Transactions"]',
-                                                    href: '/Stocks/UserTransaction/Index'
-                                                },
-                                                {
-                                                    text: '@localizer["The Suppliers"]',
-                                                    href: '/Stocks/Supplier/Index'
-                                                },
-                                                {
-                                                    text: '@localizer["Customers"]',
-                                                    href: '/Stocks/Customer/Index'
-                                                },
-                                                {
-                                                    text: '@localizer["Joining Users With Stocks and Accounts"]',
-                                                    href: '/Stocks/UserStockTransaction/Index'
-                                                },
-                                                {
-                                                    text: '@localizer["Joining Users With Stock Type"]',
-                                                    href: '/Stocks/StockEmpFlag/Index'
-                                                },
-                                                {
-                                                    text: '@localizer["Users Group"]',
-                                                    href: '/Stocks/UsersGroup/Index'
-                                                },
-                                                {
-                                                    text: '@localizer["Joining Users With Side"]',
-                                                    href: '/Stocks/UserSide/Index'
-                                                },
-                                                {
-                                                    text: '@localizer["Joining Units with Items"]',
-                                                    href: '/Stocks/ItemUnits/Index'
-                                                }
-                                            ]
-
-                                    },
-                                ]
-                            }, {
-                                text: '@localizer["The Balances"]',
-                                subMenu: [
-                                    {
-                                        text: '@localizer["The Stock Balances"]',
-                                        href: '/Stocks/StockBalance/ChooseStockType'
-                                    },
-                                ]
-                            }, {
-                                text: '@localizer["The Codes"]',
-                                subMenu: [
-                                    {
-                                        text: '@localizer["Order Limit"]',
-                                        href: '/Stocks/OrderLimit/Index'
-                                    },
-                                    {
-                                        text: '@localizer["Items Guide"]',
-                                        href: '/Stocks/MainItem/ChooseStockType'
-                                    },
-                                ]
-                            },
-                            {
-                                text: '@localizer["Transactions"]',
-                                subMenu: [
-                                    {
-                                        text: '@localizer["Permissions Forms"]',
-                                        href: '/Stocks/PermissionForm/Index'
-                                    },]
-                            }, {
-                                text: '@localizer["Closing Procedures"]',
-                                subMenu: [{
-                                    text: '@localizer["Opening and closing Transactions"]',
-                                    href: '/Stocks/OpenCloseTransaction/Index'
-                                },
-                                ]
-                            },
-                            {
-                                text: '@localizer["Post Supplies"]',
-                                subMenu: [{
-                                    text: '@localizer["Post Supplies To Stocks"]',
-                                    href: '/Stocks/TransferSuppliesToStock/Index'
-                                },
-                                {
-                                    text: '@localizer["Cancel Post Supplies To Stocks"]',
-                                    href: '/Stocks/CancelTransferSuppliesToStock/Index'
-                                }
-                                ]
-
-                            },
-                            {
-                                text: '@localizer["Reports"]',
-                                subMenu: [
-                                    {
-                                        text: '@localizer["Total Customer Transaction Report"]',
-                                        href: '/Stocks/TotalCustomerTransactionReport/Index'
-                                    },
-                                    {
-                                        text: '@localizer["Customer Transaction Quantity Report"]',
-                                        href: '/Stocks/CustomerTransactionReport/GetCustomerTransactionQuantityReport'
-                                    },
-                                    {
-                                        text: '@localizer["Customer Transaction Value Report"]',
-                                        href: '/Stocks/CustomerTransactionReport/GetCustomerTransactionValueReport'
-                                    },
-                                    {
-                                        text: '@localizer["Analytical Customer Transaction Report"]',
-                                        href: '/Stocks/AnalyticalCustomerTransactionReport/Index'
-                                    },
-                                    {
-                                        text: '@localizer["Request Limit Item Report"]',
-                                        href: '/Stocks/RequestLimitItemsReport/Index'
-                                    },
-                                    {
-                                        text: '@localizer["Display Permissions Forms"]',
-                                        href: '/Stocks/PermissionForm/AllRermissionForm'
-                                    },
-                                    {
-                                        text: '@localizer["Quantity class card only"]',
-                                        href: '/Stocks/QuantityClassCard/Index'
-                                    },
-                                    {
-                                        text: '@localizer["Quantity And Value Class Card"]',
-                                        href: '/Stocks/QuantityClassCard/QuantityAndValueClassCard'
-                                    },
-                                    {
-                                        text: '@localizer["At Level Transaction Class Card"]',
-                                        href: '/Stocks/QuantityClassCard/AtLevelTransactionCard'
-                                    },
-                                    {
-                                        text: '@localizer["Transfer And Receipt Transaction"]',
-                                        href: '/Stocks/TransferAndReceiptTransactionReport/Index'
-                                    },
-                                    {
-                                        text: '@localizer["The Total Item Cards - Quantity"]',
-                                        href: '/Stocks/TotalItemCards/TotalItemCardsQuantity'
-                                    },
-                                    {
-                                        text: '@localizer["The Total Item Cards - Price"]',
-                                        href: '/Stocks/TotalItemCards/TotalItemCardsPrice'
-                                    },
-                                    {
-                                        text: '@localizer["The Total Item Cards - Detail"]',
-                                        href: '/Stocks/TotalItemCards/TotalItemCardsDetail'
-                                    },
-                                    {
-                                        text: '@localizer["Fast Transaction Report"]',
-                                        href: '/Stocks/TransactionReport/FastTransactionReport'
-                                    },
-                                    {
-                                        text: '@localizer["Slow Transaction Report"]',
-                                        href: '/Stocks/TransactionReport/SlowTransactionReport'
-                                    },
-                                    {
-                                        text: '@localizer["Zero Transaction Report"]',
-                                        href: '/Stocks/TransactionReport/ZeroTransactionReport'
-                                    },
-                                    {
-                                        text: '@localizer["Total Permits Transaction Report"]',
-                                        href: '/Stocks/TransactionReport/TotalPermitsTransactionReport'
-                                    },
-                                    {
-                                        text: '@localizer["Supplier Permits Transaction Report"]',
-                                        href: '/Stocks/TransactionReport/SupplierPermitsTransactionReport'
-                                    },
-                                    {
-                                        text: '@localizer["Stock Balance Report"]',
-                                        href: '/Stocks/StockBalanceReport/Index'
-                                    }
-                                ]
-                            },
-                        ]
-                    }, {
-                        // Treasury System
-                        text: '@localizer["Treasury System"]',
-                        subMenu: [
-                            {
-                                text: '@localizer["Main data"]',
-                                subMenu: [
-                                    {
-                                        text: '@localizer["Definitions"]',
-                                        subMenu: [
-                                            {
-                                                "text": "@localizer["Treasury Names"]",
-                                                "href": "/Treasury/TreasuryName/Index"
-                                            },
-                                            {
-                                                "text": "@localizer["Currencies"]",
-                                                "href": "/Treasury/Currency/Index"
-                                            },
-                                            {
-                                                "text": "@localizer["Banks"]",
-                                                "href": "/Treasury/BankData/Index"
-                                            },
-                                            {
-                                                "text": "@localizer["Cost Center Treasury"]",
-                                                "href": "/Treasury/CostCenterTreasury/Index"
-                                            },
-                                            {
-                                                "text": "@localizer["Joining Users With Treasurys"]",
-                                                "href": "/Treasury/UserCashNo/Index"
-                                            }]
-                                    },
-                                ]
-                            },
-                            {
-                                text: '@localizer["Transactions"]',
-                                subMenu: [
-                                    {
-                                        "text": "@localizer["The Cash"]",
-                                        "subMenu": [
-                                            {
-                                                "text": "@localizer["Payment Receipt"]",
-                                                "href": "/Treasury/AccSafeCash/Index?docType=SFCIN&flagType=oneANDtwo"
-                                            },
-                                            {
-                                                "text": "@localizer["Disbursement permission"]",
-                                                "href": "/Treasury/DisbursementPermission/Index?docType=SFCOT&flagType=oneANDtwo"
-                                            },
-                                            {
-                                                "text": "@localizer["Receive Permission"]",
-                                                "href": "/Treasury/ReceivePermission/Index?docType=SFTIN&flagType=oneANDtwoAndthree"
-                                            },
-                                            {
-                                                "text": "@localizer["Transfer Permission"]",
-                                                "href": "/Treasury/TransferPermission/Index?docType=SFTOT&flagType=oneANDtwoAndthree"
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        "text": "@localizer["The Checks"]",
-                                        "subMenu": [
-                                            {
-                                                "text": "@localizer["Deposit check in Treasury"]",
-                                                "href": "/Treasury/AccSafeCheck/Index?tranType=SFSIN&flagType=oneANDtwo"
-                                            },
-                                            {
-                                                "text": "@localizer["Disbursement permission Checks"]",
-                                                "href": "/Treasury/DisbursementPermissionCheck/Index?tranType=SFOUT&flagType=oneANDtwo"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                text: '@localizer["Reports"]',
-                                subMenu: [
-                                    {
-                                        "text": "@localizer["Follow up cash and checks"]",
-                                        "href": "/Treasury/ReportCashAndChecks/Index?tranType=SFOUT&flagType=oneANDtwo"
-                                    }
-                                ]
-                            },
-                        ]
-                    }, {
-                        // Accounts System
-                        text: '@localizer["Accounts System"]', 
-                        subMenu: [
-                            {
-                                text: '@localizer["Main data"]',
-                                subMenu: [
-                                    {
-                                        text: '@localizer["Definitions"]',
-                                        subMenu: [
-                                            {
-                                                "text": "@localizer["Accounts guide"]",
-                                                "href": "/Accounts/AccMainCode/Index"
-                                            },
-                                            {
-                                                "text": "@localizer["Cost Centers"]",
-                                                "href": "/Accounts/CostCenter/Index"
-                                            },
-                                            {
-                                                "text": "@localizer["Journal Types"]",
-                                                "href": "/Accounts/JournalType/Index"
-                                            },
-                                            {
-                                                "text": "@localizer["Modification of account codes"]",
-                                                "href": "/Accounts/AccSubCodeEdit/Index"
-                                            },
-                                            {
-                                                "text": "@localizer["Opening Balances"]",
-                                                "href": "/Accounts/AccStartBal/Index"
-                                            },
-                                            {
-                                                "text": "@localizer["Joining Users With Journals"]",
-                                                "href": "/Accounts/UserJournalType/Index"
-                                            }
-                                        ]
-                                    },
-                                ]
-                            },
-                            {
-                                text: '@localizer["Recording Restrictions"]',
-                                subMenu: [
-                                    {
-                                        "text": "@localizer["Journals"]",
-                                        "href": "/Accounts/UserJournalType/JournalTypeForUser"
-                                    },
-                                    {
-                                        "text": "@localizer["Cancel Journal Voucher"]",
-                                        "href": "/Accounts/CancelJournalVoucher/Index"
-                                    }
-                                ]
-                            }, {
-                                text: '@localizer["Closing Procedures"]',
-                                subMenu: [
-                                    {
-                                        "text": "@localizer["Monthly Closing"]",
-                                        "href": "/Accounts/MonthlyClosing/Index"
-                                    },
-                                    {
-                                        "text": "@localizer["Cancel Journal Voucher"]",
-                                        "href": "/Accounts/CancelJournalVoucher/Index"
-                                    }
-                                ]
-                            },
-                            {
-                                text: '@localizer["Reports"]',
-                                subMenu: [
-                                    {
-                                        "text": "@localizer["American Daily"]",
-                                        "href": "/Accounts/AmericanDaily/Index"
-                                    },
-                                    {
-                                        "text": "@localizer["Print From Voucher To Voucher"]",
-                                        "href": "/Accounts/ReportFromVoucherToVoucher/Index"
-                                    },
-                                    {
-                                        "text": "@localizer["Assistant Professor(Analytical/Overall)"]",
-                                        "href": "/Accounts/ReportAssistantProfessor/Index"
-                                    },
-                                    {
-                                        "text": "@localizer["Transaction account for journal Level"]",
-                                        "href": "/Accounts/ReportTransactionAccountJournal/Index"
-                                    },
-                                    {
-                                        "text": "@localizer["Expense Analysis"]",
-                                        "href": "/Accounts/ReportExpenseAnalysis/Index"
-                                    },
-                                    {
-                                        "text": "@localizer["Review Journal Vouchers"]",
-                                        "href": "/Accounts/ReportReviewJournalVouchers/Index"
-                                    },
-                                    {
-                                        "text": "@localizer["General Professor For Facility"]",
-                                        "href": "/Accounts/ReportGeneralProfessorFacility/Index"
-                                    },
-                                    {
-                                        "text": "@localizer["Daily assistance for Voucher level"]",
-                                        "href": "/Accounts/ReportDailyAssistance/Index"
-                                    }
-                                ]
-                            },
-                        ]
-                    }, {
-                        // System Tools
-                        text: '@localizer["System Tools"]', 
-                        subMenu: [
-                            {
-                                text: '@localizer["Main data"]',
-                                subMenu: [
-                                    {
-                                        "text": "@localizer["Definitions"]",
-                                        "subMenu": [
-                                            {
-                                                "text": "@localizer["System Accounts Coding"]",
-                                                "href": "/Shared/EisPosting/Index"
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                        ]
-                    },
-
-
-                ]);
+            const overlay = document.querySelector(".overlay");
+            overlay.classList.toggle("lay-active");
+        }
     </script>
 
     <script type="text/javascript">
         // event name=>>DOMContentLoaded
-        document.addEventListener("DOMContentLoaded", function () {
-            // document.querySelectorAll("#mySidebar .nav-link").forEach(function (element) {
-            //     element.addEventListener("click", function (e) {
-            //         let nextEl = element.nextElementSibling;
-            //         let parentEl = element.parentElement;
+         document.addEventListener("DOMContentLoaded", function () {
+             document.querySelectorAll("#mySidebar .nav-link").forEach(function (element) {
+                 element.addEventListener("click", function (e) {
+                     let nextEl = element.nextElementSibling;
+                     let parentEl = element.parentElement;
 
-            //         if (nextEl) {
-            //             //stop click on address like medical analysis
-            //             e.preventDefault();
+                     if (nextEl) {
+                         //stop click on address like medical analysis
+                         e.preventDefault();
 
-            //             if (nextEl.classList.contains("show")) {
-            //                 // mycollapse.hide();
-            //                 nextEl.classList.remove("show");
-            //                 // let href = element.getAttribute("href");
-            //                 // console.log(href);
-            //                 // window.location.href = href;
-            //             } else {
-            //                 nextEl.classList.add("show");
-            //             }
-            //         }
-            //     });
-            // });
-        });
-        //DOMContentLoaded  end
+                         if (nextEl.classList.contains("show")) {
+                             // mycollapse.hide();
+                             nextEl.classList.remove("show");
+                             // let href = element.getAttribute("href");
+                             // console.log(href);
+                             // window.location.href = href;
+                         } else {
+                             nextEl.classList.add("show");
+                         }
+                     }
+                 });
+             });
+         });
+         //DOMContentLoaded  end
     </script>
 
     @await RenderSectionAsync("Scripts", required: false)

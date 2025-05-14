@@ -47,7 +47,7 @@
 
         </div>
     </div>
-    <div class="border border-success p-0 mb-2 border-opacity-75 overflow-auto" style="height: 200px;">
+    <div class="border border-success p-0 mb-2 border-opacity-75 overflow-auto" style="height: 150px;">
         <table id="myTable" class="table table-bordered table-hover" style="width:100%">
             <thead class="table-dark">
                 <tr>
@@ -108,7 +108,7 @@
         @* asp-controller="MedAnalysis" asp-action="Add_SubItemAnalysis" asp-route-ID="@ViewBag.item.MainCode" asp-route-itemAnalCode="" *@
     </div>
 
-    <div class="border border-success p-0 mb-2 border-opacity-75 overflow-auto" style="max-height: 300px;">
+    <div class="border border-success p-0 mb-2 border-opacity-75 overflow-auto" style="max-height: 150px;">
 
         <table id="myTable" class="table table-bordered table-hover admisson-table" style="width:100%">
             <thead class="table-dark">
@@ -159,7 +159,7 @@
         @* asp-controller="MedAnalysis" asp-action="Add_SubItemAnalysis" asp-route-ID="@ViewBag.item.MainCode" asp-route-itemAnalCode="" *@
     </div>
 
-    <div class="border border-success p-0 mb-2 border-opacity-75 overflow-auto" style="max-height: 300px;">
+    <div class="border border-success p-0 mb-2 border-opacity-75 overflow-auto" style="max-height: 150px;">
 
         <table id="myTable" class="table table-bordered table-hover clinicTrans-table" style="width:100%">
             <thead class="table-dark">
@@ -316,7 +316,7 @@
 
 
                                 <a href="/Medical/DepositVisit/Index/${item.masterId}?redirect=Invoices" class="btn btn-sm btn-success mb-1  fs-6" >
-    @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add Deposit"]
+    @Html.Raw(GlobalConstants.InsertIcon) 
                                 </a>
                                 <a href="/Medical/PatAdmission/Edit_PatientAdmission/${item.masterId}?redirect=Invoices" class="btn btn-sm btn-warning mb-1  fs-6" >
     @Html.Raw(GlobalConstants.EditIcon)

@@ -3,7 +3,9 @@
 @{
    var isRTL = CultureInfo.CurrentCulture.Name.StartsWith("ar");
     string F_Year = User.Claims.FirstOrDefault(c => c.Type == "F_Year").Value;
+
 }
+
 <!DOCTYPE html>
 <html lang="en" dir="@(isRTL ? "RTL" : "LTR")">
 <head>
