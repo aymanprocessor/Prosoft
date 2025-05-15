@@ -43,6 +43,7 @@ bld/
 # Visual Studio files
 **/.vs
 *.log
+!*.oracle.log
 *.vspscc
 *.vspx.*
 *.user
