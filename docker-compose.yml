@@ -23,13 +23,13 @@ services:
     restart: unless-stopped
 
   oracle-db:
-    image: houdinisparks/oracle_db:12.2.0.2-latest  # Oracle 12c Enterprise Edition (12.2.0.1)
+    image: doctorkirk/oracle-19c  # Oracle 19c Enterprise Edition (19.3.0.0.0)
     container_name: oracle-db
     environment:
-      - ORACLE_PASSWORD=Eiss2024  # Set the password for the SYS and SYSTEM users
-      - ORACLE_SID=ORCL  # Oracle System ID (SID)
+      - ORACLE_PWD=Eiss2024  # Set the password for the SYS and SYSTEM users
+      - ORACLE_SID=ORCL19  # Oracle System ID (SID)
       - ORACLE_PDB=PDB1  # Oracle Pluggable Database name (optional)
-      - ORACLE_CHARACTERSET=AL32UTF8  # Character set (default AL32UTF8)
+      - ORACLE_CHARACTERSET=AL16UTF8  # Character set (default AL32UTF8)
     ports:
       - "1521:1521"  # Expose Oracle port for database connections
       - "5500:5500"  # Oracle EM (Enterprise Manager) port (optional)
