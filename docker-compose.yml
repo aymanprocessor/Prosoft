@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   prosoft-web:
@@ -8,10 +7,9 @@ services:
     container_name: prosoft-web
     ports:
       - "8080:80"
-      - "8443:443" 
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_URLS=http://+:80
       # - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/certs/cert.pfx
       # - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
     volumes:
