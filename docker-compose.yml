@@ -16,31 +16,10 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
     volumes:
       - ./certs:/app/certs:ro
-    depends_on:
-      - oracle-db
     networks:
       - prosoft-network
     restart: unless-stopped
 
-  oracle-db:
-    image: doctorkirk/oracle-19c  # Oracle 19c Enterprise Edition (19.3.0.0.0)
-    container_name: oracle-db
-    environment:
-      - ORACLE_PWD=Eiss2024  # Set the password for the SYS and SYSTEM users
-      - ORACLE_SID=ORCL19  # Oracle System ID (SID)
-      - ORACLE_PDB=PDB1  # Oracle Pluggable Database name (optional)
-      - ORACLE_CHARACTERSET=AL16UTF8  # Character set (default AL32UTF8)
-    ports:
-      - "1521:1521"  # Expose Oracle port for database connections
-      - "5500:5500"  # Oracle EM (Enterprise Manager) port (optional)
-    volumes:
-      - oracle-data:/opt/oracle/oradata  # Persist Oracle data on the host
-    networks:
-      - prosoft-network
-    restart: unless-stopped  # Restart the container unless stopped manually
-
-volumes:
-  oracle-data:
 
 networks:
   prosoft-network:

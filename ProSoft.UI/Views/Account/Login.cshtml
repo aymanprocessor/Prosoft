@@ -6,9 +6,8 @@
     //SelectList users = new SelectList(Model.users, "UserCode", "UserName");
 }
 @inject IViewLocalizer localizer
-
 <!DOCTYPE html>
-<html lang="en" dir="rtl">
+<html lang="ar" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,61 +17,219 @@
     <!-- Boxicons for icons -->
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <style>
-        /* Custom background color for medical theme */
         body {
-            background: linear-gradient(135deg, #e0f7fa, #80deea); /* Light blue gradient */
-            height: 100vh;
             margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
         }
+        
+        .main-container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        .image-side {
+            background-color: #ecf9fd;
+            width: 60%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .image-side img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .login-side {
+            width: 40%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 3rem;
+            background-color: white;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .logo img {
+            height: 40px;
+        }
+        
+        .welcome-text {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        .form-label {
+            text-align: right;
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: normal;
+        }
+        
+        .form-control, .form-select {
+            border-radius: 4px;
+            border: 1px solid #ced4da;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .password-field {
+            position: relative;
+        }
+        
+        .eye-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #999;
+        }
+        
+        .submit-btn {
+            background-color: #00b074;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            width: 100%;
+            margin-top: 1rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .divider-dots {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            padding-right: 10px;
+        }
+        
+        .dot {
+            width: 12px;
+            height: 12px;
+            background-color: #00b1eb;
+            border-radius: 50%;
+        }
+        
+        .forgot-password {
+            text-align: right;
+            color: #00b1eb;
+            text-decoration: none;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        
+        .language-selector {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .language-selector img {
+            width: 24px;
+            height: 16px;
+        }
+      
     </style>
 </head>
-<body class="d-flex align-items-center">
-    <div class="container justify-items-center " style="width:400px;">
-        <form method="post" asp-action="Login" class="bg-white p-4 rounded shadow" style="max-width: 400px;">
-            <h2 class="text-center mb-4" style="color: #00796b;">@localizer["User Login"]</h2>
-            <div class="mb-3">
-                <label asp-for="UserCode" class="form-label" style="color: #004d40;">@localizer["User Name"]</label>
-                <select asp-for="UserCode" asp-items="ViewBag.users" class="form-control text-center" style="border-color: #b2dfdb;">
-                    <option value="">@localizer["Choose User"]</option>
-                </select>
-                <span asp-validation-for="UserCode" class="text-danger"></span>
+<body>
+    <div class="main-container">
+        <!-- Left side - Image -->
+        <div class="image-side">
+            <img src="~/images/login-image.png" alt="Medical Professionals">
+            
+            <!-- Divider Dots -->
+            <div class="divider-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
             </div>
-            <div class="mb-3">
-                <label asp-for="PassWord" class="form-label" style="color: #004d40;">@localizer["Password"]</label>
-                <div class="input-field position-relative">
-                    <input asp-for="PassWord" class="form-control text-center" type="password" style="border-color: #b2dfdb;" />
-                    <i class="bx bx-hide show-hide position-absolute top-50 end-0 translate-middle-y me-2" style="color: #00796b; cursor: pointer;"></i>
+        </div>
+        
+        <!-- Right side - Login Form -->
+        <div class="login-side">
+     
+            
+            <!-- Logo -->
+            <div class="logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg" alt="Microsoft Logo">
+            </div>
+            
+            <!-- Welcome Text -->
+            <h2 class="welcome-text">مرحبا بكم في EIS ProSoft</h2>
+            
+            <form method="post" asp-action="Login">
+                <!-- Username Field -->
+                <div class="mb-3">
+                    <label class="form-label">اسم المستخدم</label>
+                    <select asp-for="UserCode" asp-items="ViewBag.users" class="form-select">
+                        <option value="">اختر اسم المستخدم</option>
+                    </select>
+                    <span asp-validation-for="UserCode" class="text-danger"></span>
                 </div>
-                <span asp-validation-for="PassWord" class="text-danger"></span>
-            </div>
-            <div class="mb-3 form-check">
-                <input asp-for="rememberMe" class="form-check-input" style="border-color: #b2dfdb;" />
-                <label asp-for="rememberMe" class="form-check-label" style="color: #004d40;">@localizer["Remember Me"]</label>
-                <span asp-validation-for="rememberMe" class="text-danger"></span>
-            </div>
-            <div class="d-grid gap-2">
-                <button type="submit" class="btn" style="background-color: #00796b; color: white;">@localizer["Login"]</button>
-            </div>
-        </form>
+                
+                <!-- Password Field -->
+                <div class="mb-3">
+                    <label class="form-label">كلمة المرور</label>
+                    <div class="password-field">
+                        <input asp-for="PassWord" type="password" class="form-control" />
+                        <i class="bx bx-hide show-hide eye-icon"></i>
+                    </div>
+                    <span asp-validation-for="PassWord" class="text-danger"></span>
+                </div>
+                
+                <!-- Forgot Password Link -->
+                <a href="#" class="forgot-password">نسيت كلمة المرور</a>
+                
+                <!-- Remember Me Checkbox -->
+                <div class="mb-3 form-check text-end">
+                    <input asp-for="rememberMe" class="form-check-input" id="rememberMe" />
+                    <label class="form-check-label" for="rememberMe">تذكرني</label>
+                </div>
+                
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn">تسجيل الدخول</button>
+            </form>
+        </div>
     </div>
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Toggle password visibility
-        const eyeIcons = document.querySelectorAll(".show-hide");
-
-        eyeIcons.forEach((eyeIcon) => {
-            eyeIcon.addEventListener("click", () => {
-                const pInput = eyeIcon.parentElement.querySelector("input");
-                if (pInput.type === "password") {
-                    eyeIcon.classList.replace("bx-hide", "bx-show");
-                    pInput.type = "text";
-                } else {
-                    eyeIcon.classList.replace("bx-show", "bx-hide");
-                    pInput.type = "password";
-                }
-            });
+        const eyeIcon = document.querySelector(".show-hide");
+        eyeIcon.addEventListener("click", () => {
+            const pInput = eyeIcon.parentElement.querySelector("input");
+            if (pInput.type === "password") {
+                eyeIcon.classList.replace("bx-hide", "bx-show");
+                pInput.type = "text";
+            } else {
+                eyeIcon.classList.replace("bx-show", "bx-hide");
+                pInput.type = "password";
+            }
         });
     </script>
 </body>
