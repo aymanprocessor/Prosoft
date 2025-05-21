@@ -2,218 +2,250 @@
 @model List<PatViewDTO>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
+
 @{
-	ViewData["Title"] = "Invoices";
-	Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Invoices";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    SelectList mainList = new SelectList(ViewBag.MainClinics, "ClinicId", "ClinicDesc");
+
 }
 @inject IViewLocalizer localizer
 
 <style>
-	.active-row {
-		background-color: #cdcdcd;
-	}
+    .active-row {
+        background-color: #cdcdcd;
+    }
 
-	.image {
-		top: 0px;
-		left: 0px;
-		width: 100%;
-		height: 100%;
-		background-repeat: no-repeat;
-		background-attachment: fixed;
-		background-size: cover;
-		background-position: center;
-		opacity: 0.5;
-		z-index: -1;
-	}
+    .image {
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.5;
+        z-index: -1;
+    }
 </style>
 <div class="text-center">
-	<h1 class="mb-2">@localizer["Hospital Patient Data For Invoices"]</h1>
+    <h1 class="mb-2">@localizer["Hospital Patient Data For Invoices"]</h1>
 </div>
 
 <div class="container pt-2" style="min-height:100vh;">
 
 
-	<div class="d-flex align-items-md-center flex-column flex-md-row justify-content-between mb-2 gap-2">
-		<div>
-			<h4 class="ms-2 my-1">@localizer["Search for patient.."]</h4>
-		</div>
-		<div class="w-50 ">
-			<input type="text" class="form-control" id="searchInput" placeholder="@localizer["Search by ID, Name, or Mobile..."]">
-		</div>
-		<div>
-			<a asp-controller="Patient" asp-action="Add_Patient" asp-route-redirect="Invoices" asp-route-controll="HospitalPatData" class="btn btn-sm btn-primary fs-6">
-				@Html.Raw(GlobalConstants.InsertIcon) @localizer["Add New Patient"]
-			</a>
+    <div class="d-flex align-items-md-center flex-column flex-md-row justify-content-between mb-2 gap-2">
+        <div>
+            <h4 class="ms-2 my-1">@localizer["Search for patient.."]</h4>
+        </div>
+        <div class="w-50 ">
+            <input type="text" class="form-control" id="searchInput" placeholder="@localizer["Search by ID, Name, or Mobile..."]">
+        </div>
+        <div>
+            <a asp-controller="Patient" asp-action="Add_Patient" asp-route-redirect="Invoices" asp-route-controll="HospitalPatData" class="btn btn-sm btn-primary fs-6">
+                @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add New Patient"]
+            </a>
 
-		</div>
-	</div>
-	<div class="border border-success p-0 mb-2 border-opacity-75 overflow-auto" style="height: 150px;">
-		<table id="myTable" class="table table-bordered table-hover" style="width:100%">
-			<thead class="table-dark">
-				<tr>
-					<th>
-						@localizer["Patient ID"]
-					</th>
-					<th>
-						@localizer["Patient Name"]
-					</th>
-					<th>
-						@localizer["Patient Mobile"]
-					</th>
-					@*   <th>
-                    Record
-                    </th> *@
+        </div>
+    </div>
+    <div class="border border-success p-0 mb-2 border-opacity-75 overflow-auto" style="height: 150px;">
+        <table id="myTable" class="table table-bordered table-hover" style="width:100%">
+            <thead class="table-dark">
+                <tr>
+                    <th>
+                        @localizer["Patient ID"]
+                    </th>
+                    <th>
+                        @localizer["Patient Name"]
+                    </th>
+                    <th>
+                        @localizer["Patient Mobile"]
+                    </th>
+                    @*   <th>
+                        Record
+                        </th> *@
 
-				</tr>
-			</thead>
-			<tbody>
-				@foreach (var pat in Model)
-				{
-					<tr onclick="GetAdmisson(event,@pat.PatId)" style="cursor:pointer;">
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var pat in Model)
+                {
+                    <tr onclick="GetAdmisson(event,@pat.PatId)" style="cursor:pointer;">
 
-						<td>
-							@pat.PatId
-						</td>
+                        <td>
+                            @pat.PatId
+                        </td>
 
-						<td class="item-name">
-							@pat.PatName
-						</td>
-						<td>
-							@pat.PatMobile
-						</td>
+                        <td class="item-name">
+                            @pat.PatName
+                        </td>
+                        <td>
+                            @pat.PatMobile
+                        </td>
 
-						@*                          <td class="text-center">
-                    *@                                @* asp-area="Medical" asp-controller="PatRecord" asp-action="Index" asp-route-ID="@pat.PatId" *@
-						@*  <a onclick="setToStorage(event, @pat.PatId)" class="btn btn-sm btn-success" style="width:150px">
-                    GO TO RECORD
-                    </a> *@
-						@*  </td> *@
+                        @*                          <td class="text-center">
+                        *@                                @* asp-area="Medical" asp-controller="PatRecord" asp-action="Index" asp-route-ID="@pat.PatId" *@
+                        @*  <a onclick="setToStorage(event, @pat.PatId)" class="btn btn-sm btn-success" style="width:150px">
+                            GO TO RECORD
+                            </a> *@
+                        @*  </td> *@
 
-					</tr>
+                    </tr>
 
-				}
-			</tbody>
-		</table>
-	</div>
-	@* /////////////////////////////////////////////////////////////////// *@
+                }
+            </tbody>
+        </table>
+    </div>
+    @* /////////////////////////////////////////////////////////////////// *@
 
-	@* Table for PatAdmissions *@
+    @* Table for PatAdmissions *@
 
-	<div class="admission-table-head d-flex justify-content-between align-items-center mt-4">
-		<h2 class="header pat-admission">@localizer["Visits of patient :"]</h2>
+    <div class="admission-table-head d-flex justify-content-between align-items-center mt-4">
+        <h2 class="header pat-admission">@localizer["Visits of patient :"]</h2>
 
-		<a class="btn btn-sm btn-primary fs-6">
-			@Html.Raw(GlobalConstants.InsertIcon) @localizer["Add Visit"]
-		</a>
-		@* asp-controller="MedAnalysis" asp-action="Add_SubItemAnalysis" asp-route-ID="@ViewBag.item.MainCode" asp-route-itemAnalCode="" *@
-	</div>
+        <a class="btn btn-sm btn-primary fs-6">
+            @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add Visit"]
+        </a>
+        @* asp-controller="MedAnalysis" asp-action="Add_SubItemAnalysis" asp-route-ID="@ViewBag.item.MainCode" asp-route-itemAnalCode="" *@
+    </div>
 
-	<div class="border border-success p-0 mb-2 border-opacity-75 overflow-auto" style="max-height: 150px;">
+    <div class="border border-success p-0 mb-2 border-opacity-75 overflow-auto" style="max-height: 150px;">
 
-		<table id="myTable" class="table table-bordered table-hover admisson-table" style="width:100%">
-			<thead class="table-dark">
-				<tr>
-					<th class="align-middle">
-						@localizer["Master Id"]
-					</th>
-					<th class="align-middle">
-						@localizer["Entry Date"]
-					</th>
-					<th class="align-middle" width="2px">
-						@localizer["Entity Code"]
-					</th>
-					<th class="align-middle">
-						@localizer["Entity Name"]
-					</th>
-					<th class="align-middle">
-						@localizer["subEntity Name"]
-					</th>
-					<th class="align-middle">
-						@localizer["Department"]
-					</th>
-					@* <th class="align-middle">
-                        @localizer["Sent From"]
-                    </th> *@
-					<th class="align-middle">
-						@localizer["Doctor Name"]
-					</th>
-					<th class="align-middle">
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-			</tbody>
-		</table>
+        <table id="myTable" class="table table-bordered table-hover admisson-table" style="width:100%">
+            <thead class="table-dark">
+                <tr>
+                    <th class="align-middle">
+                        @localizer["Master Id"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Entry Date"]
+                    </th>
+                    <th class="align-middle" width="2px">
+                        @localizer["Entity Code"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Entity Name"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["subEntity Name"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Department"]
+                    </th>
+                    @* <th class="align-middle">
+                            @localizer["Sent From"]
+                        </th> *@
+                    <th class="align-middle">
+                        @localizer["Doctor Name"]
+                    </th>
+                    <th class="align-middle">
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
 
-	</div>
-	@* /////////////////////////////////////////////////////////////////// *@
+    </div>
+    @* /////////////////////////////////////////////////////////////////// *@
 
-	@* Table for ClinicTrans *@
+    @* Table for ClinicTrans *@
 
-	<div class="clinicTrans-table-head d-flex justify-content-between align-items-center mt-4">
-		<h2 class="header clinic-trans">@localizer["Clinic Transaction Invoices For Visit No."] </h2>
+    <div class="clinicTrans-table-head d-flex justify-content-between align-items-center mt-4">
+        <h2 class="header clinic-trans">@localizer["Clinic Transaction Invoices For Visit No."] </h2>
 
-		<div>
+        <div>
 
-			<a class="btn btn-sm btn-primary fs-6">
-				@Html.Raw(GlobalConstants.InsertIcon) @localizer["Add Transaction"]
-			</a>
-			<a class="btn btn-sm btn-primary fs-6" id="btnAddNew">
-				@Html.Raw(GlobalConstants.InsertIcon) @localizer["Add New Row"]
-			</a>
-			<a class="btn btn-sm btn-primary fs-6" id="btnAddNew">
-				@Html.Raw(GlobalConstants.SaveIcon) @localizer["Save"]
-			</a>
-		</div>
-		@* asp-controller="MedAnalysis" asp-action="Add_SubItemAnalysis" asp-route-ID="@ViewBag.item.MainCode" asp-route-itemAnalCode="" *@
-	</div>
+            <a class="btn btn-sm btn-primary fs-6">
+                @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add Transaction"]
+            </a>
+            <a class="btn btn-sm btn-primary fs-6" id="btnAddNew">
+                @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add New Row"]
+            </a>
+            <a class="btn btn-sm btn-primary fs-6" id="btnAddNew">
+                @Html.Raw(GlobalConstants.SaveIcon) @localizer["Save"]
+            </a>
+        </div>
+        @* asp-controller="MedAnalysis" asp-action="Add_SubItemAnalysis" asp-route-ID="@ViewBag.item.MainCode" asp-route-itemAnalCode="" *@
+    </div>
 
-	<div class="p-0 mb-2 border-opacity-75 overflow-auto">
+    <div class="p-0 mb-2 border-opacity-75 overflow-auto">
 
-		<table id="myTable" class="table table-bordered table-hover clinicTrans-table" style="width:100%">
-			<thead class="table-dark">
-				<tr>
-					<th class="align-middle">
-						@localizer["Serial"]
-					</th>
-					<th class="align-middle">
-						@localizer["Service OR Item"]
-					</th>
-					<th class="align-middle">
-						@localizer["Sender Doctor"]
-					</th>
-					<th class="align-middle">
-						@localizer["Service Price"]
-					</th>
-					<th class="align-middle">
-						@localizer["Patient Value"]
-					</th>
-					<th class="align-middle">
-						@localizer["Patient Requirements"]
-					</th>
-					<th class="align-middle">
-						@localizer["Patient Maintainance"]
-					</th>
-					<th class="align-middle">
-						@localizer["Company value"]
-					</th>
-					<th class="align-middle">
-						@localizer["AllServicePrice"]
-					</th>
-					<th class="align-middle">
-						@localizer["Action"]
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-			</tbody>
-		</table>
+        <table id="myTable" class="table table-bordered table-hover clinicTrans-table" style="width:100%">
+            <thead class="table-dark">
+                <tr>
 
-	</div>
-	<div class="d-flex justify-content-end mt-3">
-		<h5 class="mx-4"><span class="bg-black text-white rounded-1 p-1 mx-2">@localizer["Net Patient"] : </span> <span class="rounded-1 px-3 py-1" id="netPatient"></span> @localizer["L.E"]</h5>
-		<h5><span class="bg-black text-white rounded-1 p-1 mx-2">@localizer["Total Service"] : </span> <span class="rounded-1 px-3 py-1" id="totalServicesForVisit"></span> @localizer["L.E"]</h5>
-	</div>
+                    <th class="align-middle">
+                        @localizer["Invoice Date"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Servise OR Item"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Main Clinic"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Sub Clinic"]
+                    </th>
+                  
+                    <th class="align-middle">
+                        @localizer["Clinic Service"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Sender Doctor"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Quantity"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Service Price"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["All Service Price"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Stock"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Patient Value"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Company Value"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Discount"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Patient Requirements"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Patient Maintainance"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Attendance Shift"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Service Acceptance"]
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+    </div>
+    <div class="d-flex justify-content-end mt-3">
+        <h5 class="mx-4">
+            <span class="bg-black text-white rounded-1 p-1 mx-2">@localizer["Net Patient"] : </span>
+            <span class="rounded-1 px-3 py-1" id="netPatient"></span> @localizer["L.E"]
+        </h5>
+        <h5>
+            <span class="bg-black text-white rounded-1 p-1 mx-2">@localizer["Total Service"] : </span>
+            <span class="rounded-1 px-3 py-1" id="totalServicesForVisit"></span> @localizer["L.E"]
+        </h5>
+    </div>
 </div>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -223,37 +255,37 @@
 
 @* search *@
 <script>
-	document.getElementById('searchInput').addEventListener('input', function () {
-		filterTable();
-	});
-	function filterTable() {
-		var input = document.getElementById('searchInput');
-		var filter = input.value.toUpperCase();
-		var table = document.getElementById('myTable');
-		var rows = table.getElementsByTagName('tr');
+    document.getElementById('searchInput').addEventListener('input', function () {
+        filterTable();
+    });
+    function filterTable() {
+        var input = document.getElementById('searchInput');
+        var filter = input.value.toUpperCase();
+        var table = document.getElementById('myTable');
+        var rows = table.getElementsByTagName('tr');
 
-		for (var i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
-			var cells = rows[i].getElementsByTagName('td');
-			var found = false;
+        for (var i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
+            var cells = rows[i].getElementsByTagName('td');
+            var found = false;
 
-			for (var j = 0; j < cells.length; j++) {
-				var cell = cells[j];
-				if (cell) {
-					var textValue = cell.textContent || cell.innerText;
-					if (textValue.toUpperCase().indexOf(filter) > -1) {
-						found = true;
-						break;
-					}
-				}
-			}
+            for (var j = 0; j < cells.length; j++) {
+                var cell = cells[j];
+                if (cell) {
+                    var textValue = cell.textContent || cell.innerText;
+                    if (textValue.toUpperCase().indexOf(filter) > -1) {
+                        found = true;
+                        break;
+                    }
+                }
+            }
 
-			if (found) {
-				rows[i].style.display = '';
-			} else {
-				rows[i].style.display = 'none';
-			}
-		}
-	}
+            if (found) {
+                rows[i].style.display = '';
+            } else {
+                rows[i].style.display = 'none';
+            }
+        }
+    }
 </script>
 
 
@@ -354,351 +386,613 @@
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////
 	@* Ajax for Clinctrans *@
-			function GetClinicTrans(e, id) {
-	@*
-            var clinicTrans = document.querySelector(".clinicTrans-table tbody");
+    function GetClinicTrans(e, id) {
 
-            // Handle active clic
-            let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");;
+        let mainClinicList = [];
+        let subClinicList = [];
+        let servList = [];
+        let doctorList = []
 
-            allItemRows.forEach(row => {
-                row.classList.remove("active-row");
+
+
+
+             fetchMainClinics();
+             fetchDoctors();
+
+    
+
+
+
+         function fetchMainClinics() {
+             // Fetch Main Clinics
+           $.ajax({
+                 url: '/Medical/MainClinic/GetMainClinics' ,
+                 type: 'GET',
+                 success: function (data) {
+                     mainClinicList = data;
+                 }
+             });
+          
+        }
+        async function fetchSubClinics(clinicId) {
+            // Fetch Sub Clinics
+            //const response = await fetch(`/Medical/SubClinic/GetSubClinic/${clinicId}`);
+            //const subClinicList = await response.json();
+          const data = await $.ajax({
+                url: '/Medical/SubClinic/GetSubClinic/' + clinicId,
+                type: 'GET'
+                //success: function (data) {
+                //    subClinicList = data;
+                //}
+          });
+            subClinicList = data;
+        }
+
+        async function fetchServ(subClinicId) {
+            // Fetch Sub Clinics
+           const data = await $.ajax({
+                url: '/Medical/ClinicTrans/GetServeClinic/' + subClinicId,
+                type: 'GET'
+           });
+            servList = data;
+
+        }
+         function fetchDoctors() {
+      
+             $.ajax({
+                 url: '/Medical/Doctor/GetDoctors',
+                 type: 'GET',
+                 success: function (data) {
+                     doctorList = data;
+                 }
+             });
+
+        }
+
+
+        function buildMainClinicDd(row) {
+            let html = `<select class="form-control text-center clinic-dropdown" data-field="clinicId" data-id="${row.checkId}">`;
+                html += `<option value="">@localizer["Choosee"]</option>`;
+            for (let item of mainClinicList) {
+                html += `<option value="${item.clinicId}">${item.clinicDesc}</option>`;
+            }
+            html += `</select>`;
+            return html;
+        }
+
+
+
+
+
+        function buildSubClinicDd(row) {
+            let html = `<select class="form-control text-center sub-clinic-dropdown " data-field="SClinicId" data-id="${row.checkId}" disabled>`;
+            html += `</select>`;
+            return html;
+        }
+
+        function buildServDd(row) {
+            let html = `<select class="form-control text-center serv-dropdown " data-field="ServId" data-id="${row.checkId}" disabled>`;
+            html += `</select>`;
+            return html;
+        }
+
+
+
+        function buildDoctorDd(row) {
+            let html = `<select class="form-control text-center doctor-dropdown" data-field="drSendId" data-id="${row.checkId}">`;
+                html += `<option value="">@localizer["Choosee"]</option>`;
+            for (let item of doctorList) {
+                html += `<option value="${item.drId}">${item.drDesc}</option>`;
+            }
+            html += `</select>`;
+            return html;
+        }
+
+
+
+        $('.clinicTrans-table tbody').on('change', '.clinic-dropdown', async function () {
+            let selectedClinicId = $(this).val();
+            let rowId = $(this).data('id');
+            let $SubClinicSelect = $(`.sub-clinic-dropdown[data-id="${rowId}"]`);
+            if (selectedClinicId) {
+
+               await fetchSubClinics(selectedClinicId);
+
+                if (subClinicList.length>0) {
+                    $SubClinicSelect.prop('disabled', false);
+                    $SubClinicSelect.empty().append('<option value="">@localizer["Choosee"]</option>');
+                    if (selectedClinicId && subClinicList) {
+                        subClinicList.forEach(subClinic => {
+                            $SubClinicSelect.append(`<option value="${subClinic.sClinicId}">${subClinic.sClinicDesc}</option>`);
+                        });
+                    }
+                }
+
+            } else {
+                $SubClinicSelect.prop('disabled', true);
+
+            }
+
+        });
+
+
+        $('.clinicTrans-table tbody').on('change', '.sub-clinic-dropdown', async function () {
+          let selectedSubClinicId = $(this).val();
+          let rowId = $(this).data('id');
+          let $ServSelect = $(`.serv-dropdown[data-id="${rowId}"]`);
+            if (selectedSubClinicId) {
+
+                await fetchServ(selectedSubClinicId);
+
+              if (subClinicList.length>0) {
+                  $ServSelect.prop('disabled', false);
+                  $ServSelect.empty().append('<option value="">@localizer["Choosee"]</option>');
+                  if (selectedSubClinicId && servList) {
+                      servList.forEach(Serv => {
+                          $ServSelect.append(`<option value="${Serv.servId}">${Serv.servDesc}</option>`);
+                      });
+                  }
+              }
+
+          } else {
+                $ServSelect.prop('disabled', true);
+
+          }
+
+    });
+
+
+
+
+        // Handle active class
+        let clickedTarget = e.target.closest('tr');
+        let allItemRows = clickedTarget.parentElement.querySelectorAll("tr");
+
+        allItemRows.forEach(row => {
+            row.classList.remove("active-row");
+        });
+
+        clickedTarget.classList.add("active-row");
+
+        // Update header
+        let clinicTransHead = document.querySelector(".clinicTrans-table-head");
+        let itemId = clickedTarget.querySelector(".item-id").innerText;
+        let clinicTransHeader = clinicTransHead.querySelector(".header.clinic-trans");
+        clinicTransHeader.innerHTML = "@localizer["Clinic Transaction Invoices For Visit No"] : " + itemId;
+
+        // Initialize DataTable
+        if ($.fn.DataTable.isDataTable('.clinicTrans-table')) {
+            $('.clinicTrans-table').DataTable().destroy();
+        }
+
+        var table = $('.clinicTrans-table').DataTable({
+            ajax: {
+                url: '/Medical/ClinicTrans/GetClinicTrans/' + id,
+                data: function(d) {
+                    return { flag: 1 };
+                },
+                dataSrc: function(json) {
+                    if (json.error) {
+                        alert('Error loading data: ' + json.error);
+                        return [];
+                    }
+
+                    // Calculate totals here
+                    let totalServicesForVisit = 0;
+                    let netPatient = 0;
+
+                    json.forEach(function(item) {
+                        totalServicesForVisit += (item.compValue + item.patientValue);
+                        netPatient += (item.extraVal + item.extraVal2 + item.patientValue);
+                    });
+
+                    // Update total displays
+                    document.getElementById("totalServicesForVisit").classList.add("bg-white");
+                    document.getElementById("totalServicesForVisit").innerHTML = totalServicesForVisit.toFixed(2);
+                    document.getElementById("netPatient").classList.add("bg-white");
+                    document.getElementById("netPatient").innerHTML = netPatient.toFixed(2);
+
+                    return json;
+                }
+            },
+            columns: [
+                {
+                    data: 'exDate',
+                    render: function (data, type, row) {
+                        if (type === 'display') {
+                            return moment(data).format('DD-MM-YYYY');
+                        }
+                        return data;
+                    },
+                    createdCell: function (td) {
+                        td.style.minWidth = '120px';
+                    }
+                },
+                {
+                    data: 'itmServFlag',
+                    render: function (data, type, row) {
+                        if (type === 'display') {
+                            // Display service or item based on itmServFlag
+                            return (row.itmServFlag == 3) ? row.servDesc : row.subName;
+                        }
+                        return data;
+                    },
+                    createdCell: function (td) {
+                        td.style.minWidth = '120px';
+                    }
+                },
+                {
+                    data: 'clinicId',
+                    render: function (data, type, row) {
+                        if (type === 'display') {
+
+
+                            return buildMainClinicDd(row);
+
+                        }
+                        return data;
+                    },
+                    createdCell: function (td) {
+                        td.style.minWidth = '150px';
+                    }
+                },
+                {
+                    data: 'sClinicId',
+                    render: function (data, type, row) {
+                        if (type === 'display') {
+
+
+                            return buildSubClinicDd(row);
+
+                        }
+                        return data;
+                    },
+                    createdCell: function (td) {
+                        td.style.minWidth = '150px';
+                    }
+                },
+                {
+                    data: 'servId',
+                    render: function (data, type, row) {
+                        if (type === 'display') {
+
+
+                            return buildServDd(row);
+
+                        }
+                        return data;
+                    },
+                    createdCell: function (td) {
+                        td.style.minWidth = '150px';
+                    }
+                },
+                {
+                    data: 'drSendId',
+                    render: function (data, type, row) {
+                        if (type === 'display') {
+
+
+                            return buildDoctorDd(row);
+
+                        }
+                        return data;
+                    },
+                    createdCell: function (td) {
+                        td.style.minWidth = '150px';
+                    }
+                },
+                {
+                    data: 'unitPrice',
+                    render: function (data, type, row) {
+                        if (type === 'display') {
+                            return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="unitPrice" data-id="' + row.checkId + '">';
+                        }
+                        return data;
+                    }
+                },
+                {
+                    data: 'patientValue',
+                    render: function (data, type, row) {
+                        if (type === 'display') {
+                            return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="patientValue" data-id="' + row.checkId + '">';
+                        }
+                        return data;
+                    }
+                },
+                {
+                    data: 'extraVal',
+                    render: function (data, type, row) {
+                        if (type === 'display') {
+                            return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="extraVal" data-id="' + row.checkId + '">';
+                        }
+                        return data;
+                    }
+                },
+                {
+                    data: 'extraVal2',
+                    render: function (data, type, row) {
+                        if (type === 'display') {
+                            return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="extraVal2" data-id="' + row.checkId + '">';
+                        }
+                        return data;
+                    }
+                },
+                {
+                    data: 'compValue',
+                    render: function (data, type, row) {
+                        if (type === 'display') {
+                            return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="compValue" data-id="' + row.checkId + '">';
+                        }
+                        return data;
+                    }
+                },
+
+                {
+                    data: 'compValue',
+                    render: function (data, type, row) {
+                        if (type === 'display') {
+                            return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="compValue" data-id="' + row.checkId + '">';
+                        }
+                        return data;
+                    }
+                },
+
+                {
+                    data: 'compValue',
+                    render: function (data, type, row) {
+                        if (type === 'display') {
+                            return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="compValue" data-id="' + row.checkId + '">';
+                        }
+                        return data;
+                    }
+                },
+
+                {
+                    data: 'compValue',
+                    render: function (data, type, row) {
+                        if (type === 'display') {
+                            return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="compValue" data-id="' + row.checkId + '">';
+                        }
+                        return data;
+                    }
+                },
+
+                {
+                    data: 'compValue',
+                    render: function (data, type, row) {
+                        if (type === 'display') {
+                            return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="compValue" data-id="' + row.checkId + '">';
+                        }
+                        return data;
+                    }
+                },
+
+                {
+                    data: 'compValue',
+                    render: function (data, type, row) {
+                        if (type === 'display') {
+                            return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="compValue" data-id="' + row.checkId + '">';
+                        }
+                        return data;
+                    }
+                },
+
+                {
+                    data: 'compValue',
+                    render: function (data, type, row) {
+                        if (type === 'display') {
+                            return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="compValue" data-id="' + row.checkId + '">';
+                        }
+                        return data;
+                    }
+                },
+
+                {
+                    data: 'compValue',
+                    render: function (data, type, row) {
+                        if (type === 'display') {
+                            return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="compValue" data-id="' + row.checkId + '">';
+                        }
+                        return data;
+                    }
+                },
+
+                {
+                    data: 'compValue',
+                    render: function (data, type, row) {
+                        if (type === 'display') {
+                            return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="compValue" data-id="' + row.checkId + '">';
+                        }
+                        return data;
+                    }
+                },
+                {
+                    // Total service price
+                    data: null,
+                    render: function (data, type, row) {
+                        var total = (parseFloat(row.compValue) + parseFloat(row.patientValue)).toFixed(2);
+                        return '<span class="total-service">' + total + '</span>';
+                    }
+                },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return '<button class="btn btn-sm btn-warning btn-edit" data-id="' + row.checkId + '">@Html.Raw(GlobalConstants.EditIcon)</button> ' +
+                               '<button class="btn btn-sm btn-danger btn-delete" data-id="' + row.checkId + '">@Html.Raw(GlobalConstants.DeleteIcon)</button>';
+                    },
+                    createdCell: function (td) {
+                        td.style.minWidth = '100px';
+                    }
+                }
+            ],
+            paging: true,
+            searching: false,
+            ordering: true,
+            rowId: function(data) {
+                return 'row-' + data.checkId;
+            },
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'excel', 'pdf', 'print'
+            ],
+            language: {
+                search: "@localizer["Search"]:",
+                lengthMenu: "@localizer["Show _MENU_ entries"]",
+                info: "@localizer["Showing _START_ to _END_ of _TOTAL_ entries"]",
+                infoEmpty: "@localizer["Showing 0 to 0 of 0 entries"]",
+                infoFiltered: "@localizer["(filtered from _MAX_ total entries)"]",
+                paginate: {
+                    first: "@localizer["First"]",
+                    last: "@localizer["Last"]",
+                    next: "@localizer["Next"]",
+                    previous: "@localizer["Previous"]"
+                }
+            }
+        });
+
+        // Handle Add New button
+        $('#btnAddNew').off('click').on('click', function () {
+            //var maxCheckId = 0;
+            //var maxCounter = 0;
+
+            // Find the maximum checkId and counter
+            //table.rows().every(function() {
+            //    var rowData = this.data();
+            //    maxCheckId = Math.max(maxCheckId, rowData.checkId || 0);
+            //    maxCounter = Math.max(maxCounter, rowData.counter || 0);
+            //});
+
+            var newRowData = {
+                exDate: new Date(),
+                masterId: id, // Set to the admission ID
+                itmServFlag: 3,
+                subName: "",
+                clinicId: "",
+                servDesc: "",
+                drDesc: "",
+                unitPrice: 0,
+                patientValue: 0,
+                extraVal: 0,
+                extraVal2: 0,
+                compValue: 0
+            };
+
+            table.row.add(newRowData).draw(false);
+        });
+
+        // Auto-calculate patientValue when unitPrice changes
+        $('.clinicTrans-table').on('change', 'input[data-field="unitPrice"]', function() {
+            var row = $(this).closest('tr');
+            var unitPrice = parseFloat($(this).val()) || 0;
+
+            // Set patientValue equal to unitPrice by default
+            row.find('input[data-field="patientValue"]').val(unitPrice);
+
+            // Update the totals
+            updateRowTotal(row);
+            updateGrandTotals();
+        });
+
+        // Update other values when they change
+        $('.clinicTrans-table').on('change', 'input[data-field]', function() {
+            updateRowTotal($(this).closest('tr'));
+            updateGrandTotals();
+        });
+
+        // Helper function to update row total
+        function updateRowTotal(row) {
+            var patientValue = parseFloat(row.find('input[data-field="patientValue"]').val()) || 0;
+            var compValue = parseFloat(row.find('input[data-field="compValue"]').val()) || 0;
+            row.find('.total-service').text((patientValue + compValue).toFixed(2));
+        }
+
+        // Helper function to update grand totals
+        function updateGrandTotals() {
+            var totalServicesForVisit = 0;
+            var netPatient = 0;
+
+            table.rows().every(function() {
+                var row = $(this.node());
+                var patientValue = parseFloat(row.find('input[data-field="patientValue"]').val()) || 0;
+                var extraVal = parseFloat(row.find('input[data-field="extraVal"]').val()) || 0;
+                var extraVal2 = parseFloat(row.find('input[data-field="extraVal2"]').val()) || 0;
+                var compValue = parseFloat(row.find('input[data-field="compValue"]').val()) || 0;
+
+                totalServicesForVisit += (patientValue + compValue);
+                netPatient += (patientValue + extraVal + extraVal2);
             });
 
-            let clickedTarget = e.target.parentElement
-            clickedTarget.classList.add("active-row");
-            ///////////////////////////////////////////////////////////////////
+            document.getElementById("totalServicesForVisit").innerHTML = totalServicesForVisit.toFixed(2);
+            document.getElementById("netPatient").innerHTML = netPatient.toFixed(2);
+        }
 
-            // Catch header for ClinicTrans => PatAdmissionID and reset it
-            let clinicTransHead = document.querySelector(".clinicTrans-table-head");
+        // Save button click handler
+        $('#btnSave').off('click').on('click', function() {
+            var modifiedData = [];
 
-            let itemId = clickedTarget.querySelector(".item-id").innerText;
+            table.rows().every(function() {
+                var row = $(this.node());
+                var checkId = this.data().checkId;
 
-            let clinicTransHeader = clinicTransHead.querySelector(".header.clinic-trans"); // Display Header for sub items
-            clinicTransHeader.innerHTML = "@localizer["Clinic Transaction Invoices For Visit No"] :" + itemId;
+                var rowData = {
+                    checkId: checkId,
+                    masterId: id,
+                    clinicId: row.find('select[data-field="clinicId"]').val(),
+                    itmServFlag: this.data().itmServFlag,
+                    servDesc: this.data().servDesc,
+                    drDesc: row.find('input[data-field="drDesc"]').val(),
+                    unitPrice: parseFloat(row.find('input[data-field="unitPrice"]').val()) || 0,
+                    patientValue: parseFloat(row.find('input[data-field="patientValue"]').val()) || 0,
+                    extraVal: parseFloat(row.find('input[data-field="extraVal"]').val()) || 0,
+                    extraVal2: parseFloat(row.find('input[data-field="extraVal2"]').val()) || 0,
+                    compValue: parseFloat(row.find('input[data-field="compValue"]').val()) || 0
+                };
 
-            let clinicTransAddButton = clinicTransHead.querySelector("a");
-            clinicTransAddButton.setAttribute("href", `/Medical/ClinicTrans/Add_ClinicTrans/${id}?redirect=Invoices&flag=1`);
-            // console.log(clinicTransAddButton);
-            ///////////////////////////////////////////////////////////////////
+                modifiedData.push(rowData);
+            });
 
-            // Handle ajax call
-            clinicTrans.innerHTML = "";  // Empty the body
-
+            // Send data to the server
             $.ajax({
-                url: `/Medical/ClinicTrans/GetClinicTrans/${id}?flag=1`,
-                success: function (result) {
-                    //console.log(result);
-                    // console.log(result.sort((a, b) => b.itemanalcode - a.itemanalcode));
-                    //sortng
-                    result.sort((a, b) => b.counter - a.counter)
-                    //for calculate all value service
-                    var totalServicesForVisit = 0;
-                    var NetPatient = 0;
-                    for (let item of result) {
-                        const clinic = document.createElement("tr");
-                        //for calculate all value service
-                        totalServicesForVisit += item.compValue + item.patientValue;
-                        NetPatient += item.extraVal + item.extraVal2 + item.patientValue;
-                        clinic.innerHTML +=
-                            `
-                                <td class="align-middle">${item.counter}</td>
-                                                    ${item.itmServFlag == 3 ?
-                                `<td class="align-middle">${item.servDesc}</td>`
-                                : `<td class="align-middle">${item.subName}</td>`
-                            }
-                                        <td class="align-middle">${item.drDesc}</td>
-                                        <td class="align-middle">${item.unitPrice}</td>
-                                        <td class="align-middle">${item.patientValue}</td>
-                                        <td class="align-middle">${item.extraVal}</td>
-                                        <td class="align-middle">${item.extraVal2}</td>
-                                        <td class="align-middle">${item.compValue}</td>
-                                        <td class="align-middle">${item.compValue + item.patientValue}</td>
-
-                                        <td class="text-center">
-                                            <a href="/Medical/ClinicTrans/Edit_ClinicTrans/${item.checkId}?redirect=Invoices" class="btn btn-sm btn-earning mb-1  fs-6" >
-    @Html.Raw(GlobalConstants.EditIcon)
-                                            </a>
-                                        <form action="/Medical/ClinicTrans/Delete_ClinicTrans" method="post" class="d-inline">
-                                @Html.AntiForgeryToken()
-                                                <input type="hidden" name="id" value="${item.checkId}" />
-                                                <input type="hidden" name="redirect" value="Invoices" />
-                                             <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');">@Html.Raw(GlobalConstants.DeleteIcon)</button>
-                                            </form>
-                                        </td>
-                                    `;
-                        clinicTrans.appendChild(clinic);
+                url: '/Medical/ClinicTrans/SaveClinicTrans',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(modifiedData),
+                success: function(response) {
+                    if (response.success) {
+                        alert('@localizer["Data saved successfully"]');
+                        table.ajax.reload();
+                    } else {
+                        alert('@localizer["Error saving data"]: ' + response.message);
                     }
-                    //set total service in span 
-                    document.getElementById("totalServicesForVisit").classList.add("bg-white");
-                    document.getElementById("totalServicesForVisit").innerHTML = totalServicesForVisit;
-                    document.getElementById("netPatient").classList.add("bg-white");
-                    document.getElementById("netPatient").innerHTML = NetPatient;
-
-
+                },
+                error: function(xhr) {
+                    alert('@localizer["Error saving data"]: ' + xhr.responseText);
                 }
-            });*@
+            });
+        });
 
-					// Initialize DataTable with editable functionality
-							  let clickedTarget = e.target.parentElement
-					clickedTarget.classList.add("active-row");
-					///////////////////////////////////////////////////////////////////
+        // Delete button click handler
+        $('.clinicTrans-table').on('click', '.btn-delete', function() {
+            var checkId = $(this).data('id');
 
-					// Catch header for ClinicTrans => PatAdmissionID and reset it
-					let clinicTransHead = document.querySelector(".clinicTrans-table-head");
-
-					let itemId = clickedTarget.querySelector(".item-id").innerText;
-					let clinicTransHeader = clinicTransHead.querySelector(".header.clinic-trans"); // Display Header for sub items
-					clinicTransHeader.innerHTML = "@localizer["Clinic Transaction Invoices For Visit No"] :" + itemId;
-
-						var table = $('.clinicTrans-table').DataTable(
-
-							{
-									destroy: true,
-						ajax: {
-									url: '/medical/ClinicTrans/GetClinicTrans/' + id,
-											data: function(d) {
-								return {
-									flag: 1
-								};
-							},
-							dataSrc: function(json) {
-								// Check if the response contains an error
-								if (json.error) {
-									alert('Error loading data: ' + json.error);
-									return [];
-								}
-								return json;
-							}
-						},
-						columns: [
-							{ data: 'checkId' },
-							{ data: 'counter' },
-							{ data: 'itmServFlag' },
-							{ data: 'sClinicId' },
-							{
-								data: 'servDesc',
-								render: function (data, type, row) {
-									if (type === 'display') {
-										return '<input type="text" class="form-control" value="' + (data || '') + '" data-field="servDesc" data-id="' + row.checkId + '">';
-									}
-									return data;
-								}
-							},
-							{
-								data: 'drDesc',
-								render: function (data, type, row) {
-									if (type === 'display') {
-										return '<input type="text" class="form-control" value="' + (data || '') + '" data-field="drDesc" data-id="' + row.checkId + '">';
-									}
-									return data;
-								}
-							},
-							{
-								data: 'unitPrice',
-								render: function (data, type, row) {
-									if (type === 'display') {
-										return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="unitPrice" data-id="' + row.checkId + '">';
-									}
-									return data;
-								}
-							},
-							{
-								data: 'patientValue',
-								render: function (data, type, row) {
-									if (type === 'display') {
-										return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="patientValue" data-id="' + row.checkId + '">';
-									}
-									return data;
-								}
-							},
-							{
-								data: 'extraVal',
-								render: function (data, type, row) {
-									if (type === 'display') {
-										return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="extraVal" data-id="' + row.checkId + '">';
-									}
-									return data;
-								}
-							},
-							{
-								data: 'extraVal2',
-								render: function (data, type, row) {
-									if (type === 'display') {
-										return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="extraVal2" data-id="' + row.checkId + '">';
-									}
-									return data;
-								}
-							},
-							{
-								data: 'compValue',
-								render: function (data, type, row) {
-									if (type === 'display') {
-										return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="compValue" data-id="' + row.checkId + '">';
-									}
-									return data;
-								}
-							},
-							{
-								data: 'discountVal',
-								render: function (data, type, row) {
-									if (type === 'display') {
-										return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="discountVal" data-id="' + row.checkId + '">';
-									}
-									return data;
-								}
-							},
-							{
-								data: 'approvalPeriod',
-								render: function (data, type, row) {
-									if (type === 'display') {
-										return '<input type="number" class="form-control" value="' + data + '" data-field="approvalPeriod" data-id="' + row.checkId + '">';
-									}
-									return data;
-								}
-							},
-							{
-								data: null,
-								render: function (data, type, row) {
-									return '<button class="btn btn-sm btn-danger btn-delete" data-id="' + row.checkId + '">Delete</button>';
-								}
-							}
-						],
-						paging: true,
-						searching: true,
-						ordering: true,
-						rowId: function(data) {
-							return 'row-' + data.checkId;
-						},
-						language: {
-							search: "بحث:",
-							lengthMenu: "عرض _MENU_ سجلات",
-							info: "عرض _START_ الى _END_ من _TOTAL_ سجلات",
-							infoEmpty: "لا توجد سجلات",
-							infoFiltered: "(تصفية من _MAX_ سجلات)",
-							paginate: {
-								first: "الأول",
-								last: "الأخير",
-								next: "التالي",
-								previous: "السابق"
-							}
-						}
-					});
-
-					// Handle Add New button
-					$('#btnAddNew').on('click', function () {
-						var maxCheckId = 0;
-						var maxCounter = 0;
-
-						// Find the maximum checkId and counter
-						table.rows().every(function() {
-							var rowData = this.data();
-							maxCheckId = Math.max(maxCheckId, rowData.checkId);
-							maxCounter = Math.max(maxCounter, rowData.counter);
-						});
-
-						var newRowData = {
-							checkId: maxCheckId + 1,
-							counter: maxCounter + 1,
-							itmServFlag: 3,
-							subName: null,
-							sClinicId: 1,
-							servDesc: "",
-							drDesc: "",
-							unitPrice: 0,
-							patientValue: 0,
-							extraVal: 0,
-							extraVal2: 0,
-							compValue: 0,
-							discountVal: 0,
-							approvalPeriod: 1,
-							checkIdCancel: 0
-						};
-
-						var newRow = table.row.add(newRowData).draw().node();
-						$(newRow).addClass('new-row');
-
-						// Focus on the first editable input in the new row
-						$(newRow).find('input[data-field="servDesc"]').focus();
-					});
-
-					// Save all changes
-					$('#btnSaveAll').on('click', function () {
-						var modifiedData = [];
-
-						// Get data from all visible rows
-						table.rows().every(function() {
-							var rowData = this.data();
-							var rowNode = this.node();
-							var rowId = $(rowNode).attr('id');
-
-							// Update the data with values from input fields
-							rowData.servDesc = $(rowNode).find('input[data-field="servDesc"]').val();
-							rowData.drDesc = $(rowNode).find('input[data-field="drDesc"]').val();
-							rowData.unitPrice = parseFloat($(rowNode).find('input[data-field="unitPrice"]').val()) || 0;
-							rowData.patientValue = parseFloat($(rowNode).find('input[data-field="patientValue"]').val()) || 0;
-							rowData.extraVal = parseFloat($(rowNode).find('input[data-field="extraVal"]').val()) || 0;
-							rowData.extraVal2 = parseFloat($(rowNode).find('input[data-field="extraVal2"]').val()) || 0;
-							rowData.compValue = parseFloat($(rowNode).find('input[data-field="compValue"]').val()) || 0;
-							rowData.discountVal = parseFloat($(rowNode).find('input[data-field="discountVal"]').val()) || 0;
-							rowData.approvalPeriod = parseInt($(rowNode).find('input[data-field="approvalPeriod"]').val()) || 1;
-
-							modifiedData.push(rowData);
-						});
-
-						// Send to server
-						$.ajax({
-							url: '@Url.Action("SaveData", "ClinicTransactions")',
-							type: 'POST',
-							contentType: 'application/json',
-							data: JSON.stringify(modifiedData),
-							success: function (response) {
-								if (response.success) {
-									alert('تم حفظ البيانات بنجاح!');
-									table.ajax.reload();
-								} else {
-									alert('خطأ في حفظ البيانات: ' + response.message);
-								}
-							},
-							error: function (xhr) {
-								alert('خطأ في حفظ البيانات: ' + xhr.responseText);
-							}
-						});
-					});
-
-					// Delete button click handler
-					$('.transactionsTable').on('click', '.btn-delete', function () {
-						var checkId = $(this).data('id');
-
-						if (confirm('هل أنت متأكد من رغبتك في حذف هذه المعاملة؟')) {
-							$.ajax({
-								url: '@Url.Action("Delete", "ClinicTransactions")',
-								type: 'POST',
-								data: { checkId: checkId },
-								success: function (response) {
-									if (response.success) {
-										table.ajax.reload();
-									} else {
-										alert('خطأ في حذف المعاملة: ' + response.message);
-									}
-								},
-								error: function (xhr) {
-									alert('خطأ في حذف المعاملة: ' + xhr.responseText);
-								}
-							});
-						}
-					});
-
-					// Auto-calculate patientValue when unitPrice changes
-					$('.transactionsTable').on('change', 'input[data-field="unitPrice"]', function() {
-						var row = $(this).closest('tr');
-						var unitPrice = parseFloat($(this).val()) || 0;
-
-						// Set patientValue equal to unitPrice by default
-						row.find('input[data-field="patientValue"]').val(unitPrice);
-					});
-
-			}
+            if (confirm('@localizer["Are you sure you want to delete this item?"]')) {
+                $.ajax({
+                    url: '/Medical/ClinicTrans/Delete_ClinicTrans',
+                    type: 'POST',
+                    data: {
+                        id: checkId,
+                        redirect: 'Invoices'
+                    },
+                    success: function(response) {
+                        table.ajax.reload();
+                    },
+                    error: function(xhr) {
+                        alert('@localizer["Error deleting item"]: ' + xhr.responseText);
+                    }
+                });
+            }
+        });
+    }
 </script>
 
 

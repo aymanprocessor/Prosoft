@@ -15,7 +15,7 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         private readonly IMapper _mapper;
         private readonly ISubClinicRepo _subClinicRebo;
         public SubClinicController(IMapper mapper, ISubClinicRepo subClinicRebo)
-        {   
+        {
             _mapper = mapper;
             _subClinicRebo = subClinicRebo;
         }
@@ -37,7 +37,7 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         //Post Add
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add_SubClinic(int id , SubClinicEditAddDTO subClinicDTO)
+        public async Task<IActionResult> Add_SubClinic(int id, SubClinicEditAddDTO subClinicDTO)
         {
             if (ModelState.IsValid)
             {
@@ -56,7 +56,7 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         //Post Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit_SubClinic(int id , SubClinicEditAddDTO subClinicDTO)
+        public async Task<IActionResult> Edit_SubClinic(int id, SubClinicEditAddDTO subClinicDTO)
         {
             if (ModelState.IsValid)
             {
@@ -77,5 +77,8 @@ namespace ProSoft.UI.Areas.Medical.Controllers
             await _subClinicRebo.SaveChangesAsync();
             return RedirectToAction("Index", "MainClinic");
         }
+
+       
+
     }
 }

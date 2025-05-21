@@ -78,5 +78,11 @@ namespace ProSoft.UI.Areas.Medical.Controllers
             await _doctorRepo.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        public async Task<IActionResult> GetDoctors()
+        {
+            List<DoctorViewDTO> doctorsDTO = await _doctorRepo.GetAllDoctor();
+            return Json(doctorsDTO);
+        }
     }
 }

@@ -78,5 +78,15 @@ namespace ProSoft.UI.Areas.Medical.Controllers
             await _mainClinicRepo.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+
+        [HttpGet]
+        public async Task<JsonResult> GetMainClinics()
+        {
+            var mainClinics = await _mainClinicRepo.GetAllClinics();
+            return Json(mainClinics);
+        }
+
+
     }
 }

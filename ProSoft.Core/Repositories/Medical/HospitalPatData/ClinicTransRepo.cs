@@ -82,20 +82,27 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
                .Select(obj => new ClinicTransViewDTO()
                {
                    CheckId = (int)obj.CheckId,
-                   Counter = (int)obj.Counter,
                    ItmServFlag = (int)obj.ItmServFlag,
-                   SubName = obj.Sub.SubName,
+                   ExDate = (DateTime)obj.ExDate,
+                   ClinicId = (int)obj.ClinicId,
                    SClinicId = Convert.ToInt32(obj.SClinicId),
-                   ServDesc = obj.Serv.ServDesc,
-                   DrDesc = obj.DrSendNavigation.DrDesc,
+                   ServId = Convert.ToInt32(obj.ServId),
+                   DrSendId = (int)obj.DrSend,
+                   Qty = (int)obj.Qty,
                    UnitPrice = Convert.ToDecimal(obj.UnitPrice),
+                   ValueService = Convert.ToDecimal(obj.ValueService),
                    PatientValue = Convert.ToDecimal(obj.PatientValue),
-                   ExtraVal = Convert.ToDecimal(obj.ExtraVal),
-                   ExtraVal2 = Convert.ToDecimal(obj.ExtraVal2),
                    CompValue = Convert.ToDecimal(obj.CompValue),
                    DiscountVal = Convert.ToDecimal(obj.DiscountVal),
+                   ExtraVal = Convert.ToDecimal(obj.ExtraVal),
+                   ExtraVal2 = Convert.ToDecimal(obj.ExtraVal2),
                    ApprovalPeriod = Convert.ToInt32(obj.ApprovalPeriod),
-                   CheckIdCancel = Convert.ToInt32(obj.CheckIdCancel)
+                   CheckIdCancel = Convert.ToInt32(obj.CheckIdCancel),
+                   Counter = (int)obj.Counter,
+                   StockId = (int)obj.StockCode,
+                   SubName = obj.Sub.SubName,
+                   ServDesc = obj.Serv.ServDesc,
+                   DrDesc = obj.DrSendNavigation.DrDesc,
                })
                .ToListAsync(); 
 
