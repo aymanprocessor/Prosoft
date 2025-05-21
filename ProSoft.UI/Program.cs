@@ -44,7 +44,7 @@ if (string.IsNullOrEmpty(dbProvider) || string.IsNullOrEmpty(connectionString))
 
 builder.Services.AddScoped(sp =>
 {
-    return new AppDbContext("User Id=C##EIS;Password=Eiss2024;Data Source=localhost:1521/ORCL19;", "Oracle");
+    return new AppDbContext("User Id=C##EIS;Password=Eiss2024;Data Source=oracle-19c-test:1521/ORCL19;", "Oracle");
 });
 //builder.Services.AddDbContext<AppDbContext>(options =>
 //    options.UseSqlServer(sqlServerConnection));
