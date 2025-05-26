@@ -158,13 +158,13 @@
 
         <div>
 
-            <a class="btn btn-sm btn-primary fs-6">
+            @*<a class="btn btn-sm btn-primary fs-6">
                 @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add Transaction"]
-            </a>
+            </a>*@
             <a class="btn btn-sm btn-primary fs-6" id="btnAddNew">
                 @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add New Row"]
             </a>
-            <a class="btn btn-sm btn-primary fs-6" id="btnAddNew">
+            <a class="btn btn-sm btn-primary fs-6" id="btnSave">
                 @Html.Raw(GlobalConstants.SaveIcon) @localizer["Save"]
             </a>
         </div>
@@ -189,7 +189,7 @@
                     <th class="align-middle">
                         @localizer["Sub Clinic"]
                     </th>
-                  
+
                     <th class="align-middle">
                         @localizer["Clinic Service"]
                     </th>
@@ -391,19 +391,15 @@
         let mainClinicList = [];
         let subClinicList = [];
         let servList = [];
-        let doctorList = []
+        let doctorList = [];
+        let stockList = [];
+
+        fetchMainClinics();
+        fetchDoctors();
+        fetchStocks();
 
 
-
-
-             fetchMainClinics();
-             fetchDoctors();
-
-    
-
-
-
-         function fetchMainClinics() {
+        function fetchMainClinics() {
              // Fetch Main Clinics
            $.ajax({
                  url: '/Medical/MainClinic/GetMainClinics' ,
@@ -412,8 +408,9 @@
                      mainClinicList = data;
                  }
              });
-          
+
         }
+
         async function fetchSubClinics(clinicId) {
             // Fetch Sub Clinics
             //const response = await fetch(`/Medical/SubClinic/GetSubClinic/${clinicId}`);
@@ -437,8 +434,9 @@
             servList = data;
 
         }
-         function fetchDoctors() {
-      
+
+        function fetchDoctors() {
+
              $.ajax({
                  url: '/Medical/Doctor/GetDoctors',
                  type: 'GET',
@@ -449,23 +447,76 @@
 
         }
 
+        function fetchStocks() {
+
+             $.ajax({
+                 url: '/Stocks/Stock/GetStocks',
+                 type: 'GET',
+                 success: function (data) {
+                     stockList = data;
+                 }
+             });
+
+        }
+
 
         function buildMainClinicDd(row) {
             let html = `<select class="form-control text-center clinic-dropdown" data-field="clinicId" data-id="${row.checkId}">`;
                 html += `<option value="">@localizer["Choosee"]</option>`;
             for (let item of mainClinicList) {
-                html += `<option value="${item.clinicId}">${item.clinicDesc}</option>`;
+                let selected = (item.clinicId === row.clinicId) ? ' selected' : '';
+
+                html += `<option value="${item.clinicId}"${selected}>${item.clinicDesc}</option>`;
             }
             html += `</select>`;
             return html;
         }
 
 
+        function buildCheckIdCancelDd(row) {
+            let html = `<select class="form-control text-center approval-period-dropdown" data-field="approvalPeriod" data-id="${row.checkId}">`;
 
+            html += `
+              <option value="">-- Choose --</option>
+              <option value="1" ${row.checkIdCancel == 1 ? ' selected' : ''} >حضور</option>
+              <option value="2" ${row.checkIdCancel == 2 ? ' selected' : ''}  >حجز</option>
+              <option value="3" ${row.checkIdCancel == 3 ? ' selected' : ''}  >ملغي</option>
+              <option value="4" ${row.checkIdCancel == 4 ? ' selected' : ''}  >استرداد</option>
+         `;
+
+            html += `</select>`;
+            return html;
+        }
+
+
+        function buildApprovalPeriodDd(row) {
+            let html = `<select class="form-control text-center approval-period-dropdown" data-field="approvalPeriod" data-id="${row.checkId}">`;
+
+            html += `
+                     <option value="">-- Choose --</option>
+                     <option value="1" ${row.approvalPeriod == 1 ? ' selected' : ''}>صباحي</option>
+                     <option value="2" ${row.approvalPeriod == 2 ? ' selected' : ''}>مسائي</option>
+                     <option value="3" ${row.approvalPeriod == 3 ? ' selected' : ''}>ليلي</option>
+                     <option value="4" ${row.approvalPeriod == 4 ? ' selected' : ''}>ظهرا</option>
+                `;
+           
+            html += `</select>`;
+            return html;
+        }
 
 
         function buildSubClinicDd(row) {
             let html = `<select class="form-control text-center sub-clinic-dropdown " data-field="SClinicId" data-id="${row.checkId}" disabled>`;
+
+            //if (row.clinicId) {
+            //    fetchSubClinics(row.clinicId);
+
+            //    for (let subClinic of subClinicList) {
+            //        let selected = (subClinic.sClinicId === row.sClinicId) ? ' selected' : '';
+            //        html += `<option value="${subClinic.sClinicId}"${selected}>${subClinic.sClinicDesc}</option>`;
+            //    }
+            //}
+
             html += `</select>`;
             return html;
         }
@@ -482,18 +533,31 @@
             let html = `<select class="form-control text-center doctor-dropdown" data-field="drSendId" data-id="${row.checkId}">`;
                 html += `<option value="">@localizer["Choosee"]</option>`;
             for (let item of doctorList) {
-                html += `<option value="${item.drId}">${item.drDesc}</option>`;
+                let selected = (item.drId === row.drSendId) ? ' selected' : '';
+                html += `<option value="${item.drId}" ${selected}>${item.drDesc}</option>`;
             }
             html += `</select>`;
             return html;
         }
 
+        function buildStockDd(row) {
+             let html = `<select class="form-control text-center stock-dropdown" data-field="stockCode" data-id="${row.checkId}">`;
+                 html += `<option value="">@localizer["Choosee"]</option>`;
+             for (let item of stockList) {
+                 let selected = (item.stkcod === row.stockId) ? ' selected' : '';
+                 html += `<option value="${item.stkcod}" ${selected}>${item.stknam}</option>`;
+             }
+             html += `</select>`;
+             return html;
+        }
 
 
         $('.clinicTrans-table tbody').on('change', '.clinic-dropdown', async function () {
             let selectedClinicId = $(this).val();
             let rowId = $(this).data('id');
             let $SubClinicSelect = $(`.sub-clinic-dropdown[data-id="${rowId}"]`);
+            let $ServSelect = $(`.serv-dropdown[data-id="${rowId}"]`);
+
             if (selectedClinicId) {
 
                await fetchSubClinics(selectedClinicId);
@@ -510,6 +574,7 @@
 
             } else {
                 $SubClinicSelect.prop('disabled', true);
+                $ServSelect.prop('disabled', true);
 
             }
 
@@ -541,7 +606,37 @@
 
     });
 
+        // Listen for changes on any qty or unitPrice input inside the table
+        $('.clinicTrans-table').on('input', 'input[data-field="qty"], input[data-field="unitPrice"]', function () {
+            const $input = $(this);
+            const field = $input.data('field');      // 'qty' or 'unitPrice'
+            const id = $input.data('id');             // the row's checkId
+            const newValue = parseFloat($input.val()) || 0;
 
+            // Find the row data by checkId
+            const rowIndex = table.rows().eq(0).filter(function (idx) {
+                return table.cell(idx, 0).data().checkId === id || table.row(idx).data().checkId === id;
+            })[0];
+
+            if (rowIndex === undefined) return; // row not found
+
+            // Get current row data
+            const rowData = table.row(rowIndex).data();
+
+            // Update the changed field in rowData
+            rowData[field] = newValue;
+
+            // Calculate new valueService
+            const qty = parseFloat(rowData.qty) || 0;
+            const unitPrice = parseFloat(rowData.unitPrice) || 0;
+            rowData.valueService = qty * unitPrice;
+
+            // Update the row data in DataTable
+            table.row(rowIndex).data(rowData).invalidate();
+
+            // Redraw just the updated row (for performance)
+            table.draw(false);
+        });
 
 
         // Handle active class
@@ -613,7 +708,7 @@
                     render: function (data, type, row) {
                         if (type === 'display') {
                             // Display service or item based on itmServFlag
-                            return (row.itmServFlag == 3) ? row.servDesc : row.subName;
+                            return (row.itmServFlag == 3) ? "خدمة" : "صنف";
                         }
                         return data;
                     },
@@ -682,19 +777,76 @@
                     }
                 },
                 {
+                    data: 'qty',
+                    render: function (data, type, row) {
+                        if (type === 'display') {
+                            return '<input type="number"  class="form-control no-spinner" value="' + data + '" data-field="qty" data-id="' + row.checkId + '">';
+                        }
+                        return data;
+                    },
+                    createdCell: function (td) {
+                        td.style.minWidth = '100px';
+                    }
+                },{
                     data: 'unitPrice',
                     render: function (data, type, row) {
                         if (type === 'display') {
-                            return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="unitPrice" data-id="' + row.checkId + '">';
+                            return '<input type="number" class="form-control no-spinner" value="' + data + '" data-field="unitPrice" data-id="' + row.checkId + '">';
+                        }
+                        return data;
+                    },
+                    createdCell: function (td) {
+                        td.style.minWidth = '100px';
+                    }
+                },
+                {
+                    data: 'valueService',
+                    render: function (data, type, row) {
+
+                        return data;
+                    }
+                },
+                {
+                    data: 'stockId',
+                    render: function (data, type, row) {
+
+                        if (type === 'display') {
+
+
+                            return buildStockDd(row);
+
+                        }
+                        return data;
+                    },
+                    createdCell: function (td) {
+                        td.style.minWidth = '150px';
+                    }
+                },
+
+                {
+                    data: 'patientValue',
+                    render: function (data, type, row) {
+                        if (type === 'display') {
+                            return '<input type="number"  class="form-control no-spinner" value="' + data + '" data-field="patientValue" data-id="' + row.checkId + '">';
                         }
                         return data;
                     }
                 },
                 {
-                    data: 'patientValue',
+                    data: 'compValue',
                     render: function (data, type, row) {
                         if (type === 'display') {
-                            return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="patientValue" data-id="' + row.checkId + '">';
+                            return '<input type="number"  class="form-control no-spinner" value="' + data + '" data-field="compValue" data-id="' + row.checkId + '">';
+                        }
+                        return data;
+                    }
+                },
+
+                {
+                    data: 'discountVal',
+                    render: function (data, type, row) {
+                        if (type === 'display') {
+                            return '<input type="number"  class="form-control no-spinner" value="' + data + '" data-field="compValue" data-id="' + row.checkId + '">';
                         }
                         return data;
                     }
@@ -703,7 +855,7 @@
                     data: 'extraVal',
                     render: function (data, type, row) {
                         if (type === 'display') {
-                            return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="extraVal" data-id="' + row.checkId + '">';
+                            return '<input type="number" class="form-control no-spinner" value="' + data + '" data-field="extraVal" data-id="' + row.checkId + '">';
                         }
                         return data;
                     }
@@ -712,113 +864,43 @@
                     data: 'extraVal2',
                     render: function (data, type, row) {
                         if (type === 'display') {
-                            return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="extraVal2" data-id="' + row.checkId + '">';
+                            return '<input type="number" min="0" max="100"  class="form-control no-spinner" value="' + data + '" data-field="extraVal2" data-id="' + row.checkId + '">';
                         }
                         return data;
                     }
                 },
+             
+
                 {
-                    data: 'compValue',
+                    data: 'approvalPeriod',
                     render: function (data, type, row) {
                         if (type === 'display') {
-                            return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="compValue" data-id="' + row.checkId + '">';
+                            return buildApprovalPeriodDd(row);
                         }
                         return data;
+                    },
+                    createdCell: function (td) {
+                        td.style.minWidth = '150px';
                     }
                 },
 
                 {
-                    data: 'compValue',
+                    data: 'checkIdCancel',
                     render: function (data, type, row) {
                         if (type === 'display') {
-                            return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="compValue" data-id="' + row.checkId + '">';
+                            return buildCheckIdCancelDd(row);
                         }
                         return data;
+                    },
+                    createdCell: function (td) {
+                        td.style.minWidth = '150px';
                     }
                 },
-
-                {
-                    data: 'compValue',
-                    render: function (data, type, row) {
-                        if (type === 'display') {
-                            return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="compValue" data-id="' + row.checkId + '">';
-                        }
-                        return data;
-                    }
-                },
-
-                {
-                    data: 'compValue',
-                    render: function (data, type, row) {
-                        if (type === 'display') {
-                            return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="compValue" data-id="' + row.checkId + '">';
-                        }
-                        return data;
-                    }
-                },
-
-                {
-                    data: 'compValue',
-                    render: function (data, type, row) {
-                        if (type === 'display') {
-                            return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="compValue" data-id="' + row.checkId + '">';
-                        }
-                        return data;
-                    }
-                },
-
-                {
-                    data: 'compValue',
-                    render: function (data, type, row) {
-                        if (type === 'display') {
-                            return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="compValue" data-id="' + row.checkId + '">';
-                        }
-                        return data;
-                    }
-                },
-
-                {
-                    data: 'compValue',
-                    render: function (data, type, row) {
-                        if (type === 'display') {
-                            return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="compValue" data-id="' + row.checkId + '">';
-                        }
-                        return data;
-                    }
-                },
-
-                {
-                    data: 'compValue',
-                    render: function (data, type, row) {
-                        if (type === 'display') {
-                            return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="compValue" data-id="' + row.checkId + '">';
-                        }
-                        return data;
-                    }
-                },
-
-                {
-                    data: 'compValue',
-                    render: function (data, type, row) {
-                        if (type === 'display') {
-                            return '<input type="number" step="0.01" class="form-control" value="' + data + '" data-field="compValue" data-id="' + row.checkId + '">';
-                        }
-                        return data;
-                    }
-                },
-                {
-                    // Total service price
-                    data: null,
-                    render: function (data, type, row) {
-                        var total = (parseFloat(row.compValue) + parseFloat(row.patientValue)).toFixed(2);
-                        return '<span class="total-service">' + total + '</span>';
-                    }
-                },
+             
                 {
                     data: null,
                     render: function (data, type, row) {
-                        return '<button class="btn btn-sm btn-warning btn-edit" data-id="' + row.checkId + '">@Html.Raw(GlobalConstants.EditIcon)</button> ' +
-                               '<button class="btn btn-sm btn-danger btn-delete" data-id="' + row.checkId + '">@Html.Raw(GlobalConstants.DeleteIcon)</button>';
+                        return '<button class="btn btn-sm btn-danger btn-delete" data-id="' + row.checkId + '">@Html.Raw(GlobalConstants.DeleteIcon)</button>';
                     },
                     createdCell: function (td) {
                         td.style.minWidth = '100px';
@@ -864,40 +946,46 @@
 
             var newRowData = {
                 exDate: new Date(),
-                masterId: id, // Set to the admission ID
                 itmServFlag: 3,
-                subName: "",
                 clinicId: "",
-                servDesc: "",
-                drDesc: "",
+                sClinicId: "",
+                servId: "",
+                qty:1,
                 unitPrice: 0,
                 patientValue: 0,
                 extraVal: 0,
                 extraVal2: 0,
-                compValue: 0
+                compValue: 0,
+                discountVal: 0,
+                approvalPeriod:-1,
+                checkIdCancel: -1,
+                stockId:"",
+                valueService: 0,
+                drSendId:""
+
             };
 
             table.row.add(newRowData).draw(false);
         });
 
         // Auto-calculate patientValue when unitPrice changes
-        $('.clinicTrans-table').on('change', 'input[data-field="unitPrice"]', function() {
-            var row = $(this).closest('tr');
-            var unitPrice = parseFloat($(this).val()) || 0;
+        //$('.clinicTrans-table').on('change', 'input[data-field="unitPrice"]', function() {
+        //    var row = $(this).closest('tr');
+        //    var unitPrice = parseFloat($(this).val()) || 0;
 
-            // Set patientValue equal to unitPrice by default
-            row.find('input[data-field="patientValue"]').val(unitPrice);
+        //    // Set patientValue equal to unitPrice by default
+        //    row.find('input[data-field="patientValue"]').val(unitPrice);
 
-            // Update the totals
-            updateRowTotal(row);
-            updateGrandTotals();
-        });
+        //    // Update the totals
+        //    updateRowTotal(row);
+        //    updateGrandTotals();
+        //});
 
-        // Update other values when they change
-        $('.clinicTrans-table').on('change', 'input[data-field]', function() {
-            updateRowTotal($(this).closest('tr'));
-            updateGrandTotals();
-        });
+        //// Update other values when they change
+        //$('.clinicTrans-table').on('change', 'input[data-field]', function() {
+        //    updateRowTotal($(this).closest('tr'));
+        //    updateGrandTotals();
+        //});
 
         // Helper function to update row total
         function updateRowTotal(row) {
@@ -947,12 +1035,15 @@
                     extraVal2: parseFloat(row.find('input[data-field="extraVal2"]').val()) || 0,
                     compValue: parseFloat(row.find('input[data-field="compValue"]').val()) || 0
                 };
+                if (!checkId) {
 
                 modifiedData.push(rowData);
+                }
             });
+            console.log(modifiedData);
 
             // Send data to the server
-            $.ajax({
+            @*$.ajax({
                 url: '/Medical/ClinicTrans/SaveClinicTrans',
                 type: 'POST',
                 contentType: 'application/json',
@@ -968,7 +1059,7 @@
                 error: function(xhr) {
                     alert('@localizer["Error saving data"]: ' + xhr.responseText);
                 }
-            });
+            });*@
         });
 
         // Delete button click handler
