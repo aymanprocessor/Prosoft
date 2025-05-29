@@ -203,6 +203,37 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<LabReportDTO, LabReport>().ReverseMap();
             CreateMap<MedicationDTO, MedicationAtCcu>().ReverseMap();
             CreateMap<PciReportDTO, PciReport>().ReverseMap();
+
+            //************** CUSTOM MAP ****************//
+            CreateMap<ClinicTransRequestDTO, ClinicTransEditAddDTO>()
+          .ForMember(dest => dest.ExYear, opt => opt.Ignore()) // Not present in source
+          .ForMember(dest => dest.ExInvoiceNo, opt => opt.Ignore()) // Not present in source
+          .ForMember(dest => dest.ServDesc, opt => opt.Ignore())
+          .ForMember(dest => dest.DrDesc, opt => opt.Ignore())
+          .ForMember(dest => dest.DrCode, opt => opt.Ignore())
+          .ForMember(dest => dest.DrValPat, opt => opt.Ignore())
+          .ForMember(dest => dest.HoValPat, opt => opt.Ignore())
+          .ForMember(dest => dest.MainId, opt => opt.Ignore())
+          .ForMember(dest => dest.SubId, opt => opt.Ignore())
+          .ForMember(dest => dest.ClinicId, opt => opt.MapFrom(src => (int?)src.ClinicId))
+          .ForMember(dest => dest.SClinicId, opt => opt.MapFrom(src => (int?)src.SClinicId))
+          .ForMember(dest => dest.ServId, opt => opt.MapFrom(src => (int?)src.ServId))
+          .ForMember(dest => dest.DrSend, opt => opt.MapFrom(src => (int?)src.DrSendId))
+          .ForMember(dest => dest.ValueService, opt => opt.MapFrom(src => (decimal?)src.ValueService))
+          .ForMember(dest => dest.StockCode, opt => opt.MapFrom(src => src.StockId))
+          // Map optional fields
+          .ForMember(dest => dest.PatId, opt => opt.Ignore())
+          .ForMember(dest => dest.CompId, opt => opt.Ignore())
+          .ForMember(dest => dest.CompIdDtl, opt => opt.Ignore())
+          .ForMember(dest => dest.SendTo, opt => opt.Ignore())
+          .ForMember(dest => dest.SendFr, opt => opt.Ignore())
+          .ForMember(dest => dest.MainInvNo, opt => opt.Ignore())
+          .ForMember(dest => dest.SessionNo, opt => opt.Ignore())
+          .ForMember(dest => dest.Flag, opt => opt.Ignore())
+          .ForMember(dest => dest.Counter, opt => opt.Ignore())
+          .ForMember(dest => dest.MasterId, opt => opt.MapFrom(src => (int?)src.MasterId))
+          .ForMember(dest => dest.SubCode, opt => opt.Ignore())
+          .ForMember(dest => dest.MainCode, opt => opt.Ignore());
         }
     }
 }

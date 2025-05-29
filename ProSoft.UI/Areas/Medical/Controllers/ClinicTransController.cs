@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Text.Json;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProSoft.Core.Repositories.Medical.HospitalPatData;
@@ -16,11 +18,13 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         private readonly IClinicTransRepo _clinicTransRepo;
         private readonly IPatAdmissionRepo _patAdmissionRepo;
         private readonly ICurrentUserService _currentUserService;
-        public ClinicTransController(IClinicTransRepo clinicTransRepo, IPatAdmissionRepo patAdmissionRepo, ICurrentUserService currentUserService)
+        private readonly IMapper _mapper;
+        public ClinicTransController(IClinicTransRepo clinicTransRepo, IPatAdmissionRepo patAdmissionRepo, ICurrentUserService currentUserService, IMapper mapper)
         {
             _clinicTransRepo = clinicTransRepo;
             _patAdmissionRepo = patAdmissionRepo;
             _currentUserService = currentUserService;
+            _mapper = mapper;
         }
 
         public async Task<IActionResult> GetClinicTrans(int id, int flag)
@@ -147,11 +151,88 @@ namespace ProSoft.UI.Areas.Medical.Controllers
 
         //Delete ClinicTrans 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete_ClinicTrans(int id, string redirect)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             await _clinicTransRepo.DeleteClinicTransAsync(id);
-            return RedirectToAction(redirect, "HospitalPatData");
+            //return RedirectToAction(redirect, "HospitalPatData");
+               return StatusCode(200, new
+            {
+                success = true,
+                message = "Data Deleted",
+              
+            });
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> SaveRows([FromBody] List<ClinicTransRequestDTO> modifiedData)
+        {
+            try
+            {
+                //using var reader = new StreamReader(Request.Body);
+                //var json = await reader.ReadToEndAsync();
+
+                //var options = new JsonSerializerOptions
+                //{
+                //    PropertyNameCaseInsensitive = true,
+                //    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                //};
+
+                //var modifiedData = JsonSerializer.Deserialize<List<ClinicTransRequestDTO>>(json, options);
+
+                // Validate the model
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                // Check if the raw body is null
+                if (modifiedData == null)
+                {
+                    return BadRequest(new
+                    {
+                        success = false,
+                        message = "Request body is null or invalid JSON format."
+                    });
+                }
+
+                List<ClinicTransEditAddDTO> clinicTransDTO = new();
+                clinicTransDTO= _mapper.Map<List<ClinicTransEditAddDTO>>(modifiedData);
+                await _clinicTransRepo.AddClinicTransListAsync((int)clinicTransDTO[0].MasterId, 1, clinicTransDTO);
+
+                //// Validate required fields
+                //if (string.IsNullOrEmpty(modifiedData.CheckId) || string.IsNullOrEmpty(modifiedData.MasterId))
+                //{
+                //    return BadRequest("CheckId and MasterId are required fields.");
+                //}
+
+                //// Set ExDate to current time if not provided
+                //if (modifiedData.ExDate == default(DateTime))
+                //{
+                //    modifiedData.ExDate = DateTime.Now;
+                //}
+
+                return StatusCode(200, new
+                {
+                    success = true,
+                    message = "Data Added",
+                    data=modifiedData
+                });
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "An error occurred while saving the row data",
+                    innerEx = ex.InnerException
+                });
+            }
         }
 
     }

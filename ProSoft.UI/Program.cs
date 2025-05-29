@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http.Json;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,7 @@ using ProSoft.EF.Models.Stocks;
 using ProSoft.UI.Areas.Accounts;
 using ProSoft.UI.Localization;
 using System.Globalization;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,10 +56,14 @@ builder.Services.AddScoped(sp =>
 
 // Register for AutoMapper service
 builder.Services.AddAutoMapper(typeof(AutoMap)); //builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
+builder.Services.Configure<JsonOptions>(options =>
+{
+    options.SerializerOptions.PropertyNameCaseInsensitive = true;
+    options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+});
 //JsonConvert.DefaultSettings = () => new JsonSerializerSettings
 //{
-  
+
 //    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
 //};
 

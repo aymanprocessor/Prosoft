@@ -31,6 +31,8 @@ namespace ProSoft.EF.IRepositories.Medical.HospitalPatData
         Task<DoctorPrecentViewDTO> GetDoctorPrices(int id, int sClincID, int servID);
         /////////////////////////////////////////////////////////////////////////////////
         Task AddClinicTransAsync(int visitId, int flag, ClinicTransEditAddDTO clinicTransDTO);
+        Task AddClinicTransListAsync(int visitId, int flag, List<ClinicTransEditAddDTO> clinicTransDTOList);
+
         Task EditClinicTransAsync(int checkId, ClinicTransEditAddDTO clinicTransDTO);
         Task DeleteClinicTransAsync(int id);
     }

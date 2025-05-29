@@ -367,7 +367,199 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             }
 
         }
-        
+
+        //********************** BATCH ADD CLINIC TRANS **********************//
+        public async Task AddClinicTransListAsync(int visitId, int flag, List<ClinicTransEditAddDTO> clinicTransDTOList)
+        {
+            using var transaction = await _Context.Database.BeginTransactionAsync();
+
+            try
+            {
+                // Get common data once for all rows
+                PatAdmission patAdmission = await _Context.PatAdmissions
+                         .FirstOrDefaultAsync(obj => obj.MasterId == visitId);
+
+                if (patAdmission == null)
+                {
+                    throw new Exception($"PatAdmission not found for visitId: {visitId}");
+                }
+
+                // Get the current counter
+                ClinicTran lastClinicTrans = await _Context.ClinicTrans
+                        .OrderBy(obj => obj.Counter)
+                        .LastOrDefaultAsync(obj => obj.MasterId == visitId);
+
+                int currentCounter = lastClinicTrans?.Counter ?? 0;
+
+                // Process each row
+                foreach (var clinicTransDTO in clinicTransDTOList)
+                {
+                    // Set counter
+                    currentCounter++;
+                    clinicTransDTO.Counter = currentCounter;
+
+                    // Get SubClinic data
+                    var SubClinic = await _Context.SubClinics
+                        .FirstOrDefaultAsync(s => s.ClinicId == clinicTransDTO.ClinicId && s.SClinicId == clinicTransDTO.SClinicId);
+
+                    if (SubClinic != null)
+                    {
+                        clinicTransDTO.StockCode = (int)SubClinic.StockCd;
+                    }
+
+                    // Set common properties from patAdmission
+                    clinicTransDTO.PatId = patAdmission.PatId;
+                    clinicTransDTO.CompId = patAdmission.CompId;
+                    clinicTransDTO.CompIdDtl = patAdmission.CompIdDtl;
+                    clinicTransDTO.SendFr = patAdmission.SendFr;
+                    clinicTransDTO.SendTo = patAdmission.SendTo;
+                    clinicTransDTO.MainInvNo = patAdmission.MainInvNo;
+                    clinicTransDTO.SessionNo = patAdmission.SessionNo;
+                    clinicTransDTO.DrCode = patAdmission.DrCode;
+                    clinicTransDTO.Flag = flag;
+                    clinicTransDTO.MasterId = visitId;
+
+                    // Handle analysis logic (SClinicId == 5)
+                    if (clinicTransDTO.SClinicId == 5)
+                    {
+                        await ProcessAnalysisForRow(clinicTransDTO, visitId,(int) patAdmission.PatId);
+                    }
+
+                    // Map to entity
+                    ClinicTran clinicTran = _mapper.Map<ClinicTran>(clinicTransDTO);
+
+                    // Handle SubItem logic
+                    if (clinicTran.ItmServFlag == 2)
+                    {
+                        var SubItem = await _Context.SubItems
+                            .FirstOrDefaultAsync(s => s.SubId == clinicTran.SubId);
+                        if (SubItem != null)
+                        {
+                            clinicTran.ItemMaster = SubItem.ItemCode;
+                        }
+                    }
+
+                    // Add to context
+                    await _Context.AddAsync(clinicTran);
+                }
+
+                // Save all changes
+                await _Context.SaveChangesAsync();
+
+                // Handle Deposit logic once for all rows
+                await ProcessDepositForVisit(visitId, flag, patAdmission);
+
+                // Commit transaction
+                await transaction.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                throw new Exception($"Error adding clinic trans list: {ex.Message}", ex);
+            }
+        }
+
+
+
+        // Separate method for analysis processing
+        private async Task ProcessAnalysisForRow(ClinicTransEditAddDTO clinicTransDTO, int visitId, int patId)
+        {
+            // Get serviceClinic object by clinicTran
+            ServiceClinic serviceClinic = await _Context.ServiceClinics
+                .FirstOrDefaultAsync(obj => obj.ServId == clinicTransDTO.ServId);
+
+            if (serviceClinic == null) return;
+
+            // Get subAnalysis object by serviceClinic
+            MedicalAnalysisSub subAnalysis = await _Context.MedicalAnalysisSubs
+                .FirstOrDefaultAsync(obj => obj.SubName == serviceClinic.ServDesc);
+
+            if (subAnalysis == null) return;
+
+            // Set props in variables
+            var subCode = subAnalysis.SubCode;
+            var mainCode = subAnalysis.MainCode;
+
+            clinicTransDTO.SubCode = subCode;
+            clinicTransDTO.MainCode = mainCode;
+
+            // Get itemAnalysis by variables
+            List<Itemanalysis> itemAnalysisList = await _Context.Itemanalyses
+                .Where(obj => obj.Codeanalcode == subCode && obj.Subanalcode == mainCode)
+                .ToListAsync();
+
+            // Set props in new Analdetail
+            foreach (var item in itemAnalysisList)
+            {
+                var newDetail = new Analdetail
+                {
+                    PatId = patId,
+                    Codeanalcode = item.Codeanalcode,
+                    Itemanalcode = item.Itemanalcode,
+                    Itemanalname = item.Itemanalname,
+                    MasterId = visitId,
+                    SubCode = item.Subanalcode,
+                    MainCode = item.Mainanalcode
+                };
+
+                _Context.Add(newDetail);
+            }
+        }
+
+        // Separate method for deposit processing
+        private async Task ProcessDepositForVisit(int visitId, int flag, PatAdmission patAdmission)
+        {
+            // Call GetPricesOfServices to get the total price of services
+            decimal totalPrice = await GetPricesOfServices(visitId, flag);
+
+            // Call GetAllDepositForVisit to get the total Deposit of visit
+            decimal totalDeposit = await GetAllDepositForVisit(visitId);
+
+            if (totalPrice > totalDeposit)
+            {
+                // Delete service deposit 
+                Deposit depositWillDeleted = await _Context.Deposits
+                    .FirstOrDefaultAsync(obj => obj.MasterId == visitId && obj.PostRecipt != 1);
+
+                if (depositWillDeleted != null)
+                {
+                    _Context.Remove(depositWillDeleted);
+                    await _Context.SaveChangesAsync();
+                }
+
+                // Add new service
+                DepositEditAddDTO depositDTO = new DepositEditAddDTO
+                {
+                    DpsType = 1,
+                    DpsVal = Convert.ToDecimal(totalPrice - totalDeposit)
+                };
+
+                Deposit deposit = _mapper.Map<Deposit>(depositDTO);
+                deposit.MasterId = visitId;
+                deposit.ModId = 11;
+                deposit.DpsDate = DateTime.Now; // Assuming current date
+                deposit.PatId = patAdmission.PatId;
+
+                await _Context.AddAsync(deposit);
+                await _Context.SaveChangesAsync();
+
+                // Reset amanat
+                patAdmission.AmanatRetPat = 0;
+            }
+            else if (totalPrice < totalDeposit)
+            {
+                // Set amanat
+                patAdmission.AmanatRetPat = Convert.ToDecimal(totalDeposit - totalPrice);
+            }
+            else
+            {
+                // Equal amounts
+                patAdmission.AmanatRetPat = 0;
+            }
+        }
+
+
+        //***********************************//
         public async Task EditClinicTransAsync(int checkId, ClinicTransEditAddDTO clinicTransDTO)
         {
             ClinicTran myClinicTran = await _Context.ClinicTrans
