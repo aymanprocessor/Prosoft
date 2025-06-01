@@ -614,6 +614,22 @@
 
     });
 
+
+        // Listen for changes on inputs and selects to track modifications
+    $('.clinicTrans-table tbody').on('change', 'input, select', function() {
+        var row = $(this).closest('tr');
+        var checkId = table.row(row).data().checkId;
+
+        // Only track existing records
+        if (typeof checkId === "number" || (typeof checkId === "string" && !checkId.includes("temp"))) {
+            modifiedRows.add(checkId);
+            row.addClass('modified-row'); // Add visual indicator
+        }
+
+        updateRowTotal(row);
+        updateGrandTotals();
+    });
+
         // Listen for changes on any qty or unitPrice input inside the table
         // Store row data separately from DataTable
         //$('.clinicTrans-table tbody').on('input', 'input[data-field="qty"], input[data-field="unitPrice"]', function () {
