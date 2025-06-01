@@ -594,6 +594,58 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             await _Context.SaveChangesAsync();
         }
 
+
+        public async Task EditClinicTransBatchAsync(List<ClinicTransEditAddDTO> clinicTransDTOs)
+        {
+            var checkIds = clinicTransDTOs.Select(dto => dto.CheckId).ToList();
+
+            // Fetch all ClinicTrans records in one query
+            var clinicTransList = await _Context.ClinicTrans
+                .Where(ct => checkIds.Contains(ct.CheckId))
+                .ToListAsync();
+
+            foreach (var dto in clinicTransDTOs)
+            {
+                var myClinicTran = clinicTransList.FirstOrDefault(ct => ct.CheckId == dto.CheckId);
+                if (myClinicTran == null)
+                    continue; // or handle as needed
+
+                // Preserve properties
+                var admissionId = myClinicTran.MasterId;
+                var counter = myClinicTran.Counter;
+                var itemServflag = myClinicTran.ItmServFlag;
+                var flag = myClinicTran.Flag;
+                var patId = myClinicTran.PatId;
+                var stockCode = myClinicTran.StockCode;
+
+                // Map new values from DTO
+                _mapper.Map(dto, myClinicTran);
+
+                // Restore preserved values
+                myClinicTran.CheckId = dto.CheckId;
+                myClinicTran.MasterId = admissionId;
+                myClinicTran.Counter = counter;
+                myClinicTran.ItmServFlag = itemServflag;
+                myClinicTran.Flag = flag;
+                myClinicTran.PatId = patId;
+                myClinicTran.StockCode = stockCode;
+
+                // Special logic for ItmServFlag == 2
+                if (myClinicTran.ItmServFlag == 2)
+                {
+                    var subItem = await _Context.SubItems.FirstOrDefaultAsync(s => s.SubId == myClinicTran.SubId);
+                    if (subItem != null)
+                    {
+                        myClinicTran.ItemMaster = subItem.ItemCode;
+                    }
+                }
+
+                _Context.Update(myClinicTran);
+            }
+
+            await _Context.SaveChangesAsync();
+        }
+
         public async Task DeleteClinicTransAsync(int id)
         {
             ClinicTran clinicTran = await _Context.ClinicTrans.FirstOrDefaultAsync(obj => obj.CheckId == id);

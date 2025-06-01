@@ -124,6 +124,13 @@
       "files": [
         "dataTables.keyTable.min.js"
       ]
+    },
+    {
+      "library": "parsley.js@2.9.2",
+      "destination": "wwwroot/lib/parsley.js/",
+      "files": [
+        "parsley.min.js"
+      ]
     }
   ]
 }

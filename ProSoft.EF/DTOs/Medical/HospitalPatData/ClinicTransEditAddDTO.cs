@@ -11,7 +11,7 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
 {
     public class ClinicTransEditAddDTO
     {
-
+        public int CheckId { get; set; }
         public int BranchId { get; set; }
         public int ExYear { get; set; }
         public int ItmServFlag { get; set; }

@@ -1111,5 +1111,8 @@
     "Inquiry": "استعلم",
     "DoctorsAppointmentsInquiry": "استعلام عن حجوزات لدى الطبيب",
     "ClinicsAppointmentsInquiry": "استعلام عن حجوزات العيادات",
-    "Are you sure you want to delete this row?":"هل انت متاكد من مسح هذا الصف" 
+    "Are you sure you want to delete this row?": "هل انت متاكد من مسح هذا الصف",
+    "Error saving data": "خطأ اثناء الحفظ",
+    "Error updating data": "خطأ اثناء التحديث",
+    "Error deleting item": "خطأ اثناء الحذف"
 }

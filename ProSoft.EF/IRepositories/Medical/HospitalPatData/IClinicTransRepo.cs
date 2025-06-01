@@ -34,6 +34,7 @@ namespace ProSoft.EF.IRepositories.Medical.HospitalPatData
         Task AddClinicTransListAsync(int visitId, int flag, List<ClinicTransEditAddDTO> clinicTransDTOList);
 
         Task EditClinicTransAsync(int checkId, ClinicTransEditAddDTO clinicTransDTO);
+        Task EditClinicTransBatchAsync( List<ClinicTransEditAddDTO> clinicTransDTO);
         Task DeleteClinicTransAsync(int id);
     }
 }

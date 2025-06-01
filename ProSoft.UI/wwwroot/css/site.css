@@ -543,6 +543,9 @@ a[disabled] {
 }
 
 
+table.dataTable td {
+    background-color: transparent !important;
+}
 
 .modified-row {
     background-color: #fff3cd !important; /* Light yellow background */
@@ -551,4 +554,13 @@ a[disabled] {
 
     .modified-row:hover {
         background-color: #ffeaa7 !important;
+    }
+
+.new-row {
+    background-color: #e0f7fa !important; /* Light cyan background */
+    border-left: 4px solid #00bcd4 !important; /* Bright cyan border */
+}
+
+    .new-row:hover {
+        background-color: #b2ebf2 !important; /* Slightly darker cyan on hover */
     }

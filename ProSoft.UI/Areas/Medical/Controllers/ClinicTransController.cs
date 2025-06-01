@@ -149,6 +149,7 @@ namespace ProSoft.UI.Areas.Medical.Controllers
             return View(clinicTranDTO);
         }
 
+       
         //Delete ClinicTrans 
         [HttpPost]
         public async Task<IActionResult> Delete_ClinicTrans(int id, string redirect)
@@ -173,17 +174,7 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         {
             try
             {
-                //using var reader = new StreamReader(Request.Body);
-                //var json = await reader.ReadToEndAsync();
-
-                //var options = new JsonSerializerOptions
-                //{
-                //    PropertyNameCaseInsensitive = true,
-                //    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-                //};
-
-                //var modifiedData = JsonSerializer.Deserialize<List<ClinicTransRequestDTO>>(json, options);
-
+            
                 // Validate the model
                 if (!ModelState.IsValid)
                 {
@@ -204,23 +195,61 @@ namespace ProSoft.UI.Areas.Medical.Controllers
                 clinicTransDTO= _mapper.Map<List<ClinicTransEditAddDTO>>(modifiedData);
                 await _clinicTransRepo.AddClinicTransListAsync((int)clinicTransDTO[0].MasterId, 1, clinicTransDTO);
 
-                //// Validate required fields
-                //if (string.IsNullOrEmpty(modifiedData.CheckId) || string.IsNullOrEmpty(modifiedData.MasterId))
-                //{
-                //    return BadRequest("CheckId and MasterId are required fields.");
-                //}
-
-                //// Set ExDate to current time if not provided
-                //if (modifiedData.ExDate == default(DateTime))
-                //{
-                //    modifiedData.ExDate = DateTime.Now;
-                //}
+           
 
                 return StatusCode(200, new
                 {
                     success = true,
                     message = "Data Added",
                     data=modifiedData
+                });
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "An error occurred while saving the row data",
+                    innerEx = ex.InnerException
+                });
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateRows([FromBody] List<ClinicTransRequestDTO> modifiedData)
+        {
+            try
+            {
+
+                // Validate the model
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                // Check if the raw body is null
+                if (modifiedData == null)
+                {
+                    return BadRequest(new
+                    {
+                        success = false,
+                        message = "Request body is null or invalid JSON format."
+                    });
+                }
+
+                List<ClinicTransEditAddDTO> clinicTransDTO = new();
+                clinicTransDTO = _mapper.Map<List<ClinicTransEditAddDTO>>(modifiedData);
+                await _clinicTransRepo.EditClinicTransBatchAsync( clinicTransDTO);
+
+
+
+                return StatusCode(200, new
+                {
+                    success = true,
+                    message = "Data Updated",
+                    data = modifiedData
                 });
 
             }
