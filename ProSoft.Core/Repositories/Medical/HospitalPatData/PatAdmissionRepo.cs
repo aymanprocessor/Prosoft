@@ -32,13 +32,24 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
                 {
                     MasterId = obj.MasterId,
                     PatId = (int)obj.PatId,
-                    PatAdDate =Convert.ToDateTime(obj.PatAdDate).Date,
+                    PatAdDate = Convert.ToDateTime(obj.PatAdDate).Date,
+                    Deal = obj.Deal,
                     CompId = obj.Comp.CompId,
                     CompName = obj.Comp.CompName,
                     CompNameDtl = obj.CompIdDtlNavigation.CompNameDtl,
                     ClassificationDesc = obj.BrnachInitialNavigation.ClassificationDesc,
                     RegionDesc = obj.SendFrNavigation.RegionDesc,
                     DrDesc = obj.DrCodeNavigation.DrDesc,
+                    BrnachInitial = obj.BrnachInitial,
+                    CompIdDtl = obj.CompIdDtl,
+                    MainInvNo = obj.MainInvNo,
+                    PatientValue = obj.PatientValue,
+                    Prepaid = obj.Prepaid,
+                    SessionNo = obj.SessionNo,
+                    DrCode = obj.DrCode,
+                    PatDateExit = obj.PatDateExit,
+                    SendFr = obj.SendFr
+
                 })
                 .ToListAsync();
 
@@ -46,11 +57,11 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
         }
         public async Task<PatAdmissionEditAddDTO> GetEmptyPatAdmissionAsync(int patId)
         {
-            PatAdmissionEditAddDTO patAdmissionDTO=new PatAdmissionEditAddDTO();
-            Pat patient =await _Context.Pats.FirstOrDefaultAsync(obj=>obj.PatId == patId);
+            PatAdmissionEditAddDTO patAdmissionDTO = new PatAdmissionEditAddDTO();
+            Pat patient = await _Context.Pats.FirstOrDefaultAsync(obj => obj.PatId == patId);
             var patName = patient.PatName;
 
-            List<ClassificationCust> classifications= await _Context.ClassificationCusts.ToListAsync();
+            List<ClassificationCust> classifications = await _Context.ClassificationCusts.ToListAsync();
             List<Doctor> doctors = await _Context.Doctors.ToListAsync();
 
             patAdmissionDTO.classifications = _mapper.Map<List<ClassificationViewDTO>>(classifications);
@@ -62,14 +73,14 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
         ///////////////////////////////////Get for Ajax//////////////////////////////////
         public async Task<List<CompanyViewDTO>> GetCompany(int id)
         {
-            List<Company> companies=await _Context.Companies.Where(obj=>obj.GroupId == id && obj.CompanyOnOff == 1).ToListAsync();
+            List<Company> companies = await _Context.Companies.Where(obj => obj.GroupId == id && obj.CompanyOnOff == 1).ToListAsync();
             List<CompanyViewDTO> companiesDTO = _mapper.Map<List<CompanyViewDTO>>(companies);
             return companiesDTO;
         }
 
         public async Task<List<CompanyDtlViewDTO>> GetSubCompany(int id)
         {
-            List<CompanyDtl> companyDtls = await _Context.CompanyDtls.Where(obj =>obj.CompId == id).ToListAsync();
+            List<CompanyDtl> companyDtls = await _Context.CompanyDtls.Where(obj => obj.CompId == id).ToListAsync();
             List<CompanyDtlViewDTO> companuDtlsDTO = _mapper.Map<List<CompanyDtlViewDTO>>(companyDtls);
             return companuDtlsDTO;
         }
@@ -84,7 +95,7 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
         public async Task AddPatAdmissionAsync(int patId, PatAdmissionEditAddDTO patAdmissionDTO)
         {
             patAdmissionDTO.patId = patId;
-           
+
             PatAdmission patAdmission = _mapper.Map<PatAdmission>(patAdmissionDTO);
 
             await _Context.AddAsync(patAdmission);
@@ -102,8 +113,8 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
                 .FirstOrDefaultAsync(obj => obj.PatId == patAdmission.PatId);
             patAdmissionDTO.PatName = pat.PatName;
             // For Lists or dropdows
-            List<Company> companies= await _Context.Companies.Where(obj => obj.GroupId == patAdmission.Deal && obj.CompanyOnOff == 1).ToListAsync();
-           
+            List<Company> companies = await _Context.Companies.Where(obj => obj.GroupId == patAdmission.Deal && obj.CompanyOnOff == 1).ToListAsync();
+
             // For Filtering sub company depending on the selected company
             List<CompanyDtl> companyDtls = await _Context.CompanyDtls
                .Where(obj => obj.CompId == patAdmission.CompId).ToListAsync();
@@ -130,7 +141,7 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             PatAdmission patAdmission = await _Context.PatAdmissions
                 .FirstOrDefaultAsync(obj => obj.MasterId == id);
             var patId = patAdmission.PatId;
-            
+
             _mapper.Map(patAdmissionDTO, patAdmission);
             patAdmission.PatId = patId;
             patAdmission.MasterId = id;

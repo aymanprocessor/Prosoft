@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProSoft.Core.Repositories.Medical.HospitalPatData;
+using ProSoft.EF.DTOs.Medical.HospitalPatData;
 using ProSoft.EF.DTOs.Stocks;
 using ProSoft.EF.IRepositories.Medical.HospitalPatData;
 using ProSoft.EF.IRepositories.Stocks;
@@ -20,6 +22,12 @@ namespace ProSoft.UI.Areas.Shared.Controllers
             _mapper = mapper;
         }
 
+        /// Get GetSubComp
+        public async Task<IActionResult> GetDepartments()
+        {
+            List<ClassificationCust> departments = await _classCustRepo.GetAllAsync();
+            return Json(departments);
+        }
         public async Task<IActionResult> Index()
         {
             List<ClassificationCust> departments = await _classCustRepo.GetAllAsync();

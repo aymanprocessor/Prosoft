@@ -105,13 +105,27 @@
     <div class="admission-table-head d-flex justify-content-between align-items-center mt-4">
         <h2 class="header pat-admission">@localizer["Visits of patient :"]</h2>
 
-        <a class="btn btn-sm btn-primary fs-6">
+        @* <a class="btn btn-sm btn-primary fs-6">
             @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add Visit"]
-        </a>
+        </a> *@
+
+         <div>
+
+          
+            <a class="btn btn-sm btn-primary fs-6" id="btnAddPatAdmissionNew">
+                @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add New Row"]
+            </a>
+            <a class="btn btn-sm btn-primary fs-6" id="btnSavePatAdmission">
+                @Html.Raw(GlobalConstants.SaveIcon) @localizer["Save"]
+                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" style="display:none;" id="btnSavePatAdmissionSpinner"></span>
+
+            </a>
+        </div>
+
         @* asp-controller="MedAnalysis" asp-action="Add_SubItemAnalysis" asp-route-ID="@ViewBag.item.MainCode" asp-route-itemAnalCode="" *@
     </div>
 
-    <div class="border border-success p-0 mb-2 border-opacity-75 overflow-auto" style="max-height: 150px;">
+    <div class="border border-success p-0 mb-2 border-opacity-75 overflow-auto" style="max-height: 250px;">
 
         <table id="myTable" class="table table-bordered table-hover admisson-table" style="width:100%">
             <thead class="table-dark">
@@ -122,23 +136,42 @@
                     <th class="align-middle">
                         @localizer["Entry Date"]
                     </th>
-                    <th class="align-middle" width="2px">
-                        @localizer["Entity Code"]
+                    <th class="align-middle">
+                        @localizer["Entity Type"]
                     </th>
                     <th class="align-middle">
-                        @localizer["Entity Name"]
+                        @localizer["Companys"]
                     </th>
                     <th class="align-middle">
-                        @localizer["subEntity Name"]
+                        @localizer["Companys Details"]
                     </th>
                     <th class="align-middle">
                         @localizer["Department"]
                     </th>
-                    @* <th class="align-middle">
-                            @localizer["Sent From"]
-                        </th> *@
+
                     <th class="align-middle">
-                        @localizer["Doctor Name"]
+                        @localizer["Sections"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Doctors"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Exit Date"]
+                    </th>
+                    <th class="align-middle">
+                        @localizer["Patient Value"]
+                    </th>
+
+                    <th class="align-middle">
+                        @localizer["Pre-Paid"]
+                    </th>
+
+                    <th class="align-middle">
+                        @localizer["Invoice No"]
+                    </th>
+
+                    <th class="align-middle">
+                        @localizer["Session No"]
                     </th>
                     <th class="align-middle">
                     </th>
@@ -161,17 +194,18 @@
             @*<a class="btn btn-sm btn-primary fs-6">
                     @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add Transaction"]
                 </a>*@
-            <a class="btn btn-sm btn-primary fs-6" id="btnAddNew">
+            <a class="btn btn-sm btn-primary fs-6" id="btnAddClinicTransNew">
                 @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add New Row"]
             </a>
-            <a class="btn btn-sm btn-primary fs-6" id="btnSave">
+            <a class="btn btn-sm btn-primary fs-6" id="btnSaveClinicTrans">
                 @Html.Raw(GlobalConstants.SaveIcon) @localizer["Save"]
-                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" style="display:none;" id="btnSaveSpinner"></span>
+                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true" style="display:none;" id="btnSaveClinicTransSpinner"></span>
 
             </a>
         </div>
         @* asp-controller="MedAnalysis" asp-action="Add_SubItemAnalysis" asp-route-ID="@ViewBag.item.MainCode" asp-route-itemAnalCode="" *@
     </div>
+
 
     <div class="p-0 mb-2 border-opacity-75 overflow-auto">
 
@@ -238,6 +272,8 @@
         </table>
 
     </div>
+
+
     <div class="d-flex justify-content-end mt-3">
         <h5 class="mx-4">
             <span class="bg-black text-white rounded-1 p-1 mx-2">@localizer["Net Patient"] : </span>
@@ -256,6 +292,9 @@
 
 
 @* search *@
+@section Scripts{
+
+
 <script>
     document.getElementById('searchInput').addEventListener('input', function () {
         filterTable();
@@ -288,1010 +327,1452 @@
             }
         }
     }
-</script>
 
-
-<script>
-	@* Ajax for patAdmisson *@
-			function GetAdmisson(e, id) {
-				var admissions = document.querySelector(".admisson-table tbody");
-				let clinicTrans = document.querySelector(".clinicTrans-table tbody");
-
-				// Handle active clic
-				let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");;
-
-				allItemRows.forEach(row => {
-					row.classList.remove("active-row");
-				});
-
-				let clickedTarget = e.target.parentElement
-				clickedTarget.classList.add("active-row");
-				///////////////////////////////////////////////////////////////////
-
-				// Catch header for pat admission name and reset it
-				let patAdmissonHead = document.querySelector(".admission-table-head");
-
-				let itemName = clickedTarget.querySelector(".item-name").innerText;
-
-				let patAdmissonHeader = patAdmissonHead.querySelector(".header.pat-admission"); // Display Header for patAdmisson
-				patAdmissonHeader.innerHTML = "@localizer["Visits of patient"] : " + itemName;
-				// For remove specific head
-				let clinicTransHeader = document.querySelector(".header.clinic-trans");
-				clinicTransHeader.innerHTML = "@localizer["Clinic Transaction Invoices For Visit No"] :";
-
-
-				let patAdmissonAddButton = patAdmissonHead.querySelector("a");
-				patAdmissonAddButton.setAttribute("href", `/Medical/PatAdmission/Add_PatientAdmission/${id}?redirect=Invoices`);
-				// console.log(patAdmissonAddButton);
-				// console.log(clickedTarget);
-				///////////////////////////////////////////////////////////////////
-
-				// Handle ajax call
-				admissions.innerHTML = "";  // Empty the body
-				// For closing clinictrans
-				clinicTrans.innerHTML = "";  // Empty the body
-
-				$.ajax({
-					url: `/Medical/PatAdmission/GetAdmissions/${id}`,
-					success: function (result) {
-						// console.log(result);
-						//sorting
-							// <td class="align-middle">${item.regionDesc}</td>
-						result.sort((a, b) => b.masterId - a.masterId)
-						for (let item of result) {
-
-							//convert to date not time// Format the date as needed (e.g., "YYYY-MM-DD")
-							const PatAdDate = new Date(item.patAdDate).toISOString().split('T')[0];
-							//////////////////
-
-							const patAdmission = document.createElement("tr");
-							patAdmission.innerHTML +=
-	`
-							<td class="item-id align-middle">${item.masterId}</td>
-							<td class="align-middle">${PatAdDate}</td>
-							<td class="align-middle">${item.compId}</td>
-							<td class="align-middle">${item.compName}</td>
-							<td class="align-middle">${item.compNameDtl}</td>
-							<td class="align-middle">${item.classificationDesc}</td>
-							<td class="align-middle">${item.drDesc}</td>
-
-								<td class="text-center ">
-
-
-									<a href="/Medical/DepositVisit/Index/${item.masterId}?redirect=Invoices" class="btn btn-sm btn-success mb-1  fs-6" >
-	@Html.Raw(GlobalConstants.InsertIcon)
-									</a>
-									<a href="/Medical/PatAdmission/Edit_PatientAdmission/${item.masterId}?redirect=Invoices" class="btn btn-sm btn-warning mb-1  fs-6" >
-	@Html.Raw(GlobalConstants.EditIcon)
-									</a>
-								<form action="/Medical/PatAdmission/Delete_PatientAdmission" method="post" class="d-inline ms-1">
-	@Html.AntiForgeryToken()
-									<input type="hidden" name="id" value="${item.masterId}" />
-									<input type="hidden" name="redirect" value="Invoices" />
-									 <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" >@Html.Raw(GlobalConstants.DeleteIcon)</button>
-								</form>
-
-							</td>
-									`;
-						 //for click to call ajax
-							patAdmission.style.cursor = "pointer";
-							patAdmission.onclick = function (event) {
-								GetClinicTrans(event, item.masterId);
-							}
-							admissions.appendChild(patAdmission);
-							//console.log(section);
-						}
-					}
-
-				});
-			}
-
-		/////////////////////////////////////////////////////////////////////////////////////////////////
-	@* Ajax for Clinctrans *@
-    function GetClinicTrans(e, id) {
-        $("#btnSave").prop('disabled', true);
-        let mainClinicList = [];
-        let subClinicList = [];
-        let servList = [];
-        let doctorList = [];
-        let stockList = [];
-
-
-        fetchDoctors();
-        fetchStocks();
-
-
-       async function fetchMainClinics() {
-             // Fetch Main Clinics
-            const data= await $.ajax({
-                 url: '/Medical/MainClinic/GetMainClinics' ,
-                 type: 'GET'
-             });
-        mainClinicList = data;
-
-        }
-
-        async function fetchSubClinics(clinicId) {
-            // Fetch Sub Clinics
-            //const response = await fetch(`/Medical/SubClinic/GetSubClinic/${clinicId}`);
-            //const subClinicList = await response.json();
-          const data = await $.ajax({
-                url: '/Medical/SubClinic/GetSubClinic/' + clinicId,
-                type: 'GET'
-                //success: function (data) {
-                //    subClinicList = data;
-                //}
-          });
-            subClinicList = data;
-        }
-
-        async function fetchServ(subClinicId) {
-            // Fetch Sub Clinics
-           const data = await $.ajax({
-                url: '/Medical/ClinicTrans/GetServeClinic/' + subClinicId,
-                type: 'GET'
-           });
-            servList = data;
-
-        }
-
-       async  function fetchDoctors() {
-
-            const data = await $.ajax({
-                 url: '/Medical/Doctor/GetDoctors',
-                 type: 'GET',
-
-             });
-            doctorList = data;
-
-        }
-
-        async function fetchStocks() {
-
-            const data  = await $.ajax({
-                 url: '/Stocks/Stock/GetStocks',
-                 type: 'GET'
-
-             });
-            stockList = data;
-        }
-
-
-        async function buildMainClinicDd(row) {
-            let html = `<select class="form-control text-center clinic-dropdown" data-field="clinicId" data-id="${row.checkId}" required >`;
-            html += `<option value="">@localizer["Choosee"]</option>`;
-            await fetchMainClinics();
-            for (let item of mainClinicList) {
-                let selected = (item.clinicId === row.clinicId) ? ' selected' : '';
-
-                html += `<option value="${item.clinicId}"${selected}>${item.clinicDesc}</option>`;
-            }
-            html += `</select>`;
-            return html;
-        }
-
-
-
-
-        async function buildSubClinicDd(row) {
-            let disabled = row.clinicId ? '' : ' disabled';
-
-            let html = `<select class="form-control text-center sub-clinic-dropdown " data-field="sClinicId" data-id="${row.checkId}" ${disabled} required="">`;
-
-            if (row.clinicId) {
-                await fetchSubClinics(row.clinicId);
-                for (let subClinic of subClinicList) {
-                        let selected = (subClinic.sClinicId === row.sClinicId) ? ' selected' : '';
-                        html += `<option value="${subClinic.sClinicId}"${selected}>${subClinic.sClinicDesc}</option>`;
-                 }
-            }
-            html += `</select>`;
-            return html;
-        }
-
-        async function buildServDd(row) {
-            let disabled = row.sClinicId ? '' : ' disabled';
-
-            let html = `<select class="form-control text-center serv-dropdown " data-field="servId" data-id="${row.checkId}" ${disabled} required>`;
-            if (row.sClinicId) {
-                await fetchServ(row.sClinicId);
-                for (let serv of servList) {
-                    let selected = (serv.servId === row.servId) ? ' selected' : '';
-                    html += `<option value="${serv.servId}"${selected}>${serv.servDesc}</option>`;
-                }
-            }
-
-            html += `</select>`;
-            return html;
-        }
-
-
-
-        function buildDoctorDd(row) {
-            let html = `<select class="form-control text-center doctor-dropdown" data-field="drSendId" data-id="${row.checkId}" required>`;
-            html += `<option value="">@localizer["Choosee"]</option>`;
-            console.log(row);
-            for (let item of doctorList) {
-                let selected = (item.drId === row.drSendId) ? ' selected' : '';
-                html += `<option value="${item.drId}" ${selected}>${item.drDesc}</option>`;
-            }
-            html += `</select>`;
-            return html;
-        }
-
-        function buildStockDd(row) {
-            let html = `<select class="form-control text-center stock-dropdown" data-field="stockId" data-id="${row.checkId}" required>`;
-                 html += `<option value="">@localizer["Choosee"]</option>`;
-             for (let item of stockList) {
-                 let selected = (item.stkcod === row.stockId) ? ' selected' : '';
-                 html += `<option value="${item.stkcod}" ${selected}>${item.stknam}</option>`;
-             }
-             html += `</select>`;
-             return html;
-        }
-
-        function buildCheckIdCancelDd(row) {
-            let html = `<select class="form-control text-center approval-period-dropdown" data-field="checkIdCancel" data-id="${row.checkId}" required>`;
-
-             html += `
-               <option value="">@localizer["Choosee"]</option>
-               <option value=1 ${row.checkIdCancel == 1 ? ' selected' : ''} >حضور</option>
-               <option value=2 ${row.checkIdCancel == 2 ? ' selected' : ''}  >حجز</option>
-               <option value=3 ${row.checkIdCancel == 3 ? ' selected' : ''}  >ملغي</option>
-               <option value=4 ${row.checkIdCancel == 4 ? ' selected' : ''}  >استرداد</option>
-          `;
-
-             html += `</select>`;
-             return html;
-         }
-
-
-         function buildApprovalPeriodDd(row) {
-             let html = `<select class="form-control text-center approval-period-dropdown" data-field="approvalPeriod" data-id="${row.checkId}" required>`;
-
-             html += `
-                      <option value="">@localizer["Choosee"]</option>
-                      <option value=1 ${row.approvalPeriod == 1 ? ' selected' : ''}>صباحي</option>
-                      <option value=2 ${row.approvalPeriod == 2 ? ' selected' : ''}>مسائي</option>
-                      <option value=3 ${row.approvalPeriod == 3 ? ' selected' : ''}>ليلي</option>
-                      <option value=4 ${row.approvalPeriod == 4 ? ' selected' : ''}>ظهرا</option>
-                 `;
-
-             html += `</select>`;
-             return html;
-         }
-
-
-        $('.clinicTrans-table tbody').on('change', '.clinic-dropdown', async function () {
-            let selectedClinicId = $(this).val();
-            let rowId = $(this).data('id');
-            let $SubClinicSelect = $(`.sub-clinic-dropdown[data-id="${rowId}"]`);
-            let $ServSelect = $(`.serv-dropdown[data-id="${rowId}"]`);
-
-            if (selectedClinicId) {
-
-               await fetchSubClinics(selectedClinicId);
-
-                if (subClinicList.length>0) {
-                    $SubClinicSelect.prop('disabled', false);
-                    $SubClinicSelect.empty().append('<option value="">@localizer["Choosee"]</option>');
-                    if (selectedClinicId && subClinicList) {
-                        subClinicList.forEach(subClinic => {
-                            $SubClinicSelect.append(`<option value="${subClinic.sClinicId}">${subClinic.sClinicDesc}</option>`);
-                        });
-                    }
-                }
-
-            } else {
-                $SubClinicSelect.prop('disabled', true);
-                $ServSelect.prop('disabled', true);
-
-            }
-
-        });
-
-
-        $('.clinicTrans-table tbody').on('change', '.sub-clinic-dropdown', async function () {
-          let selectedSubClinicId = $(this).val();
-          let rowId = $(this).data('id');
-          let $ServSelect = $(`.serv-dropdown[data-id="${rowId}"]`);
-            if (selectedSubClinicId) {
-
-                await fetchServ(selectedSubClinicId);
-
-              if (subClinicList.length>0) {
-                  $ServSelect.prop('disabled', false);
-                  $ServSelect.empty().append('<option value="">@localizer["Choosee"]</option>');
-                  if (selectedSubClinicId && servList) {
-                      servList.forEach(Serv => {
-                          $ServSelect.append(`<option value="${Serv.servId}">${Serv.servDesc}</option>`);
-                      });
-                  }
-              }
-
-          } else {
-                $ServSelect.prop('disabled', true);
-
-          }
-
-    });
-
-        var modifiedRows = new Set();
-        // Listen for changes on inputs and selects to track modifications
-    $('.clinicTrans-table tbody').on('input change', 'input, select', function() {
-        var row = $(this).closest('tr');
-        var checkId = table.row(row).data().checkId;
-
-        // Only track existing records
-        console.log(checkId);
-        if (typeof checkId === "number" || (typeof checkId === "string" && !checkId.includes("temp"))) {
-            modifiedRows.add(checkId);
-            row.addClass('modified-row'); // Add visual indicator
-            $("#btnSave").prop('disabled', false);
-            
-        }
-
-        updateRowTotal(row);
-        updateGrandTotals();
-    });
-
-        // Listen for changes on any qty or unitPrice input inside the table
-        // Store row data separately from DataTable
-        //$('.clinicTrans-table tbody').on('input', 'input[data-field="qty"], input[data-field="unitPrice"]', function () {
-        //    const $input = $(this);
-        //    const field = $input.data('field');
-        //    const newValue = parseFloat($input.val()) || 0;
-
-        //    // Store focus information
-        //    const inputSelector = `input[data-field="${field}"]`;
-        //    const $row = $input.closest('tr');
-        //    const rowIndex = table.row($row).index();
-        //    const inputValue = $input.val(); // Store the actual input value
-
-        //    if (rowIndex === undefined || rowIndex === null) return;
-
-        //    // Update data
-        //    const rowData = table.row(rowIndex).data();
-        //    rowData[field] = newValue;
-
-        //    const qty = parseFloat(rowData.qty) || 0;
-        //    const unitPrice = parseFloat(rowData.unitPrice) || 0;
-        //    rowData.valueService = qty * unitPrice;
-
-        //    table.row(rowIndex).data(rowData);
-        //    table.draw(false);
-
-        //    // Restore focus after redraw
-        //    setTimeout(() => {
-        //        const $newRow = $(table.row(rowIndex).node());
-        //        const $newInput = $newRow.find(inputSelector);
-        //        if ($newInput.length) {
-        //            // Set the exact value that was typed
-        //            $newInput.val(inputValue);
-        //            $newInput.focus();
-
-        //            // For number inputs, cursor position cannot be set with setSelectionRange
-        //            // The cursor will automatically go to the end, which is usually desired behavior
-        //        }
-        //    }, 20); // Increased timeout for better reliability
-        //});
-
-        // Handle active class
-        let clickedTarget = e.target.closest('tr');
-        let allItemRows = clickedTarget.parentElement.querySelectorAll("tr");
-
-        allItemRows.forEach(row => {
-            row.classList.remove("active-row");
-        });
-
-        clickedTarget.classList.add("active-row");
-
-        // Update header
-        let clinicTransHead = document.querySelector(".clinicTrans-table-head");
-        let itemId = clickedTarget.querySelector(".item-id").innerText;
-        let clinicTransHeader = clinicTransHead.querySelector(".header.clinic-trans");
-        clinicTransHeader.innerHTML = "@localizer["Clinic Transaction Invoices For Visit No"] : " + itemId;
-
-
-        // Initialize DataTable
-        if ($.fn.DataTable.isDataTable('.clinicTrans-table')) {
-            $('.clinicTrans-table').DataTable().destroy();
-        }
-
-        var table = $('.clinicTrans-table').DataTable({
-            ajax: {
-                url: '/Medical/ClinicTrans/GetClinicTrans/' + id,
-                data: function(d) {
-                    return { flag: 1 };
-                },
-                dataSrc: function(json) {
-                    if (json.error) {
-                        alert('Error loading data: ' + json.error);
-                        return [];
+        @* Ajax for patAdmisson *@
+                function GetAdmisson(e, id)
+                {
+
+                    let companyList = [];
+                    let companyDetailsList = [];
+                    let departmentList = [];
+                    let sectionList = [];
+                    let doctorList = [];
+
+
+                    // Async data loading functions (simulating your existing AJAX calls)
+                    async function fetchCompanies(deal) {
+                        // Simulate API call: /Medical/PatAdmission/GetCompanys/${deal}
+                       const data= await $.ajax({
+                             url: `/Medical/PatAdmission/GetCompanys/${deal}` ,
+                             type: 'GET'
+                         });
+                        companyList = data;
                     }
 
-                    // Calculate totals here
-                    let totalServicesForVisit = 0;
-                    let netPatient = 0;
+                    async function fetchCompanyDetails(compId) {
+                        // Simulate API call: /Medical/PatAdmission/GetSubComp/${compId}
+                        const data= await $.ajax({
+                             url: `/Medical/PatAdmission/GetSubComp/${compId}` ,
+                             type: 'GET'
+                         });
+                        companyDetailsList = data;
+                    }
 
-                    json.forEach(function(item) {
-                        totalServicesForVisit += (item.compValue + item.patientValue);
-                        netPatient += (item.extraVal + item.extraVal2 + item.patientValue);
+                    async function fetchDepartments() {
+                        // Simulate API call: /Shared/ClassificationCust/GetDepartments
+                        const data= await $.ajax({
+                             url: `/Shared/ClassificationCust/GetDepartments` ,
+                             type: 'GET'
+                         });
+                        departmentList = data;
+                    }
+
+                    async function fetchSections(deptId) {
+                        // Simulate API call: /Medical/PatAdmission/GetSection/${deptId}
+                          const data= await $.ajax({
+                                 url: `/Medical/PatAdmission/GetSection/${deptId}` ,
+                                 type: 'GET'
+                             });
+                          sectionList = data;
+                    }
+
+                    async function fetchDoctors() {
+                        // Simulate API call: /Medical/Doctor/GetDoctors
+                       const data= await $.ajax({
+                                 url: `/Medical/Doctor/GetDoctors` ,
+                                 type: 'GET'
+                             });
+                          doctorList = data;
+
+                    }
+                     // BUILD DROPDOWN //
+
+                     function buildDealDd(row) {
+                        let html = `<select class="form-control text-center deal-dropdown" data-field="deal" data-id="${row.masterId}" required >`;
+                        html += `
+                        <option value="">@localizer["Choosee"]</option>
+                        <option value="1">خاص</option>
+                        <option value="2">تعاقد</option>
+
+                        `;
+
+                        html += `</select>`;
+                        return html;
+                    }
+
+
+                   async function buildCompaniesDd(row) {
+                       let disabled = row.deal ? '' : ' disabled';
+
+                        let html = `<select class="form-control text-center compId-dropdown " data-field="compId" data-id="${row.masterId}" ${disabled} required="">`;
+
+                        if (row.deal) {
+                            await fetchCompanies(row.deal);
+                            for (let comp of companyList) {
+                                    let selected = (comp.compId === row.compId) ? ' selected' : '';
+                                    html += `<option value="${comp.compId}" ${selected}>${comp.compName}</option>`;
+                             }
+                        }
+                        html += `</select>`;
+                        return html;
+                    }
+
+                    async function buildCompaniesDtlDd(row) {
+                       let disabled = row.compId ? '' : ' disabled';
+
+                        let html = `<select class="form-control text-center compIdDtl-dropdown " data-field="compIdDtl" data-id="${row.masterId}" ${disabled} required="">`;
+
+                        if (row.compId) {
+                            await fetchCompanyDetails(row.compId);
+                            for (let compDtl of companyDetailsList) {
+                                    let selected = (compDtl.compIdDtl === row.compIdDtl) ? ' selected' : '';
+                                    html += `<option value="${compDtl.compIdDtl}" ${selected}>${compDtl.compNameDtl}</option>`;
+                             }
+                        }
+                        html += `</select>`;
+                        return html;
+                    }
+
+                    async function buildDoctorDd(row) {
+                        let html = `<select class="form-control text-center doctor-dropdown" data-field="drSendId" data-id="${row.masterId}" required>`;
+                        html += `<option value="">@localizer["Choosee"]</option>`;
+                        await fetchDoctors();
+                        for (let item of doctorList) {
+                            let selected = (item.drId === row.drCode) ? ' selected' : '';
+                            html += `<option value="${item.drId}" ${selected}>${item.drDesc}</option>`;
+                        }
+                        html += `</select>`;
+                        return html;
+                    }
+
+                    async function buildDepartmentDd(row) {
+                        let html = `<select class="form-control text-center brnachInitial-dropdown" data-field="brnachInitial" data-id="${row.masterId}" required>`;
+                        html += `<option value="">@localizer["Choosee"]</option>`;
+                        
+                        await fetchDepartments();
+
+                        for (let item of departmentList) {
+                            let selected = (item.classificationCust1 === row.brnachInitial) ? ' selected' : '';
+                            html += `<option value="${item.classificationCust1}" ${selected}>${item.classificationDesc}</option>`;
+                        }
+                        html += `</select>`;
+                        return html;
+                    }
+
+                    async function buildSectionDd(row) {
+                       let disabled = row.brnachInitial ? '' : ' disabled';
+
+                        let html = `<select class="form-control text-center sendFr-dropdown " data-field="sendFr" data-id="${row.masterId}" ${disabled} required="">`;
+
+                        if (row.brnachInitial) {
+                            await fetchSections(row.brnachInitial);
+                            for (let section of sectionList) {
+                                    let selected = (section.regionCode === row.sendFr) ? ' selected' : '';
+                                    html += `<option value="${section.regionCode}" ${selected}>${section.regionDesc}</option>`;
+                             }
+                        }
+                        html += `</select>`;
+                        return html;
+                    }
+
+
+                    if ($.fn.DataTable.isDataTable('.admisson-table')) {
+                        $('.admisson-table').DataTable().destroy();
+                    }
+                    // TABLE DATATABLE
+                    var table = $('.admisson-table').DataTable({
+                        ajax: {
+                            url: '/Medical/PatAdmission/GetAdmissions/' + id,
+                            type: "GET",
+                           dataSrc: function (json) {
+                                // If null/undefined, return empty array
+                                if (!json) return [];
+                                // If array, return as is
+                                if (Array.isArray(json)) return json;
+                                // If object with data property, return that
+                                if (json.data && Array.isArray(json.data)) return json.data;
+                                // You may need to adapt to your actual structure
+                                return [];
+                            }
+                        },
+                        columns: [
+                            {
+                                data: 'masterId',
+                                render: function (data, type, row) {
+                                    if (type === 'display') {
+                                        return `<p>${data}</p>`;
+                                    }
+                                    return data;
+                                },
+                                createdCell: function (td) {
+                                    td.style.minWidth = '50px';
+                                }
+                            },
+                            {
+                                data: 'patAdDate',
+                                render: function (data, type, row) {
+                                    if (type === 'display') {
+
+                                        return `<p class="patAdDate">${moment(data).format('DD-MM-YYYY')}</p>`;
+                                    }
+                                    return data;
+                                },
+                                createdCell: function (td) {
+                                    td.style.minWidth = '120px';
+                                }
+                            },
+                            {
+                                data: 'deal',
+                                render: function (data, type, row) {
+                                    if (type === 'display') {
+
+
+                                        return '<div class="loading">Loading...</div>';
+
+                                    }
+                                    return data;
+                                },
+                                createdCell:  function (td, cellData, rowData) {
+                                    if (rowData) {
+                                        const content =   buildDealDd(rowData);
+                                        td.innerHTML = content;
+                                    }
+                                    td.style.minWidth = '150px';
+                                }
+                            },
+                            {
+                                data: 'compId',
+                                render: function (data, type, row) {
+                                    if (type === 'display') {
+
+                                        return '<div class="loading">Loading...</div>'; // Placeholder
+
+                                    }
+                                    return data;
+                                },
+                                createdCell: async function (td, cellData, rowData) {
+                                    if (rowData) {
+                                        const content = await buildCompaniesDd(rowData);
+                                        td.innerHTML = content;
+                                    }
+                                    td.style.minWidth = '150px';
+                                }
+
+                            },
+                            {
+                                data: 'compIdDtl',
+                                render: function (data, type, row) {
+                                    if (type === 'display') {
+                                        return '<div class="loading">Loading...</div>';
+                                    }
+                                    return data;
+                                },
+                                createdCell: async function (td, cellData, rowData) {
+                                    if (rowData) {
+                                        const content = await buildCompaniesDtlDd(rowData);
+                                        td.innerHTML = content;
+                                    }
+                                    td.style.minWidth = '150px';
+                                }
+                            },
+                            {
+                                data: 'brnachInitial',
+                                render: function (data, type, row) {
+                                    if (type === 'display') {
+
+
+                                        return '<div class="loading">Loading...</div>';
+
+                                    }
+                                    return data;
+                                },
+                                createdCell: async function (td, cellData, rowData) {
+                                    if (rowData) {
+                                        const content = await buildDepartmentDd(rowData);
+                                        td.innerHTML = content;
+                                    }
+                                    td.style.minWidth = '150px';
+                                }
+                            },
+                            {
+                                data: 'sendFr',
+                                render: function (data, type, row) {
+                                    if (type === 'display') {
+                                        return '<div class="loading">Loading...</div>';
+                                    }
+                                    return data;
+                                },
+                                 createdCell: async function (td, cellData, rowData) {
+                                    if (rowData) {
+                                        const content = await buildSectionDd(rowData);
+                                        td.innerHTML = content;
+                                    }
+                                    td.style.minWidth = '150px';
+                                }
+                            },{
+                                data: 'drCode',
+                                render: function (data, type, row) {
+                                    if (type === 'display') {
+                                        return '<div class="loading">Loading...</div>';
+                                    }
+                                    return data;
+                                },
+                                createdCell: async function (td, cellData, rowData) {
+
+                                     if (rowData) {
+                                        const content = await buildDoctorDd(rowData);
+                                        td.innerHTML = content;
+                                    }
+                                    td.style.minWidth = '150px';
+                                }
+                            },
+                            {
+                                data: 'patDateExit',
+                                render: function (data, type, row) {
+                                    if (type === 'display') {
+                                        // Fallback for null/empty
+                                        if (!data) return '<input type="datetime-local" value="" data-field=""/>';
+
+                                        // Format to yyyy-MM-ddTHH:mm
+                                        let date = moment(data).format('DD-MM-YYYY');
+                                        return `<input type="datetime-local" value="${date}" />`;
+                                    }
+                                    return data;
+                                }
+                            },
+                            {
+                                data: 'patientValue',
+                                render: function (data, type, row) {
+
+                                    if (type === 'display') {
+                                        return '<input type="number" class="form-control no-spinner" value="' + data + '" data-field="patientValue" data-id="' + row.masterId + '" min=0 data-parsley-type="number">';
+                                    }
+                                    return data;
+                                },
+                                createdCell: function (td, cellData, rowData) {
+                              
+                                    td.style.minWidth = '150px';
+                                }
+                            },
+
+                            {
+                                data: 'prepaid',
+                                render: function (data, type, row) {
+                                    if (type === 'display') {
+                                        return '<input type="number"  class="form-control no-spinner" value="' + data + '" data-field="prepaid" data-id="' + row.masterId + '" min=0 data-parsley-type="number">';
+                                    }
+                                    return data;
+                                }
+                            },
+                            {
+                                data: 'mainInvNo',
+                                render: function (data, type, row) {
+                                    if (type === 'display') {
+                                        return '<input type="number"  class="form-control no-spinner" value="' + data + '" data-field="mainInvNo" data-id="' + row.masterId + '" min=0 data-parsley-type="number">';
+                                    }
+                                    return data;
+                                }
+                            },
+
+                            {
+                                data: 'sessionNo',
+                                render: function (data, type, row) {
+                                    if (type === 'display') {
+                                        return '<input type="number"  class="form-control no-spinner" value="' + data + '" data-field="sessionNo" data-id="' + row.masterId + '" min=0 max=100 data-parsley-type="number">';
+                                    }
+                                    return data;
+                                }
+                            },
+                            {
+                                data: null,
+                                render: function (data, type, row) {
+                                    return '<button class="btn btn-sm btn-danger btn-delete" data-id="' + row.masterId + '">@Html.Raw(GlobalConstants.DeleteIcon)</button>';
+                                },
+                                createdCell: function (td) {
+                                    td.style.minWidth = '100px';
+                                }
+                            }
+                        ],
+                        paging: true,
+                        searching: false,
+                        ordering: true,
+                        rowId: function(data) {
+                            return 'row-' + data.checkId;
+                        },
+                        dom: 'Bfrtip',
+                        buttons: [
+                            'copy', 'excel', 'pdf', 'print'
+                        ],
+                        language: {
+                            search: "@localizer["Search"]:",
+                            lengthMenu: "@localizer["Show _MENU_ entries"]",
+                            info: "@localizer["Showing _START_ to _END_ of _TOTAL_ entries"]",
+                            infoEmpty: "@localizer["Showing 0 to 0 of 0 entries"]",
+                            infoFiltered: "@localizer["(filtered from _MAX_ total entries)"]",
+                            paginate: {
+                                first: "@localizer["First"]",
+                                last: "@localizer["Last"]",
+                                next: "@localizer["Next"]",
+                                previous: "@localizer["Previous"]"
+                            }
+                        }
                     });
 
-                    // Update total displays
-                    document.getElementById("totalServicesForVisit").classList.add("bg-white");
-                    document.getElementById("totalServicesForVisit").innerHTML = totalServicesForVisit.toFixed(2);
-                    document.getElementById("netPatient").classList.add("bg-white");
-                    document.getElementById("netPatient").innerHTML = netPatient.toFixed(2);
 
-                    return json;
+                    $('#btnAddPatAdmissionNew').off('click').on('click', function () {
+                       var newRowData = {
+                            masterId: "",
+                            patAdDate: moment().format('DD-MM-YYYY'),   // Current date-time
+                            deal: "",
+                            compId: "",
+                            compIdDtl: "",
+                            brnachInitial: "",
+                            sendFr: "",
+                            drCode: "",
+                            patDateExit: "",       // You can set default if needed
+                            patientValue: 0,
+                            prepaid: 0,
+                            mainInvNo: "",
+                            sessionNo: 1
+                        };
+
+                    // Add row to table and draw
+                    var row = table.row.add(newRowData).draw(false);
+
+                    // Highlight the new row for user feedback (optional)
+                    $(table.row(row).node()).addClass('new-row');
+
+                    // Enable the save button if needed
+                        $("#btnAddPatAdmissionNew").prop('disabled', false);
+                 
+
+                    });
+
+
+
+
+        //             var admissions = document.querySelector(".admisson-table tbody");
+        //             let clinicTrans = document.querySelector(".clinicTrans-table tbody");
+
+        //             Handle active clic
+        //             let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");;
+
+        //             allItemRows.forEach(row => {
+        //                 row.classList.remove("active-row");
+        //             });
+
+        //             let clickedTarget = e.target.parentElement
+        //             clickedTarget.classList.add("active-row");
+        //             ///////////////////////////////////////////////////////////////
+
+        //             Catch header for pat admission name and reset it
+        //             let patAdmissonHead = document.querySelector(".admission-table-head");
+
+        //             let itemName = clickedTarget.querySelector(".item-name").innerText;
+
+        //             let patAdmissonHeader = patAdmissonHead.querySelector(".header.pat-admission"); Display Header for patAdmisson
+        //             patAdmissonHeader.innerHTML = "@localizer["Visits of patient"] : " + itemName;
+        //             For remove specific head
+        //             let clinicTransHeader = document.querySelector(".header.clinic-trans");
+        //             clinicTransHeader.innerHTML = "@localizer["Clinic Transaction Invoices For Visit No"] :";
+
+
+        //             let patAdmissonAddButton = patAdmissonHead.querySelector("a");
+        //             patAdmissonAddButton.setAttribute("href", `/Medical/PatAdmission/Add_PatientAdmission/${id}?redirect=Invoices`);
+        //             console.log(patAdmissonAddButton);
+        //             console.log(clickedTarget);
+        //             ///////////////////////////////////////////////////////////////
+
+        //             Handle ajax call
+        //             admissions.innerHTML = "";  Empty the body
+        //             For closing clinictrans
+        //             clinicTrans.innerHTML = "";  Empty the body
+
+        //             $.ajax({
+        //                 url: `/Medical/PatAdmission/GetAdmissions/${id}`,
+        //                 success: function (result) {
+        //                     console.log(result);
+        //                     sorting
+        //                         <td class="align-middle">${item.regionDesc}</td>
+        //                     let firstRowMasterId = null; Store the first row's masterId
+        //                     result.sort((a, b) => b.masterId - a.masterId)
+        //                     for (let i = 0; i < result.length; i++) {
+        //                         let item = result[i];
+
+        //                         if (i === 0) {
+        //                             firstRowMasterId = item.masterId;
+        //                         }
+        //                         convert to date not timeFormat the date as needed (e.g., "YYYY-MM-DD")
+        //                         const PatAdDate = new Date(item.patAdDate).toISOString().split('T')[0];
+        //                         //////////////
+
+        //                         const patAdmission = document.createElement("tr");
+        //                         patAdmission.innerHTML +=
+        // `
+        //                         <td class="item-id align-middle">${item.masterId}</td>
+        //                         <td class="align-middle">${PatAdDate}</td>
+        //                         <td class="align-middle">${item.compId}</td>
+        //                         <td class="align-middle">${item.compName}</td>
+        //                         <td class="align-middle">${item.compNameDtl}</td>
+        //                         <td class="align-middle">${item.classificationDesc}</td>
+        //                         <td class="align-middle">${item.drDesc}</td>
+
+        //                             <td class="text-center ">
+
+
+        //                                 <a href="/Medical/DepositVisit/Index/${item.masterId}?redirect=Invoices" class="btn btn-sm btn-success mb-1  fs-6" >
+        // @Html.Raw(GlobalConstants.InsertIcon)
+        //                                 </a>
+        //                                 <a href="/Medical/PatAdmission/Edit_PatientAdmission/${item.masterId}?redirect=Invoices" class="btn btn-sm btn-warning mb-1  fs-6" >
+        // @Html.Raw(GlobalConstants.EditIcon)
+        //                                 </a>
+        //                             <form action="/Medical/PatAdmission/Delete_PatientAdmission" method="post" class="d-inline ms-1">
+        // @Html.AntiForgeryToken()
+        //                                 <input type="hidden" name="id" value="${item.masterId}" />
+        //                                 <input type="hidden" name="redirect" value="Invoices" />
+        //                                  <button type="submit" class="btn btn-sm btn-danger mb-1  fs-6" onclick="return confirm('Are you sure you want to delete this item ?');" >@Html.Raw(GlobalConstants.DeleteIcon)</button>
+        //                             </form>
+
+        //                         </td>
+        //                                 `;
+
+        //                         if (i === 0) {
+        //                             patAdmission.classList.add("active-row");
+        //                         }
+
+        //                         for click to call ajax
+        //                         patAdmission.style.cursor = "pointer";
+        //                         patAdmission.onclick = function (event) {
+        //                             GetClinicTrans(event, item.masterId);
+        //                         }
+        //                         admissions.appendChild(patAdmission);
+        //                         console.log(section);
+        //                          if (firstRowMasterId && result.length > 0) {
+        //                             🔥 NEW: Update the header for clinic trans with first row's masterId
+        //                             let clinicTransHead = document.querySelector(".clinicTrans-table-head");
+        //                             let clinicTransHeader = clinicTransHead.querySelector(".header.clinic-trans");
+        //                             clinicTransHeader.innerHTML = "@localizer["Clinic Transaction Invoices For Visit No"] : " + firstRowMasterId;
+
+        //                             🔥 NEW: Automatically trigger GetClinicTrans for first row
+        //                             setTimeout(() => {
+        //                                 🔥 NEW: Create a mock event object for the first row
+        //                                 const firstRow = admissions.querySelector("tr");
+        //                                 if (firstRow) {
+        //                                     const mockEvent = {
+        //                                         target: firstRow.querySelector(".item-id")
+        //                                     };
+        //                                     GetClinicTrans(mockEvent, firstRowMasterId);
+        //                                 }
+        //                             }, 100);
+        //                         }
+        //                     }
+        //                 }
+
+        //             });
                 }
-            },
-            columns: [
-                {
-                    data: 'exDate',
-                    render: function (data, type, row) {
-                        if (type === 'display') {
-                            return `<p class="exDate">${moment(data).format('DD-MM-YYYY')}</p>`;
-                        }
-                        return data;
-                    },
-                    createdCell: function (td) {
-                        td.style.minWidth = '120px';
-                    }
-                },
-                {
-                    data: 'itmServFlag',
-                    render: function (data, type, row) {
-                        if (type === 'display') {
-                            // Display service or item based on itmServFlag
-                            return (row.itmServFlag == 3) ? "خدمة" : "صنف";
-                        }
-                        return data;
-                    },
-                    createdCell: function (td) {
-                        td.style.minWidth = '120px';
-                    }
-                },
-                {
-                    data: 'clinicId',
-                    render: function (data, type, row) {
-                        if (type === 'display') {
+
+            /////////////////////////////////////////////////////////////////////////////////////////////////
+        @* Ajax for Clinctrans *@
+        function GetClinicTrans(e, id) {
+            $("#btnSaveClinicTrans").prop('disabled', true);
+            let mainClinicList = [];
+            let subClinicList = [];
+            let servList = [];
+            let doctorList = [];
+            let stockList = [];
 
 
-                            return '<div class="loading">Loading...</div>';
-
-                        }
-                        return data;
-                    },
-                    createdCell: async function (td, cellData, rowData) {
-                        if (rowData) {
-                            const content =  await buildMainClinicDd(rowData);
-                            td.innerHTML = content;
-                        }
-                        td.style.minWidth = '150px';
-                    }
-                },
-                {
-                    data: 'sClinicId',
-                    render: function (data, type, row) {
-                        if (type === 'display') {
-
-                            return '<div class="loading">Loading...</div>'; // Placeholder
-
-                        }
-                        return data;
-                    },
-                    createdCell: async function (td, cellData, rowData) {
-                        if (rowData) {
-                            const content = await buildSubClinicDd(rowData);
-                            td.innerHTML = content;
-                        }
-                        td.style.minWidth = '150px';
-                    }
-
-                },
-                {
-                    data: 'servId',
-                    render: function (data, type, row) {
-                        if (type === 'display') {
-                            return '<div class="loading">Loading...</div>';
-                        }
-                        return data;
-                    },
-                    createdCell: async function (td, cellData, rowData) {
-                        if (rowData) {
-                            const content = await buildServDd(rowData);
-                            td.innerHTML = content;
-                        }
-                        td.style.minWidth = '150px';
-                    }
-                },
-                {
-                    data: 'drSendId',
-                    render: function (data, type, row) {
-                        if (type === 'display') {
+            fetchDoctors();
+            fetchStocks();
 
 
-                            return '<div class="loading">Loading...</div>';
+           async function fetchMainClinics() {
+                 // Fetch Main Clinics
+                const data= await $.ajax({
+                     url: '/Medical/MainClinic/GetMainClinics' ,
+                     type: 'GET'
+                 });
+                mainClinicList = data;
 
-                        }
-                        return data;
-                    },
-                    createdCell: async function (td, cellData, rowData) {
-                        if (rowData) {
-                            const content = await buildDoctorDd(rowData);
-                            td.innerHTML = content;
-                        }
-                        td.style.minWidth = '150px';
-                    }
-                },
-                {
-                    data: 'qty',
-                    render: function (data, type, row) {
-                        if (type === 'display') {
-                            return '<input type="number"  class="form-control no-spinner" value="' + data + '" data-field="qty" data-id="' + row.checkId + '" min=1 required data-parsley-type="integer">';
-                        }
-                        return data;
-                    },
-                    createdCell: function (td) {
-                        td.style.minWidth = '100px';
-                    }
-                },{
-                    data: 'unitPrice',
-                    render: function (data, type, row) {
-                        if (type === 'display') {
-                            return '<input type="number" class="form-control no-spinner" value="' + data + '" data-field="unitPrice" data-id="' + row.checkId + '" min=0 data-parsley-type="number">';
-                        }
-                        return data;
-                    },
-                    createdCell: function (td) {
-                        td.style.minWidth = '100px';
-                    }
-                },
-                {
-                    data: 'valueService',
-                    render: function (data, type, row) {
-                        if (type === 'display') {
-                            return `<p class="valueService" data-field="valueService">${(parseFloat(data) || 0).toFixed(2)}</p>` ; // or your preferred formatting
-                        }
-                        return data;
-                    }
-                },
-                {
-                    data: 'stockId',
-                    render: function (data, type, row) {
-
-                        if (type === 'display') {
-
-
-                            return '<div class="loading">Loading...</div>';
-
-                        }
-                        return data;
-                    },
-                    createdCell:async function (td, cellData, rowData) {
-                        if (rowData) {
-                            const content = await buildStockDd(rowData);
-                            td.innerHTML = content;
-                        }
-                        td.style.minWidth = '150px';
-                    }
-                },
-
-                {
-                    data: 'patientValue',
-                    render: function (data, type, row) {
-                        if (type === 'display') {
-                            return '<input type="number"  class="form-control no-spinner" value="' + data + '" data-field="patientValue" data-id="' + row.checkId + '" min=0 data-parsley-type="number">';
-                        }
-                        return data;
-                    }
-                },
-                {
-                    data: 'compValue',
-                    render: function (data, type, row) {
-                        if (type === 'display') {
-                            return '<input type="number"  class="form-control no-spinner" value="' + data + '" data-field="compValue" data-id="' + row.checkId + '" min=0 data-parsley-type="number">';
-                        }
-                        return data;
-                    }
-                },
-
-                {
-                    data: 'discountVal',
-                    render: function (data, type, row) {
-                        if (type === 'display') {
-                            return '<input type="number"  class="form-control no-spinner" value="' + data + '" data-field="compValue" data-id="' + row.checkId + '" min=0 max=100 data-parsley-type="number">';
-                        }
-                        return data;
-                    }
-                },
-                {
-                    data: 'extraVal',
-                    render: function (data, type, row) {
-                        if (type === 'display') {
-                            return '<input type="number" class="form-control no-spinner" value="' + data + '" data-field="extraVal" data-id="' + row.checkId + '" min=0  data-parsley-type="number">';
-                        }
-                        return data;
-                    }
-                },
-                {
-                    data: 'extraVal2',
-                    render: function (data, type, row) {
-                        if (type === 'display') {
-                            return '<input type="number" min="0" max="100"  class="form-control no-spinner" value="' + data + '" data-field="extraVal2" data-id="' + row.checkId + '" min=0 data-parsley-type="number">';
-                        }
-                        return data;
-                    }
-                },
-
-
-                {
-                    data: 'approvalPeriod',
-                    render: function (data, type, row) {
-                        if (type === 'display') {
-                            return buildApprovalPeriodDd(row);
-                        }
-                        return data;
-                    },
-                    createdCell: function (td) {
-                        td.style.minWidth = '150px';
-                    }
-                },
-
-                {
-                    data: 'checkIdCancel',
-                    render: function (data, type, row) {
-                        if (type === 'display') {
-                            return buildCheckIdCancelDd(row);
-                        }
-                        return data;
-                    },
-                    createdCell: function (td) {
-                        td.style.minWidth = '150px';
-                    }
-                },
-
-                {
-                    data: null,
-                    render: function (data, type, row) {
-                        return '<button class="btn btn-sm btn-danger btn-delete" data-id="' + row.checkId + '">@Html.Raw(GlobalConstants.DeleteIcon)</button>';
-                    },
-                    createdCell: function (td) {
-                        td.style.minWidth = '100px';
-                    }
-                }
-            ],
-            paging: true,
-            searching: false,
-            ordering: true,
-            rowId: function(data) {
-                return 'row-' + data.checkId;
-            },
-            dom: 'Bfrtip',
-            buttons: [
-                'copy', 'excel', 'pdf', 'print'
-            ],
-            language: {
-                search: "@localizer["Search"]:",
-                lengthMenu: "@localizer["Show _MENU_ entries"]",
-                info: "@localizer["Showing _START_ to _END_ of _TOTAL_ entries"]",
-                infoEmpty: "@localizer["Showing 0 to 0 of 0 entries"]",
-                infoFiltered: "@localizer["(filtered from _MAX_ total entries)"]",
-                paginate: {
-                    first: "@localizer["First"]",
-                    last: "@localizer["Last"]",
-                    next: "@localizer["Next"]",
-                    previous: "@localizer["Previous"]"
-                }
             }
+
+            async function fetchSubClinics(clinicId) {
+
+              const data = await $.ajax({
+                    url: '/Medical/SubClinic/GetSubClinic/' + clinicId,
+                    type: 'GET'
+
+              });
+                subClinicList = data;
+            }
+
+            async function fetchServ(subClinicId) {
+                // Fetch Sub Clinics
+               const data = await $.ajax({
+                    url: '/Medical/ClinicTrans/GetServeClinic/' + subClinicId,
+                    type: 'GET'
+               });
+                servList = data;
+
+            }
+
+           async  function fetchDoctors() {
+
+                const data = await $.ajax({
+                     url: '/Medical/Doctor/GetDoctors',
+                     type: 'GET',
+
+                 });
+                doctorList = data;
+
+            }
+
+            async function fetchStocks() {
+
+                const data  = await $.ajax({
+                     url: '/Stocks/Stock/GetStocks',
+                     type: 'GET'
+
+                 });
+                stockList = data;
+            }
+
+
+            async function buildMainClinicDd(row) {
+                let html = `<select class="form-control text-center clinic-dropdown" data-field="clinicId" data-id="${row.checkId}" required >`;
+                html += `<option value="">@localizer["Choosee"]</option>`;
+                await fetchMainClinics();
+                for (let item of mainClinicList) {
+                    let selected = (item.clinicId === row.clinicId) ? ' selected' : '';
+
+                    html += `<option value="${item.clinicId}"${selected}>${item.clinicDesc}</option>`;
+                }
+                html += `</select>`;
+                return html;
+            }
+
+
+
+
+            async function buildSubClinicDd(row) {
+                let disabled = row.clinicId ? '' : ' disabled';
+
+                let html = `<select class="form-control text-center sub-clinic-dropdown " data-field="sClinicId" data-id="${row.checkId}" ${disabled} required="">`;
+
+                if (row.clinicId) {
+                    await fetchSubClinics(row.clinicId);
+                    for (let subClinic of subClinicList) {
+                            let selected = (subClinic.sClinicId === row.sClinicId) ? ' selected' : '';
+                            html += `<option value="${subClinic.sClinicId}"${selected}>${subClinic.sClinicDesc}</option>`;
+                     }
+                }
+                html += `</select>`;
+                return html;
+            }
+
+            async function buildServDd(row) {
+                let disabled = row.sClinicId ? '' : ' disabled';
+
+                let html = `<select class="form-control text-center serv-dropdown " data-field="servId" data-id="${row.checkId}" ${disabled} required>`;
+                if (row.sClinicId) {
+                    await fetchServ(row.sClinicId);
+                    for (let serv of servList) {
+                        let selected = (serv.servId === row.servId) ? ' selected' : '';
+                        html += `<option value="${serv.servId}"${selected}>${serv.servDesc}</option>`;
+                    }
+                }
+
+                html += `</select>`;
+                return html;
+            }
+
+
+
+            function buildDoctorDd(row) {
+                let html = `<select class="form-control text-center doctor-dropdown" data-field="drSendId" data-id="${row.checkId}" required>`;
+                html += `<option value="">@localizer["Choosee"]</option>`;
+                console.log(row);
+                for (let item of doctorList) {
+                    let selected = (item.drId === row.drSendId) ? ' selected' : '';
+                    html += `<option value="${item.drId}" ${selected}>${item.drDesc}</option>`;
+                }
+                html += `</select>`;
+                return html;
+            }
+
+            function buildStockDd(row) {
+                let html = `<select class="form-control text-center stock-dropdown" data-field="stockId" data-id="${row.checkId}" required>`;
+                     html += `<option value="">@localizer["Choosee"]</option>`;
+                 for (let item of stockList) {
+                     let selected = (item.stkcod === row.stockId) ? ' selected' : '';
+                     html += `<option value="${item.stkcod}" ${selected}>${item.stknam}</option>`;
+                 }
+                 html += `</select>`;
+                 return html;
+            }
+
+            function buildCheckIdCancelDd(row) {
+                let html = `<select class="form-control text-center approval-period-dropdown" data-field="checkIdCancel" data-id="${row.checkId}" required>`;
+
+                 html += `
+                   <option value="">@localizer["Choosee"]</option>
+                   <option value=1 ${row.checkIdCancel == 1 ? ' selected' : ''} >حضور</option>
+                   <option value=2 ${row.checkIdCancel == 2 ? ' selected' : ''}  >حجز</option>
+                   <option value=3 ${row.checkIdCancel == 3 ? ' selected' : ''}  >ملغي</option>
+                   <option value=4 ${row.checkIdCancel == 4 ? ' selected' : ''}  >استرداد</option>
+              `;
+
+                 html += `</select>`;
+                 return html;
+             }
+
+
+             function buildApprovalPeriodDd(row) {
+                 let html = `<select class="form-control text-center approval-period-dropdown" data-field="approvalPeriod" data-id="${row.checkId}" required>`;
+
+                 html += `
+                          <option value="">@localizer["Choosee"]</option>
+                          <option value=1 ${row.approvalPeriod == 1 ? ' selected' : ''}>صباحي</option>
+                          <option value=2 ${row.approvalPeriod == 2 ? ' selected' : ''}>مسائي</option>
+                          <option value=3 ${row.approvalPeriod == 3 ? ' selected' : ''}>ليلي</option>
+                          <option value=4 ${row.approvalPeriod == 4 ? ' selected' : ''}>ظهرا</option>
+                     `;
+
+                 html += `</select>`;
+                 return html;
+             }
+
+
+            $('.clinicTrans-table tbody').on('change', '.clinic-dropdown', async function () {
+                let selectedClinicId = $(this).val();
+                let rowId = $(this).data('id');
+                let $SubClinicSelect = $(`.sub-clinic-dropdown[data-id="${rowId}"]`);
+                let $ServSelect = $(`.serv-dropdown[data-id="${rowId}"]`);
+
+                if (selectedClinicId) {
+
+                   await fetchSubClinics(selectedClinicId);
+
+                    if (subClinicList.length>0) {
+                        $SubClinicSelect.prop('disabled', false);
+                        $SubClinicSelect.empty().append('<option value="">@localizer["Choosee"]</option>');
+                        if (selectedClinicId && subClinicList) {
+                            subClinicList.forEach(subClinic => {
+                                $SubClinicSelect.append(`<option value="${subClinic.sClinicId}">${subClinic.sClinicDesc}</option>`);
+                            });
+                        }
+                    }
+
+                } else {
+                    $SubClinicSelect.prop('disabled', true);
+                    $ServSelect.prop('disabled', true);
+
+                }
+
+            });
+
+
+            $('.clinicTrans-table tbody').on('change', '.sub-clinic-dropdown', async function () {
+              let selectedSubClinicId = $(this).val();
+              let rowId = $(this).data('id');
+              let $ServSelect = $(`.serv-dropdown[data-id="${rowId}"]`);
+                if (selectedSubClinicId) {
+
+                    await fetchServ(selectedSubClinicId);
+
+                  if (subClinicList.length>0) {
+                      $ServSelect.prop('disabled', false);
+                      $ServSelect.empty().append('<option value="">@localizer["Choosee"]</option>');
+                      if (selectedSubClinicId && servList) {
+                          servList.forEach(Serv => {
+                              $ServSelect.append(`<option value="${Serv.servId}">${Serv.servDesc}</option>`);
+                          });
+                      }
+                  }
+
+              } else {
+                    $ServSelect.prop('disabled', true);
+
+              }
+
         });
 
-        // Handle Add New button
-        $('#btnAddNew').off('click').on('click', function () {
-            //var maxCheckId = 0;
-            //var maxCounter = 0;
-
-            // Find the maximum checkId and counter
-            //table.rows().every(function() {
-            //    var rowData = this.data();
-            //    maxCheckId = Math.max(maxCheckId, rowData.checkId || 0);
-            //    maxCounter = Math.max(maxCounter, rowData.counter || 0);
-            //});
-
-            var newRowData = {
-                checkId: "temp" + (Math.random() * (1000 - 1) + 1),
-                exDate: new Date(),
-                itmServFlag: 3,
-                clinicId: "",
-                sClinicId: "",
-                servId: "",
-                qty:1,
-                unitPrice: 0,
-                patientValue: 0,
-                extraVal: 0,
-                extraVal2: 0,
-                compValue: 0,
-                discountVal: 0,
-                approvalPeriod:-1,
-                checkIdCancel: -1,
-                stockId:"",
-                valueService: 0,
-                drSendId:""
-
-            };
-
-            var row =table.row.add(newRowData).draw(false);
-            $(table.row(row).node()).addClass('new-row');
-            $("#btnSave").prop('disabled', false);
-
-        });
-
-
-
-         //Auto-calculate patientValue when unitPrice changes
-        $('.clinicTrans-table tbody').on('change', 'input[data-field="unitPrice"]', function() {
+        var modifiedRows = new Set();
+            // Listen for changes on inputs and selects to track modifications
+        $('.clinicTrans-table tbody').on('input change', 'input, select', function() {
             var row = $(this).closest('tr');
-            var unitPrice = parseFloat($(this).val()) || 0;
+            var checkId = table.row(row).data().checkId;
 
-            // Set patientValue equal to unitPrice by default
-            row.find('input[data-field="patientValue"]').val(unitPrice);
+            // Only track existing records
+            console.log(checkId);
+            if (typeof checkId === "number" || (typeof checkId === "string" && !checkId.includes("temp"))) {
+                modifiedRows.add(checkId);
+                row.addClass('modified-row'); // Add visual indicator
+                $("#btnSaveClinicTrans").prop('disabled', false);
 
-            // Update the totals
+            }
+
             updateRowTotal(row);
             updateGrandTotals();
         });
 
-        // Update other values when they change
-        $('.clinicTrans-table').on('change', 'input[data-field]', function() {
-            updateRowTotal($(this).closest('tr'));
-            updateGrandTotals();
-        });
+            // Listen for changes on any qty or unitPrice input inside the table
+            // Store row data separately from DataTable
+            //$('.clinicTrans-table tbody').on('input', 'input[data-field="qty"], input[data-field="unitPrice"]', function () {
+            //    const $input = $(this);
+            //    const field = $input.data('field');
+            //    const newValue = parseFloat($input.val()) || 0;
 
-        // Helper function to update row total
-        function updateRowTotal(row) {
-            var qty = parseFloat(row.find('input[data-field="qty"]').val()) || 0;
-            var unitPrice = parseFloat(row.find('input[data-field="unitPrice"]').val()) || 0;
-            row.find('.valueService').text((qty * unitPrice).toFixed(2));
-        }
+            //    // Store focus information
+            //    const inputSelector = `input[data-field="${field}"]`;
+            //    const $row = $input.closest('tr');
+            //    const rowIndex = table.row($row).index();
+            //    const inputValue = $input.val(); // Store the actual input value
 
-        // Helper function to update grand totals
-        function updateGrandTotals() {
-            var totalServicesForVisit = 0;
-            var netPatient = 0;
+            //    if (rowIndex === undefined || rowIndex === null) return;
 
-            table.rows().every(function() {
-                var row = $(this.node());
-                var patientValue = parseFloat(row.find('input[data-field="patientValue"]').val()) || 0;
-                var extraVal = parseFloat(row.find('input[data-field="extraVal"]').val()) || 0;
-                var extraVal2 = parseFloat(row.find('input[data-field="extraVal2"]').val()) || 0;
-                var compValue = parseFloat(row.find('input[data-field="compValue"]').val()) || 0;
+            //    // Update data
+            //    const rowData = table.row(rowIndex).data();
+            //    rowData[field] = newValue;
 
-                totalServicesForVisit += (patientValue + compValue);
-                netPatient += (patientValue + extraVal + extraVal2);
+            //    const qty = parseFloat(rowData.qty) || 0;
+            //    const unitPrice = parseFloat(rowData.unitPrice) || 0;
+            //    rowData.valueService = qty * unitPrice;
+
+            //    table.row(rowIndex).data(rowData);
+            //    table.draw(false);
+
+            //    // Restore focus after redraw
+            //    setTimeout(() => {
+            //        const $newRow = $(table.row(rowIndex).node());
+            //        const $newInput = $newRow.find(inputSelector);
+            //        if ($newInput.length) {
+            //            // Set the exact value that was typed
+            //            $newInput.val(inputValue);
+            //            $newInput.focus();
+
+            //            // For number inputs, cursor position cannot be set with setSelectionRange
+            //            // The cursor will automatically go to the end, which is usually desired behavior
+            //        }
+            //    }, 20); // Increased timeout for better reliability
+            //});
+
+            // Handle active class
+            let clickedTarget = e.target.closest('tr');
+            let allItemRows = clickedTarget.parentElement.querySelectorAll("tr");
+
+            allItemRows.forEach(row => {
+                row.classList.remove("active-row");
             });
 
-            document.getElementById("totalServicesForVisit").innerHTML = totalServicesForVisit.toFixed(2);
-            document.getElementById("netPatient").innerHTML = netPatient.toFixed(2);
-        }
+            clickedTarget.classList.add("active-row");
+
+            // Update header
+            let clinicTransHead = document.querySelector(".clinicTrans-table-head");
+            let itemId = clickedTarget.querySelector(".item-id").innerText;
+            let clinicTransHeader = clinicTransHead.querySelector(".header.clinic-trans");
+            clinicTransHeader.innerHTML = "@localizer["Clinic Transaction Invoices For Visit No"] : " + itemId;
 
 
-        var clinicTransValidation = $('.clinicTrans-table').parsley({
-            errorClass: 'is-invalid',
-            successClass: 'is-valid',
-            errorsWrapper: '<div class="invalid-feedback"></div>',
-            errorTemplate: '<span></span>'
-        });
-
-        // Save button click handler
-       $('#btnSave').off('click').on('click', function() {
-
-           var $btn = $(this);
-           var $spinner = $('#btnSaveSpinner');
-           $spinner.show();
-
-            $btn.prop('disabled', true);
-
-            var isValid = true;
-            
-        // Validate new rows
-           $('.new-row').each(function () {
-               $(this).find('input, select').each(function () {
-                   if (!clinicTransValidation.validate()) {
-                       isValid = false;
-                       return false; // break inner loop
-                   }
-               });
-               if (!isValid) return false; // break outer loop
-           });
-
-            // Validate modified rows (excluding new rows)
-            if (isValid) {
-                $('.modified-row').not('.new-row').each(function () {
-                    $(this).find('input, select').each(function () {
-                        if (!clinicTransValidation.validate()) {
-                            alert('Not Valid');
-                            isValid = false;
-                            return false;
-                        }
-                    });
-                    if (!isValid) return false;
-                });
+            // Initialize DataTable
+            if ($.fn.DataTable.isDataTable('.clinicTrans-table')) {
+                $('.clinicTrans-table').DataTable().destroy();
             }
 
-           console.log(isValid);
-            if (isValid) {
-                $btn.prop('disabled', false);
-                $spinner.hide();
-
-           
-
-            // Prepare insert data
-            var insertData = [];
-            table.rows('.new-row').every(function () {
-                var row = $(this.node());
-                var data = this.data();
-                var checkId = data.checkId;
-                if (typeof (checkId) === "string" && checkId.includes("temp")) {
-                    insertData.push({
-                        exDate: new Date(),
-                        masterId: id,
-                        itmServFlag: parseInt(data.itmServFlag) || 0,
-                        clinicId: row.find('select[data-field="clinicId"]').val(),
-                        sClinicId: row.find('select[data-field="sClinicId"]').val(),
-                        servId: row.find('select[data-field="servId"]').val(),
-                        drSendId: row.find('select[data-field="drSendId"]').val(),
-                        qty: parseInt(row.find('input[data-field="qty"]').val()) || 0,
-                        unitPrice: parseFloat(row.find('input[data-field="unitPrice"]').val()) || 0,
-                        valueService: parseFloat(row.find('.valueService').text()) || 0,
-                        patientValue: parseFloat(row.find('input[data-field="patientValue"]').val()) || 0,
-                        compValue: parseFloat(row.find('input[data-field="compValue"]').val()) || 0,
-                        discountVal: parseFloat(row.find('input[data-field="discountVal"]').val()) || 0,
-                        extraVal: parseFloat(row.find('input[data-field="extraVal"]').val()) || 0,
-                        extraVal2: parseFloat(row.find('input[data-field="extraVal2"]').val()) || 0,
-                        approvalPeriod: parseInt(row.find('select[data-field="approvalPeriod"]').val()) || 0,
-                        checkIdCancel: parseInt(row.find('select[data-field="checkIdCancel"]').val()) || 0,
-                        stockId: parseInt(row.find('select[data-field="stockId"]').val()) || 0,
-                    });
-                }
-            });
-
-            // Prepare update data
-            var updateData = [];
-            $('.modified-row').not('.new-row').each(function () {
-                var row = $(this);
-                var checkId = table.row(row).data().checkId;
-                if (checkId) {
-                    updateData.push({
-                        checkId: checkId,
-                        exDate: moment(row.find('.exDate').text().trim(), 'DD/MM/YYYY').format('YYYY-MM-DD'),
-                        masterId: id,
-                        itmServFlag: parseInt(table.row(row).data().itmServFlag) || 0,
-                        clinicId: parseInt(row.find('select[data-field="clinicId"]').val()) || null,
-                        sClinicId: parseInt(row.find('select[data-field="sClinicId"]').val()) || null,
-                        servId: parseInt(row.find('select[data-field="servId"]').val()) || null,
-                        drSendId: parseInt(row.find('select[data-field="drSendId"]').val()) || null,
-                        qty: parseInt(row.find('input[data-field="qty"]').val()) || 0,
-                        unitPrice: parseFloat(row.find('input[data-field="unitPrice"]').val()) || 0,
-                        valueService: parseFloat(row.find('.valueService').text()) || 0,
-                        patientValue: parseFloat(row.find('input[data-field="patientValue"]').val()) || 0,
-                        compValue: parseFloat(row.find('input[data-field="compValue"]').val()) || 0,
-                        discountVal: parseFloat(row.find('input[data-field="discountVal"]').val()) || 0,
-                        extraVal: parseFloat(row.find('input[data-field="extraVal"]').val()) || 0,
-                        extraVal2: parseFloat(row.find('input[data-field="extraVal2"]').val()) || 0,
-                        approvalPeriod: parseInt(row.find('select[data-field="approvalPeriod"]').val()) || 0,
-                        checkIdCancel: parseInt(row.find('select[data-field="checkIdCancel"]').val()) || 0,
-                        stockId: parseInt(row.find('select[data-field="stockId"]').val()) || 0,
-                    });
-                }
-            });
-
-            // Sequential AJAX calls
-            function updateRows() {
-                if (updateData.length === 0) {
-                    finishSave();
-                    return;
-                }
-                $.ajax({
-                    url: '/Medical/ClinicTrans/UpdateRows',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(updateData),
-                    success: function(response) {
-                        if (response.success) {
-                            finishSave();
-                        } else {
-                            alert('@localizer["Error updating data"]: ' + response.message);
-                            $btn.prop('disabled', false);
-                            $spinner.hide();
-
-                        }
+            var table = $('.clinicTrans-table').DataTable({
+                ajax: {
+                    url: '/Medical/ClinicTrans/GetClinicTrans/' + id,
+                    data: function(d) {
+                        return { flag: 1 };
                     },
-                    error: function(xhr) {
-                        alert('@localizer["Error updating data"]: ' + xhr.responseText);
-                        $btn.prop('disabled', false);
-                        $spinner.hide();
-
-                    }
-                });
-            }
-
-            function finishSave() {
-                $('.modified-row').removeClass('modified-row');
-                $('.new-row').removeClass('new-row');
-                if (typeof modifiedRows !== 'undefined' && modifiedRows.clear) modifiedRows.clear();
-                table.ajax.reload();
-                $btn.prop('disabled', false);
-                $spinner.hide();
-
-            }
-
-            if (insertData.length === 0) {
-                updateRows();
-            } else {
-                $.ajax({
-                    url: '/Medical/ClinicTrans/SaveRows',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(insertData),
-                    success: function(response) {
-                        if (response.success) {
-                            updateRows();
-                        } else {
-                            alert('@localizer["Error saving data"]: ' + response.message);
-                            $btn.prop('disabled', false);
-                            $spinner.hide();
-
+                    dataSrc: function(json) {
+                        if (json.error) {
+                            alert('Error loading data: ' + json.error);
+                            return [];
                         }
-                    },
-                    error: function(xhr) {
-                        alert('@localizer["Error saving data"]: ' + xhr.responseText);
-                        $btn.prop('disabled', false);
-                        $spinner.hide();
 
+                        // Calculate totals here
+                        let totalServicesForVisit = 0;
+                        let netPatient = 0;
+
+                        json.forEach(function(item) {
+                            totalServicesForVisit += (item.compValue + item.patientValue);
+                            netPatient += (item.extraVal + item.extraVal2 + item.patientValue);
+                        });
+
+                        // Update total displays
+                        document.getElementById("totalServicesForVisit").classList.add("bg-white");
+                        document.getElementById("totalServicesForVisit").innerHTML = totalServicesForVisit.toFixed(2);
+                        document.getElementById("netPatient").classList.add("bg-white");
+                        document.getElementById("netPatient").innerHTML = netPatient.toFixed(2);
+
+                        return json;
                     }
-                });
-                }
-
-           }
-
-});
-
-        // Delete button click handler
-        $('.clinicTrans-table').off('click', '.btn-delete').on('click', '.btn-delete', function() {
-            var checkId = $(this).data('id');
-
-            if (typeof (checkId) === "string" && checkId.includes("temp") ) {
-
-                var row = table.row($(this).closest('tr'));
-                row.remove().draw(false);
-
-            } else {
-
-
-                if (confirm('@localizer["Are you sure you want to delete this row?"]'))
-                {
-                    $.ajax({
-                        url: '/Medical/ClinicTrans/Delete_ClinicTrans',
-                        type: 'POST',
-                        data: {
-                            id: checkId,
-                            redirect: 'Invoices'
+                },
+                columns: [
+                    {
+                        data: 'exDate',
+                        render: function (data, type, row) {
+                            if (type === 'display') {
+                                return `<p class="exDate">${moment(data).format('DD-MM-YYYY')}</p>`;
+                            }
+                            return data;
                         },
+                        createdCell: function (td) {
+                            td.style.minWidth = '120px';
+                        }
+                    },
+                    {
+                        data: 'itmServFlag',
+                        render: function (data, type, row) {
+                            if (type === 'display') {
+                                // Display service or item based on itmServFlag
+                                return (row.itmServFlag == 3) ? "خدمة" : "صنف";
+                            }
+                            return data;
+                        },
+                        createdCell: function (td) {
+                            td.style.minWidth = '120px';
+                        }
+                    },
+                    {
+                        data: 'clinicId',
+                        render: function (data, type, row) {
+                            if (type === 'display') {
+
+
+                                return '<div class="loading">Loading...</div>';
+
+                            }
+                            return data;
+                        },
+                        createdCell: async function (td, cellData, rowData) {
+                            if (rowData) {
+                                const content =  await buildMainClinicDd(rowData);
+                                td.innerHTML = content;
+                            }
+                            td.style.minWidth = '150px';
+                        }
+                    },
+                    {
+                        data: 'sClinicId',
+                        render: function (data, type, row) {
+                            if (type === 'display') {
+
+                                return '<div class="loading">Loading...</div>'; // Placeholder
+
+                            }
+                            return data;
+                        },
+                        createdCell: async function (td, cellData, rowData) {
+                            if (rowData) {
+                                const content = await buildSubClinicDd(rowData);
+                                td.innerHTML = content;
+                            }
+                            td.style.minWidth = '150px';
+                        }
+
+                    },
+                    {
+                        data: 'servId',
+                        render: function (data, type, row) {
+                            if (type === 'display') {
+                                return '<div class="loading">Loading...</div>';
+                            }
+                            return data;
+                        },
+                        createdCell: async function (td, cellData, rowData) {
+                            if (rowData) {
+                                const content = await buildServDd(rowData);
+                                td.innerHTML = content;
+                            }
+                            td.style.minWidth = '150px';
+                        }
+                    },
+                    {
+                        data: 'drSendId',
+                        render: function (data, type, row) {
+                            if (type === 'display') {
+
+
+                                return '<div class="loading">Loading...</div>';
+
+                            }
+                            return data;
+                        },
+                        createdCell: async function (td, cellData, rowData) {
+                            if (rowData) {
+                                const content = await buildDoctorDd(rowData);
+                                td.innerHTML = content;
+                            }
+                            td.style.minWidth = '150px';
+                        }
+                    },
+                    {
+                        data: 'qty',
+                        render: function (data, type, row) {
+                            if (type === 'display') {
+                                return '<input type="number"  class="form-control no-spinner" value="' + data + '" data-field="qty" data-id="' + row.checkId + '" min=1 required data-parsley-type="integer">';
+                            }
+                            return data;
+                        },
+                        createdCell: function (td) {
+                            td.style.minWidth = '100px';
+                        }
+                    },{
+                        data: 'unitPrice',
+                        render: function (data, type, row) {
+                            if (type === 'display') {
+                                return '<input type="number" class="form-control no-spinner" value="' + data + '" data-field="unitPrice" data-id="' + row.checkId + '" min=0 data-parsley-type="number">';
+                            }
+                            return data;
+                        },
+                        createdCell: function (td) {
+                            td.style.minWidth = '100px';
+                        }
+                    },
+                    {
+                        data: 'valueService',
+                        render: function (data, type, row) {
+                            if (type === 'display') {
+                                return `<p class="valueService" data-field="valueService">${(parseFloat(data) || 0).toFixed(2)}</p>` ; // or your preferred formatting
+                            }
+                            return data;
+                        }
+                    },
+                    {
+                        data: 'stockId',
+                        render: function (data, type, row) {
+
+                            if (type === 'display') {
+
+
+                                return '<div class="loading">Loading...</div>';
+
+                            }
+                            return data;
+                        },
+                        createdCell:async function (td, cellData, rowData) {
+                            if (rowData) {
+                                const content = await buildStockDd(rowData);
+                                td.innerHTML = content;
+                            }
+                            td.style.minWidth = '150px';
+                        }
+                    },
+
+                    {
+                        data: 'patientValue',
+                        render: function (data, type, row) {
+                            if (type === 'display') {
+                                return '<input type="number"  class="form-control no-spinner" value="' + data + '" data-field="patientValue" data-id="' + row.checkId + '" min=0 data-parsley-type="number">';
+                            }
+                            return data;
+                        }
+                    },
+                    {
+                        data: 'compValue',
+                        render: function (data, type, row) {
+                            if (type === 'display') {
+                                return '<input type="number"  class="form-control no-spinner" value="' + data + '" data-field="compValue" data-id="' + row.checkId + '" min=0 data-parsley-type="number">';
+                            }
+                            return data;
+                        }
+                    },
+
+                    {
+                        data: 'discountVal',
+                        render: function (data, type, row) {
+                            if (type === 'display') {
+                                return '<input type="number"  class="form-control no-spinner" value="' + data + '" data-field="compValue" data-id="' + row.checkId + '" min=0 max=100 data-parsley-type="number">';
+                            }
+                            return data;
+                        }
+                    },
+                    {
+                        data: 'extraVal',
+                        render: function (data, type, row) {
+                            if (type === 'display') {
+                                return '<input type="number" class="form-control no-spinner" value="' + data + '" data-field="extraVal" data-id="' + row.checkId + '" min=0  data-parsley-type="number">';
+                            }
+                            return data;
+                        }
+                    },
+                    {
+                        data: 'extraVal2',
+                        render: function (data, type, row) {
+                            if (type === 'display') {
+                                return '<input type="number" min="0" max="100"  class="form-control no-spinner" value="' + data + '" data-field="extraVal2" data-id="' + row.checkId + '" min=0 data-parsley-type="number">';
+                            }
+                            return data;
+                        }
+                    },
+
+
+                    {
+                        data: 'approvalPeriod',
+                        render: function (data, type, row) {
+                            if (type === 'display') {
+                                return buildApprovalPeriodDd(row);
+                            }
+                            return data;
+                        },
+                        createdCell: function (td) {
+                            td.style.minWidth = '150px';
+                        }
+                    },
+
+                    {
+                        data: 'checkIdCancel',
+                        render: function (data, type, row) {
+                            if (type === 'display') {
+                                return buildCheckIdCancelDd(row);
+                            }
+                            return data;
+                        },
+                        createdCell: function (td) {
+                            td.style.minWidth = '150px';
+                        }
+                    },
+
+                    {
+                        data: null,
+                        render: function (data, type, row) {
+                            return '<button class="btn btn-sm btn-danger btn-delete" data-id="' + row.checkId + '">@Html.Raw(GlobalConstants.DeleteIcon)</button>';
+                        },
+                        createdCell: function (td) {
+                            td.style.minWidth = '100px';
+                        }
+                    }
+                ],
+                paging: true,
+                searching: false,
+                ordering: true,
+                rowId: function(data) {
+                    return 'row-' + data.checkId;
+                },
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'excel', 'pdf', 'print'
+                ],
+                language: {
+                    search: "@localizer["Search"]:",
+                    lengthMenu: "@localizer["Show _MENU_ entries"]",
+                    info: "@localizer["Showing _START_ to _END_ of _TOTAL_ entries"]",
+                    infoEmpty: "@localizer["Showing 0 to 0 of 0 entries"]",
+                    infoFiltered: "@localizer["(filtered from _MAX_ total entries)"]",
+                    paginate: {
+                        first: "@localizer["First"]",
+                        last: "@localizer["Last"]",
+                        next: "@localizer["Next"]",
+                        previous: "@localizer["Previous"]"
+                    }
+                }
+            });
+
+            // Handle Add New button
+            $('#btnAddClinicTransNew').off('click').on('click', function () {
+                //var maxCheckId = 0;
+                //var maxCounter = 0;
+
+                // Find the maximum checkId and counter
+                //table.rows().every(function() {
+                //    var rowData = this.data();
+                //    maxCheckId = Math.max(maxCheckId, rowData.checkId || 0);
+                //    maxCounter = Math.max(maxCounter, rowData.counter || 0);
+                //});
+
+                var newRowData = {
+                    checkId: "temp" + (Math.random() * (1000 - 1) + 1),
+                    exDate: new Date(),
+                    itmServFlag: 3,
+                    clinicId: "",
+                    sClinicId: "",
+                    servId: "",
+                    qty:1,
+                    unitPrice: 0,
+                    patientValue: 0,
+                    extraVal: 0,
+                    extraVal2: 0,
+                    compValue: 0,
+                    discountVal: 0,
+                    approvalPeriod:-1,
+                    checkIdCancel: -1,
+                    stockId:"",
+                    valueService: 0,
+                    drSendId:""
+
+                };
+
+                var row =table.row.add(newRowData).draw(false);
+                $(table.row(row).node()).addClass('new-row');
+                $("#btnSaveClinicTrans").prop('disabled', false);
+
+            });
+
+
+
+             //Auto-calculate patientValue when unitPrice changes
+            $('.clinicTrans-table tbody').on('change', 'input[data-field="unitPrice"]', function() {
+                var row = $(this).closest('tr');
+                var unitPrice = parseFloat($(this).val()) || 0;
+
+                // Set patientValue equal to unitPrice by default
+                row.find('input[data-field="patientValue"]').val(unitPrice);
+
+                // Update the totals
+                updateRowTotal(row);
+                updateGrandTotals();
+            });
+
+            // Update other values when they change
+            $('.clinicTrans-table').on('change', 'input[data-field]', function() {
+                updateRowTotal($(this).closest('tr'));
+                updateGrandTotals();
+            });
+
+            // Helper function to update row total
+            function updateRowTotal(row) {
+                var qty = parseFloat(row.find('input[data-field="qty"]').val()) || 0;
+                var unitPrice = parseFloat(row.find('input[data-field="unitPrice"]').val()) || 0;
+                row.find('.valueService').text((qty * unitPrice).toFixed(2));
+            }
+
+            // Helper function to update grand totals
+            function updateGrandTotals() {
+                var totalServicesForVisit = 0;
+                var netPatient = 0;
+
+                table.rows().every(function() {
+                    var row = $(this.node());
+                    var patientValue = parseFloat(row.find('input[data-field="patientValue"]').val()) || 0;
+                    var extraVal = parseFloat(row.find('input[data-field="extraVal"]').val()) || 0;
+                    var extraVal2 = parseFloat(row.find('input[data-field="extraVal2"]').val()) || 0;
+                    var compValue = parseFloat(row.find('input[data-field="compValue"]').val()) || 0;
+
+                    totalServicesForVisit += (patientValue + compValue);
+                    netPatient += (patientValue + extraVal + extraVal2);
+                });
+
+                document.getElementById("totalServicesForVisit").innerHTML = totalServicesForVisit.toFixed(2);
+                document.getElementById("netPatient").innerHTML = netPatient.toFixed(2);
+            }
+
+
+            var clinicTransValidation = $('.clinicTrans-table').parsley({
+                errorClass: 'is-invalid',
+                successClass: 'is-valid',
+                errorsWrapper: '<div class="invalid-feedback"></div>',
+                errorTemplate: '<span></span>'
+            });
+
+            // Save button click handler
+           $('#btnSaveClinicTrans').off('click').on('click', function() {
+
+               var $btn = $(this);
+               var $spinner = $('#btnSaveClinicTransSpinner');
+               $spinner.show();
+
+                $btn.prop('disabled', true);
+
+                var isValid = true;
+
+            // Validate new rows
+               $('.new-row').each(function () {
+                   $(this).find('input, select').each(function () {
+                       if (!clinicTransValidation.validate()) {
+                           isValid = false;
+                           return false; // break inner loop
+                       }
+                   });
+                   if (!isValid) return false; // break outer loop
+               });
+
+                // Validate modified rows (excluding new rows)
+                if (isValid) {
+                    $('.modified-row').not('.new-row').each(function () {
+                        $(this).find('input, select').each(function () {
+                            if (!clinicTransValidation.validate()) {
+                                alert('Not Valid');
+                                isValid = false;
+                                return false;
+                            }
+                        });
+                        if (!isValid) return false;
+                    });
+                }
+
+               console.log(isValid);
+                if (isValid) {
+                    $btn.prop('disabled', false);
+                    $spinner.hide();
+
+
+
+                // Prepare insert data
+                var insertData = [];
+                table.rows('.new-row').every(function () {
+                    var row = $(this.node());
+                    var data = this.data();
+                    var checkId = data.checkId;
+                    if (typeof (checkId) === "string" && checkId.includes("temp")) {
+                        insertData.push({
+                            exDate: new Date(),
+                            masterId: id,
+                            itmServFlag: parseInt(data.itmServFlag) || 0,
+                            clinicId: row.find('select[data-field="clinicId"]').val(),
+                            sClinicId: row.find('select[data-field="sClinicId"]').val(),
+                            servId: row.find('select[data-field="servId"]').val(),
+                            drSendId: row.find('select[data-field="drSendId"]').val(),
+                            qty: parseInt(row.find('input[data-field="qty"]').val()) || 0,
+                            unitPrice: parseFloat(row.find('input[data-field="unitPrice"]').val()) || 0,
+                            valueService: parseFloat(row.find('.valueService').text()) || 0,
+                            patientValue: parseFloat(row.find('input[data-field="patientValue"]').val()) || 0,
+                            compValue: parseFloat(row.find('input[data-field="compValue"]').val()) || 0,
+                            discountVal: parseFloat(row.find('input[data-field="discountVal"]').val()) || 0,
+                            extraVal: parseFloat(row.find('input[data-field="extraVal"]').val()) || 0,
+                            extraVal2: parseFloat(row.find('input[data-field="extraVal2"]').val()) || 0,
+                            approvalPeriod: parseInt(row.find('select[data-field="approvalPeriod"]').val()) || 0,
+                            checkIdCancel: parseInt(row.find('select[data-field="checkIdCancel"]').val()) || 0,
+                            stockId: parseInt(row.find('select[data-field="stockId"]').val()) || 0,
+                        });
+                    }
+                });
+
+                // Prepare update data
+                var updateData = [];
+                $('.modified-row').not('.new-row').each(function () {
+                    var row = $(this);
+                    var checkId = table.row(row).data().checkId;
+                    if (checkId) {
+                        updateData.push({
+                            checkId: checkId,
+                            exDate: moment(row.find('.exDate').text().trim(), 'DD/MM/YYYY').format('YYYY-MM-DD'),
+                            masterId: id,
+                            itmServFlag: parseInt(table.row(row).data().itmServFlag) || 0,
+                            clinicId: parseInt(row.find('select[data-field="clinicId"]').val()) || null,
+                            sClinicId: parseInt(row.find('select[data-field="sClinicId"]').val()) || null,
+                            servId: parseInt(row.find('select[data-field="servId"]').val()) || null,
+                            drSendId: parseInt(row.find('select[data-field="drSendId"]').val()) || null,
+                            qty: parseInt(row.find('input[data-field="qty"]').val()) || 0,
+                            unitPrice: parseFloat(row.find('input[data-field="unitPrice"]').val()) || 0,
+                            valueService: parseFloat(row.find('.valueService').text()) || 0,
+                            patientValue: parseFloat(row.find('input[data-field="patientValue"]').val()) || 0,
+                            compValue: parseFloat(row.find('input[data-field="compValue"]').val()) || 0,
+                            discountVal: parseFloat(row.find('input[data-field="discountVal"]').val()) || 0,
+                            extraVal: parseFloat(row.find('input[data-field="extraVal"]').val()) || 0,
+                            extraVal2: parseFloat(row.find('input[data-field="extraVal2"]').val()) || 0,
+                            approvalPeriod: parseInt(row.find('select[data-field="approvalPeriod"]').val()) || 0,
+                            checkIdCancel: parseInt(row.find('select[data-field="checkIdCancel"]').val()) || 0,
+                            stockId: parseInt(row.find('select[data-field="stockId"]').val()) || 0,
+                        });
+                    }
+                });
+
+                // Sequential AJAX calls
+                function updateRows() {
+                    if (updateData.length === 0) {
+                        finishSave();
+                        return;
+                    }
+                    $.ajax({
+                        url: '/Medical/ClinicTrans/UpdateRows',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(updateData),
                         success: function(response) {
-                            table.ajax.reload();
+                            if (response.success) {
+                                finishSave();
+                            } else {
+                                alert('@localizer["Error updating data"]: ' + response.message);
+                                $btn.prop('disabled', false);
+                                $spinner.hide();
+
+                            }
                         },
                         error: function(xhr) {
-                            console.log('@localizer["Error deleting item"]: ' + xhr.responseText);
+                            alert('@localizer["Error updating data"]: ' + xhr.responseText);
+                            $btn.prop('disabled', false);
+                            $spinner.hide();
+
                         }
                     });
                 }
-            }
-        });
-    }
-</script>
+
+                function finishSave() {
+                    $('.modified-row').removeClass('modified-row');
+                    $('.new-row').removeClass('new-row');
+                    if (typeof modifiedRows !== 'undefined' && modifiedRows.clear) modifiedRows.clear();
+                    table.ajax.reload();
+                    $btn.prop('disabled', false);
+                    $spinner.hide();
+
+                }
+
+                if (insertData.length === 0) {
+                    updateRows();
+                } else {
+                    $.ajax({
+                        url: '/Medical/ClinicTrans/SaveRows',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(insertData),
+                        success: function(response) {
+                            if (response.success) {
+                                updateRows();
+                            } else {
+                                alert('@localizer["Error saving data"]: ' + response.message);
+                                $btn.prop('disabled', false);
+                                $spinner.hide();
+
+                            }
+                        },
+                        error: function(xhr) {
+                            alert('@localizer["Error saving data"]: ' + xhr.responseText);
+                            $btn.prop('disabled', false);
+                            $spinner.hide();
+
+                        }
+                    });
+                    }
+
+               }
+
+    });
+
+            // Delete button click handler
+            $('.clinicTrans-table').off('click', '.btn-delete').on('click', '.btn-delete', function() {
+                var checkId = $(this).data('id');
+
+                if (typeof (checkId) === "string" && checkId.includes("temp") ) {
+
+                    var row = table.row($(this).closest('tr'));
+                    row.remove().draw(false);
+
+                } else {
+
+
+                    if (confirm('@localizer["Are you sure you want to delete this row?"]'))
+                    {
+                        $.ajax({
+                            url: '/Medical/ClinicTrans/Delete_ClinicTrans',
+                            type: 'POST',
+                            data: {
+                                id: checkId,
+                                redirect: 'Invoices'
+                            },
+                            success: function(response) {
+                                table.ajax.reload();
+                            },
+                            error: function(xhr) {
+                                console.log('@localizer["Error deleting item"]: ' + xhr.responseText);
+                            }
+                        });
+                    }
+                }
+            });
+        }
+</script>}
 
 
 

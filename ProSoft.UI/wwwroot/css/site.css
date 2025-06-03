@@ -188,7 +188,8 @@ html {
 }
 /* For clicking on table row */
 .active-row {
-    background-color: #cdcdcd;
+    background-color: #ffc107 !important;
+    transition: all 0.3s ease;
 }
 /* For clicking on table row */
 /* ///////////////////////////////////////////////// */
@@ -543,7 +544,7 @@ a[disabled] {
 }
 
 
-table.dataTable td {
+table.dataTable, table td {
     background-color: transparent !important;
 }
 
