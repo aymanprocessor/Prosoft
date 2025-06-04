@@ -1,0 +1,43 @@
+﻿@using ProSoft.UI.Global
+
+@inject IViewLocalizer localizer
+
+<div class="table-header clinicTrans-table-head">
+    <h2 class="header clinic-trans">@localizer["Clinic Transaction Invoices For Visit No."]</h2>
+    <div>
+        <a class="btn btn-sm btn-primary fs-6" id="btnAddClinicTransNew">
+            @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add New Row"]
+        </a>
+        <a class="btn btn-sm btn-primary fs-6" id="btnSaveClinicTrans">
+            @Html.Raw(GlobalConstants.SaveIcon) @localizer["Save"]
+            <span class="spinner-border spinner-border-sm me-2 spinner-hidden" role="status" aria-hidden="true" id="btnSaveClinicTransSpinner"></span>
+        </a>
+    </div>
+</div>
+
+<div class="p-0 mb-2 border-opacity-75 overflow-auto">
+    <table class="table table-bordered table-hover clinicTrans-table" style="width:100%" data-parsley-validate="">
+        <thead class="table-dark">
+            <tr>
+                <th class="align-middle">@localizer["Invoice Date"]</th>
+                <th class="align-middle">@localizer["Servise OR Item"]</th>
+                <th class="align-middle">@localizer["Main Clinic"]</th>
+                <th class="align-middle">@localizer["Sub Clinic"]</th>
+                <th class="align-middle">@localizer["Clinic Service"]</th>
+                <th class="align-middle">@localizer["Sender Doctor"]</th>
+                <th class="align-middle">@localizer["Quantity"]</th>
+                <th class="align-middle">@localizer["Service Price"]</th>
+                <th class="align-middle">@localizer["All Service Price"]</th>
+                <th class="align-middle">@localizer["Stock"]</th>
+                <th class="align-middle">@localizer["Patient Value"]</th>
+                <th class="align-middle">@localizer["Company Value"]</th>
+                <th class="align-middle">@localizer["Discount"]</th>
+                <th class="align-middle">@localizer["Patient Requirements"]</th>
+                <th class="align-middle">@localizer["Patient Maintainance"]</th>
+                <th class="align-middle">@localizer["Attendance Shift"]</th>
+                <th class="align-middle">@localizer["Service Acceptance"]</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>

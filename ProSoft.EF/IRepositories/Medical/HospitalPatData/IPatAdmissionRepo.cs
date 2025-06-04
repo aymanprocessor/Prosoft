@@ -18,6 +18,7 @@ namespace ProSoft.EF.IRepositories.Medical.HospitalPatData
         Task<List<RegionViewDTO>> GetSection(int id);
         /////////////////////////////////////////////////////////////////////////////////
         Task AddPatAdmissionAsync(int patId, PatAdmissionEditAddDTO patAdmissionDTO);
+        Task AddBatchPatAdmissionsAsync(int patId, List<PatAdmissionEditAddDTO> patAdmissionDTOs);
 
         Task<PatAdmissionEditAddDTO> GetPatAdmissionByIdAsync(int id);
         Task EditPatAdmissionAsync(int id, PatAdmissionEditAddDTO patAdmissionDTO);

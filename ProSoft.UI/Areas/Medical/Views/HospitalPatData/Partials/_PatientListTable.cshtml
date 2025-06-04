@@ -1,0 +1,24 @@
+﻿@model List<PatViewDTO>
+@inject IViewLocalizer localizer
+
+<div class="table-container patient-table-container">
+    <table id="myTable" class="table table-bordered table-hover" style="width:100%">
+        <thead class="table-dark">
+            <tr>
+                <th>@localizer["Patient ID"]</th>
+                <th>@localizer["Patient Name"]</th>
+                <th>@localizer["Patient Mobile"]</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pat in Model)
+            {
+                <tr onclick="GetAdmisson(event,@pat.PatId)" style="cursor:pointer;">
+                    <td>@pat.PatId</td>
+                    <td class="item-name">@pat.PatName</td>
+                    <td>@pat.PatMobile</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

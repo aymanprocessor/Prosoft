@@ -102,6 +102,19 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             await _Context.SaveChangesAsync();
         }
 
+        public async Task AddBatchPatAdmissionsAsync(int patId, List<PatAdmissionEditAddDTO> patAdmissionDTOs)
+        {
+            foreach (var dto in patAdmissionDTOs)
+            {
+                dto.patId = patId;
+            }
+
+            var patAdmissions = _mapper.Map<List<PatAdmission>>(patAdmissionDTOs);
+
+            await _Context.AddRangeAsync(patAdmissions);
+            await _Context.SaveChangesAsync();
+        }
+
         public async Task<PatAdmissionEditAddDTO> GetPatAdmissionByIdAsync(int id)
         {
             PatAdmission patAdmission = await _Context.PatAdmissions

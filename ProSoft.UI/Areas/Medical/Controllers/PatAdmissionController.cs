@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
@@ -16,12 +17,13 @@ namespace ProSoft.UI.Areas.Medical.Controllers
     {
         private readonly IPatAdmissionRepo _patAdmissionRepo;
         private readonly ICurrentUserService _currentUserService;
+        private readonly IMapper _mapper;
 
-        public PatAdmissionController(IPatAdmissionRepo patAdmissionRepo, ICurrentUserService currentUserService)
+        public PatAdmissionController(IPatAdmissionRepo patAdmissionRepo, ICurrentUserService currentUserService, IMapper mapper)
         {
             _patAdmissionRepo = patAdmissionRepo;
             _currentUserService = currentUserService;
-
+            _mapper = mapper;
         }
 
         public async Task<IActionResult> GetAdmissions(int id)
@@ -111,6 +113,53 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         {
             await _patAdmissionRepo.DeletePatAdmissionAsync(id);
             return RedirectToAction(redirect, "HospitalPatData");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveRows([FromBody] List<PatAdmissionRequestDTO> insertedData)
+        {
+            try
+            {
+
+                // Validate the model
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                // Check if the raw body is null
+                if (insertedData == null)
+                {
+                    return BadRequest(new
+                    {
+                        success = false,
+                        message = "Request body is null or invalid JSON format."
+                    });
+                }
+
+                List<PatAdmissionEditAddDTO> patAdmissionDTO = new();
+                patAdmissionDTO = _mapper.Map<List<PatAdmissionEditAddDTO>>(insertedData);
+                await _patAdmissionRepo.AddBatchPatAdmissionsAsync((int)patAdmissionDTO[0].MasterId, patAdmissionDTO);
+
+
+
+                return StatusCode(200, new
+                {
+                    success = true,
+                    message = "Data Added",
+                    data = insertedData
+                });
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "An error occurred while saving the row data",
+                    innerEx = ex.InnerException
+                });
+            }
         }
     }
 }

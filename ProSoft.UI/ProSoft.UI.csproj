@@ -40,4 +40,9 @@
     <ProjectReference Include="..\Shared\ProSoft.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Medical\Views\HospitalPatData\JS\" />
+    <Folder Include="Areas\Medical\Views\HospitalPatData\CSS\" />
+  </ItemGroup>
+
 </Project>
