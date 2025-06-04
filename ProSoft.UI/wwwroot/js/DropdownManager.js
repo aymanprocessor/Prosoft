@@ -12,14 +12,11 @@ const DropdownManager = (function () {
     const getChildDropdown = () => document.getElementById(config.childDropdownId);
     const getParentDropdown = () => document.getElementById(config.parentDropdownId);
 
-   
-
     const clearChildDropdown = () => {
         const childDropdown = getChildDropdown();
         childDropdown.innerHTML = `<option value="">${config.defaultChildOption}</option>`;
         childDropdown.disabled = true;
     };
-
 
     const createOption = (item) => {
         const option = document.createElement('option');
@@ -42,7 +39,6 @@ const DropdownManager = (function () {
     const checkParentDropdown = async (parentId) => {
         if (parentId) {
             populateChildDropdown(parentId);
-           
         }
     };
     const populateChildDropdown = async (parentId) => {
@@ -73,7 +69,6 @@ const DropdownManager = (function () {
             // Dispatch custom event after child dropdown is populated
             const event = new CustomEvent('childLoaded', { detail: { parentId, data } });
             childDropdown.dispatchEvent(event);
-
         } catch (error) {
             console.error('Error fetching dependent dropdown data:', error);
             clearChildDropdown();
@@ -81,16 +76,9 @@ const DropdownManager = (function () {
     };
 
     //const assignValue = async (dropdownId) => {
-
-
     //};
     // Public methods
     return {
-
-      
-
-
-            
         init: function (options) {
             config = { ...config, ...options };
 
@@ -108,8 +96,6 @@ const DropdownManager = (function () {
 
             //childDropdown.addEventListener('change', (e) =>
             //    populateChildDropdown(e.target.value));
-
-
         },
 
         refresh: function () {

@@ -536,13 +536,11 @@ a[disabled] {
     cursor: pointer;
 }
 
-
 .no-spinner::-webkit-outer-spin-button,
 .no-spinner::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
-
 
 table.dataTable, table td {
     background-color: transparent !important;

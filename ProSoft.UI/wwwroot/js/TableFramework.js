@@ -36,7 +36,6 @@
         });
     }
 
-
     // Private function to send AJAX request
     function sendAjaxRequest(url, data, successCallback, errorCallback) {
         const token = $('input[name="__RequestVerificationToken"]').attr('value');
@@ -72,7 +71,6 @@
         return formData;
     }
 
-
     // Private function to enable or disable batch mode
     function toggleBatchMode() {
         isBatchMode = !isBatchMode; // Toggle batch mode state
@@ -90,7 +88,6 @@
     // Private function to enable inline editing for all rows
     function enableInlineEditing(fieldMapping) {
         $(SELECTORS.tableRowSelector).each(function () {
-
             $(this).find('td').each(function (index) {
                 var rowId = $(this).find('span').data('row-id'); // Assuming you have row-id set on each <tr>
 
@@ -110,11 +107,9 @@
         });
     }
 
-
     // Private function to disable inline editing for all rows
     function disableInlineEditing(fieldMapping) {
         $(SELECTORS.tableRowSelector).each(function () {
-
             $(this).find('td').each(function (index) {
                 var rowId = $(this).find(SELECTORS.editableInputSelector).data('row-id'); // Assuming you have row-id set on each <tr>
 
@@ -129,14 +124,10 @@
         });
     }
 
-
-
     // Bind the batch mode button
     $(document).on('click', SELECTORS.batchModeButtonSelector, function () {
         toggleBatchMode(); // Toggle batch mode when the button is clicked
     });
-
-
 
     // Private function to filter table rows
     function filterTable(filterInputSelector, tableRowSelector) {
@@ -166,7 +157,6 @@
                 var totalCols = tr.find('td').length - 1; // Exclude action buttons column
 
                 switch (event.key) {
-
                     case 'Enter':
                         event.preventDefault(); // Prevent default tab behavior (moving out of the table)
                         if (currentRowIndex < totalRows - 1) {
@@ -197,12 +187,9 @@
         }
     }
 
-
-
     // Private function to generate input fields dynamically based on column type
-    function generateInputField(rowId, field, value, isBatchMode,row) {
+    function generateInputField(rowId, field, value, isBatchMode, row) {
         let inputField;
-
 
         if (isBatchMode === false) {
             return `<span data-row-id="${rowId}">${value}</span>`;
@@ -226,7 +213,7 @@
                 inputField = `<input type="text" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()" pattern="\\d+(\\.\\d+)?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\\..*)\\./g, '$1');" ${disabledClass}/>`;
                 break;
             case 'date':
-                inputField = `<input type="date" value="${parseDate(value,"YYYY-MM-DD")}" class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()"  ${disabledClass}/>`;
+                inputField = `<input type="date" value="${parseDate(value, "YYYY-MM-DD")}" class="form-control ${titleCenter}" id="${field.name}_${rowId}" data-row-id="${rowId}" data-field-name="${field.name}" onfocus="this.select()"  ${disabledClass}/>`;
 
                 break;
             case 'select':
@@ -242,7 +229,6 @@
         }
 
         // Return the input field with an onChange event listener
-
 
         return inputField;
     }
@@ -264,13 +250,10 @@
             row.addClass('changed');
             row.css('background-color', '#FFFFE0'); // Highlight changed row
         }
-
-
     }
 
     function handleDeleteRow(config) {
-        $(document).on('click',`#${config.tableId}-delete-btn.delete-row`, function (event) {
-
+        $(document).on('click', `#${config.tableId}-delete-btn.delete-row`, function (event) {
             var idName = config.fieldMapping
                 .find(field => field.name === 'action') // Find the 'action' field
                 ?.list.find(action => action.name === 'Delete Button') // Find the 'Delete Button' in the list
@@ -282,13 +265,9 @@
             var rowId = $(this).data(`row-${idName.toLowerCase()}`);
             var row = $(this).closest('tr'); // Get the closest table row
 
-
-
             // Show confirmation alert before proceeding
             if (confirm("Are you sure you want to delete this item?")) {
-
-               // Retrieve the idName
-
+                // Retrieve the idName
 
                 const formData = {};
                 formData[idName] = rowId;
@@ -315,7 +294,6 @@
         });
     }
 
-
     // Save only changed rows
     function batchSaveRecords(saveUrl) {
         const dataToInsert = [];
@@ -324,13 +302,12 @@
         // Collect data for newly created rows (rows marked with 'created' class)
         $('.dynamic-row.created').each(function () {
             //const rowId = $(this).data('row-id');
-          
 
             // Initialize a formData object for each new row
-             const formData = {  };
+            const formData = {};
 
             // Iterate over the input fields within the row to collect field data
-           // const formData = {}
+            // const formData = {}
             $(this).find(SELECTORS.editableInputSelector).each(function () {
                 const fieldName = $(this).data('field-name');
                 let fieldValue = $(this).val();
@@ -351,7 +328,7 @@
             formData["PLDtlId"] = 0;
             dataToInsert.push(formData);
         });
-     
+
         // Collect data for rows that have been modified (marked in 'changedRows')
         changedRows.forEach(rowId => {
             const row = $(`${SELECTORS.tableRowSelector}.changed input[data-row-id="${rowId}"]`).closest('tr');
@@ -372,9 +349,7 @@
                 } else if (fieldType === 'checkbox') {
                     fieldValue = $(this).is(':checked');
                 } else if (fieldType == 'date') {
-
                     fieldValue = new Date(fieldValue).toISOString();
-
                 }
 
                 formData[fieldName] = fieldValue === "" || fieldValue === "null" ? null : fieldValue;
@@ -400,10 +375,8 @@
                 // Clear the list of changed rows
                 changedRows.clear();
                 $(SELECTORS.tableRowSelector).removeClass('changed').css('background-color', '');
-
             }, function (errorMessage) {
-                console.error("ERROR",errorMessage);
-
+                console.error("ERROR", errorMessage);
             });
         } else {
             console.log('No changes to save.');
@@ -427,8 +400,6 @@
             format: 'dd/mm/yyyy'
         });
 
-        
-       
         console.log("DATEPICKER");
 
         $(document).on('change', SELECTORS.editableInputSelector, function () {
@@ -451,7 +422,6 @@
         config.fieldMapping.forEach(field => {
             console.log("New ROW", field);
             if (field.type === "action") return;
-            
 
             newRowHtml += `<td>${generateInputField(newRowId, field, field.defualtValue ?? "", true)}</td>`;
         });
@@ -464,8 +434,6 @@
         // Attach change detection for the new row inputs
         attachChangeEventsToInputs(config);
     }
-
-
 
     // Add "Save" button below the table
     function addSaveRowsButton(config) {
@@ -480,11 +448,9 @@
     }
     // Add "Insert New Row" button below the table
     function addInsertRowButton(config) {
-
         //var ButtonHtml = '<div class="col">';
         var ButtonHtml = `<button id="${config.tableId}-insert-new-row-btn" class="btn btn-success mb-3" ><i class="bi bi-plus-circle"></i> اضافة </button>`;
         //ButtonHtml += '</div>';
-
 
         document.addEventListener('DOMContentLoaded', function () {
             document.getElementById(`${config.tableId}-insert-new-row-btn`).addEventListener('click', function () { addNewRow(config) });
@@ -492,7 +458,7 @@
 
         return ButtonHtml;
     }
-     function addRefreshButton(config) {
+    function addRefreshButton(config) {
         var ButtonHtml = `<button id="${config.tableId}-refresh-btn" class="btn btn-info mb-3"><i class="bi bi-arrow-clockwise"></i> تحديث</button>`;
 
         document.addEventListener('DOMContentLoaded', function () {
@@ -508,23 +474,20 @@
 
         toolbarHtml += addInsertRowButton(config);
         toolbarHtml += addSaveRowsButton(config);
-       // toolbarHtml += addRefreshButton(config);  
+        // toolbarHtml += addRefreshButton(config);
 
         toolbarHtml += '</div>';
 
-        $("#" +config.tableId).prepend(toolbarHtml);
-
+        $("#" + config.tableId).prepend(toolbarHtml);
     }
 
     // Private function to generate table rows dynamically with different column types
-    function generateTableBody(config,viewButtonEnable, viewUrl, data, fieldMapping, actionButtonsHtml, isBatchMode) {
+    function generateTableBody(config, viewButtonEnable, viewUrl, data, fieldMapping, actionButtonsHtml, isBatchMode) {
         var tableBodyHtml = '';
 
         tableBodyHtml += '<thead><tr>';
         // Table Header
         fieldMapping.forEach(function (field) {
-
-
             var value = field.title;
             //var widthStyle = field.width ? `style="width: ${field.width};"` : ''; // Apply width if defined
 
@@ -534,23 +497,19 @@
 
         tableBodyHtml += '</tr></thead>';
 
-
         tableBodyHtml += ' <tbody>';
         //  Table Data
-        console.log("DATA",data)
+        console.log("DATA", data)
         data.forEach(function (row) {
-            console.log("ROW",row);
+            console.log("ROW", row);
             tableBodyHtml += '<tr class="dynamic-row">';
             fieldMapping.forEach(function (field) {
-
-         
                 var value = row[field.name];
-
 
                 if (field.type === "action") {
                     tableBodyHtml += "<td>";
                     field.list.forEach(function (action) {
-                        console.log("ACTION",action);
+                        console.log("ACTION", action);
                         switch (action.name) {
                             case "View Button":
                                 tableBodyHtml += `<a class="btn btn-primary view mx-1" href="${action.options.viewUrl}?id=${row[action.options.idName]}" data-row-${action.options.idName}="${row[action.options.idName]}">عرض</a>`;
@@ -560,26 +519,17 @@
                                 tableBodyHtml += `<button id='${config.tableId}-delete-btn' class="btn btn-danger delete-row mx-1" data-row-${action.options.idName}="${row[action.options.idName]}"><i class="bi bi-trash"></i></button>`;
                                 break;
                         }
-                        
                     });
                     tableBodyHtml += "</td>";
-
-                    
-                } else{
-                    tableBodyHtml += `<td >${generateInputField(row[config.idName], field, value, isBatchMode,row)}</td>`;
-
+                } else {
+                    tableBodyHtml += `<td >${generateInputField(row[config.idName], field, value, isBatchMode, row)}</td>`;
                 }
-             
-
             });
-   
-
 
             //tableBodyHtml += '<td>' + actionButtonsHtml.replace(/{{rowId}}/g, row.id) + '</td>';
             tableBodyHtml += '</tr>';
         });
         tableBodyHtml += '</tbody >';
-
 
         return `<table class="table table-hover">${tableBodyHtml}</table>`;
     }
@@ -593,7 +543,6 @@
                 var formData = gatherFormData(rowId, config.fieldMapping);
 
                 sendAjaxRequest(config.updateUrl, formData, function (response) {
-
                 }, function (errorMessage) {
                     alert(MESSAGES.errorMessage + ": " + errorMessage);
                 });
@@ -609,12 +558,10 @@
         renderTable: function (config) {
             // Render the table body
 
-            var tableBodyHtml = generateTableBody(config,config.viewButtonEnable, config.viewUrl, config.data, config.fieldMapping, config.actionButtonsHtml, isBatchMode);
+            var tableBodyHtml = generateTableBody(config, config.viewButtonEnable, config.viewUrl, config.data, config.fieldMapping, config.actionButtonsHtml, isBatchMode);
             $("#" + config.tableId).html(tableBodyHtml);
 
             attachChangeEventsToInputs(config);
-
-           
 
             // Initialize inline edit and filter features after rendering
             this.initInlineEdit({
@@ -634,6 +581,5 @@
             generateToolbar(config);
             handleDeleteRow(config);
         }
-
     }
 })();

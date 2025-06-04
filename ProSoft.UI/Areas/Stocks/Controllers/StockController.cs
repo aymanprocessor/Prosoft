@@ -26,6 +26,12 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             return View(stocksDTO);
         }
 
+        public async Task<IActionResult> GetStocks()
+        {
+            var stocks = await _stockRepo.GetAllStocksAsync();
+            return Json(stocks);
+        }
+
         // Get Add
         public async Task<IActionResult> Add_Stock()
         {
@@ -86,12 +92,6 @@ namespace ProSoft.UI.Areas.Stocks.Controllers
             await _stockRepo.DeleteAsync(stock);
             await _stockRepo.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        public async Task<IActionResult> GetStocks()
-        {
-            var stocks = await _stockRepo.GetAllStocksAsync();
-            return Json(stocks);
         }
     }
 }

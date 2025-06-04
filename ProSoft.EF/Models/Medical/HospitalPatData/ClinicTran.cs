@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using ProSoft.EF.Models.Stocks;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
-using ProSoft.EF.Models.Stocks;
 
 namespace ProSoft.EF.Models.Medical.HospitalPatData;
 

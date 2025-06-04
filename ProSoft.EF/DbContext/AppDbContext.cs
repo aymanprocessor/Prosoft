@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ProSoft.Core.Enums;
 using ProSoft.EF.Models;
 using ProSoft.EF.Models.Accounts;
@@ -14,7 +12,6 @@ using ProSoft.EF.Models.Shared;
 using ProSoft.EF.Models.Stocks;
 using ProSoft.EF.Models.Stocks.StoredProcedure;
 using ProSoft.EF.Models.Treasury;
-using System.Reflection.Emit;
 using System.Security.Claims;
 
 namespace ProSoft.EF.DbContext
@@ -117,20 +114,13 @@ namespace ProSoft.EF.DbContext
             }
         }
 
-        private string ShortenIdentifier(string identifier)
-        {
-           
-            // Truncate to 30 characters if necessary
-            return identifier.Length > 30 ? identifier.Substring(0, 30) : identifier;
-        }
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            
 
-           
+
+
             // ------------------- Stored Procedures ------------------- //
 
             builder.Entity<ItemBalance>().HasNoKey();
@@ -238,7 +228,7 @@ namespace ProSoft.EF.DbContext
                 //.Ignore(us => us.EisSectionTypes)
                 .HasKey(us => new { us.UserId, us.SideId, us.RegionId, us.BranchId });
 
-      
+
 
             builder.Entity<SubItem>()
                 .HasOne(s => s.Main)
@@ -276,7 +266,7 @@ namespace ProSoft.EF.DbContext
             if (_provider == "Oracle")
             {
 
-              
+
 
                 Console.WriteLine("This Is Oracle Provider");
                 foreach (var entity in builder.Model.GetEntityTypes())

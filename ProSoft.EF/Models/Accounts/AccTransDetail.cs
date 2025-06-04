@@ -1,12 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProSoft.EF.Models.Medical.HospitalPatData;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProSoft.EF.Models.Accounts
 {
@@ -16,8 +12,10 @@ namespace ProSoft.EF.Models.Accounts
         [Key]
         [Column("TRANS_DTL_ID")]
         public int TransDtlId { get; set; }
+
         [Column("AccTransMastersTransId")]
         public int AccTransMasterTransId { get; set; }
+
         [Column("CO_CODE")]
         public int? CoCode { get; set; }
 

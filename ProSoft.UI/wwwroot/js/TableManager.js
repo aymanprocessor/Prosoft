@@ -82,28 +82,23 @@ class TableManager {
         else if (event.key === "ArrowUp") {
             event.preventDefault();
 
-            if (currentRowIndex >=0) {
+            if (currentRowIndex >= 0) {
                 // Only increase the row index, keeping the column index the same
-                this.navigateToCell(currentRowIndex -1, currentColIndex - 1);
+                this.navigateToCell(currentRowIndex - 1, currentColIndex - 1);
             }
         }
         else if (event.key === "ArrowLeft") {
             event.preventDefault();
 
-           
-                // Only increase the row index, keeping the column index the same
-                this.navigateToCell(currentRowIndex, currentColIndex );
-            
+            // Only increase the row index, keeping the column index the same
+            this.navigateToCell(currentRowIndex, currentColIndex);
         }
         else if (event.key === "ArrowRight") {
             event.preventDefault();
 
-
             // Only increase the row index, keeping the column index the same
-            this.navigateToCell(currentRowIndex, currentColIndex-2);
-
+            this.navigateToCell(currentRowIndex, currentColIndex - 2);
         }
-        
     }
 
     navigateToCell(rowIndex, colIndex) {
@@ -135,8 +130,6 @@ class TableManager {
     //}
 
     handleInputBlur(event) {
-
-
         const row = $(event.currentTarget);
         var formField = {};
         row.closest("tr").find("td").each(function () {
@@ -180,9 +173,7 @@ class TableManager {
         cell.html(inputField);
 
         cell.find('input, select').focus().select();
-
     }
-
 
     ///////////////// EVENTS //////////////////
 
@@ -191,7 +182,6 @@ class TableManager {
 
         var formFieldList = [];
         rows.each(function () {
-
             var formField = {};
 
             $(this).find('td,input').each(function () {
@@ -209,9 +199,8 @@ class TableManager {
                 }
                 formField[fieldName] = fieldValue;
             });
-            formField["UnitCode"]=1
+            formField["UnitCode"] = 1
             formFieldList.push(formField);
-
         });
 
         if (this.onSave) {
@@ -225,7 +214,6 @@ class TableManager {
             console.error('onSave must be a function');
         }
     }
-
 
     handleDelete(event) {
         const row = $(event.currentTarget);
@@ -255,7 +243,6 @@ class TableManager {
     }
 
     handleAfterCellEdit(event) {
-
         const row = $(event.currentTarget);
         var formField = [];
         $(`${TableManager.SELECTORS.TABLE_ROW}.changed`).each(function () {
@@ -278,15 +265,12 @@ class TableManager {
             cell.html(value);
 
             formField.push(rowField);
-
         });
-       
 
         const input = $(event.target);
         const cell = input.closest('td');
         const value = input.val();
         cell.html(value);
-
 
         if (this.onAfterCellEdit) {
             this.onAfterCellEdit(formField);
@@ -355,7 +339,6 @@ class TableManager {
     }
 
     generateInputField(rowId, field, value) {
-
         const disabledClass = '';
         const titleCenter = field.titleCenter ? 'text-center' : '';
         const widthStyle = field.width ? `style="width: ${field.width};"` : `style="width: 100px;"`;
@@ -374,7 +357,7 @@ class TableManager {
                 return `<input type="date" value="${this.parseDate(value, "YYYY-MM-DD")}" class="form-control ${titleCenter}" id="${fieldId}" data-row-id="${rowId}" data-field="${field.name}" ${disabledClass}/>`;
             case 'select':
                 const options = field.options.map(option => `<option value="${option.Value}" ${option.Value == value ? 'selected' : ''}>${option.Text}</option>`).join('');
-                console.log("option :",options);
+                console.log("option :", options);
                 return `<select class="form-control form-select ${titleCenter}" ${widthStyle} id="${field.name}_${rowId}" data-row-id="${rowId}" data-field="${field.name}" ${disabledClass}>${options}</select>`;
             default:
                 return `<input type="text" value="${value}" ${widthStyle} class="form-control ${titleCenter}" id="${fieldId}" data-row-id="${rowId}" data-field="${field.name}" ${disabledClass}/>`;
@@ -384,7 +367,6 @@ class TableManager {
     getNestedValue(obj, path) {
         return path.split('.').reduce((current, key) => (current && current[key] !== undefined) ? current[key] : undefined, obj);
     }
-
 
     parseDate(isoDateString, outputFormat) {
         return dayjs(isoDateString).format(outputFormat);
@@ -441,7 +423,7 @@ class TableManager {
             value = this.parseDate(value, "YYYY-MM-DD");
         }
         const editableClass = field.editable ? 'editable-cell' : 'cell-disabled';
-        
+
         return `<td class="${editableClass}" data-field="${field.name}" style="width:${widthStyle};">${value}</td>`;
     }
 
@@ -460,7 +442,6 @@ class TableManager {
     }
 
     generateToolbar() {
-
         const sumQtyStart = this.config.data.reduce(
             (accumulator, currentValue) => accumulator + currentValue.QtyStart,
             0
@@ -471,16 +452,15 @@ class TableManager {
             0
         );
 
-
         const toolbarHtml = `
         <div class="row">
             <div class="col-4 d-flex gap-2 align-items-start">
 
-                ${ this.addInsertRowButton()}
-    
+                ${this.addInsertRowButton()}
+
                 ${this.addSaveRowsButton()}
             </div>
-            
+
              <div class="col-8 d-flex gap-2">
                <p class="alert alert-primary">عدد السجلات : ${this.config.data.length}</p>
                <p class="alert alert-success">اجمالي كمية الرصيد الافتتاحي : ${sumQtyStart} </p>
@@ -489,13 +469,11 @@ class TableManager {
         </div>
         `;
         $(`#${this.config.tableId}`).prepend(toolbarHtml);
-       
     }
 
     addInsertRowButton() {
         if (this.config.enableInsertBtn) {
-
-        return `<button id="${this.config.tableId}-insert-new-row-btn" class="btn btn-success mb-3"><i class="bi bi-plus-circle"></i> اضافة </button>`;
+            return `<button id="${this.config.tableId}-insert-new-row-btn" class="btn btn-success mb-3"><i class="bi bi-plus-circle"></i> اضافة </button>`;
         }
         return '';
     }
@@ -504,7 +482,6 @@ class TableManager {
         return `<button id="${this.config.tableId}-save-row-btn" class="btn btn-warning mb-3"><i class="bi bi-floppy"></i> حفظ </button>`;
     }
 
-  
     refresh(newData) {
         // Update the data in the config
         this.config.data = newData;
@@ -521,6 +498,4 @@ class TableManager {
 
         console.log("Table refreshed with new data");
     }
-
-
 }

@@ -106,12 +106,12 @@
         <h2 class="header pat-admission">@localizer["Visits of patient :"]</h2>
 
         @* <a class="btn btn-sm btn-primary fs-6">
-            @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add Visit"]
-        </a> *@
+                @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add Visit"]
+            </a> *@
 
-         <div>
+        <div>
 
-          
+
             <a class="btn btn-sm btn-primary fs-6" id="btnAddPatAdmissionNew">
                 @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add New Row"]
             </a>
@@ -295,7 +295,7 @@
 @section Scripts{
 
 
-<script>
+    <script>
     document.getElementById('searchInput').addEventListener('input', function () {
         filterTable();
     });
@@ -448,7 +448,7 @@
                     async function buildDepartmentDd(row) {
                         let html = `<select class="form-control text-center brnachInitial-dropdown" data-field="brnachInitial" data-id="${row.masterId}" required>`;
                         html += `<option value="">@localizer["Choosee"]</option>`;
-                        
+
                         await fetchDepartments();
 
                         for (let item of departmentList) {
@@ -650,7 +650,7 @@
                                     return data;
                                 },
                                 createdCell: function (td, cellData, rowData) {
-                              
+
                                     td.style.minWidth = '150px';
                                 }
                             },
@@ -744,7 +744,7 @@
 
                     // Enable the save button if needed
                         $("#btnAddPatAdmissionNew").prop('disabled', false);
-                 
+
 
                     });
 
@@ -1602,7 +1602,6 @@
                     });
                 }
 
-               console.log(isValid);
                 if (isValid) {
                     $btn.prop('disabled', false);
                     $spinner.hide();
@@ -1772,7 +1771,8 @@
                 }
             });
         }
-</script>}
+    </script>
+}
 
 
 

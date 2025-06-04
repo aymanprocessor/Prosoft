@@ -25,27 +25,28 @@ html {
     max-height: 100%;
     overflow: auto;
 }
-#mySidebar ul {
-    font-size: 1rem;
-}
 
-#mySidebar ul li:hover {
-    background-color: #656565 !important;
-}
+    #mySidebar ul {
+        font-size: 1rem;
+    }
 
-/* for togelling submenu*/
-#mySidebar li .submenu {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    display: none;
-}
+        #mySidebar ul li:hover {
+            background-color: #656565 !important;
+        }
 
-#mySidebar li .submenu.show {
-    display: block;
-}
+    /* for togelling submenu*/
+    #mySidebar li .submenu {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        display: none;
+    }
+
+        #mySidebar li .submenu.show {
+            display: block;
+        }
 /*/////////*/
 
 .active-link {
@@ -61,9 +62,9 @@ html {
     color: white;
 }
 
-#mySidebar .nav-link i {
-    color: white;
-}
+    #mySidebar .nav-link i {
+        color: white;
+    }
 
 #mySidebar .nav-item ul:hover {
     background-color: rgba(var(--bs-dark-rgb),var(--bs-bg-opacity)) !important;
@@ -90,9 +91,10 @@ html {
         transition: .3s;
     }
 
-    #mySidebar:dir(RTL) {
-        transform: translateX(100%);
-    }
+        #mySidebar:dir(RTL) {
+            transform: translateX(100%);
+        }
+
     .overlay {
         opacity: 0;
         z-index: 1;
@@ -102,11 +104,11 @@ html {
         transition: .3s;
     }
 
-    .overlay.lay-active {
-        background-color: black;
-        opacity: .3;
-        pointer-events: all;
-    }
+        .overlay.lay-active {
+            background-color: black;
+            opacity: .3;
+            pointer-events: all;
+        }
 
     .toggler {
         display: block;
@@ -126,13 +128,13 @@ html {
 .parent > div {
     width: 30%;
 }
+
 @media (max-width: 767px) {
     .parent > div {
         width: 100% !important;
     }
 }
 /* End Styling Some Forms */
-
 
 /* For clicking on table row */
 .active-row {
