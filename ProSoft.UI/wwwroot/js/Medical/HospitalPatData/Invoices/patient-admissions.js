@@ -41,11 +41,11 @@ function updateActivePatientUI(e, id) {
     let patAdmissonHead = document.querySelector(".admission-table-head");
     let itemName = clickedTarget.querySelector(".item-name").innerText;
     let patAdmissonHeader = patAdmissonHead.querySelector(".header.pat-admission");
-    patAdmissonHeader.innerHTML = "Visits of patient : " + itemName;
+    patAdmissonHeader.innerHTML = "خدمات لرقم الزيارة  : " + itemName;
 
     // Reset clinic trans header
     let clinicTransHeader = document.querySelector(".header.clinic-trans");
-    clinicTransHeader.innerHTML = "Clinic Transaction Invoices For Visit No :";
+    clinicTransHeader.innerHTML = "خدمات  ";
 }
 
 function initializeAdmissionsTable(patientId, dataLists) {

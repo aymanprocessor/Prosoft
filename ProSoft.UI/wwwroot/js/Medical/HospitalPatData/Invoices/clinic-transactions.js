@@ -46,7 +46,7 @@ function updateClinicTransUI(e, masterId) {
     let clinicTransHead = document.querySelector(".clinicTrans-table-head");
     let itemId = clickedTarget.querySelector(".item-id")?.innerText || masterId;
     let clinicTransHeader = clinicTransHead.querySelector(".header.clinic-trans");
-    clinicTransHeader.innerHTML = "Clinic Transaction Invoices For Visit No : " + itemId;
+    clinicTransHeader.innerHTML = "زيارة للمريض : " + itemId;
 }
 
 function initializeClinicTransTable(masterId, dataLists) {
