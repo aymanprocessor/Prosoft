@@ -108,7 +108,6 @@ namespace ProSoft.UI.Areas.Medical.Controllers
 
         //Delete PatAdmisson
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete_PatientAdmission(int id,string redirect)
         {
             await _patAdmissionRepo.DeletePatAdmissionAsync(id);
@@ -139,7 +138,7 @@ namespace ProSoft.UI.Areas.Medical.Controllers
 
                 List<PatAdmissionEditAddDTO> patAdmissionDTO = new();
                 patAdmissionDTO = _mapper.Map<List<PatAdmissionEditAddDTO>>(insertedData);
-                await _patAdmissionRepo.AddBatchPatAdmissionsAsync((int)patAdmissionDTO[0].MasterId, patAdmissionDTO);
+                await _patAdmissionRepo.AddBatchPatAdmissionsAsync((int)patAdmissionDTO[0].patId, patAdmissionDTO);
 
 
 
@@ -148,6 +147,54 @@ namespace ProSoft.UI.Areas.Medical.Controllers
                     success = true,
                     message = "Data Added",
                     data = insertedData
+                });
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "An error occurred while saving the row data",
+                    innerEx = ex.InnerException
+                });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateRows([FromBody] List<PatAdmissionRequestDTO> modifiedData)
+        {
+            try
+            {
+
+                // Validate the model
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                // Check if the raw body is null
+                if (modifiedData == null)
+                {
+                    return BadRequest(new
+                    {
+                        success = false,
+                        message = "Request body is null or invalid JSON format."
+                    });
+                }
+
+                List<PatAdmissionEditAddDTO> patAdmissionDTOs = new();
+
+                patAdmissionDTOs = _mapper.Map<List<PatAdmissionEditAddDTO>>(modifiedData);
+                await _patAdmissionRepo.EditPatAdmissionsBatchAsync(patAdmissionDTOs);
+
+
+
+                return StatusCode(200, new
+                {
+                    success = true,
+                    message = "Data Updated",
+                    data = modifiedData
                 });
 
             }

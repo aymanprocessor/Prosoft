@@ -2,15 +2,15 @@
 
 @inject IViewLocalizer localizer
 
-<div class="table-header clinicTrans-table-head">
+<div class="table-header clinicTrans-table-head d-flex justify-content-between">
     <h2 class="header clinic-trans">خدمات</h2>
     <div>
-        <a class="btn btn-sm btn-primary fs-6" id="btnAddClinicTransNew">
+        <a class="btn btn-sm btn-primary fs-6" id="btnAddClinicTransNew" disabled>
             @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add New Row"]
         </a>
-        <a class="btn btn-sm btn-primary fs-6" id="btnSaveClinicTrans">
+        <a class="btn btn-sm btn-primary fs-6" id="btnSaveClinicTrans" disabled>
             @Html.Raw(GlobalConstants.SaveIcon) @localizer["Save"]
-            <span class="spinner-border spinner-border-sm me-2 spinner-hidden" role="status" aria-hidden="true" id="btnSaveClinicTransSpinner"></span>
+            <span class="spinner-border spinner-border-sm me-2 spinner-hidden d-none" role="status" aria-hidden="true" id="btnSaveClinicTransSpinner"></span>
         </a>
     </div>
 </div>

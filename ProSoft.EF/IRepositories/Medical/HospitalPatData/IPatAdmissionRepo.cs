@@ -22,6 +22,7 @@ namespace ProSoft.EF.IRepositories.Medical.HospitalPatData
 
         Task<PatAdmissionEditAddDTO> GetPatAdmissionByIdAsync(int id);
         Task EditPatAdmissionAsync(int id, PatAdmissionEditAddDTO patAdmissionDTO);
+        Task EditPatAdmissionsBatchAsync(List<PatAdmissionEditAddDTO> admissionsToEdit);
         Task DeletePatAdmissionAsync(int id);
 
 

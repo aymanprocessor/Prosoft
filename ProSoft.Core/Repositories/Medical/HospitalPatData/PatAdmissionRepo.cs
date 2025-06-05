@@ -162,6 +162,34 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             await _Context.SaveChangesAsync();
         }
 
+
+        public async Task EditPatAdmissionsBatchAsync(List<PatAdmissionEditAddDTO> admissionsToEdit)
+        {
+            // Extract all IDs from the incoming DTOs
+            var ids = admissionsToEdit.Select(x => x.MasterId).ToList();
+
+            // Fetch all corresponding records in a single query
+            var patAdmissions = await _Context.PatAdmissions
+                .Where(x => ids.Contains(x.MasterId))
+                .ToListAsync();
+
+            // Map updates for each found record
+            foreach (var patAdmission in patAdmissions)
+            {
+                // Find matching DTO
+                var dto = admissionsToEdit.FirstOrDefault(x => x.MasterId == patAdmission.MasterId);
+                if (dto != null)
+                {
+                    var patId = patAdmission.PatId; // Save original
+                    _mapper.Map(dto, patAdmission);
+                    patAdmission.PatId = patId; // Restore if needed
+                    patAdmission.MasterId = (int)dto.MasterId;
+                }
+            }
+
+            await _Context.SaveChangesAsync();
+        }
+
         public async Task DeletePatAdmissionAsync(int id)
         {
             PatAdmission patAdmission = await _Context.PatAdmissions.FirstOrDefaultAsync(obj => obj.MasterId == id);

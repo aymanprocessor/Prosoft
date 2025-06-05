@@ -158,6 +158,21 @@ const AjaxHandlers = {
         }
     },
 
+    // Update Pat Admission Rows
+    async updatePatAdmissionRows(updateData) {
+        try {
+            const response = await $.ajax({
+                url: '/Medical/PatAdmission/UpdateRows',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(updateData)
+            });
+            return response;
+        } catch (error) {
+            console.error('Error updating clinic trans rows:', error);
+            throw error;
+        }
+    },
     // Delete Clinic Transaction
     async deleteClinicTransaction(checkId) {
         try {
@@ -174,9 +189,26 @@ const AjaxHandlers = {
             console.error('Error deleting clinic transaction:', error);
             throw error;
         }
-    }
+    },
 
-    ,
+    // Delete Pat Admission
+    async deletePatAdmission(Id) {
+        try {
+            const response = await $.ajax({
+                url: '/Medical/PatAdmission/Delete_PatientAdmission',
+                type: 'POST',
+                data: {
+                    id: Id,
+                    redirect: 'Invoices'
+
+                   }
+            });
+            return response;
+        } catch (error) {
+            console.error('Error deleting clinic transaction:', error);
+            throw error;
+        }
+    },
 
     // Save Clinic Transaction Rows
     async savePatAdmissionRows(insertData) {

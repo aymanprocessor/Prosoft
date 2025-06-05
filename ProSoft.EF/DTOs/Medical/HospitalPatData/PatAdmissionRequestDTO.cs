@@ -11,7 +11,6 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
         public int? BranchId { get; set; } = 1;
         public int? ExYear { get; set; } = 2025;
 
-        public string? PatName { get; set; }
         public int? patId { get; set; }
         public int? MasterId { get; set; }
         public DateTime PatAdDate { get; set; } = DateTime.Now;

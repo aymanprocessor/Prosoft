@@ -7,9 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Medical\Views\HospitalPatData\CSS\**" />
+    <Compile Remove="Areas\Medical\Views\HospitalPatData\JS\**" />
     <Compile Remove="Areas\Shared\Shared\**" />
+    <Content Remove="Areas\Medical\Views\HospitalPatData\CSS\**" />
+    <Content Remove="Areas\Medical\Views\HospitalPatData\JS\**" />
     <Content Remove="Areas\Shared\Shared\**" />
+    <EmbeddedResource Remove="Areas\Medical\Views\HospitalPatData\CSS\**" />
+    <EmbeddedResource Remove="Areas\Medical\Views\HospitalPatData\JS\**" />
     <EmbeddedResource Remove="Areas\Shared\Shared\**" />
+    <None Remove="Areas\Medical\Views\HospitalPatData\CSS\**" />
+    <None Remove="Areas\Medical\Views\HospitalPatData\JS\**" />
     <None Remove="Areas\Shared\Shared\**" />
   </ItemGroup>
 
@@ -38,11 +46,6 @@
     <ProjectReference Include="..\ProSoft.Core\ProSoft.Core.csproj" />
     <ProjectReference Include="..\ProSoft.EF\ProSoft.EF.csproj" />
     <ProjectReference Include="..\Shared\ProSoft.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\Medical\Views\HospitalPatData\JS\" />
-    <Folder Include="Areas\Medical\Views\HospitalPatData\CSS\" />
   </ItemGroup>
 
 </Project>

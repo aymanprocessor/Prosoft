@@ -1,15 +1,28 @@
 ﻿// Patient Admissions Management
+
+
 async function GetAdmisson(e, id) {
+
     let companyList = [];
     let companyDetailsList = [];
     let departmentList = [];
     let sectionList = [];
     let doctorList = [];
 
+    if (id) {
+        enableAddNewBtn();
+    }
+
+  
+
     // Pre-load common data
     try {
-        doctorList = await AjaxHandlers.fetchDoctors();
-        departmentList = await AjaxHandlers.fetchDepartments();
+
+        [doctorList, departmentList] = await Promise.all([
+            AjaxHandlers.fetchDoctors(),
+            AjaxHandlers.fetchDepartments()
+        ]);
+
     } catch (error) {
         console.error('Error loading initial data:', error);
     }
@@ -86,7 +99,7 @@ function getAdmissionsTableColumns(dataLists) {
         {
             data: 'masterId',
             render: function (data, type, row) {
-                return type === 'display' ? `<p class="masterId">${data}</p>` : data;
+                return type === 'display' ? `<p class="masterId"  data-field="masterId">${data}</p>` : data;
             },
             createdCell: function (td) {
                 td.style.minWidth = '50px';
@@ -95,7 +108,7 @@ function getAdmissionsTableColumns(dataLists) {
         {
             data: 'patAdDate',
             render: function (data, type, row) {
-                return type === 'display' ? `<p class="patAdDate">${moment(data).format('DD-MM-YYYY')}</p>` : data;
+                return type === 'display' ? `<p class="patAdDate"  data-field="patAdDate">${moment(data).format('DD-MM-YYYY')}</p>` : data;
             },
             createdCell: function (td) {
                 td.style.minWidth = '120px';
@@ -192,9 +205,9 @@ function getAdmissionsTableColumns(dataLists) {
             data: 'patDateExit',
             render: function (data, type, row) {
                 if (type === 'display') {
-                    if (!data) return '<input type="date" value="" data-field="patDateExit"/>';
+                    if (!data) return '<input type="date" class="patDateExit" value="" data-field="patDateExit"/>';
                     let date = moment(data, "DD-MM-YYYY").format('YYYY-MM-DD'); // format to ISO date
-                    return `<input type="date" value="${date}" data-field="patDateExit" data-id="${row.masterId}" />`;
+                    return `<input type="date" class="patDateExit" value="${date}" data-field="patDateExit" data-id="${row.masterId}" />`;
                 }
                 return data;
             }
@@ -207,7 +220,7 @@ function getAdmissionsTableColumns(dataLists) {
                 }
                 return data;
             }
-           
+
         },
         {
             data: 'prepaid',
@@ -239,7 +252,7 @@ function getAdmissionsTableColumns(dataLists) {
         {
             data: null,
             render: function (data, type, row) {
-                return `<button class="btn btn-sm btn-danger btn-delete" data-id="${row.masterId}">Delete</button>`;
+                return `<button class="btn btn-sm btn-danger btn-delete" data-id="${row.masterId}"><i class=\"bi bi-trash\"></i></button>`;
             },
             createdCell: function (td) {
                 td.style.minWidth = '100px';
@@ -248,30 +261,75 @@ function getAdmissionsTableColumns(dataLists) {
     ];
 }
 
-function setupAdmissionsEventHandlers(table, patientId,dataLists) {
+function hideSpinnerPatAdmission() {
+    // Hide the spinner
+    $('#btnSavePatAdmissionSpinner').addClass('d-none');
+}
 
-    setupCascadeDropdownsAdmission(dataLists);
+function showSpinnerPatAdmission() {
+    // Hide the spinner
+    $('#btnSavePatAdmissionSpinner').removeClass('d-none');
+}
+
+
+function disableSaveBtn() {
+    $('#btnSavePatAdmission').attr('disabled', 'disabled');
+}
+function enableSaveBtn() {
+    $('#btnSavePatAdmission').removeAttr('disabled');
+}
+
+function disableAddNewBtn() {
+    $('#btnAddPatAdmissionNew').attr('disabled', 'disabled');
+}
+function enableAddNewBtn() {
+    $('#btnAddPatAdmissionNew').removeAttr('disabled');
+}
+
+
+
+function setupAdmissionsEventHandlers(table, patientId, dataLists) {
+
+    setupCascadeDropdownsAdmission(dataLists, patientId);
     // Add new admission button
     $('#btnAddPatAdmissionNew').off('click').on('click', function () {
+
+        
         var newRowData = {
             masterId: "temp_" + Math.floor(Math.random() * 1000) + 1,
-            patAdDate: moment().format("DD-MM-YYYY"),
+            patAdDate: moment().format("YYYY-MM-DD"),
             deal: "",
             compId: "",
             compIdDtl: "",
             brnachInitial: "",
             sendFr: "",
             drCode: "",
-            patDateExit: "",
+            patDateExit: null,
             patientValue: 0,
             prepaid: 0,
-            mainInvNo:0,
+            mainInvNo: 0,
             sessionNo: 0
         };
 
         var row = table.row.add(newRowData).draw(false);
         $(table.row(row).node()).addClass('new-row');
-        $("#btnSavePatAdmission").prop('disabled', false);
+        enableSaveBtn();
+    });
+
+    // Track modifications
+    $('.admisson-table tbody').on('input change', 'input, select', function () {
+        var row = $(this).closest('tr');
+        var rowIdx = table.row(row).index();
+        var rowData = table.row(rowIdx).data();
+        var masterId = rowData ? rowData.masterId : undefined;
+
+        if (typeof masterId === "number" || (typeof masterId === "string" && !masterId.includes("temp"))) {
+            //modifiedRows.add(masterId);
+            row.addClass('modified-row');
+            enableSaveBtn();
+        }
+
+     
     });
 
     // Row click handler for clinic transactions
@@ -285,7 +343,12 @@ function setupAdmissionsEventHandlers(table, patientId,dataLists) {
     });
 
     $('#btnSavePatAdmission').off('click').on('click', function () {
-        handleSavePatAdmission(table);
+        handleSavePatAdmission(table, patientId);
+    });
+
+    // Delete button
+    $('.admisson-table').off('click', '.btn-delete').on('click', '.btn-delete', function () {
+        handleDeletePatAdmission($(this), table);
     });
 
 }
@@ -368,12 +431,10 @@ function setupCascadeDropdownsAdmission(dataLists) {
 
 }
 
-async function handleSavePatAdmission(table, modifiedRows) {
-    var $btn = $('#btnSavePatAdmission');
-    var $spinner = $('#btnSavePatAdmissionSpinner');
+async function handleSavePatAdmission(table, patientId) {
+    enableSaveBtn();
+    showSpinnerPatAdmission();
 
-    $spinner.show();
-    $btn.prop('disabled', true);
 
     try {
         // Validate data
@@ -383,24 +444,23 @@ async function handleSavePatAdmission(table, modifiedRows) {
         }
 
         // Prepare data
-        var insertData = patAdmissionPrepareInsertData(table);
-        //var updateData = patAdmissionPrepareUpdateData(table);
+        var insertData = patAdmissionPrepareInsertData(table, patientId);
+        var updateData = patAdmissionPrepareUpdateData(table, patientId);
         console.log(insertData);
         // Save data
         if (insertData.length > 0) {
 
             await AjaxHandlers.savePatAdmissionRows(insertData);
-            console.log("savePatAdmissionRows Called");
         }
 
-        //if (updateData.length > 0) {
-        //    await AjaxHandlers.updatePatAdmissionRows(updateData);
-        //}
+        if (updateData.length > 0) {
+            await AjaxHandlers.updatePatAdmissionRows(updateData);
+        }
 
         // Clean up
         $('.modified-row').removeClass('modified-row');
         $('.new-row').removeClass('new-row');
-        //modifiedRows.clear();
+   
         table.ajax.reload();
 
     } catch (error) {
@@ -431,11 +491,31 @@ async function handleSavePatAdmission(table, modifiedRows) {
             message += JSON.stringify(error);
         }
 
-        alert(message);
         console.error('Detailed error:', error);
     } finally {
-        $btn.prop('disabled', false);
-        $spinner.hide();
+        disableSaveBtn();
+        hideSpinnerPatAdmission();
+    }
+}
+
+
+async function handleDeletePatAdmission($deleteBtn, table) {
+    var masterId = $deleteBtn.data('id');
+
+    if (typeof (masterId) === "string" && masterId.includes("temp")) {
+        // Delete temporary row
+        var row = table.row($deleteBtn.closest('tr'));
+        row.remove().draw(false);
+    } else {
+        // Delete existing row
+        if (confirm('هل تريد حذف هذا الصف')) {
+            try {
+                await AjaxHandlers.deletePatAdmission(masterId);
+                table.ajax.reload();
+            } catch (error) {
+                console.log('Error deleting item: ' + error.message);
+            }
+        }
     }
 }
 
@@ -475,7 +555,7 @@ function validatePatAdmissionData() {
     return isValid;
 }
 
-function patAdmissionPrepareInsertData(table) {
+function patAdmissionPrepareInsertData(table, patientId) {
     var insertData = [];
 
     table.rows('.new-row').every(function () {
@@ -484,14 +564,15 @@ function patAdmissionPrepareInsertData(table) {
         var masterId = row.find('.masterId').text() || null;
         if (typeof masterId === "string" && masterId.includes("temp")) {
             insertData.push({
-                patAdDate: row.find('.patAdDate').text() || null,
+                patId: patientId,
+                patAdDate: moment(row.find('[data-field="patAdDate"]').text(), "DD-MM-YYYY").toISOString() || null,
                 deal: row.find('select[data-field="deal"]').val() || null,
                 compId: row.find('select[data-field="compId"]').val() || null,
                 compIdDtl: row.find('select[data-field="compIdDtl"]').val() || null,
                 brnachInitial: row.find('select[data-field="brnachInitial"]').val() || null,
                 sendFr: row.find('select[data-field="sendFr"]').val() || null,
-                drCode: row.find('select[data-field="drCode"]').val() || null,
-                patDateExit: row.find('input[data-field="patDateExit"]').val() || null,
+                drCode: row.find('select[data-field="drSendId"]').val() || null,
+                patDateExit: moment(row.find('.patDateExit').text()).toISOString() || null,
                 patientValue: parseFloat(row.find('input[data-field="patientValue"]').val()) || 0,
                 prepaid: parseFloat(row.find('input[data-field="prepaid"]').val()) || 0,
                 mainInvNo: parseInt(row.find('input[data-field="mainInvNo"]').val()) || 0,
@@ -505,22 +586,23 @@ function patAdmissionPrepareInsertData(table) {
 
 
 
-function patAdmissionPrepareUpdateData(table) {
+function patAdmissionPrepareUpdateData(table,patientId) {
     var updateData = [];
 
     $('.modified-row').not('.new-row').each(function () {
         var row = $(this);
 
         updateData.push({
-            masterId: row.find('input[data-field="masterId"]').val() || null,
-            patAdDate: row.find('input[data-field="patAdDate"]').val() || null,
+            patId: patientId,
+            masterId: row.find('.masterId').text() || null,
+            patAdDate: moment(row.find('[data-field="patAdDate"]').text(), "DD-MM-YYYY").toISOString() || null,
             deal: row.find('select[data-field="deal"]').val() || null,
             compId: row.find('select[data-field="compId"]').val() || null,
             compIdDtl: row.find('select[data-field="compIdDtl"]').val() || null,
             brnachInitial: row.find('select[data-field="brnachInitial"]').val() || null,
             sendFr: row.find('select[data-field="sendFr"]').val() || null,
-            drCode: row.find('select[data-field="drCode"]').val() || null,
-            patDateExit: row.find('input[data-field="patDateExit"]').val() || null,
+            drCode: row.find('select[data-field="drSendId"]').val() || null,
+            patDateExit: moment(row.find('input[data-field="patDateExit"]').val()).toISOString() || null,
             patientValue: parseFloat(row.find('input[data-field="patientValue"]').val()) || 0,
             prepaid: parseFloat(row.find('input[data-field="prepaid"]').val()) || 0,
             mainInvNo: parseInt(row.find('input[data-field="mainInvNo"]').val()) || 0,

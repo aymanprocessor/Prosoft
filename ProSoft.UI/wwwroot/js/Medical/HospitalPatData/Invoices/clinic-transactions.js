@@ -1,7 +1,8 @@
 ﻿// Clinic Transactions Management
 async function GetClinicTrans(e, masterId) {
-    $("#btnSaveClinicTrans").prop('disabled', true);
-
+    if (masterId) {
+        enableAddNewClinicTransBtn();
+    }
     let mainClinicList = [];
     let subClinicList = [];
     let servList = [];
@@ -64,6 +65,7 @@ function initializeClinicTransTable(masterId, dataLists) {
                 return { flag: 1 };
             },
             dataSrc: function (json) {
+                console.log("data:", json);
                 if (json.error) {
                     alert('Error loading data: ' + json.error);
                     return [];
@@ -90,6 +92,10 @@ function initializeClinicTransTable(masterId, dataLists) {
 
 function getClinicTransColumns(dataLists) {
     return [
+        {
+            data: 'checkId',
+            visible:false
+        },
         {
             data: 'exDate',
             render: function (data, type, row) {
@@ -270,7 +276,7 @@ function getClinicTransColumns(dataLists) {
         {
             data: null,
             render: function (data, type, row) {
-                return `<button class="btn btn-sm btn-danger btn-delete" data-id="${row.checkId}">Delete</button>`;
+                return `<button class="btn btn-sm btn-danger btn-delete" data-id="${row.checkId}"><i class=\"bi bi-trash\"></i></button>`;
             },
             createdCell: function (td) {
                 td.style.minWidth = '100px';
@@ -286,12 +292,14 @@ function setupClinicTransEventHandlers(table, masterId, modifiedRows, dataLists)
     // Track modifications
     $('.clinicTrans-table tbody').on('input change', 'input, select', function () {
         var row = $(this).closest('tr');
-        var checkId = table.row(row).data().checkId;
+        var rowIdx = table.row(row).index();
+        var rowData = table.row(rowIdx).data();
+        var checkId = rowData ? rowData.checkId : undefined;
 
         if (typeof checkId === "number" || (typeof checkId === "string" && !checkId.includes("temp"))) {
             modifiedRows.add(checkId);
             row.addClass('modified-row');
-            $("#btnSaveClinicTrans").prop('disabled', false);
+            enableSaveClinicTransBtn();
         }
 
         updateRowTotal(row);
@@ -303,7 +311,7 @@ function setupClinicTransEventHandlers(table, masterId, modifiedRows, dataLists)
         var newRowData = createNewClinicTransRow(masterId);
         var row = table.row.add(newRowData).draw(false);
         $(table.row(row).node()).addClass('new-row');
-        $("#btnSaveClinicTrans").prop('disabled', false);
+        enableSaveClinicTransBtn();
     });
 
     // Auto-calculate patient value
@@ -582,4 +590,29 @@ async function handleDeleteClinicTrans($deleteBtn, table) {
             }
         }
     }
+}
+
+function hideSpinnerClinicTrans() {
+    // Hide the spinner
+    $('#btnSaveClinicTransSpinner').addClass('d-none');
+}
+
+function showSpinnerClinicTrans() {
+    // Hide the spinner
+    $('#btnSaveClinicTransSpinner').removeClass('d-none');
+}
+
+
+function disableSaveClinicTransBtn() {
+    $('#btnSaveClinicTrans').attr('disabled', 'disabled');
+}
+function enableSaveClinicTransBtn() {
+    $('#btnSaveClinicTrans').removeAttr('disabled');
+}
+
+function disableAddNewClinicTransBtn() {
+    $('#btnAddClinicTransNew').attr('disabled', 'disabled');
+}
+function enableAddNewClinicTransBtn() {
+    $('#btnAddClinicTransNew').removeAttr('disabled');
 }
