@@ -3,6 +3,12 @@
 @{
     ViewData["Title"] = "Price List New";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var jsonSettings = new JsonSerializerSettings
+    {
+        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+    };
+
 }
 
 @inject IViewLocalizer localizer
@@ -31,7 +37,7 @@
 @section Scripts {
     <script>
 
-        var priceLists = @Html.Raw(JsonConvert.SerializeObject(Model.PriceList));
+        var priceLists = @Html.Raw(JsonConvert.SerializeObject(Model.PriceList, jsonSettings));
         var fieldMapping = [
             {
                 title: "كود",
@@ -106,10 +112,10 @@
         });
 
 
-        var priceListDetails = @Html.Raw(JsonConvert.SerializeObject(Model.PriceListDetail));
-        var MainClinic = @Html.Raw(JsonConvert.SerializeObject(Model.MainClinic));
-        var SubClinic = @Html.Raw(JsonConvert.SerializeObject(Model.SubClinic));
-        var Service = @Html.Raw(JsonConvert.SerializeObject(Model.Services));
+        var priceListDetails = @Html.Raw(JsonConvert.SerializeObject(Model.PriceListDetail, jsonSettings));
+        var MainClinic = @Html.Raw(JsonConvert.SerializeObject(Model.MainClinic, jsonSettings));
+        var SubClinic = @Html.Raw(JsonConvert.SerializeObject(Model.SubClinic, jsonSettings));
+        var Service = @Html.Raw(JsonConvert.SerializeObject(Model.Services, jsonSettings));
 
         console.log(MainClinic);
 
@@ -119,6 +125,7 @@
                 title: "",
                 name: 'PLId',
                 type: 'hidden',
+                defualtValue:4
                
             },
             {

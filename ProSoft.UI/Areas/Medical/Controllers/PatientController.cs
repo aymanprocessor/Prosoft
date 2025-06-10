@@ -24,6 +24,11 @@ namespace ProSoft.UI.Areas.Medical.Controllers
             return View(patients);
         }
 
+        public async Task<IActionResult> GetPatients()
+        {
+            List<Pat> patients = await _patRepo.GetAllPatientsAsync();
+            return Json(patients);
+        }
         // Get Add
         public async Task<IActionResult> Add_Patient(string redirect, string controll)
         {

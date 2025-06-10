@@ -18,7 +18,9 @@ namespace ProSoft.EF.IRepositories.Medical.HospitalPatData
         // ----------------- Ayman Saad ----------------- //
 
         Task<List<PatViewDTO>> GetAllPatsAsync();
-		Task<PatEditAddDTO> GetPatientByIdAsync(int id);
+        Task<List<Pat>> GetAllPatientsAsync();
+
+        Task<PatEditAddDTO> GetPatientByIdAsync(int id);
 
         ////////////////////////////////////////////////////
         Task AddPatientAsync(PatEditAddDTO patDTO);

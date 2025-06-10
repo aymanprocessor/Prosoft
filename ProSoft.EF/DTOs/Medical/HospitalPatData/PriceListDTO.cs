@@ -20,7 +20,7 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
         public int? Year { get; set; }
 
         public IEnumerable<PriceList> PriceList { get; set; } = Enumerable.Empty<PriceList>();
-        public IEnumerable<PriceListDetail> PriceListDetail { get; set; } = Enumerable.Empty<PriceListDetail>();
+        public IEnumerable<PriceListDetailDTO> PriceListDetail { get; set; } = Enumerable.Empty<PriceListDetailDTO>();
         public IEnumerable<SelectListItem> MainClinic { get; set; } = Enumerable.Empty<SelectListItem>();
         public IEnumerable<SelectListItem> SubClinic { get; set; } = Enumerable.Empty<SelectListItem>();
         public IEnumerable<SelectListItem> Services { get; set; } = Enumerable.Empty<SelectListItem>();

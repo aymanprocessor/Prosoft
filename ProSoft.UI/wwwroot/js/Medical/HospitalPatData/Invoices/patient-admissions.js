@@ -2,7 +2,7 @@
 
 
 async function GetAdmisson(e, id) {
-
+    console.log("event",e)
     let companyList = [];
     let companyDetailsList = [];
     let departmentList = [];
@@ -52,7 +52,8 @@ function updateActivePatientUI(e, id) {
 
     // Update header
     let patAdmissonHead = document.querySelector(".admission-table-head");
-    let itemName = clickedTarget.querySelector(".item-name").innerText;
+    //let itemName = clickedTarget.querySelector(".item-name").innerText;
+    let itemName = "";
     let patAdmissonHeader = patAdmissonHead.querySelector(".header.pat-admission");
     patAdmissonHeader.innerHTML = "خدمات لرقم الزيارة  : " + itemName;
 
@@ -98,8 +99,9 @@ function getAdmissionsTableColumns(dataLists) {
     return [
         {
             data: 'masterId',
+            defaultContent: null,
             render: function (data, type, row) {
-                return type === 'display' ? `<p class="masterId"  data-field="masterId">${data}</p>` : data;
+                return type === 'display' ? `<p class="masterId" data-field="masterId">${data || ''}</p>` : (data || null);
             },
             createdCell: function (td) {
                 td.style.minWidth = '50px';
@@ -107,8 +109,12 @@ function getAdmissionsTableColumns(dataLists) {
         },
         {
             data: 'patAdDate',
+            defaultContent: null,
             render: function (data, type, row) {
-                return type === 'display' ? `<p class="patAdDate"  data-field="patAdDate">${moment(data).format('DD-MM-YYYY')}</p>` : data;
+                if (type === 'display') {
+                    return data ? `<p class="patAdDate" data-field="patAdDate">${moment(data).format('DD-MM-YYYY')}</p>` : '<p class="patAdDate" data-field="patAdDate"></p>';
+                }
+                return data || null;
             },
             createdCell: function (td) {
                 td.style.minWidth = '120px';
@@ -116,8 +122,9 @@ function getAdmissionsTableColumns(dataLists) {
         },
         {
             data: 'deal',
+            defaultContent: null,
             render: function (data, type, row) {
-                return type === 'display' ? '<div class="loading">Loading...</div>' : data;
+                return type === 'display' ? '<div class="loading">Loading...</div>' : (data || null);
             },
             createdCell: function (td, cellData, rowData) {
                 if (rowData) {
@@ -129,14 +136,13 @@ function getAdmissionsTableColumns(dataLists) {
         },
         {
             data: 'compId',
+            defaultContent: null,
             render: function (data, type, row) {
-                return type === 'display' ? '<div class="loading">Loading...</div>' : data;
+                return type === 'display' ? '<div class="loading">Loading...</div>' : (data || null);
             },
             createdCell: async function (td, cellData, rowData) {
-                if (rowData) {
-                    if (rowData.deal) {
-                        dataLists.companyList = await AjaxHandlers.fetchCompanies(rowData.deal);
-                    }
+                if (rowData?.deal) {
+                    dataLists.companyList = await AjaxHandlers.fetchCompanies(rowData.deal);
                     const content = await DropdownBuilders.buildCompaniesDd(rowData, dataLists.companyList);
                     td.innerHTML = content;
                 }
@@ -145,14 +151,13 @@ function getAdmissionsTableColumns(dataLists) {
         },
         {
             data: 'compIdDtl',
+            defaultContent: null,
             render: function (data, type, row) {
-                return type === 'display' ? '<div class="loading">Loading...</div>' : data;
+                return type === 'display' ? '<div class="loading">Loading...</div>' : (data || null);
             },
             createdCell: async function (td, cellData, rowData) {
-                if (rowData) {
-                    if (rowData.compId) {
-                        dataLists.companyDetailsList = await AjaxHandlers.fetchCompanyDetails(rowData.compId);
-                    }
+                if (rowData?.compId) {
+                    dataLists.companyDetailsList = await AjaxHandlers.fetchCompanyDetails(rowData.compId);
                     const content = await DropdownBuilders.buildCompaniesDtlDd(rowData, dataLists.companyDetailsList);
                     td.innerHTML = content;
                 }
@@ -161,8 +166,9 @@ function getAdmissionsTableColumns(dataLists) {
         },
         {
             data: 'brnachInitial',
+            defaultContent: null,
             render: function (data, type, row) {
-                return type === 'display' ? '<div class="loading">Loading...</div>' : data;
+                return type === 'display' ? '<div class="loading">Loading...</div>' : (data || null);
             },
             createdCell: async function (td, cellData, rowData) {
                 if (rowData) {
@@ -174,14 +180,13 @@ function getAdmissionsTableColumns(dataLists) {
         },
         {
             data: 'sendFr',
+            defaultContent: null,
             render: function (data, type, row) {
-                return type === 'display' ? '<div class="loading">Loading...</div>' : data;
+                return type === 'display' ? '<div class="loading">Loading...</div>' : (data || null);
             },
             createdCell: async function (td, cellData, rowData) {
-                if (rowData) {
-                    if (rowData.brnachInitial) {
-                        dataLists.sectionList = await AjaxHandlers.fetchSections(rowData.brnachInitial);
-                    }
+                if (rowData?.brnachInitial) {
+                    dataLists.sectionList = await AjaxHandlers.fetchSections(rowData.brnachInitial);
                     const content = await DropdownBuilders.buildSectionDd(rowData, dataLists.sectionList);
                     td.innerHTML = content;
                 }
@@ -190,8 +195,9 @@ function getAdmissionsTableColumns(dataLists) {
         },
         {
             data: 'drCode',
+            defaultContent: null,
             render: function (data, type, row) {
-                return type === 'display' ? '<div class="loading">Loading...</div>' : data;
+                return type === 'display' ? '<div class="loading">Loading...</div>' : (data || null);
             },
             createdCell: async function (td, cellData, rowData) {
                 if (rowData) {
@@ -203,56 +209,62 @@ function getAdmissionsTableColumns(dataLists) {
         },
         {
             data: 'patDateExit',
+            defaultContent: null,
             render: function (data, type, row) {
                 if (type === 'display') {
-                    if (!data) return '<input type="date" class="patDateExit" value="" data-field="patDateExit"/>';
-                    let date = moment(data, "DD-MM-YYYY").format('YYYY-MM-DD'); // format to ISO date
+                    if (!data || data == null) {
+                        return '<input type="date" class="patDateExit" value="" data-field="patDateExit"/>';
+                    }
+                    let date = moment(data, "DD-MM-YYYY").format('YYYY-MM-DD');
                     return `<input type="date" class="patDateExit" value="${date}" data-field="patDateExit" data-id="${row.masterId}" />`;
                 }
-                return data;
+                return data || null;
             }
         },
         {
             data: 'patientValue',
+            defaultContent: null,
             render: function (data, type, row) {
                 if (type === 'display') {
-                    return `<input type="number" class="form-control no-spinner" value="${data}" data-field="patientValue" data-id="${row.masterId}" min="0" data-parsley-type="number">`;
+                    return `<input type="number" class="form-control no-spinner" value="${data || ''}" data-field="patientValue" data-id="${row.masterId || ''}" min="0" data-parsley-type="number">`;
                 }
-                return data;
+                return data || null;
             }
-
         },
         {
             data: 'prepaid',
+            defaultContent: null,
             render: function (data, type, row) {
                 if (type === 'display') {
-                    return `<input type="number" class="form-control no-spinner" value="${data}" data-field="prepaid" data-id="${row.masterId}" min="0" data-parsley-type="number">`;
+                    return `<input type="number" class="form-control no-spinner" value="${data || ''}" data-field="prepaid" data-id="${row.masterId || ''}" min="0" data-parsley-type="number">`;
                 }
-                return data;
+                return data || null;
             }
         },
         {
             data: 'mainInvNo',
+            defaultContent: null,
             render: function (data, type, row) {
                 if (type === 'display') {
-                    return `<input type="number" class="form-control no-spinner" value="${data}" data-field="mainInvNo" data-id="${row.masterId}" min="0" data-parsley-type="number">`;
+                    return `<input type="number" class="form-control no-spinner" value="${data || ''}" data-field="mainInvNo" data-id="${row.masterId || ''}" min="0" data-parsley-type="number">`;
                 }
-                return data;
+                return data || null;
             }
         },
         {
             data: 'sessionNo',
+            defaultContent: null,
             render: function (data, type, row) {
                 if (type === 'display') {
-                    return `<input type="number" class="form-control no-spinner" value="${data}" data-field="sessionNo" data-id="${row.masterId}" min="0" max="100" data-parsley-type="number">`;
+                    return `<input type="number" class="form-control no-spinner" value="${data || ''}" data-field="sessionNo" data-id="${row.masterId || ''}" min="0" max="100" data-parsley-type="number">`;
                 }
-                return data;
+                return data || null;
             }
         },
         {
             data: null,
             render: function (data, type, row) {
-                return `<button class="btn btn-sm btn-danger btn-delete" data-id="${row.masterId}"><i class=\"bi bi-trash\"></i></button>`;
+                return `<button class="btn btn-sm btn-danger btn-delete" data-id="${row.masterId || ''}"><i class="bi bi-trash"></i></button>`;
             },
             createdCell: function (td) {
                 td.style.minWidth = '100px';
@@ -260,7 +272,6 @@ function getAdmissionsTableColumns(dataLists) {
         }
     ];
 }
-
 function hideSpinnerPatAdmission() {
     // Hide the spinner
     $('#btnSavePatAdmissionSpinner').addClass('d-none');

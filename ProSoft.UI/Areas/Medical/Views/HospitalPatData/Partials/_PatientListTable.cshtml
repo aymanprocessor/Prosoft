@@ -1,24 +1,27 @@
-﻿@model List<PatViewDTO>
-@inject IViewLocalizer localizer
-
-<div class="table-container patient-table-container">
-    <table id="myTable" class="table table-bordered table-hover" style="width:100%">
+﻿
+<div class="table-container overflow-auto">
+    <table class="table table-bordered table-hover patient-table" style="width:100%" data-parsley-validate="">
         <thead class="table-dark">
             <tr>
-                <th>@localizer["Patient ID"]</th>
-                <th>@localizer["Patient Name"]</th>
-                <th>@localizer["Patient Mobile"]</th>
+                <th class="align-middle">نوع الهوية</th>
+                <th class="align-middle">الرقم القومي</th>
+                <th class="align-middle">اسم المريض</th>
+                <th class="align-middle">رقم الدخول</th>
+                <th class="align-middle">تاريخ الدخول</th>
+                <th class="align-middle">وقت الدخول</th>
+                <th class="align-middle">تاريخ الميلاد</th>
+                <th class="align-middle">العمر</th>
+                <th class="align-middle">الحالة الاجتماعية</th>
+                <th class="align-middle">نوع الجنس</th>
+                <th class="align-middle">العنوان</th>
+                <th class="align-middle">الوظيفة</th>
+                <th class="align-middle">رقم الموبايل</th>
+                <th class="align-middle">المستشفى</th>
+                <th class="align-middle">الإدارة</th>
+                <th class="align-middle">القطاع</th>
+                <th class="align-middle">الإجراءات</th>
             </tr>
         </thead>
-        <tbody>
-            @foreach (var pat in Model)
-            {
-                <tr onclick="GetAdmisson(event,@pat.PatId)" style="cursor:pointer;">
-                    <td>@pat.PatId</td>
-                    <td class="item-name">@pat.PatName</td>
-                    <td>@pat.PatMobile</td>
-                </tr>
-            }
-        </tbody>
+        <tbody></tbody>
     </table>
 </div>

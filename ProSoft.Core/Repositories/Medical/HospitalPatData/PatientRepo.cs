@@ -55,6 +55,11 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             return patientsDTO;
         }
 
+        public async Task<List<Pat>> GetAllPatientsAsync()
+        {
+            List<Pat> patients = await _Context.Pats.ToListAsync();
+            return patients;
+        }
         public async Task AddPatientAsync(PatEditAddDTO patDTO)
         {
             Pat pat = _mapper.Map<Pat>(patDTO);

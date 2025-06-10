@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
+using Newtonsoft.Json;
 using ProSoft.Core.AutoMapper;
 using ProSoft.Core.Repositories;
 using ProSoft.Core.Repositories.Accounts;
@@ -32,6 +33,7 @@ using ProSoft.UI.Areas.Accounts;
 using ProSoft.UI.Localization;
 using System.Globalization;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,11 +58,18 @@ builder.Services.AddScoped(sp =>
 
 // Register for AutoMapper service
 builder.Services.AddAutoMapper(typeof(AutoMap)); //builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-builder.Services.Configure<JsonOptions>(options =>
-{
-    options.SerializerOptions.PropertyNameCaseInsensitive = true;
-    options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-});
+//builder.Services.AddControllers().Configure<JsonOptions>(options =>
+//{
+//    options.SerializerOptions.PropertyNameCaseInsensitive = true;
+//    options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+
+
+//});
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+    });
 //JsonConvert.DefaultSettings = () => new JsonSerializerSettings
 //{
 
@@ -74,6 +83,7 @@ builder.Services.Configure<JsonOptions>(options =>
 
 //    //options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 //});
+
 
 // Register for Identity Package
 builder.Services.AddIdentity<AppUser, IdentityRole>()

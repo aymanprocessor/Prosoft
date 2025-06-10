@@ -45,7 +45,7 @@
             type: 'POST',
             contentType: 'application/json', // Set content type to JSON
             dataType: 'json', // Expected response data type
-            data: data,
+            data:JSON.stringify( data),
             headers: {
                 'RequestVerificationToken': token
             },
@@ -275,7 +275,7 @@
                 console.log("formData", formData);
 
                 sendAjaxRequest(config.deleteUrl,
-                    JSON.stringify(formData),
+                   formData,
                     function (response) {
                         if (response.success) {
                             console.log("Deleted successfully");
@@ -366,7 +366,7 @@
             };
 
             // Send AJAX request with both insert and update data
-            sendAjaxRequest(saveUrl, JSON.stringify(records), function (response) {
+            sendAjaxRequest(saveUrl, records, function (response) {
                 console.log(MESSAGES.successMessage);
 
                 // Reset state of inserted rows
