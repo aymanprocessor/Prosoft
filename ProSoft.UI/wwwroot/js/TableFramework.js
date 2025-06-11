@@ -40,6 +40,7 @@
     function sendAjaxRequest(url, data, successCallback, errorCallback) {
         const token = $('input[name="__RequestVerificationToken"]').attr('value');
         console.log("Data :", data)
+
         $.ajax({
             url: url,
             type: 'POST',
@@ -311,9 +312,12 @@
             $(this).find(SELECTORS.editableInputSelector).each(function () {
                 const fieldName = $(this).data('field-name');
                 let fieldValue = $(this).val();
+
                 const fieldType = $(this).attr('type');
+
                 console.log("FIELD NAME", fieldName);
                 console.log("FIELD VALUE", fieldValue);
+
                 // Type conversions (if necessary)
                 //if (fieldType === 'number') {
                 //    fieldValue = parseFloat(fieldValue);
@@ -325,6 +329,13 @@
 
                 formData[fieldName] = fieldValue === "" || fieldValue === "null" ? null : fieldValue;
             });
+
+            if (saveUrl.includes("SaveRecordPriceListDetail")) {
+                const params = new URLSearchParams(window.location.search);
+                const id = params.get("id");
+     
+                formData["PLId"] = id;
+            }
             formData["PLDtlId"] = 0;
             dataToInsert.push(formData);
         });
@@ -568,7 +579,7 @@
                 tableId: config.tableId,
                 updateUrl: config.updateUrl,
                 deleteUrl: config.deleteUrl,
-                saveUrl: config.deleteUrl,
+                saveUrl: config.saveUrl,
                 fieldMapping: config.fieldMapping,
                 viewButtonEnable: config.viewButtonEnable,
                 viewUrl: config.viewUrl

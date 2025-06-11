@@ -63,11 +63,15 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        
 
-        public async Task<JsonResult> SaveRecordPriceList([FromBody] PriceListRecordsDTO records)
+        public async Task<IActionResult> SaveRecordPriceList([FromBody] PriceListRecordsDTO records)
         {
 
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             if (records == null)
             {
                 return Json(new { success = false, message = "No data received." });

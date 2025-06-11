@@ -1,4 +1,18 @@
-﻿
+﻿@using ProSoft.UI.Global
+@inject IViewLocalizer localizer
+
+<div class="table-header  d-flex justify-content-between">
+    <h2 class="header pateint">المرضى</h2>
+    <div>
+        <a class="btn btn-sm btn-primary fs-6" id="btnAddPateintNew" disabled>
+            @Html.Raw(GlobalConstants.InsertIcon) @localizer["Add New Row"]
+        </a>
+        <a class="btn btn-sm btn-primary fs-6" id="btnSavePateint" disabled>
+            @Html.Raw(GlobalConstants.SaveIcon) @localizer["Save"]
+            <span class="spinner-border spinner-border-sm me-2 spinner-hidden d-none" role="status" aria-hidden="true" id="btnSavePateintSpinner"></span>
+        </a>
+    </div>
+</div>
 <div class="table-container overflow-auto">
     <table class="table table-bordered table-hover patient-table" style="width:100%" data-parsley-validate="">
         <thead class="table-dark">
