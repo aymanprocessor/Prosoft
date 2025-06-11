@@ -12,12 +12,12 @@
 <link rel="stylesheet" href="~/css/Invoices.css" asp-append-version="true" />
 
 <div class="text-center">
-    <h1 class="mb-2">@localizer["Hospital Patient Data For Invoices"]</h1>
+    <h1 class="mb-2 mt-3">@localizer["Hospital Patient Data For Invoices"]</h1>
 </div>
 
 <div class="container pt-2" style="min-height:100vh;">
     <!-- Patient Search Section -->
-    <partial name="Partials/_PatientSearchSection" />
+    @*<partial name="Partials/_PatientSearchSection" />*@
 
     <!-- Patient List Table -->
     <partial name="Partials/_PatientListTable"  />

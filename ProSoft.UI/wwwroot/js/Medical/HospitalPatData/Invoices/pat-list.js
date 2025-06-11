@@ -27,6 +27,7 @@ function initializeTable() {
         paging: true,
         searching: true,
         ordering: true,
+        order:[],
         scrollX: true,
         scrollY: "200px",
         scrollCollapse: true,
@@ -51,11 +52,15 @@ function initializeTable() {
         }
     });
 
-    enableAddNewBtn();
+    enableAddNewPatientBtn();
 }
 
 function getTableColumns() {
     return [
+        {
+            data: 'patId',
+           visible:false,
+        },
         {
             data: 'idType',
             render: function (data, type, row) {
@@ -68,6 +73,10 @@ function getTableColumns() {
                             </select>`;
                 }
                 return data;
+            },
+            createdCell: function (td, cellData, rowData) {
+               
+                td.style.minWidth = '150px';
             }
         },
         {
@@ -77,6 +86,10 @@ function getTableColumns() {
                     return `<input type="text" class="form-control" value="${data || ''}" data-field="patIdCard" data-id="${row.patId}" required>`;
                 }
                 return data;
+            },
+            createdCell: function (td, cellData, rowData) {
+
+                td.style.minWidth = '200px';
             }
         },
         {
@@ -100,6 +113,10 @@ function getTableColumns() {
                     return `<input type="number" class="form-control no-spinner" value="${data || ''}" data-field="entryNo" data-id="${row.patId}" min="1" required>`;
                 }
                 return data;
+            },
+            createdCell: function (td, cellData, rowData) {
+
+                td.style.minWidth = '50px';
             }
         },
         {
@@ -119,7 +136,7 @@ function getTableColumns() {
                     return `<input type="time" class="form-control" value="${data || ''}" data-field="entryTime" data-id="${row.patId}" required>`;
                 }
                 return data;
-            }
+            },
         },
         {
             data: 'birthDate',
@@ -138,6 +155,10 @@ function getTableColumns() {
                     return `<input type="number" class="form-control no-spinner" value="${data || ''}" data-field="newOld" data-id="${row.patId}" min="0" max="150" required>`;
                 }
                 return data;
+            },
+            createdCell: function (td, cellData, rowData) {
+
+                td.style.minWidth = '50px';
             }
         },
         {
@@ -151,6 +172,10 @@ function getTableColumns() {
                             </select>`;
                 }
                 return data;
+            },
+            createdCell: function (td, cellData, rowData) {
+
+                td.style.minWidth = '150px';
             }
         },
         {
@@ -164,6 +189,10 @@ function getTableColumns() {
                             </select>`;
                 }
                 return data;
+            },
+            createdCell: function (td, cellData, rowData) {
+
+                td.style.minWidth = '150px';
             }
         },
         {
@@ -173,6 +202,10 @@ function getTableColumns() {
                     return `<input type="text" class="form-control" value="${data || ''}" data-field="patAddress" data-id="${row.patId}">`;
                 }
                 return data;
+            },
+            createdCell: function (td, cellData, rowData) {
+
+                td.style.minWidth = '200px';
             }
         },
         {
@@ -182,6 +215,10 @@ function getTableColumns() {
                     return `<input type="text" class="form-control" value="${data || ''}" data-field="patJob" data-id="${row.patId}">`;
                 }
                 return data;
+            },
+            createdCell: function (td, cellData, rowData) {
+
+                td.style.minWidth = '150px';
             }
         },
         {
@@ -191,6 +228,10 @@ function getTableColumns() {
                     return `<input type="text" class="form-control" value="${data || ''}" data-field="patMobile" data-id="${row.patId}">`;
                 }
                 return data;
+            },
+            createdCell: function (td, cellData, rowData) {
+
+                td.style.minWidth = '150px';
             }
         },
         {
@@ -200,6 +241,10 @@ function getTableColumns() {
                     return `<input type="text" class="form-control" value="${data || ''}" data-field="patHospital" data-id="${row.patId}">`;
                 }
                 return data;
+            },
+            createdCell: function (td, cellData, rowData) {
+
+                td.style.minWidth = '150px';
             }
         },
         {
@@ -209,6 +254,10 @@ function getTableColumns() {
                     return `<input type="text" class="form-control" value="${data || ''}" data-field="pDep" data-id="${row.patId}">`;
                 }
                 return data;
+            },
+            createdCell: function (td, cellData, rowData) {
+
+                td.style.minWidth = '150px';
             }
         },
         {
@@ -218,6 +267,10 @@ function getTableColumns() {
                     return `<input type="text" class="form-control" value="${data || ''}" data-field="patSector" data-id="${row.patId}">`;
                 }
                 return data;
+            },
+            createdCell: function (td, cellData, rowData) {
+
+                td.style.minWidth = '150px';
             }
         },
         {
@@ -232,11 +285,14 @@ function getTableColumns() {
 }
 
 function setupEventHandlers() {
+
     // Add new row
-    $('#btnAddNew').off('click').on('click', function () {
+    $('#btnAddPatientNew').off('click').on('click', function () {
+        enableBtnSavePateint();
+
         const newId = "temp_" + Math.floor(Math.random() * 1000) + 1;
         const newRowData = {
-            id: newId,
+            patId: newId,
             idType: '',
             patIdCard: '',
             patName: '',
@@ -256,8 +312,14 @@ function setupEventHandlers() {
         };
 
         const row = table.row.add(newRowData).draw(false);
-        $(table.row(row).node()).addClass('new-row');
-        enableSaveBtn();
+        const rowNode = table.row(row).node();
+        $(rowNode).addClass('new-row');
+
+        // Move the row to the top
+        const tbody = table.table().body();
+        $(tbody).prepend(rowNode);
+
+        table.draw(false); // Redraw without changing pagination
     });
 
     // Track modifications
@@ -308,8 +370,8 @@ function setupEventHandlers() {
 }
 
 function handleSave() {
-    showSpinner();
-    disableSaveBtn();
+    showPatientSpinner();
+    disableBtnSavePateint();
 
     try {
         if (!validateData()) {
@@ -331,14 +393,14 @@ function handleSave() {
             $('.new-row').removeClass('new-row');
             modifiedRows.clear();
 
-            hideSpinner();
-            disableSaveBtn();
+            hidePatientSpinner();
+            disableBtnSavePateint();
         }, 1000);
 
     } catch (error) {
         console.error('Error saving data:', error);
         alert('خطأ في حفظ البيانات: ' + error.message);
-        hideSpinner();
+        hidePatientSpinner();
         enableSaveBtn();
     }
 }
@@ -441,26 +503,35 @@ function prepareUpdateData() {
     return updateData;
 }
 
-function showSpinner() {
-    $('#btnSaveSpinner').removeClass('spinner-hidden');
-}
-
-function hideSpinner() {
-    $('#btnSaveSpinner').addClass('spinner-hidden');
-}
-
-function enableSaveBtn() {
-    $('#btnSave').prop('disabled', false);
-}
 
 function disableSaveBtn() {
-    $('#btnSave').prop('disabled', true);
+    $('#btnSavePatAdmission').attr('disabled', 'disabled');
+}
+function enableSaveBtn() {
+    $('#btnSavePatAdmission').removeAttr('disabled');
 }
 
-function enableAddNewBtn() {
-    $('#btnAddNew').prop('disabled', false);
+
+function showPatientSpinner() {
+    $('#btnSavePatientSpinner').removeClass('spinner-hidden');
 }
 
-function disableAddNewBtn() {
-    $('#btnAddNew').prop('disabled', true);
+function hidePatientSpinner() {
+    $('#btnSavePatientSpinner').addClass('spinner-hidden');
+}
+
+function enableBtnSavePateint() {
+    $('#btnSavePatient').removeAttr('disabled');
+}
+
+function disableBtnSavePateint() {
+    $('#btnSavePatient').attr('disabled', 'disabled');
+}
+
+function enableAddNewPatientBtn() {
+    $('#btnAddPatientNew').removeAttr('disabled');
+}
+
+function disableAddNewPatientBtn() {
+    $('#btnAddPatientNew').attr('disabled', 'disabled');
 }
