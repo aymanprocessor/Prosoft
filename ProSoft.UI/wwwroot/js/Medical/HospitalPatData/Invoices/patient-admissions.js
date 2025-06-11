@@ -83,9 +83,10 @@ function initializeAdmissionsTable(patientId, dataLists) {
         paging: true,
         searching: false,
         ordering: true,
-        scrollX: true,
-        scrollY: "200px",
-        scrollCollapse: true,
+        order: []  ,
+        //scrollX: true,
+        //scrollY: "200px",
+        //scrollCollapse: true,
         rowId: function (data) {
             return 'row-' + data.masterId;
         },
@@ -96,6 +97,7 @@ function initializeAdmissionsTable(patientId, dataLists) {
             // Auto-select first row after table is drawn
             var firstRow = this.api().row(0);
             if (firstRow.data()) {
+                console.log(firstRow.data())
                 var $firstRowNode = $(firstRow.node());
                 $firstRowNode.addClass('active-row');
 
@@ -160,9 +162,12 @@ function getAdmissionsTableColumns(dataLists) {
                 return type === 'display' ? '<div class="loading">Loading...</div>' : (data || null);
             },
             createdCell: async function (td, cellData, rowData) {
-                if (rowData?.deal) {
+                if (rowData.deal) {
                     dataLists.companyList = await AjaxHandlers.fetchCompanies(rowData.deal);
                     const content = await DropdownBuilders.buildCompaniesDd(rowData, dataLists.companyList);
+                    td.innerHTML = content;
+                } else {
+                    const content = await DropdownBuilders.buildCompaniesDd(rowData, []);
                     td.innerHTML = content;
                 }
                 td.style.minWidth = '150px';
@@ -179,6 +184,9 @@ function getAdmissionsTableColumns(dataLists) {
                     dataLists.companyDetailsList = await AjaxHandlers.fetchCompanyDetails(rowData.compId);
                     const content = await DropdownBuilders.buildCompaniesDtlDd(rowData, dataLists.companyDetailsList);
                     td.innerHTML = content;
+                } else {
+                    const content = await DropdownBuilders.buildCompaniesDtlDd(rowData, []);
+                    td.innerHTML = content;
                 }
                 td.style.minWidth = '150px';
             }
@@ -189,9 +197,12 @@ function getAdmissionsTableColumns(dataLists) {
             render: function (data, type, row) {
                 return type === 'display' ? '<div class="loading">Loading...</div>' : (data || null);
             },
-            createdCell: async function (td, cellData, rowData) {
+            createdCell:  function (td, cellData, rowData) {
                 if (rowData) {
-                    const content = await DropdownBuilders.buildDepartmentDd(rowData, dataLists.departmentList);
+                    const content = DropdownBuilders.buildDepartmentDd(rowData, dataLists.departmentList);
+                    td.innerHTML = content;
+                } else {
+                    const content = DropdownBuilders.buildDepartmentDd(rowData, []);
                     td.innerHTML = content;
                 }
                 td.style.minWidth = '150px';
@@ -206,7 +217,10 @@ function getAdmissionsTableColumns(dataLists) {
             createdCell: async function (td, cellData, rowData) {
                 if (rowData?.brnachInitial) {
                     dataLists.sectionList = await AjaxHandlers.fetchSections(rowData.brnachInitial);
-                    const content = await DropdownBuilders.buildSectionDd(rowData, dataLists.sectionList);
+                    const content = DropdownBuilders.buildSectionDd(rowData, dataLists.sectionList);
+                    td.innerHTML = content;
+                } else {
+                    const content = DropdownBuilders.buildSectionDd(rowData, []);
                     td.innerHTML = content;
                 }
                 td.style.minWidth = '150px';
@@ -220,7 +234,7 @@ function getAdmissionsTableColumns(dataLists) {
             },
             createdCell: async function (td, cellData, rowData) {
                 if (rowData) {
-                    const content = await DropdownBuilders.buildDoctorDd(rowData, dataLists.doctorList);
+                    const content = DropdownBuilders.buildDoctorDd(rowData, dataLists.doctorList);
                     td.innerHTML = content;
                 }
                 td.style.minWidth = '150px';
@@ -387,7 +401,7 @@ function setupAdmissionsEventHandlers(table, patientId, dataLists) {
 function setupCascadeDropdownsAdmission(dataLists) {
     // Deal Dropdown
 
-    $('.admisson-table tbody').on('change', '.deal-dropdown', async function () {
+    $(document).off('change', '.admisson-table .deal-dropdown').on('change', '.admisson-table .deal-dropdown', async function () {
         let selectedDeal = $(this).val();
         let rowId = $(this).data('id');
         let $compIdSelect = $(`.compId-dropdown[data-id="${rowId}"]`);

@@ -79,9 +79,10 @@ function initializeClinicTransTable(masterId, dataLists) {
         paging: true,
         searching: false,
         ordering: true,
-        scrollX: true,
-        scrollY: "200px", // Show 3 rows height with vertical scroll
-        scrollCollapse: true,
+        order: [],
+        //scrollX: true,
+        //scrollY: "200px", // Show 3 rows height with vertical scroll
+        //scrollCollapse: true,
 
         rowId: function (data) {
             return 'row-' + data.checkId;
