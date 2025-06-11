@@ -83,12 +83,31 @@ function initializeAdmissionsTable(patientId, dataLists) {
         paging: true,
         searching: false,
         ordering: true,
+        scrollX: true,
+        scrollY: "200px",
+        scrollCollapse: true,
         rowId: function (data) {
             return 'row-' + data.masterId;
         },
         dom: 'Bfrtip',
         buttons: ['copy', 'excel', 'pdf', 'print'],
-        language: getDataTableLanguage()
+        language: getDataTableLanguage(),
+        drawCallback: function () {
+            // Auto-select first row after table is drawn
+            var firstRow = this.api().row(0);
+            if (firstRow.data()) {
+                var $firstRowNode = $(firstRow.node());
+                $firstRowNode.addClass('active-row');
+
+                // Auto-trigger click on first admission to load clinic transactions
+                setTimeout(() => {
+                    var firstRowData = firstRow.data();
+                    if (firstRowData && firstRowData.masterId) {
+                        GetClinicTrans({ target: $firstRowNode.find('td:first')[0] }, firstRowData.masterId);
+                    }
+                }, 100);
+            }
+        }
     });
 
     // Setup event handlers
@@ -627,16 +646,21 @@ function patAdmissionPrepareUpdateData(table,patientId) {
 
 function getDataTableLanguage() {
     return {
-        search: "Search:",
-        lengthMenu: "Show _MENU_ entries",
-        info: "Showing _START_ to _END_ of _TOTAL_ entries",
-        infoEmpty: "Showing 0 to 0 of 0 entries",
-        infoFiltered: "(filtered from _MAX_ total entries)",
+       
         paginate: {
-            first: "First",
-            last: "Last",
-            next: "Next",
-            previous: "Previous"
-        }
+            first: "الأول",
+            last: "الأخير",
+            next: "التالي",
+            previous: "السابق"
+        },
+        search: "البحث:",
+        info: "عرض _START_ إلى _END_ من أصل _TOTAL_ عنصر",
+        infoEmpty: "عرض 0 إلى 0 من أصل 0 عنصر",
+        infoFiltered: "(مرشح من _MAX_ إجمالي العناصر)",
+        lengthMenu: "عرض _MENU_ عنصر",
+        zeroRecords: "لا توجد سجلات مطابقة",
+        emptyTable: "لا توجد بيانات متاحة في الجدول",
+        loadingRecords: "جاري التحميل...",
+        processing: "جاري المعالجة..."
     };
 }

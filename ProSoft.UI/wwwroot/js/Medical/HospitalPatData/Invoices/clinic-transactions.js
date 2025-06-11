@@ -75,15 +75,28 @@ function initializeClinicTransTable(masterId, dataLists) {
             }
         },
         columns: getClinicTransColumns(dataLists),
+        pageLength: 10,
         paging: true,
         searching: false,
         ordering: true,
+        scrollX: true,
+        scrollY: "200px", // Show 3 rows height with vertical scroll
+        scrollCollapse: true,
+
         rowId: function (data) {
             return 'row-' + data.checkId;
         },
         dom: 'Bfrtip',
         buttons: ['copy', 'excel', 'pdf', 'print'],
-        language: getDataTableLanguage()
+        language: getDataTableLanguage(),
+        drawCallback: function () {
+            // Auto-select first row after table is drawn
+            var firstRow = this.api().row(0);
+            if (firstRow.data()) {
+                var $firstRowNode = $(firstRow.node());
+                $firstRowNode.addClass('active-row');
+            }
+        }
     });
 
     // Setup event handlers

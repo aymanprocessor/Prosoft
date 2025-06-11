@@ -27,6 +27,9 @@ function initializeTable() {
         paging: true,
         searching: true,
         ordering: true,
+        scrollX: true,
+        scrollY: "200px",
+        scrollCollapse: true,
         rowId: function (data) {
             console.log("id",data.patId)
             return 'row-' + data.patId;
