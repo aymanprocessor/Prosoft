@@ -505,7 +505,9 @@ async function handleSavePatAdmission(table, patientId) {
         $('.modified-row').removeClass('modified-row');
         $('.new-row').removeClass('new-row');
    
+        disableSaveBtn();
         table.ajax.reload();
+
 
     } catch (error) {
 
@@ -536,8 +538,9 @@ async function handleSavePatAdmission(table, patientId) {
         }
 
         console.error('Detailed error:', error);
+        enableSaveBtn();
+
     } finally {
-        disableSaveBtn();
         hideSpinnerPatAdmission();
     }
 }

@@ -27,12 +27,11 @@ function initializeTable() {
         paging: true,
         searching: true,
         ordering: true,
-        order:[],
+        order: [],
         scrollX: true,
         scrollY: "200px",
         scrollCollapse: true,
         rowId: function (data) {
-            console.log("id",data.patId)
             return 'row-' + data.patId;
         },
         dom: 'Bfrtip',
@@ -59,7 +58,10 @@ function getTableColumns() {
     return [
         {
             data: 'patId',
-           visible:false,
+            render: function (data, type, row) {
+               
+                return `<p value="${data} data-field="patId" data-id="${row.patId}">${data}</p>`;
+            },
         },
         {
             data: 'idType',
@@ -75,7 +77,7 @@ function getTableColumns() {
                 return data;
             },
             createdCell: function (td, cellData, rowData) {
-               
+
                 td.style.minWidth = '150px';
             }
         },
@@ -101,7 +103,7 @@ function getTableColumns() {
                 return data;
             },
             createdCell: async function (td, cellData, rowData) {
-             
+
                 td.style.minWidth = '150px';
             }
 
@@ -124,28 +126,47 @@ function getTableColumns() {
             render: function (data, type, row) {
                 if (type === 'display') {
                     const maxDate = moment().format('YYYY-MM-DD');
-                    return `<input type="date" class="form-control" value="${data || ''}" data-field="entryDate" data-id="${row.patId}" max="${maxDate}" required>`;
+                    const date = moment(data).format('YYYY-MM-DD');
+                    return `<input type="date" class="form-control" value="${date || ''}" data-field="entryDate" data-id="${row.patId}" max="${maxDate}" required>`;
                 }
                 return data;
+            },
+            createdCell: async function (td, cellData, rowData) {
+
+                td.style.minWidth = '180px';
             }
         },
         {
             data: 'entryTime',
             render: function (data, type, row) {
                 if (type === 'display') {
-                    return `<input type="time" class="form-control" value="${data || ''}" data-field="entryTime" data-id="${row.patId}" required>`;
+                    const date = moment(data).format("HH:mm");
+
+                    return `<input type="time" class="form-control" value="${date || ''}" data-field="entryTime" data-id="${row.patId}" required>`;
                 }
                 return data;
             },
+
+            createdCell: async function (td, cellData, rowData) {
+
+                td.style.minWidth = '130px';
+            }
         },
         {
             data: 'birthDate',
             render: function (data, type, row) {
                 if (type === 'display') {
                     const maxDate = moment().format('YYYY-MM-DD');
-                    return `<input type="date" class="form-control" value="${data || ''}" data-field="birthDate" data-id="${row.patId}" max="${maxDate}" required>`;
+                    const date = moment(data).format("YYYY-MM-DD");
+
+                    return `<input type="date" class="form-control" value="${date || ''}" data-field="birthDate" data-id="${row.patId}" max="${maxDate}" required>`;
                 }
                 return data;
+            },
+
+            createdCell: async function (td, cellData, rowData) {
+
+                td.style.minWidth = '180px';
             }
         },
         {
@@ -158,7 +179,7 @@ function getTableColumns() {
             },
             createdCell: function (td, cellData, rowData) {
 
-                td.style.minWidth = '50px';
+                td.style.minWidth = '100px';
             }
         },
         {
@@ -326,17 +347,17 @@ function setupEventHandlers() {
     $('.patient-table tbody').on('input change', 'input, select', function () {
         const row = $(this).closest('tr');
         const rowData = table.row(row).data();
-        const id = rowData ? rowData.id : undefined;
+        const id = rowData ? rowData.patId : undefined;
 
-        if (typeof id === "number" || (typeof id === "string" && !id.includes("temp"))) {
+        if (typeof id === "number"  || (typeof id === "string" && !id.includes("temp"))) {
             modifiedRows.add(id);
             row.addClass('modified-row');
         }
-        enableSaveBtn();
+        enableBtnSavePateint();
     });
 
     // Save button
-    $('#btnSave').off('click').on('click', function () {
+    $('#btnSavePatient').off('click').on('click', function () {
         handleSave();
     });
 
@@ -365,11 +386,12 @@ function setupEventHandlers() {
         var rowData = table.row(this).data();
         if (rowData && rowData.patId) {
             const syntheticEvent = { target: $(this).find('td').first()[0] };
-            GetAdmisson(syntheticEvent, rowData.patId);        }
+            GetAdmisson(syntheticEvent, rowData.patId);
+        }
     });
 }
 
-function handleSave() {
+async function handleSave(patId) {
     showPatientSpinner();
     disableBtnSavePateint();
 
@@ -378,30 +400,34 @@ function handleSave() {
             throw new Error('Validation failed');
         }
 
-        const insertData = prepareInsertData();
-        const updateData = prepareUpdateData();
+        const insertData = prepareInsertDataPat();
+        const updateData = prepareUpdateDataPat();
 
         console.log('Insert Data:', insertData);
         console.log('Update Data:', updateData);
 
-        // Simulate API calls
-        setTimeout(() => {
-            alert('تم حفظ البيانات بنجاح');
+        if (insertData.length > 0) {
 
-            // Clean up
-            $('.modified-row').removeClass('modified-row');
-            $('.new-row').removeClass('new-row');
-            modifiedRows.clear();
+            await AjaxHandlers.savePatientRows(insertData);
+        }
 
-            hidePatientSpinner();
-            disableBtnSavePateint();
-        }, 1000);
+        if (updateData.length > 0) {
+            await AjaxHandlers.updatePatientRows(updateData);
+        }
+
+
+        // Clean up
+        $('.modified-row').removeClass('modified-row');
+        $('.new-row').removeClass('new-row');
+        modifiedRows.clear();
+
+        hidePatientSpinner();
+        disableBtnSavePateint();
 
     } catch (error) {
         console.error('Error saving data:', error);
-        alert('خطأ في حفظ البيانات: ' + error.message);
         hidePatientSpinner();
-        enableSaveBtn();
+        enableBtnSavePateint();
     }
 }
 
@@ -409,9 +435,11 @@ function handleDelete($deleteBtn) {
     const id = $deleteBtn.data('id');
 
     if (typeof id === "string" && id.includes("temp")) {
+
         // Delete temporary row
         const row = table.row($deleteBtn.closest('tr'));
         row.remove().draw(false);
+
     } else {
         // Delete existing row
         if (confirm('هل تريد حذف هذا الصف؟')) {
@@ -436,8 +464,10 @@ function validateData() {
     $('.new-row').each(function () {
         $(this).find('input[required], select[required]').each(function () {
             if (!$(this).val()) {
+
                 $(this).addClass('is-invalid');
                 isValid = false;
+
             } else {
                 $(this).removeClass('is-invalid');
             }
@@ -448,8 +478,10 @@ function validateData() {
     $('.modified-row').not('.new-row').each(function () {
         $(this).find('input[required], select[required]').each(function () {
             if (!$(this).val()) {
+
                 $(this).addClass('is-invalid');
                 isValid = false;
+
             } else {
                 $(this).removeClass('is-invalid');
             }
@@ -459,7 +491,7 @@ function validateData() {
     return isValid;
 }
 
-function prepareInsertData() {
+function prepareInsertDataPat() {
     const insertData = [];
 
     $('.new-row').each(function () {
@@ -470,7 +502,18 @@ function prepareInsertData() {
             const field = $(this).data('field');
             const value = $(this).val();
             if (field) {
-                data[field] = value;
+                if (field === 'entryTime' && value) {
+
+                    // Get the entry date for the same row
+                    const entryDate = row.find('input[data-field="entryDate"]').val() || moment().format('YYYY-MM-DD');
+
+                    // Combine date and time, then convert to ISO string
+                    const dateTimeString = `${entryDate}T${value}:00`;
+
+                    data[field] = new Date(dateTimeString).toISOString();
+                } else {
+                    data[field] = value;
+                }
             }
         });
 
@@ -480,7 +523,7 @@ function prepareInsertData() {
     return insertData;
 }
 
-function prepareUpdateData() {
+function prepareUpdateDataPat() {
     const updateData = [];
 
     $('.modified-row').not('.new-row').each(function () {
@@ -492,8 +535,18 @@ function prepareUpdateData() {
             const value = $(this).val();
             const id = $(this).data('id');
             if (field) {
-                data[field] = value;
-                data.id = id;
+                // Convert entry time to ISO string
+                if (field === 'entryTime' && value) {
+                    // Get the entry date for the same row
+                    const entryDate = row.find('input[data-field="entryDate"]').val() || moment().format('YYYY-MM-DD');
+                    // Combine date and time, then convert to ISO string
+                    const dateTimeString = `${entryDate}T${value}:00`;
+                    data[field] = new Date(dateTimeString).toISOString();
+                } else {
+                    data[field] = value;
+                }
+                const patId = table.row(row).data().patId;
+                data.patId = patId;
             }
         });
 
@@ -504,12 +557,6 @@ function prepareUpdateData() {
 }
 
 
-function disableSaveBtn() {
-    $('#btnSavePatAdmission').attr('disabled', 'disabled');
-}
-function enableSaveBtn() {
-    $('#btnSavePatAdmission').removeAttr('disabled');
-}
 
 
 function showPatientSpinner() {

@@ -300,8 +300,11 @@ function getClinicTransColumns(dataLists) {
 }
 
 function setupClinicTransEventHandlers(table, masterId, modifiedRows, dataLists) {
+
     // Cascade dropdown changes
     setupCascadeDropdowns(dataLists);
+
+
 
     // Track modifications
     $('.clinicTrans-table tbody').on('input change', 'input, select', function () {
@@ -458,8 +461,8 @@ async function handleSaveClinicTrans(table, masterId, modifiedRows) {
         }
 
         // Prepare data
-        var insertData = prepareInsertData(table, masterId);
-        var updateData = prepareUpdateData(table, masterId, modifiedRows);
+        var insertData = prepareInsertDataClinic(table, masterId);
+        var updateData = prepareUpdateDataClinic(table, masterId, modifiedRows);
 
         // Save data
         if (insertData.length > 0) {
@@ -475,12 +478,14 @@ async function handleSaveClinicTrans(table, masterId, modifiedRows) {
         $('.new-row').removeClass('new-row');
         modifiedRows.clear();
         table.ajax.reload();
+        disableSaveClinicTransBtn();
 
     } catch (error) {
-        alert('Error saving data: ' + error.message);
+        console.log('Error saving data: ' + error.message);
+        enableSaveClinicTransBtn();
+
     } finally {
-        $btn.prop('disabled', false);
-        $spinner.hide();
+        hideSpinnerClinicTrans();
     }
 }
 
@@ -520,7 +525,7 @@ function validateClinicTransData() {
     return isValid;
 }
 
-function prepareInsertData(table, masterId) {
+function prepareInsertDataClinic(table, masterId) {
     var insertData = [];
     table.rows('.new-row').every(function () {
         var row = $(this.node());
@@ -553,7 +558,7 @@ function prepareInsertData(table, masterId) {
     return insertData;
 }
 
-function prepareUpdateData(table, masterId, modifiedRows) {
+function prepareUpdateDataClinic(table, masterId, modifiedRows) {
     var updateData = [];
     $('.modified-row').not('.new-row').each(function () {
         var row = $(this);

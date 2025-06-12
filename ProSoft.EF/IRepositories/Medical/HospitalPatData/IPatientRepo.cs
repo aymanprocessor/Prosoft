@@ -24,7 +24,9 @@ namespace ProSoft.EF.IRepositories.Medical.HospitalPatData
 
         ////////////////////////////////////////////////////
         Task AddPatientAsync(PatEditAddDTO patDTO);
+        Task AddBatchPatientsAsync(List<PatEditAddDTO> patDTOs);
         Task EditPatientAsync(int id, PatEditAddDTO patientDTO);
+        Task EditBatchPatientsAsync(List<PatEditAddDTO> patientDTOs);
         Task DeletePatientAsync(int id);
 
 

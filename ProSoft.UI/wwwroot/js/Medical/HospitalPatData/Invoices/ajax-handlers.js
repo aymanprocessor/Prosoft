@@ -125,7 +125,36 @@ const AjaxHandlers = {
             return [];
         }
     },
-
+    
+    async savePatientRows(insertData) {
+        try {
+            const response = await $.ajax({
+                url: '/Medical/Patient/SaveRows',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(insertData)
+            });
+            return response;
+        } catch (error) {
+            console.error('Error saving Pat Admission rows:', error);
+            throw error;
+        }
+    },
+    // Save Clinic Transaction Rows
+    async savePatAdmissionRows(insertData) {
+        try {
+            const response = await $.ajax({
+                url: '/Medical/PatAdmission/SaveRows',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(insertData)
+            });
+            return response;
+        } catch (error) {
+            console.error('Error saving Pat Admission rows:', error);
+            throw error;
+        }
+    },
     // Save Clinic Transaction Rows
     async saveClinicTransRows(insertData) {
         try {
@@ -142,18 +171,17 @@ const AjaxHandlers = {
         }
     },
 
-    // Update Clinic Transaction Rows
-    async updateClinicTransRows(updateData) {
+    async updatePatientRows(updateData) {
         try {
             const response = await $.ajax({
-                url: '/Medical/ClinicTrans/UpdateRows',
+                url: '/Medical/Patient/UpdateRows',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(updateData)
             });
             return response;
         } catch (error) {
-            console.error('Error updating clinic trans rows:', error);
+            console.error('Error updating rows:', error);
             throw error;
         }
     },
@@ -169,10 +197,61 @@ const AjaxHandlers = {
             });
             return response;
         } catch (error) {
-            console.error('Error updating clinic trans rows:', error);
+            console.error('Error updating rows:', error);
             throw error;
         }
     },
+
+    // Update Clinic Transaction Rows
+    async updateClinicTransRows(updateData) {
+        try {
+            const response = await $.ajax({
+                url: '/Medical/ClinicTrans/UpdateRows',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(updateData)
+            });
+            return response;
+        } catch (error) {
+            console.error('Error updating rows:', error);
+            throw error;
+        }
+    },
+    async deletePatient(Id) {
+        try {
+            const response = await $.ajax({
+                url: '/Medical/Patient/Delete_Patient',
+                type: 'POST',
+                data: {
+                    id: Id,
+                  
+                }
+            });
+            return response;
+        } catch (error) {
+            console.error('Error deleting :', error);
+            throw error;
+        }
+    },
+   
+    // Delete Pat Admission
+    async deletePatAdmission(Id) {
+        try {
+            const response = await $.ajax({
+                url: '/Medical/PatAdmission/Delete_PatientAdmission',
+                type: 'POST',
+                data: {
+                    id: Id,
+                    redirect: 'Invoices'
+                }
+            });
+            return response;
+        } catch (error) {
+            console.error('Error deleting :', error);
+            throw error;
+        }
+    },
+
     // Delete Clinic Transaction
     async deleteClinicTransaction(checkId) {
         try {
@@ -186,43 +265,10 @@ const AjaxHandlers = {
             });
             return response;
         } catch (error) {
-            console.error('Error deleting clinic transaction:', error);
+            console.error('Error deleting :', error);
             throw error;
         }
     },
 
-    // Delete Pat Admission
-    async deletePatAdmission(Id) {
-        try {
-            const response = await $.ajax({
-                url: '/Medical/PatAdmission/Delete_PatientAdmission',
-                type: 'POST',
-                data: {
-                    id: Id,
-                    redirect: 'Invoices'
-
-                   }
-            });
-            return response;
-        } catch (error) {
-            console.error('Error deleting clinic transaction:', error);
-            throw error;
-        }
-    },
-
-    // Save Clinic Transaction Rows
-    async savePatAdmissionRows(insertData) {
-        try {
-            const response = await $.ajax({
-                url: '/Medical/PatAdmission/SaveRows',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(insertData)
-            });
-            return response;
-        } catch (error) {
-            console.error('Error saving Pat Admission rows:', error);
-            throw error;
-        }
-    },
+  
 };

@@ -10,6 +10,7 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
 {
     public class PatEditAddDTO
     {
+        public int? PatId {  get; set; }
         [DisplayName("Patient SSN")]
         [RegularExpression("^[0-9]{14}$", ErrorMessage = "National Id must be 14 digit")]
         public double PatIdCard { get; set; }
