@@ -92,7 +92,6 @@ namespace ProSoft.UI.Areas.Medical.Controllers
 
         //Delete ClinicTrans 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete_Patient(int id)
         {
             await _patRepo.DeletePatientAsync(id);

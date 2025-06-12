@@ -84,9 +84,9 @@ function initializeAdmissionsTable(patientId, dataLists) {
         searching: false,
         ordering: true,
         order: []  ,
-        //scrollX: true,
-        //scrollY: "200px",
-        //scrollCollapse: true,
+        scrollX: true,
+        scrollY: "200px",
+        scrollCollapse: true,
         rowId: function (data) {
             return 'row-' + data.masterId;
         },
@@ -358,6 +358,8 @@ function setupAdmissionsEventHandlers(table, patientId, dataLists) {
         var row = table.row.add(newRowData).draw(false);
         $(table.row(row).node()).addClass('new-row');
         enableSaveBtn();
+        // Scroll to top to show new rows
+        $('.dt-scroll-body').scrollTop($('.dt-scroll-body')[0].scrollHeight);
     });
 
     // Track modifications
@@ -567,37 +569,34 @@ async function handleDeletePatAdmission($deleteBtn, table) {
 }
 
 function validatePatAdmissionData() {
-    var isValid = true;
-    var patAdmissionValidation = $('.admisson-table').parsley({
-        errorClass: 'is-invalid',
-        successClass: 'is-valid',
-        errorsWrapper: '<div class="invalid-feedback"></div>',
-        errorTemplate: '<span></span>'
-    });
+    const tableSelector = ".admisson-table";
+    const validation = ValidationManager.init(tableSelector);
+
+    let isValid = true;
 
     // Validate new rows
-    $('.new-row').each(function () {
-        $(this).find('input, select').each(function () {
-            if (!patAdmissionValidation.validate()) {
+    $(`${tableSelector} .new-row`).each(function () {
+        const $row = $(this);
+        const $requiredFields = $row.find('[required]');
+
+        $requiredFields.each(function () {
+            if (!$(this).parsley().validate()) {
                 isValid = false;
-                return false;
             }
         });
-        if (!isValid) return false;
     });
 
     // Validate modified rows
-    if (isValid) {
-        $('.modified-row').not('.new-row').each(function () {
-            $(this).find('input, select').each(function () {
-                if (!patAdmissionValidation.validate()) {
-                    isValid = false;
-                    return false;
-                }
-            });
-            if (!isValid) return false;
+    $(`${tableSelector} .modified-row`).not('.new-row').each(function () {
+        const $row = $(this);
+        const $requiredFields = $row.find('[required]');
+
+        $requiredFields.each(function () {
+            if (!$(this).parsley().validate()) {
+                isValid = false;
+            }
         });
-    }
+    });
 
     return isValid;
 }

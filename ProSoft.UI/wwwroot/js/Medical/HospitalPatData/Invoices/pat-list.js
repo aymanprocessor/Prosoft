@@ -27,7 +27,6 @@ function initializeTable() {
         paging: true,
         searching: true,
         ordering: true,
-        order: [],
         scrollX: true,
         scrollY: "200px",
         scrollCollapse: true,
@@ -336,11 +335,10 @@ function setupEventHandlers() {
         const rowNode = table.row(row).node();
         $(rowNode).addClass('new-row');
 
-        // Move the row to the top
-        const tbody = table.table().body();
-        $(tbody).prepend(rowNode);
-
-        table.draw(false); // Redraw without changing pagination
+   
+        // Scroll to top to show new rows
+        $('.dt-scroll-body').scrollTop($('.dt-scroll-body')[0].scrollHeight);
+  
     });
 
     // Track modifications
@@ -391,12 +389,12 @@ function setupEventHandlers() {
     });
 }
 
-async function handleSave(patId) {
+async function handleSave() {
     showPatientSpinner();
     disableBtnSavePateint();
 
     try {
-        if (!validateData()) {
+        if (!patientValidateData()) {
             throw new Error('Validation failed');
         }
 
@@ -431,7 +429,7 @@ async function handleSave(patId) {
     }
 }
 
-function handleDelete($deleteBtn) {
+async function handleDelete($deleteBtn) {
     const id = $deleteBtn.data('id');
 
     if (typeof id === "string" && id.includes("temp")) {
@@ -443,47 +441,42 @@ function handleDelete($deleteBtn) {
     } else {
         // Delete existing row
         if (confirm('هل تريد حذف هذا الصف؟')) {
-            const row = table.row($deleteBtn.closest('tr'));
-            row.remove().draw(false);
-            console.log('Deleted patient with ID:', id);
+            try {
+                await AjaxHandlers.deletePatient(id);
+                table.ajax.reload();
+            } catch (error) {
+                console.log('Error deleting item: ' + error.message);
+            }
         }
     }
 }
 
-function validateData() {
-    const validation = $('.patient-table').parsley({
-        errorClass: 'is-invalid',
-        successClass: 'is-valid',
-        errorsWrapper: '<div class="invalid-feedback"></div>',
-        errorTemplate: '<span></span>'
-    });
+function patientValidateData() {
+    const tableSelector = ".patient-table";
+    const validation = ValidationManager.init(tableSelector);
 
     let isValid = true;
 
     // Validate new rows
-    $('.new-row').each(function () {
-        $(this).find('input[required], select[required]').each(function () {
-            if (!$(this).val()) {
+    $(`${tableSelector} .new-row`).each(function () {
+        const $row = $(this);
+        const $requiredFields = $row.find('[required]');
 
-                $(this).addClass('is-invalid');
+        $requiredFields.each(function () {
+            if (!$(this).parsley().validate()) {
                 isValid = false;
-
-            } else {
-                $(this).removeClass('is-invalid');
             }
         });
     });
 
     // Validate modified rows
-    $('.modified-row').not('.new-row').each(function () {
-        $(this).find('input[required], select[required]').each(function () {
-            if (!$(this).val()) {
+    $(`${tableSelector} .modified-row`).not('.new-row').each(function () {
+        const $row = $(this);
+        const $requiredFields = $row.find('[required]');
 
-                $(this).addClass('is-invalid');
+        $requiredFields.each(function () {
+            if (!$(this).parsley().validate()) {
                 isValid = false;
-
-            } else {
-                $(this).removeClass('is-invalid');
             }
         });
     });
