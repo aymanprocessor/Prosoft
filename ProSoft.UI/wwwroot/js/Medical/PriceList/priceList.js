@@ -31,6 +31,8 @@
             type: "GET",
             dataSrc: function (json) {
                 console.log('AJAX response:', json);
+                console.log('First item structure:', json[0]);
+                console.log('Available properties:', Object.keys(json[0] || {}));
 
                 return json;
               

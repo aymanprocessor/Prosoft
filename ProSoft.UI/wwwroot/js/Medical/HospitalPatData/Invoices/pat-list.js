@@ -84,7 +84,16 @@ function getTableColumns() {
             data: 'patIdCard',
             render: function (data, type, row) {
                 if (type === 'display') {
-                    return `<input type="text" class="form-control" value="${data || ''}" data-field="patIdCard" data-id="${row.patId}" required>`;
+                    return `<input type="text" class="form-control" value="${data || ''}" data-field="patIdCard" data-id="${row.patId}" pattern="\\d{14}"
+                          required      
+                          data-parsley-length="[14,14]"
+                          data-parsley-type="digits"
+                          data-parsley-trigger="change"
+                          maxlength="14"
+                          data-parsley-required-message="الرقم القومي مطلوب"
+                          data-parsley-type-message="يجب إدخال أرقام فقط"
+                          data-parsley-length-message="يجب أن يكون الرقم القومي 14 رقمًا"
+                          >`;
                 }
                 return data;
             },
@@ -504,7 +513,9 @@ function prepareInsertDataPat() {
                     const dateTimeString = `${entryDate}T${value}:00`;
 
                     data[field] = new Date(dateTimeString).toISOString();
-                } else {
+                }
+             
+                else {
                     data[field] = value;
                 }
             }
