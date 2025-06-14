@@ -42,15 +42,16 @@ namespace ProSoft.UI.Areas.Medical.Controllers
             PriceListDTO priceListDTO = new() { PriceList = priceLists, PriceListDetail = priceListDetail, MainClinic = mainClinics, SubClinic = subClinics, Services = services };
             return View(priceListDTO);
         }
-        [HttpGet]
 
-        public async Task<JsonResult> GetPriceList()
+        [HttpGet]
+        public async Task<IActionResult> GetPriceList()
         {
-            var priceList = await _priceListRepo.GetAllAsync();
-            return Json(new { success = true, data = priceList });
+            List<PriceList> priceList = await _priceListRepo.GetAllAsync();
+            return Json( priceList );
         }
-        [HttpGet]
 
+
+        [HttpGet]
         public async Task<IActionResult> GetPriceListDetail(int id)
         {
             if (id == 0)
@@ -59,7 +60,7 @@ namespace ProSoft.UI.Areas.Medical.Controllers
 
             }
             var priceListDetail = await _termsPriceListRepo.GetAllAsync();
-            return Json(new { success = true, data = priceListDetail.Where(x => x.PLId == id).ToList() });
+            return Json(priceListDetail.Where(x => x.PLId == id).ToList());
         }
 
         [HttpPost]
@@ -72,6 +73,7 @@ namespace ProSoft.UI.Areas.Medical.Controllers
             {
                 return BadRequest(ModelState);
             }
+
             if (records == null)
             {
                 return Json(new { success = false, message = "No data received." });

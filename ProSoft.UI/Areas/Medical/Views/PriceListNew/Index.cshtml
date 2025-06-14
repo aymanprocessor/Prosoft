@@ -1,313 +1,74 @@
 ﻿@using Newtonsoft.Json
 @model PriceListDTO
 @{
-    ViewData["Title"] = "Price List New";
+    ViewData["Title"] = "Price List";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     var jsonSettings = new JsonSerializerSettings
     {
         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
     };
-
 }
 
 @inject IViewLocalizer localizer
 
-@Html.AntiForgeryToken()
+
+<!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css">
+
 <div class="container">
     <div class="border mt-5 p-3">
-
-
         <div class="table-responsive">
-            <div id="PriceList"></div>
+            <table id="PriceList" class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>كود</th>
+                        <th>اسم القائمة</th>
+                        <th>نوع القائمة</th>
+                        <th>تاريخ القائمة</th>
+                        <th>السنة المالية</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
         </div>
-
     </div>
-
-
 </div>
 
-<div class="border mt-5 mx-2  p-3 ">
-
-
-    <div id="PriceListDetail" class="table-responsive"></div>
-
-
+<div class="border mt-5 mx-2 p-3">
+    <div class="table-responsive">
+        <table id="PriceListDetail" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>كود</th>
+                    <th>مستوى 1</th>
+                    <th>مستوى 2</th>
+                    <th>مستوى 3</th>
+                    <th>الخدمة قبل الخصم</th>
+                    <th>نسبة خصم الخدمة</th>
+                    <th>الخدمة بعد الخصم</th>
+                    <th>نسبة الشركة</th>
+                    <th>قيمة تحمل الشركة</th>
+                    <th>تحمل العضو</th>
+                    <th>تحمل القريب</th>
+                    <th>تحمل مستلزمات علي المريض</th>
+                    <th>تحمل صيانة علي المريض</th>
+                    <th>تغطي الخدمة</th>
+                    <th>الإجراءات</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
 </div>
+
 @section Scripts {
-   
-    <script>
 
-    var priceLists = @Html.Raw(JsonConvert.SerializeObject(Model.PriceList, jsonSettings));
-    var fieldMapping = [
-    {
-    title: "كود",
-    name: 'PLId',
-    isID: true,
-    type: 'text',
-    editable: false,
-    width: '100px'
-    },
-
-    {
-    title: "اسم القائمة",
-    name: 'PlDesc',
-    type: 'text',
-    width: '100%',
-
-    editable: true
-    },
-    {
-    title: "نوع القائمة",
-    name: 'Flag1',
-    type: 'select',
-    width: '100px',
-    options: [
-    { Value: 1, Text: 'خاص' },
-    { Value: 2, Text: 'تعاقد' },
-    ],
-    editable: true
-    },
-    {
-    title: "تاريخ القائمة",
-    width:"120px",
-    name: 'PLDate',
-    type: 'date',
-    titleCenter: true,
-    editable: true
-    },
-    {
-    title: "السنة المالية",
-    width: "100px",
-    titleCenter: true,
-    name: 'Year',
-    type: 'text',
-    editable: true
-    },
-    {
-    title: "",
-    name: "action",
-    type: "action",
-    list: [{
-    name: 'View Button',
-    options: { idName: "PLId", viewUrl: "@Url.Action("Index")" }
-    },
-    {
-    name: 'Delete Button',
-    options: { idName: "PLId" }
-    }
-    ]
-    },
-
-    ];
-
-    InlineEditor.renderTable({
-    tableId: "PriceList",
-    viewButtonEnable: true,
-    idName: "PLId",
-    data: priceLists,
-    fieldMapping: fieldMapping,
-    dataUrl: '@Url.Action("GetPriceList")',
-    deleteUrl: '@Url.Action("DeletePriceList")',
-    saveUrl: '@Url.Action("SaveRecordPriceList")',
-    });
-
-
-    var priceListDetails = @Html.Raw(JsonConvert.SerializeObject(Model.PriceListDetail, jsonSettings));
-    var MainClinic = @Html.Raw(JsonConvert.SerializeObject(Model.MainClinic, jsonSettings));
-    var SubClinic = @Html.Raw(JsonConvert.SerializeObject(Model.SubClinic, jsonSettings));
-    var Service = @Html.Raw(JsonConvert.SerializeObject(Model.Services, jsonSettings));
-
-    console.log(MainClinic);
-
-    var fieldMapping1 = [
-
-    {
-    title: "",
-    name: 'PLId',
-    type: 'hidden',
-   
-
-    },
-    {
-    title: "كود",
-    name: 'PLDtlId',
-    type: 'text',
-    editable: false,
-    width: '70px'
-    },
-    {
-    title: "مستوى 1",
-    name: 'ClinicId',
-    type: 'select',
-    options: MainClinic,
-    editable: true,
-    width: '200px'
-
-    },
-    {
-    title: "مستوى 2",
-    name: 'SClinicId',
-    type: 'select',
-    options: SubClinic,
-    editable: true,
-    width: '200px'
-
-    },
-    {
-    title: "مستوى 3",
-    name: 'ServId',
-    type: 'select',
-    options: Service,
-    editable: true,
-    width: '200px'
-
-    },
-    {
-    title: "الخدمة فبل الخصم",
-    name: 'ServBefDesc',
-    type: 'text',
-    defualtValue: 0,
-    editable: true
-    },
-    {
-    title: "نسبة خصم الخدمة",
-    name: 'DiscoutComp',
-    type: 'text',
-    defualtValue: 0,
-    editable: true
-    },
-    {
-    title: "الخدمة بعد الخصم",
-    name: 'PlValue',
-    type: 'text',
-    defualtValue: 0,
-    editable: false
-    },
-    {
-    title: "نسبة الشركة",
-    name: 'CompCovPercentage',
-    type: 'text',
-    defualtValue:100,
-    editable: true
-    },
-    {
-    title: "قيمة تحمل الشركة",
-    name: 'CompValue',
-    type: 'text',
-    defualtValue: 0,
-    editable: true
-    },
-    {
-    title: "تحمل العضو",
-    name: 'PlValue2',
-    type: 'text',
-    defualtValue: 0,
-    editable: true
-    },
-    {
-    title: "تحمل القريب",
-    name: 'PlValue3',
-    type: 'text',
-    defualtValue: 0,
-    editable: true
-    },
-    {
-    title: "تحمل مستلزمات علي المريض",
-    name: 'ExtraVal',
-    type: 'text',
-    defualtValue: 0,
-    editable: true
-    },
-    {
-    title: "تحمل صيانة علي المريض",
-    name: 'ExtraVal2',
-    type: 'text',
-    defualtValue: 0,
-    editable: true
-    },
-    {
-    title: "تغطي الخدمة",
-    name: 'Covered',
-    type: 'select',
-    options: [{ Value: 1, Text: "نعم" }, {Value:2 , Text:"لا"}],
-    defualtValue: 2,
-    width:"100px",
-    editable: true
-    },
-
-    {
-    title: "",
-    name: "action",
-    type: "action",
-    list: [
-    {
-    name: 'Delete Button',
-    options: { idName: "PLDtlId" }
-    }
-    ]
-    }
-
-    ];
-
-    InlineEditor.renderTable({
-    tableId: "PriceListDetail",
-    data: priceListDetails,
-    idName: "PLDtlId",
-
-    fieldMapping: fieldMapping1,
-    deleteUrl: '@Url.Action("DeletePriceListDetail")',
-    saveUrl: '@Url.Action("SaveRecordPriceListDetail")',
-    });
-
-
-    document.addEventListener('DOMContentLoaded', function () {
-
-    $(document).on('click', '#PriceListDetail-insert-new-row-btn',function () {
-    console.log("button started")
-    init();
-    });
-
-
-    const init = function () {
-    const ServBefDescInputs = document.querySelectorAll('[data-field-name="ServBefDesc"]');
-    ServBefDescInputs.forEach(input => {
-    input.addEventListener('input', function () {
-    const row = this.dataset.row;
-    updateResult(this.dataset.rowId)
-    console.log("ROWWww", this.dataset.rowId)
-    });
-    });
-
-    const DiscoutCompInputs = document.querySelectorAll('[data-field-name="DiscoutComp"]');
-    DiscoutCompInputs.forEach(input => {
-    input.addEventListener('input', function () {
-    const row = this.dataset.row;
-    updateResult(this.dataset.rowId)
-    console.log("ROWWww", this.dataset.rowId)
-    });
-    });
-
-
-    };
-
-    function updateResult(row) {
-    const ServBefDescInput = document.querySelector(`input[data-row-id="${row}"][data-field-name="ServBefDesc"]`);
-    const DiscoutCompInput = document.querySelector(`input[data-row-id="${row}"][data-field-name="DiscoutComp"]`);
-    const resultInput = document.querySelector(`input[data-row-id="${row}"][data-field-name="PlValue"]`);
-
-    if (ServBefDescInput && DiscoutCompInput && resultInput) {
-    const ServBefDescValue = parseFloat(ServBefDescInput.value) || 0;
-    const DiscoutCompValue = parseFloat(DiscoutCompInput.value) || 0;
-
-    // Example calculation: sum of Column 2 and Column 3
-    const result = ServBefDescValue - (ServBefDescValue * DiscoutCompValue / 100);
-
-    resultInput.value = result;
-    }
-    }
-
-    });
-
-    </script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script>
+    <script src="~/js/medical/pricelist/pricelist.js" asp-append-version="true"></script>
 }
