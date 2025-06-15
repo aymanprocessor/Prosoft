@@ -48,6 +48,12 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             await _Context.SaveChangesAsync();
         }
 
+        public async Task AddBatchPriceListsAsync(IEnumerable<PriceListEditAddDTO> priceListDTOs)
+        {
+            var priceLists = _mapper.Map<List<PriceList>>(priceListDTOs);
+            await _Context.AddRangeAsync(priceLists);
+            await _Context.SaveChangesAsync();
+        }
         public async Task<PriceListEditAddDTO> GetPriceListByIdAsync(int id)
         {
             PriceList priceList = await _Context.PriceLists.FirstOrDefaultAsync(obj=>obj.PLId == id);
@@ -63,5 +69,28 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             await _Context.SaveChangesAsync();
             
         }
+
+        public async Task EditPriceListBatchAsync(IEnumerable<PriceListEditAddDTO> priceListDTOs)
+        {
+            var ids = priceListDTOs.Select(dto => dto.PLId).ToList();
+
+            // Fetch all matching records in one query
+            var priceLists = await _Context.PriceLists
+                .Where(pl => ids.Contains(pl.PLId))
+                .ToListAsync();
+
+            foreach (var dto in priceListDTOs)
+            {
+                var entity = priceLists.FirstOrDefault(pl => pl.PLId == dto.PLId);
+                if (entity != null)
+                {
+                    _mapper.Map(dto, entity);
+                }
+            }
+
+            // Save all changes in a single DB call
+            await _Context.SaveChangesAsync();
+        }
+
     }
 }

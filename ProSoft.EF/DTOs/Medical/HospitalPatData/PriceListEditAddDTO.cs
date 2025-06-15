@@ -11,12 +11,10 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
     public class PriceListEditAddDTO
     {
         [DisplayName("Code")]
-        [Required(ErrorMessage = "The field is required")]
-        public int PLId { get; set; }
+        public int? PLId { get; set; }
 
         [DisplayName("List Name")]
-        [Required(ErrorMessage = "The field is required")]
-        public string PlDesc { get; set; }
+        public string? PlDesc { get; set; }
 
         [DisplayName("List Type")]
         public int? Flag1 { get; set; }
@@ -28,8 +26,7 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
         public int? Year { get; set; }
 
         [DisplayName("Check Add To Company")]
-        [Required(ErrorMessage = "The field is required")]
-        public int CheckAddToCompany { get; set; }
+        public int? CheckAddToCompany { get; set; }
 
     }
 }

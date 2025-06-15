@@ -11,16 +11,15 @@
 }
 
 @inject IViewLocalizer localizer
-
-
 <!-- DataTables CSS -->
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css">
+
 
 <div class="container">
     <div class="border mt-5 p-3">
         <div class="table-responsive">
-            <table id="PriceList" class="table table-striped table-bordered" style="width:100%">
+            <table id="PriceList" class="table table-striped table-bordered" style="width:100%"  data-parsley-validate >
                 <thead>
                     <tr>
                         <th>كود</th>
@@ -35,40 +34,37 @@
             </table>
         </div>
     </div>
-</div>
 
-<div class="border mt-5 mx-2 p-3">
-    <div class="table-responsive">
-        <table id="PriceListDetail" class="table table-striped table-bordered" style="width:100%">
-            <thead>
-                <tr>
-                    <th>كود</th>
-                    <th>مستوى 1</th>
-                    <th>مستوى 2</th>
-                    <th>مستوى 3</th>
-                    <th>الخدمة قبل الخصم</th>
-                    <th>نسبة خصم الخدمة</th>
-                    <th>الخدمة بعد الخصم</th>
-                    <th>نسبة الشركة</th>
-                    <th>قيمة تحمل الشركة</th>
-                    <th>تحمل العضو</th>
-                    <th>تحمل القريب</th>
-                    <th>تحمل مستلزمات علي المريض</th>
-                    <th>تحمل صيانة علي المريض</th>
-                    <th>تغطي الخدمة</th>
-                    <th>الإجراءات</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+
+    <div class="border mt-5 mx-2 p-3">
+        <div class="table-responsive">
+            <table id="PriceListDetail" class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>كود</th>
+                        <th>مستوى 1</th>
+                        <th>مستوى 2</th>
+                        <th>مستوى 3</th>
+                        <th>الخدمة قبل الخصم</th>
+                        <th>نسبة خصم الخدمة</th>
+                        <th>الخدمة بعد الخصم</th>
+                        <th>نسبة الشركة</th>
+                        <th>قيمة تحمل الشركة</th>
+                        <th>تحمل العضو</th>
+                        <th>تحمل القريب</th>
+                        <th>تحمل مستلزمات علي المريض</th>
+                        <th>تحمل صيانة علي المريض</th>
+                        <th>تغطي الخدمة</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
     </div>
 </div>
-
 @section Scripts {
 
-    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script>
+
     <script src="~/js/medical/pricelist/pricelist.js" asp-append-version="true"></script>
 }

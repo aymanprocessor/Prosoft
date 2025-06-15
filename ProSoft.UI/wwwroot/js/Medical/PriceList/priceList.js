@@ -30,16 +30,29 @@
             url: '/Medical/PriceListNew/GetPriceList',
             type: "GET",
             dataSrc: function (json) {
-                console.log('AJAX response:', json);
-                console.log('First item structure:', json[0]);
-                console.log('Available properties:', Object.keys(json[0] || {}));
+                console.log('🔄 Raw AJAX response:', json);
 
-                return json;
-              
+                if (!json) {
+                    console.warn('⚠️ No data returned from server.');
+                    return [];
+                }
+
+                if (Array.isArray(json)) {
+                    console.log('✅ Response is a raw array.');
+                    return json;
+                }
+
+                if (json.data && Array.isArray(json.data)) {
+                    console.log('✅ Response has a "data" array property.');
+                    return json.data;
+                }
+
+                console.error('❌ Unexpected response format. Returning empty array.');
+                return [];
             }
         },
         language: {
-            url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/ar.json'
+            url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/ar.json'
         },
         columns: [
             {
@@ -52,7 +65,7 @@
                 title: 'اسم القائمة',
                 render: function (data, type, row, meta) {
                     if (type === 'display') {
-                        return '<input type="text" class="form-control editable-field" data-field="PlDesc" data-id="' + row.plId + '" value="' + (data || '') + '">';
+                        return '<input type="text" class="form-control editable-field" data-field="plDesc" data-id="' + row.plId + '" value="' + (data || '') + '" required>';
                     }
                     return data;
                 }
@@ -68,7 +81,7 @@
                             var selected = option.value == data ? 'selected' : '';
                             options += '<option value="' + option.value + '" ' + selected + '>' + option.text + '</option>';
                         });
-                        return '<select class="form-control editable-field" data-field="Flag1" data-id="' + row.plId + '">' + options + '</select>';
+                        return '<select class="form-control editable-field" data-field="flag1" data-id="' + row.plId + '" required>' + options + '</select>';
                     }
                     return data;
                 }
@@ -80,7 +93,7 @@
                 render: function (data, type, row, meta) {
                     if (type === 'display') {
                         var dateValue = data ? new Date(data).toISOString().split('T')[0] : '';
-                        return '<input type="date" class="form-control editable-field" data-field="PLDate" data-id="' + row.plId + '" value="' + dateValue + '">';
+                        return '<input type="date" class="form-control editable-field" data-field="plDate" data-id="' + row.plId + '" value="' + dateValue + '" required>';
                     }
                     return data;
                 }
@@ -91,7 +104,7 @@
                 width: '100px',
                 render: function (data, type, row, meta) {
                     if (type === 'display') {
-                        return '<input type="number" class="form-control editable-field" data-field="Year" data-id="' + row.plId + '" value="' + (data || '') + '">';
+                        return '<input type="number" class="form-control editable-field" data-field="year" data-id="' + row.plId + '" value="' + (data || '') + '" required>';
                     }
                     return data;
                 }
@@ -101,29 +114,48 @@
                 orderable: false,   
                 data: null,
                 render: function (data, type, row ) {
-                    return `<button class="btn btn-sm btn-danger delete-btn" data-id="${row.plId}">حذف</button>`;
+                    return `<button class="btn btn-sm btn-danger delete-btn" data-id="${row.plId}"><i class="bi bi-trash3"></i></button>`;
                 }
             }
         ],
-        dom: 'Bfrtip',
+      
+        dom:
+            "<'row mb-2 mt-3'" +
+            "<'col-sm-6 d-flex justify-content-start'B>" +             // Top-left: buttons
+            "<'col-sm-6 d-flex justify-content-end'f>" +                                       // Top-right: search box
+            ">" +
+            "<'row'<'col-sm-12'tr>>" +                                  // Table
+            "<'row mt-2'" +
+            "<'col-sm-4'l>" +                                       // Bottom-left: length menu
+            "<'col-sm-4 d-flex justify-content-center'p>" +                           // Bottom-center: pagination
+            "<'col-sm-4 text-end'i>" +                              // Bottom-right: info
+            ">",
         buttons: [
             {
-                text: 'إضافة جديد',
-                className: 'btn btn-success',
+                text: '+',
+                className: 'btn btn-success', // Bootstrap success (green)
                 action: function (e, dt, node, config) {
                     addNewPriceListRow();
                 }
+            },
+                {
+                text: 'حفظ',
+                className: 'btn btn-warning ms-1',
+                action: function (e, dt, node, config) {
+                    savePriceListRecord();
+                }
             }
-        ],
-        responsive: true,
-        pageLength: 25
+            
+            
+           
+        ]
     });
 
     // Initialize Price List Detail DataTable
     var priceListDetailTable = $('#PriceListDetail').DataTable({
         data: priceListDetails,
         language: {
-            url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/ar.json'
+            url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/ar.json'
         },
         columns: [
             {
@@ -275,18 +307,34 @@
                 }
             }
         ],
-        dom: 'Bfrtip',
+        dom:"<'row mb-2 mt-3'" +
+            "<'col-sm-6 d-flex justify-content-start'B>" +             // Top-left: buttons
+            "<'col-sm-6 d-flex justify-content-end'f>" +                                       // Top-right: search box
+            ">" +
+            "<'row'<'col-sm-12'tr>>" +                                  // Table
+            "<'row mt-2'" +
+            "<'col-sm-4'l>" +                                       // Bottom-left: length menu
+            "<'col-sm-4 d-flex justify-content-center'p>" +                           // Bottom-center: pagination
+            "<'col-sm-4 text-end'i>" +                              // Bottom-right: info
+            ">",
         buttons: [
             {
-                text: 'إضافة جديد',
+                text: '+',
                 className: 'btn btn-success',
                 action: function (e, dt, node, config) {
                     addNewPriceListDetailRow();
                 }
+            },
+            {
+                text: 'حفظ',
+                className: 'btn btn-warning ms-1',
+                action: function (e, dt, node, config) {
+                    savePriceListRecord();
+                }
             }
         ],
         responsive: true,
-        pageLength: 25,
+        pageLength: 10,
         scrollX: true
     });
 
@@ -308,15 +356,22 @@
 
     // Add new price list row
     function addNewPriceListRow() {
-        var newRow = {
-            PLId: 0,
-            PlDesc: '',
-            Flag1: 1,
-            PLDate: null,
-            Year: new Date().getFullYear()
-        };
+        
+            const tempId = 'temp-' + Math.floor(Math.random() * 1000);
 
-        priceListTable.row.add(newRow).draw();
+            const newRow = {
+                plId: tempId,
+                plDesc: '',
+                flag1: '',
+                plDate: moment().format("YYYY-MM-DD"),
+                year: 2025
+            };
+
+
+        const row = priceListTable.row.add(newRow).draw(false);
+
+        const rowNode = priceListTable.row(row).node();
+        $(rowNode).addClass('new-row');
     }
 
     // Add new price list detail row
@@ -342,22 +397,42 @@
         priceListDetailTable.row.add(newRow).draw();
     }
 
-    // Price List Event Handlers
-    $('#PriceList tbody').on('click', '.view-btn', function () {
-        var id = $(this).data('id');
-        window.location.href = viewUrl + '?id=' + id;
+    // Handle row click
+    $('#PriceList tbody').on('click', 'tr', function () {
+        const data = priceListTable.row(this).data();
+
+        // Highlight selected row
+        $('#PriceList tbody tr').removeClass('active-row');
+        $(this).addClass('active-row');
+
+        // Do something with the selected row
+    //    console.log('Selected Row Data:', data);
     });
 
+    $('#PriceList tbody').on('input change', 'input, select', function () {
+        var row = $(this).closest('tr');
+        var rowIdx = priceListTable.row(row).index();
+        var rowData = priceListTable.row(rowIdx).data();
+        var id = rowData ? rowData.plId : undefined;
+
+        if (typeof id === "number" || (typeof id === "string" && !id.includes("temp"))) {
+            //modifiedRows.add(masterId);
+            row.addClass('modified-row');
+            enableSaveBtn();
+        }
+
+
+    });
     $('#PriceList tbody').on('click', '.save-btn', function () {
         var id = $(this).data('id');
         savePriceListRecord(id);
     });
 
     $('#PriceList tbody').on('click', '.delete-btn', function () {
-        var id = $(this).data('id');
-        if (confirm('هل أنت متأكد من حذف هذا السجل؟')) {
-            deletePriceListRecord(id);
-        }
+        
+        
+            deletePriceListRecord($(this),priceListTable);
+        
     });
 
     // Price List Detail Event Handlers
@@ -388,61 +463,192 @@
         $('input[data-field="PlValue"][data-id="' + id + '"]').val(result.toFixed(2));
     }
 
-    // AJAX Functions
-    function savePriceListRecord(id) {
-        var rowData = {};
+    function priceListValidateData() {
+        const tableSelector = "#PriceList";
+        ValidationManager.init(tableSelector);
 
-        // Collect data from input fields
-        $('input[data-id="' + id + '"], select[data-id="' + id + '"]').each(function () {
-            var field = $(this).data('field');
-            var value = $(this).val();
-            rowData[field] = value;
-        });
+        let isValid = true;
 
-        rowData.PLId = id;
-
-        $.ajax({
-            url: saveUrl,
-            type: 'POST',
-            data: JSON.stringify(rowData),
-            contentType: 'application/json',
-            headers: {
-                'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
-            },
-            success: function (response) {
-                if (response.success) {
-                    toastr.success('تم الحفظ بنجاح');
-                    priceListTable.ajax.reload();
-                } else {
-                    toastr.error('حدث خطأ أثناء الحفظ');
+        // Helper function to validate rows by class
+        function validateRows(rowClass) {
+            $(`${tableSelector} ${rowClass}`).each(function () {
+                const $requiredFields = $(this).find('[required]');
+                if (!ValidationManager.validateElements($requiredFields)) {
+                    isValid = false;
                 }
-            },
-            error: function () {
-                toastr.error('حدث خطأ أثناء الحفظ');
-            }
-        });
+            });
+        }
+
+        validateRows('.new-row');
+        validateRows('.modified-row');
+
+        return isValid;
     }
 
-    function deletePriceListRecord(id) {
-        $.ajax({
-            url: deleteUrl,
-            type: 'POST',
-            data: { id: id },
-            headers: {
-                'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
-            },
-            success: function (response) {
-                if (response.success) {
-                    toastr.success('تم الحذف بنجاح');
-                    priceListTable.ajax.reload();
-                } else {
-                    toastr.error('حدث خطأ أثناء الحذف');
+    // AJAX Functions
+    function savePriceListRecord() {
+        var insertData = [];
+        var updateData = [];
+
+            console.log("Valid", !priceListValidateData())
+        if (!priceListValidateData()) {
+            return;
+        }
+        // Collect data from input fields
+        $('.new-row').not('.modified-row').each(function () {
+            const row = $(this);
+            const data = {};
+            row.find('input, select').each(function () {
+                const field = $(this).data('field');
+                const value = $(this).val();
+                if (field) {
+
+                    data[field] = value;
+
                 }
-            },
-            error: function () {
-                toastr.error('حدث خطأ أثناء الحذف');
-            }
+            });
+
+            insertData.push(data)
+        })
+
+
+        $('.modified-row').not('.new-row').each(function () {
+            const row = $(this);
+            const data = {};
+            row.find('input, select').each(function () {
+                const field = $(this).data('field');
+                const value = $(this).val();
+                if (field) {
+
+                    data[field] = value;
+
+                }
+            });
+           data.plId =  priceListTable.row(row).data().plId;
+            updateData.push(data)
         });
+
+        if (insertData.length > 0) {
+            $.ajax({
+                url: '/Medical/PriceListNew/SaveRecordPriceList',
+                type: 'POST',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify(insertData),
+
+                beforeSend: function () {
+                    console.log('Inserting record...', insertData);
+                    // Optional: disable button or show spinner
+                },
+
+                success: function (response) {
+                    if (response.success) {
+                        console.log('Record inserted successfully:', response);
+                        priceListTable.ajax.reload(null, false); // false = keep current page
+                    } else {
+                        console.warn('Insert failed:', response.message || 'Unknown error');
+                    }
+                },
+
+                error: function (xhr, status, error) {
+                    console.error('AJAX error:', {
+                        status: xhr.status,
+                        statusText: xhr.statusText,
+                        response: xhr.responseText,
+                        errorThrown: error
+                    });
+                },
+
+                complete: function () {
+                    console.log('Insert request completed.');
+                    // Optional: re-enable UI, hide spinner, etc.
+                }
+            });
+        }
+        if (updateData.length > 0) {
+            $.ajax({
+                url: '/Medical/PriceListNew/UpdateRecordPriceList',
+                type: 'POST',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify(updateData),
+
+                beforeSend: function () {
+                    console.log('Updating record...', updateData);
+                },
+
+                success: function (response) {
+                    if (response.success) {
+                        console.log('Record updated successfully:', response);
+                        priceListTable.ajax.reload(null, false); // false = keep current page
+                    } else {
+                        console.warn('Update failed:', response.message || 'Unknown error');
+                    }
+                },
+
+                error: function (xhr, status, error) {
+                    console.error('AJAX error:', {
+                        status: xhr.status,
+                        statusText: xhr.statusText,
+                        response: xhr.responseText,
+                        errorThrown: error
+                    });
+                },
+
+                complete: function () {
+                    console.log('Save request completed.');
+                    // Optional: re-enable UI, hide spinner, etc.
+                }
+            });
+        }
+       
+    }
+
+    function deletePriceListRecord($deleteBtn, table) {
+        var id = $deleteBtn.data('id');
+
+        if (typeof (id) === "string" && id.includes("temp")) {
+            // Delete temporary row
+            var row = table.row($deleteBtn.closest('tr'));
+            row.remove().draw(false);
+        } else {
+            // Delete existing row
+            if (confirm('هل تريد حذف هذا الصف')) {
+                $.ajax({
+                    url: '/Medical/PriceListNew/DeletePriceList',
+                    type: 'POST',
+                    data: { id: id },
+
+                    beforeSend: function () {
+                        console.log('Deleting record...');
+                        // Optional: disable button or show spinner
+                    },
+
+                    success: function (response) {
+                        if (response.success) {
+                            console.log('Record deleted successfully:', response);
+                            priceListTable.ajax.reload(null, false); // false = keep current page
+                        } else {
+                            console.warn('Delete failed:', response.message || 'Unknown error');
+                        }
+                    },
+
+                    error: function (xhr, status, error) {
+                        console.error('AJAX error:', {
+                            status: xhr.status,
+                            statusText: xhr.statusText,
+                            response: xhr.responseText,
+                            errorThrown: error
+                        });
+                    },
+
+                    complete: function () {
+                        console.log('Save request completed.');
+                        // Optional: re-enable UI, hide spinner, etc.
+                    }
+                });
+            }
+        }
     }
 
     function savePriceListDetailRecord(id) {

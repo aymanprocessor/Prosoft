@@ -269,6 +269,16 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     options.SupportedUICultures= supportedCulture;
 });
 /////////////////
+// add cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 
 var app = builder.Build();
@@ -280,7 +290,10 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+// add cors
 
+
+// add cors
 //app.UseHttpsRedirection();
 app.UseStaticFiles();
 //app.UseMiddleware<AuditLogMiddleware>();
@@ -297,6 +310,7 @@ var localizationsOptions =new RequestLocalizationOptions()
 app.UseRequestLocalization(localizationsOptions);
 ////////////////
 
+app.UseCors("AllowAll");
 
 app.UseAuthentication();
 app.UseAuthorization();

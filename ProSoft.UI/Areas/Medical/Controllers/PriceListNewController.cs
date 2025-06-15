@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ProSoft.Core.Repositories.Medical.HospitalPatData;
 using ProSoft.EF.DTOs.Medical.HospitalPatData;
 using ProSoft.EF.IRepositories.Medical.HospitalPatData;
 using ProSoft.EF.Models.Medical.HospitalPatData;
@@ -66,73 +67,38 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         [HttpPost]
         
 
-        public async Task<IActionResult> SaveRecordPriceList([FromBody] PriceListRecordsDTO records)
+        public async Task<IActionResult> SaveRecordPriceList([FromBody] List<PriceListEditAddDTO> records)
         {
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            
 
-            if (records == null)
-            {
-                return Json(new { success = false, message = "No data received." });
-            }
-
+          
             try
             {
-
-                // Insert new records
-                if (records.InsertData != null && records.InsertData.Any())
+                if (!ModelState.IsValid)
                 {
-                    foreach (var record in records.InsertData)
+                    return BadRequest(ModelState);
+                }
+                if (records == null)
+                {
+                    return BadRequest(new
                     {
-                        // Map DTO to entity and insert
-                        var newEntity = new PriceList
-                        {
-                            Flag1 = record.Flag1,
-                            PlDesc = record.PlDesc,
-                            PLDate = record.PLDate,
-                            Year = record.Year,
-                            BranchId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "U_Branch_Id").Value),
-
-                        };
-                        await _priceListRepo.AddAsync(newEntity);
-
-                    }
-                    await _priceListRepo.SaveChangesAsync();
-
+                        success = false,
+                        message = "Request body is null or invalid JSON format."
+                    });
                 }
 
-                // Update existing records
-                if (records.UpdateData != null && records.UpdateData.Any())
+            
+                await _priceListRepo.AddBatchPriceListsAsync(records);
+
+
+
+                return StatusCode(200, new
                 {
-                    foreach (var record in records.UpdateData)
-                    {
-                        var existingEntity = await _priceListRepo.GetByIdAsync((int)record.PLId!);
-                        if (existingEntity != null)
-                        {
-                            existingEntity.Flag1 = record.Flag1;
-                            existingEntity.PlDesc = record.PlDesc;
-                            existingEntity.PLDate = record.PLDate;
-                            existingEntity.Year = record.Year;
-                            await _priceListRepo.UpdateAsync(existingEntity);
-                        }
-                        else
-                        {
-                            return Json(new { success = false, message = "Record is not exists!" });
-
-                        }
-
-
-                    }
-                    await _priceListRepo.SaveChangesAsync();
-
-                }
-
-
-                return Json(new { success = true, message = "Records saved successfully!" });
-
+                    success = true,
+                    message = "Data Added",
+                    data = records
+                });
             }
             catch (Exception ex)
             {
@@ -141,14 +107,53 @@ namespace ProSoft.UI.Areas.Medical.Controllers
             }
         }
 
+        public async Task<IActionResult> UpdateRecordPriceList([FromBody] List<PriceListEditAddDTO> records)
+        {
+
+
+
+
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                if (records == null)
+                {
+                    return BadRequest(new
+                    {
+                        success = false,
+                        message = "Request body is null or invalid JSON format."
+                    });
+                }
+
+
+                await _priceListRepo.EditPriceListBatchAsync(records);
+
+
+
+                return StatusCode(200, new
+                {
+                    success = true,
+                    message = "Data Added",
+                    data = records
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while saving records." });
+
+            }
+        }
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<JsonResult> DeletePriceList([FromBody] PriceListDTO model)
+       
+        public async Task<JsonResult> DeletePriceList( int id)
         {
 
             try
             {
-                var product = await _priceListRepo.GetByIdAsync((int)model.PLId!);
+                var product = await _priceListRepo.GetByIdAsync(id);
                 if (product == null)
                 {
                     return Json(new { success = false, message = "Product not found" });

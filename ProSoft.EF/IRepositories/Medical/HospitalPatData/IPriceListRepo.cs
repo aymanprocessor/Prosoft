@@ -15,7 +15,9 @@ namespace ProSoft.EF.IRepositories.Medical.HospitalPatData
         Task<PriceListEditAddDTO> GetPriceListByIdAsync(int id);
         ////////
         Task AddPriceListAsync(PriceListEditAddDTO priceListDTO);
+        Task AddBatchPriceListsAsync(IEnumerable<PriceListEditAddDTO> priceListDTOs);
         Task EditPriceListAsync(int id, PriceListEditAddDTO priceListDTO);
+        Task EditPriceListBatchAsync(IEnumerable<PriceListEditAddDTO> priceListDTOs);
 
     }
 }
