@@ -98,6 +98,7 @@ namespace ProSoft.Core.AutoMapper
             CreateMap<PriceListEditAddDTO, PriceList>().ReverseMap();
             CreateMap<TermsPriceListViewDTO, PriceListDetail>().ReverseMap();
             CreateMap<TermsPriceListEditAddDTO, PriceListDetail>().ReverseMap();
+            CreateMap<TermsPriceListEditAddDTO, PriceListDetailDTO>().ReverseMap();
             CreateMap<PriceListDetailDTO, PriceListDetail>().ReverseMap();
             CreateMap<CompanyGroupDTO, CompanyGroup>().ReverseMap();
             CreateMap<CompanyViewDTO, Company>().ReverseMap();

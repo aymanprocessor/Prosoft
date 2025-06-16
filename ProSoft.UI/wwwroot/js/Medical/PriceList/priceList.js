@@ -1,10 +1,15 @@
-﻿$(document).ready(function () {
+﻿$(document).ready(async function () {
     // Get data from server (these should be passed from the Razor view)
     var priceLists =  [];
     var priceListDetails = [];
     var mainClinic = [];
     var subClinic = [];
     var services = [];
+
+
+   
+          mainClinic = await  AjaxHandlers.fetchMainClinics()
+    
 
     // Price List Type options
     var priceListTypes = [
@@ -17,8 +22,6 @@
         { value: 2, text: "لا" }
     ];
 
-    // Load dropdown data via AJAX
-    loadDropdownData();
 
     if ($.fn.DataTable.isDataTable('#PriceList')) {
         $('#PriceList').DataTable().destroy();
@@ -58,7 +61,7 @@
             {
                 data: 'plId',
                 title: 'كود',
-                width: '50px'
+                width: '30px'
             },
             {
                 data: 'plDesc',
@@ -133,17 +136,20 @@
         buttons: [
             {
                 text: '+',
-                className: 'btn btn-success', // Bootstrap success (green)
+                className: 'btn btn-success priceListAddBtn', // Bootstrap success (green)
                 action: function (e, dt, node, config) {
                     addNewPriceListRow();
                 }
+               
+
             },
                 {
                 text: 'حفظ',
-                className: 'btn btn-warning ms-1',
+                className: 'btn btn-warning ms-1 priceListSaveBtn',
                 action: function (e, dt, node, config) {
                     savePriceListRecord();
-                }
+                    },
+                    enabled: false
             }
             
             
@@ -153,146 +159,167 @@
 
     // Initialize Price List Detail DataTable
     var priceListDetailTable = $('#PriceListDetail').DataTable({
-        data: priceListDetails,
+        data: [],
         language: {
             url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/ar.json'
         },
         columns: [
             {
-                data: 'PLDtlId',
+                data: 'plId',
+                visible:false
+            },
+            {
+                data: 'plDtlId',
                 title: 'كود',
-                width: '70px'
+                width: '30px',
+                
             },
             {
-                data: 'ClinicId',
+                data: 'clinicId',
                 title: 'مستوى 1',
-                width: '200px',
+                width: '120px',
                 render: function (data, type, row, meta) {
                     if (type === 'display') {
-                        return createSelectOptions(mainClinic, data, 'ClinicId', row.PLDtlId);
+
+                        if (data) {
+                            loadSubClinics(data, row);
+                        }
+                        return createSelectOptions(mainClinic, data, 'clinicId', row.plDtlId, "clinicId","clinicDesc");
                     }
                     return data;
                 }
             },
             {
-                data: 'SClinicId',
+                data: 'sClinicId',
                 title: 'مستوى 2',
-                width: '200px',
+                width: '120px',
                 render: function (data, type, row, meta) {
                     if (type === 'display') {
-                        return createSelectOptions(subClinic, data, 'SClinicId', row.PLDtlId);
+                        if (data) {
+                            loadServices(data, row);
+                        }
+                        return createSelectOptions(subClinic, data, 'sClinicId', row.plDtlId, "sClinicId","sClinicDesc",true);
                     }
                     return data;
                 }
             },
             {
-                data: 'ServId',
+                data: 'servId',
                 title: 'مستوى 3',
-                width: '200px',
+                width: '120px',
                 render: function (data, type, row, meta) {
                     if (type === 'display') {
-                        return createSelectOptions(services, data, 'ServId', row.PLDtlId);
+                        return createSelectOptions(services, data, 'servId', row.plDtlId, "servId","servDesc",true);
                     }
                     return data;
                 }
             },
             {
-                data: 'ServBefDesc',
+                data: 'servBefDesc',
                 title: 'الخدمة قبل الخصم',
+                width:'70px',
                 render: function (data, type, row, meta) {
                     if (type === 'display') {
-                        return '<input type="number" class="form-control editable-field calculation-field" data-field="ServBefDesc" data-id="' + row.PLDtlId + '" value="' + (data || 0) + '">';
+                        return '<input type="number" class="form-control editable-field calculation-field" data-field="servBefDesc" data-id="' + row.plDtlId + '" value="' + (data || 0) + '">';
                     }
                     return data;
                 }
             },
             {
-                data: 'DiscoutComp',
+                data: 'discoutComp',
                 title: 'نسبة خصم الخدمة',
+                width: '70px',
                 render: function (data, type, row, meta) {
                     if (type === 'display') {
-                        return '<input type="number" class="form-control editable-field calculation-field" data-field="DiscoutComp" data-id="' + row.PLDtlId + '" value="' + (data || 0) + '">';
+                        return '<input type="number" class="form-control editable-field calculation-field" data-field="discoutComp" data-id="' + row.plDtlId + '" value="' + (data || 0) + '">';
                     }
                     return data;
                 }
             },
             {
-                data: 'PlValue',
+                data: 'plValue',
                 title: 'الخدمة بعد الخصم',
+                width: '70px',
                 render: function (data, type, row, meta) {
                     if (type === 'display') {
-                        return '<input type="number" class="form-control" data-field="PlValue" data-id="' + row.PLDtlId + '" value="' + (data || 0) + '" readonly>';
+                        return '<input type="number" class="form-control" data-field="plValue" data-id="' + row.plDtlId + '" value="' + (data || 0) + '" readonly>';
                     }
                     return data;
                 }
             },
             {
-                data: 'CompCovPercentage',
+                data: 'compCovPercentage',
                 title: 'نسبة الشركة',
+                width: '70px',
                 render: function (data, type, row, meta) {
                     if (type === 'display') {
-                        return '<input type="number" class="form-control editable-field" data-field="CompCovPercentage" data-id="' + row.PLDtlId + '" value="' + (data || 100) + '">';
+                        return '<input type="number" class="form-control editable-field" data-field="compCovPercentage" data-id="' + row.plDtlId + '" value="' + (data || 100) + '">';
                     }
                     return data;
                 }
             },
             {
-                data: 'CompValue',
+                data: 'compValue',
                 title: 'قيمة تحمل الشركة',
+                width: '70px',
                 render: function (data, type, row, meta) {
                     if (type === 'display') {
-                        return '<input type="number" class="form-control editable-field" data-field="CompValue" data-id="' + row.PLDtlId + '" value="' + (data || 0) + '">';
+                        return '<input type="number" class="form-control editable-field" data-field="CompValue" data-id="' + row.plDtlId + '" value="' + (data || 0) + '">';
                     }
                     return data;
                 }
             },
             {
-                data: 'PlValue2',
+                data: 'plValue2',
                 title: 'تحمل العضو',
+                width: '70px',
                 render: function (data, type, row, meta) {
                     if (type === 'display') {
-                        return '<input type="number" class="form-control editable-field" data-field="PlValue2" data-id="' + row.PLDtlId + '" value="' + (data || 0) + '">';
+                        return '<input type="number" class="form-control editable-field" data-field="plValue2" data-id="' + row.plDtlId + '" value="' + (data || 0) + '">';
                     }
                     return data;
                 }
             },
             {
-                data: 'PlValue3',
+                data: 'plValue3',
                 title: 'تحمل القريب',
+                width: '70px',
                 render: function (data, type, row, meta) {
                     if (type === 'display') {
-                        return '<input type="number" class="form-control editable-field" data-field="PlValue3" data-id="' + row.PLDtlId + '" value="' + (data || 0) + '">';
+                        return '<input type="number" class="form-control editable-field" data-field="PlValue3" data-id="' + row.plDtlId + '" value="' + (data || 0) + '">';
                     }
                     return data;
                 }
             },
             {
-                data: 'ExtraVal',
+                data: 'extraVal',
                 title: 'تحمل مستلزمات علي المريض',
+                width: '70px',
                 render: function (data, type, row, meta) {
                     if (type === 'display') {
-                        return '<input type="number" class="form-control editable-field" data-field="ExtraVal" data-id="' + row.PLDtlId + '" value="' + (data || 0) + '">';
+                        return '<input type="number" class="form-control editable-field" data-field="extraVal" data-id="' + row.plDtlId + '" value="' + (data || 0) + '">';
                     }
                     return data;
                 }
             },
             {
-                data: 'ExtraVal2',
+                data: 'extraVal2',
                 title: 'تحمل صيانة علي المريض',
+                width: '70px',
                 render: function (data, type, row, meta) {
                     if (type === 'display') {
-                        return '<input type="number" class="form-control editable-field" data-field="ExtraVal2" data-id="' + row.PLDtlId + '" value="' + (data || 0) + '">';
+                        return '<input type="number" class="form-control editable-field" data-field="extraVal2" data-id="' + row.plDtlId + '" value="' + (data || 0) + '">';
                     }
                     return data;
                 }
             },
             {
-                data: 'Covered',
+                data: 'covered',
                 title: 'تغطي الخدمة',
                 width: '100px',
                 render: function (data, type, row, meta) {
                     if (type === 'display') {
-                        return createSelectOptions(coveredOptions, data || 2, 'Covered', row.PLDtlId);
+                        return createSelectOptions(coveredOptions, data || 2, 'covered', row.plDtlId);
                     }
                     return data;
                 }
@@ -302,11 +329,11 @@
                 title: 'الإجراءات',
                 orderable: false,
                 render: function (data, type, row, meta) {
-                    return '<button class="btn btn-sm btn-success save-detail-btn" data-id="' + row.PLDtlId + '">حفظ</button> ' +
-                        '<button class="btn btn-sm btn-danger delete-detail-btn" data-id="' + row.PLDtlId + '">حذف</button>';
+                    return  '<button class="btn btn-sm btn-danger delete-detail-btn" data-id="' + row.plDtlId + '"><i class="bi bi-trash3"></i></button>';
                 }
             }
         ],
+        
         dom:"<'row mb-2 mt-3'" +
             "<'col-sm-6 d-flex justify-content-start'B>" +             // Top-left: buttons
             "<'col-sm-6 d-flex justify-content-end'f>" +                                       // Top-right: search box
@@ -317,37 +344,52 @@
             "<'col-sm-4 d-flex justify-content-center'p>" +                           // Bottom-center: pagination
             "<'col-sm-4 text-end'i>" +                              // Bottom-right: info
             ">",
+        order: [[1, 'asc']],
         buttons: [
             {
                 text: '+',
-                className: 'btn btn-success',
+                className: 'btn btn-success priceListDetailAddBtn',
                 action: function (e, dt, node, config) {
                     addNewPriceListDetailRow();
-                }
+                },
+                enabled: false
+
             },
             {
                 text: 'حفظ',
-                className: 'btn btn-warning ms-1',
+                className: 'btn btn-warning ms-1 priceListDetailSaveBtn',
                 action: function (e, dt, node, config) {
-                    savePriceListRecord();
-                }
+                    var $activeRow = $('#PriceList tbody .active-row');
+                    var rowData = priceListTable.row($activeRow).data();
+
+            
+
+                    savePriceListDetailRecord(rowData);
+                },
+                enabled: false
+
             }
         ],
         responsive: true,
         pageLength: 10,
-        scrollX: true
+        scrollX: true,
     });
 
+
+ 
     // Helper function to create select options
-    function createSelectOptions(options, selectedValue, fieldName, id) {
-        var selectHtml = '<select class="form-control editable-field" data-field="' + fieldName + '" data-id="' + id + '">';
+    function createSelectOptions(options, selectedValue, fieldName, id, valueKey = "value", textKey = "text", disabled = false,reqiured=false) {
+        const isDisabled = disabled || options.length === 0;
+        const isRequired = reqiured ? `required data-parsley-required-message="هذا الحقل مطلوب"`:"";
+        let selectHtml = `<select class="form-control editable-field" data-field="${fieldName}" data-id="${id}" ${isDisabled ? 'disabled' : ''} ${isRequired}>`;
+
         selectHtml += '<option value="">اختر...</option>';
 
-        options.forEach(function (option) {
-            var value = option.Value || option.value;
-            var text = option.Text || option.text;
-            var selected = value == selectedValue ? 'selected' : '';
-            selectHtml += '<option value="' + value + '" ' + selected + '>' + text + '</option>';
+        options.forEach(option => {
+            const value = option[valueKey];
+            const text = option[textKey];
+            const selected = value == selectedValue ? 'selected' : '';
+            selectHtml += `<option value="${value}" ${selected}>${text}</option>`;
         });
 
         selectHtml += '</select>';
@@ -372,29 +414,35 @@
 
         const rowNode = priceListTable.row(row).node();
         $(rowNode).addClass('new-row');
+        priceListTable.button(1).enable(true);
     }
 
     // Add new price list detail row
     function addNewPriceListDetailRow() {
+        const tempId = 'temp-' + Math.floor(Math.random() * 1000);
         var newRow = {
-            PLDtlId: 0,
-            PLId: 0,
-            ClinicId: null,
-            SClinicId: null,
-            ServId: null,
-            ServBefDesc: 0,
-            DiscoutComp: 0,
-            PlValue: 0,
-            CompCovPercentage: 100,
-            CompValue: 0,
-            PlValue2: 0,
-            PlValue3: 0,
-            ExtraVal: 0,
-            ExtraVal2: 0,
-            Covered: 2
+            plDtlId: tempId ,
+            plId: 0,
+            clinicId: "",
+            sClinicId: "",
+            servId: "",
+            servBefDesc: 0,
+            discoutComp: 0,
+            plValue: 0,
+            compCovPercentage: 0,
+            compValue: 0,
+            plValue2: 0,
+            plValue3: 0,
+            extraVal: 0,
+            extraVal2: 0,
+            covered: 2
         };
 
-        priceListDetailTable.row.add(newRow).draw();
+        const row =priceListDetailTable.row.add(newRow).draw();
+        const rowNode = priceListDetailTable.row(row).node();
+        $(rowNode).addClass('new-row');
+        priceListDetailTable.button(1).enable(true);
+
     }
 
     // Handle row click
@@ -405,9 +453,11 @@
         $('#PriceList tbody tr').removeClass('active-row');
         $(this).addClass('active-row');
 
-        // Do something with the selected row
-    //    console.log('Selected Row Data:', data);
+        console.log('Selected Row Data:', data.plId);
+        loadPriceListDetails(data.plId);
+
     });
+
 
     $('#PriceList tbody').on('input change', 'input, select', function () {
         var row = $(this).closest('tr');
@@ -418,11 +468,27 @@
         if (typeof id === "number" || (typeof id === "string" && !id.includes("temp"))) {
             //modifiedRows.add(masterId);
             row.addClass('modified-row');
-            enableSaveBtn();
+            priceListTable.button(1).enable(true);
         }
 
 
     });
+
+    $('#PriceListDetail tbody').on('input change', 'input, select', function () {
+        var row = $(this).closest('tr');
+        var rowIdx = priceListDetailTable.row(row).index();
+        var rowData = priceListDetailTable.row(rowIdx).data();
+        var id = rowData ? rowData.plDtlId : undefined;
+
+        if (typeof id === "number" || (typeof id === "string" && !id.includes("temp"))) {
+            //modifiedRows.add(masterId);
+            row.addClass('modified-row');
+            priceListDetailTable.button(1).enable(true);
+        }
+
+
+    });
+
     $('#PriceList tbody').on('click', '.save-btn', function () {
         var id = $(this).data('id');
         savePriceListRecord(id);
@@ -442,10 +508,8 @@
     });
 
     $('#PriceListDetail tbody').on('click', '.delete-detail-btn', function () {
-        var id = $(this).data('id');
-        if (confirm('هل أنت متأكد من حذف هذا السجل؟')) {
-            deletePriceListDetailRecord(id);
-        }
+            deletePriceListDetailRecord($(this), priceListTable);
+        
     });
 
     // Calculation event handlers for price list detail
@@ -453,6 +517,23 @@
         var id = $(this).data('id');
         updateCalculation(id);
     });
+
+
+    function loadPriceListDetails(plId) {
+        $.ajax({
+            url: '/Medical/PriceListNew/GetPriceListDetail/' + plId,
+            type: 'GET',
+            success: function (response) {
+                priceListDetailTable.clear();
+                priceListDetailTable.rows.add(response);
+                priceListDetailTable.draw();
+                priceListDetailTable.button(0).enable(true);
+            },
+            error: function () {
+                console.error('❌ Failed to load price list details for ID:', plId);
+            }
+        });
+    }
 
     // Update calculation function
     function updateCalculation(id) {
@@ -473,6 +554,39 @@
         function validateRows(rowClass) {
             $(`${tableSelector} ${rowClass}`).each(function () {
                 const $requiredFields = $(this).find('[required]');
+                if (!ValidationManager.validateElements($requiredFields)) {
+                    isValid = false;
+                }
+            });
+        }
+
+        validateRows('.new-row');
+        validateRows('.modified-row');
+
+        return isValid;
+    }
+
+
+    function priceListDetailValidateData() {
+        const tableSelector = "#PriceListDetail";
+        ValidationManager.init(tableSelector); // Initialize Parsley on the whole table
+
+        let isValid = true;
+
+        // Helper function to validate rows by class
+        function validateRows(rowClass) {
+            // Target <tr> elements with the given class (like .new-row, .modified-row)
+            $(`${tableSelector} tbody tr${rowClass}`).each(function () {
+                const $requiredFields = $(this).find('[required]');
+
+                // Attach Parsley to each required field if not already initialized
+                $requiredFields.each(function () {
+                    if (!$(this).data('parsley')) {
+                        $(this).parsley();
+                    }
+                });
+
+                // Validate the required fields in this row
                 if (!ValidationManager.validateElements($requiredFields)) {
                     isValid = false;
                 }
@@ -651,149 +765,236 @@
         }
     }
 
-    function savePriceListDetailRecord(id) {
-        var rowData = {};
+    function savePriceListDetailRecord(rowData) {
+        var insertData = [];
+        var updateData = [];
 
+        if (!priceListDetailValidateData()) {
+            throw Error("Validation Error")
+        }
         // Collect data from input fields
-        $('input[data-id="' + id + '"], select[data-id="' + id + '"]').each(function () {
-            var field = $(this).data('field');
-            var value = $(this).val();
-            rowData[field] = value;
-        });
+        $('.new-row').not('.modified-row').each(function () {
+            const row = $(this);
+            const data = {};
+            row.find('input, select').each(function () {
+                const field = $(this).data('field');
+                const value = $(this).val();
+                if (field) {
 
-        rowData.PLDtlId = id;
+                    data[field] = value;
 
-        $.ajax({
-            url: saveDetailUrl,
-            type: 'POST',
-            data: JSON.stringify(rowData),
-            contentType: 'application/json',
-            headers: {
-                'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
-            },
-            success: function (response) {
-                if (response.success) {
-                    toastr.success('تم الحفظ بنجاح');
-                    priceListDetailTable.ajax.reload();
-                } else {
-                    toastr.error('حدث خطأ أثناء الحفظ');
                 }
-            },
-            error: function () {
-                toastr.error('حدث خطأ أثناء الحفظ');
-            }
+            });
+            data.plId = rowData.plId;
+            insertData.push(data)
+        })
+
+
+        $('.modified-row').not('.new-row').each(function () {
+            const row = $(this);
+            const data = {};
+            row.find('input, select').each(function () {
+                const field = $(this).data('field');
+                const value = $(this).val();
+                if (field) {
+
+                    data[field] = value;
+
+                }
+            });
+            data.plId = rowData.Id;
+            data.plDtlId = priceListDetailTable.row(row).data().plDtlId;
+            updateData.push(data)
         });
+
+        if (insertData.length > 0) {
+            $.ajax({
+                url: '/Medical/PriceListNew/SaveRecordPriceListDetail',
+                type: 'POST',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify(insertData),
+
+                beforeSend: function () {
+                    console.log('Inserting record...', insertData);
+                    priceListDetailTable.button(1).enable(false);
+                },
+
+                success: function (response) {
+                    if (response.success) {
+                        console.log('Record inserted successfully:', response);
+                        const activeRowData = priceListTable.row('.active-row').data();
+                        if (activeRowData?.plId) {
+                            loadPriceListDetails(activeRowData.plId); // ✅ Reload with latest data
+                        }
+                        priceListDetailTable.button(1).enable(false);
+
+                    } else {
+                        console.warn('Insert failed:', response.message || 'Unknown error');
+                        priceListDetailTable.button(1).enable(true);
+
+                    }
+                },
+
+                error: function (xhr, status, error) {
+                    console.error('AJAX error:', {
+                        status: xhr.status,
+                        statusText: xhr.statusText,
+                        response: xhr.responseText,
+                        errorThrown: error
+                    });
+                    priceListDetailTable.button(1).enable(true);
+
+                },
+
+                complete: function () {
+                    console.log('Insert request completed.');
+                }
+            });
+        }
+        if (updateData.length > 0) {
+            $.ajax({
+                url: '/Medical/PriceListNew/UpdateRecordPriceListDetail',
+                type: 'POST',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify(updateData),
+
+                beforeSend: function () {
+                    console.log('Updating record...', updateData);
+                },
+
+                success: function (response) {
+                    if (response.success) {
+                        console.log('Record updated successfully:', response);
+                        const activeRowData = priceListTable.row('.active-row').data();
+                        if (activeRowData?.plId) {
+                            loadPriceListDetails(activeRowData.plId); // ✅ Reload with latest data
+                        } 
+                    } else {
+                        console.warn('Update failed:', response.message || 'Unknown error');
+                    }
+                },
+
+                error: function (xhr, status, error) {
+                    console.error('AJAX error:', {
+                        status: xhr.status,
+                        statusText: xhr.statusText,
+                        response: xhr.responseText,
+                        errorThrown: error
+                    });
+                },
+
+                complete: function () {
+                    console.log('Save request completed.');
+                    // Optional: re-enable UI, hide spinner, etc.
+                }
+            });
+        }
     }
 
-    function deletePriceListDetailRecord(id) {
-        $.ajax({
-            url: deleteDetailUrl,
-            type: 'POST',
-            data: { id: id },
-            headers: {
-                'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
-            },
-            success: function (response) {
-                if (response.success) {
-                    toastr.success('تم الحذف بنجاح');
-                    priceListDetailTable.ajax.reload();
-                } else {
-                    toastr.error('حدث خطأ أثناء الحذف');
-                }
-            },
-            error: function () {
-                toastr.error('حدث خطأ أثناء الحذف');
+    function deletePriceListDetailRecord($deleteBtn,table) {
+        var id = $deleteBtn.data('id');
+
+        if (typeof (id) === "string" && id.includes("temp")) {
+            // Delete temporary row
+            var row = table.row($deleteBtn.closest('tr'));
+            row.remove().draw(false);
+        } else {
+            // Delete existing row
+            if (confirm('هل تريد حذف هذا الصف')) {
+                $.ajax({
+                    url: '/Medical/PriceListNew/DeletePriceListDetail',
+                    type: 'POST',
+                    data: { id: id },
+
+                    beforeSend: function () {
+                        console.log('Deleting record...');
+                        // Optional: disable button or show spinner
+                    },
+
+                    success: function (response) {
+                        if (response.success) {
+                            console.log('Record deleted successfully:', response);
+                            const activeRowData = priceListTable.row('.active-row').data();
+                            if (activeRowData?.plId) {
+                                loadPriceListDetails(activeRowData.plId); // ✅ Reload with latest data
+                            }                        } else {
+                            console.warn('Delete failed:', response.message || 'Unknown error');
+                        }
+                    },
+
+                    error: function (xhr, status, error) {
+                        console.error('AJAX error:', {
+                            status: xhr.status,
+                            statusText: xhr.statusText,
+                            response: xhr.responseText,
+                            errorThrown: error
+                        });
+                    },
+
+                    complete: function () {
+                        console.log('Save request completed.');
+                        // Optional: re-enable UI, hide spinner, etc.
+                    }
+                });
             }
-        });
+        }
     }
 
-    // Load dropdown data via AJAX
-    function loadDropdownData() {
-        // Load Main Clinics
-        $.ajax({
-            url: window.mainClinicUrl,
-            type: 'GET',
-            success: function (data) {
-                mainClinic = data;
-                if (priceListDetailTable) {
-                    priceListDetailTable.draw();
-                }
-            },
-            error: function () {
-                console.error('Failed to load main clinic data');
-            }
-        });
-
-        // Load Sub Clinics
-        $.ajax({
-            url: window.subClinicUrl,
-            type: 'GET',
-            success: function (data) {
-                subClinic = data;
-                if (priceListDetailTable) {
-                    priceListDetailTable.draw();
-                }
-            },
-            error: function () {
-                console.error('Failed to load sub clinic data');
-            }
-        });
-
-        // Load Services
-        $.ajax({
-            url: window.servicesUrl,
-            type: 'GET',
-            success: function (data) {
-                services = data;
-                if (priceListDetailTable) {
-                    priceListDetailTable.draw();
-                }
-            },
-            error: function () {
-                console.error('Failed to load services data');
-            }
-        });
-    }
+   
 
     // Cascade dropdown function for sub clinics based on main clinic selection
-    $('#PriceListDetail tbody').on('change', 'select[data-field="ClinicId"]', function () {
+    $('#PriceListDetail tbody').on('change', 'select[data-field="clinicId"]', function () {
         var mainClinicId = $(this).val();
         var rowId = $(this).data('id');
 
+        const tableData = priceListDetailTable.data().toArray();
+        const row = tableData.find(r => r.plDtlId == rowId); 
+
         if (mainClinicId) {
-            loadSubClinics(mainClinicId, rowId);
+            loadSubClinics(mainClinicId, row);
         } else {
             // Clear sub clinic and services dropdowns
-            $('select[data-field="SClinicId"][data-id="' + rowId + '"]').html('<option value="">اختر...</option>');
-            $('select[data-field="ServId"][data-id="' + rowId + '"]').html('<option value="">اختر...</option>');
+            $('select[data-field="sClinicId"][data-id="' + rowId + '"]').html('<option value="">اختر...</option>');
+            $('select[data-field="servId"][data-id="' + rowId + '"]').html('<option value="">اختر...</option>');
         }
     });
 
     // Cascade dropdown function for services based on sub clinic selection
-    $('#PriceListDetail tbody').on('change', 'select[data-field="SClinicId"]', function () {
+    $('#PriceListDetail tbody').on('change', 'select[data-field="sClinicId"]', function () {
         var subClinicId = $(this).val();
         var rowId = $(this).data('id');
 
+        const tableData = priceListDetailTable.data().toArray();
+        const row = tableData.find(r => r.plDtlId == rowId); 
+
         if (subClinicId) {
-            loadServices(subClinicId, rowId);
+            loadServices(subClinicId, row);
         } else {
             // Clear services dropdown
-            $('select[data-field="ServId"][data-id="' + rowId + '"]').html('<option value="">اختر...</option>');
+            $('select[data-field="servId"][data-id="' + rowId + '"]').html('<option value="">اختر...</option>');
         }
     });
 
     // Load sub clinics based on main clinic
-    function loadSubClinics(mainClinicId, rowId) {
+    function loadSubClinics(mainClinicId, row) {
         $.ajax({
-            url: window.subClinicUrl,
+            url: '/Medical/SubClinic/GetSubClinic/' + mainClinicId,
             type: 'GET',
-            data: { mainClinicId: mainClinicId },
             success: function (data) {
-                var subClinicSelect = $('select[data-field="SClinicId"][data-id="' + rowId + '"]');
+
+               
+              
+                var subClinicSelect = $('select[data-field="sClinicId"][data-id="' + row.plDtlId + '"]');
+                subClinicSelect.removeAttr("disabled");
                 subClinicSelect.html('<option value="">اختر...</option>');
 
                 data.forEach(function (item) {
-                    subClinicSelect.append('<option value="' + item.Value + '">' + item.Text + '</option>');
+                    var isSelected = item.sClinicId == row.sClinicId ? 'selected' : '';
+                    subClinicSelect.append(
+                        '<option value="' + item.sClinicId + '" ' + isSelected + '>' + item.sClinicDesc + '</option>'
+                    );
                 });
             },
             error: function () {
@@ -803,22 +1004,47 @@
     }
 
     // Load services based on sub clinic
-    function loadServices(subClinicId, rowId) {
+    function loadServices(subClinicId, row) {
         $.ajax({
-            url: window.servicesUrl,
+            url: '/Medical/ClinicTrans/GetServeClinic/' + subClinicId,
             type: 'GET',
-            data: { subClinicId: subClinicId },
+           
             success: function (data) {
-                var servicesSelect = $('select[data-field="ServId"][data-id="' + rowId + '"]');
+
+                var servicesSelect = $('select[data-field="servId"][data-id="' + row.plDtlId + '"]');
+                servicesSelect.removeAttr("disabled");
                 servicesSelect.html('<option value="">اختر...</option>');
 
                 data.forEach(function (item) {
-                    servicesSelect.append('<option value="' + item.Value + '">' + item.Text + '</option>');
+                    var isSelected = item.servId == row.servId ? 'selected' : '';
+                    servicesSelect.append('<option value="' + item.servId + `" ${isSelected}>` + item.servDesc + '</option>');
                 });
             },
             error: function () {
+               
                 console.error('Failed to load services data');
             }
         });
+    }
+
+    function disablePriceListDetailSaveBtn() {
+        $('.priceListDetailSaveBtn').attr('disabled', 'disabled');
+    }
+    function enablePriceListDetailSaveBtn() {
+        $('.priceListDetailSaveBtn').removeAttr('disabled');
+    }
+
+    function disablePriceListSaveBtn() {
+        $('.priceListSaveBtn').attr('disabled', 'disabled');
+    }
+    function enablePriceListSaveBtn() {
+        $('.priceListSaveBtn').removeAttr('disabled');
+    }
+
+    function disablePriceListDetailAddBtn() {
+        $('.priceListDetailAddBtn').attr('disabled', 'disabled');
+    }
+    function enablePriceListDetailAddBtn() {
+        $('.priceListDetailAddBtn').removeAttr('disabled');
     }
 });

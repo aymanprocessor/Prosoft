@@ -4,7 +4,7 @@
 @{
     ViewData["Title"] = "Add Price List DtL";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    SelectList mainList = new SelectList(Model.MainClinics, "ClinicId", "ClinicDesc");
+    //SelectList mainList = new SelectList(Model.MainClinics, "ClinicId", "ClinicDesc");
 
 }
 @inject IViewLocalizer localizer
@@ -29,13 +29,13 @@
 
             <div class="parent d-flex align-items-md-end justify-content-center my-mobile servise gap-3">
                 @* from main clinic *@
-                <div class="mb-3 ">
+                @*<div class="mb-3 ">
                     <label asp-for="ClinicId"> </label>
-                    <select asp-for="ClinicId" asp-items="mainList" class="form-control text-center" onchange="GetSubClinics()">
+                    <select asp-for="ClinicId" asp-items="" class="form-control text-center" onchange="GetSubClinics()">
                         <option value="">-- Choose --</option>
                     </select>
                     <span asp-validation-for="ClinicId" class="text-danger"></span>
-                </div>
+                </div>*@
                 @* from sub clinic *@
                 <div class="mb-3">
                     <label asp-for="SClinicId"></label>

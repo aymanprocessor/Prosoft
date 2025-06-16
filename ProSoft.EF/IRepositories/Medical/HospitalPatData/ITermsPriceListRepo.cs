@@ -16,7 +16,9 @@ namespace ProSoft.EF.IRepositories.Medical.HospitalPatData
         Task<int> GetNewIdSortAsync();
         Task<TermsPriceListEditAddDTO> GetEmptyTermsPriceListAsync();
         Task AddTermPriceListAsync(int id, TermsPriceListEditAddDTO termsPriceListDTO);
+        Task AddTermPriceListBatchAsync(int id, List<TermsPriceListEditAddDTO> termsPriceListDTOs);
         Task<TermsPriceListEditAddDTO> GetTermPriceListByIdAsync(int id);
         Task EditDoctorPercentAsync(int id, TermsPriceListEditAddDTO termsPriceListDTO);
+        Task EditTermPriceListBatchAsync(List<TermsPriceListEditAddDTO> termsPriceListDTOs);
     }
 }

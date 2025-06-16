@@ -169,96 +169,71 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
 
-        public async Task<IActionResult> SaveRecordPriceListDetail([FromBody] PriceListDetailRecordDTO records)
+        public async Task<IActionResult> SaveRecordPriceListDetail([FromBody] List<PriceListDetailDTO> records)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (records == null)
+            if (records == null || !records.Any())
             {
                 return Json(new { success = false, message = "No data received." });
             }
 
             try
             {
-
-                // Insert new records
-                if (records.InsertData != null && records.InsertData.Any())
-                {
-                    foreach (var record in records.InsertData)
-                    {
-                        // Map DTO to entity and insert
-                        var newEntity = new PriceListDetail
-                        {
-                            ServOnOff = record.ServOnOff,
-                            PLId = record.PLId,
-                            ClinicId = record.ClinicId,
-                            SClinicId = record.SClinicId,
-                            ServId = record.ServId,
-                            ServBefDesc = record.ServBefDesc,
-                            DiscoutComp = record.DiscoutComp,
-                            PlValue = record.PlValue,
-                            CompCovPercentage = record.CompCovPercentage,
-                            CompValue = record.CompValue,
-                            PlValue2 = record.PlValue2,
-                            PlValue3 = record.PlValue3,
-                            ExtraVal = record.ExtraVal,
-                            ExtraVal2 = record.ExtraVal2,
-                            Covered = record.Covered,
-                            BranchId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "U_Branch_Id").Value),
-
-                        };
-                        await _termsPriceListRepo.AddAsync(newEntity);
-
-                    }
-                    await _termsPriceListRepo.SaveChangesAsync();
-
-                }
-
-                // Update existing records
-                if (records.UpdateData != null && records.UpdateData.Any())
-                {
-                    foreach (var record in records.UpdateData)
-                    {
-                        var existingEntity = await _termsPriceListRepo.GetByIdAsync((int)record.PLDtlId);
-                        if (existingEntity != null)
-                        {
-                            existingEntity.ServOnOff = record.ServOnOff;
-                            existingEntity.ClinicId = record.ClinicId;
-                            existingEntity.SClinicId = record.SClinicId;
-                            existingEntity.ServId = record.ServId;
-                            existingEntity.ServBefDesc = record.ServBefDesc;
-                            existingEntity.DiscoutComp = record.DiscoutComp;
-                            existingEntity.PlValue = record.PlValue;
-                            existingEntity.CompCovPercentage = record.CompCovPercentage;
-                            existingEntity.CompValue = record.CompValue;
-                            existingEntity.PlValue2 = record.PlValue2;
-                            existingEntity.PlValue3 = record.PlValue3;
-                            existingEntity.ExtraVal = record.ExtraVal;
-                            existingEntity.ExtraVal2 = record.ExtraVal2;
-                            existingEntity.Covered = record.Covered;
-                            existingEntity.BranchId = int.Parse(User.Claims.FirstOrDefault(x => x.Type == "U_Branch_Id").Value);
-                            await _termsPriceListRepo.UpdateAsync(existingEntity);
-                        }
-                        else
-                        {
-                            return Json(new { success = false, message = "Record is not exists!" });
-
-                        }
-
-
-                    }
-                    await _termsPriceListRepo.SaveChangesAsync();
-
-                }
-
+                
+                await _termsPriceListRepo.AddTermPriceListBatchAsync(records[0].PLId, _mapper.Map<List<TermsPriceListEditAddDTO>>(records));
 
                 return Json(new { success = true, message = "Records saved successfully!" });
+            }
+            catch (Exception ex)
+            {
+                // Optional: Log exception
+                return Json(new
+                {
+                    success = false,
+                    message = "An error occurred while saving records.",
+                    error = ex.Message
+                });
+            }
+        }
 
+
+        public async Task<IActionResult> UpdateRecordPriceListDetail([FromBody] List<TermsPriceListEditAddDTO> records)
+        {
+
+
+
+
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                if (records == null)
+                {
+                    return BadRequest(new
+                    {
+                        success = false,
+                        message = "Request body is null or invalid JSON format."
+                    });
+                }
+
+
+                await _termsPriceListRepo.EditTermPriceListBatchAsync(records);
+
+
+
+                return StatusCode(200, new
+                {
+                    success = true,
+                    message = "Data Edited",
+                    data = records
+                });
             }
             catch (Exception ex)
             {
@@ -267,14 +242,14 @@ namespace ProSoft.UI.Areas.Medical.Controllers
             }
         }
 
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<JsonResult> DeletePriceListDetail([FromBody] PriceListDetailDTO model)
+        public async Task<JsonResult> DeletePriceListDetail(int id)
         {
 
             try
             {
-                var product = await _termsPriceListRepo.GetByIdAsync((int)model.PLDtlId);
+                var product = await _termsPriceListRepo.GetByIdAsync(id);
                 if (product == null)
                 {
                     return Json(new { success = false, message = "Product not found" });

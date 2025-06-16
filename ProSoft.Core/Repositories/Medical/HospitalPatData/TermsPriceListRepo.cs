@@ -78,7 +78,7 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
         {
             TermsPriceListEditAddDTO termsPriceListDTO = new TermsPriceListEditAddDTO();
             List<MainClinic> mainClinics = await _Context.MainClinics.ToListAsync();
-            termsPriceListDTO.MainClinics = _mapper.Map<List<MainClinicViewDTO>>(mainClinics);
+           // termsPriceListDTO.MainClinics = _mapper.Map<List<MainClinicViewDTO>>(mainClinics);
 
             return termsPriceListDTO;
 
@@ -88,15 +88,8 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
         public async Task AddTermPriceListAsync(int id, TermsPriceListEditAddDTO termsPriceListDTO)
         {
             termsPriceListDTO.PlValue = termsPriceListDTO.ServBefDesc - (termsPriceListDTO.ServBefDesc * (termsPriceListDTO.DiscoutComp / 100));
-            //////////
-            //termsPriceListDTO.CompCovPercentage = 100 - ((termsPriceListDTO.PlValue2 / termsPriceListDTO.PlValue) * 100) - ((termsPriceListDTO.PlValue3 / termsPriceListDTO.PlValue) * 100);
-            //termsPriceListDTO.PlValue2 = termsPriceListDTO.PlValue -
-            //       (termsPriceListDTO.PlValue * (termsPriceListDTO.CompCovPercentage / 100)) - termsPriceListDTO.PlValue3;
-            //termsPriceListDTO.PlValue3 = termsPriceListDTO.PlValue -
-            //       (termsPriceListDTO.PlValue * (termsPriceListDTO.CompCovPercentage / 100)) - termsPriceListDTO.PlValue2;
-            /////////
             termsPriceListDTO.CompValue = termsPriceListDTO.PlValue * (termsPriceListDTO.CompCovPercentage / 100);
-            ////////////////////////////////////
+            
 
             #region EQUALS
 
@@ -126,6 +119,23 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             await _Context.SaveChangesAsync();
         }
 
+        public async Task AddTermPriceListBatchAsync(int id, List<TermsPriceListEditAddDTO> termsPriceListDTOs)
+        {
+            var priceListDetails = new List<PriceListDetail>();
+
+            foreach (var dto in termsPriceListDTOs)
+            {
+                dto.PlValue = dto.ServBefDesc - (dto.ServBefDesc * (dto.DiscoutComp / 100));
+                dto.CompValue = dto.PlValue * (dto.CompCovPercentage / 100);
+                dto.PLId = id;
+
+                var priceListDetail = _mapper.Map<PriceListDetail>(dto);
+                priceListDetails.Add(priceListDetail);
+            }
+
+            await _Context.AddRangeAsync(priceListDetails);
+            await _Context.SaveChangesAsync();
+        }
         public async Task<TermsPriceListEditAddDTO> GetTermPriceListByIdAsync(int id)
         {
             PriceListDetail priceListDetail = await _Context.PriceListDetails
@@ -136,9 +146,9 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             List<SubClinic> subClinics = await _Context.SubClinics.ToListAsync();
             List<ServiceClinic> serviceClinics = await _Context.ServiceClinics.ToListAsync();
 
-            termsPriceListDTO.MainClinics = _mapper.Map<List<MainClinicViewDTO>>(mainClinics);
-            termsPriceListDTO.SubClinics = _mapper.Map<List<SubClinicViewDTO>>(subClinics);
-            termsPriceListDTO.ServiceClinics = _mapper.Map<List<ServiceClinicViewDTO>>(serviceClinics);
+            //termsPriceListDTO.MainClinics = _mapper.Map<List<MainClinicViewDTO>>(mainClinics);
+            //termsPriceListDTO.SubClinics = _mapper.Map<List<SubClinicViewDTO>>(subClinics);
+            //termsPriceListDTO.ServiceClinics = _mapper.Map<List<ServiceClinicViewDTO>>(serviceClinics);
 
             return termsPriceListDTO;
         }
@@ -148,19 +158,45 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
             PriceListDetail priceListDetail = await _Context.PriceListDetails.FirstOrDefaultAsync(obj => obj.PLDtlId == id);
 
             termsPriceListDTO.PlValue = termsPriceListDTO.ServBefDesc - (termsPriceListDTO.ServBefDesc * (termsPriceListDTO.DiscoutComp / 100));
-            //////////
-                //termsPriceListDTO.CompCovPercentage = 100 - ((termsPriceListDTO.PlValue2 / termsPriceListDTO.PlValue) * 100) - ((termsPriceListDTO.PlValue3 / termsPriceListDTO.PlValue) * 100);
-                //termsPriceListDTO.PlValue2 = termsPriceListDTO.PlValue -
-                //       (termsPriceListDTO.PlValue * (termsPriceListDTO.CompCovPercentage / 100)) - termsPriceListDTO.PlValue3;
-                //termsPriceListDTO.PlValue3 = termsPriceListDTO.PlValue -
-                //       (termsPriceListDTO.PlValue * (termsPriceListDTO.CompCovPercentage / 100)) - termsPriceListDTO.PlValue2;
-            /////////
+           
             termsPriceListDTO.CompValue = termsPriceListDTO.PlValue * (termsPriceListDTO.CompCovPercentage / 100);
-            ////////////////////////////////////
+            
             termsPriceListDTO.PLId = priceListDetail.PLId;
             _mapper.Map(termsPriceListDTO, priceListDetail);
             _Context.Update(priceListDetail);
             await _Context.SaveChangesAsync();
         }
+
+        public async Task EditTermPriceListBatchAsync(List<TermsPriceListEditAddDTO> termsPriceListDTOs)
+        {
+            foreach (var dto in termsPriceListDTOs)
+            {
+                var priceListDetail = await _Context.PriceListDetails
+                    .FirstOrDefaultAsync(obj => obj.PLDtlId == dto.PLDtlId);
+
+                if (priceListDetail != null)
+                {
+                    // Recalculate values
+                    dto.PlValue = dto.ServBefDesc - (dto.ServBefDesc * (dto.DiscoutComp / 100));
+                    dto.CompValue = dto.PlValue * (dto.CompCovPercentage / 100);
+
+                    // Preserve PLId from the database if needed
+                    dto.PLId = priceListDetail.PLId;
+
+                    // Map updated values to the existing entity
+                    _mapper.Map(dto, priceListDetail);
+
+                    _Context.Update(priceListDetail);
+                }
+                else
+                {
+                    // Optionally log or handle missing records
+                    // e.g., continue or throw an exception
+                }
+            }
+
+            await _Context.SaveChangesAsync();
+        }
+
     }
 }

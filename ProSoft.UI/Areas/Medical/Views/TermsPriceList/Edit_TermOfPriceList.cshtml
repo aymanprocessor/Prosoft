@@ -1,15 +1,15 @@
-﻿@model TermsPriceListEditAddDTO
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@*@model TermsPriceListEditAddDTO*@
+@*@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers*@
 
-@{
+<!--@{
     ViewData["Title"] = "Add Price List DtL";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    SelectList mainList = new SelectList(Model.MainClinics, "ClinicId", "ClinicDesc");
-    // For Getting sub clinics depending on the selected clinic
-    SelectList subList = new SelectList(Model.SubClinics, "SClinicId", "SClinicDesc");
+    //SelectList mainList = new SelectList(Model.MainClinics, "ClinicId", "ClinicDesc");
+    //// For Getting sub clinics depending on the selected clinic
+    //SelectList subList = new SelectList(Model.SubClinics, "SClinicId", "SClinicDesc");
 
-    // For Getting service clinics depending on the selected sub clinics
-    SelectList serveList = new SelectList(Model.ServiceClinics, "ServId", "ServDesc");
+    //// For Getting service clinics depending on the selected sub clinics
+    //SelectList serveList = new SelectList(Model.ServiceClinics, "ServId", "ServDesc");
 }
 @inject IViewLocalizer localizer
 
@@ -19,43 +19,43 @@
     <form method="post" asp-action="Edit_TermOfPriceList" id="myForm">
         <div class="border p-3 mt-4">
 
-            <div asp-validation-summary="ModelOnly"></div>
+            <div asp-validation-summary="ModelOnly"></div>-->
             @* hidden *@
-            <input asp-for="PLDtlId" type="hidden" />
+            <!--<input asp-for="PLDtlId" type="hidden" />-->
 
-            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
+            @*<div class="parent d-flex align-items-md-end justify-content-center  my-mobile ">
                 <div class="mb-3">
                     <label asp-for="PLDetailCode"></label>
                     <input asp-for="PLDetailCode" class="form-control" />
                     <span asp-validation-for="PLDetailCode" class="text-danger"></span>
                 </div>
-            </div>
+            </div>*@
 
-            <!------------------------------------------------------------------------------->
+            <!--<!------------------------------------------------------------------------------->
 
-            <div class="parent d-flex align-items-md-end justify-content-center my-mobile servise gap-3">
+            <!--<div class="parent d-flex align-items-md-end justify-content-center my-mobile servise gap-3">-->
                 @* from main clinic *@
-                <div class="mb-3 ">
+                <!--<div class="mb-3 ">
                     <label asp-for="ClinicId"> </label>
                     <select asp-for="ClinicId" asp-items="mainList" class="form-control text-center" onchange="GetSubClinics()">
                         <option value="">-- Choose --</option>
                     </select>
                     <span asp-validation-for="ClinicId" class="text-danger"></span>
-                </div>
+                </div>-->
                 @* from sub clinic *@
-                <div class="mb-3">
+                <!--<div class="mb-3">
                     <label asp-for="SClinicId"></label>
                     <select asp-for="SClinicId" class="form-control text-center" asp-items="subList" onchange="GetServeClinics()">
                         <option value="">-- Choose --</option>
                     </select>
                     <span asp-validation-for="SClinicId" class="text-danger"></span>
                 </div>
-            </div>
+            </div>-->
 
             <!------------------------------------------------------------------------------->
-            <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
+            <!--<div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">-->
                 @* from Serve clinic *@
-                <div class="mb-3  servise">
+                @*<div class="mb-3  servise">
                     <label asp-for="ServId"></label>
                     <select asp-for="ServId" class="form-control text-center" asp-items="serveList">
                         <option value="">-- Choose --</option>
@@ -67,11 +67,11 @@
                     <input asp-for="ServBefDesc" id="serviceValue" class="form-control" type="number" />
                     <span asp-validation-for="ServBefDesc" class="text-danger"></span>
                 </div>
-            </div>
+            </div>-->*@
 
             <!------------------------------------------------------------------------------->
 
-            <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
+            <!--<div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
                 <div class="mb-3 ">
                     <label asp-for="DiscoutComp"></label>
                     <input asp-for="DiscoutComp" id="DiscoutComp" class="form-control" type="number" />
@@ -82,20 +82,20 @@
                     <input asp-for="CompCovPercentage" id="CompCovPercentage" class="form-control" type="number" />
                     <span asp-validation-for="CompCovPercentage" class="text-danger"></span>
                 </div>
-            </div>
+            </div>-->
 
             <!------------------------------------------------------------------------------->
-            <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
+            <!--<div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
 
                 <div class="mb-3 ">
                     <label>@localizer["After Discount"]</label>
                     <input id="afterDiscound" disabled type="number" class="form-control" value="0" />
                 </div>
-            </div>
+            </div>-->
 
             <!------------------------------------------------------------------------------->
 
-            <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
+            <!--<div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
                 <div class="mb-3 ">
                     <label asp-for="PlValue2"></label>
                     <input asp-for="PlValue2" id="patientValue" class="form-control" type="number" />
@@ -106,11 +106,11 @@
                     <input asp-for="PlValue3" class="form-control" type="number" />
                     <span asp-validation-for="PlValue" class="text-danger"></span>
                 </div>
-            </div>
+            </div>-->
 
             <!------------------------------------------------------------------------------->
 
-            <div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
+            <!--<div class="parent d-flex align-items-md-end justify-content-center my-mobile gap-3">
                 <div class="mb-3 ">
                     <label asp-for="ExtraVal"></label>
                     <input asp-for="ExtraVal" class="form-control" type="number" />
@@ -121,11 +121,11 @@
                     <input asp-for="ExtraVal2" class="form-control" type="number" />
                     <span asp-validation-for="ExtraVal2" class="text-danger"></span>
                 </div>
-            </div>
+            </div>-->
 
             <!------------------------------------------------------------------------------->
 
-            <div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
+            <!--<div class="parent d-flex align-items-md-end justify-content-center  my-mobile gap-3 ">
                 <div class="mb-3">
                     <label asp-for="ServOnOff"></label>
                     <select asp-for="ServOnOff" class="form-control text-center">
@@ -142,12 +142,12 @@
                     </select>
                     <span asp-validation-for="Covered" class="text-danger"></span>
                 </div>
-            </div>
+            </div>-->
 
 
             <!------------------------------------------------------------------------------->
 
-            <button type="submit" class="btn btn-primary" style="width:150px">
+            <!--<button type="submit" class="btn btn-primary" style="width:150px">
                 @localizer["Save Changes"]
             </button>
             <a asp-controller="PriceList" asp-action="Index" class="btn btn-secondary" style="width:150px">
@@ -236,4 +236,4 @@
         document.getElementById('afterDiscound').value = serviceValuee - (serviceValuee * (discountCompValue / 100));
         // console.log(document.getElementById('afterDiscound').value)
     });
-</script>
+</script>-->
