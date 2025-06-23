@@ -29,6 +29,7 @@
     <PackageReference Include="FastReport.OpenSource.Web" Version="2025.1.0" />
     <PackageReference Include="Font.Awesome" Version="5.15.4" />
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.10" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.2.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.11.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Features" Version="4.11.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.10">

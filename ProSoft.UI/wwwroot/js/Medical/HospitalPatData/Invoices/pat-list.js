@@ -1,11 +1,10 @@
 ﻿let table;
 let modifiedRows = new Set();
 
-$(document).ready(function () {
+document.addEventListener('DOMContentLoaded', function () {
     initializeTable();
     setupEventHandlers();
 });
-
 
 function initializeTable() {
     if ($.fn.DataTable.isDataTable('.patient-table')) {
@@ -23,16 +22,27 @@ function initializeTable() {
                 return [];
             }
         },
+        columnControl: [
+            {
+                target: 0,
+                content: ['order', 'searchDropdown']
+            }
+
+        ],
+        ordering: {
+            indicators: false,
+            handler: false
+        },
         columns: getTableColumns(),
         paging: true,
-        searching: true,
-        ordering: true,
         scrollX: true,
         scrollY: "200px",
         scrollCollapse: true,
         rowId: function (data) {
             return 'row-' + data.patId;
         },
+        searching: true,
+
         dom: 'Bfrtip',
         buttons: ['copy', 'excel', 'pdf', 'print'],
         language: {
@@ -64,6 +74,7 @@ function getTableColumns() {
         },
         {
             data: 'idType',
+           
             render: function (data, type, row) {
                 if (type === 'display') {
                     return `<select class="form-select" data-field="idType" data-id="${row.patId}" required>
@@ -304,6 +315,7 @@ function getTableColumns() {
         },
         {
             data: null,
+            columnControl: [],
             render: function (data, type, row) {
                 return `<button class="btn btn-sm btn-danger btn-delete" data-id="${row.patId}">
                             <i class="bi bi-trash"></i>
@@ -373,6 +385,7 @@ function setupEventHandlers() {
         handleDelete($(this));
     });
 
+    
     // Auto-calculate age from birth date
     $('.patient-table tbody').on('change', 'input[data-field="birthDate"]', function () {
         const birthDate = $(this).val();
@@ -393,7 +406,7 @@ function setupEventHandlers() {
         var rowData = table.row(this).data();
         if (rowData && rowData.patId) {
             const syntheticEvent = { target: $(this).find('td').first()[0] };
-            GetAdmisson(syntheticEvent, rowData.patId);
+            GetAdmisson(syntheticEvent, rowData);
         }
     });
 }

@@ -30,6 +30,7 @@ using ProSoft.EF.IRepositories.Treasury;
 using ProSoft.EF.Models;
 using ProSoft.EF.Models.Stocks;
 using ProSoft.UI.Areas.Accounts;
+using ProSoft.UI.Hubs;
 using ProSoft.UI.Localization;
 using System.Globalization;
 using System.Text.Json;
@@ -100,7 +101,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 
 builder.Services.ConfigureOptions<ConfigureSecurityStampOptions>();
-
+builder.Services.AddSignalR();
 //builder.Services.AddSession(options =>
 //{
 //    options.IdleTimeout = TimeSpan.FromMinutes(1000000);
@@ -292,6 +293,7 @@ if (!app.Environment.IsDevelopment())
 }
 // add cors
 
+app.MapHub<ConnectionHub>("/connectionHub"); // SignalR endpoint
 
 // add cors
 //app.UseHttpsRedirection();

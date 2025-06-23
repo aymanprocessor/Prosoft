@@ -158,9 +158,10 @@
 <body>
     <div class="main-container">
         <!-- Left side - Image -->
+
         <div class="image-side">
             <img src="~/images/login-image.png" alt="Medical Professionals">
-            
+
             <!-- Divider Dots -->
             <div class="divider-dots">
                 <div class="dot"></div>
@@ -168,19 +169,20 @@
                 <div class="dot"></div>
             </div>
         </div>
-        
+
         <!-- Right side - Login Form -->
         <div class="login-side">
-     
-            
+            <div style="position: fixed; top: 20px; right: 20px; z-index: 10;" dir="rtl">
+                @await Html.PartialAsync("_ConnectionStatusBar")
+            </div>
             <!-- Logo -->
             <div class="logo">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg" alt="Microsoft Logo">
             </div>
-            
+
             <!-- Welcome Text -->
             <h2 class="welcome-text">مرحبا بكم في EIS ProSoft</h2>
-            
+
             <form method="post" asp-action="Login">
                 <!-- Username Field -->
                 <div class="mb-3">
@@ -190,7 +192,7 @@
                     </select>
                     <span asp-validation-for="UserCode" class="text-danger"></span>
                 </div>
-                
+
                 <!-- Password Field -->
                 <div class="mb-3">
                     <label class="form-label">كلمة المرور</label>
@@ -200,16 +202,16 @@
                     </div>
                     <span asp-validation-for="PassWord" class="text-danger"></span>
                 </div>
-                
+
                 <!-- Forgot Password Link -->
                 <a href="#" class="forgot-password">نسيت كلمة المرور</a>
-                
+
                 <!-- Remember Me Checkbox -->
                 <div class="mb-3 form-check text-end">
                     <input asp-for="rememberMe" class="form-check-input" id="rememberMe" />
                     <label class="form-check-label" for="rememberMe">تذكرني</label>
                 </div>
-                
+
                 <!-- Submit Button -->
                 <button type="submit" class="submit-btn">تسجيل الدخول</button>
             </form>

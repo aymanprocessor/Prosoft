@@ -19,14 +19,22 @@
     <!-- Patient Search Section -->
     @*<partial name="Partials/_PatientSearchSection" />*@
 
-    <!-- Patient List Table -->
-    <partial name="Partials/_PatientListTable"  />
+    <div class="mb-5">
+        <!-- Patient List Table -->
+        <partial name="Partials/_PatientListTable" />
+    </div>
 
-    <!-- Patient Admissions Section -->
-    <partial name="Partials/_PatientAdmissionsSection" />
+    <div class="mb-5">
+        <!-- Patient Admissions Section -->
+        <partial name="Partials/_PatientAdmissionsSection" />
+    </div>
 
-    <!-- Clinic Transactions Section -->
-    <partial name="Partials/_ClinicTransactionsSection" />
+
+    <div class="mb-5">
+        <!-- Clinic Transactions Section -->
+        <partial name="Partials/_ClinicTransactionsSection" />
+    </div>
+ 
 
     <!-- Summary Totals -->
     <partial name="Partials/_SummaryTotals" />
@@ -34,8 +42,8 @@
 
 
     <!-- Scripts -->
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
+    @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/Medical/HospitalPatData/Invoices/pat-list.js" asp-append-version="true"></script>
     <script src="~/js/Medical/HospitalPatData/Invoices/patient-search.js" asp-append-version="true"></script>

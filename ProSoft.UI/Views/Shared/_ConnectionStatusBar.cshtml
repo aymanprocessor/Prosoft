@@ -1,0 +1,95 @@
+﻿<style>
+    .connection-badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 10px;
+        font-weight: bold;
+        font-size: 16px;
+       
+    }
+
+    .status-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .dot-green {
+        background-color: #4CAF50;
+    }
+
+    .dot-red {
+        background-color: #f44336;
+    }
+
+    .dot-yellow {
+        background-color: #ff9800;
+    }
+</style>
+
+<div class="connection-badge" id="connectionStatusBar">
+    <span class="status-dot dot-yellow" id="connectionDot"></span>
+    <span id="connectionMessage">فحص الاتصال</span>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+<script>
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/connectionHub")
+        .withAutomaticReconnect()
+        .build();
+
+    function setStatusBar(state, message) {
+        const dot = document.getElementById('connectionDot');
+        const msg = document.getElementById('connectionMessage');
+
+        msg.textContent = message;
+
+        dot.classList.remove('dot-green', 'dot-red', 'dot-yellow');
+
+        switch (state) {
+            case 'connected':
+                dot.classList.add('dot-green');
+                break;
+            case 'disconnected':
+                dot.classList.add('dot-red');
+                break;
+            case 'reconnecting':
+            default:
+                dot.classList.add('dot-yellow');
+                break;
+        }
+    }
+
+    connection.on("ReceiveStatus", function (message) {
+        setStatusBar("connected", message);
+    });
+
+    connection.start()
+        .then(() => {
+            setStatusBar("connected", "متصل");
+            setInterval(() => {
+                connection.invoke("Ping").catch(() => {
+                    setStatusBar("disconnected", "غير متصل");
+                });
+            }, 10000);
+        })
+        .catch(() => {
+            setStatusBar("disconnected", "لا استطيع الاتصال");
+        });
+
+    connection.onreconnecting(() => {
+        setStatusBar("reconnecting", "إعادة الاتصال...");
+    });
+
+    connection.onreconnected(() => {
+        setStatusBar("connected", "تمت إعادة الاتصال عند " + new Date().toLocaleTimeString());
+    });
+
+    connection.onclose(() => {
+        setStatusBar("disconnected", "الاتصال مغلق");
+    });
+</script>

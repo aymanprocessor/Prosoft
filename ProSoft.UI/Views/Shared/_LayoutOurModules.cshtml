@@ -754,6 +754,10 @@
                     <partial name="_SelectLanguagePartial" />
                     <a asp-action="Logout" asp-controller="Account" class="btn btn-secondary">@localizer["Log out"]</a>
                 </div>
+                <div dir="ltr">
+
+                    @await Html.PartialAsync("_ConnectionStatusBar")
+                </div>
             </div>
             @RenderBody()
         </div>

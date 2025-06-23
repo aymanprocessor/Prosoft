@@ -54,6 +54,17 @@
                 return [];
             }
         },
+        columnControl: [
+            {
+                target: 0,
+                content: ['order', 'searchDropdown']
+            }
+            
+        ],
+        ordering: {
+            indicators: false,
+            handler: false
+        },
         language: {
             url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/ar.json'
         },
@@ -61,11 +72,12 @@
             {
                 data: 'plId',
                 title: 'كود',
-                width: '30px'
+                width: '60px'
             },
             {
                 data: 'plDesc',
                 title: 'اسم القائمة',
+                width: '200px',
                 render: function (data, type, row, meta) {
                     if (type === 'display') {
                         return '<input type="text" class="form-control editable-field" data-field="plDesc" data-id="' + row.plId + '" value="' + (data || '') + '" required>';
@@ -116,6 +128,7 @@
                 title: 'الإجراءات', 
                 orderable: false,   
                 data: null,
+                width: '100px',
                 render: function (data, type, row ) {
                     return `<button class="btn btn-sm btn-danger delete-btn" data-id="${row.plId}"><i class="bi bi-trash3"></i></button>`;
                 }
@@ -166,13 +179,14 @@
         columns: [
             {
                 data: 'plId',
-                visible:false
+                visible: false,
+               
             },
             {
                 data: 'plDtlId',
                 title: 'كود',
-                width: '30px',
-                
+                width: '60px'
+              
             },
             {
                 data: 'clinicId',
@@ -188,6 +202,7 @@
                     }
                     return data;
                 }
+               
             },
             {
                 data: 'sClinicId',
@@ -242,7 +257,7 @@
                 width: '70px',
                 render: function (data, type, row, meta) {
                     if (type === 'display') {
-                        return '<input type="number" class="form-control" data-field="plValue" data-id="' + row.plDtlId + '" value="' + (data || 0) + '" readonly>';
+                        return '<input type="number" class="form-control editable-field" data-field="plValue" data-id="' + row.plDtlId + '" value="' + (data || 0) + '" readonly>';
                     }
                     return data;
                 }
@@ -327,9 +342,14 @@
             {
                 data: null,
                 title: 'الإجراءات',
-                orderable: false,
+                width: '100px',
+                columnControl: [],
                 render: function (data, type, row, meta) {
                     return  '<button class="btn btn-sm btn-danger delete-detail-btn" data-id="' + row.plDtlId + '"><i class="bi bi-trash3"></i></button>';
+                },
+                createdCell: function (td, cellData, rowData) {
+
+                    td.style.minWidth = '100px';
                 }
             }
         ],
@@ -370,7 +390,17 @@
 
             }
         ],
-        responsive: true,
+        columnControl: [
+            {
+                target: 0,
+                content: ['order', 'searchDropdown']
+            }
+            
+        ],
+        ordering: {
+            indicators: false,
+            handler: false
+        },
         pageLength: 10,
         scrollX: true,
     });

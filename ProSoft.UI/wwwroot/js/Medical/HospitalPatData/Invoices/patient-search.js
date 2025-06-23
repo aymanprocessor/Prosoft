@@ -1,7 +1,7 @@
 ﻿// Patient Search Functionality
-document.getElementById('searchInput').addEventListener('input', function () {
-    filterTable();
-});
+//document.getElementById('searchInput').addEventListener('input', function () {
+//    filterTable();
+//});
 
 function filterTable() {
     var input = document.getElementById('searchInput');

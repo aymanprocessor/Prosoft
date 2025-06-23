@@ -25,16 +25,15 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="~/lib/sweetalert2/sweetalert2.min.css" />
+    <link href="~/css/datatables.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fancygrid/client/fancy.min.css" />
     <link rel="stylesheet" href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.min.css" />
-    <link rel="stylesheet" href="~/lib/datatables.net-bs5/datatables.bootstrap5.min.css" />
     <link rel="stylesheet" href="~/select2/css/select2.min.css" />
     <link rel="stylesheet" href="~/datatables.net-scroller-bs5/scroller.bootstrap5.min.css" />
     <link href="~/css/bootstrap-switch-button.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/parsleyjs/src/parsley.css" />
-
     <script src="https://kit.fontawesome.com/eb688b112b.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
@@ -61,8 +60,12 @@
                 <a asp-action="Logout" asp-controller="Account" asp-area="" class="btn btn-secondary">@localizer["Log out"]</a>
             }
         </div>
+        <div dir="ltr">
+
+            @await Html.PartialAsync("_ConnectionStatusBar")
+        </div>
     </div>
-    <div class="content pb-3 position-relative" style="flex: 1;">
+    <div class="content pb-3 position-relative" style="flex: 1; background-color: #e0e4e9;">
         @RenderBody()
     </div>
 
@@ -71,33 +74,14 @@
 
     <!-- 2) Parsley.js (Form Validation) -->
     <script src="~/lib/parsley.js/parsley.min.js"></script>
-    <!-- 3) DataTables core -->
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
-    <!-- 4) DataTables Buttons -->
-    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.bootstrap5.min.js"></script>
 
-    <!-- KeyTable -->
-    <script src="https://cdn.datatables.net/keytable/2.9.0/js/dataTables.keyTable.min.js"></script>
-
-    <!-- FixedColumns -->
-    <script src="https://cdn.datatables.net/fixedcolumns/4.3.0/js/dataTables.fixedColumns.min.js"></script>
 
     <!-- Select -->
     <script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
 
-
-    <!-- 5) HTML5 export features -->
-    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
-
-    <!-- 6) PDFMake (for PDF export) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-
-    <!-- 7) JSZip (for XLSX export) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <!-- DataTables -->
+    <script src="~/js/datatables.min.js"></script>
 
     <!-- 8) (Optional) SweetAlert2 for alerts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

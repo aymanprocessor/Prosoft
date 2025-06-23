@@ -1,7 +1,7 @@
 ﻿// Patient Admissions Management
 
 
-async function GetAdmisson(e, id) {
+async function GetAdmisson(e, rowData) {
     console.log("event",e)
     let companyList = [];
     let companyDetailsList = [];
@@ -9,7 +9,7 @@ async function GetAdmisson(e, id) {
     let sectionList = [];
     let doctorList = [];
 
-    if (id) {
+    if (rowData) {
         enableAddNewBtn();
     }
 
@@ -28,10 +28,10 @@ async function GetAdmisson(e, id) {
     }
 
     // Update UI for active patient
-    updateActivePatientUI(e, id);
+    updateActivePatientUI(e, rowData);
 
     // Initialize/Refresh DataTable
-    initializeAdmissionsTable(id, {
+    initializeAdmissionsTable(rowData, {
         companyList,
         companyDetailsList,
         departmentList,
@@ -40,7 +40,7 @@ async function GetAdmisson(e, id) {
     });
 }
 
-function updateActivePatientUI(e, id) {
+function updateActivePatientUI(e, rowData) {
     // Handle active row highlighting
     let allItemRows = e.target.parentElement.parentElement.querySelectorAll("tr");
     allItemRows.forEach(row => {
@@ -53,16 +53,16 @@ function updateActivePatientUI(e, id) {
     // Update header
     let patAdmissonHead = document.querySelector(".admission-table-head");
     //let itemName = clickedTarget.querySelector(".item-name").innerText;
-    let itemName = "";
+    let patName = rowData.patName;
     let patAdmissonHeader = patAdmissonHead.querySelector(".header.pat-admission");
-    patAdmissonHeader.innerHTML = "خدمات لرقم الزيارة  : " + itemName;
+    patAdmissonHeader.innerHTML = "زيارات للمريض : " + patName;
 
     // Reset clinic trans header
     let clinicTransHeader = document.querySelector(".header.clinic-trans");
-    clinicTransHeader.innerHTML = "خدمات  ";
+    clinicTransHeader.innerHTML = "خدمات للمريض : " + patName;
 }
 
-function initializeAdmissionsTable(patientId, dataLists) {
+function initializeAdmissionsTable(rowData, dataLists) {
     // Destroy existing table
     if ($.fn.DataTable.isDataTable('.admisson-table')) {
         $('.admisson-table').DataTable().destroy();
@@ -70,7 +70,7 @@ function initializeAdmissionsTable(patientId, dataLists) {
 
     var table = $('.admisson-table').DataTable({
         ajax: {
-            url: '/Medical/PatAdmission/GetAdmissions/' + patientId,
+            url: '/Medical/PatAdmission/GetAdmissions/' + rowData.patId,
             type: "GET",
             dataSrc: function (json) {
                 if (!json) return [];
@@ -79,11 +79,21 @@ function initializeAdmissionsTable(patientId, dataLists) {
                 return [];
             }
         },
+        columnControl: [
+            {
+                target: 0,
+                content: ['order', 'searchDropdown']
+            }
+
+        ],
+        ordering: {
+            indicators: false,
+            handler: false
+        },
         columns: getAdmissionsTableColumns(dataLists),
         paging: true,
-        searching: false,
-        ordering: true,
-        order: []  ,
+        searching: true,
+   
         scrollX: true,
         scrollY: "200px",
         scrollCollapse: true,
@@ -113,7 +123,7 @@ function initializeAdmissionsTable(patientId, dataLists) {
     });
 
     // Setup event handlers
-    setupAdmissionsEventHandlers(table, patientId, dataLists);
+    setupAdmissionsEventHandlers(table, rowData.patientId, dataLists);
 }
 
 function getAdmissionsTableColumns(dataLists) {
@@ -296,6 +306,7 @@ function getAdmissionsTableColumns(dataLists) {
         },
         {
             data: null,
+            columnControl:[],
             render: function (data, type, row) {
                 return `<button class="btn btn-sm btn-danger btn-delete" data-id="${row.masterId || ''}"><i class="bi bi-trash"></i></button>`;
             },
@@ -384,7 +395,7 @@ function setupAdmissionsEventHandlers(table, patientId, dataLists) {
 
         var rowData = table.row(this).data();
         if (rowData && rowData.masterId) {
-            GetClinicTrans({ target: $(this).find('td:first')[0] }, rowData.masterId);
+            GetClinicTrans({ target: $(this).find('td:first')[0] }, rowData);
         }
     });
 

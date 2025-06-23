@@ -1,6 +1,6 @@
 ﻿// Clinic Transactions Management
-async function GetClinicTrans(e, masterId) {
-    if (masterId) {
+async function GetClinicTrans(e, rowData) {
+    if (rowData) {
         enableAddNewClinicTransBtn();
     }
     let mainClinicList = [];
@@ -21,10 +21,10 @@ async function GetClinicTrans(e, masterId) {
     }
 
     // Update UI
-    updateClinicTransUI(e, masterId);
+    updateClinicTransUI(e, rowData);
 
     // Initialize DataTable
-    initializeClinicTransTable(masterId, {
+    initializeClinicTransTable(rowData.masterId, {
         mainClinicList,
         subClinicList,
         servList,
@@ -33,7 +33,7 @@ async function GetClinicTrans(e, masterId) {
     });
 }
 
-function updateClinicTransUI(e, masterId) {
+function updateClinicTransUI(e, rowData) {
     // Handle active class
     let clickedTarget = e.target.closest('tr');
     let allItemRows = clickedTarget.parentElement.querySelectorAll("tr");
@@ -45,9 +45,9 @@ function updateClinicTransUI(e, masterId) {
 
     // Update header
     let clinicTransHead = document.querySelector(".clinicTrans-table-head");
-    let itemId = clickedTarget.querySelector(".item-id")?.innerText || masterId;
+    let patientName = rowData.patName;
     let clinicTransHeader = clinicTransHead.querySelector(".header.clinic-trans");
-    clinicTransHeader.innerHTML = "زيارة للمريض : " + itemId;
+    //clinicTransHeader.innerHTML = "خدمات للمريض : " + patientName;
 }
 
 function initializeClinicTransTable(masterId, dataLists) {
@@ -74,11 +74,21 @@ function initializeClinicTransTable(masterId, dataLists) {
                 return json;
             }
         },
+        columnControl: [
+            {
+                target: 0,
+                content: ['order', 'searchDropdown']
+            }
+
+        ],
+        ordering: {
+            indicators: false,
+            handler: false
+        },
         columns: getClinicTransColumns(dataLists),
         pageLength: 10,
         paging: true,
-        searching: false,
-        ordering: true,
+        searching: true,
         order: [],
         scrollX: true,
         scrollY: "200px", 
@@ -112,6 +122,7 @@ function getClinicTransColumns(dataLists) {
         },
         {
             data: 'exDate',
+            width: "120px",
             render: function (data, type, row) {
                 return type === 'display' ? `<p class="exDate">${moment(data).format('DD-MM-YYYY')}</p>` : data;
             },
@@ -121,6 +132,7 @@ function getClinicTransColumns(dataLists) {
         },
         {
             data: 'itmServFlag',
+            width: "120px",
             render: function (data, type, row) {
                 return type === 'display' ? ((row.itmServFlag == 3) ? "خدمة" : "صنف") : data;
             },
@@ -130,6 +142,7 @@ function getClinicTransColumns(dataLists) {
         },
         {
             data: 'clinicId',
+            width: "150px",
             render: function (data, type, row) {
                 return type === 'display' ? '<div class="loading">Loading...</div>' : data;
             },
@@ -143,6 +156,7 @@ function getClinicTransColumns(dataLists) {
         },
         {
             data: 'sClinicId',
+            width: "150px",
             render: function (data, type, row) {
                 return type === 'display' ? '<div class="loading">Loading...</div>' : data;
             },
@@ -159,6 +173,8 @@ function getClinicTransColumns(dataLists) {
         },
         {
             data: 'servId',
+            width: "150px",
+
             render: function (data, type, row) {
                 return type === 'display' ? '<div class="loading">Loading...</div>' : data;
             },
@@ -174,20 +190,20 @@ function getClinicTransColumns(dataLists) {
             }
         },
         {
-            data: 'drSendId',
+            data: 'discountVal',
+            width: "100px",
             render: function (data, type, row) {
-                return type === 'display' ? '<div class="loading">Loading...</div>' : data;
+                return type === 'display' ?
+                    `<input type="number" class="form-control no-spinner" value="${data}" data-field="discountVal" data-id="${row.checkId}" min="0" max="100" data-parsley-type="number">` :
+                    data;
             },
-            createdCell: async function (td, cellData, rowData) {
-                if (rowData) {
-                    const content =  DropdownBuilders.buildDoctorDd(rowData, dataLists.doctorList);
-                    td.innerHTML = content;
-                }
-                td.style.minWidth = '150px';
+            createdCell: function (td) {
+                td.style.minWidth = '100px';
             }
         },
         {
             data: 'qty',
+            width:"100px",
             render: function (data, type, row) {
                 return type === 'display' ?
                     `<input type="number" class="form-control no-spinner" value="${data}" data-field="qty" data-id="${row.checkId}" min="1" required data-parsley-type="integer">` :
@@ -246,13 +262,19 @@ function getClinicTransColumns(dataLists) {
             }
         },
         {
-            data: 'discountVal',
+            data: 'drSendId',
             render: function (data, type, row) {
-                return type === 'display' ?
-                    `<input type="number" class="form-control no-spinner" value="${data}" data-field="discountVal" data-id="${row.checkId}" min="0" max="100" data-parsley-type="number">` :
-                    data;
+                return type === 'display' ? '<div class="loading">Loading...</div>' : data;
+            },
+            createdCell: async function (td, cellData, rowData) {
+                if (rowData) {
+                    const content = DropdownBuilders.buildDoctorDd(rowData, dataLists.doctorList);
+                    td.innerHTML = content;
+                }
+                td.style.minWidth = '150px';
             }
         },
+        
         {
             data: 'extraVal',
             render: function (data, type, row) {
@@ -289,6 +311,7 @@ function getClinicTransColumns(dataLists) {
         },
         {
             data: null,
+            columnControl:[],
             render: function (data, type, row) {
                 return `<button class="btn btn-sm btn-danger btn-delete" data-id="${row.checkId}"><i class=\"bi bi-trash\"></i></button>`;
             },
