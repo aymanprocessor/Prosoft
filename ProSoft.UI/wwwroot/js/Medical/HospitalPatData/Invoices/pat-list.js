@@ -43,7 +43,17 @@ function initializeTable() {
         },
         searching: true,
 
-        dom: 'Bfrtip',
+        dom:
+            "<'row mb-2 mt-3'" +
+            "<'col-sm-6 d-flex justify-content-start'B>" +             // Top-left: buttons
+            "<'col-sm-6 d-flex justify-content-end'f>" +                                       // Top-right: search box
+            ">" +
+            "<'row'<'col-sm-12'tr>>" +                                  // Table
+            "<'row mt-2'" +
+            "<'col-sm-4'l>" +                                       // Bottom-left: length menu
+            "<'col-sm-4 d-flex justify-content-center'p>" +                           // Bottom-center: pagination
+            "<'col-sm-4 text-end'i>" +                              // Bottom-right: info
+            ">",
         buttons: ['copy', 'excel', 'pdf', 'print'],
         language: {
             search: "البحث:",
@@ -127,26 +137,27 @@ function getTableColumns() {
             }
 
         },
-        {
-            data: 'entryNo',
-            render: function (data, type, row) {
-                if (type === 'display') {
-                    return `<input type="number" class="form-control no-spinner" value="${data || ''}" data-field="entryNo" data-id="${row.patId}" min="1" required>`;
-                }
-                return data;
-            },
-            createdCell: function (td, cellData, rowData) {
+        //{
+        //    data: 'entryNo',
+        //    render: function (data, type, row) {
+        //        if (type === 'display') {
+        //            return `<input type="number" class="form-control no-spinner" value="${data || ''}" data-field="entryNo" data-id="${row.patId}" min="1" required>`;
+        //        }
+        //        return data;
+        //    },
+        //    createdCell: function (td, cellData, rowData) {
 
-                td.style.minWidth = '50px';
-            }
-        },
+        //        td.style.minWidth = '50px';
+        //    }
+        //},
         {
             data: 'entryDate',
             render: function (data, type, row) {
                 if (type === 'display') {
                     const maxDate = moment().format('YYYY-MM-DD');
                     const date = moment(data).format('YYYY-MM-DD');
-                    return `<input type="date" class="form-control" value="${date || ''}" data-field="entryDate" data-id="${row.patId}" max="${maxDate}" required>`;
+                    const datenow = moment().format('YYYY-MM-DD');
+                    return `<input type="date" class="form-control" value="${date || datenow}" data-field="entryDate" data-id="${row.patId}" max="${maxDate}" required>`;
                 }
                 return data;
             },
@@ -160,8 +171,9 @@ function getTableColumns() {
             render: function (data, type, row) {
                 if (type === 'display') {
                     const date = moment(data).format("HH:mm");
+                    const datenow = moment().format('HH:mm');
 
-                    return `<input type="time" class="form-control" value="${date || ''}" data-field="entryTime" data-id="${row.patId}" required>`;
+                    return `<input type="time" class="form-control" value="${date || null}" data-field="entryTime" data-id="${row.patId}" required>`;
                 }
                 return data;
             },
@@ -178,7 +190,7 @@ function getTableColumns() {
                     const maxDate = moment().format('YYYY-MM-DD');
                     const date = moment(data).format("YYYY-MM-DD");
 
-                    return `<input type="date" class="form-control" value="${date || ''}" data-field="birthDate" data-id="${row.patId}" max="${maxDate}" required>`;
+                    return `<input type="date" class="form-control" value="${date || ''}" data-field="birthDate" data-id="${row.patId}" max="${maxDate}" >`;
                 }
                 return data;
             },
@@ -192,7 +204,35 @@ function getTableColumns() {
             data: 'newOld',
             render: function (data, type, row) {
                 if (type === 'display') {
-                    return `<input type="number" class="form-control no-spinner" value="${data || ''}" data-field="newOld" data-id="${row.patId}" min="0" max="150" required>`;
+                    return `<input type="number" class="form-control no-spinner" value="${data || 0}" data-field="newOld" data-id="${row.patId}">`;
+                }
+                return data;
+            },
+            createdCell: function (td, cellData, rowData) {
+
+                td.style.minWidth = '100px';
+            }
+        },
+
+        {
+            data: 'youngDay',
+            render: function (data, type, row) {
+                if (type === 'display') {
+                    return `<input type="number" class="form-control no-spinner" value="${data || 0}" data-field="youngDay" data-id="${row.patId}">`;
+                }
+                return data;
+            },
+            createdCell: function (td, cellData, rowData) {
+
+                td.style.minWidth = '100px';
+            }
+        },
+
+        {
+            data: 'youngMonth',
+            render: function (data, type, row) {
+                if (type === 'display') {
+                    return `<input type="number" class="form-control no-spinner" value="${data || 0}" data-field="youngMonth" data-id="${row.patId}">`;
                 }
                 return data;
             },
@@ -248,19 +288,19 @@ function getTableColumns() {
                 td.style.minWidth = '200px';
             }
         },
-        {
-            data: 'patJob',
-            render: function (data, type, row) {
-                if (type === 'display') {
-                    return `<input type="text" class="form-control" value="${data || ''}" data-field="patJob" data-id="${row.patId}">`;
-                }
-                return data;
-            },
-            createdCell: function (td, cellData, rowData) {
+        //{
+        //    data: 'patJob',
+        //    render: function (data, type, row) {
+        //        if (type === 'display') {
+        //            return `<input type="text" class="form-control" value="${data || ''}" data-field="patJob" data-id="${row.patId}">`;
+        //        }
+        //        return data;
+        //    },
+        //    createdCell: function (td, cellData, rowData) {
 
-                td.style.minWidth = '150px';
-            }
-        },
+        //        td.style.minWidth = '150px';
+        //    }
+        //},
         {
             data: 'patMobile',
             render: function (data, type, row) {
@@ -275,10 +315,10 @@ function getTableColumns() {
             }
         },
         {
-            data: 'patHospital',
+            data: 'patTel',
             render: function (data, type, row) {
                 if (type === 'display') {
-                    return `<input type="text" class="form-control" value="${data || ''}" data-field="patHospital" data-id="${row.patId}">`;
+                    return `<input type="text" class="form-control" value="${data || ''}" data-field="patTel" data-id="${row.patId}">`;
                 }
                 return data;
             },
@@ -288,10 +328,10 @@ function getTableColumns() {
             }
         },
         {
-            data: 'pDep',
+            data: 'patEmail',
             render: function (data, type, row) {
                 if (type === 'display') {
-                    return `<input type="text" class="form-control" value="${data || ''}" data-field="pDep" data-id="${row.patId}">`;
+                    return `<input type="text" class="form-control" value="${data || ''}" data-field="patEmail" data-id="${row.patId}">`;
                 }
                 return data;
             },
@@ -300,19 +340,45 @@ function getTableColumns() {
                 td.style.minWidth = '150px';
             }
         },
-        {
-            data: 'patSector',
-            render: function (data, type, row) {
-                if (type === 'display') {
-                    return `<input type="text" class="form-control" value="${data || ''}" data-field="patSector" data-id="${row.patId}">`;
-                }
-                return data;
-            },
-            createdCell: function (td, cellData, rowData) {
+        //{
+        //    data: 'patHospital',
+        //    render: function (data, type, row) {
+        //        if (type === 'display') {
+        //            return `<input type="text" class="form-control" value="${data || ''}" data-field="patHospital" data-id="${row.patId}">`;
+        //        }
+        //        return data;
+        //    },
+        //    createdCell: function (td, cellData, rowData) {
 
-                td.style.minWidth = '150px';
-            }
-        },
+        //        td.style.minWidth = '150px';
+        //    }
+        //},
+        //{
+        //    data: 'pDep',
+        //    render: function (data, type, row) {
+        //        if (type === 'display') {
+        //            return `<input type="text" class="form-control" value="${data || ''}" data-field="pDep" data-id="${row.patId}">`;
+        //        }
+        //        return data;
+        //    },
+        //    createdCell: function (td, cellData, rowData) {
+
+        //        td.style.minWidth = '150px';
+        //    }
+        //},
+        //{
+        //    data: 'patSector',
+        //    render: function (data, type, row) {
+        //        if (type === 'display') {
+        //            return `<input type="text" class="form-control" value="${data || ''}" data-field="patSector" data-id="${row.patId}">`;
+        //        }
+        //        return data;
+        //    },
+        //    createdCell: function (td, cellData, rowData) {
+
+        //        td.style.minWidth = '150px';
+        //    }
+        //},
         {
             data: null,
             columnControl: [],
@@ -337,19 +403,23 @@ function setupEventHandlers() {
             idType: '',
             patIdCard: '',
             patName: '',
-            entryNo: '',
+            //entryNo: '',
             entryDate: moment().format('YYYY-MM-DD'),
-            entryTime: moment().format('HH:mm'),
+            entryTime: moment().format('h:mm a'),
             birthDate: '',
-            newOld: '',
+            newOld: 0,
+            youngDay: 0,
+            youngMonth:0,
             maritalStatus: '',
             personKind: '',
             patAddress: '',
-            patJob: '',
+            //patJob: '',
             patMobile: '',
-            patHospital: '',
-            pDep: '',
-            patSector: ''
+            patTel: '',
+            patEmail: '',
+            //patHospital: '',
+            //pDep: '',
+            //patSector: ''
         };
 
         const row = table.row.add(newRowData).draw(false);
@@ -385,7 +455,21 @@ function setupEventHandlers() {
         handleDelete($(this));
     });
 
-    
+    // Delegate keydown event for input elements inside the table
+    $('.patient-table').on('keydown', 'input, select', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+
+            const fields = $('.patient-table').find('input:visible, select:visible');
+            const index = fields.index(this);
+
+            if (index !== -1 && index + 1 < fields.length) {
+                fields.eq(index + 1).focus();
+            } else {
+                console.log('End of fields reached');
+            }
+        }
+    });
     // Auto-calculate age from birth date
     $('.patient-table tbody').on('change', 'input[data-field="birthDate"]', function () {
         const birthDate = $(this).val();

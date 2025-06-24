@@ -100,7 +100,17 @@ function initializeAdmissionsTable(rowData, dataLists) {
         rowId: function (data) {
             return 'row-' + data.masterId;
         },
-        dom: 'Bfrtip',
+        dom:
+            "<'row mb-2 mt-3'" +
+            "<'col-sm-6 d-flex justify-content-start'B>" +             // Top-left: buttons
+            "<'col-sm-6 d-flex justify-content-end'f>" +                                       // Top-right: search box
+            ">" +
+            "<'row'<'col-sm-12'tr>>" +                                  // Table
+            "<'row mt-2'" +
+            "<'col-sm-4'l>" +                                       // Bottom-left: length menu
+            "<'col-sm-4 d-flex justify-content-center'p>" +                           // Bottom-center: pagination
+            "<'col-sm-4 text-end'i>" +                              // Bottom-right: info
+            ">",
         buttons: ['copy', 'excel', 'pdf', 'print'],
         language: getDataTableLanguage(),
         drawCallback: function () {
@@ -387,6 +397,25 @@ function setupAdmissionsEventHandlers(table, patientId, dataLists) {
         }
 
      
+    });
+
+
+    // Delegate keydown event for input elements inside the table
+    $('.admisson-table').on('keydown', 'input, select', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+
+            const fields = $('.admisson-table').find('input:visible, select:visible');
+            const index = fields.index(this);
+
+            if (index !== -1 && index + 1 < fields.length) {
+                fields.eq(index + 1).focus();
+            } else {
+                console.log('End of fields reached');
+            }
+        }
+
+
     });
 
     // Row click handler for clinic transactions

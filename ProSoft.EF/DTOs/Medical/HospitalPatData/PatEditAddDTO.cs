@@ -13,16 +13,16 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
         public int? PatId {  get; set; }
         [DisplayName("Patient SSN")]
         [RegularExpression("^[0-9]{14}$", ErrorMessage = "National Id must be 14 digit")]
-        public double PatIdCard { get; set; }
+        public double? PatIdCard { get; set; }
 
         [DisplayName("Identity Type")]
-        public double IdType { get; set; }
+        public double? IdType { get; set; }
 
         [DisplayName("Patient Name")]
-        public string PatName { get; set; }
+        public string? PatName { get; set; }
 
         [DisplayName("Entry Number")]
-        public double EntryNo { get; set; }
+        public double? EntryNo { get; set; }
 
         [DisplayName("Entry Date")]
         public DateTime? EntryDate { get; set; }
@@ -34,22 +34,22 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
         public DateTime? BirthDate { get; set; }
 
         [DisplayName("Age In Years")]
-        public double NewOld { get; set; }
+        public double? NewOld { get; set; }
 
         [DisplayName("Marital Status")]
-        public int MaritalStatus { get; set; }
+        public int? MaritalStatus { get; set; }
 
         [DisplayName("Gender")]
-        public double PersonKind { get; set; }
+        public double? PersonKind { get; set; }
 
         [DisplayName("Address")]
-        public string PatAddress { get; set; }
+        public string? PatAddress { get; set; }
 
         [DisplayName("Mobile number")]
-        public string PatMobile { get; set; }
+        public string? PatMobile { get; set; }
 
         [DisplayName("Job")]
-        public string PatJob { get; set; }
+        public string? PatJob { get; set; }
 
 
         [DisplayName("Hospital")]
@@ -60,5 +60,11 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
 
         [DisplayName("Sector")]
         public string? PatSector { get; set; }
+
+        public string? PatTel { get; set; }
+        public double? YoungDay { get; set; }
+        public double? YoungMonth { get; set; }
+        public string? PatEmail { get; set; }
+
     }
 }

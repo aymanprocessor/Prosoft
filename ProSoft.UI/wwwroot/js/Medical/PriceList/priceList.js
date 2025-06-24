@@ -167,7 +167,10 @@
             
             
            
-        ]
+        ],
+        scrollX: true,
+        scrollY: "200px",
+        scrollCollapse: true,
     });
 
     // Initialize Price List Detail DataTable
@@ -403,6 +406,8 @@
         },
         pageLength: 10,
         scrollX: true,
+        scrollY: "200px",
+        scrollCollapse: true,
     });
 
 
@@ -445,6 +450,8 @@
         const rowNode = priceListTable.row(row).node();
         $(rowNode).addClass('new-row');
         priceListTable.button(1).enable(true);
+
+        $('.dt-scroll-body').scrollTop($('.dt-scroll-body')[0].scrollHeight);
     }
 
     // Add new price list detail row
@@ -472,7 +479,7 @@
         const rowNode = priceListDetailTable.row(row).node();
         $(rowNode).addClass('new-row');
         priceListDetailTable.button(1).enable(true);
-
+        $('.dt-scroll-body').scrollTop($('.dt-scroll-body')[0].scrollHeight);
     }
 
     // Handle row click
@@ -488,7 +495,37 @@
 
     });
 
+    // Delegate keydown event for input elements inside the table
+    $('#PriceList').on('keydown', 'input, select', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
 
+            const fields = $('#PriceList').find('input:visible, select:visible');
+            const index = fields.index(this);
+
+            if (index !== -1 && index + 1 < fields.length) {
+                fields.eq(index + 1).focus();
+            } else {
+                console.log('End of fields reached');
+            }
+        }
+    });
+
+    // Delegate keydown event for input elements inside the table
+    $('#PriceListDetail').on('keydown', 'input, select', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+
+            const fields = $('#PriceListDetail').find('input:visible, select:visible');
+            const index = fields.index(this);
+
+            if (index !== -1 && index + 1 < fields.length) {
+                fields.eq(index + 1).focus();
+            } else {
+                console.log('End of fields reached');
+            }
+        }
+    });
     $('#PriceList tbody').on('input change', 'input, select', function () {
         var row = $(this).closest('tr');
         var rowIdx = priceListTable.row(row).index();

@@ -31,7 +31,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fancygrid/client/fancy.min.css" />
     <link rel="stylesheet" href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.min.css" />
     <link rel="stylesheet" href="~/select2/css/select2.min.css" />
-    <link rel="stylesheet" href="~/datatables.net-scroller-bs5/scroller.bootstrap5.min.css" />
     <link href="~/css/bootstrap-switch-button.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/parsleyjs/src/parsley.css" />
     <script src="https://kit.fontawesome.com/eb688b112b.js" crossorigin="anonymous"></script>
@@ -69,31 +68,26 @@
         @RenderBody()
     </div>
 
-    <!-- 1) jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-
-    <!-- 2) Parsley.js (Form Validation) -->
-    <script src="~/lib/parsley.js/parsley.min.js"></script>
+    <!-- 1) jQuery (MUST be first) -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" asp-append-version="true"></script>
 
 
 
-    <!-- Select -->
-    <script src="https://cdn.datatables.net/select/1.7.0/js/dataTables.select.min.js"></script>
+    <!-- 2) DataTables Core -->
+    <script src="~/js/datatables.min.js" asp-append-version="true"></script>
+    <!-- 4) Parsley.js (AFTER jQuery, BEFORE any script that uses it) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js" asp-append-version="true"></script>
 
-    <!-- DataTables -->
-    <script src="~/js/datatables.min.js"></script>
-
-    <!-- 8) (Optional) SweetAlert2 for alerts -->
+    <!-- 5) Optional: SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- 9) Your Custom Scripts (AFTER dependencies) -->
+    <!-- 6) Custom Scripts (AFTER all dependencies) -->
     <script src="~/js/ValidationManager.js" asp-append-version="true"></script>
     <script src="~/js/Toast.js" asp-append-version="true"></script>
-    <script src="~/js/popup.js"></script>
-    <script src="~/js/TableFramework.js"></script>
-    <script src="~/js/TableManager.js"></script>
+    <script src="~/js/popup.js" asp-append-version="true"></script>
+    <script src="~/js/TableFramework.js" asp-append-version="true"></script>
+    <script src="~/js/TableManager.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
 
     @* for two way validation *@
 

@@ -9,16 +9,15 @@
 }
 @inject IViewLocalizer localizer
 
-<link rel="stylesheet" href="~/css/Invoices.css" asp-append-version="true" />
 
-<div class="text-center">
-    <h1 class="mb-2 mt-3">@localizer["Hospital Patient Data For Invoices"]</h1>
-</div>
+
 
 <div class="container pt-2" style="min-height:100vh;">
     <!-- Patient Search Section -->
     @*<partial name="Partials/_PatientSearchSection" />*@
-
+    <div class="text-center">
+        <h1 class="pb-2 pt-5">@localizer["Hospital Patient Data For Invoices"]</h1>
+    </div>
     <div class="mb-5">
         <!-- Patient List Table -->
         <partial name="Partials/_PatientListTable" />
@@ -34,7 +33,7 @@
         <!-- Clinic Transactions Section -->
         <partial name="Partials/_ClinicTransactionsSection" />
     </div>
- 
+
 
     <!-- Summary Totals -->
     <partial name="Partials/_SummaryTotals" />
@@ -44,7 +43,6 @@
     <!-- Scripts -->
     @*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
     @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
-    <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/Medical/HospitalPatData/Invoices/pat-list.js" asp-append-version="true"></script>
     <script src="~/js/Medical/HospitalPatData/Invoices/patient-search.js" asp-append-version="true"></script>
     <script src="~/js/Medical/HospitalPatData/Invoices/patient-admissions.js" asp-append-version="true"></script>
