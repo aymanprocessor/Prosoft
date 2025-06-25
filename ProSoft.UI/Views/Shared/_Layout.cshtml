@@ -36,34 +36,46 @@
     <script src="https://kit.fontawesome.com/eb688b112b.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/locale/ar.min.js"></script>
 
 </head>
 <body>
-    <div class="d-flex justify-content-between align-items-center gap-2 p-2 shadow-sm rounded">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 p-2 shadow-sm rounded">
+        <!-- Right Section -->
+        <div class="d-flex align-items-center gap-2 order-1 @(isRTL ? "me-auto" : "ms-auto")">
+            @if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                <a class="btn btn-secondary rounded-circle" href="/Home/Index" title="go to modules">
+                    <i class="fa-solid @(isRTL ? "fa-chevron-right" : "fa-chevron-left")"></i>
+                </a>
+                <span class="fw-bold text-capitalize">@User.Identity?.Name</span>
+                <span class="fw-bold"> / @(financialYearClaim != null ? financialYearClaim.Value : "No Financial Year")</span>
+            }
 
-        @if (User.Identity != null && User.Identity.IsAuthenticated)
-        {
-            <a class="btn btn-secondary rounded-circle" href="/Home/Index" title="go to modules">
-                <i class="fa-solid @(isRTL ? "fa-chevron-right" : "fa-chevron-left")"></i>
-            </a>
-            <span class="fw-bold text-capitalize">@User.Identity?.Name</span>
-
-
-            <span class="fw-bold"> / @(financialYearClaim != null ? financialYearClaim.Value : "No Financial Year")</span>
-        }
-
-        <div class="d-flex align-items-center gap-2 @(isRTL ? "me-auto" : "ms-auto")">
             <partial name="_SelectLanguagePartial" />
+
             @if (User.Identity != null && User.Identity.IsAuthenticated)
             {
                 <a asp-action="Logout" asp-controller="Account" asp-area="" class="btn btn-secondary">@localizer["Log out"]</a>
             }
         </div>
-        <div dir="ltr">
 
+
+        <!-- Center Section -->
+        <div class="text-center flex-grow-1 order-2">
+            <h5 class="mb-0">  @(ViewBag.PageTitle ?? "")</h5>
+        </div>
+        <!-- Left Section -->
+        <div dir="ltr" class="order-3 d-flex gap-3" style="flex-direction: row-reverse; align-items: center;">
+            <!-- Real-time Date and Time -->
+            <span id="datetime" style="font-size: large; font-weight: 600; color: mediumblue;"></span>
+            <!-- Divider -->
+            <div style="width: 1px; height: 2em; background-color: #ccc;"></div>
             @await Html.PartialAsync("_ConnectionStatusBar")
         </div>
+
     </div>
+
     <div class="content pb-3 position-relative" style="flex: 1; background-color: #e0e4e9;">
         @RenderBody()
     </div>
@@ -89,6 +101,16 @@
     <script src="~/js/TableManager.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
+    <script>
+        function updateDateTime() {
+            moment.locale('ar');
+            const now = moment().format('dddd - D MMMM YYYY - hh:mm A');
+            document.getElementById('datetime').textContent = now;
+        }
+
+        setInterval(updateDateTime, 1000); // Update every second
+        updateDateTime(); // Initial render
+    </script>
     @* for two way validation *@
 
     @*<script src="/lib/jquery-validation/dist/jquery.validate.min.js"></script>*@

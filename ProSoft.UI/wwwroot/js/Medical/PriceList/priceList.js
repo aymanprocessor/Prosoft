@@ -137,8 +137,9 @@
       
         dom:
             "<'row mb-2 mt-3'" +
-            "<'col-sm-6 d-flex justify-content-start'B>" +             // Top-left: buttons
-            "<'col-sm-6 d-flex justify-content-end'f>" +                                       // Top-right: search box
+            "<'col-sm-4 d-flex justify-content-start'B>" +             // Top-left: buttons
+            "<'col-sm-4 d-flex justify-content-center'<'PriceList-title-header'>>" +             // Top-left: buttons
+            "<'col-sm-4 d-flex justify-content-end'f>" +                                       // Top-right: search box
             ">" +
             "<'row'<'col-sm-12'tr>>" +                                  // Table
             "<'row mt-2'" +
@@ -146,6 +147,9 @@
             "<'col-sm-4 d-flex justify-content-center'p>" +                           // Bottom-center: pagination
             "<'col-sm-4 text-end'i>" +                              // Bottom-right: info
             ">",
+        initComplete: function () {
+           // $('.PriceList-title-header').html('<h6>قوائم الاسعار</h6>');
+        },
         buttons: [
             {
                 text: '+',
@@ -271,7 +275,7 @@
                 width: '70px',
                 render: function (data, type, row, meta) {
                     if (type === 'display') {
-                        return '<input type="number" class="form-control editable-field" data-field="compCovPercentage" data-id="' + row.plDtlId + '" value="' + (data || 100) + '">';
+                        return '<input type="number" class="form-control editable-field" data-field="compCovPercentage" data-id="' + row.plDtlId + '" value="' + (data || 100) + '" >';
                     }
                     return data;
                 }
@@ -293,7 +297,7 @@
                 width: '70px',
                 render: function (data, type, row, meta) {
                     if (type === 'display') {
-                        return '<input type="number" class="form-control editable-field" data-field="plValue2" data-id="' + row.plDtlId + '" value="' + (data || 0) + '">';
+                        return '<input type="number" class="form-control editable-field" data-field="plValue2" data-id="' + row.plDtlId + '" value="' + (data || 0) + '" >';
                     }
                     return data;
                 }
@@ -358,8 +362,9 @@
         ],
         
         dom:"<'row mb-2 mt-3'" +
-            "<'col-sm-6 d-flex justify-content-start'B>" +             // Top-left: buttons
-            "<'col-sm-6 d-flex justify-content-end'f>" +                                       // Top-right: search box
+            "<'col-sm-4 d-flex justify-content-start'B>" +             // Top-left: buttons
+            "<'col-sm-4 d-flex justify-content-center'<'PriceListDetail-title-header'>>" +             // Top-left: buttons
+            "<'col-sm-4 d-flex justify-content-end'f>" +                                       // Top-right: search box
             ">" +
             "<'row'<'col-sm-12'tr>>" +                                  // Table
             "<'row mt-2'" +
@@ -367,6 +372,9 @@
             "<'col-sm-4 d-flex justify-content-center'p>" +                           // Bottom-center: pagination
             "<'col-sm-4 text-end'i>" +                              // Bottom-right: info
             ">",
+        initComplete: function () {
+            $('.PriceListDetail-title-header').html('<h6>تفاصيل القائمة</h6>');
+        },
         order: [[1, 'asc']],
         buttons: [
             {
@@ -511,6 +519,7 @@
         }
     });
 
+
     // Delegate keydown event for input elements inside the table
     $('#PriceListDetail').on('keydown', 'input, select', function (e) {
         if (e.key === 'Enter') {
@@ -539,6 +548,45 @@
         }
 
 
+    });
+
+    $(document).on('input', '.calculation-field', function () {
+        const $changedInput = $(this);
+        const rowId = $changedInput.data('id');
+
+        // Get inputs with the same data-id and specific data-field values
+        const $servBefDesc = $('input[data-id="' + rowId + '"][data-field="servBefDesc"]');
+        const $discoutComp = $('input[data-id="' + rowId + '"][data-field="discoutComp"]');
+        const $plValue = $('input[data-id="' + rowId + '"][data-field="plValue"]');
+
+        const servBefDesc = parseFloat($servBefDesc.val()) || 0;
+        const discoutComp = parseFloat($discoutComp.val()) || 0;
+
+        const discount = (servBefDesc * discoutComp) / 100;
+        const result = servBefDesc - discount;
+
+        $plValue.val(result.toFixed(2));
+    });
+
+    $(document).on('input', 'input[data-field="compCovPercentage"]', function () {
+        const $percentageInput = $(this);
+        const rowId = $percentageInput.data('id');
+
+        // Get related fields using data-id and data-field
+        const $plValue = $('input[data-id="' + rowId + '"][data-field="plValue"]');
+        const $compValue = $('input[data-id="' + rowId + '"][data-field="CompValue"]');
+        const $plValue2 = $('input[data-id="' + rowId + '"][data-field="plValue2"]');
+
+        const plValue = parseFloat($plValue.val()) || 0;
+        const compCovPercentage = parseFloat($percentageInput.val()) || 0;
+
+        // Calculate company share and member share
+        const compValue = (plValue * compCovPercentage) / 100;
+        const plValue2 = plValue - compValue;
+
+        // Update values
+        $compValue.val(compValue.toFixed(2));
+        $plValue2.val(plValue2.toFixed(2));
     });
 
     $('#PriceListDetail tbody').on('input change', 'input, select', function () {

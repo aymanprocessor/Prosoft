@@ -24,6 +24,7 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
         public string RegionDesc { get; set; }
         public string DrDesc { get; set; }
         public decimal? PatientValue { get; set; }
+        public decimal? CompValue { get; set; }
         public decimal? Prepaid { get; set; }
         public int? MainInvNo { get; set; }
         public int? SessionNo { get; set; }

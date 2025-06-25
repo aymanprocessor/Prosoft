@@ -91,7 +91,7 @@ function initializeClinicTransTable(masterId, dataLists) {
         searching: true,
         order: [],
         scrollX: true,
-        scrollY: "200px", 
+        scrollY: "150px", 
         scrollCollapse: true,
 
         rowId: function (data) {
@@ -99,8 +99,9 @@ function initializeClinicTransTable(masterId, dataLists) {
         },
         dom:
             "<'row mb-2 mt-3'" +
-            "<'col-sm-6 d-flex justify-content-start'B>" +             // Top-left: buttons
-            "<'col-sm-6 d-flex justify-content-end'f>" +                                       // Top-right: search box
+            "<'col-sm-4 d-flex justify-content-start'B>" +             // Top-left: buttons
+            "<'col-sm-4 d-flex justify-content-center'<'clinic-title-header'>>" +             // Top-left: buttons
+            "<'col-sm-4 d-flex justify-content-end'f>" +                                       // Top-right: search box
             ">" +
             "<'row'<'col-sm-12'tr>>" +                                  // Table
             "<'row mt-2'" +
@@ -108,6 +109,9 @@ function initializeClinicTransTable(masterId, dataLists) {
             "<'col-sm-4 d-flex justify-content-center'p>" +                           // Bottom-center: pagination
             "<'col-sm-4 text-end'i>" +                              // Bottom-right: info
             ">",
+        initComplete: function () {
+            $('.clinic-title-header').html('<h5>خدمات</h5>');
+        },
         buttons: ['copy', 'excel', 'pdf', 'print'],
         language: getDataTableLanguage(),
         drawCallback: function () {
@@ -132,27 +136,27 @@ function getClinicTransColumns(dataLists) {
         },
         {
             data: 'exDate',
-            width: "120px",
+            width: "80px",
             render: function (data, type, row) {
-                return type === 'display' ? `<p class="exDate">${moment(data).format('DD-MM-YYYY')}</p>` : data;
+                return type === 'display' ? `<p style="width:80px;" class="exDate">${moment(data).locale('en').format('DD-MM-YYYY')}</p>` : data;
             },
             createdCell: function (td) {
-                td.style.minWidth = '120px';
+                td.style.minWidth = '80px';
             }
         },
         {
             data: 'itmServFlag',
-            width: "120px",
+            width: "50px",
             render: function (data, type, row) {
                 return type === 'display' ? ((row.itmServFlag == 3) ? "خدمة" : "صنف") : data;
             },
             createdCell: function (td) {
-                td.style.minWidth = '120px';
+                td.style.minWidth = '50px';
             }
         },
         {
             data: 'clinicId',
-            width: "150px",
+            width: "100px",
             render: function (data, type, row) {
                 return type === 'display' ? '<div class="loading">Loading...</div>' : data;
             },
@@ -161,12 +165,12 @@ function getClinicTransColumns(dataLists) {
                     const content =  DropdownBuilders.buildMainClinicDd(rowData, dataLists.mainClinicList);
                     td.innerHTML = content;
                 }
-                td.style.minWidth = '150px';
+                td.style.minWidth = '100px';
             }
         },
         {
             data: 'sClinicId',
-            width: "150px",
+            width: "100px",
             render: function (data, type, row) {
                 return type === 'display' ? '<div class="loading">Loading...</div>' : data;
             },
@@ -178,12 +182,12 @@ function getClinicTransColumns(dataLists) {
                     const content =  DropdownBuilders.buildSubClinicDd(rowData, dataLists.subClinicList);
                     td.innerHTML = content;
                 }
-                td.style.minWidth = '150px';
+                td.style.minWidth = '100px';
             }
         },
         {
             data: 'servId',
-            width: "150px",
+            width: "100px",
 
             render: function (data, type, row) {
                 return type === 'display' ? '<div class="loading">Loading...</div>' : data;
@@ -196,50 +200,56 @@ function getClinicTransColumns(dataLists) {
                     const content =  DropdownBuilders.buildServDd(rowData, dataLists.servList);
                     td.innerHTML = content;
                 }
-                td.style.minWidth = '150px';
+                td.style.minWidth = '100px';
             }
         },
         {
             data: 'discountVal',
-            width: "100px",
+            width: "50px",
             render: function (data, type, row) {
                 return type === 'display' ?
                     `<input type="number" class="form-control no-spinner" value="${data}" data-field="discountVal" data-id="${row.checkId}" min="0" max="100" data-parsley-type="number">` :
                     data;
             },
             createdCell: function (td) {
-                td.style.minWidth = '100px';
+                td.style.minWidth = '50px';
             }
         },
         {
             data: 'qty',
-            width:"100px",
+            width:"50px",
             render: function (data, type, row) {
                 return type === 'display' ?
                     `<input type="number" class="form-control no-spinner" value="${data}" data-field="qty" data-id="${row.checkId}" min="1" required data-parsley-type="integer">` :
                     data;
             },
             createdCell: function (td) {
-                td.style.minWidth = '100px';
+                td.style.minWidth = '50px';
             }
         },
         {
             data: 'unitPrice',
+            width: "50px",
+
             render: function (data, type, row) {
                 return type === 'display' ?
                     `<input type="number" class="form-control no-spinner" value="${data}" data-field="unitPrice" data-id="${row.checkId}" min="0" data-parsley-type="number">` :
                     data;
             },
             createdCell: function (td) {
-                td.style.minWidth = '100px';
+                td.style.minWidth = '50px';
             }
         },
         {
             data: 'valueService',
+            width:'50px',
             render: function (data, type, row) {
                 return type === 'display' ?
-                    `<p class="valueService" data-field="valueService">${(parseFloat(data) || 0).toFixed(2)}</p>` :
+                    `<p style="width:50px;" class="valueService" data-field="valueService">${(parseFloat(data) || 0).toFixed(2)}</p>` :
                     data;
+            },
+            createdCell: function (td) {
+                td.style.minWidth = '50px';
             }
         },
         {
@@ -252,23 +262,33 @@ function getClinicTransColumns(dataLists) {
                     const content =  DropdownBuilders.buildStockDd(rowData, dataLists.stockList);
                     td.innerHTML = content;
                 }
-                td.style.minWidth = '150px';
+                td.style.minWidth = '100px';
             }
         },
         {
             data: 'patientValue',
+            width: '50px',
+
             render: function (data, type, row) {
                 return type === 'display' ?
                     `<input type="number" class="form-control no-spinner" value="${data}" data-field="patientValue" data-id="${row.checkId}" min="0" data-parsley-type="number">` :
                     data;
+            },
+            createdCell: function (td) {
+                td.style.minWidth = '50px';
             }
         },
         {
             data: 'compValue',
+            width: '50px',
+
             render: function (data, type, row) {
                 return type === 'display' ?
                     `<input type="number" class="form-control no-spinner" value="${data}" data-field="compValue" data-id="${row.checkId}" min="0" data-parsley-type="number">` :
                     data;
+            },
+            createdCell: function (td) {
+                td.style.minWidth = '50px';
             }
         },
         {
@@ -281,24 +301,33 @@ function getClinicTransColumns(dataLists) {
                     const content = DropdownBuilders.buildDoctorDd(rowData, dataLists.doctorList);
                     td.innerHTML = content;
                 }
-                td.style.minWidth = '150px';
+                td.style.minWidth = '100px';
             }
         },
         
         {
             data: 'extraVal',
+            width:'50px',
             render: function (data, type, row) {
                 return type === 'display' ?
                     `<input type="number" class="form-control no-spinner" value="${data}" data-field="extraVal" data-id="${row.checkId}" min="0" data-parsley-type="number">` :
                     data;
+            },
+            createdCell: function (td) {
+                td.style.minWidth = '50px';
             }
         },
         {
             data: 'extraVal2',
+            width: '50px',
+
             render: function (data, type, row) {
                 return type === 'display' ?
                     `<input type="number" class="form-control no-spinner" value="${data}" data-field="extraVal2" data-id="${row.checkId}" min="0" max="100" data-parsley-type="number">` :
                     data;
+            },
+            createdCell: function (td) {
+                td.style.minWidth = '50px';
             }
         },
         {
@@ -307,7 +336,7 @@ function getClinicTransColumns(dataLists) {
                 return type === 'display' ? DropdownBuilders.buildApprovalPeriodDd(row) : data;
             },
             createdCell: function (td) {
-                td.style.minWidth = '150px';
+                td.style.minWidth = '50px';
             }
         },
         {
@@ -316,7 +345,7 @@ function getClinicTransColumns(dataLists) {
                 return type === 'display' ? DropdownBuilders.buildCheckIdCancelDd(row) : data;
             },
             createdCell: function (td) {
-                td.style.minWidth = '150px';
+                td.style.minWidth = '50px';
             }
         },
         {
@@ -324,9 +353,6 @@ function getClinicTransColumns(dataLists) {
             columnControl:[],
             render: function (data, type, row) {
                 return `<button class="btn btn-sm btn-danger btn-delete" data-id="${row.checkId}"><i class=\"bi bi-trash\"></i></button>`;
-            },
-            createdCell: function (td) {
-                td.style.minWidth = '100px';
             }
         }
     ];

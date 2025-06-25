@@ -6,30 +6,29 @@
     ViewData["Title"] = "Invoices";
     Layout = "~/Views/Shared/_Layout.cshtml";
     SelectList mainList = new SelectList(ViewBag.MainClinics, "ClinicId", "ClinicDesc");
+    ViewBag.PageTitle = "فواتير المستشفى";
 }
 @inject IViewLocalizer localizer
 
 
 
 
-<div class="container pt-2" style="min-height:100vh;">
+<div class="mx-3 pt-2" style="min-height:100vh;">
     <!-- Patient Search Section -->
     @*<partial name="Partials/_PatientSearchSection" />*@
-    <div class="text-center">
-        <h1 class="pb-2 pt-5">@localizer["Hospital Patient Data For Invoices"]</h1>
-    </div>
-    <div class="mb-5">
+  
+    <div class="mb-1">
         <!-- Patient List Table -->
         <partial name="Partials/_PatientListTable" />
     </div>
 
-    <div class="mb-5">
+    <div class="mb-1">
         <!-- Patient Admissions Section -->
         <partial name="Partials/_PatientAdmissionsSection" />
     </div>
 
 
-    <div class="mb-5">
+    <div class="mb-1">
         <!-- Clinic Transactions Section -->
         <partial name="Partials/_ClinicTransactionsSection" />
     </div>

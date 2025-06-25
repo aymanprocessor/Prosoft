@@ -55,11 +55,11 @@ function updateActivePatientUI(e, rowData) {
     //let itemName = clickedTarget.querySelector(".item-name").innerText;
     let patName = rowData.patName;
     let patAdmissonHeader = patAdmissonHead.querySelector(".header.pat-admission");
-    patAdmissonHeader.innerHTML = "زيارات للمريض : " + patName;
+    //patAdmissonHeader.innerHTML = "زيارات المريض : " + patName;
 
     // Reset clinic trans header
     let clinicTransHeader = document.querySelector(".header.clinic-trans");
-    clinicTransHeader.innerHTML = "خدمات للمريض : " + patName;
+    //clinicTransHeader.innerHTML = "خدمات المريض : " + patName;
 }
 
 function initializeAdmissionsTable(rowData, dataLists) {
@@ -95,15 +95,16 @@ function initializeAdmissionsTable(rowData, dataLists) {
         searching: true,
    
         scrollX: true,
-        scrollY: "200px",
+        scrollY: "150px",
         scrollCollapse: true,
         rowId: function (data) {
             return 'row-' + data.masterId;
         },
         dom:
             "<'row mb-2 mt-3'" +
-            "<'col-sm-6 d-flex justify-content-start'B>" +             // Top-left: buttons
-            "<'col-sm-6 d-flex justify-content-end'f>" +                                       // Top-right: search box
+            "<'col-sm-4 d-flex justify-content-start'B>" +             // Top-left: buttons
+            "<'col-sm-4 d-flex justify-content-center'<'admission-title-header'>>" +             // Top-left: buttons
+            "<'col-sm-4 d-flex justify-content-end'f>" +                                       // Top-right: search box
             ">" +
             "<'row'<'col-sm-12'tr>>" +                                  // Table
             "<'row mt-2'" +
@@ -111,6 +112,9 @@ function initializeAdmissionsTable(rowData, dataLists) {
             "<'col-sm-4 d-flex justify-content-center'p>" +                           // Bottom-center: pagination
             "<'col-sm-4 text-end'i>" +                              // Bottom-right: info
             ">",
+        initComplete: function () {
+            $('.admission-title-header').html('<h5>زيارات</h5>');
+        },
         buttons: ['copy', 'excel', 'pdf', 'print'],
         language: getDataTableLanguage(),
         drawCallback: function () {
@@ -140,9 +144,10 @@ function getAdmissionsTableColumns(dataLists) {
     return [
         {
             data: 'masterId',
+            width:'50px',
             defaultContent: null,
             render: function (data, type, row) {
-                return type === 'display' ? `<p class="masterId" data-field="masterId">${data || ''}</p>` : (data || null);
+                return type === 'display' ? `<p style="width:50px;" class="masterId" data-field="masterId">${data || ''}</p>` : (data || null);
             },
             createdCell: function (td) {
                 td.style.minWidth = '50px';
@@ -150,15 +155,16 @@ function getAdmissionsTableColumns(dataLists) {
         },
         {
             data: 'patAdDate',
+            width:'80px',
             defaultContent: null,
             render: function (data, type, row) {
                 if (type === 'display') {
-                    return data ? `<p class="patAdDate" data-field="patAdDate">${moment(data).format('DD-MM-YYYY')}</p>` : '<p class="patAdDate" data-field="patAdDate"></p>';
+                    return data ? `<p style="width:80px;" class="patAdDate" data-field="patAdDate">${moment(data).locale('en').format('DD-MM-YYYY')}</p>` : '<p class="patAdDate" data-field="patAdDate"></p>';
                 }
                 return data || null;
             },
             createdCell: function (td) {
-                td.style.minWidth = '120px';
+                td.style.minWidth = '80px';
             }
         },
         {
@@ -172,7 +178,7 @@ function getAdmissionsTableColumns(dataLists) {
                     const content = DropdownBuilders.buildDealDd(rowData);
                     td.innerHTML = content;
                 }
-                td.style.minWidth = '150px';
+                td.style.minWidth = '100px';
             }
         },
         {
@@ -190,7 +196,7 @@ function getAdmissionsTableColumns(dataLists) {
                     const content = await DropdownBuilders.buildCompaniesDd(rowData, []);
                     td.innerHTML = content;
                 }
-                td.style.minWidth = '150px';
+                td.style.minWidth = '100px';
             }
         },
         {
@@ -208,7 +214,7 @@ function getAdmissionsTableColumns(dataLists) {
                     const content = await DropdownBuilders.buildCompaniesDtlDd(rowData, []);
                     td.innerHTML = content;
                 }
-                td.style.minWidth = '150px';
+                td.style.minWidth = '100px';
             }
         },
         {
@@ -225,7 +231,7 @@ function getAdmissionsTableColumns(dataLists) {
                     const content = DropdownBuilders.buildDepartmentDd(rowData, []);
                     td.innerHTML = content;
                 }
-                td.style.minWidth = '150px';
+                td.style.minWidth = '100px';
             }
         },
         {
@@ -243,7 +249,7 @@ function getAdmissionsTableColumns(dataLists) {
                     const content = DropdownBuilders.buildSectionDd(rowData, []);
                     td.innerHTML = content;
                 }
-                td.style.minWidth = '150px';
+                td.style.minWidth = '100px';
             }
         },
         {
@@ -252,66 +258,117 @@ function getAdmissionsTableColumns(dataLists) {
             render: function (data, type, row) {
                 return type === 'display' ? '<div class="loading">Loading...</div>' : (data || null);
             },
-            createdCell: async function (td, cellData, rowData) {
+            createdCell:  function (td, cellData, rowData) {
                 if (rowData) {
                     const content = DropdownBuilders.buildDoctorDd(rowData, dataLists.doctorList);
                     td.innerHTML = content;
                 }
-                td.style.minWidth = '150px';
+                td.style.minWidth = '100px';
             }
         },
         {
             data: 'patDateExit',
+            width:'60px',
             defaultContent: null,
             render: function (data, type, row) {
                 if (type === 'display') {
                     if (!data || data == null) {
-                        return '<input type="date" class="patDateExit" value="" data-field="patDateExit"/>';
+                        return '<input type="date" class="patDateExit form-control" value="" data-field="patDateExit"/>';
                     }
                     let date = moment(data, "DD-MM-YYYY").format('YYYY-MM-DD');
-                    return `<input type="date" class="patDateExit" value="${date}" data-field="patDateExit" data-id="${row.masterId}" />`;
+                    return `<input type="date" class="patDateExit form-control" value="${date}" data-field="patDateExit" data-id="${row.masterId}" />`;
                 }
                 return data || null;
+            },
+            createdCell:  function (td, cellData, rowData) {
+            
+                td.style.minWidth = '60px';
             }
         },
         {
             data: 'patientValue',
+            width: '60px',
+
             defaultContent: null,
             render: function (data, type, row) {
+                //if (type === 'display') {
+                //    return `<input type="number" class="form-control no-spinner" value="${data || ''}" data-field="patientValue" data-id="${row.masterId || ''}" min="0" data-parsley-type="number" disabled>`;
+                //}
                 if (type === 'display') {
-                    return `<input type="number" class="form-control no-spinner" value="${data || ''}" data-field="patientValue" data-id="${row.masterId || ''}" min="0" data-parsley-type="number">`;
+                    return `<p style="width:60px;" class="text-center">${data || ''}</p>`;
                 }
                 return data || null;
+            },
+            createdCell:  function (td, cellData, rowData) {
+              
+                td.style.minWidth = '60px';
+            }
+        },
+        {
+            data: 'compValue',
+            width: '60px',
+
+            defaultContent: null,
+            render: function (data, type, row) {
+                //if (type === 'display') {
+                //    return `<input type="number" class="form-control no-spinner" value="${data || ''}" data-field="compValue" data-id="${row.masterId || ''}" min="0" data-parsley-type="number" disabled>`;
+                //}
+                if (type === 'display') {
+                    return `<p style="width:60px;"  class="text-center">${data || ''}</p>`;
+                }
+                return data || null;
+            },
+            createdCell: function (td, cellData, rowData) {
+
+                td.style.minWidth = '60px';
             }
         },
         {
             data: 'prepaid',
+            width: '60px',
+
             defaultContent: null,
             render: function (data, type, row) {
                 if (type === 'display') {
                     return `<input type="number" class="form-control no-spinner" value="${data || ''}" data-field="prepaid" data-id="${row.masterId || ''}" min="0" data-parsley-type="number">`;
                 }
                 return data || null;
+            },
+            createdCell:  function (td, cellData, rowData) {
+               
+                td.style.minWidth = '60px';
             }
         },
         {
             data: 'mainInvNo',
+            width: '60px',
+
             defaultContent: null,
             render: function (data, type, row) {
                 if (type === 'display') {
                     return `<input type="number" class="form-control no-spinner" value="${data || ''}" data-field="mainInvNo" data-id="${row.masterId || ''}" min="0" data-parsley-type="number">`;
                 }
                 return data || null;
+            },
+            createdCell: async function (td, cellData, rowData) {
+             
+                td.style.minWidth = '60px';
             }
         },
         {
             data: 'sessionNo',
+            width: '60px',
+
             defaultContent: null,
             render: function (data, type, row) {
                 if (type === 'display') {
                     return `<input type="number" class="form-control no-spinner" value="${data || ''}" data-field="sessionNo" data-id="${row.masterId || ''}" min="0" max="100" data-parsley-type="number">`;
                 }
                 return data || null;
+            },
+            createdCell: async function (td, cellData, rowData) {
+
+                td.style.minWidth = '60px';
             }
         },
         {
@@ -319,10 +376,8 @@ function getAdmissionsTableColumns(dataLists) {
             columnControl:[],
             render: function (data, type, row) {
                 return `<button class="btn btn-sm btn-danger btn-delete" data-id="${row.masterId || ''}"><i class="bi bi-trash"></i></button>`;
-            },
-            createdCell: function (td) {
-                td.style.minWidth = '100px';
             }
+           
         }
     ];
 }

@@ -564,3 +564,36 @@ table.dataTable, table td {
         background-color: #b2ebf2 !important; /* Slightly darker cyan on hover */
     }
 
+table.dataTable th {
+    background-color: #4f555a !important; /* Dark gray background */
+    color: white; /* White text */
+}
+
+table th {
+    background-color: #4f555a !important; /* Dark gray background */
+    color: white !important; /* White text */
+}
+
+table th span.dtcc-button-icon svg {
+    stroke: white !important;
+}
+
+table tbody tr td {
+    padding-top: 3px !important;
+    padding-bottom: 3px !important;
+    padding-left: 1px !important;
+    padding-right: 1px !important;
+}
+table.dataTable form-control{
+    border-radius:0px !important;
+}
+
+table.dataTable thead > tr > th div.dt-column-header {
+    flex-wrap: wrap !important;
+}
+input[type="date"].form-control {
+    width: 130px !important;
+}
+input[type="time"].form-control {
+    width: 130px !important;
+}

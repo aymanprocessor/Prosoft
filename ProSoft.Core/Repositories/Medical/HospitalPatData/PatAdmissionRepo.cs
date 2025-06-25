@@ -44,6 +44,7 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
                     CompIdDtl = obj.CompIdDtl,
                     MainInvNo = obj.MainInvNo,
                     PatientValue = obj.PatientValue,
+                    CompValue = obj.CompValue,
                     Prepaid = obj.Prepaid,
                     SessionNo = obj.SessionNo,
                     DrCode = obj.DrCode,
