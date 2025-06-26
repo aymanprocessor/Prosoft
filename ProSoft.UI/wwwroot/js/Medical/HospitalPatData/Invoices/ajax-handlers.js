@@ -125,6 +125,27 @@ const AjaxHandlers = {
             return [];
         }
     },
+
+    // Fetch Stocks
+    async fetchPriceListByClinicId(
+        masterId,
+        clinicId,
+        sClinicId,
+        servId
+    ) {
+        try {
+            const data = await $.ajax({
+                url: '/Medical/ClinicTrans/GetPriceListDetails',
+                type: 'POST',
+                data: { masterId: masterId, clinicId: clinicId, sClinicId: sClinicId, servId: servId }
+            });
+            return data || null;
+        } catch (error) {
+            console.error('Error fetching stocks:', error);
+            return null;
+        }
+    },
+
     
     async savePatientRows(insertData) {
         try {

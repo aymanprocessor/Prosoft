@@ -25,6 +25,7 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
         public DateTime? PatDateExit { get; set; }
         public int SendTo { get; set; }
         public decimal PatientValue { get; set; }
+        public decimal CompValue { get; set; }
         public decimal Prepaid { get; set; }
         public int MainInvNo { get; set; }
         public int SessionNo { get; set; }

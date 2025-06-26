@@ -55,9 +55,10 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         }
 
         ///Get  GetPriceListDetails
-        public async Task<IActionResult> GetPriceListDetails(int id, int clincID, int sClincID, int servID)
+        [HttpPost]
+        public async Task<IActionResult> GetPriceListDetails(int masterId, int clinicId, int sClinicId, int servId)
         {
-            TermsPriceListViewDTO TermsPriceListDTO = await _clinicTransRepo.GetPricesDetails(id, clincID, sClincID, servID);
+            TermsPriceListViewDTO TermsPriceListDTO = await _clinicTransRepo.GetPricesDetails(masterId, clinicId, sClinicId, servId);
             return Json(TermsPriceListDTO);
         }
 
@@ -217,6 +218,7 @@ namespace ProSoft.UI.Areas.Medical.Controllers
         }
 
 
+     
         [HttpPost]
         public async Task<IActionResult> UpdateRows([FromBody] List<ClinicTransRequestDTO> modifiedData)
         {

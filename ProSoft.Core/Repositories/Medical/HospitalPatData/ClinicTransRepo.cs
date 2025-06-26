@@ -82,6 +82,7 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
                .Select(obj => new ClinicTransViewDTO()
                {
                    CheckId = (int)obj.CheckId,
+                   MasterId = (int)obj.MasterId,
                    ItmServFlag = (int)obj.ItmServFlag,
                    ExDate = (DateTime)obj.ExDate,
                    ClinicId = (int)obj.ClinicId,
@@ -368,6 +369,27 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
 
         }
 
+        public async Task UpdatePatientAndCompTotal(int masterId)
+        {
+            PatAdmission patAdmission = await _Context.PatAdmissions
+                        .FirstOrDefaultAsync(obj => obj.MasterId == masterId);
+
+            var ClinicTrans = await _Context.ClinicTrans
+                    .Where(obj => obj.MasterId == masterId).ToListAsync();
+
+            decimal? patientValueTotal =  0;
+            decimal? compValueTotal =  0;
+            foreach (var clinic in ClinicTrans)
+            {
+                patientValueTotal += clinic.PatientValue;
+                compValueTotal += clinic.CompValue;
+            }
+            patAdmission.PatientValue = patientValueTotal;
+            patAdmission.CompValue = compValueTotal;
+            await _Context.SaveChangesAsync();
+
+        }
+
         //********************** BATCH ADD CLINIC TRANS **********************//
         public async Task AddClinicTransListAsync(int visitId, int flag, List<ClinicTransEditAddDTO> clinicTransDTOList)
         {
@@ -390,10 +412,11 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
                         .LastOrDefaultAsync(obj => obj.MasterId == visitId);
 
                 int currentCounter = lastClinicTrans?.Counter ?? 0;
-
+                
                 // Process each row
                 foreach (var clinicTransDTO in clinicTransDTOList)
                 {
+                  
                     // Set counter
                     currentCounter++;
                     clinicTransDTO.Counter = currentCounter;
@@ -438,14 +461,16 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
                             clinicTran.ItemMaster = SubItem.ItemCode;
                         }
                     }
-
                     // Add to context
                     await _Context.AddAsync(clinicTran);
                 }
 
+              
+
                 // Save all changes
                 await _Context.SaveChangesAsync();
 
+                await UpdatePatientAndCompTotal(visitId);
                 // Handle Deposit logic once for all rows
                 await ProcessDepositForVisit(visitId, flag, patAdmission);
 
@@ -599,13 +624,27 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
         {
             var checkIds = clinicTransDTOs.Select(dto => dto.CheckId).ToList();
 
+            // Get common data once for all rows
+            PatAdmission patAdmission = await _Context.PatAdmissions
+                     .FirstOrDefaultAsync(obj => obj.MasterId == clinicTransDTOs[0].MasterId);
+
+            if (patAdmission == null)
+            {
+                throw new Exception($"PatAdmission not found for visitId: {clinicTransDTOs[0].MasterId}");
+            }
+
             // Fetch all ClinicTrans records in one query
             var clinicTransList = await _Context.ClinicTrans
                 .Where(ct => checkIds.Contains(ct.CheckId))
                 .ToListAsync();
 
+
+
             foreach (var dto in clinicTransDTOs)
             {
+
+           
+
                 var myClinicTran = clinicTransList.FirstOrDefault(ct => ct.CheckId == dto.CheckId);
                 if (myClinicTran == null)
                     continue; // or handle as needed
@@ -642,8 +681,11 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
 
                 _Context.Update(myClinicTran);
             }
+       
 
             await _Context.SaveChangesAsync();
+            await UpdatePatientAndCompTotal((int)clinicTransDTOs[0].MasterId);
+
         }
 
         public async Task DeleteClinicTransAsync(int id)

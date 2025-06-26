@@ -426,6 +426,7 @@ function setupAdmissionsEventHandlers(table, patientId, dataLists) {
             drCode: "",
             patDateExit: null,
             patientValue: 0,
+            compValue:0,
             prepaid: 0,
             mainInvNo: 0,
             sessionNo: 0
@@ -699,7 +700,7 @@ function validatePatAdmissionData() {
 function patAdmissionPrepareInsertData(table, patientId) {
     var insertData = [];
 
-    table.rows('.new-row').every(function () {
+    $('.new-row').not('.modified-row').every(function () {
         var row = $(this.node());
 
         var masterId = row.find('.masterId').text() || null;
@@ -715,6 +716,7 @@ function patAdmissionPrepareInsertData(table, patientId) {
                 drCode: row.find('select[data-field="drSendId"]').val() || null,
                 patDateExit: moment(row.find('.patDateExit').text()).toISOString() || null,
                 patientValue: parseFloat(row.find('input[data-field="patientValue"]').val()) || 0,
+                compValue: parseFloat(row.find('input[data-field="compValue"]').val()) || 0,
                 prepaid: parseFloat(row.find('input[data-field="prepaid"]').val()) || 0,
                 mainInvNo: parseInt(row.find('input[data-field="mainInvNo"]').val()) || 0,
                 sessionNo: parseInt(row.find('input[data-field="sessionNo"]').val()) || 0
@@ -745,6 +747,7 @@ function patAdmissionPrepareUpdateData(table,patientId) {
             drCode: row.find('select[data-field="drSendId"]').val() || null,
             patDateExit: moment(row.find('input[data-field="patDateExit"]').val()).toISOString() || null,
             patientValue: parseFloat(row.find('input[data-field="patientValue"]').val()) || 0,
+            compValue: parseFloat(row.find('input[data-field="compValue"]').val()) || 0,
             prepaid: parseFloat(row.find('input[data-field="prepaid"]').val()) || 0,
             mainInvNo: parseInt(row.find('input[data-field="mainInvNo"]').val()) || 0,
             sessionNo: parseInt(row.find('input[data-field="sessionNo"]').val()) || 0

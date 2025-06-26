@@ -448,7 +448,7 @@
                 plId: tempId,
                 plDesc: '',
                 flag1: '',
-                plDate: moment().format("YYYY-MM-DD"),
+                plDate: moment().locale('en').format("YYYY-MM-DD"),
                 year: 2025
             };
 
@@ -623,7 +623,7 @@
     });
 
     $('#PriceListDetail tbody').on('click', '.delete-detail-btn', function () {
-            deletePriceListDetailRecord($(this), priceListTable);
+        deletePriceListDetailRecord($(this), priceListDetailTable);
         
     });
 

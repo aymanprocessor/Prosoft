@@ -10,6 +10,7 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
     {
         public DateTime ExDate { get; set; }
         public int CheckId { get; set; }
+        public int MasterId { get; set; }
         public int Counter { get; set; }
         public int ItmServFlag { get; set; }
         public string SubName { get; set; }

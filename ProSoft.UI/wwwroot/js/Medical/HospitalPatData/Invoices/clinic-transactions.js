@@ -134,6 +134,7 @@ function getClinicTransColumns(dataLists) {
             data: 'checkId',
             visible:false
         },
+      
         {
             data: 'exDate',
             width: "80px",
@@ -378,8 +379,7 @@ function setupClinicTransEventHandlers(table, masterId, modifiedRows, dataLists)
             enableSaveClinicTransBtn();
         }
 
-        updateRowTotal(row);
-        updateGrandTotalsFromTable();
+       // updateRowTotal(row);
     });
 
     // Add new row
@@ -411,12 +411,130 @@ function setupClinicTransEventHandlers(table, masterId, modifiedRows, dataLists)
 
 
     // Auto-calculate patient value
-    $('.clinicTrans-table tbody').on('change', 'input[data-field="unitPrice"]', function () {
+
+    //$('.clinicTrans-table tbody').on('change', 'input[data-field="unitPrice"] ,input[data-field="discountVal"],input[data-field="qty"]', function () {
+    //    var row = $(this).closest('tr');
+
+    //    updateRowTotal(row);
+
+
+    //    var unitPrice = parseFloat($(this).val()) || 0;
+    //    row.find('input[data-field="patientValue"]').val(unitPrice);
+
+    //});
+
+    // Auto-calculate Value Service
+    $('.clinicTrans-table tbody').on('input change', 'input[data-field="qty"]', function () {
         var row = $(this).closest('tr');
-        var unitPrice = parseFloat($(this).val()) || 0;
-        row.find('input[data-field="patientValue"]').val(unitPrice);
-        updateRowTotal(row);
-        updateGrandTotalsFromTable();
+        var rowData = $('.clinicTrans-table').DataTable().row(row).data();
+
+        var clinicId = row.find('select[data-field="clinicId"]').val();
+        var sClinicId = row.find('select[data-field="sClinicId"]').val();
+        var servId = row.find('select[data-field="servId"]').val();
+
+        var qty = parseFloat(row.find('input[data-field="qty"]').val()) || 0;
+        var unitPrice = parseFloat(row.find('input[data-field="unitPrice"]').val()) || 0;
+        var valueService = row.find('[data-field="valueService"]');
+
+        var compValue = row.find('input[data-field="compValue"]');
+        var patientValue = row.find('input[data-field="patientValue"]');
+
+
+        var updatedValueService = unitPrice * qty;
+        row.find('.valueService').text((updatedValueService).toFixed(2));
+
+
+        if (masterId && clinicId && sClinicId && servId) {
+
+            AjaxHandlers.fetchPriceListByClinicId(
+                masterId,
+                clinicId,
+                sClinicId,
+                servId
+            ).then(function (serviceDetails) {
+                // Example: auto-fill unitPrice and patientValue if returned
+                console.log('serviceDetails', serviceDetails)
+
+                if (serviceDetails) {
+
+                   
+
+                
+                    compValue.val(updatedValueService * serviceDetails.compCovPercentage /100)
+                        patientValue.val(updatedValueService - compValue.val())
+                    
+
+                } else {
+                    alert("لا يوجد قائمة اسعار لهذه الشركة");
+                }
+            }).catch(function (error) {
+                console.error('Error fetching service details:', error);
+            });
+        }
+
+       
+
+        //updateRowTotal(row);
+
+
+
+    });
+    // Auto-calculate patient value
+    $('.clinicTrans-table tbody').on('change', 'select[data-field="clinicId"],select[data-field="sClinicId"],select[data-field="servId"]', function () {
+        var row = $(this).closest('tr');
+     
+
+        var clinicId = row.find('select[data-field="clinicId"]').val();
+        var sClinicId = row.find('select[data-field="sClinicId"]').val();
+        var servId = row.find('select[data-field="servId"]').val();
+        var discountVal = row.find('input[data-field="discountVal"]');
+        var unitPrice = row.find('input[data-field="unitPrice"]');
+        var qty = row.find('input[data-field="qty"]');
+        var valueService = row.find('[data-field="valueService"]');
+        var compValue = row.find('input[data-field="compValue"]');
+        var patientValue = row.find('input[data-field="patientValue"]');
+
+
+
+
+        if (masterId && clinicId && sClinicId && servId) {
+            //ajax request
+            //ajax request
+            AjaxHandlers.fetchPriceListByClinicId(
+                masterId,
+                clinicId,
+                sClinicId,
+                servId
+            ).then(function (serviceDetails) {
+                // Example: auto-fill unitPrice and patientValue if returned
+                console.log('serviceDetails', serviceDetails)
+
+                if (serviceDetails) {
+
+                    discountVal.val(serviceDetails.discoutComp);
+                    unitPrice.val(serviceDetails.plValue);
+
+                    var valueServiceTotal = (qty.val() * unitPrice.val())
+
+                    valueService.text(valueServiceTotal);
+
+                    compValue.val(valueServiceTotal * serviceDetails.compCovPercentage /100)
+
+                    patientValue.val(valueServiceTotal - compValue.val())
+
+                    row.attr('data-compcov', serviceDetails.compCovPercentage / 100);
+
+                } else {
+                    alert("لا يوجد قائمة اسعار لهذه الشركة");
+                }
+            }).catch(function (error) {
+                console.error('Error fetching service details:', error);
+            });
+        } 
+
+            
+
+        
     });
 
     // Save button
@@ -437,6 +555,10 @@ function setupCascadeDropdowns(dataLists) {
         let rowId = $(this).data('id');
         let $SubClinicSelect = $(`.sub-clinic-dropdown[data-id="${rowId}"]`);
         let $ServSelect = $(`.serv-dropdown[data-id="${rowId}"]`);
+
+
+        $SubClinicSelect.empty().append('<option value="">Choose</option>').prop('disabled', true);
+        $ServSelect.empty().append('<option value="">Choose</option>').prop('disabled', true);
 
         if (selectedClinicId) {
             dataLists.subClinicList = await AjaxHandlers.fetchSubClinics(selectedClinicId);
@@ -459,6 +581,9 @@ function setupCascadeDropdowns(dataLists) {
         let selectedSubClinicId = $(this).val();
         let rowId = $(this).data('id');
         let $ServSelect = $(`.serv-dropdown[data-id="${rowId}"]`);
+
+        $ServSelect.empty().append('<option value="">Choose</option>').prop('disabled', true);
+
 
         if (selectedSubClinicId) {
             dataLists.servList = await AjaxHandlers.fetchServices(selectedSubClinicId);
@@ -502,7 +627,13 @@ function createNewClinicTransRow(masterId) {
 function updateRowTotal(row) {
     var qty = parseFloat(row.find('input[data-field="qty"]').val()) || 0;
     var unitPrice = parseFloat(row.find('input[data-field="unitPrice"]').val()) || 0;
-    row.find('.valueService').text((qty * unitPrice).toFixed(2));
+    var discountVal = parseFloat(row.find('input[data-field="discountVal"]').val()) || 0;
+
+    var updatedUnitPrice = unitPrice - (unitPrice * discountVal / 100)
+    row.find('input[data-field="unitPrice"]').val(updatedUnitPrice)
+
+    var updatedValueService = updatedUnitPrice * qty;
+    row.find('.valueService').text((updatedValueService).toFixed(2));
 }
 
 function updateGrandTotals(json) {
@@ -520,10 +651,7 @@ function updateGrandTotals(json) {
     document.getElementById("netPatient").innerHTML = netPatient.toFixed(2);
 }
 
-function updateGrandTotalsFromTable() {
-    // This would be called after manual changes to update totals
-    // Implementation similar to updateGrandTotals but reading from current table state
-}
+
 
 async function handleSaveClinicTrans(table, masterId, modifiedRows) {
     var $btn = $('#btnSaveClinicTrans');
@@ -610,7 +738,7 @@ function prepareInsertDataClinic(table, masterId) {
 
         if (typeof (checkId) === "string" && checkId.includes("temp")) {
             insertData.push({
-                exDate: new Date(),
+                exDate: moment(new Date()).locale('en').format('YYYY-MM-DD') ,
                 masterId: masterId,
                 itmServFlag: parseInt(data.itmServFlag) || 0,
                 clinicId: row.find('select[data-field="clinicId"]').val(),
@@ -643,7 +771,7 @@ function prepareUpdateDataClinic(table, masterId, modifiedRows) {
         if (checkId) {
             updateData.push({
                 checkId: checkId,
-                exDate: moment(row.find('.exDate').text().trim(), 'DD/MM/YYYY').format('YYYY-MM-DD'),
+                exDate: moment(row.find('.exDate').text().trim(), 'DD/MM/YYYY').locale('en').format('YYYY-MM-DD'),
                 masterId: masterId,
                 itmServFlag: parseInt(table.row(row).data().itmServFlag) || 0,
                 clinicId: parseInt(row.find('select[data-field="clinicId"]').val()) || null,
