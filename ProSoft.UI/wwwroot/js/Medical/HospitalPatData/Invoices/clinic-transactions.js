@@ -149,11 +149,20 @@ function getClinicTransColumns(dataLists) {
             data: 'itmServFlag',
             width: "50px",
             render: function (data, type, row) {
-                return type === 'display' ? ((row.itmServFlag == 3) ? "خدمة" : "صنف") : data;
+                return type === 'display' ? '<div class="loading">Loading...</div>' : data;
             },
-            createdCell: function (td) {
-                td.style.minWidth = '50px';
-            }
+            createdCell:  async function (td, cellData, rowData) {
+                if (rowData) {
+                    td.innerHTML = DropdownBuilders.buildItmServFlagDd(rowData);
+
+                    const $select = $(td).find('select[data-field="itmServFlag"]');
+                    if ($select.length>0) {
+                        const row = $select.closest('tr');
+                        const itmServFlag = $select.val();
+                        handleItmServFlagChange(row, itmServFlag);
+                    }
+                }
+                td.style.minWidth = '100px';            }
         },
         {
             data: 'clinicId',
@@ -198,9 +207,24 @@ function getClinicTransColumns(dataLists) {
                     if (rowData.sClinicId) {
                         dataLists.servList = await AjaxHandlers.fetchServices(rowData.sClinicId);
                     }
-                    const content =  DropdownBuilders.buildServDd(rowData, dataLists.servList);
-                    td.innerHTML = content;
+                    td.innerHTML = DropdownBuilders.buildServDd(rowData, dataLists.servList);
                 }
+                td.style.minWidth = '100px';
+            }
+        },
+        {
+            data: 'subId',
+            width: "100px",
+
+            render: function (data, type, row) {
+                // return type === 'display' ? '<div class="loading">Loading...</div>' : data;
+                return DropdownBuilders.buildSubIdFlagDd(row);
+            },
+            createdCell: async function (td, cellData, rowData) {
+                // if (rowData) {
+                //
+                //     td.innerHTML = DropdownBuilders.buildSubIdFlagDd(rowData);
+                // }
                 td.style.minWidth = '100px';
             }
         },
@@ -260,8 +284,7 @@ function getClinicTransColumns(dataLists) {
             },
             createdCell: async function (td, cellData, rowData) {
                 if (rowData) {
-                    const content =  DropdownBuilders.buildStockDd(rowData, dataLists.stockList);
-                    td.innerHTML = content;
+                    td.innerHTML = DropdownBuilders.buildStockDd(rowData, dataLists.stockList);
                 }
                 td.style.minWidth = '100px';
             }
@@ -286,6 +309,32 @@ function getClinicTransColumns(dataLists) {
             render: function (data, type, row) {
                 return type === 'display' ?
                     `<input type="number" class="form-control no-spinner" value="${data}" data-field="compValue" data-id="${row.checkId}" min="0" data-parsley-type="number">` :
+                    data;
+            },
+            createdCell: function (td) {
+                td.style.minWidth = '50px';
+            }
+        },
+        {
+            data: 'doctorValue',
+            width: '50px',
+
+            render: function (data, type, row) {
+                return type === 'display' ?
+                    `<input type="number" class="form-control no-spinner" value="${data}" data-field="doctorValue" data-id="${row.checkId}" min="0" data-parsley-type="number">` :
+                    data;
+            },
+            createdCell: function (td) {
+                td.style.minWidth = '50px';
+            }
+        },
+        {
+            data: 'hospitalValue',
+            width: '50px',
+
+            render: function (data, type, row) {
+                return type === 'display' ?
+                    `<input type="number" class="form-control no-spinner" value="${data}" data-field="hospitalValue" data-id="${row.checkId}" min="0" data-parsley-type="number">` :
                     data;
             },
             createdCell: function (td) {
@@ -364,7 +413,17 @@ function setupClinicTransEventHandlers(table, masterId, modifiedRows, dataLists)
     // Cascade dropdown changes
     setupCascadeDropdowns(dataLists);
 
+    $('.clinicTrans-table').on('draw.dt', function () {
+        // Loop through every itmServFlag dropdown
+        $('.clinicTrans-table').find('select[data-field="itmServFlag"]').each(function () {
+            const $select = $(this);
+            const row = $select.closest('tr');
+            const itmServFlag = $select.val();
 
+            handleItmServFlagChange(row, itmServFlag);
+        });
+
+    });
 
     // Track modifications
     $('.clinicTrans-table tbody').on('input change', 'input, select', function () {
@@ -422,6 +481,13 @@ function setupClinicTransEventHandlers(table, masterId, modifiedRows, dataLists)
     //    row.find('input[data-field="patientValue"]').val(unitPrice);
 
     //});
+
+    $('.clinicTrans-table tbody').on('change', 'select[data-field="itmServFlag"]', function () {
+        const row = $(this).closest('tr');
+        const itmServFlag = $(this).val();
+        handleItmServFlagChange(row, itmServFlag);
+    });
+
 
     // Auto-calculate Value Service
     $('.clinicTrans-table tbody').on('input change', 'input[data-field="qty"]', function () {
@@ -548,6 +614,30 @@ function setupClinicTransEventHandlers(table, masterId, modifiedRows, dataLists)
     });
 }
 
+function handleItmServFlagChange(row, itmServFlag) {
+    const sClinicIdDp = row.find('select[data-field="sClinicId"]');
+    const clinicIdDp = row.find('select[data-field="clinicId"]');
+    const servIdDp = row.find('select[data-field="servId"]');
+    const subIdDp = row.find('select[data-field="subId"]');
+
+    if (itmServFlag == 2) {
+        clinicIdDp.prop('disabled', true).removeAttr('required');
+        sClinicIdDp.prop('disabled', true).removeAttr('required');
+        servIdDp.prop('disabled', true).removeAttr('required');
+        subIdDp.prop('disabled', false).attr('required', true);
+    } else if (itmServFlag == 3) {
+        clinicIdDp.prop('disabled', false).attr('required', true);
+        sClinicIdDp.prop('disabled', false).attr('required', true);
+        servIdDp.prop('disabled', false).attr('required', true);
+        subIdDp.prop('disabled', true).removeAttr('required');
+    } else {
+        clinicIdDp.prop('disabled', true).removeAttr('required');
+        sClinicIdDp.prop('disabled', true).removeAttr('required');
+        servIdDp.prop('disabled', true).removeAttr('required');
+        subIdDp.prop('disabled', true).removeAttr('required');
+    }
+}
+
 function setupCascadeDropdowns(dataLists) {
     // Main clinic change
     $('.clinicTrans-table tbody').on('change', '.clinic-dropdown', async function () {
@@ -609,12 +699,15 @@ function createNewClinicTransRow(masterId) {
         clinicId: "",
         sClinicId: "",
         servId: "",
+        subId: "",
         qty: 1,
         unitPrice: 0,
         patientValue: 0,
         extraVal: 0,
         extraVal2: 0,
         compValue: 0,
+        hospitalValue: 0,
+        doctorValue: 0,
         discountVal: 0,
         approvalPeriod: -1,
         checkIdCancel: -1,

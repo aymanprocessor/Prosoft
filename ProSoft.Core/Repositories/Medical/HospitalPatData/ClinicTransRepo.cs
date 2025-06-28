@@ -88,12 +88,15 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
                    ClinicId = (int)obj.ClinicId,
                    SClinicId = Convert.ToInt32(obj.SClinicId),
                    ServId = Convert.ToInt32(obj.ServId),
+                   SubId = Convert.ToInt16(obj.SubId),
                    DrSendId = (int)obj.DrSend,
                    Qty = (int)obj.Qty,
                    UnitPrice = Convert.ToDecimal(obj.UnitPrice),
                    ValueService = Convert.ToDecimal(obj.ValueService),
                    PatientValue = Convert.ToDecimal(obj.PatientValue),
                    CompValue = Convert.ToDecimal(obj.CompValue),
+                   DoctorValue = Convert.ToDecimal(obj.DrVal),
+                   HospitalValue = Convert.ToDecimal(obj.HoVal),
                    DiscountVal = Convert.ToDecimal(obj.DiscountVal),
                    ExtraVal = Convert.ToDecimal(obj.ExtraVal),
                    ExtraVal2 = Convert.ToDecimal(obj.ExtraVal2),
@@ -102,6 +105,7 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
                    Counter = (int)obj.Counter,
                    StockId = (int)obj.StockCode,
                    SubName = obj.Sub.SubName,
+                   
                    ServDesc = obj.Serv.ServDesc,
                    DrDesc = obj.DrSendNavigation.DrDesc,
                })
@@ -369,13 +373,13 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
 
         }
 
-        public async Task UpdatePatientAndCompTotal(int masterId)
+        private async Task UpdatePatientAndCompTotal(int masterId)
         {
-            PatAdmission patAdmission = await _Context.PatAdmissions
+            var patAdmission = await _Context.PatAdmissions
                         .FirstOrDefaultAsync(obj => obj.MasterId == masterId);
 
             var ClinicTrans = await _Context.ClinicTrans
-                    .Where(obj => obj.MasterId == masterId).ToListAsync();
+                    .Where(obj => obj.MasterId == masterId && (obj.CheckIdCancel == 1 || obj.CheckIdCancel == 2)).ToListAsync();
 
             decimal? patientValueTotal =  0;
             decimal? compValueTotal =  0;
@@ -390,6 +394,33 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
 
         }
 
+        private async Task UpdateDoctorValueAndHospitalValue(int masterId)
+        {
+            var patAdmission = await _Context.PatAdmissions
+                .FirstOrDefaultAsync(obj => obj.MasterId == masterId);
+
+            var ClinicTrans = await _Context.ClinicTrans
+                .Where(obj => obj.MasterId == masterId ).ToListAsync();
+
+            foreach (var clinic in ClinicTrans)
+            {
+                var doctorPercent =
+                    await _Context.DoctorsPercents.FirstOrDefaultAsync(dr =>
+                        dr.DrCode == patAdmission.DrCode && dr.SubCode == clinic.SClinicId && dr.SubDetailCodeL1 == clinic.ServId);
+                var drPerc = patAdmission.Deal switch
+                {
+                    1 => doctorPercent.DrPerc,
+                    2=> doctorPercent.DrPercContract
+                };
+
+                var drValue = drPerc * clinic.ValueService / 100;
+                clinic.DrVal =  drValue;
+                clinic.HoVal = clinic.ValueService - drValue;
+            }
+            await _Context.SaveChangesAsync();
+           
+
+        }
         //********************** BATCH ADD CLINIC TRANS **********************//
         public async Task AddClinicTransListAsync(int visitId, int flag, List<ClinicTransEditAddDTO> clinicTransDTOList)
         {
@@ -471,6 +502,8 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
                 await _Context.SaveChangesAsync();
 
                 await UpdatePatientAndCompTotal(visitId);
+
+                await UpdateDoctorValueAndHospitalValue(visitId);
                 // Handle Deposit logic once for all rows
                 await ProcessDepositForVisit(visitId, flag, patAdmission);
 
@@ -685,6 +718,7 @@ namespace ProSoft.Core.Repositories.Medical.HospitalPatData
 
             await _Context.SaveChangesAsync();
             await UpdatePatientAndCompTotal((int)clinicTransDTOs[0].MasterId);
+            await UpdateDoctorValueAndHospitalValue((int)clinicTransDTOs[0].MasterId);
 
         }
 

@@ -6,13 +6,39 @@ const DropdownBuilders = {
         let html = `<select class="form-control text-center deal-dropdown" data-field="deal" data-id="${row.masterId}" required >`;
         html += `
         <option value="" ${!selectedValue ? 'selected' : ''}>Choose</option>
-        <option value=1 ${selectedValue == 1 ? 'selected' : ''}>خاص</option>
-        <option value=2 ${selectedValue == 2 ? 'selected' : ''}>تعاقد</option>
+        <option value=1 ${selectedValue === 1 ? 'selected' : ''}>خاص</option>
+        <option value=2 ${selectedValue === 2 ? 'selected' : ''}>تعاقد</option>
+    `;
+        html += `</select>`;
+        return html;
+    },
+    // Build ItemService Dropdown
+
+    buildItmServFlagDd(row) {
+        let selectedValue = row.itmServFlag;
+        let html = `<select class="form-control text-center itmServFlag-dropdown" data-field="itmServFlag" data-id="${row.masterId}" required >`;
+        html += `
+        <option value="" ${!selectedValue ? 'selected' : ''}>Choose</option>
+        <option value=3 ${selectedValue === 3 ? 'selected' : ''}>خدمة</option>
+        <option value=2 ${selectedValue === 2 ? 'selected' : ''}>صنف</option>
     `;
         html += `</select>`;
         return html;
     },
 
+    // Build SubItem Dropdown
+
+    buildSubIdFlagDd(row) {
+        let selectedValue = row.subId;
+        let html = `<select class="form-control text-center subId-dropdown" data-field="subId" data-id="${row.masterId}"  >`;
+        html += `
+        <option value="" ${!selectedValue ? 'selected' : ''}>Choose</option>
+       
+    `;
+        html += `</select>`;
+        return html;
+    },
+    
     // Build Companies Dropdown
     async buildCompaniesDd(row, companyList) {
         let disabled = row.deal ? '' : ' disabled';

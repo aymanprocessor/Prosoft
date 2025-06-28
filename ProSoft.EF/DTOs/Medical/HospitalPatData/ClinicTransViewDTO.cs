@@ -17,6 +17,7 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
         public int ClinicId { get; set; }
         public int SClinicId { get; set; }
         public int ServId { get; set; }
+        public int SubId { get; set; }
         public string ServDesc { get; set; }
         public int DrSendId { get; set; }
         public int StockId { get; set; }
@@ -26,6 +27,8 @@ namespace ProSoft.EF.DTOs.Medical.HospitalPatData
         public decimal UnitPrice { get; set; }
         public decimal ValueService { get; set; }
         public decimal PatientValue { get; set; }
+        public decimal DoctorValue { get; set; }
+        public decimal HospitalValue { get; set; }
         public decimal ExtraVal { get; set; }
         public decimal ExtraVal2 { get; set; }
         public decimal CompValue { get; set; }
