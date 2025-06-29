@@ -197,6 +197,14 @@ function getAdmissionsTableColumns(dataLists) {
                     td.innerHTML = content;
                 }
                 td.style.minWidth = '100px';
+
+                const selectElement = document.querySelector(`select.tomselect[data-id="${rowData.masterId}"]`);
+                if (selectElement) {
+                }
+                $(`select.select2[data-id="${rowData.masterId}"]`).select2({
+                    width: '100%'
+                });
+             
             }
         },
         {
@@ -215,7 +223,9 @@ function getAdmissionsTableColumns(dataLists) {
                     td.innerHTML = content;
                 }
                 td.style.minWidth = '100px';
+            
             }
+
         },
         {
             data: 'brnachInitial',
@@ -369,6 +379,10 @@ function getAdmissionsTableColumns(dataLists) {
             createdCell: async function (td, cellData, rowData) {
 
                 td.style.minWidth = '60px';
+                $(`select.select2[data-id="${rowData.masterId}"]`).select2({
+                    width: '100%'
+                });
+               
             }
         },
         {
@@ -409,6 +423,9 @@ function enableAddNewBtn() {
 
 
 function setupAdmissionsEventHandlers(table, patientId, dataLists) {
+
+
+   
 
     setupCascadeDropdownsAdmission(dataLists, patientId);
     // Add new admission button
@@ -492,6 +509,8 @@ function setupAdmissionsEventHandlers(table, patientId, dataLists) {
     $('.admisson-table').off('click', '.btn-delete').on('click', '.btn-delete', function () {
         handleDeletePatAdmission($(this), table);
     });
+
+ 
 
 }
 

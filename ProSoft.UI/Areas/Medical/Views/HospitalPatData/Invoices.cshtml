@@ -16,7 +16,7 @@
 <div class="mx-3 pt-2" style="min-height:100vh;">
     <!-- Patient Search Section -->
     @*<partial name="Partials/_PatientSearchSection" />*@
-  
+
     <div class="mb-1">
         <!-- Patient List Table -->
         <partial name="Partials/_PatientListTable" />
@@ -39,9 +39,12 @@
 </div>
 
 
-    <!-- Scripts -->
-    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
-    @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
+<!-- Scripts -->
+@*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
+@*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
+
+
+@section Scripts{
     <script src="~/js/Medical/HospitalPatData/Invoices/pat-list.js" asp-append-version="true"></script>
     <script src="~/js/Medical/HospitalPatData/Invoices/patient-search.js" asp-append-version="true"></script>
     <script src="~/js/Medical/HospitalPatData/Invoices/patient-admissions.js" asp-append-version="true"></script>
@@ -49,3 +52,4 @@
     <script src="~/js/Medical/HospitalPatData/Invoices/dropdown-builders.js" asp-append-version="true"></script>
     <script src="~/js/Medical/HospitalPatData/Invoices/ajax-handlers.js" asp-append-version="true"></script>
 
+}

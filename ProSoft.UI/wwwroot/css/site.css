@@ -597,3 +597,6 @@ input[type="date"].form-control {
 input[type="time"].form-control {
     width: 130px !important;
 }
+.select2-selection__rendered {
+    font-size: 14px !important; /* Or any size you prefer */
+}

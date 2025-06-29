@@ -32,6 +32,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap-datepicker/css/bootstrap-datepicker.min.css" />
     <link rel="stylesheet" href="~/select2/css/select2.min.css" />
     <link href="~/css/bootstrap-switch-button.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/parsleyjs/src/parsley.css" />
     <script src="https://kit.fontawesome.com/eb688b112b.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -87,6 +89,10 @@
 
     <!-- 2) DataTables Core -->
     <script src="~/js/datatables.min.js" asp-append-version="true"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/i18n/ar.js"></script>
+
     <!-- 4) Parsley.js (AFTER jQuery, BEFORE any script that uses it) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js" asp-append-version="true"></script>
 
@@ -101,6 +107,25 @@
     <script src="~/js/TableManager.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
+    @if (isRTL)
+    {
+
+
+        <script>
+            // Set default language and direction globally
+            $.fn.select2.defaults.set("language", "ar");
+            $.fn.select2.defaults.set("dir", "rtl");
+        </script>
+    }
+    else
+    {
+        <script>
+            // Set default language and direction globally
+            $.fn.select2.defaults.set("language", "en");
+            $.fn.select2.defaults.set("dir", "ltr");
+        </script>
+    }
+
     <script>
         function updateDateTime() {
             moment.locale('ar');
@@ -110,6 +135,8 @@
 
         setInterval(updateDateTime, 1000); // Update every second
         updateDateTime(); // Initial render
+
+
     </script>
     @* for two way validation *@
 

@@ -3,7 +3,7 @@ const DropdownBuilders = {
     // Build Deal Dropdown
      buildDealDd(row) {
         let selectedValue = row.deal;
-        let html = `<select class="form-control text-center deal-dropdown" data-field="deal" data-id="${row.masterId}" required >`;
+        let html = `<select class="form-control text-center deal-dropdown select2" data-field="deal" data-id="${row.masterId}" required >`;
         html += `
         <option value="" ${!selectedValue ? 'selected' : ''}>Choose</option>
         <option value=1 ${selectedValue === 1 ? 'selected' : ''}>خاص</option>
@@ -16,7 +16,7 @@ const DropdownBuilders = {
 
     buildItmServFlagDd(row) {
         let selectedValue = row.itmServFlag;
-        let html = `<select class="form-control text-center itmServFlag-dropdown" data-field="itmServFlag" data-id="${row.masterId}" required >`;
+        let html = `<select class="form-control text-center itmServFlag-dropdown select2" data-field="itmServFlag" data-id="${row.masterId}" required >`;
         html += `
         <option value="" ${!selectedValue ? 'selected' : ''}>Choose</option>
         <option value=3 ${selectedValue === 3 ? 'selected' : ''}>خدمة</option>
@@ -30,7 +30,7 @@ const DropdownBuilders = {
 
     buildSubIdFlagDd(row) {
         let selectedValue = row.subId;
-        let html = `<select class="form-control text-center subId-dropdown" data-field="subId" data-id="${row.masterId}"  >`;
+        let html = `<select class="form-control text-center subId-dropdown select2" data-field="subId" data-id="${row.masterId}"  >`;
         html += `
         <option value="" ${!selectedValue ? 'selected' : ''}>Choose</option>
        
@@ -42,7 +42,7 @@ const DropdownBuilders = {
     // Build Companies Dropdown
     async buildCompaniesDd(row, companyList) {
         let disabled = row.deal ? '' : ' disabled';
-        let html = `<select class="form-control text-center compId-dropdown " data-field="compId" data-id="${row.masterId}" ${disabled} required="">`;
+        let html = `<select class="form-control text-center compId-dropdown select2" data-field="compId" data-id="${row.masterId}" ${disabled} required="">`;
 
         if (row.deal && companyList) {
             for (let comp of companyList) {
@@ -57,7 +57,7 @@ const DropdownBuilders = {
     // Build Company Details Dropdown
     async buildCompaniesDtlDd(row, companyDetailsList) {
         let disabled = row.compId ? '' : ' disabled';
-        let html = `<select class="form-control text-center compIdDtl-dropdown " data-field="compIdDtl" data-id="${row.masterId}" ${disabled} required="">`;
+        let html = `<select class="form-control text-center compIdDtl-dropdown select2" data-field="compIdDtl" data-id="${row.masterId}" ${disabled} required="">`;
 
         if (row.compId && companyDetailsList) {
             for (let compDtl of companyDetailsList) {
@@ -71,7 +71,7 @@ const DropdownBuilders = {
 
     // Build Doctor Dropdown
     buildDoctorDd(row, doctorList) {
-        let html = `<select class="form-control text-center doctor-dropdown" data-field="drSendId" data-id="${row.masterId || row.checkId}" required>`;
+        let html = `<select class="form-control text-center doctor-dropdown select2" data-field="drSendId" data-id="${row.masterId || row.checkId}" required>`;
         html += `<option value="">Choose</option>`;
 
         if (doctorList) {
@@ -86,7 +86,7 @@ const DropdownBuilders = {
 
     // Build Department Dropdown
     buildDepartmentDd(row, departmentList) {
-        let html = `<select class="form-control text-center brnachInitial-dropdown" data-field="brnachInitial" data-id="${row.masterId}" required>`;
+        let html = `<select class="form-control text-center brnachInitial-dropdown select2" data-field="brnachInitial" data-id="${row.masterId}" required>`;
         html += `<option value="">Choose</option>`;
 
         if (departmentList) {
@@ -102,7 +102,7 @@ const DropdownBuilders = {
     // Build Section Dropdown
     buildSectionDd(row, sectionList) {
         let disabled = row.brnachInitial ? '' : ' disabled';
-        let html = `<select class="form-control text-center sendFr-dropdown " data-field="sendFr" data-id="${row.masterId}" ${disabled} required="">`;
+        let html = `<select class="form-control text-center sendFr-dropdown select2" data-field="sendFr" data-id="${row.masterId}" ${disabled} required="">`;
 
         if (row.brnachInitial && sectionList) {
             for (let section of sectionList) {
@@ -116,7 +116,7 @@ const DropdownBuilders = {
 
     // Build Main Clinic Dropdown
     buildMainClinicDd(row, mainClinicList) {
-        let html = `<select class="form-control text-center clinic-dropdown" data-field="clinicId" data-id="${row.checkId}" required >`;
+        let html = `<select class="form-control text-center clinic-dropdown select2" data-field="clinicId" data-id="${row.checkId}" required >`;
         html += `<option value="">Choose</option>`;
 
         if (mainClinicList) {
@@ -132,7 +132,7 @@ const DropdownBuilders = {
     // Build Sub Clinic Dropdown
     buildSubClinicDd(row, subClinicList) {
         let disabled = row.clinicId ? '' : ' disabled';
-        let html = `<select class="form-control text-center sub-clinic-dropdown " data-field="sClinicId" data-id="${row.checkId}" ${disabled} required="">`;
+        let html = `<select class="form-control text-center sub-clinic-dropdown select2" data-field="sClinicId" data-id="${row.checkId}" ${disabled} required="">`;
 
         if (row.clinicId && subClinicList) {
             for (let subClinic of subClinicList) {
@@ -147,7 +147,7 @@ const DropdownBuilders = {
     // Build Service Dropdown
     buildServDd(row, servList) {
         let disabled = row.sClinicId ? '' : ' disabled';
-        let html = `<select class="form-control text-center serv-dropdown " data-field="servId" data-id="${row.checkId}" ${disabled} required>`;
+        let html = `<select class="form-control text-center serv-dropdown select2" data-field="servId" data-id="${row.checkId}" ${disabled} required>`;
 
         if (row.sClinicId && servList) {
             for (let serv of servList) {
@@ -161,7 +161,7 @@ const DropdownBuilders = {
 
     // Build Stock Dropdown
     buildStockDd(row, stockList) {
-        let html = `<select class="form-control text-center stock-dropdown" data-field="stockId" data-id="${row.checkId}" required>`;
+        let html = `<select class="form-control text-center stock-dropdown select2" data-field="stockId" data-id="${row.checkId}" required>`;
         html += `<option value="">Choose</option>`;
 
         if (stockList) {
@@ -176,7 +176,7 @@ const DropdownBuilders = {
 
     // Build Approval Period Dropdown
     buildApprovalPeriodDd(row) {
-        let html = `<select class="form-control text-center approval-period-dropdown" data-field="approvalPeriod" data-id="${row.checkId}" required>`;
+        let html = `<select class="form-control text-center approval-period-dropdown select2" data-field="approvalPeriod" data-id="${row.checkId}" required>`;
         html += `
             <option value="">Choose</option>
             <option value=1 ${row.approvalPeriod == 1 ? ' selected' : ''}>صباحي</option>
@@ -190,7 +190,7 @@ const DropdownBuilders = {
 
     // Build Check ID Cancel Dropdown
     buildCheckIdCancelDd(row) {
-        let html = `<select class="form-control text-center check-cancel-dropdown" data-field="checkIdCancel" data-id="${row.checkId}" required>`;
+        let html = `<select class="form-control text-center check-cancel-dropdown select2" data-field="checkIdCancel" data-id="${row.checkId}" required>`;
         html += `
             <option value="">Choose</option>
             <option value=1 ${row.checkIdCancel == 1 ? ' selected' : ''}>حضور</option>

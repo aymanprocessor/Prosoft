@@ -394,8 +394,11 @@ function getClinicTransColumns(dataLists) {
             render: function (data, type, row) {
                 return type === 'display' ? DropdownBuilders.buildCheckIdCancelDd(row) : data;
             },
-            createdCell: function (td) {
+            createdCell: function (td,_,rowData) {
                 td.style.minWidth = '50px';
+                $(`select.select2[data-id="${rowData.masterId}"]`).select2({
+                    width: '100%'
+                });
             }
         },
         {
