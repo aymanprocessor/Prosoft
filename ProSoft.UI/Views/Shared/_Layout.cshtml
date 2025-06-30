@@ -136,7 +136,9 @@
         setInterval(updateDateTime, 1000); // Update every second
         updateDateTime(); // Initial render
 
-
+        $('select').select2({
+            minimumResultsForSearch: Infinity // hides search box if not needed
+        });
     </script>
     @* for two way validation *@
 

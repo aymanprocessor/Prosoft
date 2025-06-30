@@ -287,6 +287,9 @@ function getClinicTransColumns(dataLists) {
                     td.innerHTML = DropdownBuilders.buildStockDd(rowData, dataLists.stockList);
                 }
                 td.style.minWidth = '100px';
+                $(`select.select2`).select2({
+                    width: '100%'
+                });
             }
         },
         {
@@ -378,6 +381,7 @@ function getClinicTransColumns(dataLists) {
             },
             createdCell: function (td) {
                 td.style.minWidth = '50px';
+
             }
         },
         {
@@ -396,9 +400,7 @@ function getClinicTransColumns(dataLists) {
             },
             createdCell: function (td,_,rowData) {
                 td.style.minWidth = '50px';
-                $(`select.select2[data-id="${rowData.masterId}"]`).select2({
-                    width: '100%'
-                });
+              
             }
         },
         {

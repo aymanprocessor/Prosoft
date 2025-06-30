@@ -201,9 +201,9 @@ function getAdmissionsTableColumns(dataLists) {
                 const selectElement = document.querySelector(`select.tomselect[data-id="${rowData.masterId}"]`);
                 if (selectElement) {
                 }
-                $(`select.select2[data-id="${rowData.masterId}"]`).select2({
-                    width: '100%'
-                });
+                //$(`select.select2[data-id="${rowData.masterId}"]`).select2({
+                //    width: '100%'
+                //});
              
             }
         },
